@@ -24,6 +24,12 @@
         .project-card { background: white; border-radius: 8px; border: 1px solid #e5e5e5; overflow: hidden; transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
         .project-card:hover { border-color: var(--vip-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 
+        /* Sidebar Styling */
+        .sidebar-box { background: white; border-radius: 8px; border: 1px solid #e5e5e5; padding: 18px; margin-bottom: 20px; }
+        .sidebar-title { font-weight: bold; font-size: 15px; border-left: 4px solid var(--vip-color); padding-left: 10px; margin-bottom: 15px; text-transform: uppercase; }
+        .cate-count { background: #f0f0f0; color: #666; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+        .sidebar-link:hover .cate-count { background: var(--vip-color); color: white; }
+
         @media (max-width: 768px) {
             .filter-item { min-width: 120px; }
         }
@@ -54,24 +60,24 @@
                     <i class="fa-regular fa-heart text-xl"></i>
                     <span class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-1.5 rounded-full">0</span>
                 </div>
-                <div class="hidden md:flex items-center gap-3 text-[14px] font-semibold">
-                    <a href="#" class="hover:text-[--hover-color]">Đăng nhập</a> <span class="text-gray-300">|</span> <a href="#" class="hover:text-[--hover-color]">Đăng ký</a>
-                </div>
                 <button class="border border-[--vip-color] text-[--vip-color] px-4 py-1.5 rounded-lg font-bold hover:bg-[--vip-color] hover:text-white transition uppercase text-[12px]">Đăng tin</button>
             </div>
         </div>
     </header>
 
     <div class="relative">
-        <div class="swiper mySwiper w-full h-[300px] md:h-[450px]">
+        <div class="swiper mySwiper w-full h-[320px] md:h-[480px]">
             <div class="swiper-wrapper">
                 <div class="swiper-slide relative">
                     <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/30 flex items-center">
+                    <div class="absolute inset-0 bg-black/40 flex items-center">
                         <div class="container-custom w-full text-white">
                             <span class="bg-green-600 px-2 py-1 rounded text-[10px] font-bold uppercase">Đang mở bán</span>
-                            <h2 class="text-3xl md:text-5xl font-bold mt-4">Hồng Hạc City</h2>
-                            <p class="mt-2 opacity-90">Phường Xuân Lâm, Thuận Thành, Bắc Ninh</p>
+                            <h2 class="text-3xl md:text-5xl font-bold mt-4 leading-tight">
+                                <a href="bai-viet-hong-hac-city.html" class="hover:text-[--hover-color] transition">Hồng Hạc City: Khu Đô Thị Sinh Thái <br> Bậc Nhất Bắc Ninh</a>
+                            </h2>
+                            <p class="mt-2 opacity-90 text-lg">Phường Xuân Lâm, Thuận Thành, Bắc Ninh - Quy mô 198ha</p>
+                            <a href="bai-viet-hong-hac-city.html" class="mt-6 inline-block bg-[--vip-color] text-white px-8 py-3 rounded-lg font-bold hover:bg-opacity-90 transition">XEM CHI TIẾT DỰ ÁN</a>
                         </div>
                     </div>
                 </div>
@@ -79,62 +85,109 @@
             <div class="swiper-pagination !bottom-16"></div>
         </div>
 
-        <div class="bg-white border-b shadow-sm relative z-10">
-            <div class="container-custom py-4">
-                <div class="flex flex-wrap lg:flex-nowrap gap-3 items-center">
-                    <div class="flex-1 min-w-[200px] relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
-                        <input type="text" placeholder="Tìm kiếm dự án..." class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md outline-none text-sm bg-gray-50">
-                    </div>
-                    <div class="flex gap-2 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0">
-                        <select class="filter-item border border-gray-200 p-2 rounded-md text-sm outline-none bg-white min-w-[120px]"><option>Khu vực</option></select>
-                        <select class="filter-item border border-gray-200 p-2 rounded-md text-sm outline-none bg-white min-w-[120px]"><option>Loại hình</option></select>
-                        <select class="filter-item border border-gray-200 p-2 rounded-md text-sm outline-none bg-white min-w-[120px]"><option>Khoảng giá</option></select>
-                    </div>
-                    <button class="bg-gray-100 p-2.5 rounded-md hover:bg-gray-200 transition"><i class="fa-solid fa-rotate-right text-gray-600"></i></button>
-                    <button class="bg-[--vip-color] text-white px-8 py-2 rounded-md font-bold hover:opacity-90 transition w-full lg:w-auto">TÌM KIẾM</button>
+        <div class="bg-white border-b shadow-md relative z-10 -mt-10 mx-auto max-w-[1100px] rounded-xl p-4">
+            <div class="flex flex-wrap lg:flex-nowrap gap-3 items-center">
+                <div class="flex-1 min-w-[200px] relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
+                    <input type="text" placeholder="Tìm kiếm dự án..." class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md outline-none text-sm bg-gray-50">
                 </div>
+                <div class="flex gap-2">
+                    <select class="border border-gray-200 p-2 rounded-md text-sm outline-none bg-white min-w-[130px]"><option>Toàn quốc</option></select>
+                    <select class="border border-gray-200 p-2 rounded-md text-sm outline-none bg-white min-w-[130px]"><option>Loại hình</option></select>
+                </div>
+                <button class="bg-[--vip-color] text-white px-8 py-2 rounded-md font-bold hover:opacity-90 transition w-full lg:w-auto uppercase">Tìm kiếm</button>
             </div>
         </div>
     </div>
 
-    <div class="container-custom py-10">
-        <div class="mb-8">
-            <h1 class="text-2xl font-bold uppercase border-l-4 border-[--vip-color] pl-3">Dự án bất động sản trên toàn quốc</h1>
-            <p class="text-gray-500 text-sm mt-1 ml-4 italic">Hiện có 1,235 dự án đang được đăng bán & cho thuê</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="container-custom py-12">
+        <div class="flex flex-col lg:flex-row gap-8">
             
-            <div class="project-card">
-                <div class="relative h-48">
-                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500" class="w-full h-full object-cover">
-                    <span class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1"><i class="fa-regular fa-image"></i> 12</span>
-                    <span class="absolute top-2 right-2 bg-[--vip-color] text-white text-[10px] px-2 py-1 rounded font-bold">VIP</span>
+            <div class="lg:w-3/4">
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold uppercase border-l-4 border-[--vip-color] pl-3">Dự án bất động sản nổi bật</h1>
+                    <p class="text-gray-500 text-sm mt-1 ml-4 italic font-medium">Hiện có <span class="text-[--vip-color] font-bold">1,235</span> dự án trên hệ thống</p>
                 </div>
-                <div class="p-4 flex-1 flex flex-col">
-                    <h3 class="font-bold text-[14px] uppercase line-clamp-2 hover:text-[--vip-color] cursor-pointer">Vinhomes Ocean Park 3 - The Crown</h3>
-                    <p class="text-red-600 font-bold text-lg mt-2">Từ 8.5 tỷ <span class="text-gray-400 font-normal text-sm">/ căn</span></p>
-                    <div class="flex items-center gap-2 mt-2 text-gray-500 text-[12px]">
-                        <i class="fa-solid fa-location-dot"></i> <span>Văn Giang, Hưng Yên</span>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="project-card">
+                        <div class="relative h-48">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500" class="w-full h-full object-cover">
+                            <span class="absolute top-2 right-2 bg-[--vip-color] text-white text-[10px] px-2 py-1 rounded font-bold">VIP</span>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-[15px] uppercase line-clamp-2 hover:text-[--vip-color] cursor-pointer">Vinhomes Ocean Park 3 - The Crown</h3>
+                            <p class="text-red-600 font-bold text-lg mt-2">Từ 8.5 tỷ <span class="text-gray-400 font-normal text-sm">/ căn</span></p>
+                            <div class="flex items-center gap-2 mt-2 text-gray-500 text-[12px]">
+                                <i class="fa-solid fa-location-dot"></i> <span>Văn Giang, Hưng Yên</span>
+                            </div>
+                            <div class="mt-auto pt-4 border-t flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <img src="https://i.pravatar.cc/100?img=12" class="w-8 h-8 rounded-full">
+                                    <span class="text-[12px] font-bold">BĐS Tổ Ấm Việt</span>
+                                </div>
+                                <button class="text-gray-400 hover:text-red-500"><i class="fa-regular fa-heart text-lg"></i></button>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="mt-auto pt-4 border-t flex items-center justify-between">
-                        <a href="profile-doanh-nghiep.html" class="flex items-center gap-2 group">
-                            <div class="w-10 h-10 rounded-full bg-[--vip-color] overflow-hidden border border-gray-100">
-                                <img src="https://i.pravatar.cc/100?img=12" alt="Avatar">
-                            </div>
-                            <div>
-                                <p class="text-[12px] font-bold group-hover:text-[--hover-color]">BĐS Tổ Ấm Việt</p>
-                                <p class="text-[10px] text-gray-400">Doanh nghiệp chuyên nghiệp</p>
-                            </div>
+                    </div>
+            </div>
+
+            <div class="lg:w-1/4">
+                
+                <div class="sidebar-box shadow-sm">
+                    <h4 class="sidebar-title">Dự án theo địa danh</h4>
+                    <div class="flex flex-col gap-1">
+                        <a href="#" class="sidebar-link flex justify-between items-center py-2 text-sm border-b border-gray-50 hover:text-[--vip-color] transition group">
+                            <span>Dự án tại Hà Nội</span>
+                            <span class="cate-count">452</span>
                         </a>
-                        <button class="text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart text-lg"></i></button>
+                        <a href="#" class="sidebar-link flex justify-between items-center py-2 text-sm border-b border-gray-50 hover:text-[--vip-color] transition group">
+                            <span>Dự án tại TP. HCM</span>
+                            <span class="cate-count">318</span>
+                        </a>
+                        <a href="#" class="sidebar-link flex justify-between items-center py-2 text-sm border-b border-gray-50 hover:text-[--vip-color] transition group">
+                            <span>Dự án tại Đà Nẵng</span>
+                            <span class="cate-count">124</span>
+                        </a>
+                        <a href="#" class="sidebar-link flex justify-between items-center py-2 text-sm border-b border-gray-50 hover:text-[--vip-color] transition group">
+                            <span>Dự án tại Bình Dương</span>
+                            <span class="cate-count">95</span>
+                        </a>
+                        <a href="#" class="sidebar-link flex justify-between items-center py-2 text-sm hover:text-[--vip-color] transition group">
+                            <span>Dự án tại Hưng Yên</span>
+                            <span class="cate-count">42</span>
+                        </a>
                     </div>
+                </div>
+
+                <div class="sidebar-box shadow-sm">
+                    <h4 class="sidebar-title">Tin tức dự án</h4>
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=100" class="w-16 h-16 rounded object-cover">
+                            <div>
+                                <a href="#" class="text-[13px] font-bold leading-tight line-clamp-2 hover:text-[--vip-color]">Thị trường BĐS 2026: Dòng tiền đổ về đâu?</a>
+                                <p class="text-[10px] text-gray-400 mt-1">2 giờ trước</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100" class="w-16 h-16 rounded object-cover">
+                            <div>
+                                <a href="#" class="text-[13px] font-bold leading-tight line-clamp-2 hover:text-[--vip-color]">Lãi suất ngân hàng tiếp tục giảm mạnh</a>
+                                <p class="text-[10px] text-gray-400 mt-1">5 giờ trước</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="block text-center mt-5 text-[12px] font-bold text-[--vip-color] hover:underline">XEM TẤT CẢ TIN TỨC</a>
+                </div>
+
+                <div class="rounded-lg overflow-hidden border shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1582408921715-18e7806365c1?w=400" class="w-full">
                 </div>
             </div>
 
-            </div>
+        </div>
     </div>
 
     <footer class="bg-white border-t mt-12 pt-12 pb-8">
@@ -148,24 +201,10 @@
                     </ul>
                 </div>
                 <div class="footer-link-group">
-                    <h4 class="font-bold text-sm mb-4 uppercase">BẤT ĐỘNG SẢN BÁN</h4>
+                    <h4 class="font-bold text-sm mb-4 uppercase">DỰ ÁN MỚI</h4>
                     <ul class="text-[13px] text-gray-500 space-y-2">
-                        <li class="hover:text-[--hover-color] cursor-pointer">Bán căn hộ chung cư</li>
-                        <li class="hover:text-[--hover-color] cursor-pointer">Bán nhà riêng</li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4 class="font-bold text-sm mb-4 uppercase">BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul class="text-[13px] text-gray-500 space-y-2">
-                        <li class="hover:text-[--hover-color] cursor-pointer">Thuê căn hộ chung cư</li>
-                        <li class="hover:text-[--hover-color] cursor-pointer">Thuê văn phòng</li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4 class="font-bold text-sm mb-4 uppercase">DỰ ÁN NỔI BẬT</h4>
-                    <ul class="text-[13px] text-gray-500 space-y-2">
-                        <li class="hover:text-[--hover-color] cursor-pointer">Dự án Vinhomes</li>
-                        <li class="hover:text-[--hover-color] cursor-pointer">Căn hộ cao cấp Quận 2</li>
+                        <li class="hover:text-[--hover-color] cursor-pointer">Căn hộ cao cấp</li>
+                        <li class="hover:text-[--hover-color] cursor-pointer">Đất nền dự án</li>
                     </ul>
                 </div>
             </div>
@@ -173,17 +212,15 @@
             <div class="bg-[#f9f9f9] rounded-2xl p-8 flex flex-wrap justify-between items-start gap-8 border border-gray-100">
                 <div class="w-full lg:w-1/3">
                     <img src="DAI TRONG SUOT (2).png" class="h-10 mb-6" alt="Logo">
-                    <h5 class="font-bold text-sm mb-4 uppercase">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</h5>
-                    <p class="text-[13px] text-gray-500 mb-2"><i class="fa-solid fa-location-dot mr-2 text-[--vip-color]"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[13px] text-gray-500"><i class="fa-solid fa-phone mr-2 text-[--vip-color]"></i> Hotline: 0946 239 289</p>
+                    <h5 class="font-bold text-sm mb-2 uppercase">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</h5>
+                    <p class="text-[13px] text-gray-500"><i class="fa-solid fa-location-dot mr-2 text-[--vip-color]"></i> Tầng 31, Keangnam Landmark 72, Hà Nội</p>
+                    <p class="text-[13px] text-gray-500 mt-1"><i class="fa-solid fa-phone mr-2 text-[--vip-color]"></i> Hotline: 0946 239 289</p>
                 </div>
                 <div class="w-full lg:w-1/4">
-                    <h5 class="font-bold text-[12px] mb-4 uppercase">ĐĂNG KÝ NHẬN TIN</h5>
-                    <div class="flex bg-white border border-gray-200 rounded-lg overflow-hidden p-1 shadow-sm">
-                        <input type="text" placeholder="Email của bạn..." class="flex-1 px-3 py-2 outline-none text-sm">
-                        <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md hover:opacity-90">
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
+                    <h5 class="font-bold text-[12px] mb-4 uppercase text-gray-400">Đăng ký nhận bảng giá</h5>
+                    <div class="flex bg-white border border-gray-200 rounded-lg p-1 shadow-sm">
+                        <input type="text" placeholder="Email..." class="flex-1 px-3 outline-none text-sm">
+                        <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
@@ -194,14 +231,14 @@
         <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg border border-gray-100 cursor-pointer hover:bg-gray-50" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
             <i class="fa-solid fa-chevron-up text-gray-500"></i>
         </div>
-        <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-14 h-14 shadow-xl rounded-full hover:scale-110 transition"></a>
+        <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-14 h-14 shadow-xl rounded-full"></a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         var swiper = new Swiper(".mySwiper", {
             loop: true,
-            autoplay: { delay: 5000 },
+            autoplay: { delay: 4000 },
             pagination: { el: ".swiper-pagination", clickable: true },
         });
     </script>
