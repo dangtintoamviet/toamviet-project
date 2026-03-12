@@ -3,87 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ thống Quản lý | toamviet.com.vn</title>
+    <title>Đăng nhập & Đăng ký | toamviet.com.vn</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
-        .auth-container { max-width: 1000px; margin: 50px auto; background: white; border-radius: 15px; overflow: hidden; display: flex; box-shadow: 0 15px 35px rgba(0,0,0,0.1); min-height: 600px; }
-        .auth-info { width: 40%; background: linear-gradient(135deg, var(--vip-color), #005a5a); color: white; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f7; color: #2C2C2C; }
+        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        
+        /* Header Sync */
+        .nav-link { font-size: 14px; font-weight: 600; color: #2C2C2C; transition: 0.3s; }
+        .nav-link:hover { color: var(--hover-color); }
+        .btn-post { border: 1.5px solid var(--vip-color); color: var(--vip-color); padding: 6px 16px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .btn-post:hover { background: var(--vip-color); color: white; }
+
+        /* Auth Container */
+        .auth-container { max-width: 1000px; margin: 40px auto; background: white; border-radius: 20px; overflow: hidden; display: flex; box-shadow: 0 15px 35px rgba(0,0,0,0.08); min-height: 550px; border: 1px solid #eee; }
+        .auth-info { width: 40%; background: linear-gradient(135deg, var(--vip-color), #005a5a); color: white; padding: 45px; display: flex; flex-direction: column; justify-content: center; }
         .auth-form { width: 60%; padding: 50px; }
-        .input-box { position: relative; margin-bottom: 20px; }
-        .input-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888; }
-        .input-box input, .input-box select { width: 100%; padding: 12px 15px 12px 45px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s; }
-        .input-box input:focus { border-color: var(--vip-color); box-shadow: 0 0 8px rgba(0,139,139,0.2); }
-        .btn-main { background: var(--vip-color); color: white; width: 100%; padding: 14px; border-radius: 8px; font-weight: bold; margin-top: 10px; transition: 0.3s; }
-        .btn-main:hover { background: #006b6b; transform: translateY(-2px); }
-        .tab-btn { padding-bottom: 8px; font-weight: bold; cursor: pointer; color: #999; border-bottom: 2px solid transparent; transition: 0.3s; }
+        
+        .input-box { position: relative; margin-bottom: 18px; }
+        .input-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 14px; }
+        .input-box input, .input-box select { width: 100%; padding: 12px 15px 12px 42px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s; font-size: 14px; }
+        .input-box input:focus { border-color: var(--vip-color); box-shadow: 0 0 8px rgba(0,139,139,0.15); }
+        
+        .btn-main { background: var(--vip-color); color: white; width: 100%; padding: 14px; border-radius: 8px; font-weight: bold; margin-top: 10px; transition: 0.3s; border: none; cursor: pointer; }
+        .btn-main:hover { background: #006b6b; transform: translateY(-1px); box-shadow: 0 5px 15px rgba(0,139,139,0.2); }
+        
+        .tab-btn { padding-bottom: 10px; font-weight: bold; cursor: pointer; color: #aaa; border-bottom: 3px solid transparent; transition: 0.3s; font-size: 13px; letter-spacing: 0.5px; }
         .tab-btn.active { color: var(--vip-color); border-bottom-color: var(--vip-color); }
+
+        /* Footer Sync */
+        .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; }
+        .footer-list li { margin-bottom: 10px; font-size: 13.5px; color: #555; cursor: pointer; transition: 0.2s; }
+        .footer-list li:hover { color: var(--hover-color); padding-left: 4px; }
     </style>
 </head>
 <body>
 
-    <div class="auth-container">
-        <div class="auth-info">
-            <img src="DAI TRONG SUOT (2).png" class="h-12 mb-8 w-fit" alt="Logo">
-            <h2 class="text-2xl font-bold mb-4">Kết nối Thị trường Bất động sản</h2>
-            <p class="text-sm opacity-80 leading-relaxed mb-6">Giải pháp quản lý thông minh dành cho Nhà môi giới và Doanh nghiệp chuyên nghiệp tại Việt Nam.</p>
-            <div class="space-y-4">
-                <div class="flex items-center gap-3"><i class="fa-solid fa-shield-halved"></i> Bảo mật dữ liệu 256-bit</div>
-                <div class="flex items-center gap-3"><i class="fa-solid fa-chart-line"></i> Quản lý hiệu quả tin đăng</div>
-                <div class="flex items-center gap-3"><i class="fa-solid fa-headset"></i> Hỗ trợ kỹ thuật 24/7</div>
+    <header class="bg-white border-b sticky top-0 z-[1000]">
+        <div class="container-custom h-[75px] flex justify-between items-center">
+            <div class="flex items-center gap-6">
+                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
+                <nav class="hidden xl:flex items-center gap-5">
+                    <a href="#" class="nav-link">Nhà đất bán</a>
+                    <a href="#" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="#" class="nav-link">Dự án</a>
+                    <a href="#" class="nav-link">Tin tức</a>
+                    <div class="relative group">
+                        <button class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="flex items-center gap-4 font-semibold text-sm">
+                <a href="dang-nhap.html" class="text-[--vip-color]">Đăng nhập</a>
+                <span class="text-gray-300">|</span>
+                <a href="dang-ky.html" class="text-gray-700 hover:text-[--vip-color]">Đăng ký</a>
+                <a href="#" class="btn-post text-xs uppercase ml-2">Đăng tin</a>
             </div>
         </div>
+    </header>
 
-        <div class="auth-form">
-            <div class="flex gap-8 mb-10 border-b">
-                <div class="tab-btn active" id="tab-login" onclick="switchTab('login')">ĐĂNG NHẬP</div>
-                <div class="tab-btn" id="tab-register" onclick="switchTab('register')">ĐĂNG KÝ TÀI KHOẢN</div>
-            </div>
+    <main class="py-10">
+        <div class="container-custom">
+            <div class="auth-container">
+                <div class="auth-info hidden md:flex">
+                    <h2 class="text-2xl font-bold mb-4">Kết nối Thị trường Bất động sản</h2>
+                    <p class="text-sm opacity-90 leading-relaxed mb-8">Giải pháp quản lý thông minh dành cho Nhà môi giới và Doanh nghiệp chuyên nghiệp tại Việt Nam.</p>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4"><i class="fa-solid fa-shield-halved text-xl text-teal-200"></i> <span class="text-sm">Bảo mật dữ liệu 256-bit</span></div>
+                        <div class="flex items-center gap-4"><i class="fa-solid fa-chart-line text-xl text-teal-200"></i> <span class="text-sm">Quản lý hiệu quả tin đăng</span></div>
+                        <div class="flex items-center gap-4"><i class="fa-solid fa-headset text-xl text-teal-200"></i> <span class="text-sm">Hỗ trợ kỹ thuật 24/7</span></div>
+                    </div>
+                </div>
 
-            <form id="form-login" action="admin-dashboard.html"> <h3 class="text-xl font-bold mb-6 text-gray-700">Chào mừng trở lại!</h3>
-                <div class="input-box">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="text" placeholder="Email hoặc Số điện thoại" required>
-                </div>
-                <div class="input-box">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" placeholder="Mật khẩu" required>
-                </div>
-                <div class="flex justify-between items-center text-xs mb-6">
-                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox"> Duy trì đăng nhập</label>
-                    <a href="#" class="text-[--vip-color] font-bold">Quên mật khẩu?</a>
-                </div>
-                <button type="submit" class="btn-main uppercase tracking-wider">Đăng nhập ngay</button>
-            </form>
+                <div class="auth-form">
+                    <div class="flex gap-8 mb-10 border-b">
+                        <div class="tab-btn active" id="tab-login" onclick="switchTab('login')">ĐĂNG NHẬP</div>
+                        <div class="tab-btn" id="tab-register" onclick="switchTab('register')">ĐĂNG KÝ TÀI KHOẢN</div>
+                    </div>
 
-            <form id="form-register" class="hidden">
-                <h3 class="text-xl font-bold mb-6 text-gray-700">Đăng ký thành viên mới</h3>
-                <div class="input-box">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" placeholder="Họ và tên đầy đủ">
+                    <form id="form-login" action="admin-dashboard.html">
+                        <h3 class="text-lg font-bold mb-6 text-gray-700 italic">Chào mừng trở lại!</h3>
+                        <div class="input-box">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="text" placeholder="Email hoặc Số điện thoại" required>
+                        </div>
+                        <div class="input-box">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" placeholder="Mật khẩu" required>
+                        </div>
+                        <div class="flex justify-between items-center text-xs mb-8">
+                            <label class="flex items-center gap-2 cursor-pointer text-gray-500"><input type="checkbox" class="accent-[--vip-color]"> Duy trì đăng nhập</label>
+                            <a href="#" class="text-[--vip-color] font-bold hover:underline text-[11px]">Quên mật khẩu?</a>
+                        </div>
+                        <button type="submit" class="btn-main uppercase tracking-widest text-sm">Đăng nhập hệ thống</button>
+                    </form>
+
+                    <form id="form-register" class="hidden" action="dang-ky.html">
+                        <h3 class="text-lg font-bold mb-6 text-gray-700 italic">Khởi tạo tài khoản đối tác</h3>
+                        <div class="input-box">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" placeholder="Họ và tên đầy đủ">
+                        </div>
+                        <div class="input-box">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="text" placeholder="Số điện thoại chính chủ">
+                        </div>
+                        <div class="input-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <select class="bg-white">
+                                <option value="">Bạn là ai?</option>
+                                <option value="broker">Nhà môi giới cá nhân</option>
+                                <option value="company">Doanh nghiệp / Sàn BĐS</option>
+                            </select>
+                        </div>
+                        <div class="input-box">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" placeholder="Tạo mật khẩu an toàn">
+                        </div>
+                        <button type="submit" class="btn-main uppercase tracking-widest text-sm">Tiếp tục đăng ký</button>
+                    </form>
                 </div>
-                <div class="input-box">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="text" placeholder="Số điện thoại chính chủ">
-                </div>
-                <div class="input-box">
-                    <i class="fa-solid fa-briefcase"></i>
-                    <select class="bg-white">
-                        <option value="">Bạn là ai?</option>
-                        <option value="broker">Nhà môi giới cá nhân</option>
-                        <option value="company">Doanh nghiệp / Sàn BĐS</option>
-                    </select>
-                </div>
-                <div class="input-box">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" placeholder="Tạo mật khẩu an toàn">
-                </div>
-                <button type="submit" class="btn-main uppercase tracking-wider">Đăng ký thành viên</button>
             </div>
         </div>
-    </div>
+    </main>
+
+    <footer class="bg-white border-t pt-16 pb-8">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <h4 class="footer-title">Chủ đề nổi bật</h4>
+                    <ul class="footer-list">
+                        <li>Bất động sản Hà Nội</li>
+                        <li>Bất động sản Hồ Chí Minh</li>
+                        <li>Mua nhà chung cư</li>
+                        <li>Báo cáo thị trường</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Bất động sản bán</h4>
+                    <ul class="footer-list">
+                        <li>Bán căn hộ chung cư</li>
+                        <li>Bán nhà riêng</li>
+                        <li>Bán đất nền dự án</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Quy định</h4>
+                    <ul class="footer-list">
+                        <li>Điều khoản thỏa thuận</li>
+                        <li>Chính sách bảo mật</li>
+                        <li>Giải quyết khiếu nại</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Đăng ký nhận tin</h4>
+                    <div class="flex items-center bg-gray-50 rounded-lg p-1 border">
+                        <input type="text" placeholder="Email của bạn..." class="bg-transparent border-none outline-none px-3 py-2 text-sm w-full">
+                        <button class="bg-[--vip-color] text-white p-2 rounded-md"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t pt-10 flex flex-col lg:flex-row justify-between items-start gap-8">
+                <div class="max-w-md">
+                    <img src="DAI TRONG SUOT (2).png" class="h-8 mb-6 opacity-80" alt="Logo">
+                    <h5 class="font-bold text-gray-800 text-sm uppercase">Bất động sản Tổ Ấm Việt</h5>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+                        <i class="fa-solid fa-location-dot text-[--vip-color]"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội
+                    </p>
+                    <p class="text-xs text-gray-500 mt-2">
+                        <i class="fa-solid fa-phone text-[--vip-color]"></i> Hotline: 0946 239 289
+                    </p>
+                </div>
+                <div class="flex gap-6 grayscale opacity-40">
+                    <img src="https://img.icons8.com/color/48/google-play.png" class="h-8">
+                    <img src="https://img.icons8.com/ios-filled/50/apple-app-store--v1.png" class="h-8">
+                </div>
+            </div>
+            <div class="text-center mt-12 text-[10px] text-gray-400 uppercase tracking-widest border-t pt-6">
+                © 2026 toamviet.com.vn - Bảo mật & Chuyên nghiệp
+            </div>
+        </div>
+    </footer>
 
     <script>
         function switchTab(type) {
