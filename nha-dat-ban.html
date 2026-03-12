@@ -11,9 +11,11 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f2f2f2; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         
-        /* Header & Nav Styles */
+        /* Menu & Hover */
         .nav-link { transition: all 0.3s; position: relative; }
-        .nav-link:hover { color: var(--hover-color) !important; }
+        /* Hiệu ứng màu vàng cam khi rê chuột */
+        .nav-link:hover { color: var(--hover-color) !important; } 
+        
         .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; border-top: 2px solid var(--vip-color); z-index: 50; }
         .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; border-bottom: 1px solid #f2f2f2; }
@@ -25,11 +27,11 @@
 
         /* Card Tin Đăng */
         .card-container { background: white; border-radius: 8px; border: 1px solid #e5e5e5; overflow: hidden; display: flex; transition: 0.3s; }
-        .card-container:hover { border-color: var(--vip-color); shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .card-container:hover { border-color: var(--vip-color); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
         
-        /* Footer SEO Styles */
+        /* Footer Styles */
         .footer-link-group h4 { font-weight: 700; font-size: 14px; margin-bottom: 15px; color: #2C2C2C; text-transform: uppercase; }
-        .footer-link-group ul li { margin-bottom: 8px; font-size: 13px; color: #555; cursor: pointer; }
+        .footer-link-group ul li { margin-bottom: 8px; font-size: 13px; color: #555; cursor: pointer; transition: 0.2s; }
         .footer-link-group ul li:hover { color: var(--hover-color); text-decoration: underline; }
         .footer-bottom-box { background: #f9f9f9; border-radius: 12px; padding: 30px; }
 
@@ -37,7 +39,6 @@
         @media (max-width: 768px) {
             .card-container { flex-direction: column; }
             .card-image-box { width: 100% !important; height: 220px !important; }
-            .mobile-info-grid { grid-template-columns: 1fr; }
             .filter-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; scrollbar-width: none; }
             .filter-select { min-width: 120px; flex-shrink: 0; }
         }
@@ -69,7 +70,7 @@
                     <span class="save-count">0</span>
                 </div>
                 <div class="hidden md:flex items-center gap-3 text-[14px] font-semibold text-[#2C2C2C]">
-                    <a href="#">Đăng nhập</a> <span class="text-gray-300">|</span> <a href="#">Đăng ký</a>
+                    <a href="#" class="hover:text-[--hover-color]">Đăng nhập</a> <span class="text-gray-300">|</span> <a href="#" class="hover:text-[--hover-color]">Đăng ký</a>
                 </div>
                 <button class="border border-[--vip-color] text-[--vip-color] px-4 py-1.5 rounded-lg font-bold hover:bg-[--vip-color] hover:text-white transition uppercase text-[12px]">Đăng tin</button>
             </div>
@@ -93,13 +94,13 @@
                 </div>
 
                 <div class="card-container">
-                    <div class="card-image-box w-[280px] h-[210px] shrink-0 relative">
+                    <div class="card-image-box w-[280px] h-auto shrink-0 relative">
                         <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500" class="w-full h-full object-cover">
                         <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1"><i class="fa-regular fa-image"></i> 8</div>
                     </div>
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-[16px] text-gray-800 uppercase line-clamp-2 leading-snug">NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN</h3>
+                            <h3 class="font-bold text-[16px] text-gray-800 uppercase line-clamp-2 leading-snug hover:text-[--vip-color] cursor-pointer">NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN</h3>
                             <div class="flex items-center gap-3 mt-3 text-sm flex-wrap font-medium">
                                 <span class="text-red-600 font-bold text-lg">60 tỷ</span>
                                 <span class="text-gray-300">•</span>
@@ -113,34 +114,34 @@
                                 <span class="text-gray-300">•</span>
                                 <span class="text-gray-600">Hà Nội</span>
                             </div>
-                            <p class="text-gray-500 text-sm mt-3 line-clamp-2">Căn biệt thự có vị trí kim cương, bàn giao full nội thất cao cấp. Môi giới hỗ trợ pháp lý...</p>
+                            <p class="text-gray-500 text-sm mt-3 line-clamp-2 italic">Căn biệt thự có vị trí kim cương, bàn giao full nội thất cao cấp. Môi giới hỗ trợ pháp lý...</p>
                         </div>
                         <div class="flex justify-between items-center mt-4 pt-3 border-t">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs">MG</div>
+                            <a href="profile-moi-gioi.html" class="flex items-center gap-3 group">
+                                <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs group-hover:opacity-80 transition">MG</div>
                                 <div>
-                                    <p class="text-sm font-bold text-gray-700">Nguyễn Thành An</p>
+                                    <p class="text-sm font-bold text-gray-700 group-hover:text-[--vip-color] transition">Nguyễn Thành An</p>
                                     <p class="text-[11px] text-gray-400">Môi giới chuyên nghiệp</p>
                                 </div>
-                            </div>
+                            </a>
                             <div class="flex gap-2">
-                                <button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2"><i class="fa-solid fa-phone"></i> 0912 598 *** · Hiện số</button>
-                                <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500"><i class="fa-regular fa-heart"></i></button>
+                                <button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm"><i class="fa-solid fa-phone"></i> 0912 598 *** · Hiện số</button>
+                                <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="hidden lg:block lg:col-span-1">
+            <aside class="hidden lg:block lg:col-span-1">
                 <div class="bg-white p-5 rounded-lg border border-gray-200">
                     <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Khu vực nổi bật</h4>
                     <ul class="text-sm space-y-3 text-gray-600">
-                        <li class="flex justify-between"><span>Bán nhà đất TP.HCM</span> <span class="text-gray-400 text-[11px]">12k+</span></li>
-                        <li class="flex justify-between"><span>Bán nhà đất Hà Nội</span> <span class="text-gray-400 text-[11px]">15k+</span></li>
+                        <li class="flex justify-between hover:text-[--hover-color] cursor-pointer"><span>Bán nhà đất TP.HCM</span> <span class="text-gray-400 text-[11px]">12k+</span></li>
+                        <li class="flex justify-between hover:text-[--hover-color] cursor-pointer"><span>Bán nhà đất Hà Nội</span> <span class="text-gray-400 text-[11px]">15k+</span></li>
                     </ul>
                 </div>
-            </div>
+            </aside>
         </div>
     </div>
 
@@ -200,26 +201,26 @@
                     <div>
                         <h5 class="font-bold text-gray-800 text-[12px] mb-4 uppercase">HƯỚNG DẪN</h5>
                         <ul class="text-[13px] text-gray-500 space-y-2">
-                            <li>Về chúng tôi</li>
-                            <li>Báo giá dịch vụ</li>
-                            <li>Câu hỏi thường gặp</li>
-                            <li>Sitemap</li>
+                            <li class="hover:text-[--hover-color]">Về chúng tôi</li>
+                            <li class="hover:text-[--hover-color]">Báo giá dịch vụ</li>
+                            <li class="hover:text-[--hover-color]">Câu hỏi thường gặp</li>
+                            <li class="hover:text-[--hover-color]">Sitemap</li>
                         </ul>
                     </div>
                     <div>
                         <h5 class="font-bold text-gray-800 text-[12px] mb-4 uppercase">QUY ĐỊNH</h5>
                         <ul class="text-[13px] text-gray-500 space-y-2">
-                            <li>Điều khoản thỏa thuận</li>
-                            <li>Chính sách bảo mật</li>
-                            <li>Giải quyết khiếu nại</li>
+                            <li class="hover:text-[--hover-color]">Điều khoản thỏa thuận</li>
+                            <li class="hover:text-[--hover-color]">Chính sách bảo mật</li>
+                            <li class="hover:text-[--hover-color]">Giải quyết khiếu nại</li>
                         </ul>
                     </div>
                 </div>
                 <div class="w-full lg:w-1/4">
                     <h5 class="font-bold text-gray-800 text-[12px] mb-4 uppercase">ĐĂNG KÝ NHẬN TIN</h5>
-                    <div class="flex bg-white border border-gray-200 rounded-lg overflow-hidden p-1">
+                    <div class="flex bg-white border border-gray-200 rounded-lg overflow-hidden p-1 shadow-sm">
                         <input type="text" placeholder="Email của bạn..." class="flex-1 px-3 py-2 outline-none text-sm">
-                        <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md hover:bg-opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                     <p class="text-[11px] text-gray-400 mt-2 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
                 </div>
@@ -227,7 +228,7 @@
         </div>
     </footer>
 
-    <div class="fixed bottom-6 right-6 z-[1001] cursor-pointer">
+    <div class="fixed bottom-6 right-6 z-[1001] cursor-pointer hover:scale-110 transition-transform">
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-14 h-14 shadow-xl rounded-full">
     </div>
 
