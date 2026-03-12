@@ -35,10 +35,8 @@
         /* Section Title */
         .section-title { font-size: 24px; font-weight: 700; color: #2C2C2C; margin-bottom: 24px; }
 
-        /* Footer SEO */
-        .footer-link-group h4 { font-weight: 700; font-size: 14px; margin-bottom: 15px; color: #2C2C2C; }
-        .footer-link-group ul li { margin-bottom: 8px; font-size: 13px; color: #555; }
-        .footer-link-group ul li a:hover { color: var(--hover-color); text-decoration: underline; }
+        /* Location Card */
+        .location-card:hover img { transform: scale(1.05); }
     </style>
 </head>
 <body>
@@ -52,8 +50,7 @@
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
                     <a href="nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
                     <a href="#" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="#" class="nav-link text-gray-500">Dự án</a>
-                    <a href="#" class="nav-link text-gray-500">Tin tức</a>
+                    <a href="#" class="nav-link">Dự án</a>
                     <div class="dropdown relative h-full flex items-center cursor-pointer">
                         <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
                         <div class="dropdown-menu">
@@ -85,16 +82,16 @@
         <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920" class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/30"></div>
         
-        <div class="relative z-10 w-full max-w-[850px] px-4">
-            <div class="flex gap-1 mb-0">
+        <div class="relative z-10 w-full max-w-[850px] px-4 text-center">
+            <div class="flex justify-center gap-1 mb-0">
                 <button class="search-tab active px-6 py-2.5 text-white font-bold uppercase text-[12px]">Bán</button>
                 <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px] hover:bg-black/40">Cho thuê</button>
                 <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px] hover:bg-black/40">Dự án</button>
             </div>
-            <div class="bg-black/60 p-2 rounded-b-lg rounded-tr-lg backdrop-blur-md">
-                <div class="bg-white rounded flex items-center p-1">
+            <div class="bg-black/60 p-2 rounded-lg backdrop-blur-md">
+                <div class="bg-white rounded flex items-center p-1 shadow-2xl">
                     <input type="text" placeholder="Tìm nhanh: Vinhomes, Quận 2, Nhà phố..." class="flex-1 p-3.5 outline-none text-[15px]">
-                    <div class="hidden md:flex border-l px-5 items-center gap-2 cursor-pointer text-gray-600 font-medium">
+                    <div class="hidden md:flex border-l px-5 items-center gap-2 cursor-pointer text-gray-600 font-medium whitespace-nowrap">
                         <span>Trên toàn quốc</span>
                         <i class="fa-solid fa-chevron-down text-[10px]"></i>
                     </div>
@@ -141,17 +138,9 @@
                             <p class="text-gray-500 text-[13px] mt-1">Thuận An, Bình Dương</p>
                         </div>
                     </div>
-                    <div class="swiper-slide bg-white rounded-lg overflow-hidden border">
-                        <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500" class="w-full h-44 object-cover">
-                        <div class="p-4">
-                            <span class="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded font-bold uppercase">Đang mở bán</span>
-                            <h4 class="font-bold mt-2 text-[15px]">Vinhomes Global Gate</h4>
-                            <p class="text-gray-500 text-[13px] mt-1">Đông Anh, Hà Nội</p>
-                        </div>
-                    </div>
                 </div>
-                <div class="swiper-button-next !text-[#008B8B] !w-10 !h-10 bg-white shadow-md rounded-full after:!text-sm"></div>
-                <div class="swiper-button-prev !text-[#008B8B] !w-10 !h-10 bg-white shadow-md rounded-full after:!text-sm"></div>
+                <div class="swiper-button-next !text-[#008B8B]"></div>
+                <div class="swiper-button-prev !text-[#008B8B]"></div>
             </div>
         </div>
     </section>
@@ -159,25 +148,66 @@
     <section class="py-16 container-custom">
         <h2 class="section-title">Bất động sản theo địa điểm</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 h-[500px]">
-            <div class="md:col-span-2 md:row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            <div class="md:col-span-2 md:row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group location-card">
+                <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800" class="w-full h-full object-cover transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-8 flex flex-col justify-end text-white">
                     <h4 class="text-2xl font-bold">TP. Hồ Chí Minh</h4>
                     <p class="text-sm font-medium opacity-90">23.815 tin đăng</p>
                 </div>
             </div>
-            <div class="relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            <div class="relative rounded-2xl overflow-hidden cursor-pointer group location-card">
+                <img src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=400" class="w-full h-full object-cover transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-6 flex flex-col justify-end text-white">
                     <h4 class="text-lg font-bold">Hà Nội</h4>
                     <p class="text-xs opacity-90">13.308 tin đăng</p>
                 </div>
             </div>
-            <div class="relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1559592481-74488ea56144?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            <div class="relative rounded-2xl overflow-hidden cursor-pointer group location-card">
+                <img src="https://images.unsplash.com/photo-1559592481-74488ea56144?w=400" class="w-full h-full object-cover transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-6 flex flex-col justify-end text-white">
                     <h4 class="text-lg font-bold">Đà Nẵng</h4>
                     <p class="text-xs opacity-90">536 tin đăng</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 bg-white border-y">
+        <div class="container-custom">
+            <div class="flex justify-between items-end mb-8">
+                <h2 class="section-title mb-0">Tin tức bất động sản</h2>
+                <a href="#" class="text-[#008B8B] font-semibold hover:underline text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 cursor-pointer group">
+                    <div class="overflow-hidden rounded-xl h-[350px]">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <h3 class="mt-4 text-xl font-bold group-hover:text-[#008B8B] transition">Thị trường bất động sản năm 2026: Những phân khúc nào sẽ lên ngôi?</h3>
+                    <p class="text-gray-500 mt-2 text-sm line-clamp-2">Các chuyên gia dự báo dòng tiền sẽ đổ mạnh vào các dự án có pháp lý hoàn thiện và hạ tầng đồng bộ tại các đô thị vệ tinh...</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex gap-4 cursor-pointer group">
+                        <img src="https://images.unsplash.com/photo-1448630360428-65ff2c0257ef?w=200" class="w-24 h-20 object-cover rounded-lg">
+                        <div>
+                            <h4 class="font-bold text-[14px] group-hover:text-[#008B8B] line-clamp-2">Lãi suất vay mua nhà tiếp tục giảm sâu trong quý 1</h4>
+                            <span class="text-[11px] text-gray-400">2 giờ trước</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 cursor-pointer group">
+                        <img src="https://images.unsplash.com/photo-1592595894519-02319c2ec51f?w=200" class="w-24 h-20 object-cover rounded-lg">
+                        <div>
+                            <h4 class="font-bold text-[14px] group-hover:text-[#008B8B] line-clamp-2">Cận cảnh tuyến Metro số 1 trước ngày vận hành chính thức</h4>
+                            <span class="text-[11px] text-gray-400">5 giờ trước</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 cursor-pointer group">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=200" class="w-24 h-20 object-cover rounded-lg">
+                        <div>
+                            <h4 class="font-bold text-[14px] group-hover:text-[#008B8B] line-clamp-2">Kinh nghiệm mua nhà lần đầu để tránh rủi ro pháp lý</h4>
+                            <span class="text-[11px] text-gray-400">1 ngày trước</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,7 +218,7 @@
             <h2 class="text-center text-sm font-bold text-gray-400 mb-10 uppercase tracking-[4px]">Doanh nghiệp tiêu biểu</h2>
             <div class="swiper brandSwiper">
                 <div class="swiper-wrapper items-center">
-                    <div class="swiper-slide px-8"><img src="image_7e4cfb.png" class="grayscale hover:grayscale-0 transition opacity-60 hover:opacity-100"></div>
+                    <div class="swiper-slide px-8"><img src="image_7e4cfb.png" class="grayscale hover:grayscale-0 transition opacity-60 hover:opacity-100 mx-auto"></div>
                 </div>
             </div>
         </div>
@@ -198,53 +228,22 @@
         <div class="container-custom">
             <div class="mb-12 border-b pb-12">
                 <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="#" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="#" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
+                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam... (Đoạn text tối ưu SEO của bạn)
                 </p>
             </div>
-
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
                 <div class="footer-link-group">
-                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="#">Tin tức bất động sản</a></li>
-                        <li><a href="#">Bất động sản Hà Nội</a></li>
-                        <li><a href="#">Bất động sản Hồ Chí Minh</a></li>
-                        <li><a href="#">Báo cáo thị trường</a></li>
+                    <h4 class="font-bold text-sm mb-4">BẤT ĐỘNG SẢN BÁN</h4>
+                    <ul class="text-[13px] text-gray-500 space-y-2">
+                        <li><a href="#" class="hover:text-[#FF8C00]">Bán căn hộ chung cư</a></li>
+                        <li><a href="#" class="hover:text-[#FF8C00]">Bán nhà riêng</a></li>
                     </ul>
                 </div>
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
-                    <ul>
-                        <li><a href="#">Bán căn hộ chung cư</a></li>
-                        <li><a href="#">Bán nhà riêng</a></li>
-                        <li><a href="#">Bán đất nền dự án</a></li>
-                        <li><a href="#">Bán biệt thự, liền kề</a></li>
-                    </ul>
                 </div>
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul>
-                        <li><a href="#">Thuê căn hộ chung cư</a></li>
-                        <li><a href="#">Thuê nhà riêng</a></li>
-                        <li><a href="#">Thuê văn phòng</a></li>
-                        <li><a href="#">Thuê phòng trọ giá rẻ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>HƯỚNG DẪN</h4>
-                    <ul>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Báo giá & hỗ trợ</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                        <li><a href="#">Chính sách bảo mật</a></li>
-                    </ul>
-                </div>
-            </div>
-
             <div class="border-t py-10 flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex items-center gap-6">
                     <img src="DAI TRONG SUOT (2).png" class="h-8">
-                    <p class="text-[12px] text-gray-500">© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm</p>
+                    <p class="text-[12px] text-gray-400">© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm</p>
                 </div>
                 <div class="flex gap-4">
                     <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" class="h-8 cursor-pointer">
@@ -256,18 +255,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // Slider Dự án
         new Swiper(".projectSwiper", {
-            slidesPerView: 1,
-            spaceBetween: 20,
+            slidesPerView: 1, spaceBetween: 20,
             navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
             breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 4 } }
         });
-        // Slider Đối tác
         new Swiper(".brandSwiper", {
-            slidesPerView: 2,
-            autoplay: { delay: 2500 },
-            loop: true,
+            slidesPerView: 2, autoplay: { delay: 2500 }, loop: true,
             breakpoints: { 640: { slidesPerView: 3 }, 1024: { slidesPerView: 6 } }
         });
     </script>
