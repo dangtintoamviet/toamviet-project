@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng tin rao bán | toamviet.com.vn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafb; color: #2C2C2C; }
+        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        
+        /* Header Sync */
+        .nav-link { font-size: 14px; font-weight: 600; color: #2C2C2C; transition: 0.3s; position: relative; }
+        .nav-link:hover { color: var(--hover-color); }
+        .btn-post { border: 1.5px solid var(--vip-color); color: var(--vip-color); padding: 6px 16px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .btn-post:hover { background: var(--vip-color); color: white; }
+
+        /* Form Styles */
+        .input-field { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; }
+        .input-field:focus { border-color: var(--vip-color); box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.1); }
+        .step-label { font-size: 11px; font-weight: 800; color: var(--vip-color); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+
+        /* Footer Sync */
+        .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; border-left: 3px solid var(--vip-color); padding-left: 10px; }
+        .footer-list li { margin-bottom: 10px; font-size: 13.5px; color: #555; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .footer-list li:hover { color: var(--hover-color); transform: translateX(5px); }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white border-b sticky top-0 z-[1000]">
+        <div class="container-custom h-[75px] flex justify-between items-center">
+            <div class="flex items-center gap-6">
+                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
+                <nav class="hidden xl:flex items-center gap-5">
+                    <a href="#" class="nav-link">Nhà đất bán</a>
+                    <a href="#" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="#" class="nav-link">Dự án</a>
+                    <a href="#" class="nav-link">Tin tức</a>
+                    <div class="relative group">
+                        <button class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="relative cursor-pointer hover:text-[--hover-color] transition px-3">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                    <span class="absolute -top-1 -right-0.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </div>
+
+                <div class="flex items-center gap-2 border-l pl-4">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-[11px] font-bold text-gray-700 leading-none">Môi giới viên</p>
+                        <p class="text-[10px] text-green-500 font-bold mt-1">Sẵn sàng đăng tin</p>
+                    </div>
+                    <div class="w-9 h-9 bg-[--vip-color] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-sm">MG</div>
+                </div>
+                <a href="dang-tin.html" class="btn-post text-sm uppercase">Đăng tin</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-12">
+        <div class="container-custom">
+            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-[--vip-color] p-6 text-white text-center">
+                    <h1 class="text-xl font-bold uppercase tracking-wide">Đăng tin rao bán & cho thuê</h1>
+                    <p class="text-sm opacity-90 mt-1">Thông tin càng chi tiết, khách hàng càng tin tưởng</p>
+                </div>
+
+                <form id="post-news-form" class="p-8 space-y-8">
+                    <div>
+                        <label class="step-label">Bước 1: Thông tin cơ bản</label>
+                        <div class="space-y-4">
+                            <input type="text" id="title" placeholder="Tiêu đề (VD: Bán căn hộ chung cư cao cấp 2PN tại Vinhomes...)" class="input-field" required>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <select id="type" class="input-field">
+                                    <option value="Bán căn hộ">Bán căn hộ chung cư</option>
+                                    <option value="Bán nhà riêng">Bán nhà riêng</option>
+                                    <option value="Bán đất">Bán đất nền</option>
+                                    <option value="Cho thuê căn hộ">Cho thuê căn hộ</option>
+                                </select>
+                                <input type="number" id="area" placeholder="Diện tích (m2)" class="input-field" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="step-label">Bước 2: Giá & Vị trí</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="text" id="price" placeholder="Mức giá (VNĐ hoặc thỏa thuận)" class="input-field" required>
+                            <select id="city" class="input-field">
+                                <option value="Hà Nội">Hà Nội</option>
+                                <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                                <option value="Đà Nẵng">Đà Nẵng</option>
+                            </select>
+                        </div>
+                        <input type="text" id="address" placeholder="Số nhà, tên đường, phường/xã..." class="input-field">
+                    </div>
+
+                    <div>
+                        <label class="step-label">Bước 3: Hình ảnh & Mô tả</label>
+                        <div class="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:border-[--vip-color] transition bg-gray-50 mb-4">
+                            <i class="fa-solid fa-images text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-sm text-gray-500">Kéo thả ảnh tại đây để tải lên (Tối đa 10 ảnh)</p>
+                        </div>
+                        <textarea rows="4" placeholder="Mô tả chi tiết về bất động sản (Ưu điểm, tiện ích xung quanh, pháp lý...)" class="input-field"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[--vip-color] hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-300 uppercase shadow-lg">Gửi yêu cầu duyệt tin</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t pt-16 pb-8">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <h4 class="footer-title">Chủ đề nổi bật</h4>
+                    <ul class="footer-list">
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bất động sản Hà Nội</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bất động sản Hồ Chí Minh</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Báo cáo thị trường</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Dịch vụ</h4>
+                    <ul class="footer-list">
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bán căn hộ chung cư</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bán nhà riêng</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Thuê văn phòng</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Quy định</h4>
+                    <ul class="footer-list">
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Điều khoản thỏa thuận</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Chính sách bảo mật</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Giải quyết khiếu nại</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Hệ thống</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed mb-4">Kết nối với chúng tôi qua các nền tảng mạng xã hội.</p>
+                    <div class="flex gap-4">
+                        <i class="fa-brands fa-facebook text-2xl text-gray-400 hover:text-blue-600 cursor-pointer transition"></i>
+                        <i class="fa-brands fa-youtube text-2xl text-gray-400 hover:text-red-600 cursor-pointer transition"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+                <img src="DAI TRONG SUOT (2).png" class="h-8 opacity-70">
+                <p class="text-[11px] text-gray-400 font-medium">© 2026 toamviet.com.vn - Nền tảng kết nối Bất động sản Việt Nam</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('post-news-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Lưu dữ liệu giả lập vào LocalStorage
+            const newsData = {
+                id: Date.now(),
+                title: document.getElementById('title').value,
+                type: document.getElementById('type').value,
+                area: document.getElementById('area').value,
+                price: document.getElementById('price').value,
+                city: document.getElementById('city').value,
+                time: "Vừa xong",
+                status: "Chờ duyệt"
+            };
+
+            let listNews = JSON.parse(localStorage.getItem('pendingNews')) || [];
+            listNews.push(newsData);
+            localStorage.setItem('pendingNews', JSON.stringify(listNews));
+
+            alert('Đã gửi tin đăng! Vui lòng chờ Admin phê duyệt trong 24h.');
+            window.location.href = 'admin-dashboard.html';
+        });
+    </script>
+</body>
+</html>
