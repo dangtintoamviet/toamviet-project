@@ -12,25 +12,32 @@
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         
         /* Menu & Hover (Đồng bộ trang chủ) */
-        .nav-link { transition: all 0.3s; }
+        .nav-link { transition: all 0.3s; position: relative; }
         .nav-link:hover { color: var(--hover-color) !important; }
         .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; border-top: 2px solid var(--vip-color); z-index: 50; }
         .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; border-bottom: 1px solid #f2f2f2; }
         .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
 
-        /* Icon Lưu tin (Trái tim có số 0) */
+        /* Icon Lưu tin số 0 đỏ */
         .save-icon { position: relative; cursor: pointer; font-size: 20px; }
-        .save-count { position: absolute; top: -8px; right: -10px; background: #E03C31; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; }
+        .save-count { position: absolute; top: -8px; right: -10px; background: #E03C31; color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; border: 1px solid white; }
 
-        /* Filter & Card */
-        .filter-select { border: 1px solid #ccc; padding: 8px 12px; border-radius: 4px; font-size: 14px; background: white; min-width: 150px; }
+        /* Filter & Listing */
+        .filter-select { border: 1px solid #ccc; padding: 8px 12px; border-radius: 4px; font-size: 14px; background: white; min-width: 150px; outline: none; }
         .btn-search { background-color: var(--vip-color); color: white; padding: 8px 25px; border-radius: 4px; font-weight: bold; }
         .card-container { background: white; border-radius: 8px; border: 1px solid #e5e5e5; overflow: hidden; display: flex; transition: 0.3s; }
         .card-container:hover { border-color: var(--vip-color); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
         .btn-phone { background-color: var(--vip-color); color: white; border-radius: 4px; padding: 8px 15px; display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 14px; }
 
-        /* Zalo & Top Button */
+        /* Footer SEO Styles (Chuẩn mẫu ảnh) */
+        .footer-seo { background: white; padding: 40px 0; font-size: 14px; }
+        .footer-seo h4 { font-weight: 700; color: #2C2C2C; margin-bottom: 15px; text-transform: uppercase; font-size: 13px; }
+        .footer-seo ul li { margin-bottom: 8px; color: #555; }
+        .footer-seo ul li a:hover { color: var(--hover-color); text-decoration: underline; }
+        .footer-main { background: #F2F2F2; padding: 40px 0; border-top: 1px solid #e5e5e5; }
+
+        /* Zalo & Chat */
         #zalo-form { display: none; position: fixed; bottom: 150px; right: 20px; width: 320px; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; overflow: hidden; border: 1px solid #ddd; }
         .zalo-chat-btn { position: fixed; bottom: 85px; right: 20px; z-index: 999; cursor: pointer; }
     </style>
@@ -82,8 +89,11 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div class="lg:col-span-3 space-y-6">
-                <h1 class="text-xl font-bold text-gray-800 uppercase">Mua bán nhà đất tại Việt Nam</h1>
-                
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800 uppercase">Mua bán nhà đất tại Việt Nam</h1>
+                    <p class="text-gray-500 text-sm mt-1">Hiện có <span class="font-bold text-gray-700">125,430</span> bất động sản đang giao dịch</p>
+                </div>
+
                 <div class="card-container">
                     <div class="w-[280px] h-[210px] relative shrink-0">
                         <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500" class="w-full h-full object-cover">
@@ -105,17 +115,17 @@
                                 <span class="text-gray-300">•</span>
                                 <span class="text-gray-600">Hà Nội</span>
                             </div>
-                            <p class="text-gray-500 text-sm mt-3 line-clamp-2">Căn biệt thự có vị trí kim cương, bàn giao full nội thất cao cấp. Môi giới hỗ trợ pháp lý...</p>
+                            <p class="text-gray-500 text-sm mt-3 line-clamp-2 italic">Vị trí đắc địa, bàn giao full nội thất cao cấp nhập khẩu...</p>
                         </div>
                         
                         <div class="flex justify-between items-center mt-4 pt-3 border-t">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs">MG</div>
+                            <a href="profile-moi-gioi.html" class="flex items-center gap-3 group">
+                                <div class="w-10 h-10 rounded-full bg-cyan-700 flex items-center justify-center text-white font-bold text-xs border border-gray-100">MG</div>
                                 <div>
-                                    <p class="text-sm font-bold text-gray-700">Nguyễn Thành An</p>
-                                    <p class="text-[11px] text-gray-400 italic">Môi giới chuyên nghiệp</p>
+                                    <p class="text-sm font-bold text-gray-700 group-hover:text-[--vip-color]">Nguyễn Thành An</p>
+                                    <p class="text-[11px] text-gray-400">Môi giới chuyên nghiệp</p>
                                 </div>
-                            </div>
+                            </a>
                             <div class="flex gap-2">
                                 <button class="btn-phone"><i class="fa-solid fa-phone-volume"></i> 0912 598 *** · Hiện số</button>
                                 <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart"></i></button>
@@ -127,27 +137,129 @@
 
             <div class="lg:col-span-1">
                 <div class="bg-white p-5 rounded-lg border border-gray-200">
-                    <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-sm">Khu vực nổi bật</h4>
+                    <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Khu vực nổi bật</h4>
                     <ul class="text-sm space-y-3 text-gray-600">
-                        <li class="flex items-center justify-between hover:text-[--vip-color] cursor-pointer"><span>Bán nhà đất TP.HCM</span> <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded">12k+</span></li>
-                        <li class="flex items-center justify-between hover:text-[--vip-color] cursor-pointer"><span>Bán nhà đất Hà Nội</span> <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded">15k+</span></li>
+                        <li class="flex items-center justify-between hover:text-[--vip-color] cursor-pointer"><span>Bán nhà đất TP.HCM</span> <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400">12k+</span></li>
+                        <li class="flex items-center justify-between hover:text-[--vip-color] cursor-pointer"><span>Bán nhà đất Hà Nội</span> <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400">15k+</span></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
+    <section class="bg-white border-t mt-10">
+        <div class="container-custom footer-seo">
+            <div class="mb-10 text-gray-600 leading-relaxed text-sm">
+                <p>ToamViet.com.vn là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình.</p>
+                <p class="mt-4 italic">Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="#" class="text-red-500">bán căn hộ chung cư</a>, <a href="#" class="text-red-500">bán nhà riêng</a>, nhà mặt tiền, biệt thự và liền kề... <a href="#" class="font-bold">Xem thêm</a></p>
+            </div>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <h4>Chủ đề nổi bật</h4>
+                    <ul class="text-[13px]">
+                        <li><a href="#">Tin tức bất động sản</a></li>
+                        <li><a href="#">Bất động sản Hà Nội</a></li>
+                        <li><a href="#">Báo cáo thị trường</a></li>
+                        <li><a href="#" class="text-red-500 font-bold">Xem thêm</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Bất động sản bán</h4>
+                    <ul class="text-[13px]">
+                        <li><a href="#">Bán căn hộ chung cư <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#">Bán nhà riêng <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#">Bán biệt thự, liền kề <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#" class="text-red-500 font-bold">Xem thêm</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Bất động sản thuê</h4>
+                    <ul class="text-[13px]">
+                        <li><a href="#">Thuê căn hộ chung cư <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#">Thuê nhà riêng <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#">Thuê văn phòng <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#" class="text-red-500 font-bold">Xem thêm</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Bất động sản toàn quốc</h4>
+                    <ul class="text-[13px]">
+                        <li><a href="#">Mua bán BĐS Hà Nội <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#">Cho thuê BĐS Hà Nội <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#">Mua bán BĐS Hồ Chí Minh <i class="fa-solid fa-angle-down text-[10px] opacity-50"></i></a></li>
+                        <li><a href="#" class="text-red-500 font-bold">Xem thêm</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-main">
+            <div class="container-custom">
+                <div class="flex flex-wrap justify-between items-start gap-10">
+                    <div class="w-full lg:w-1/3">
+                        <img src="DAI TRONG SUOT (2).png" class="h-10 mb-6">
+                        <h4 class="font-bold text-gray-800 uppercase text-xs mb-4">Công ty Cổ phần Toàn Việt Việt Nam</h4>
+                        <p class="text-[13px] text-gray-500 flex items-start gap-2 mb-3">
+                            <i class="fa-solid fa-location-dot mt-1 text-gray-400"></i>
+                            Tầng 31, Keangnam Hanoi Landmark Tower, Phường Yên Hòa, Quận Cầu Giấy, Hà Nội
+                        </p>
+                        <p class="text-[13px] text-gray-500 flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-phone text-gray-400"></i> (024) 3562 5939
+                        </p>
+                        <div class="flex gap-4 mt-6">
+                            <img src="https://img.icons8.com/color/48/google-play.png" class="h-8">
+                            <img src="https://img.icons8.com/ios-filled/50/apple-app-store--v1.png" class="h-8">
+                        </div>
+                    </div>
+
+                    <div class="flex-1 grid grid-cols-2 md:grid-cols-3 gap-8">
+                        <div>
+                            <h4 class="font-bold text-gray-800 uppercase text-xs mb-4">Hướng dẫn</h4>
+                            <ul class="text-[13px] text-gray-500 space-y-2">
+                                <li><a href="#">Về chúng tôi</a></li>
+                                <li><a href="#">Báo giá & hỗ trợ</a></li>
+                                <li><a href="#">Câu hỏi thường gặp</a></li>
+                                <li><a href="#">Sitemap</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 uppercase text-xs mb-4">Quy định</h4>
+                            <ul class="text-[13px] text-gray-500 space-y-2">
+                                <li><a href="#">Quy định đăng tin</a></li>
+                                <li><a href="#">Điều khoản thỏa thuận</a></li>
+                                <li><a href="#">Chính sách bảo mật</a></li>
+                                <li><a href="#">Giải quyết khiếu nại</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-span-2 md:col-span-1">
+                            <h4 class="font-bold text-gray-800 uppercase text-xs mb-4">Đăng ký nhận tin</h4>
+                            <div class="relative mb-6">
+                                <input type="text" placeholder="Nhập email của bạn" class="w-full p-3 pr-12 rounded-lg border border-gray-300 outline-none text-sm">
+                                <button class="absolute right-2 top-2 bg-red-500 text-white w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                            <h4 class="font-bold text-gray-800 uppercase text-xs mb-4">Quốc gia & Ngôn ngữ</h4>
+                            <select class="w-full p-2 border border-gray-300 rounded text-sm bg-white">
+                                <option>Việt Nam</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <div id="zalo-form">
         <div class="bg-[--vip-color] p-5 text-white">
-            <p class="text-[14px]">Hãy giới thiệu về bạn theo mẫu dưới đây và bắt đầu trò chuyện với chúng tôi.</p>
+            <p class="text-sm font-medium">Hãy giới thiệu về bạn theo mẫu dưới đây và bắt đầu trò chuyện với chúng tôi.</p>
         </div>
         <div class="p-5 space-y-4">
-            <input type="text" id="cusName" placeholder="Họ và tên *" class="w-full border border-gray-200 p-3 rounded-lg outline-none bg-gray-50 text-sm">
+            <input type="text" id="cusName" placeholder="Họ và tên *" class="w-full border border-gray-100 p-3 rounded-lg outline-none bg-gray-50 text-sm">
             <input type="text" id="cusPhone" placeholder="Số điện thoại *" class="w-full border border-gray-100 p-3 rounded-lg outline-none bg-gray-50 text-sm">
             <input type="email" id="cusEmail" placeholder="Email" class="w-full border border-gray-100 p-3 rounded-lg outline-none bg-gray-50 text-sm">
             <div class="flex gap-2 pt-2">
-                <button onclick="sendToZalo()" class="flex-1 bg-gray-100 text-gray-800 py-3 rounded-lg font-bold">Bắt đầu chat</button>
-                <button onclick="toggleZalo()" class="flex-1 bg-gray-100 text-gray-800 py-3 rounded-lg font-bold">Cancel</button>
+                <button onclick="sendToZalo()" class="flex-1 bg-gray-100 text-gray-800 py-3 rounded-lg font-bold hover:bg-gray-200">Bắt đầu chat</button>
+                <button onclick="toggleZalo()" class="flex-1 bg-gray-100 text-gray-800 py-3 rounded-lg font-bold hover:bg-gray-200">Cancel</button>
             </div>
         </div>
     </div>
@@ -165,7 +277,7 @@
             const name = document.getElementById("cusName").value;
             const phone = document.getElementById("cusPhone").value;
             if(!name || !phone) { alert("Vui lòng nhập tên và số điện thoại"); return; }
-            window.open(`https://zalo.me/0946239289?text=${encodeURIComponent("Chào Môi giới, tôi là " + name + " (" + phone + ") cần tư vấn.")}`, "_blank");
+            window.open(`https://zalo.me/0946239289?text=${encodeURIComponent("Chào Toàn Việt, tôi là " + name + " (" + phone + ") cần hỗ trợ.")}`, "_blank");
         }
     </script>
 </body>
