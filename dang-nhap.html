@@ -188,26 +188,32 @@
             </div>
         </div>
     </footer>
+<script>
+    function switchTab(type) {
+        // ... (giữ nguyên code chuyển tab cũ của bạn) ...
+    }
 
-    <script>
-        function switchTab(type) {
-            const login = document.getElementById('form-login');
-            const register = document.getElementById('form-register');
-            const tabL = document.getElementById('tab-login');
-            const tabR = document.getElementById('tab-register');
+    // --- CODE XỬ LÝ ĐĂNG NHẬP ---
+    document.getElementById('form-login').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="text"]').value;
+        const pass = this.querySelector('input[type="password"]').value;
 
-            if(type === 'login') {
-                login.classList.remove('hidden');
-                register.classList.add('hidden');
-                tabL.classList.add('active');
-                tabR.classList.remove('active');
+        // Giả lập tài khoản Admin mặc định
+        if(email === 'admin@toamviet.com' && pass === '123456') {
+            alert('Chào mừng Sếp quay trở lại!');
+            window.location.href = 'admin-dashboard.html';
+        } else {
+            // Kiểm tra xem có phải tài khoản vừa đăng ký không
+            const savedUser = JSON.parse(localStorage.getItem('registeredUser'));
+            if(savedUser && email === savedUser.email && pass === savedUser.password) {
+                alert('Tài khoản đang chờ Admin duyệt. Bạn sẽ được chuyển đến trang cá nhân.');
+                window.location.href = 'index.html';
             } else {
-                login.classList.add('hidden');
-                register.classList.remove('hidden');
-                tabL.classList.remove('active');
-                tabR.classList.add('active');
+                alert('Sai tài khoản hoặc mật khẩu! (Thử dùng: admin@toamviet.com / 123456)');
             }
         }
-    </script>
+    });
+</script>
 </body>
 </html>
