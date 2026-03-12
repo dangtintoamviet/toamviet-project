@@ -12,24 +12,31 @@
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         
         /* Header Sync */
-        .nav-link { font-size: 14px; font-weight: 600; color: #2C2C2C; transition: 0.3s; }
+        .nav-link { font-size: 14px; font-weight: 600; color: #2C2C2C; transition: 0.3s; position: relative; }
         .nav-link:hover { color: var(--hover-color); }
         .btn-post { border: 1.5px solid var(--vip-color); color: var(--vip-color); padding: 6px 16px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
         .btn-post:hover { background: var(--vip-color); color: white; }
 
+        /* Dropdown Menu */
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 200px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); border-radius: 8px; padding: 10px 0; z-index: 100; border: 1px solid #eee; }
+        .group:hover .dropdown-content { display: block; }
+        .dropdown-item { padding: 8px 20px; font-size: 13px; color: #444; display: block; }
+        .dropdown-item:hover { background: #f8f8f8; color: var(--vip-color); }
+
         /* Admin Layout */
         .admin-sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 10px; transition: 0.3s; color: #4b5563; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-        .admin-sidebar-item:hover, .admin-sidebar-item.active { background: var(--vip-color); color: white; }
+        .admin-sidebar-item:hover, .admin-sidebar-item.active { background: var(--vip-color); color: white; box-shadow: 0 4px 12px rgba(0,139,139,0.2); }
         
         /* Stats & Tables */
-        .stat-card { background: white; border-radius: 16px; padding: 24px; border: 1px solid #edf2f7; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .stat-card { background: white; border-radius: 16px; padding: 24px; border: 1px solid #edf2f7; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
         .badge-pending { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
 
         /* Footer Sync */
-        .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; }
-        .footer-list li { margin-bottom: 10px; font-size: 13.5px; color: #555; cursor: pointer; transition: 0.2s; }
-        .footer-list li:hover { color: var(--hover-color); padding-left: 4px; }
+        .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; border-left: 3px solid var(--vip-color); padding-left: 10px; }
+        .footer-list li { margin-bottom: 10px; font-size: 13.5px; color: #555; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .footer-list li:hover { color: var(--hover-color); transform: translateX(5px); }
     </style>
 </head>
 <body>
@@ -45,6 +52,10 @@
                     <a href="#" class="nav-link">Tin tức</a>
                     <div class="relative group">
                         <button class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <div class="dropdown-content">
+                            <a href="#" class="dropdown-item">Danh bạ Môi giới</a>
+                            <a href="#" class="dropdown-item">Danh bạ Doanh nghiệp</a>
+                        </div>
                     </div>
                 </nav>
             </div>
@@ -73,8 +84,8 @@
                             <a href="#" class="admin-sidebar-item active"><i class="fa-solid fa-chart-line text-lg"></i> Tổng quan</a>
                             <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-user-shield text-lg"></i> Duyệt thành viên</a>
                             <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-file-circle-check text-lg"></i> Kiểm duyệt tin đăng</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-newspaper text-lg"></i> Quản lý tin tức/Wiki</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-sliders text-lg"></i> Cấu hình hệ thống</a>
+                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-newspaper text-lg"></i> Quản lý tin tức</a>
+                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-sliders text-lg"></i> Cấu hình</a>
                         </nav>
                         <div class="mt-8 pt-6 border-t border-gray-50">
                             <a href="dang-nhap.html" class="admin-sidebar-item text-red-500 hover:bg-red-50 transition"><i class="fa-solid fa-power-off"></i> Đăng xuất</a>
@@ -86,7 +97,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div class="stat-card border-t-4 border-[--vip-color]">
                             <p class="text-[11px] text-gray-400 font-bold uppercase">Môi giới mới</p>
-                            <h4 class="text-3xl font-black mt-1">24</h4>
+                            <h4 id="stat-broker" class="text-3xl font-black mt-1 text-slate-800">24</h4>
                         </div>
                         <div class="stat-card border-t-4 border-orange-400">
                             <p class="text-[11px] text-gray-400 font-bold uppercase">Tin chờ duyệt</p>
@@ -94,14 +105,14 @@
                         </div>
                         <div class="stat-card border-t-4 border-blue-400">
                             <p class="text-[11px] text-gray-400 font-bold uppercase">Doanh nghiệp</p>
-                            <h4 class="text-3xl font-black mt-1 text-blue-600">08</h4>
+                            <h4 id="stat-company" class="text-3xl font-black mt-1 text-blue-600">08</h4>
                         </div>
                     </div>
 
                     <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
                         <div class="flex justify-between items-center mb-8">
                             <h2 class="font-bold text-lg text-slate-800">Yêu cầu đăng ký tài khoản mới</h2>
-                            <button class="text-[--vip-color] text-xs font-bold hover:underline italic">Xem tất cả yêu cầu</button>
+                            <button class="text-[--vip-color] text-xs font-bold hover:underline italic">Xem tất cả</button>
                         </div>
 
                         <div class="overflow-x-auto text-sm">
@@ -115,7 +126,7 @@
                                         <th class="pb-4 text-center">Xử lý</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-50">
+                                <tbody id="user-requests-list" class="divide-y divide-gray-50">
                                     <tr>
                                         <td class="py-5">
                                             <div class="flex items-center gap-3">
@@ -131,8 +142,8 @@
                                         <td class="text-center"><span class="status-badge badge-pending">Chờ duyệt</span></td>
                                         <td class="text-center">
                                             <div class="flex justify-center gap-2">
-                                                <button class="w-8 h-8 bg-green-500 text-white rounded-lg hover:shadow-lg transition"><i class="fa-solid fa-check"></i></button>
-                                                <button class="w-8 h-8 bg-red-500 text-white rounded-lg hover:shadow-lg transition"><i class="fa-solid fa-x"></i></button>
+                                                <button onclick="approveUser(this, 'broker')" class="w-8 h-8 bg-green-500 text-white rounded-lg hover:shadow-lg transition"><i class="fa-solid fa-check"></i></button>
+                                                <button onclick="rejectUser(this)" class="w-8 h-8 bg-red-500 text-white rounded-lg hover:shadow-lg transition"><i class="fa-solid fa-x"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -151,109 +162,102 @@
                 <div>
                     <h4 class="footer-title">Chủ đề nổi bật</h4>
                     <ul class="footer-list">
-                        <li>Bất động sản Hà Nội</li>
-                        <li>Bất động sản Hồ Chí Minh</li>
-                        <li>Mua nhà chung cư</li>
-                        <li>Báo cáo thị trường</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bất động sản Hà Nội</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bất động sản Hồ Chí Minh</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Báo cáo thị trường</li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="footer-title">Bất động sản bán</h4>
                     <ul class="footer-list">
-                        <li>Bán căn hộ chung cư</li>
-                        <li>Bán nhà riêng</li>
-                        <li>Bán đất nền dự án</li>
-                        <li>Bán biệt thự, liền kề</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bán căn hộ chung cư</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bán nhà riêng</li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="footer-title">Quy định</h4>
                     <ul class="footer-list">
-                        <li>Điều khoản thỏa thuận</li>
-                        <li>Chính sách bảo mật</li>
-                        <li>Giải quyết khiếu nại</li>
-                        <li>Hướng dẫn bảo mật</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Điều khoản thỏa thuận</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Chính sách bảo mật</li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="footer-title">Đăng ký nhận tin</h4>
-                    <div class="flex items-center bg-gray-50 rounded-lg p-1 border">
-                        <input type="text" placeholder="Email của bạn..." class="bg-transparent border-none outline-none px-3 py-2 text-sm w-full">
-                        <button class="bg-[--vip-color] text-white p-2 rounded-md"><i class="fa-solid fa-paper-plane"></i></button>
+                    <h4 class="footer-title">Hệ thống</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed mb-4">Mọi hành vi truy cập trái phép sẽ bị xử lý theo quy định công ty.</p>
+                    <div class="flex gap-4">
+                        <i class="fa-brands fa-facebook text-xl text-gray-400 hover:text-blue-600 cursor-pointer"></i>
+                        <i class="fa-brands fa-youtube text-xl text-gray-400 hover:text-red-600 cursor-pointer"></i>
                     </div>
-                    <p class="text-[10px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ các cơ hội đầu tư tốt nhất.</p>
                 </div>
             </div>
-
-            <div class="border-t pt-10 flex flex-col lg:flex-row justify-between items-start gap-8">
-                <div class="max-w-md">
-                    <img src="DAI TRONG SUOT (2).png" class="h-8 mb-6 opacity-80" alt="Logo">
-                    <h5 class="font-bold text-gray-800 text-sm uppercase">Bất động sản Tổ Ấm Việt</h5>
-                    <p class="text-xs text-gray-500 mt-2 flex items-start gap-2 leading-relaxed">
-                        <i class="fa-solid fa-location-dot mt-1 text-[--vip-color]"></i> 
-                        Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội
-                    </p>
-                    <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
-                        <i class="fa-solid fa-phone text-[--vip-color]"></i> 
-                        Hotline: 0946 239 289
-                    </p>
-                    <div class="flex gap-4 mt-6">
-                        <i class="fa-brands fa-facebook text-2xl text-gray-300 hover:text-blue-600 transition cursor-pointer"></i>
-                        <i class="fa-brands fa-youtube text-2xl text-gray-300 hover:text-red-600 transition cursor-pointer"></i>
-                    </div>
-                </div>
-                <div class="text-[11px] text-gray-400 leading-relaxed lg:text-right max-w-lg">
-                    <p class="font-bold uppercase mb-2">Thông tin hệ thống</p>
-                    Hệ thống quản trị nội bộ dành cho nhân viên Tổ Ấm Việt. Vui lòng bảo mật tài khoản và tuân thủ các quy định về quyền riêng tư khách hàng. Mọi hành vi truy cập trái phép sẽ bị xử lý theo quy định công ty.
-                </div>
+            <div class="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+                <img src="DAI TRONG SUOT (2).png" class="h-8 opacity-70">
+                <p class="text-[11px] text-gray-400">© 2026 toamviet.com.vn - Phiên bản quản trị nội bộ v2.0</p>
             </div>
         </div>
     </footer>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        renderUserRequests();
-    });
 
-    function renderUserRequests() {
-        const listContainer = document.getElementById('user-requests-list');
-        if (!listContainer) return;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            renderUserRequests();
+        });
 
-        // Lấy dữ liệu người dùng vừa đăng ký từ bộ nhớ
-        const savedUser = JSON.parse(localStorage.getItem('registeredUser'));
+        function renderUserRequests() {
+            const listContainer = document.getElementById('user-requests-list');
+            const savedUser = JSON.parse(localStorage.getItem('registeredUser'));
 
-        // Nếu không có ai đăng ký mới, giữ nguyên danh sách mẫu hoặc báo trống
-        if (!savedUser) return;
+            if (savedUser) {
+                const roleText = savedUser.role === 'company' ? 'Doanh nghiệp' : 'Môi giới cá nhân';
+                const roleType = savedUser.role === 'company' ? 'company' : 'broker';
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">
+                                ${savedUser.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-700">${savedUser.name}</div>
+                                <div class="text-[11px] text-gray-400">${savedUser.phone}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-gray-600">${roleText}</td>
+                    <td class="text-gray-500 italic text-[11px]">Vừa đăng ký</td>
+                    <td class="text-center"><span class="status-badge badge-pending">Chờ duyệt</span></td>
+                    <td class="text-center">
+                        <div class="flex justify-center gap-2">
+                            <button onclick="approveUser(this, '${roleType}')" class="w-8 h-8 bg-green-500 text-white rounded-lg hover:shadow-lg transition"><i class="fa-solid fa-check"></i></button>
+                            <button onclick="rejectUser(this)" class="w-8 h-8 bg-red-500 text-white rounded-lg hover:shadow-lg transition"><i class="fa-solid fa-x"></i></button>
+                        </div>
+                    </td>
+                `;
+                listContainer.prepend(tr);
+            }
+        }
 
-        // Nếu có người mới, chúng ta tạo một hàng mới trong bảng
-        const html = `
-            <div class="flex items-center justify-between p-4 border-b hover:bg-gray-50 transition">
-                <div class="flex items-center gap-4 w-1/3">
-                    <div class="w-10 h-10 bg-teal-100 text-[--vip-color] rounded-full flex items-center justify-center font-bold">
-                        ${savedUser.name.charAt(0)}
-                    </div>
-                    <div>
-                        <p class="font-bold text-sm">${savedUser.name}</p>
-                        <p class="text-[10px] text-gray-400">${savedUser.phone}</p>
-                    </div>
-                </div>
-                <div class="text-xs text-gray-500 w-1/4">${savedUser.role === 'company' ? 'Doanh nghiệp' : 'Môi giới cá nhân'}</div>
-                <div class="text-xs text-gray-400 w-1/4">Vừa mới xong</div>
-                <div class="w-1/4 flex justify-end gap-2">
-                    <button onclick="approveUser(this)" class="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"><i class="fa-solid fa-check"></i></button>
-                    <button onclick="rejectUser(this)" class="p-2 bg-red-500 text-white rounded-md hover:bg-red-600"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-            </div>
-        `;
+        function approveUser(btn, type) {
+            if(confirm('Bạn có chắc chắn muốn duyệt thành viên này?')) {
+                const row = btn.closest('tr');
+                row.style.backgroundColor = '#f0fdf4';
+                btn.parentElement.innerHTML = '<span class="text-green-600 font-black text-[10px] uppercase"><i class="fa-solid fa-circle-check"></i> Đã duyệt</span>';
+                
+                if(type === 'broker') {
+                    let count = parseInt(document.getElementById('stat-broker').innerText);
+                    document.getElementById('stat-broker').innerText = count + 1;
+                } else {
+                    let count = parseInt(document.getElementById('stat-company').innerText);
+                    document.getElementById('stat-company').innerText = count + 1;
+                }
+            }
+        }
 
-        // Chèn vào đầu danh sách
-        listContainer.insertAdjacentHTML('afterbegin', html);
-    }
-
-    function approveUser(btn) {
-        alert('Đã phê duyệt thành viên thành công!');
-        btn.closest('.flex').style.opacity = '0.5';
-        btn.parentElement.innerHTML = '<span class="text-green-500 font-bold text-xs">ĐÃ DUYỆT</span>';
-    }
-</script>
+        function rejectUser(btn) {
+            if(confirm('Từ chối yêu cầu đăng ký này?')) {
+                btn.closest('tr').remove();
+            }
+        }
+    </script>
 </body>
 </html>
