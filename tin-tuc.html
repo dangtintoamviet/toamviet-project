@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự án Bất động sản - ToamViet.com.vn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; --wiki-gray: #505050; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f2f2f2; color: #2C2C2C; }
+        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+
+        /* Menu & Hover */
+        .nav-link { transition: all 0.3s; position: relative; }
+        .nav-link:hover { color: var(--hover-color) !important; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; border-top: 2px solid var(--vip-color); z-index: 50; }
+        .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; border-bottom: 1px solid #f2f2f2; }
+        .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
+
+        /* Card Dự án - GIỮ NGUYÊN LAYOUT GỐC */
+        .project-card { background: white; border-radius: 8px; border: 1px solid #e5e5e5; overflow: hidden; transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
+        .project-card:hover { border-color: var(--vip-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+        /* Sidebar Wiki Style */
+        .sidebar-wiki-title { font-size: 16px; font-weight: 700; color: #222; margin-bottom: 15px; display: flex; items-center: center; gap: 8px; }
+        .wiki-list-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 14px; color: var(--wiki-gray); transition: 0.2s; }
+        .wiki-list-item:hover { color: var(--vip-color); }
+        .wiki-icon-circle { width: 6px; height: 6px; border-radius: 50%; background: #ccc; margin-top: 7px; flex-shrink: 0; }
+        .wiki-list-item:hover .wiki-icon-circle { background: var(--vip-color); }
+
+        @media (max-width: 768px) { .filter-item { min-width: 120px; } }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white border-b sticky top-0 z-[1000]">
+        <div class="container-custom h-[70px] flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
+                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
+                    <a href="nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="du-an.html" class="nav-link text-[--vip-color]">Dự án</a>
+                    <a href="#" class="nav-link">Tin tức</a>
+                    <div class="dropdown relative">
+                        <a href="#" class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">Danh bạ môi giới</a>
+                            <a href="#" class="dropdown-item">Danh bạ doanh nghiệp</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="relative cursor-pointer text-gray-500">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-1.5 rounded-full">0</span>
+                </div>
+                <button class="border border-[--vip-color] text-[--vip-color] px-4 py-1.5 rounded-lg font-bold hover:bg-[--vip-color] hover:text-white transition uppercase text-[12px]">Đăng tin</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="relative">
+        <div class="swiper mySwiper w-full h-[300px] md:h-[450px]">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide relative">
+                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/30 flex items-center">
+                        <div class="container-custom w-full text-white">
+                            <span class="bg-green-600 px-2 py-1 rounded text-[10px] font-bold uppercase">Đang mở bán</span>
+                            <a href="thong-tin-du-an-hong-hac.html" class="block">
+                                <h2 class="text-3xl md:text-5xl font-bold mt-4 hover:text-[--hover-color] transition">Hồng Hạc City</h2>
+                            </a>
+                            <p class="mt-2 opacity-90">Phường Xuân Lâm, Thuận Thành, Bắc Ninh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination !bottom-16"></div>
+        </div>
+        </div>
+
+    <div class="container-custom py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <div class="flex-1">
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold uppercase border-l-4 border-[--vip-color] pl-3">Dự án nổi bật</h1>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div class="project-card">
+                        <div class="relative h-48">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500" class="w-full h-full object-cover">
+                            <span class="absolute top-2 right-2 bg-[--vip-color] text-white text-[10px] px-2 py-1 rounded font-bold">VIP</span>
+                        </div>
+                        <div class="p-4 flex-1">
+                            <h3 class="font-bold text-[14px] uppercase line-clamp-2">Vinhomes Ocean Park 3</h3>
+                            <p class="text-red-600 font-bold text-lg mt-2">Từ 8.5 tỷ</p>
+                            <div class="mt-4 pt-4 border-t flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                                    <p class="text-[12px] font-bold">Tổ Ấm Việt</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-[320px] shrink-0">
+                
+                <div class="bg-white p-5 rounded-lg border border-gray-200 mb-6">
+                    <h4 class="sidebar-wiki-title">
+                        <i class="fa-solid fa-layer-group text-blue-500"></i>
+                        DỰ ÁN THEO ĐỊA DANH
+                    </h4>
+                    <nav class="flex flex-col">
+                        <a href="#" class="wiki-list-item">
+                            <span class="wiki-icon-circle"></span>
+                            <span>Bất động sản Hà Nội <span class="text-gray-300">(450)</span></span>
+                        </a>
+                        <a href="#" class="wiki-list-item">
+                            <span class="wiki-icon-circle"></span>
+                            <span>Bất động sản TP.HCM <span class="text-gray-300">(320)</span></span>
+                        </a>
+                        <a href="#" class="wiki-list-item">
+                            <span class="wiki-icon-circle"></span>
+                            <span>Bất động sản Bắc Ninh <span class="text-gray-300">(85)</span></span>
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <h4 class="sidebar-wiki-title">
+                        <i class="fa-solid fa-newspaper text-orange-500"></i>
+                        TIN TỨC PHONG THỦY & NỘI THẤT
+                    </h4>
+                    <div class="space-y-4 mt-2">
+                        <a href="#" class="flex gap-3 group">
+                            <img src="https://images.unsplash.com/photo-1616489953149-8f3227627207?w=100" class="w-20 h-14 object-cover rounded shadow-sm">
+                            <span class="text-[13px] font-medium leading-tight group-hover:text-[--vip-color] transition">Cách bố trí phòng khách hợp phong thủy 2026</span>
+                        </a>
+                        
+                        <div class="flex flex-col">
+                            <a href="#" class="wiki-list-item">
+                                <span class="wiki-icon-circle"></span>
+                                <span>Màu sơn nhà đẹp cho người mệnh Kim</span>
+                            </a>
+                            <a href="#" class="wiki-list-item">
+                                <span class="wiki-icon-circle"></span>
+                                <span>Xu hướng nội thất tối giản (Minimalism)</span>
+                            </a>
+                            <a href="#" class="wiki-list-item">
+                                <span class="wiki-icon-circle"></span>
+                                <span>Lưu ý khi thiết kế ban công chung cư</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1582408921715-18e7806365c1?w=400" class="w-full h-auto">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            loop: true, autoplay: { delay: 5000 },
+            pagination: { el: ".swiper-pagination", clickable: true },
+        });
+    </script>
+</body>
+</html>
