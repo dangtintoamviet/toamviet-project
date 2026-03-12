@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh bạ Nhà môi giới | Tổ Ấm Việt</title>
+    <title>Danh bạ Nhà môi giới | toamviet.com.vn</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        :root { --vip-color: #008B8B; --hover-color: #FF8C00; --red-btn: #E03C31; }
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; color: #2C2C2C; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         
@@ -21,19 +21,19 @@
 
         /* Search Box */
         .search-container { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .search-title { color: var(--red-btn); font-weight: bold; text-transform: uppercase; font-size: 14px; margin-bottom: 15px; }
+        .search-title { color: var(--vip-color); font-weight: bold; text-transform: uppercase; font-size: 14px; margin-bottom: 15px; }
         
         /* Broker Card */
         .broker-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; transition: 0.3s; }
-        .broker-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .btn-email { border: 1px solid #ccc; padding: 6px 15px; border-radius: 4px; font-size: 14px; font-weight: 600; transition: 0.3s; }
-        .btn-email:hover { background: #f5f5f5; border-color: #999; }
+        .broker-card:hover { border-color: var(--vip-color); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-email { border: 1px solid var(--vip-color); color: var(--vip-color); padding: 6px 15px; border-radius: 4px; font-size: 14px; font-weight: 600; transition: 0.3s; }
+        .btn-email:hover { background: var(--vip-color); color: white; }
 
         /* Sidebar */
         .sidebar-title { background: #555; color: white; padding: 10px 15px; font-weight: bold; text-transform: uppercase; font-size: 13px; border-radius: 4px 4px 0 0; }
         .sidebar-content { background: white; padding: 15px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 4px 4px; }
 
-        /* Footer */
+        /* Footer Groups */
         .footer-link-group h4 { font-weight: bold; font-size: 14px; margin-bottom: 16px; color: #2C2C2C; }
         .footer-link-group ul { font-size: 13px; color: #666; padding: 0; list-style: none; }
         .footer-link-group li { margin-bottom: 8px; cursor: pointer; transition: 0.3s; }
@@ -45,7 +45,7 @@
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[70px] flex justify-between items-center">
             <div class="flex items-center gap-8">
-                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
+                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo toamviet" class="h-10"></a>
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
                     <a href="nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
                     <a href="nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
@@ -78,9 +78,9 @@
             
             <div class="search-container">
                 <div class="flex flex-col lg:flex-row items-center gap-4">
-                    <span class="search-title shrink-0">Tìm kiếm môi giới</span>
+                    <span class="search-title shrink-0">Tìm kiếm môi giới tại Tổ Ấm Việt</span>
                     <div class="flex-1 w-full relative">
-                        <input type="text" placeholder="Nhập từ khóa tìm kiếm" class="w-full border p-2 rounded outline-none text-sm pr-10">
+                        <input type="text" placeholder="Nhập tên môi giới hoặc khu vực..." class="w-full border p-2 rounded outline-none text-sm pr-10 focus:border-[--vip-color]">
                         <i class="fa-solid fa-magnifying-glass absolute right-3 top-3 text-gray-400"></i>
                     </div>
                 </div>
@@ -90,57 +90,57 @@
                     <select class="border p-2 rounded text-sm outline-none bg-white"><option>Tỉnh/Thành phố</option></select>
                     <select class="border p-2 rounded text-sm outline-none bg-white"><option>Quận/Huyện</option></select>
                     <select class="border p-2 rounded text-sm outline-none bg-white"><option>Dự án</option></select>
-                    <button class="bg-[--red-btn] text-white rounded font-bold text-sm py-2 hover:bg-opacity-90">Tìm kiếm</button>
+                    <button class="bg-[--vip-color] text-white rounded font-bold text-sm py-2 hover:bg-opacity-90 transition">Tìm kiếm</button>
                 </div>
             </div>
 
             <div class="flex flex-col lg:flex-row gap-8">
                 <div class="lg:w-2/3">
-                    <h1 class="text-xl font-bold mb-6">Danh bạ nhà môi giới</h1>
+                    <h1 class="text-xl font-bold mb-6 text-gray-800">Danh bạ nhà môi giới chuyên nghiệp</h1>
                     <div class="flex gap-2 mb-6">
-                        <button class="bg-white border px-4 py-1.5 rounded text-sm font-semibold">Công ty môi giới</button>
-                        <button class="bg-gray-100 border-2 border-gray-300 px-4 py-1.5 rounded text-sm font-bold">Cá nhân môi giới</button>
+                        <button class="bg-white border px-4 py-1.5 rounded text-sm font-semibold hover:border-[--vip-color] transition">Công ty môi giới</button>
+                        <button class="bg-[--vip-color] text-white px-4 py-1.5 rounded text-sm font-bold shadow-sm">Cá nhân môi giới</button>
                     </div>
 
                     <div class="broker-card flex flex-col md:flex-row gap-6">
-                        <img src="https://i.pravatar.cc/150?u=1" class="w-28 h-28 rounded-lg object-cover bg-gray-200">
+                        <img src="https://i.pravatar.cc/150?u=1" class="w-28 h-28 rounded-lg object-cover border">
                         <div class="flex-1">
-                            <h2 class="text-lg font-bold text-blue-800">Nguyễn Trần Thái Sơn</h2>
+                            <h2 class="text-lg font-bold text-[--vip-color] hover:text-[--hover-color] cursor-pointer transition">Nguyễn Trần Thái Sơn</h2>
                             <p class="text-sm text-gray-600 mt-2 flex items-start gap-2">
                                 <i class="fa-solid fa-location-dot mt-1"></i> Thái Phiên, Lâm Viên, Đà Lạt, Lâm Đồng
                             </p>
                             <p class="text-sm font-bold mt-2 flex items-center gap-2">
-                                <i class="fa-solid fa-phone"></i> 0949437438
+                                <i class="fa-solid fa-phone text-green-600"></i> 0949 437 438
                             </p>
-                            <button class="btn-email mt-4">Gửi Email</button>
+                            <button class="btn-email mt-4 uppercase text-xs tracking-wider">Gửi Email liên hệ</button>
                         </div>
                         <div class="md:w-1/3 border-l pl-6 hidden md:block">
-                            <h3 class="text-xs font-bold text-gray-500 uppercase">Khu vực cá nhân môi giới</h3>
-                            <ul class="text-sm mt-2 space-y-1 text-red-600 list-disc pl-4">
-                                <li>Bán nhà mặt phố ở Đà Lạt</li>
-                                <li>Bán nhà biệt thự, liền kề</li>
-                                <li>Cho thuê nhà mặt phố ở Đà Lạt</li>
+                            <h3 class="text-xs font-bold text-gray-400 uppercase mb-2">Lĩnh vực chuyên sâu</h3>
+                            <ul class="text-sm space-y-1 text-gray-700 list-disc pl-4">
+                                <li>Bán nhà mặt phố Đà Lạt</li>
+                                <li>Biệt thự nghỉ dưỡng</li>
+                                <li>Đất nền dự án</li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="broker-card flex flex-col md:flex-row gap-6">
-                        <img src="https://i.pravatar.cc/150?u=2" class="w-28 h-28 rounded-lg object-cover bg-gray-200">
+                        <img src="https://i.pravatar.cc/150?u=2" class="w-28 h-28 rounded-lg object-cover border">
                         <div class="flex-1">
-                            <h2 class="text-lg font-bold text-blue-800">Nguyễn Trường</h2>
+                            <h2 class="text-lg font-bold text-[--vip-color] hover:text-[--hover-color] cursor-pointer transition">Nguyễn Trường</h2>
                             <p class="text-sm text-gray-600 mt-2 flex items-start gap-2">
                                 <i class="fa-solid fa-location-dot mt-1"></i> Phan Chu Trinh, Đà Lạt, Lâm Đồng
                             </p>
                             <p class="text-sm font-bold mt-2 flex items-center gap-2">
-                                <i class="fa-solid fa-phone"></i> 0916997297
+                                <i class="fa-solid fa-phone text-green-600"></i> 0916 997 297
                             </p>
-                            <button class="btn-email mt-4">Gửi Email</button>
+                            <button class="btn-email mt-4 uppercase text-xs tracking-wider">Gửi Email liên hệ</button>
                         </div>
                         <div class="md:w-1/3 border-l pl-6 hidden md:block">
-                            <h3 class="text-xs font-bold text-gray-500 uppercase">Khu vực cá nhân môi giới</h3>
-                            <ul class="text-sm mt-2 space-y-1 text-red-600 list-disc pl-4">
-                                <li>Bán nhà mặt phố ở Đà Lạt</li>
-                                <li>Bán nhà biệt thự, liền kề</li>
+                            <h3 class="text-xs font-bold text-gray-400 uppercase mb-2">Lĩnh vực chuyên sâu</h3>
+                            <ul class="text-sm space-y-1 text-gray-700 list-disc pl-4">
+                                <li>Căn hộ cao cấp</li>
+                                <li>Nhà riêng nội thành</li>
                             </ul>
                         </div>
                     </div>
@@ -148,23 +148,22 @@
 
                 <div class="lg:w-1/3">
                     <div class="bg-white border rounded-lg p-5 mb-8 text-center shadow-sm">
-                        <div class="flex justify-center mb-2"><i class="fa-solid fa-envelope-open-text text-red-500 text-3xl"></i></div>
-                        <h4 class="text-sm font-semibold">Nhận bản tin từ Toamviet.com.vn</h4>
+                        <div class="flex justify-center mb-2"><i class="fa-solid fa-envelope-open-text text-[--vip-color] text-3xl"></i></div>
+                        <h4 class="text-sm font-semibold">Nhận bản tin từ toamviet.com.vn</h4>
                         <div class="flex mt-4">
-                            <input type="text" placeholder="Nhập email" class="flex-1 border p-2 rounded-l outline-none text-sm">
-                            <button class="bg-[--red-btn] text-white px-4 rounded-r font-bold text-sm">Đăng ký</button>
+                            <input type="text" placeholder="Email của bạn..." class="flex-1 border p-2 rounded-l outline-none text-sm focus:border-[--vip-color]">
+                            <button class="bg-[--vip-color] text-white px-4 rounded-r font-bold text-sm hover:bg-opacity-90">Đăng ký</button>
                         </div>
                     </div>
 
-                    <div class="mb-8">
-                        <div class="sidebar-title">Theo loại BĐS</div>
+                    <div>
+                        <div class="sidebar-title">Nhà đất bán theo loại</div>
                         <div class="sidebar-content">
                             <ul class="text-sm space-y-3">
-                                <li class="flex justify-between items-center text-red-700 font-semibold border-b pb-2">Nhà đất bán (6081)</li>
-                                <li class="flex justify-between items-center hover:text-red-600 cursor-pointer"><span>• Bán đất nền dự án</span> <span class="text-gray-400">(2160)</span></li>
-                                <li class="flex justify-between items-center hover:text-red-600 cursor-pointer"><span>• Bán nhà riêng</span> <span class="text-gray-400">(1572)</span></li>
-                                <li class="flex justify-between items-center hover:text-red-600 cursor-pointer"><span>• Bán căn hộ chung cư</span> <span class="text-gray-400">(2907)</span></li>
-                                <li class="flex justify-between items-center hover:text-red-600 cursor-pointer"><span>• Bán biệt thự, liền kề</span> <span class="text-gray-400">(1101)</span></li>
+                                <li class="flex justify-between items-center text-[--vip-color] font-bold border-b pb-2">Tổng tin đăng (6081)</li>
+                                <li class="flex justify-between items-center hover:text-[--hover-color] cursor-pointer transition"><span>• Bán đất nền dự án</span> <span class="text-gray-400">(2160)</span></li>
+                                <li class="flex justify-between items-center hover:text-[--hover-color] cursor-pointer transition"><span>• Bán nhà riêng</span> <span class="text-gray-400">(1572)</span></li>
+                                <li class="flex justify-between items-center hover:text-[--hover-color] cursor-pointer transition"><span>• Bán căn hộ chung cư</span> <span class="text-gray-400">(2907)</span></li>
                             </ul>
                         </div>
                     </div>
@@ -182,7 +181,7 @@
                         <li>Bất động sản Hà Nội</li>
                         <li>Bất động sản Hồ Chí Minh</li>
                         <li>Mua nhà chung cư</li>
-                        <li>Báo cáo thị trường</li>
+                        <li>Báo cáo thị trường toamviet</li>
                     </ul>
                 </div>
                 <div class="footer-link-group">
@@ -191,14 +190,12 @@
                         <li>Bán căn hộ chung cư</li>
                         <li>Bán nhà riêng</li>
                         <li>Bán đất nền dự án</li>
-                        <li>Bán biệt thự, liền kề</li>
                     </ul>
                 </div>
                 <div class="footer-link-group">
                     <h4>BẤT ĐỘNG SẢN THUÊ</h4>
                     <ul>
                         <li>Thuê căn hộ chung cư</li>
-                        <li>Thuê nhà riêng</li>
                         <li>Thuê văn phòng</li>
                         <li>Thuê phòng trọ giá rẻ</li>
                     </ul>
@@ -207,7 +204,6 @@
                     <h4>DỰ ÁN NỔI BẬT</h4>
                     <ul>
                         <li>Dự án Vinhomes</li>
-                        <li>Căn hộ cao cấp Quận 2</li>
                         <li>Đất nền Bình Dương</li>
                         <li>Căn hộ Studio giá rẻ</li>
                     </ul>
@@ -231,7 +227,6 @@
                         <ul class="text-[13px] text-gray-500 space-y-2">
                             <li class="hover:text-[--hover-color]">Về chúng tôi</li>
                             <li class="hover:text-[--hover-color]">Báo giá dịch vụ</li>
-                            <li class="hover:text-[--hover-color]">Câu hỏi thường gặp</li>
                             <li class="hover:text-[--hover-color]">Sitemap</li>
                         </ul>
                     </div>
@@ -240,17 +235,15 @@
                         <ul class="text-[13px] text-gray-500 space-y-2">
                             <li class="hover:text-[--hover-color]">Điều khoản thỏa thuận</li>
                             <li class="hover:text-[--hover-color]">Chính sách bảo mật</li>
-                            <li class="hover:text-[--hover-color]">Giải quyết khiếu nại</li>
                         </ul>
                     </div>
                 </div>
                 <div class="w-full lg:w-1/4">
-                    <h5 class="font-bold text-gray-800 text-[12px] mb-4 uppercase">ĐĂNG KÝ NHẬN TIN</h5>
+                    <h5 class="font-bold text-gray-800 text-[12px] mb-4 uppercase">LIÊN KẾT MỚI</h5>
                     <div class="flex bg-white border border-gray-200 rounded-lg overflow-hidden p-1 shadow-sm">
-                        <input type="text" placeholder="Email của bạn..." class="flex-1 px-3 py-2 outline-none text-sm">
+                        <input type="text" placeholder="Email..." class="flex-1 px-3 py-2 outline-none text-sm">
                         <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md hover:bg-opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
-                    <p class="text-[11px] text-gray-400 mt-2 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
                 </div>
             </div>
         </div>
