@@ -200,18 +200,34 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        function selectType(element, type) {
-            document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('active'));
-            element.classList.add('active');
-            const companyField = document.getElementById('company-field');
-            if (type === 'company') {
-                companyField.classList.remove('hidden');
-            } else {
-                companyField.classList.add('hidden');
-            }
+<script>
+    function selectType(element, type) {
+        document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('active'));
+        element.classList.add('active');
+        const companyField = document.getElementById('company-field');
+        if (type === 'company') {
+            companyField.classList.remove('hidden');
+        } else {
+            companyField.classList.add('hidden');
         }
-    </script>
+    }
+
+    // --- CODE XỬ LÝ ĐĂNG KÝ MỚI ---
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Chặn việc tải lại trang
+        
+        const name = document.querySelector('input[placeholder="Nguyễn Văn A"]').value;
+        const phone = document.querySelector('input[placeholder="09xx xxx xxx"]').value;
+        const email = document.querySelector('input[type="email"]').value;
+        const password = document.querySelector('input[type="password"]').value;
+        
+        // Lưu vào bộ nhớ trình duyệt (LocalStorage)
+        const userData = { name, phone, email, password, role: 'user', status: 'pending' };
+        localStorage.setItem('registeredUser', JSON.stringify(userData));
+
+        alert('Đăng ký thành công! Thông tin của bạn đã được gửi đến Admin chờ duyệt.');
+        window.location.href = 'dang-nhap.html'; // Chuyển sang trang đăng nhập
+    });
+</script>
 </body>
 </html>
