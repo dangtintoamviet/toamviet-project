@@ -11,6 +11,13 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f7; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         
+        /* Header Sync */
+        .nav-link { font-size: 14px; font-weight: 600; color: #2C2C2C; transition: 0.3s; }
+        .nav-link:hover { color: var(--hover-color); }
+        .btn-post { border: 1.5px solid var(--vip-color); color: var(--vip-color); padding: 6px 16px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .btn-post:hover { background: var(--vip-color); color: white; }
+
+        /* Register Card */
         .reg-card { background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; display: flex; max-width: 900px; margin: 40px auto; }
         .reg-side { width: 35%; background: var(--vip-color); color: white; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
         .reg-form { width: 65%; padding: 40px; }
@@ -27,45 +34,67 @@
         .type-option { flex: 1; border: 2px solid #eee; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.3s; }
         .type-option.active { border-color: var(--vip-color); background: #f0fafa; color: var(--vip-color); }
         .type-option i { display: block; font-size: 20px; margin-bottom: 5px; }
+
+        /* Footer Sync */
+        .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; }
+        .footer-list li { margin-bottom: 10px; font-size: 13.5px; color: #555; cursor: pointer; transition: 0.2s; }
+        .footer-list li:hover { color: var(--hover-color); padding-left: 4px; }
     </style>
 </head>
 <body>
 
     <header class="bg-white border-b sticky top-0 z-[1000]">
-        <div class="container-custom h-[70px] flex justify-between items-center">
-            <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
-            <div class="text-sm font-semibold">Đã có tài khoản? <a href="dang-nhap.html" class="text-[--vip-color] hover:underline">Đăng nhập ngay</a></div>
+        <div class="container-custom h-[75px] flex justify-between items-center">
+            <div class="flex items-center gap-6">
+                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
+                <nav class="hidden xl:flex items-center gap-5">
+                    <a href="#" class="nav-link">Nhà đất bán</a>
+                    <a href="#" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="#" class="nav-link">Dự án</a>
+                    <a href="#" class="nav-link">Tin tức</a>
+                    <div class="relative group">
+                        <button class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="flex items-center gap-4 font-semibold text-sm">
+                <a href="dang-nhap.html" class="text-gray-700 hover:text-[--vip-color]">Đăng nhập</a>
+                <span class="text-gray-300">|</span>
+                <a href="dang-ky.html" class="text-[--vip-color]">Đăng ký</a>
+                <a href="#" class="btn-post text-xs uppercase ml-2">Đăng tin</a>
+            </div>
         </div>
     </header>
 
-    <main class="container-custom">
+    <main class="container-custom py-10">
         <div class="reg-card">
             <div class="reg-side hidden md:flex">
                 <h2 class="text-2xl font-bold mb-6">Trở thành đối tác của Tổ Ấm Việt</h2>
                 <ul class="space-y-5 text-sm">
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1"></i> Tiếp cận 1.000.000+ khách hàng tiềm năng mỗi tháng.</li>
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1"></i> Công cụ quản lý tin đăng thông minh, chuyên nghiệp.</li>
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1"></i> Xây dựng thương hiệu cá nhân/doanh nghiệp uy tín.</li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1 text-teal-200"></i> Tiếp cận 1.000.000+ khách hàng tiềm năng mỗi tháng.</li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1 text-teal-200"></i> Công cụ quản lý tin đăng thông minh, chuyên nghiệp.</li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1 text-teal-200"></i> Xây dựng thương hiệu cá nhân/doanh nghiệp uy tín.</li>
                 </ul>
-                <div class="mt-12 pt-8 border-t border-teal-600 text-[11px] opacity-70 italic text-center">
-                    "Giải pháp công nghệ dẫn đầu cho môi giới Bất động sản"
+                <div class="mt-12 pt-8 border-t border-teal-600 text-[11px] opacity-70 italic text-center leading-relaxed">
+                    "Giải pháp công nghệ dẫn đầu<br>cho môi giới Bất động sản"
                 </div>
             </div>
 
             <div class="reg-form">
                 <h1 class="text-xl font-bold text-gray-800 mb-2">Tạo tài khoản mới</h1>
-                <p class="text-gray-400 text-xs mb-6">Vui lòng điền chính xác thông tin để Admin duyệt hồ sơ nhanh chóng.</p>
+                <p class="text-gray-400 text-[11px] mb-6">Vui lòng điền chính xác thông tin để Admin duyệt hồ sơ nhanh chóng.</p>
 
                 <form action="#">
                     <label class="text-[13px] font-bold text-gray-700 block mb-2">Bạn đăng ký với tư cách:</label>
                     <div class="type-selector">
                         <div class="type-option active" onclick="selectType(this, 'broker')">
                             <i class="fa-solid fa-user-tie"></i>
-                            <span class="text-xs font-bold uppercase">Môi giới</span>
+                            <span class="text-[10px] font-bold uppercase">Môi giới</span>
                         </div>
                         <div class="type-option" onclick="selectType(this, 'company')">
                             <i class="fa-solid fa-building"></i>
-                            <span class="text-xs font-bold uppercase">Doanh nghiệp</span>
+                            <span class="text-[10px] font-bold uppercase">Doanh nghiệp</span>
                         </div>
                     </div>
 
@@ -81,7 +110,7 @@
                     </div>
 
                     <div class="input-group">
-                        <label>Địa chỉ Email (Để nhận thông báo duyệt tin) *</label>
+                        <label>Địa chỉ Email *</label>
                         <input type="email" placeholder="example@gmail.com" required>
                     </div>
 
@@ -96,34 +125,86 @@
                     </div>
 
                     <div class="text-[11px] text-gray-500 mt-4 leading-relaxed">
-                        Bằng việc nhấn "Đăng ký thành viên", bạn đã đồng ý với <a href="#" class="text-[--vip-color] underline">Điều khoản dịch vụ</a> và <a href="#" class="text-[--vip-color] underline">Chính sách bảo mật</a> của toamviet.com.vn
+                        Bằng việc nhấn "Đăng ký thành viên", bạn đã đồng ý với <a href="#" class="text-[--vip-color] underline">Điều khoản dịch vụ</a> và <a href="#" class="text-[--vip-color] underline">Chính sách bảo mật</a>
                     </div>
 
-                    <button type="submit" class="btn-reg uppercase tracking-widest">Đăng ký thành viên</button>
+                    <button type="submit" class="btn-reg uppercase tracking-widest text-sm">Đăng ký thành viên</button>
                 </form>
             </div>
         </div>
     </main>
 
-    <footer class="bg-white border-t mt-12 py-10">
-        <div class="container-custom text-center">
-            <p class="text-sm font-bold text-gray-700 uppercase">Bất động sản Tổ Ấm Việt</p>
-            <p class="text-xs text-gray-500 mt-2">Địa chỉ: Tầng 31, Keangnam Landmark 72, Phạm Hùng, Nam Từ Liêm, Hà Nội</p>
-            <p class="text-xs text-gray-500">Hotline: 0946 239 289 | Email: dangtin.toamviet@gmail.com</p>
-            <div class="mt-6 flex justify-center gap-6 grayscale opacity-60">
-                <img src="https://img.icons8.com/color/48/google-play.png" class="h-6">
-                <img src="https://img.icons8.com/ios-filled/50/apple-app-store--v1.png" class="h-6">
+    <footer class="bg-white border-t pt-16 pb-8">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <h4 class="footer-title">Chủ đề nổi bật</h4>
+                    <ul class="footer-list">
+                        <li>Bất động sản Hà Nội</li>
+                        <li>Bất động sản Hồ Chí Minh</li>
+                        <li>Mua nhà chung cư</li>
+                        <li>Báo cáo thị trường</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Bất động sản bán</h4>
+                    <ul class="footer-list">
+                        <li>Bán căn hộ chung cư</li>
+                        <li>Bán nhà riêng</li>
+                        <li>Bán đất nền dự án</li>
+                        <li>Bán biệt thự, liền kề</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Quy định</h4>
+                    <ul class="footer-list">
+                        <li>Điều khoản thỏa thuận</li>
+                        <li>Chính sách bảo mật</li>
+                        <li>Giải quyết khiếu nại</li>
+                        <li>Hướng dẫn bảo mật</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Đăng ký nhận tin</h4>
+                    <div class="flex items-center bg-gray-50 rounded-lg p-1 border">
+                        <input type="text" placeholder="Email của bạn..." class="bg-transparent border-none outline-none px-3 py-2 text-sm w-full">
+                        <button class="bg-[--vip-color] text-white p-2 rounded-md"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-3 italic text-center">Đừng bỏ lỡ các cơ hội đầu tư tốt nhất.</p>
+                </div>
+            </div>
+
+            <div class="border-t pt-10 flex flex-col lg:flex-row justify-between items-start gap-8">
+                <div class="max-w-md">
+                    <img src="DAI TRONG SUOT (2).png" class="h-8 mb-6 opacity-80" alt="Logo">
+                    <h5 class="font-bold text-gray-800 text-sm uppercase">Bất động sản Tổ Ấm Việt</h5>
+                    <p class="text-xs text-gray-500 mt-2 flex items-start gap-2 leading-relaxed">
+                        <i class="fa-solid fa-location-dot mt-1 text-[--vip-color]"></i> 
+                        Tầng 31, Keangnam Landmark 72, Nam Từ Liêm, Hà Nội
+                    </p>
+                    <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
+                        <i class="fa-solid fa-phone text-[--vip-color]"></i> Hotline: 0946 239 289
+                    </p>
+                    <div class="flex gap-4 mt-6">
+                        <i class="fa-brands fa-facebook text-2xl text-gray-300 hover:text-blue-600 transition cursor-pointer"></i>
+                        <i class="fa-brands fa-youtube text-2xl text-gray-300 hover:text-red-600 transition cursor-pointer"></i>
+                    </div>
+                </div>
+                <div class="flex gap-6 grayscale opacity-40">
+                    <img src="https://img.icons8.com/color/48/google-play.png" class="h-8">
+                    <img src="https://img.icons8.com/ios-filled/50/apple-app-store--v1.png" class="h-8">
+                </div>
+            </div>
+            <div class="text-center mt-12 text-[10px] text-gray-400 uppercase tracking-widest border-t pt-6">
+                © 2026 toamviet.com.vn - Kết nối thị trường bất động sản Việt Nam
             </div>
         </div>
     </footer>
 
     <script>
         function selectType(element, type) {
-            // Xử lý giao diện nút chọn
             document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('active'));
             element.classList.add('active');
-
-            // Ẩn hiện trường nhập tên công ty
             const companyField = document.getElementById('company-field');
             if (type === 'company') {
                 companyField.classList.remove('hidden');
