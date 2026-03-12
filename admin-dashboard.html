@@ -209,6 +209,51 @@
             </div>
         </div>
     </footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        renderUserRequests();
+    });
 
+    function renderUserRequests() {
+        const listContainer = document.getElementById('user-requests-list');
+        if (!listContainer) return;
+
+        // Lấy dữ liệu người dùng vừa đăng ký từ bộ nhớ
+        const savedUser = JSON.parse(localStorage.getItem('registeredUser'));
+
+        // Nếu không có ai đăng ký mới, giữ nguyên danh sách mẫu hoặc báo trống
+        if (!savedUser) return;
+
+        // Nếu có người mới, chúng ta tạo một hàng mới trong bảng
+        const html = `
+            <div class="flex items-center justify-between p-4 border-b hover:bg-gray-50 transition">
+                <div class="flex items-center gap-4 w-1/3">
+                    <div class="w-10 h-10 bg-teal-100 text-[--vip-color] rounded-full flex items-center justify-center font-bold">
+                        ${savedUser.name.charAt(0)}
+                    </div>
+                    <div>
+                        <p class="font-bold text-sm">${savedUser.name}</p>
+                        <p class="text-[10px] text-gray-400">${savedUser.phone}</p>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-500 w-1/4">${savedUser.role === 'company' ? 'Doanh nghiệp' : 'Môi giới cá nhân'}</div>
+                <div class="text-xs text-gray-400 w-1/4">Vừa mới xong</div>
+                <div class="w-1/4 flex justify-end gap-2">
+                    <button onclick="approveUser(this)" class="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"><i class="fa-solid fa-check"></i></button>
+                    <button onclick="rejectUser(this)" class="p-2 bg-red-500 text-white rounded-md hover:bg-red-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+        `;
+
+        // Chèn vào đầu danh sách
+        listContainer.insertAdjacentHTML('afterbegin', html);
+    }
+
+    function approveUser(btn) {
+        alert('Đã phê duyệt thành viên thành công!');
+        btn.closest('.flex').style.opacity = '0.5';
+        btn.parentElement.innerHTML = '<span class="text-green-500 font-bold text-xs">ĐÃ DUYỆT</span>';
+    }
+</script>
 </body>
 </html>
