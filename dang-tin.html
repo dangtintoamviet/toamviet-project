@@ -3,24 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng tin chuyên sâu | toamviet.com.vn</title>
+    <title>Đăng tin chuyên nghiệp | toamviet.com.vn</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f8fafb; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafb; color: #2C2C2C; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         
-        /* Tab Styles */
-        .tab-btn { padding: 12px 24px; font-weight: bold; border-bottom: 3px solid transparent; transition: 0.3s; cursor: pointer; }
-        .tab-btn.active { color: var(--vip-color); border-bottom-color: var(--vip-color); }
+        /* Header Sync */
+        .nav-link { font-size: 14px; font-weight: 600; color: #2C2C2C; transition: 0.3s; position: relative; }
+        .nav-link:hover { color: var(--hover-color); }
+        .btn-post { border: 1.5px solid var(--vip-color); color: var(--vip-color); padding: 6px 16px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .btn-post:hover { background: var(--vip-color); color: white; }
 
-        /* Input Styles */
-        .input-field { width: 100%; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; }
+        /* Dropdown Menu */
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 200px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); border-radius: 8px; padding: 10px 0; z-index: 100; border: 1px solid #eee; }
+        .group:hover .dropdown-content { display: block; }
+        .dropdown-item { padding: 8px 20px; font-size: 13px; color: #444; display: block; }
+        .dropdown-item:hover { background: #f8f8f8; color: var(--vip-color); }
+
+        /* Tab Styles */
+        .tab-btn { padding: 15px; font-weight: bold; border-bottom: 3px solid transparent; transition: 0.3s; cursor: pointer; text-transform: uppercase; font-size: 14px; }
+        .tab-btn.active { color: var(--vip-color); border-bottom-color: var(--vip-color); background: #f0fdfa; }
+
+        /* Form Styles */
+        .input-field { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; font-size: 14px; }
         .input-field:focus { border-color: var(--vip-color); box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.1); }
-        .step-label { font-size: 11px; font-weight: 800; color: var(--vip-color); text-transform: uppercase; margin-bottom: 12px; display: block; border-left: 3px solid var(--vip-color); padding-left: 8px; }
-        
-        .grid-custom { display: grid; grid-template-cols: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .step-label { font-size: 11px; font-weight: 800; color: var(--vip-color); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 12px; border-left: 3px solid var(--vip-color); padding-left: 10px; }
+
+        /* Footer Sync */
+        .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; border-left: 3px solid var(--vip-color); padding-left: 10px; }
+        .footer-list li { margin-bottom: 10px; font-size: 13.5px; color: #555; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .footer-list li:hover { color: var(--hover-color); transform: translateX(5px); }
     </style>
 </head>
 <body>
@@ -28,154 +43,199 @@
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[75px] flex justify-between items-center">
             <div class="flex items-center gap-6">
-                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
+                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
                 <nav class="hidden xl:flex items-center gap-5">
-                    <a href="#" class="nav-link font-semibold">Nhà đất bán</a>
-                    <a href="#" class="nav-link font-semibold">Nhà đất cho thuê</a>
-                    <a href="#" class="nav-link font-semibold">Tin tức</a>
+                    <a href="#" class="nav-link">Nhà đất bán</a>
+                    <a href="#" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="#" class="nav-link">Dự án</a>
+                    <a href="#" class="nav-link">Tin tức</a>
+                    <div class="relative group">
+                        <button class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <div class="dropdown-content">
+                            <a href="#" class="dropdown-item">Danh bạ Môi giới</a>
+                            <a href="#" class="dropdown-item">Danh bạ Doanh nghiệp</a>
+                        </div>
+                    </div>
                 </nav>
             </div>
+            
             <div class="flex items-center gap-4">
-                <div class="relative px-3"><i class="fa-regular fa-heart text-xl"></i><span class="absolute -top-1 right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span></div>
-                <div class="flex items-center gap-2 border-l pl-4">
-                    <div class="text-right"><p class="text-[11px] font-bold">Môi giới viên</p><p class="text-[10px] text-green-500">Đang trực tuyến</p></div>
-                    <div class="w-9 h-9 bg-[--vip-color] text-white rounded-full flex items-center justify-center font-bold">MG</div>
+                <div class="relative cursor-pointer hover:text-[--hover-color] transition px-3">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                    <span class="absolute -top-1 -right-0.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
                 </div>
+
+                <div class="flex items-center gap-2 border-l pl-4">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-[11px] font-bold text-gray-700 leading-none">Môi giới viên</p>
+                        <p class="text-[10px] text-green-500 font-bold mt-1">Sẵn sàng đăng tin</p>
+                    </div>
+                    <div class="w-9 h-9 bg-[--vip-color] text-white rounded-full flex items-center justify-center font-bold text-sm">MG</div>
+                </div>
+                <a href="dang-tin.html" class="btn-post text-sm uppercase">Đăng tin</a>
             </div>
         </div>
     </header>
 
-    <main class="py-10">
+    <main class="py-12">
         <div class="container-custom">
-            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 
-                <div class="flex border-b">
-                    <div onclick="setTab('ban')" id="tab-ban" class="tab-btn active w-1/2 text-center uppercase">Bất động sản Bán</div>
-                    <div onclick="setTab('thue')" id="tab-thue" class="tab-btn w-1/2 text-center uppercase">Bất động sản Cho thuê</div>
+                <div class="flex border-b bg-gray-50">
+                    <div onclick="setTab('ban')" id="tab-ban" class="tab-btn active w-1/2 text-center">Bất động sản Bán</div>
+                    <div onclick="setTab('thue')" id="tab-thue" class="tab-btn w-1/2 text-center">Bất động sản Cho thuê</div>
                 </div>
 
-                <form id="pro-post-form" class="p-8 space-y-8">
-                    
+                <form id="pro-post-form" class="p-8 space-y-10">
                     <section>
-                        <label class="step-label">1. Thông tin chung & Tiêu đề</label>
+                        <label class="step-label">1. Thông tin tổng quan</label>
                         <div class="space-y-4">
-                            <input type="text" id="title" placeholder="Tiêu đề (VD: Biệt thự sân vườn 2 mặt tiền đường lớn, sổ đỏ trao tay...)" class="input-field" required>
+                            <input type="text" id="title" placeholder="Tiêu đề (VD: Bán nhà phố mặt tiền Cầu Giấy, 4 tầng, kinh doanh tốt...)" class="input-field" required>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <select id="category" class="input-field">
                                     <option>Nhà phố</option>
                                     <option>Căn hộ chung cư</option>
                                     <option>Đất nền</option>
-                                    <option>Văn phòng</option>
+                                    <option>Biệt thự</option>
                                 </select>
-                                <input type="text" id="price" placeholder="Giá (VD: 3.5 Tỷ hoặc 15 Tr/tháng)" class="input-field" required>
-                                <input type="number" id="area" placeholder="Tổng diện tích (m2)" class="input-field" required>
+                                <input type="text" id="price" placeholder="Giá (VD: 5.2 Tỷ)" class="input-field" required>
+                                <input type="number" id="area" placeholder="Diện tích (m2)" class="input-field" required>
                             </div>
                         </div>
                     </section>
 
                     <section>
-                        <label class="step-label">2. Thông số chi tiết & Pháp lý</label>
-                        <div class="grid-custom">
+                        <label class="step-label">2. Đặc điểm bất động sản</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div>
-                                <p class="text-[11px] text-gray-500 mb-1">Mặt tiền (m)</p>
-                                <input type="number" step="0.1" id="width" placeholder="VD: 5.5" class="input-field">
+                                <p class="text-[11px] text-gray-400 mb-1 font-bold">Mặt tiền (m)</p>
+                                <input type="number" step="0.1" id="width" placeholder="VD: 5" class="input-field">
                             </div>
                             <div>
-                                <p class="text-[11px] text-gray-500 mb-1">Số phòng ngủ</p>
+                                <p class="text-[11px] text-gray-400 mb-1 font-bold">Phòng ngủ</p>
                                 <input type="number" id="bedroom" placeholder="VD: 3" class="input-field">
                             </div>
                             <div>
-                                <p class="text-[11px] text-gray-500 mb-1">Số Toilet</p>
+                                <p class="text-[11px] text-gray-400 mb-1 font-bold">Toilet</p>
                                 <input type="number" id="wc" placeholder="VD: 2" class="input-field">
                             </div>
+                            <div>
+                                <p class="text-[11px] text-gray-400 mb-1 font-bold">Hướng nhà</p>
+                                <select id="direction" class="input-field">
+                                    <option>Không xác định</option>
+                                    <option>Đông</option><option>Tây</option><option>Nam</option><option>Bắc</option>
+                                    <option>Đông Nam</option><option>Đông Bắc</option><option>Tây Nam</option><option>Tây Bắc</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                            <select id="direction" class="input-field">
-                                <option value="">-- Chọn hướng nhà --</option>
-                                <option>Đông</option><option>Tây</option><option>Nam</option><option>Bắc</option>
-                                <option>Đông Bắc</option><option>Tây Bắc</option><option>Đông Nam</option><option>Tây Nam</option>
-                            </select>
+                        <div class="mt-4">
+                            <p class="text-[11px] text-gray-400 mb-1 font-bold">Giấy tờ pháp lý</p>
                             <select id="legal" class="input-field">
-                                <option value="">-- Tình trạng pháp lý --</option>
-                                <option>Sổ đỏ / Sổ hồng</option>
+                                <option>Sổ đỏ / Sổ hồng chính chủ</option>
                                 <option>Hợp đồng mua bán</option>
-                                <option>Đang chờ sổ</option>
+                                <option>Giấy tờ tay</option>
+                                <option>Đang chờ cấp sổ</option>
                             </select>
                         </div>
                     </section>
 
                     <section>
-                        <label class="step-label">3. Hình ảnh & Video giới thiệu</label>
+                        <label class="step-label">3. Hình ảnh & Video</label>
                         <div class="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:border-[--vip-color] transition bg-gray-50 mb-4 cursor-pointer">
-                            <i class="fa-solid fa-camera-rotate text-3xl text-gray-300 mb-2"></i>
-                            <p class="text-sm text-gray-500">Đăng từ 4-10 ảnh để tin có tương tác tốt nhất</p>
+                            <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-300 mb-2"></i>
+                            <p class="text-sm text-gray-500 font-medium">Tải lên tối thiểu 3 ảnh thật của bất động sản</p>
                         </div>
                         <div class="relative">
-                            <i class="fa-brands fa-youtube absolute left-4 top-3 text-red-600"></i>
-                            <input type="url" id="video_url" placeholder="Dán liên kết Video (YouTube, TikTok, Reels...)" class="input-field pl-10">
+                            <span class="absolute left-4 top-3 text-red-600 font-bold"><i class="fa-brands fa-youtube"></i></span>
+                            <input type="url" id="video_url" placeholder="Dán liên kết Video (YouTube, TikTok hoặc Facebook Reels)" class="input-field pl-10">
                         </div>
+                        <textarea rows="4" placeholder="Mô tả chi tiết nội thất, tiện ích xung quanh, lý do bán..." class="input-field mt-4"></textarea>
                     </section>
 
-                    <section class="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                        <label class="step-label">4. Thông tin người đăng tin</label>
+                    <section class="bg-gray-50 p-6 rounded-xl border border-dashed border-gray-300">
+                        <label class="step-label">4. Thông tin người đăng</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input type="text" id="contact_name" placeholder="Tên liên hệ" class="input-field" required>
-                            <input type="tel" id="contact_phone" placeholder="Số điện thoại" class="input-field" required>
+                            <input type="text" id="contact_name" placeholder="Họ và tên người liên hệ" class="input-field" required>
+                            <input type="tel" id="contact_phone" placeholder="Số điện thoại di động" class="input-field" required>
                         </div>
                     </section>
 
-                    <button type="submit" class="w-full bg-[--vip-color] hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-300 shadow-lg uppercase">
-                        Gửi tin & Chờ phê duyệt
-                    </button>
+                    <button type="submit" class="w-full bg-[--vip-color] hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-300 uppercase shadow-lg tracking-wider">Gửi yêu cầu kiểm duyệt tin</button>
                 </form>
             </div>
         </div>
     </main>
 
-    <footer class="bg-white border-t pt-10 pb-6 mt-20">
-        <div class="container-custom text-center">
-            <div class="flex justify-center gap-6 mb-6">
-                <a href="#" class="text-gray-400 hover:text-blue-600"><i class="fa-brands fa-facebook text-2xl"></i></a>
-                <a href="#" class="text-gray-400 hover:text-red-600"><i class="fa-brands fa-youtube text-2xl"></i></a>
+    <footer class="bg-white border-t pt-16 pb-8">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <h4 class="footer-title">Chủ đề nổi bật</h4>
+                    <ul class="footer-list">
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bất động sản Hà Nội</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bất động sản Hồ Chí Minh</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Báo cáo thị trường</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Dịch vụ</h4>
+                    <ul class="footer-list">
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bán căn hộ chung cư</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Bán nhà riêng</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Thuê văn phòng</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Quy định</h4>
+                    <ul class="footer-list">
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Điều khoản thỏa thuận</li>
+                        <li><i class="fa-solid fa-chevron-right text-[10px]"></i> Chính sách bảo mật</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Hệ thống</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed mb-4">Kết nối với chúng tôi qua các nền tảng xã hội.</p>
+                    <div class="flex gap-4">
+                        <i class="fa-brands fa-facebook text-2xl text-gray-400 hover:text-blue-600 cursor-pointer"></i>
+                        <i class="fa-brands fa-youtube text-2xl text-gray-400 hover:text-red-600 cursor-pointer"></i>
+                    </div>
+                </div>
             </div>
-            <p class="text-xs text-gray-400 uppercase font-bold tracking-widest">© 2026 BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
+            <div class="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <img src="DAI TRONG SUOT (2).png" class="h-8 opacity-70">
+                <p class="text-[11px] text-gray-400">© 2026 toamviet.com.vn - Nền tảng kết nối Bất động sản Việt Nam</p>
+            </div>
         </div>
     </footer>
 
     <script>
-        let currentType = 'ban';
-        
+        let currentPostType = 'ban';
         function setTab(type) {
-            currentType = type;
-            document.getElementById('tab-ban').classList.remove('active');
-            document.getElementById('tab-thue').classList.remove('active');
-            document.getElementById('tab-' + type).classList.add('active');
-            // Cập nhật gợi ý giá
-            document.getElementById('price').placeholder = type === 'ban' ? 'Giá bán (VD: 3.5 Tỷ)' : 'Giá thuê/tháng (VD: 12 Tr/tháng)';
+            currentPostType = type;
+            document.getElementById('tab-ban').classList.toggle('active', type === 'ban');
+            document.getElementById('tab-thue').classList.toggle('active', type === 'thue');
+            document.getElementById('price').placeholder = type === 'ban' ? 'Giá bán (VD: 5.2 Tỷ)' : 'Giá thuê/tháng (VD: 12 Tr/tháng)';
         }
 
         document.getElementById('pro-post-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const data = {
+            const newsData = {
                 id: Date.now(),
-                type: currentType,
+                type: currentPostType,
                 title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
                 price: document.getElementById('price').value,
-                specs: {
-                    bed: document.getElementById('bedroom').value,
-                    wc: document.getElementById('wc').value,
-                    width: document.getElementById('width').value
-                },
+                area: document.getElementById('area').value,
                 contact: document.getElementById('contact_phone').value,
-                status: 'Chờ duyệt'
+                time: "Vừa xong",
+                status: "Chờ duyệt"
             };
             
-            // Lưu dữ liệu vào hệ thống (giả lập)
-            let pending = JSON.parse(localStorage.getItem('pendingNews')) || [];
-            pending.push(data);
-            localStorage.setItem('pendingNews', JSON.stringify(pending));
-            
-            alert('Tin đã được gửi! Admin sẽ kiểm duyệt các thông số kỹ thuật trước khi hiển thị.');
+            let listNews = JSON.parse(localStorage.getItem('pendingNews')) || [];
+            listNews.push(newsData);
+            localStorage.setItem('pendingNews', JSON.stringify(listNews));
+
+            alert('Tin đăng của bạn đã được gửi hệ thống kiểm duyệt!');
             window.location.href = 'admin-dashboard.html';
         });
     </script>
