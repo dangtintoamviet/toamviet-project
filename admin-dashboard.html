@@ -17,15 +17,14 @@
         .btn-post { border: 1.5px solid var(--vip-color); color: var(--vip-color); padding: 6px 16px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
         .btn-post:hover { background: var(--vip-color); color: white; }
 
-        /* Chức năng Lưu tin (Trái tim) */
-        .btn-save-post { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; items-center: center; justify-content: center; color: #ccc; transition: 0.3s; cursor: pointer; border: none; z-index: 10; }
-        .btn-save-post:hover, .btn-save-post.active { color: #ff4757; transform: scale(1.1); }
-
         /* Admin Layout */
         .admin-sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 10px; transition: 0.3s; color: #4b5563; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
         .admin-sidebar-item:hover, .admin-sidebar-item.active { background: var(--vip-color); color: white; }
         
+        /* Stats & Tables */
         .stat-card { background: white; border-radius: 16px; padding: 24px; border: 1px solid #edf2f7; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .badge-pending { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
 
         /* Footer Sync */
         .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; }
@@ -38,20 +37,23 @@
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[75px] flex justify-between items-center">
             <div class="flex items-center gap-6">
-                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
+                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
                 <nav class="hidden xl:flex items-center gap-5">
                     <a href="#" class="nav-link">Nhà đất bán</a>
                     <a href="#" class="nav-link">Nhà đất cho thuê</a>
                     <a href="#" class="nav-link">Dự án</a>
                     <a href="#" class="nav-link">Tin tức</a>
-                    <a href="#" class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+                    <div class="relative group">
+                        <button class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                    </div>
                 </nav>
             </div>
+            
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 border-r pr-4">
                     <div class="text-right">
-                        <p class="text-[10px] font-bold text-[--vip-color] uppercase tracking-tighter">Quản trị viên</p>
-                        <p class="text-[10px] text-green-500 font-bold leading-none mt-1">● Online</p>
+                        <p class="text-[10px] font-bold text-[--vip-color] tracking-tighter uppercase leading-none">Quản trị viên</p>
+                        <p class="text-[10px] text-green-500 font-bold leading-none mt-1">● Đang trực tuyến</p>
                     </div>
                     <div class="w-9 h-9 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold text-sm">AD</div>
                 </div>
@@ -66,35 +68,76 @@
                 
                 <aside class="lg:w-1/4">
                     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm sticky top-28">
-                        <h3 class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-5 px-2">Hệ thống</h3>
+                        <h3 class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-5 px-2">Hệ thống quản lý</h3>
                         <nav>
                             <a href="#" class="admin-sidebar-item active"><i class="fa-solid fa-chart-line text-lg"></i> Tổng quan</a>
                             <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-user-shield text-lg"></i> Duyệt thành viên</a>
                             <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-file-circle-check text-lg"></i> Kiểm duyệt tin đăng</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-heart text-lg"></i> Tin đã lưu (Admin)</a>
+                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-newspaper text-lg"></i> Quản lý tin tức/Wiki</a>
+                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-sliders text-lg"></i> Cấu hình hệ thống</a>
                         </nav>
+                        <div class="mt-8 pt-6 border-t border-gray-50">
+                            <a href="dang-nhap.html" class="admin-sidebar-item text-red-500 hover:bg-red-50 transition"><i class="fa-solid fa-power-off"></i> Đăng xuất</a>
+                        </div>
                     </div>
                 </aside>
 
                 <div class="lg:w-3/4">
-                    <h2 class="font-bold text-xl mb-6">Tổng quan hệ thống</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-xl overflow-hidden border shadow-sm relative group">
-                            <button class="btn-save-post shadow-md" onclick="toggleSave(this)">
-                                <i class="fa-solid fa-heart"></i>
-                            </button>
-                            
-                            <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=400&h=250&auto=format&fit=crop" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <span class="text-[10px] font-bold text-orange-500 uppercase">Chờ duyệt</span>
-                                <h4 class="font-bold text-sm mt-1 line-clamp-1">Căn hộ Penthouse Keangnam Landmark 72</h4>
-                                <p class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-location-dot"></i> Nam Từ Liêm, Hà Nội</p>
-                                <div class="mt-4 flex justify-between items-center border-t pt-3">
-                                    <span class="font-bold text-[--vip-color]">12.5 Tỷ</span>
-                                    <button class="text-[10px] bg-[--vip-color] text-white px-3 py-1 rounded">Xem chi tiết</button>
-                                </div>
-                            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="stat-card border-t-4 border-[--vip-color]">
+                            <p class="text-[11px] text-gray-400 font-bold uppercase">Môi giới mới</p>
+                            <h4 class="text-3xl font-black mt-1">24</h4>
+                        </div>
+                        <div class="stat-card border-t-4 border-orange-400">
+                            <p class="text-[11px] text-gray-400 font-bold uppercase">Tin chờ duyệt</p>
+                            <h4 class="text-3xl font-black mt-1 text-orange-500">156</h4>
+                        </div>
+                        <div class="stat-card border-t-4 border-blue-400">
+                            <p class="text-[11px] text-gray-400 font-bold uppercase">Doanh nghiệp</p>
+                            <h4 class="text-3xl font-black mt-1 text-blue-600">08</h4>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="flex justify-between items-center mb-8">
+                            <h2 class="font-bold text-lg text-slate-800">Yêu cầu đăng ký tài khoản mới</h2>
+                            <button class="text-[--vip-color] text-xs font-bold hover:underline italic">Xem tất cả yêu cầu</button>
+                        </div>
+
+                        <div class="overflow-x-auto text-sm">
+                            <table class="w-full text-left">
+                                <thead class="text-[11px] text-gray-400 uppercase font-black border-b">
+                                    <tr>
+                                        <th class="pb-4">Người đăng ký</th>
+                                        <th class="pb-4">Loại hình</th>
+                                        <th class="pb-4">Thời gian</th>
+                                        <th class="pb-4 text-center">Trạng thái</th>
+                                        <th class="pb-4 text-center">Xử lý</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50">
+                                    <tr>
+                                        <td class="py-5">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-teal-50 text-[--vip-color] rounded-full flex items-center justify-center font-bold">TS</div>
+                                                <div>
+                                                    <div class="font-bold text-slate-700">Nguyễn Trần Thái Sơn</div>
+                                                    <div class="text-[11px] text-gray-400">0949 437 438</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-gray-600">Môi giới cá nhân</td>
+                                        <td class="text-gray-500">10 phút trước</td>
+                                        <td class="text-center"><span class="status-badge badge-pending">Chờ duyệt</span></td>
+                                        <td class="text-center">
+                                            <div class="flex justify-center gap-2">
+                                                <button class="w-8 h-8 bg-green-500 text-white rounded-lg hover:shadow-lg transition"><i class="fa-solid fa-check"></i></button>
+                                                <button class="w-8 h-8 bg-red-500 text-white rounded-lg hover:shadow-lg transition"><i class="fa-solid fa-x"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -107,34 +150,65 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                 <div>
                     <h4 class="footer-title">Chủ đề nổi bật</h4>
-                    <ul class="footer-list"><li>Bất động sản Hà Nội</li><li>Báo cáo thị trường</li></ul>
+                    <ul class="footer-list">
+                        <li>Bất động sản Hà Nội</li>
+                        <li>Bất động sản Hồ Chí Minh</li>
+                        <li>Mua nhà chung cư</li>
+                        <li>Báo cáo thị trường</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Bất động sản bán</h4>
+                    <ul class="footer-list">
+                        <li>Bán căn hộ chung cư</li>
+                        <li>Bán nhà riêng</li>
+                        <li>Bán đất nền dự án</li>
+                        <li>Bán biệt thự, liền kề</li>
+                    </ul>
                 </div>
                 <div>
                     <h4 class="footer-title">Quy định</h4>
-                    <ul class="footer-list"><li>Điều khoản</li><li>Chính sách bảo mật</li></ul>
+                    <ul class="footer-list">
+                        <li>Điều khoản thỏa thuận</li>
+                        <li>Chính sách bảo mật</li>
+                        <li>Giải quyết khiếu nại</li>
+                        <li>Hướng dẫn bảo mật</li>
+                    </ul>
                 </div>
-                <div class="lg:col-span-2">
-                    <img src="DAI TRONG SUOT (2).png" class="h-8 mb-6 opacity-80" alt="Logo">
-                    <p class="text-xs text-gray-500 leading-relaxed"><i class="fa-solid fa-location-dot text-[--vip-color]"></i> Tầng 31, Keangnam Landmark 72, Hà Nội</p>
-                    <p class="text-xs text-gray-500 mt-2"><i class="fa-solid fa-phone text-[--vip-color]"></i> 0946 239 289</p>
+                <div>
+                    <h4 class="footer-title">Đăng ký nhận tin</h4>
+                    <div class="flex items-center bg-gray-50 rounded-lg p-1 border">
+                        <input type="text" placeholder="Email của bạn..." class="bg-transparent border-none outline-none px-3 py-2 text-sm w-full">
+                        <button class="bg-[--vip-color] text-white p-2 rounded-md"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ các cơ hội đầu tư tốt nhất.</p>
                 </div>
             </div>
-            <div class="text-center text-[10px] text-gray-400 border-t pt-6 uppercase tracking-widest">
-                © 2026 toamviet.com.vn
+
+            <div class="border-t pt-10 flex flex-col lg:flex-row justify-between items-start gap-8">
+                <div class="max-w-md">
+                    <img src="DAI TRONG SUOT (2).png" class="h-8 mb-6 opacity-80" alt="Logo">
+                    <h5 class="font-bold text-gray-800 text-sm uppercase">Bất động sản Tổ Ấm Việt</h5>
+                    <p class="text-xs text-gray-500 mt-2 flex items-start gap-2 leading-relaxed">
+                        <i class="fa-solid fa-location-dot mt-1 text-[--vip-color]"></i> 
+                        Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội
+                    </p>
+                    <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
+                        <i class="fa-solid fa-phone text-[--vip-color]"></i> 
+                        Hotline: 0946 239 289
+                    </p>
+                    <div class="flex gap-4 mt-6">
+                        <i class="fa-brands fa-facebook text-2xl text-gray-300 hover:text-blue-600 transition cursor-pointer"></i>
+                        <i class="fa-brands fa-youtube text-2xl text-gray-300 hover:text-red-600 transition cursor-pointer"></i>
+                    </div>
+                </div>
+                <div class="text-[11px] text-gray-400 leading-relaxed lg:text-right max-w-lg">
+                    <p class="font-bold uppercase mb-2">Thông tin hệ thống</p>
+                    Hệ thống quản trị nội bộ dành cho nhân viên Tổ Ấm Việt. Vui lòng bảo mật tài khoản và tuân thủ các quy định về quyền riêng tư khách hàng. Mọi hành vi truy cập trái phép sẽ bị xử lý theo quy định công ty.
+                </div>
             </div>
         </div>
     </footer>
 
-    <script>
-        function toggleSave(btn) {
-            btn.classList.toggle('active');
-            if(btn.classList.contains('active')) {
-                btn.style.color = '#ff4757';
-                alert('Đã lưu tin vào danh sách yêu thích!');
-            } else {
-                btn.style.color = '#ccc';
-            }
-        }
-    </script>
 </body>
 </html>
