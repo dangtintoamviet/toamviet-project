@@ -17,7 +17,9 @@
         .nav-link:hover { color: var(--hover-color) !important; }
         .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; border-top: 2px solid var(--vip-color); z-index: 50; }
-        
+        .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; border-bottom: 1px solid #f2f2f2; }
+        .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
+
         /* Slide Styling */
         .swiper-pagination-bullet-active { background: white !important; }
         
@@ -44,8 +46,8 @@
                     <div class="dropdown relative">
                         <a href="#" class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item p-3 block hover:bg-gray-50 hover:text-[--hover-color]">Danh bạ môi giới</a>
-                            <a href="#" class="dropdown-item p-3 block hover:bg-gray-50 hover:text-[--hover-color]">Danh bạ doanh nghiệp</a>
+                            <a href="#" class="dropdown-item">Danh bạ môi giới</a>
+                            <a href="#" class="dropdown-item">Danh bạ doanh nghiệp</a>
                         </div>
                     </div>
                 </nav>
@@ -132,42 +134,62 @@
                 </div>
             </div>
 
-            </div>
+        </div>
     </div>
 
     <footer class="bg-white border-t mt-12 pt-12 pb-8">
         <div class="container-custom">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 <div class="footer-link-group">
-                    <h4 class="font-bold text-sm mb-4 uppercase">CHỦ ĐỀ NỔI BẬT</h4>
-                    <ul class="text-[13px] text-gray-500 space-y-2"><li>Bất động sản Hà Nội</li><li>Bất động sản Hồ Chí Minh</li></ul>
+                    <h4 class="font-bold text-sm mb-4 uppercase text-[#2C2C2C]">CHỦ ĐỀ NỔI BẬT</h4>
+                    <ul class="text-[13px] text-gray-500 space-y-2">
+                        <li class="hover:text-[--hover-color] cursor-pointer">Bất động sản Hà Nội</li>
+                        <li class="hover:text-[--hover-color] cursor-pointer">Bất động sản Hồ Chí Minh</li>
+                    </ul>
                 </div>
                 <div class="footer-link-group">
-                    <h4 class="font-bold text-sm mb-4 uppercase">BẤT ĐỘNG SẢN BÁN</h4>
-                    <ul class="text-[13px] text-gray-500 space-y-2"><li>Bán căn hộ chung cư</li><li>Bán nhà riêng</li></ul>
+                    <h4 class="font-bold text-sm mb-4 uppercase text-[#2C2C2C]">BẤT ĐỘNG SẢN BÁN</h4>
+                    <ul class="text-[13px] text-gray-500 space-y-2">
+                        <li class="hover:text-[--hover-color] cursor-pointer">Bán căn hộ chung cư</li>
+                        <li class="hover:text-[--hover-color] cursor-pointer">Bán nhà riêng</li>
+                    </ul>
                 </div>
                 <div class="footer-link-group">
-                    <h4 class="font-bold text-sm mb-4 uppercase">BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul class="text-[13px] text-gray-500 space-y-2"><li>Thuê căn hộ chung cư</li><li>Thuê văn phòng</li></ul>
+                    <h4 class="font-bold text-sm mb-4 uppercase text-[#2C2C2C]">BẤT ĐỘNG SẢN THUÊ</h4>
+                    <ul class="text-[13px] text-gray-500 space-y-2">
+                        <li class="hover:text-[--hover-color] cursor-pointer">Thuê căn hộ chung cư</li>
+                        <li class="hover:text-[--hover-color] cursor-pointer">Thuê văn phòng</li>
+                    </ul>
                 </div>
                 <div class="footer-link-group">
-                    <h4 class="font-bold text-sm mb-4 uppercase">DỰ ÁN NỔI BẬT</h4>
-                    <ul class="text-[13px] text-gray-500 space-y-2"><li>Dự án Vinhomes</li><li>Căn hộ cao cấp Quận 2</li></ul>
+                    <h4 class="font-bold text-sm mb-4 uppercase text-[#2C2C2C]">DỰ ÁN NỔI BẬT</h4>
+                    <ul class="text-[13px] text-gray-500 space-y-2">
+                        <li class="hover:text-[--hover-color] cursor-pointer">Dự án Vinhomes</li>
+                        <li class="hover:text-[--hover-color] cursor-pointer">Căn hộ cao cấp Quận 2</li>
+                    </ul>
                 </div>
             </div>
 
             <div class="bg-[#f9f9f9] rounded-2xl p-8 flex flex-wrap justify-between items-start gap-8 border border-gray-100">
                 <div class="w-full lg:w-1/3">
                     <img src="DAI TRONG SUOT (2).png" class="h-10 mb-6" alt="Logo">
-                    <h5 class="font-bold text-sm mb-4 uppercase">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</h5>
-                    <p class="text-[13px] text-gray-500 mb-2"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[13px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
+                    <h5 class="font-bold text-sm mb-4 uppercase text-[#2C2C2C]">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</h5>
+                    <p class="text-[13px] text-gray-500 mb-2">
+                        <i class="fa-solid fa-location-dot mr-2 text-[--vip-color]"></i> 
+                        Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội
+                    </p>
+                    <p class="text-[13px] text-gray-500">
+                        <i class="fa-solid fa-phone mr-2 text-[--vip-color]"></i> 
+                        Hotline: 0946 239 289
+                    </p>
                 </div>
                 <div class="w-full lg:w-1/4">
-                    <h5 class="font-bold text-[12px] mb-4 uppercase">ĐĂNG KÝ NHẬN TIN</h5>
+                    <h5 class="font-bold text-[12px] mb-4 uppercase text-[#2C2C2C]">ĐĂNG KÝ NHẬN TIN</h5>
                     <div class="flex bg-white border border-gray-200 rounded-lg overflow-hidden p-1 shadow-sm">
                         <input type="text" placeholder="Email của bạn..." class="flex-1 px-3 py-2 outline-none text-sm">
-                        <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md hover:opacity-90">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
                     </div>
                 </div>
             </div>
