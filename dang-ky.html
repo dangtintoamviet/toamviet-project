@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký thành viên | toamviet.com.vn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f7; }
+        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        
+        .reg-card { background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; display: flex; max-width: 900px; margin: 40px auto; }
+        .reg-side { width: 35%; background: var(--vip-color); color: white; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .reg-form { width: 65%; padding: 40px; }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px; }
+        .input-group input, .input-group select { width: 100%; border: 1px solid #ddd; padding: 10px 12px; border-radius: 6px; outline: none; font-size: 14px; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--vip-color); box-shadow: 0 0 0 3px rgba(0,139,139,0.1); }
+        
+        .btn-reg { background: var(--vip-color); color: white; width: 100%; padding: 12px; border-radius: 6px; font-weight: bold; margin-top: 20px; transition: 0.3s; cursor: pointer; border: none; }
+        .btn-reg:hover { background: #006b6b; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,139,139,0.3); }
+
+        .type-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .type-option { flex: 1; border: 2px solid #eee; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .type-option.active { border-color: var(--vip-color); background: #f0fafa; color: var(--vip-color); }
+        .type-option i { display: block; font-size: 20px; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white border-b sticky top-0 z-[1000]">
+        <div class="container-custom h-[70px] flex justify-between items-center">
+            <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
+            <div class="text-sm font-semibold">Đã có tài khoản? <a href="dang-nhap.html" class="text-[--vip-color] hover:underline">Đăng nhập ngay</a></div>
+        </div>
+    </header>
+
+    <main class="container-custom">
+        <div class="reg-card">
+            <div class="reg-side hidden md:flex">
+                <h2 class="text-2xl font-bold mb-6">Trở thành đối tác của Tổ Ấm Việt</h2>
+                <ul class="space-y-5 text-sm">
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1"></i> Tiếp cận 1.000.000+ khách hàng tiềm năng mỗi tháng.</li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1"></i> Công cụ quản lý tin đăng thông minh, chuyên nghiệp.</li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1"></i> Xây dựng thương hiệu cá nhân/doanh nghiệp uy tín.</li>
+                </ul>
+                <div class="mt-12 pt-8 border-t border-teal-600 text-[11px] opacity-70 italic text-center">
+                    "Giải pháp công nghệ dẫn đầu cho môi giới Bất động sản"
+                </div>
+            </div>
+
+            <div class="reg-form">
+                <h1 class="text-xl font-bold text-gray-800 mb-2">Tạo tài khoản mới</h1>
+                <p class="text-gray-400 text-xs mb-6">Vui lòng điền chính xác thông tin để Admin duyệt hồ sơ nhanh chóng.</p>
+
+                <form action="#">
+                    <label class="text-[13px] font-bold text-gray-700 block mb-2">Bạn đăng ký với tư cách:</label>
+                    <div class="type-selector">
+                        <div class="type-option active" onclick="selectType(this, 'broker')">
+                            <i class="fa-solid fa-user-tie"></i>
+                            <span class="text-xs font-bold uppercase">Môi giới</span>
+                        </div>
+                        <div class="type-option" onclick="selectType(this, 'company')">
+                            <i class="fa-solid fa-building"></i>
+                            <span class="text-xs font-bold uppercase">Doanh nghiệp</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label>Họ và tên *</label>
+                            <input type="text" placeholder="Nguyễn Văn A" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Số điện thoại *</label>
+                            <input type="text" placeholder="09xx xxx xxx" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Địa chỉ Email (Để nhận thông báo duyệt tin) *</label>
+                        <input type="email" placeholder="example@gmail.com" required>
+                    </div>
+
+                    <div id="company-field" class="input-group hidden">
+                        <label>Tên Công ty / Sàn giao dịch *</label>
+                        <input type="text" placeholder="Công ty BĐS Tổ Ấm Việt">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Mật khẩu *</label>
+                        <input type="password" placeholder="Tối thiểu 6 ký tự" required>
+                    </div>
+
+                    <div class="text-[11px] text-gray-500 mt-4 leading-relaxed">
+                        Bằng việc nhấn "Đăng ký thành viên", bạn đã đồng ý với <a href="#" class="text-[--vip-color] underline">Điều khoản dịch vụ</a> và <a href="#" class="text-[--vip-color] underline">Chính sách bảo mật</a> của toamviet.com.vn
+                    </div>
+
+                    <button type="submit" class="btn-reg uppercase tracking-widest">Đăng ký thành viên</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t mt-12 py-10">
+        <div class="container-custom text-center">
+            <p class="text-sm font-bold text-gray-700 uppercase">Công ty Cổ phần Đầu tư Tổ Ấm Việt</p>
+            <p class="text-xs text-gray-500 mt-2">Địa chỉ: Tầng 31, Keangnam Landmark 72, Phạm Hùng, Nam Từ Liêm, Hà Nội</p>
+            <p class="text-xs text-gray-500">Hotline: 0946 239 289 | Email: info@toamviet.com.vn</p>
+            <div class="mt-6 flex justify-center gap-6 grayscale opacity-60">
+                <img src="https://img.icons8.com/color/48/google-play.png" class="h-6">
+                <img src="https://img.icons8.com/ios-filled/50/apple-app-store--v1.png" class="h-6">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function selectType(element, type) {
+            // Xử lý giao diện nút chọn
+            document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+
+            // Ẩn hiện trường nhập tên công ty
+            const companyField = document.getElementById('company-field');
+            if (type === 'company') {
+                companyField.classList.remove('hidden');
+            } else {
+                companyField.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
