@@ -8,25 +8,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f7; color: #2C2C2C; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f7; color: #2C2C2C; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         
-        /* Menu & Sidebar Sync */
+        /* Header & Nav Sync */
+        .nav-link { transition: all 0.3s; position: relative; }
         .nav-link:hover { color: var(--hover-color) !important; }
-        .admin-sidebar-item { display: flex; items-center: center; gap: 10px; padding: 12px 15px; border-radius: 8px; transition: 0.3s; color: #4b5563; font-weight: 600; font-size: 14px; }
+
+        /* Sidebar Admin */
+        .admin-sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 8px; transition: 0.3s; color: #4b5563; font-weight: 600; font-size: 14px; margin-bottom: 5px; }
         .admin-sidebar-item:hover, .admin-sidebar-item.active { background: var(--vip-color); color: white; }
         
-        /* Status Badges */
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        .badge-pending { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
-        .badge-active { background: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }
+        /* Dashboard Cards */
+        .stat-card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
 
-        /* Table */
-        .admin-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
-        .admin-table tr { background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .admin-table td { padding: 15px; vertical-align: middle; }
-        .admin-table td:first-child { border-radius: 10px 0 0 10px; }
-        .admin-table td:last-child { border-radius: 0 10px 10px 0; }
+        /* Badge & Table */
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .badge-pending { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
+        
+        /* Footer group */
+        .footer-link-group h4 { font-weight: bold; font-size: 14px; margin-bottom: 16px; color: #2C2C2C; }
+        .footer-link-group ul { font-size: 13px; color: #666; list-style: none; padding: 0; }
+        .footer-link-group li { margin-bottom: 8px; cursor: pointer; transition: 0.3s; }
+        .footer-link-group li:hover { color: var(--hover-color); }
     </style>
 </head>
 <body>
@@ -34,7 +39,9 @@
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[70px] flex justify-between items-center">
             <div class="flex items-center gap-8">
-                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
+                <a href="index.html">
+                    <img src="DAI TRONG SUOT (2).png" alt="Logo toamviet" class="h-10">
+                </a>
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
                     <a href="nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
                     <a href="nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
@@ -44,10 +51,10 @@
             </div>
             <div class="flex items-center gap-4 border-l pl-4">
                 <div class="text-right hidden md:block">
-                    <p class="text-xs font-bold text-[--vip-color]">QUẢN TRỊ VIÊN</p>
-                    <p class="text-[10px] text-gray-400">Đang trực tuyến</p>
+                    <p class="text-[10px] font-bold text-[--vip-color] uppercase tracking-widest">Quản trị viên</p>
+                    <p class="text-[10px] text-green-500 font-bold">● Đang trực tuyến</p>
                 </div>
-                <img src="https://ui-avatars.com/api/?name=Admin&background=008B8B&color=fff" class="w-10 h-10 rounded-full border-2 border-[--vip-color]">
+                <div class="w-10 h-10 bg-[--vip-color] rounded-full flex items-center justify-center text-white font-bold">AD</div>
             </div>
         </div>
     </header>
@@ -57,92 +64,92 @@
             <div class="flex flex-col lg:flex-row gap-8">
                 
                 <aside class="lg:w-1/4">
-                    <div class="bg-white p-5 rounded-xl border shadow-sm sticky top-24">
-                        <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4 px-2">Điều khiển chính</h3>
-                        <nav class="space-y-1">
-                            <a href="#" class="admin-sidebar-item active"><i class="fa-solid fa-chart-line"></i> Tổng quan</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-user-check"></i> Duyệt thành viên</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-file-pen"></i> Kiểm duyệt tin đăng</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-bullhorn"></i> Quản lý tin tức/Wiki</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-gears"></i> Cấu hình hệ thống</a>
+                    <div class="bg-white p-5 rounded-2xl border shadow-sm sticky top-24">
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4 px-2">Điều khiển chính</p>
+                        <nav>
+                            <a href="#" class="admin-sidebar-item active"><i class="fa-solid fa-chart-pie w-5"></i> Tổng quan</a>
+                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-user-check w-5"></i> Duyệt thành viên</a>
+                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-file-shield w-5"></i> Kiểm duyệt tin đăng</a>
+                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-bullhorn w-5"></i> Quản lý tin tức/Wiki</a>
+                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-screwdriver-wrench w-5"></i> Cấu hình hệ thống</a>
                         </nav>
                         <div class="mt-8 pt-6 border-t">
-                            <a href="dang-nhap.html" class="admin-sidebar-item text-red-500 hover:bg-red-50"><i class="fa-solid fa-power-off"></i> Đăng xuất</a>
+                            <a href="dang-nhap.html" class="admin-sidebar-item text-red-500 hover:bg-red-50"><i class="fa-solid fa-power-off w-5"></i> Đăng xuất</a>
                         </div>
                     </div>
                 </aside>
 
                 <div class="lg:w-3/4">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <div class="bg-white p-6 rounded-xl border shadow-sm border-t-4 border-[--vip-color]">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="stat-card border-b-4 border-[--vip-color]">
                             <p class="text-xs text-gray-400 font-bold uppercase">Môi giới mới</p>
-                            <h4 class="text-2xl font-black mt-1">24</h4>
+                            <h4 class="text-3xl font-black mt-2 text-slate-800">24</h4>
                         </div>
-                        <div class="bg-white p-6 rounded-xl border shadow-sm border-t-4 border-orange-400">
+                        <div class="stat-card border-b-4 border-orange-400">
                             <p class="text-xs text-gray-400 font-bold uppercase">Tin chờ duyệt</p>
-                            <h4 class="text-2xl font-black mt-1 text-orange-500">156</h4>
+                            <h4 class="text-3xl font-black mt-2 text-orange-500">156</h4>
                         </div>
-                        <div class="bg-white p-6 rounded-xl border shadow-sm border-t-4 border-blue-400">
+                        <div class="stat-card border-b-4 border-blue-400">
                             <p class="text-xs text-gray-400 font-bold uppercase">Doanh nghiệp</p>
-                            <h4 class="text-2xl font-black mt-1 text-blue-600">08</h4>
+                            <h4 class="text-3xl font-black mt-2 text-blue-600">08</h4>
                         </div>
                     </div>
 
-                    <div class="bg-white p-6 rounded-xl border shadow-sm">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="font-bold text-lg text-gray-800">Yêu cầu đăng ký tài khoản mới</h2>
+                    <div class="bg-white p-8 rounded-2xl border shadow-sm">
+                        <div class="flex justify-between items-center mb-8">
+                            <h2 class="font-bold text-xl text-slate-800">Yêu cầu đăng ký tài khoản mới</h2>
                             <button class="text-[--vip-color] text-xs font-bold hover:underline">Xem tất cả</button>
                         </div>
 
                         <div class="overflow-x-auto">
-                            <table class="admin-table">
+                            <table class="w-full text-left border-separate border-spacing-y-3">
                                 <thead>
-                                    <tr class="text-[11px] text-gray-400 uppercase font-bold text-left">
-                                        <th class="px-4">Người đăng ký</th>
-                                        <th>Loại hình</th>
-                                        <th>Thời gian</th>
-                                        <th>Trạng thái</th>
-                                        <th class="text-center">Xử lý</th>
+                                    <tr class="text-[11px] text-gray-400 uppercase font-bold">
+                                        <th class="px-4 pb-2">Người đăng ký</th>
+                                        <th class="pb-2">Loại hình</th>
+                                        <th class="pb-2">Thời gian</th>
+                                        <th class="pb-2 text-center">Trạng thái</th>
+                                        <th class="pb-2 text-center">Xử lý</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
+                                <tbody class="text-sm">
+                                    <tr class="bg-gray-50/50">
+                                        <td class="p-4 rounded-l-xl">
                                             <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-[--vip-color]">TS</div>
+                                                <div class="w-10 h-10 bg-teal-100 text-[--vip-color] rounded-full flex items-center justify-center font-bold">TS</div>
                                                 <div>
-                                                    <div class="text-sm font-bold">Nguyễn Trần Thái Sơn</div>
+                                                    <div class="font-bold">Nguyễn Trần Thái Sơn</div>
                                                     <div class="text-[11px] text-gray-400">0949 437 438</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><span class="text-xs text-gray-600">Môi giới cá nhân</span></td>
-                                        <td><span class="text-xs text-gray-500">10 phút trước</span></td>
-                                        <td><span class="badge badge-pending">Chờ duyệt</span></td>
-                                        <td>
+                                        <td>Môi giới cá nhân</td>
+                                        <td>10 phút trước</td>
+                                        <td class="text-center"><span class="status-badge badge-pending">Chờ duyệt</span></td>
+                                        <td class="rounded-r-xl text-center">
                                             <div class="flex justify-center gap-2">
-                                                <button class="w-8 h-8 rounded-lg bg-green-50 text-green-600 hover:bg-green-600 hover:text-white transition"><i class="fa-solid fa-check"></i></button>
-                                                <button class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                                                <button class="w-8 h-8 bg-green-500 text-white rounded-lg hover:bg-green-600 transition shadow-sm"><i class="fa-solid fa-check text-xs"></i></button>
+                                                <button class="w-8 h-8 bg-red-500 text-white rounded-lg hover:bg-red-600 transition shadow-sm"><i class="fa-solid fa-xmark text-xs"></i></button>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
+                                    <tr class="bg-gray-50/50">
+                                        <td class="p-4 rounded-l-xl">
                                             <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-blue-600">TP</div>
+                                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">TP</div>
                                                 <div>
-                                                    <div class="text-sm font-bold uppercase">BĐS THUẬN PHÁT</div>
+                                                    <div class="font-bold uppercase">BĐS THUẬN PHÁT</div>
                                                     <div class="text-[11px] text-gray-400">0901 234 567</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><span class="text-xs text-gray-600">Doanh nghiệp</span></td>
-                                        <td><span class="text-xs text-gray-500">2 giờ trước</span></td>
-                                        <td><span class="badge badge-pending">Chờ duyệt</span></td>
-                                        <td>
+                                        <td>Doanh nghiệp</td>
+                                        <td>2 giờ trước</td>
+                                        <td class="text-center"><span class="status-badge badge-pending">Chờ duyệt</span></td>
+                                        <td class="rounded-r-xl text-center">
                                             <div class="flex justify-center gap-2">
-                                                <button class="w-8 h-8 rounded-lg bg-green-50 text-green-600 hover:bg-green-600 hover:text-white transition"><i class="fa-solid fa-check"></i></button>
-                                                <button class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                                                <button class="w-8 h-8 bg-green-500 text-white rounded-lg hover:bg-green-600 transition shadow-sm"><i class="fa-solid fa-check text-xs"></i></button>
+                                                <button class="w-8 h-8 bg-red-500 text-white rounded-lg hover:bg-red-600 transition shadow-sm"><i class="fa-solid fa-xmark text-xs"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -157,32 +164,36 @@
 
     <footer class="bg-white border-t pt-12 pb-8">
         <div class="container-custom">
-            <div class="footer-bottom-box flex flex-wrap justify-between items-start gap-8">
-                <div class="w-full lg:w-1/3">
-                    <img src="DAI TRONG SUOT (2).png" class="h-10 mb-6">
-                    <h5 class="font-bold text-gray-800 text-sm mb-4 uppercase">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</h5>
-                    <p class="text-[13px] text-gray-500 flex items-center gap-2 mb-2"><i class="fa-solid fa-location-dot"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[13px] text-gray-500 flex items-center gap-2 mb-4"><i class="fa-solid fa-phone"></i> Hotline: 0946 239 289</p>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-12 border-b pb-10">
+                <div class="footer-link-group">
+                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
+                    <ul>
+                        <li>Bất động sản Hà Nội</li>
+                        <li>Bất động sản Hồ Chí Minh</li>
+                        <li>Báo cáo thị trường toamviet</li>
+                    </ul>
                 </div>
-                <div class="flex-1 grid grid-cols-2 gap-8 text-[13px] text-gray-500">
-                    <div>
-                        <h5 class="font-bold text-gray-800 mb-4 uppercase">Quản lý hệ thống</h5>
-                        <ul class="space-y-2">
-                            <li class="hover:text-[--hover-color] cursor-pointer italic">Hướng dẫn bảo mật</li>
-                            <li class="hover:text-[--hover-color] cursor-pointer italic">Quy trình duyệt tin</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h5 class="font-bold text-gray-800 mb-4 uppercase">Kết nối</h5>
-                        <div class="flex gap-4">
-                            <i class="fa-brands fa-facebook text-2xl text-blue-600"></i>
-                            <i class="fa-brands fa-youtube text-2xl text-red-600"></i>
-                        </div>
+                <div class="footer-link-group">
+                    <h4>HỖ TRỢ</h4>
+                    <ul>
+                        <li>Hướng dẫn bảo mật</li>
+                        <li>Quy trình duyệt tin</li>
+                        <li>Giải quyết khiếu nại</li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-2">
+                    <img src="DAI TRONG SUOT (2).png" class="h-10 mb-6 grayscale opacity-80" alt="Logo">
+                    <h5 class="font-bold text-gray-800 text-sm mb-2 uppercase">Công ty Cổ phần Đầu tư Tổ Ấm Việt</h5>
+                    <p class="text-[13px] text-gray-500 flex items-center gap-2 mb-1"><i class="fa-solid fa-location-dot"></i> Tầng 31, Keangnam Landmark 72, Nam Từ Liêm, Hà Nội</p>
+                    <p class="text-[13px] text-gray-500 flex items-center gap-2 mb-4"><i class="fa-solid fa-phone"></i> Hotline: 0946 239 289</p>
+                    <div class="flex gap-4">
+                        <i class="fa-brands fa-facebook text-2xl text-gray-300 hover:text-blue-600 cursor-pointer transition"></i>
+                        <i class="fa-brands fa-youtube text-2xl text-gray-300 hover:text-red-600 cursor-pointer transition"></i>
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-10 pt-6 border-t text-[10px] text-gray-400 uppercase tracking-widest">
-                Admin Panel © 2026 toamviet.com.vn
+            <div class="text-center text-[11px] text-gray-400 uppercase tracking-widest">
+                Admin Control Panel © 2026 toamviet.com.vn - Bảo lưu mọi quyền
             </div>
         </div>
     </footer>
