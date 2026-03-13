@@ -1,132 +1,101 @@
 <!DOCTYPE html>
 <html lang="vi">
-<header class="bg-white border-b sticky top-0 z-[1000]">
-    <div class="max-w-[1366px] mx-auto h-[80px] flex justify-between items-center px-4 md:px-6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng tin chuyên nghiệp | toamviet.com.vn</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
+        body { font-family: 'Roboto', sans-serif; background-color: #f4f7fa; color: #1e293b; }
+        .container-custom { max-width: 1366px; margin: 0 auto; padding: 0 15px; }
         
-        <div class="flex items-center gap-6 lg:gap-8">
-            <a href="index.html" class="shrink-0">
-                <img src="Logo ToamViet.png" alt="Logo ToamViet" class="h-10 w-auto">
-            </a>
-            
-            <nav class="hidden xl:flex items-center gap-4 lg:gap-5">
-                <a href="index.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Trang chủ</a>
-                <a href="nha-dat-ban.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Nhà đất bán</a>
-                <a href="nha-dat-cho-thue.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Nhà đất cho thuê</a>
-                <a href="du-an.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Dự án</a>
-                
-                <a href="xay-dung.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Xây dựng</a>
-                
-                <a href="gia-nha-dat.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Giá nhà đất</a>
-                
-                <a href="tin-tuc.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Tin tức</a>
-                
-                <div class="relative group py-4">
-                    <button class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition flex items-center gap-1.5 uppercase">
-                        Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                    </button>
-                    <div class="absolute top-[90%] left-0 bg-white shadow-xl rounded-xl p-2 min-w-[200px] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                        <a href="danh-ba.html" class="block p-3 text-sm font-semibold hover:bg-slate-50 rounded-lg text-slate-700">Danh bạ Môi giới</a>
-                        <a href="danh-ba-doanh-nghiep.html" class="block p-3 text-sm font-semibold hover:bg-slate-50 rounded-lg text-slate-700">Danh bạ Doanh nghiệp</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        
-        <div class="flex items-center gap-3 sm:gap-4 lg:gap-5 pl-4 border-l border-slate-100">
-            <div class="flex items-center gap-3 sm:gap-4 text-slate-500">
-                <button class="relative hover:text-[#008B8B] transition p-1">
-                    <i class="fa-regular fa-message text-lg"></i>
-                </button>
-                <button class="relative hover:text-[#008B8B] transition p-1">
-                    <i class="fa-regular fa-heart text-lg"></i>
-                    <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
-                </button>
-                <button class="relative hover:text-[#008B8B] transition p-1">
-                    <i class="fa-regular fa-bell text-lg"></i>
-                </button>
-            </div>
+        /* Tab Styles */
+        .tab-btn { padding: 18px; font-weight: 700; border-bottom: 4px solid transparent; transition: 0.3s; cursor: pointer; text-transform: uppercase; font-size: 13px; color: #64748b; }
+        .tab-btn.active { color: var(--vip-color); border-bottom-color: var(--vip-color); background: white; }
 
-            <div class="flex items-center gap-2 lg:gap-3">
-                <div class="text-right hidden sm:block">
-                    <p class="text-[11px] font-black text-slate-800 leading-none">THÀNH VIÊN</p>
-                    <p class="text-[10px] text-green-500 font-bold mt-1 uppercase">Đang trực tuyến</p>
-                </div>
-                <button class="w-10 h-10 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold text-sm border-2 border-white shadow-sm">
-                    AV
-                </button>
-            </div>
-            
-            <a href="dang-tin.html" class="bg-[#008B8B] text-white px-5 sm:px-6 py-2.5 rounded-xl text-[11px] sm:text-[12px] font-black uppercase tracking-wider hover:bg-slate-800 transition shadow-sm text-nowrap">
-                Đăng tin
-            </a>
-            
-            <button class="xl:hidden p-2 text-slate-600">
-                <i class="fa-solid fa-bars text-xl"></i>
-            </button>
-        </div>
-    </div>
-</header>
+        /* Form Controls */
+        .input-field { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; outline: none; transition: 0.3s; background: #fff; font-size: 14px; font-weight: 500; }
+        .input-field:focus { border-color: var(--vip-color); box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.1); }
+        .step-label { font-size: 11px; font-weight: 900; color: var(--vip-color); text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 15px; border-left: 4px solid var(--vip-color); padding-left: 12px; }
+
+        /* Profile Selection */
+        .profile-opt { border: 2px solid #e2e8f0; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s; }
+        .profile-opt.selected { border-color: var(--vip-color); background: #f0fdfa; }
+    </style>
+</head>
 <body>
 
     <header class="bg-white border-b sticky top-0 z-[1000]">
-        <div class="container-custom h-[75px] flex justify-between items-center">
-            <div class="flex items-center gap-6">
-                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
+        <div class="container-custom h-[80px] flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <a href="index.html"><img src="Logo ToamViet.png" alt="Logo ToamViet" class="h-10"></a>
                 <nav class="hidden xl:flex items-center gap-5">
-                    <a href="nha-dat-ban.html" class="nav-link text-slate-400">Nhà đất bán</a>
-                    <a href="xay-dung.html" class="nav-link">Xây dựng</a>
+                    <a href="index.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Trang chủ</a>
+                    <a href="nha-dat-ban.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Nhà đất bán</a>
+                    <a href="nha-dat-cho-thue.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Nhà đất cho thuê</a>
+                    <a href="du-an.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Dự án</a>
+                    <a href="xay-dung.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Xây dựng</a>
+                    <a href="gia-nha-dat.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Giá nhà đất</a>
                     <div class="relative group py-4">
-                        <button class="nav-link flex items-center gap-1 uppercase">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
-                        <div class="hidden group-hover:block absolute top-full left-0 bg-white shadow-xl rounded-xl p-2 min-w-[220px] border">
-                            <a href="danh-ba.html" class="block p-3 text-sm font-bold hover:bg-slate-50 rounded-lg">Danh bạ Môi giới</a>
-                            <a href="danh-ba-doanh-nghiep.html" class="block p-3 text-sm font-bold hover:bg-slate-50 rounded-lg">Danh bạ Doanh nghiệp</a>
+                        <button class="text-[14px] font-semibold text-[#2C2C2C] flex items-center gap-1 uppercase">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <div class="absolute top-[90%] left-0 bg-white shadow-xl rounded-xl p-2 min-w-[200px] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                            <a href="danh-ba.html" class="block p-3 text-sm font-semibold hover:bg-slate-50 rounded-lg">Danh bạ Môi giới</a>
+                            <a href="danh-ba-doanh-nghiep.html" class="block p-3 text-sm font-semibold hover:bg-slate-50 rounded-lg">Danh bạ Doanh nghiệp</a>
                         </div>
                     </div>
                 </nav>
             </div>
             <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2 border-l pl-4">
+                <div class="flex items-center gap-3">
                     <div class="text-right hidden sm:block">
-                        <p class="text-[11px] font-black text-slate-800 leading-none">THÀNH VIÊN</p>
-                        <p class="text-[10px] text-green-500 font-bold mt-1 uppercase">Đang trực tuyến</p>
+                        <p class="text-[11px] font-black text-slate-800 uppercase">Thành viên</p>
+                        <p class="text-[10px] text-green-500 font-bold uppercase">Trực tuyến</p>
                     </div>
-                    <div class="w-9 h-9 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold text-sm">AV</div>
+                    <div class="w-10 h-10 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold">AV</div>
                 </div>
-                <a href="dang-tin.html" class="btn-post text-[11px] uppercase tracking-tighter">Đăng tin ngay</a>
+                <a href="dang-tin.html" class="bg-[#008B8B] text-white px-6 py-2.5 rounded-xl text-[12px] font-black uppercase tracking-wider hover:bg-slate-700 transition">Đăng tin</a>
             </div>
         </div>
     </header>
 
-    <main class="py-12 bg-[#f4f7fa]">
+    <main class="py-12">
         <div class="container-custom">
             <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
                 
                 <div class="flex border-b bg-slate-50">
                     <div onclick="setTab('ban')" id="tab-ban" class="tab-btn active w-1/3 text-center">BĐS Bán</div>
                     <div onclick="setTab('thue')" id="tab-thue" class="tab-btn w-1/3 text-center">BĐS Cho thuê</div>
-                    <div onclick="setTab('xaydung')" id="tab-xaydung" class="tab-btn w-1/3 text-center text-orange-600"><i class="fa-solid fa-helmet-safety mr-1"></i> Xây dựng</div>
+                    <div onclick="setTab('xaydung')" id="tab-xaydung" class="tab-btn w-1/3 text-center"><i class="fa-solid fa-helmet-safety mr-1"></i> Xây dựng</div>
                 </div>
 
                 <form id="pro-post-form" class="p-8 md:p-12 space-y-12">
                     
                     <section>
-                        <label class="step-label">1. Hình thức đăng tin</label>
+                        <label class="step-label">1. Tư cách người đăng</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                             <div onclick="setProfile('canhan')" id="prof-canhan" class="profile-opt selected">
                                 <div class="flex items-center gap-3">
-                                    <i class="fa-solid fa-user-tie text-xl text-[--vip-color]"></i>
+                                    <i class="fa-solid fa-user-check text-xl text-[--vip-color]"></i>
                                     <div>
                                         <p class="font-bold text-sm">Cá nhân / Môi giới</p>
-                                        <p class="text-[11px] text-slate-400">Tin đăng sẽ đưa vào Danh bạ môi giới</p>
+                                        <p class="text-[11px] text-slate-400">Dành cho cá nhân tự doanh</p>
                                     </div>
                                 </div>
                             </div>
                             <div onclick="setProfile('doanhnghiep')" id="prof-doanhnghiep" class="profile-opt">
                                 <div class="flex items-center gap-3">
-                                    <i class="fa-solid fa-building text-xl text-slate-400"></i>
+                                    <i class="fa-solid fa-building-shield text-xl text-slate-400"></i>
                                     <div>
                                         <p class="font-bold text-sm">Doanh nghiệp / Nhà thầu</p>
-                                        <p class="text-[11px] text-slate-400">Tin đăng đưa vào Danh bạ doanh nghiệp</p>
+                                        <p class="text-[11px] text-slate-400">Dành cho pháp nhân công ty</p>
                                     </div>
                                 </div>
                             </div>
@@ -134,123 +103,116 @@
                     </section>
 
                     <section>
-                        <label class="step-label">2. Nội dung chi tiết</label>
-                        <div class="space-y-4">
-                            <input type="text" id="title" placeholder="Tiêu đề tin đăng..." class="input-field" required>
-                            
-                            <div id="dynamic-fields" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                </div>
+                        <label class="step-label">2. Vị trí & Khu vực</label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                            <div>
+                                <p class="text-[11px] font-black text-slate-400 mb-2 uppercase tracking-tighter">Tỉnh / Thành phố</p>
+                                <select id="city" class="input-field bg-slate-50" readonly><option>Bình Dương</option></select>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-black text-slate-400 mb-2 uppercase tracking-tighter">Quận / Huyện</p>
+                                <select id="district" class="input-field" onchange="updateWards()">
+                                    <option value="">Chọn Quận/Huyện</option>
+                                    <option value="di-an">Dĩ An</option>
+                                    <option value="thuan-an">Thuận An</option>
+                                    <option value="thu-dau-mot">Thủ Dầu Một</option>
+                                </select>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-black text-slate-400 mb-2 uppercase tracking-tighter">Phường / Xã</p>
+                                <select id="ward" class="input-field">
+                                    <option value="">Chọn Phường/Xã</option>
+                                </select>
+                            </div>
                         </div>
+                        <input type="text" placeholder="Địa chỉ chi tiết (Số nhà, tên đường, tên dự án...)" class="input-field mt-4">
                     </section>
 
                     <section>
-                        <label class="step-label">3. Hình ảnh công trình / BĐS</label>
-                        <div class="border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center hover:border-[--vip-color] transition bg-slate-50 mb-4 cursor-pointer">
-                            <i class="fa-solid fa-images text-4xl text-slate-300 mb-3"></i>
-                            <p class="text-sm text-slate-500 font-bold">Kéo thả ảnh hoặc Click để tải lên</p>
-                            <p class="text-[11px] text-slate-400 mt-1">Tối đa 10 ảnh, định dạng JPG, PNG</p>
+                        <label class="step-label">3. Thông tin nội dung</label>
+                        <div class="space-y-4 mt-4">
+                            <input type="text" id="title" placeholder="Tiêu đề tin đăng..." class="input-field" required>
+                            <div id="dynamic-fields" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                </div>
                         </div>
-                        <textarea id="description" rows="5" placeholder="Mô tả chi tiết nội dung (ưu điểm dự án, gói vật liệu thi công, tiện ích xung quanh...)" class="input-field"></textarea>
+                        <textarea rows="5" placeholder="Mô tả chi tiết nội dung (ví dụ: nội thất, tiện ích, hồ sơ năng lực xây dựng...)" class="input-field mt-4"></textarea>
                     </section>
 
-                    <section class="bg-slate-50 p-8 rounded-2xl border border-slate-200">
-                        <label class="step-label">4. Thông tin xác thực</label>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                            <div>
-                                <p class="text-[11px] font-black text-slate-400 mb-2 uppercase">Họ và tên</p>
-                                <input type="text" id="contact_name" class="input-field" value="Nguyễn Văn An">
-                            </div>
-                            <div>
-                                <p class="text-[11px] font-black text-slate-400 mb-2 uppercase">Số điện thoại</p>
-                                <input type="tel" id="contact_phone" class="input-field" placeholder="090x xxx xxx">
-                            </div>
+                    <section>
+                        <label class="step-label">4. Hình ảnh thực tế</label>
+                        <div class="border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center hover:border-[--vip-color] transition bg-slate-50 cursor-pointer">
+                            <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-300 mb-3"></i>
+                            <p class="text-sm font-bold text-slate-500">Kéo thả ít nhất 3 ảnh thực tế vào đây</p>
                         </div>
                     </section>
 
-                    <button type="submit" class="w-full bg-slate-800 hover:bg-[--vip-color] text-white font-black py-5 rounded-2xl transition-all duration-300 uppercase shadow-xl tracking-widest text-sm">
-                        Đăng tin kiểm duyệt ngay
+                    <button type="submit" class="w-full bg-slate-800 hover:bg-[--vip-color] text-white font-black py-5 rounded-2xl transition-all uppercase shadow-xl tracking-widest">
+                        Gửi tin kiểm duyệt
                     </button>
                 </form>
             </div>
         </div>
     </main>
 
-    <footer class="bg-white border-t pt-16 pb-8">
-        <div class="container-custom text-center md:text-left">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div>
-                    <h4 class="footer-title">Tổ Ấm Việt</h4>
-                    <p class="text-xs text-slate-400 leading-relaxed">Hệ sinh thái Bất động sản và Xây dựng hàng đầu Bình Dương.</p>
-                </div>
-                </div>
-            <div class="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <img src="DAI TRONG SUOT (2).png" class="h-8 opacity-50 grayscale">
-                <p class="text-[11px] text-slate-400 font-medium uppercase tracking-tighter">© 2026 toamviet.com.vn - All rights reserved</p>
-            </div>
-        </div>
-    </footer>
-
     <script>
         let currentPostType = 'ban';
         let currentProfile = 'canhan';
+
+        // Logic Phường Xã mẫu cho Bình Dương
+        const wardData = {
+            'di-an': ['Dĩ An', 'An Bình', 'Bình An', 'Bình Thắng', 'Đông Hòa', 'Tân Bình', 'Tân Đông Hiệp'],
+            'thuan-an': ['An Thạnh', 'An Phú', 'Bình Hòa', 'Bình Chuẩn', 'Thuận Giao', 'Vĩnh Phú'],
+            'thu-dau-mot': ['Phú Cường', 'Hiệp Thành', 'Chánh Nghĩa', 'Phú Lợi', 'Phú Mỹ']
+        };
+
+        function updateWards() {
+            const district = document.getElementById('district').value;
+            const wardSelect = document.getElementById('ward');
+            wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+            if(wardData[district]) {
+                wardData[district].forEach(w => {
+                    wardSelect.innerHTML += `<option value="${w}">${w}</option>`;
+                });
+            }
+        }
 
         function setProfile(p) {
             currentProfile = p;
             document.getElementById('prof-canhan').classList.toggle('selected', p === 'canhan');
             document.getElementById('prof-doanhnghiep').classList.toggle('selected', p === 'doanhnghiep');
-            
-            // Đổi icon màu sắc khi chọn
-            const iconUser = document.querySelector('#prof-canhan i');
-            const iconBiz = document.querySelector('#prof-doanhnghiep i');
-            if(p === 'canhan') {
-                iconUser.classList.replace('text-slate-400', 'text-[--vip-color]');
-                iconBiz.classList.replace('text-[--vip-color]', 'text-slate-400');
-            } else {
-                iconBiz.classList.replace('text-slate-400', 'text-[--vip-color]');
-                iconUser.classList.replace('text-[--vip-color]', 'text-slate-400');
-            }
         }
 
         function setTab(type) {
             currentPostType = type;
-            const tabs = ['ban', 'thue', 'xaydung'];
-            tabs.forEach(t => {
+            ['ban', 'thue', 'xaydung'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.toggle('active', type === t);
             });
-            renderFields();
+            renderDynamicFields();
         }
 
-        function renderFields() {
+        function renderDynamicFields() {
             const container = document.getElementById('dynamic-fields');
             if (currentPostType === 'xaydung') {
                 container.innerHTML = `
-                    <select class="input-field"><option>Xây nhà trọn gói</option><option>Xây thô</option><option>Sửa chữa</option></select>
-                    <input type="text" placeholder="Đơn giá (VD: 5.5 Triệu/m2)" class="input-field">
-                    <input type="text" placeholder="Khu vực thi công (VD: Dĩ An)" class="input-field">
+                    <select class="input-field"><option>Xây nhà trọn gói</option><option>Xây thô</option><option>Thiết kế kiến trúc</option></select>
+                    <input type="text" placeholder="Đơn giá tham khảo (Tr/m2)" class="input-field">
+                    <input type="text" placeholder="Năm kinh nghiệm" class="input-field">
                 `;
-                document.getElementById('title').placeholder = "VD: Thi công biệt thự vườn hiện đại tại Bình Dương...";
+                document.getElementById('title').placeholder = "VD: Công ty An Gia Land - Chuyên thiết kế nhà phố hiện đại Dĩ An";
             } else {
                 container.innerHTML = `
-                    <select id="category" class="input-field"><option>Nhà phố</option><option>Đất nền</option><option>Căn hộ</option></select>
-                    <input type="text" id="price" placeholder="${currentPostType === 'ban' ? 'Giá bán (Tỷ/Triệu)' : 'Giá thuê (Tr/tháng)'}" class="input-field">
-                    <input type="number" id="area" placeholder="Diện tích (m2)" class="input-field">
-                    <input type="text" placeholder="Pháp lý (Sổ hồng/Hợp đồng)" class="input-field">
+                    <select class="input-field"><option>Nhà phố</option><option>Đất nền</option><option>Căn hộ</option></select>
+                    <input type="text" placeholder="${currentPostType === 'ban' ? 'Giá bán (VNĐ)' : 'Giá thuê (Tr/tháng)'}" class="input-field">
+                    <input type="number" placeholder="Diện tích (m2)" class="input-field">
+                    <input type="text" placeholder="Pháp lý (Sổ riêng...)" class="input-field">
                     <select class="input-field"><option>Hướng Đông</option><option>Hướng Tây</option><option>Hướng Nam</option><option>Hướng Bắc</option></select>
-                    <input type="number" placeholder="Số tầng" class="input-field">
+                    <input type="number" placeholder="Số phòng ngủ" class="input-field">
                 `;
-                document.getElementById('title').placeholder = "VD: Bán đất nền sổ đỏ Đông Bình Dương, 80m2...";
+                document.getElementById('title').placeholder = "VD: Bán đất nền 80m2 gần trung tâm hành chính Dĩ An, sổ sẵn";
             }
         }
 
-        document.getElementById('pro-post-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Xử lý lưu LocalStorage tương tự như cũ nhưng thêm trường profileType
-            alert('Tin đăng (' + currentPostType + ') đã được gửi! Tài khoản của bạn sẽ hiển thị trong Danh bạ ' + (currentProfile === 'canhan' ? 'Môi giới' : 'Doanh nghiệp'));
-            window.location.href = 'index.html';
-        });
-
-        // Khởi tạo form mặc định
-        window.onload = renderFields;
+        window.onload = renderDynamicFields;
     </script>
 </body>
 </html>
