@@ -7,76 +7,238 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="assets/css/main.css">
+
     <style>
         :root {
-            --vip-color: #008B8B; 
-            --hover-color: #FF8C00; 
+            --vip-color: #008B8B;
+            --hover-color: #FF8C00;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f2f2f2; }
-        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
         /* Menu & Hover */
-        .nav-link { transition: all 0.3s; position: relative; }
-        .nav-link:hover { color: var(--hover-color) !important; }
-        
+        .nav-link {
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--hover-color) !important;
+        }
+
         /* Dropdown Danh bạ */
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; z-index: 100; border-top: 3px solid var(--vip-color); padding: 10px 0; }
-        .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; }
-        .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 200px;
+            z-index: 100;
+            border-top: 3px solid var(--vip-color);
+            padding: 10px 0;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .dropdown-item:hover {
+            background: #f9f9f9;
+            color: var(--hover-color);
+        }
 
         /* Icon Lưu tin */
-        .save-icon { position: relative; cursor: pointer; font-size: 20px; }
-        .save-count { position: absolute; top: -8px; right: -10px; background: #E03C31; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold; }
+        .save-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .save-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #E03C31;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
 
         /* Search Banner */
-        .search-tab.active { background: rgba(0,0,0,0.7); color: white; border-radius: 4px 4px 0 0; }
-        
+        .search-tab.active {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 4px 4px 0 0;
+        }
+
         /* Section Title */
-        .section-title { font-size: 24px; font-weight: 700; color: #2C2C2C; margin-bottom: 24px; }
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2C2C2C;
+            margin-bottom: 24px;
+        }
 
         /* Footer SEO */
-        .footer-link-group h4 { font-weight: 700; font-size: 14px; margin-bottom: 15px; color: #2C2C2C; }
-        .footer-link-group ul li { margin-bottom: 8px; font-size: 13px; color: #555; }
-        .footer-link-group ul li a:hover { color: var(--hover-color); text-decoration: underline; }
-        
+        .footer-link-group h4 {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #2C2C2C;
+        }
+
+        .footer-link-group ul li {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .footer-link-group ul li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+
         /* News Section Styles */
-        .news-card-img { height: 350px; border-radius: 12px; overflow: hidden; }
-        .news-side-img { width: 100px; height: 75px; border-radius: 8px; object-fit: cover; }
+        .news-card-img {
+            height: 350px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .news-side-img {
+            width: 100px;
+            height: 75px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
 
         /* NÚT GO TO TOP & CHAT */
         #goToTop {
-            display: none; position: fixed; bottom: 100px; right: 25px; z-index: 999;
-            width: 45px; height: 45px; background-color: #fff; color: #333;
-            border: 1px solid #ddd; border-radius: 50%; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.3s;
-            align-items: center; justify-content: center; font-size: 18px;
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            z-index: 999;
+            width: 45px;
+            height: 45px;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
         }
-        #goToTop:hover { background-color: #f8f8f8; transform: translateY(-3px); }
+
+        #goToTop:hover {
+            background-color: #f8f8f8;
+            transform: translateY(-3px);
+        }
 
         .zalo-chat-btn {
-            position: fixed; bottom: 30px; right: 20px; z-index: 999;
-            width: 55px; height: 55px; background-color: var(--vip-color);
-            color: white; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 26px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 139, 139, 0.4); transition: all 0.3s;
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            z-index: 999;
+            width: 55px;
+            height: 55px;
+            background-color: var(--vip-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 139, 139, 0.4);
+            transition: all 0.3s;
         }
-        .zalo-chat-btn:hover { transform: scale(1.1); }
-        .wiggle { animation: wiggle-ani 2s infinite; }
+
+        .zalo-chat-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .wiggle {
+            animation: wiggle-ani 2s infinite;
+        }
+
         @keyframes wiggle-ani {
             0%, 100% { transform: rotate(-5deg); }
             50% { transform: rotate(5deg); }
         }
 
         #chatForm {
-            display: none; position: fixed; bottom: 95px; right: 20px; width: 320px;
-            background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            z-index: 1000; overflow: hidden;
+            display: none;
+            position: fixed;
+            bottom: 95px;
+            right: 20px;
+            width: 320px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            overflow: hidden;
         }
-        .chat-header { background: var(--vip-color); color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        .chat-body { padding: 20px; }
-        .chat-body input, .chat-body textarea { width: 100%; margin-bottom: 15px; padding: 10px; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box; outline: none; }
-        .btn-send { width: 100%; background: var(--vip-color); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        .chat-header {
+            background: var(--vip-color);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-body {
+            padding: 20px;
+        }
+
+        .chat-body input,
+        .chat-body textarea {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .btn-send {
+            width: 100%;
+            background: var(--vip-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -87,32 +249,38 @@
                 <a href="index.html">
                     <img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
                 </a>
+
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="du-an.html" class="nav-link text-gray-500">Dự án</a>
-                    <a href="tin-tuc.html" class="nav-link text-gray-500">Tin tức</a>
+                    <a href="pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="pages/du-an.html" class="nav-link">Dự án</a>
+                    <a href="pages/tin-tuc.html" class="nav-link">Tin tức</a>
+                    <a href="pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
+                    <a href="pages/xay-dung.html" class="nav-link">Xây dựng</a>
+
                     <div class="dropdown relative h-full flex items-center cursor-pointer">
                         <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
                         <div class="dropdown-menu">
-                            <a href="danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
+                            <a href="pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
+                            <a href="pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
                         </div>
                     </div>
                 </nav>
             </div>
-            
+
             <div class="flex items-center gap-5">
                 <div class="save-icon nav-link text-gray-600">
                     <i class="fa-regular fa-heart"></i>
                     <span class="save-count">0</span>
                 </div>
+
                 <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
-                    <a href="dang-nhap.html" class="nav-link">Đăng nhập</a>
+                    <a href="auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
                     <span class="text-gray-300">|</span>
-                    <a href="dang-ky.html" class="nav-link">Đăng ký</a>
+                    <a href="auth/dang-ky.html" class="nav-link">Đăng ký</a>
                 </div>
-                <a href="dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
+
+                <a href="user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
                     Đăng tin
                 </a>
             </div>
@@ -120,15 +288,16 @@
     </header>
 
     <section class="relative h-[480px] flex items-center justify-center overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920" class="absolute inset-0 w-full h-full object-cover">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920" alt="Banner bất động sản" class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/30"></div>
-        
+
         <div class="relative z-10 w-full max-w-[850px] px-4 text-center">
             <div class="flex justify-center gap-1 mb-0">
                 <button class="search-tab active px-6 py-2.5 text-white font-bold uppercase text-[12px]">Bán</button>
                 <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px] hover:bg-black/40">Cho thuê</button>
                 <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px] hover:bg-black/40">Dự án</button>
             </div>
+
             <div class="bg-black/60 p-2 rounded-lg backdrop-blur-md">
                 <div class="bg-white rounded flex items-center p-1 shadow-2xl">
                     <input type="text" placeholder="Tìm nhanh: Vinhomes, Quận 2, Nhà phố..." class="flex-1 p-3.5 outline-none text-[15px]">
@@ -147,12 +316,13 @@
     <section class="py-12 container-custom">
         <div class="flex justify-between items-end mb-8">
             <h2 class="section-title mb-0">Bất động sản dành cho bạn</h2>
-            <a href="nha-dat-ban.html" class="text-[#008B8B] font-semibold hover:underline text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+            <a href="pages/nha-dat-ban.html" class="text-[#008B8B] font-semibold hover:underline text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
         </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition cursor-pointer group">
                 <div class="relative h-[180px] overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1560448204-61dc36dc98c8?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <img src="https://images.unsplash.com/photo-1560448204-61dc36dc98c8?w=400" alt="Căn hộ Diamond Alnata Plus" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     <div class="absolute top-2 right-2 bg-white/90 p-2 rounded-full shadow-sm hover:text-red-500"><i class="fa-regular fa-heart"></i></div>
                 </div>
                 <div class="p-4">
@@ -169,18 +339,20 @@
     <section class="py-12 bg-white border-y">
         <div class="container-custom relative">
             <h2 class="section-title">Dự án bất động sản nổi bật</h2>
+
             <div class="swiper projectSwiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide bg-white rounded-lg overflow-hidden border">
-                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500" class="w-full h-44 object-cover">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500" alt="Dự án Bcons NewSky" class="w-full h-44 object-cover">
                         <div class="p-4">
                             <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold uppercase">Sắp mở bán</span>
                             <h4 class="font-bold mt-2 text-[15px]">Bcons NewSky</h4>
                             <p class="text-gray-500 text-[13px] mt-1">Thuận An, Bình Dương</p>
                         </div>
                     </div>
+
                     <div class="swiper-slide bg-white rounded-lg overflow-hidden border">
-                        <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500" class="w-full h-44 object-cover">
+                        <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500" alt="Dự án Vinhomes Global Gate" class="w-full h-44 object-cover">
                         <div class="p-4">
                             <span class="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded font-bold uppercase">Đang mở bán</span>
                             <h4 class="font-bold mt-2 text-[15px]">Vinhomes Global Gate</h4>
@@ -188,6 +360,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="swiper-button-next !text-[#008B8B] !w-10 !h-10 bg-white shadow-md rounded-full after:!text-sm"></div>
                 <div class="swiper-button-prev !text-[#008B8B] !w-10 !h-10 bg-white shadow-md rounded-full after:!text-sm"></div>
             </div>
@@ -196,23 +369,26 @@
 
     <section class="py-16 container-custom">
         <h2 class="section-title">Bất động sản theo địa điểm</h2>
+
         <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 h-[500px]">
             <div class="md:col-span-2 md:row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800" alt="Bất động sản TP Hồ Chí Minh" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-8 flex flex-col justify-end text-white">
                     <h4 class="text-2xl font-bold">TP. Hồ Chí Minh</h4>
                     <p class="text-sm font-medium opacity-90">23.815 tin đăng</p>
                 </div>
             </div>
+
             <div class="relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <img src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=400" alt="Bất động sản Hà Nội" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-6 flex flex-col justify-end text-white">
                     <h4 class="text-lg font-bold">Hà Nội</h4>
                     <p class="text-xs opacity-90">13.308 tin đăng</p>
                 </div>
             </div>
+
             <div class="relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1559592481-74488ea56144?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <img src="https://images.unsplash.com/photo-1559592481-74488ea56144?w=400" alt="Bất động sản Đà Nẵng" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-6 flex flex-col justify-end text-white">
                     <h4 class="text-lg font-bold">Đà Nẵng</h4>
                     <p class="text-xs opacity-90">536 tin đăng</p>
@@ -225,33 +401,37 @@
         <div class="container-custom">
             <div class="flex justify-between items-end mb-8">
                 <h2 class="section-title mb-0">Tin tức bất động sản</h2>
-                <a href="#" class="text-[#008B8B] font-semibold hover:underline text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                <a href="pages/tin-tuc.html" class="text-[#008B8B] font-semibold hover:underline text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
             </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 <div class="lg:col-span-2 group cursor-pointer">
                     <div class="news-card-img">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800" alt="Tin tức bất động sản nổi bật" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
                     <h3 class="mt-4 text-[20px] font-bold group-hover:text-[#008B8B]">Thị trường bất động sản năm 2026: Những phân khúc nào sẽ dẫn đầu xu hướng?</h3>
                     <p class="text-gray-500 mt-2 text-sm leading-relaxed">Theo các chuyên gia, dòng tiền đang có xu hướng quay lại các sản phẩm phục vụ nhu cầu thực như căn hộ tầm trung và đất nền vùng ven có pháp lý sạch...</p>
                 </div>
+
                 <div class="space-y-6">
                     <div class="flex gap-4 cursor-pointer group">
-                        <img src="https://images.unsplash.com/photo-1448630360428-65ff2c0257ef?w=200" class="news-side-img">
+                        <img src="https://images.unsplash.com/photo-1448630360428-65ff2c0257ef?w=200" alt="Lãi suất ngân hàng giảm sâu" class="news-side-img">
                         <div>
                             <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[#008B8B]">Lãi suất ngân hàng tiếp tục giảm sâu, cơ hội vàng cho người mua nhà?</h4>
                             <p class="text-[12px] text-gray-400 mt-1">2 giờ trước</p>
                         </div>
                     </div>
+
                     <div class="flex gap-4 cursor-pointer group">
-                        <img src="https://images.unsplash.com/photo-1592595894519-02319c2ec51f?w=200" class="news-side-img">
+                        <img src="https://images.unsplash.com/photo-1592595894519-02319c2ec51f?w=200" alt="Dự án mới miền Trung" class="news-side-img">
                         <div>
                             <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[#008B8B]">Vingroup công bố thêm siêu dự án mới tại khu vực miền Trung</h4>
                             <p class="text-[12px] text-gray-400 mt-1">5 giờ trước</p>
                         </div>
                     </div>
+
                     <div class="flex gap-4 cursor-pointer group">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=200" class="news-side-img">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=200" alt="Cẩm nang pháp lý mua đất nền" class="news-side-img">
                         <div>
                             <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[#008B8B]">Cẩm nang pháp lý: Những lưu ý khi mua đất nền dự án</h4>
                             <p class="text-[12px] text-gray-400 mt-1">1 ngày trước</p>
@@ -266,7 +446,7 @@
         <div class="container-custom">
             <div class="mb-12 border-b pb-12">
                 <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="#" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="#" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
+                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
                 </p>
             </div>
 
@@ -274,52 +454,56 @@
                 <div class="footer-link-group">
                     <h4>CHỦ ĐỀ NỔI BẬT</h4>
                     <ul>
-                        <li><a href="#">Bất động sản Hà Nội</a></li>
-                        <li><a href="#">Bất động sản Hồ Chí Minh</a></li>
-                        <li><a href="#">Mua nhà chung cư</a></li>
-                        <li><a href="#">Báo cáo thị trường</a></li>
+                        <li><a href="pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
+                        <li><a href="pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
+                        <li><a href="pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
+                        <li><a href="pages/tin-tuc.html">Báo cáo thị trường</a></li>
                     </ul>
                 </div>
+
                 <div class="footer-link-group">
                     <h4>BẤT ĐỘNG SẢN BÁN</h4>
                     <ul>
-                        <li><a href="#">Bán căn hộ chung cư</a></li>
-                        <li><a href="#">Bán nhà riêng</a></li>
-                        <li><a href="#">Bán đất nền dự án</a></li>
-                        <li><a href="#">Bán biệt thự, liền kề</a></li>
+                        <li><a href="pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
+                        <li><a href="pages/nha-dat-ban.html">Bán nhà riêng</a></li>
+                        <li><a href="pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
+                        <li><a href="pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
                     </ul>
                 </div>
+
                 <div class="footer-link-group">
                     <h4>BẤT ĐỘNG SẢN THUÊ</h4>
                     <ul>
-                        <li><a href="#">Thuê căn hộ chung cư</a></li>
-                        <li><a href="#">Thuê nhà riêng</a></li>
-                        <li><a href="#">Thuê văn phòng</a></li>
-                        <li><a href="#">Thuê phòng trọ giá rẻ</a></li>
+                        <li><a href="pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
+                        <li><a href="pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
+                        <li><a href="pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
+                        <li><a href="pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
                     </ul>
                 </div>
+
                 <div class="footer-link-group">
                     <h4>DỰ ÁN NỔI BẬT</h4>
                     <ul>
-                        <li><a href="#">Dự án Vinhomes</a></li>
-                        <li><a href="#">Căn hộ cao cấp Quận 2</a></li>
-                        <li><a href="#">Đất nền Bình Dương</a></li>
-                        <li><a href="#">Căn hộ Studio giá rẻ</a></li>
+                        <li><a href="pages/du-an.html">Dự án Vinhomes</a></li>
+                        <li><a href="pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
+                        <li><a href="pages/du-an.html">Đất nền Bình Dương</a></li>
+                        <li><a href="pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
                 <div class="max-w-sm">
-                    <img src="DAI TRONG SUOT (2).png" class="h-10 mb-6">
+                    <img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6">
                     <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
                     <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
                     <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
                     <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" class="h-8 cursor-pointer">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" class="h-8 cursor-pointer">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer">
                     </div>
                 </div>
+
                 <div class="grid grid-cols-2 gap-10 text-[13px]">
                     <div>
                         <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
@@ -330,6 +514,7 @@
                             <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
                         </ul>
                     </div>
+
                     <div>
                         <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
                         <ul class="text-gray-500 space-y-2">
@@ -339,6 +524,7 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="w-full lg:max-w-xs">
                     <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
                     <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
@@ -369,54 +555,42 @@
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required>
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
-            <button class="btn-send" onclick="sendToZalo()">
-                BẮT ĐẦU CHAT TRÊN ZALO
-            </button>
+            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // Swiper Config
-        new Swiper(".projectSwiper", {
-            slidesPerView: 1, spaceBetween: 20,
-            navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-            breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 4 } }
-        });
-
-        // Xử lý nút bấm
-        window.onscroll = function() {
-            const btn = document.getElementById("goToTop");
-            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
-                btn.style.display = "flex";
-            } else {
-                btn.style.display = "none";
-            }
-        };
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleForm() {
-            var form = document.getElementById("chatForm");
-            form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
+        if (document.querySelector(".projectSwiper")) {
+            new Swiper(".projectSwiper", {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev"
+                },
+                breakpoints: {
+                    640: { slidesPerView: 2 },
+                    1024: { slidesPerView: 4 }
+                }
+            });
         }
 
         function sendToZalo() {
-            var name = document.getElementById("cusName").value;
-            var msg = document.getElementById("cusMsg").value;
-            var phone = "0946239289";
+            const name = document.getElementById("cusName").value;
+            const msg = document.getElementById("cusMsg").value;
+            const phone = "0946239289";
 
-            if(!name) {
+            if (!name) {
                 alert("Vui lòng cho biết tên của bạn");
                 return;
             }
 
-            var fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
-            var encodedMsg = encodeURIComponent(fullMsg);
+            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
     </script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
