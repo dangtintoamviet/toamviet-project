@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dịch vụ Xây dựng & Sửa chữa | toamviet.com.vn</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
+        body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .container-custom { max-width: 1366px; margin: 0 auto; padding: 0 15px; }
+        
+        /* Chỉnh font 16pt cho tiêu đề chính theo sở thích của bạn */
+        .main-title { font-size: 21.33px; font-weight: 900; } /* 16pt ≈ 21.33px */
+
+        /* Card Style */
+        .con-card { background: white; border-radius: 20px; border: 1px solid #e2e8f0; transition: all 0.3s; overflow: hidden; }
+        .con-card:hover { transform: translateY(-5px); shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border-color: var(--vip-color); }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white border-b sticky top-0 z-[1000]">
+        <div class="container-custom h-[80px] flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <a href="index.html"><img src="Logo ToamViet.png" alt="Logo ToamViet" class="h-10"></a>
+                <nav class="hidden xl:flex items-center gap-5">
+                    <a href="index.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Trang chủ</a>
+                    <a href="nha-dat-ban.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Nhà đất bán</a>
+                    <a href="du-an.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Dự án</a>
+                    <a href="xay-dung.html" class="text-[14px] font-bold text-[#008B8B] uppercase border-b-2 border-[#008B8B]">Xây dựng</a>
+                    <a href="gia-nha-dat.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B]">Giá nhà đất</a>
+                    <div class="relative group py-4">
+                        <button class="text-[14px] font-semibold text-[#2C2C2C] flex items-center gap-1 uppercase">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <div class="absolute top-[90%] left-0 bg-white shadow-xl rounded-xl p-2 min-w-[200px] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                            <a href="danh-ba.html" class="block p-3 text-sm font-semibold hover:bg-slate-50 rounded-lg">Danh bạ Môi giới</a>
+                            <a href="danh-ba-doanh-nghiep.html" class="block p-3 text-sm font-semibold hover:bg-slate-50 rounded-lg">Danh bạ Doanh nghiệp</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="dang-tin.html" class="bg-[#008B8B] text-white px-6 py-2.5 rounded-xl text-[12px] font-black uppercase tracking-wider hover:bg-slate-700 transition shadow-sm">Đăng tin ngay</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-slate-900 py-16 text-white text-center">
+        <div class="container-custom">
+            <h1 class="main-title uppercase mb-4">Tìm kiếm Nhà thầu & Dịch vụ Xây dựng</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-8 text-sm">Kết nối trực tiếp với hơn 500+ đơn vị thi công, kiến trúc sư và nhà thầu uy tín tại Bình Dương và lân cận.</p>
+            
+            <div class="max-w-4xl mx-auto bg-white p-4 rounded-2xl shadow-2xl flex flex-wrap md:flex-nowrap gap-3">
+                <select class="flex-1 min-w-[150px] p-3 border rounded-xl text-slate-700 text-sm font-bold outline-none">
+                    <option>Loại hình thi công</option>
+                    <option>Xây nhà trọn gói</option>
+                    <option>Thi công phần thô</option>
+                    <option>Sửa chữa & Cải tạo</option>
+                    <option>Thiết kế kiến trúc</option>
+                </select>
+                <select class="flex-1 min-w-[150px] p-3 border rounded-xl text-slate-700 text-sm font-bold outline-none">
+                    <option>Khu vực (Quận/Huyện)</option>
+                    <option>Dĩ An</option>
+                    <option>Thuận An</option>
+                    <option>Thủ Dầu Một</option>
+                </select>
+                <button class="bg-[#FF8C00] text-white px-8 py-3 rounded-xl font-black uppercase text-xs hover:bg-orange-600 transition">Tìm kiếm</button>
+            </div>
+        </div>
+    </section>
+
+    <main class="py-12">
+        <div class="container-custom">
+            <div class="flex justify-between items-end mb-8 border-l-4 border-[--vip-color] pl-4">
+                <div>
+                    <h2 class="font-black text-xl text-slate-800">Dịch vụ thi công tiêu biểu</h2>
+                    <p class="text-xs text-slate-500 mt-1 uppercase font-bold tracking-widest">Dữ liệu cập nhật mới nhất từ các doanh nghiệp</p>
+                </div>
+                <div class="text-xs font-bold text-slate-400">Hiển thị 12/450 kết quả</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="con-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1503387762-592dea58ef23?auto=format&fit=crop&q=80&w=800" class="w-full h-56 object-cover" alt="Xây dựng">
+                        <span class="absolute top-4 left-4 bg-[#008B8B] text-white text-[10px] font-black px-3 py-1.5 rounded-lg uppercase">Trọn gói</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <img src="https://ui-avatars.com/api/?name=BD+Cons&background=008B8B&color=fff" class="w-6 h-6 rounded-full">
+                            <span class="text-[11px] font-black text-slate-400 uppercase tracking-tighter">Bình Dương Cons Co., Ltd</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg line-clamp-2 mb-3">Thi công biệt thự phố hiện đại - Chìa khóa trao tay 2026</h3>
+                        <div class="flex justify-between items-center py-3 border-t border-slate-50">
+                            <div>
+                                <p class="text-[10px] text-slate-400 uppercase font-bold">Đơn giá tham khảo</p>
+                                <p class="text-[--vip-color] font-black">5.8 - 6.5 Tr/m²</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-slate-400 uppercase font-bold">Khu vực</p>
+                                <p class="text-slate-800 font-bold text-xs">Dĩ An, Thuận An</p>
+                            </div>
+                        </div>
+                        <a href="chi-tiet-xay-dung.html" class="block w-full mt-4 py-3 bg-slate-50 hover:bg-[--vip-color] hover:text-white text-center text-xs font-black rounded-xl transition uppercase">Xem báo giá chi tiết</a>
+                    </div>
+                </div>
+
+                <div class="con-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" class="w-full h-56 object-cover" alt="Thiết kế">
+                        <span class="absolute top-4 left-4 bg-orange-500 text-white text-[10px] font-black px-3 py-1.5 rounded-lg uppercase">Thiết kế</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <img src="https://ui-avatars.com/api/?name=Arch+Studio&background=FF8C00&color=fff" class="w-6 h-6 rounded-full">
+                            <span class="text-[11px] font-black text-slate-400 uppercase tracking-tighter">Studio Kiến Trúc Việt</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg line-clamp-2 mb-3">Tư vấn thiết kế kiến trúc và nội thất nhà phố xanh</h3>
+                        <div class="flex justify-between items-center py-3 border-t border-slate-50">
+                            <div>
+                                <p class="text-[10px] text-slate-400 uppercase font-bold">Đơn giá</p>
+                                <p class="text-[--vip-color] font-black">150k - 250k/m²</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-slate-400 uppercase font-bold">Hạng mục</p>
+                                <p class="text-slate-800 font-bold text-xs">Bản vẽ 3D + Kỹ thuật</p>
+                            </div>
+                        </div>
+                        <a href="#" class="block w-full mt-4 py-3 bg-slate-50 hover:bg-[--vip-color] hover:text-white text-center text-xs font-black rounded-xl transition uppercase">Xem hồ sơ năng lực</a>
+                    </div>
+                </div>
+
+                </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t pt-16 pb-8 mt-12">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <h4 class="text-[14px] font-black text-slate-800 uppercase mb-6 border-l-4 border-[--vip-color] pl-3">Tổ Ấm Việt</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Hệ sinh thái kết nối Bất động sản và Xây dựng chuyên nghiệp hàng đầu tại khu vực Bình Dương.</p>
+                </div>
+                <div>
+                    <h4 class="text-[14px] font-black text-slate-800 uppercase mb-6">Xây dựng</h4>
+                    <ul class="text-xs text-slate-500 space-y-3">
+                        <li class="hover:text-[--vip-color] cursor-pointer">Báo giá xây nhà trọn gói</li>
+                        <li class="hover:text-[--vip-color] cursor-pointer">Tìm nhà thầu uy tín</li>
+                        <li class="hover:text-[--vip-color] cursor-pointer">Mẫu nhà phố đẹp 2026</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[14px] font-black text-slate-800 uppercase mb-6">Liên kết</h4>
+                    <ul class="text-xs text-slate-500 space-y-3">
+                        <li class="hover:text-[--vip-color] cursor-pointer">Biểu đồ giá nhà đất</li>
+                        <li class="hover:text-[--vip-color] cursor-pointer">Danh bạ môi giới</li>
+                        <li class="hover:text-[--vip-color] cursor-pointer">Tin tức thị trường</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[14px] font-black text-slate-800 uppercase mb-6">Kết nối</h4>
+                    <div class="flex gap-4">
+                        <i class="fa-brands fa-facebook text-2xl text-slate-300 hover:text-blue-600 cursor-pointer transition"></i>
+                        <i class="fa-brands fa-youtube text-2xl text-slate-300 hover:text-red-600 cursor-pointer transition"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-slate-400 font-medium uppercase tracking-tighter">
+                <p>© 2026 toamviet.com.vn - Giải pháp công nghệ Bất động sản</p>
+                <div class="flex gap-6">
+                    <span>Điều khoản</span>
+                    <span>Bảo mật</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
