@@ -4,137 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>Bảng Giá Nhà Đất Bình Dương 2026 - Thống Kê Dự Án Đông Bình Dương | Tổ Ấm Việt</title>
-    <meta name="description" content="Cập nhật bảng giá nhà đất Bình Dương, Dĩ An mới nhất. Hệ thống tự động phân tích giá đất nền dự án Đông Bình Dương, Bcons, Charm City dựa trên dữ liệu tin đăng thực tế.">
-    <meta name="keywords" content="giá nhà đất bình dương, giá đất dĩ an, bảng giá đông bình dương, biến động bất động sản bình dương, tổ ấm việt">
-
+    <title>Giá Nhà Đất Bình Dương 2026 - Thống Kê Dự Án | Tổ Ấm Việt</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <style>
         :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; line-height: 1.6; }
-        .stats-card { background: white; border-radius: 16px; padding: 20px; border: 1px solid #e2e8f0; transition: all 0.3s ease; }
-        .stats-card:hover { border-color: var(--vip-color); transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .price-badge { background: #f0fdfa; color: var(--vip-color); padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 13px; border: 1px solid #ccfbf1; white-space: nowrap; }
-        .table-container { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background: white; border: 1px solid #e2e8f0; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: #f9fbff; color: #475569; line-height: 1.6; }
         
-        /* Custom Scrollbar cho bảng Mobile */
-        .overflow-x-auto::-webkit-scrollbar { height: 5px; }
-        .overflow-x-auto::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        /* Tinh chỉnh nét chữ thanh mảnh */
+        h1, h2, h3 { letter-spacing: -0.01em; color: #334155; }
+        .light-title { font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
+        
+        .stats-card { background: white; border-radius: 20px; padding: 24px; border: 1px solid #edf2f7; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .stats-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.05); border-color: #cbd5e1; }
+        
+        .price-badge { background: #f0fdfa; color: var(--vip-color); padding: 4px 12px; border-radius: 8px; font-weight: 600; font-size: 13px; border: 1px solid #ccfbf1; }
+        
+        .table-container { border-radius: 20px; overflow: hidden; background: white; border: 1px solid #edf2f7; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); }
+
+        /* Mobile Scrollbar */
+        .overflow-x-auto::-webkit-scrollbar { height: 4px; }
+        .overflow-x-auto::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
 
         @media (max-width: 768px) {
-            .container { padding-left: 10px; padding-right: 10px; }
-            h1 { font-size: 1.25rem !important; }
+            .stats-card { padding: 18px; }
+            canvas { height: 350px !important; }
         }
     </style>
 </head>
 <body>
 
-    <div class="max-w-6xl mx-auto py-6 md:py-10 px-4">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-5">
+    <div class="max-w-6xl mx-auto py-8 md:py-12 px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
             <div>
-                <h1 class="text-2xl md:text-3xl font-black text-slate-800 uppercase tracking-tighter flex items-center gap-3">
-                    <span class="bg-[--vip-color] text-white p-2 rounded-lg"><i class="fa-solid fa-chart-column"></i></span>
-                    Giá Nhà Đất Bình Dương
+                <h1 class="text-2xl md:text-3xl font-light text-slate-700 tracking-tight flex items-center gap-3">
+                    Bảng giá <span class="font-semibold text-slate-800">Nhà Đất Bình Dương</span>
                 </h1>
-                <p class="text-xs md:text-sm text-slate-500 mt-2 italic font-medium">
-                    Dữ liệu cập nhật tự động từ <span id="total-ads" class="text-[--vip-color] font-bold">0</span> nguồn tin xác thực
+                <p class="text-xs md:text-sm text-slate-400 mt-2 font-medium">
+                    Dữ liệu phân tích từ <span id="total-ads" class="text-[--vip-color] font-semibold">0</span> tin đăng thực tế
                 </p>
             </div>
-            <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2">
-                <button class="bg-[--vip-color] text-white px-5 py-2.5 rounded-full text-[11px] font-black uppercase shadow-lg shrink-0">Bình Dương</button>
-                <button class="bg-white text-slate-400 border px-5 py-2.5 rounded-full text-[11px] font-black uppercase hover:bg-slate-50 shrink-0 transition">TP. Hồ Chí Minh</button>
-                <button class="bg-white text-slate-400 border px-5 py-2.5 rounded-full text-[11px] font-black uppercase hover:bg-slate-50 shrink-0 transition">Đồng Nai</button>
+            <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 border-b border-transparent">
+                <button class="bg-slate-800 text-white px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm shrink-0">Bình Dương</button>
+                <button class="bg-white text-slate-400 border border-slate-200 px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider hover:bg-slate-50 shrink-0 transition">TP. Hồ Chí Minh</button>
+                <button class="bg-white text-slate-400 border border-slate-200 px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider hover:bg-slate-50 shrink-0 transition text-nowrap">Đồng Nai</button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-10">
-            <div class="stats-card border-b-4 border-b-[--vip-color]">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Trung bình toàn khu vực</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-8 mb-12">
+            <div class="stats-card">
+                <p class="light-title mb-2">Giá trung bình m²</p>
                 <div class="flex items-baseline gap-2">
-                    <h2 id="avg-land-price" class="text-3xl md:text-4xl font-black text-slate-800 tracking-tighter">0</h2>
-                    <span class="text-sm font-bold text-slate-400 uppercase font-mono">Tr/m²</span>
+                    <h2 id="avg-land-price" class="text-4xl font-light text-slate-800 tracking-tighter">0</h2>
+                    <span class="text-xs font-semibold text-slate-400 uppercase">Tr/m²</span>
                 </div>
             </div>
-            <div class="stats-card border-b-4 border-b-orange-500">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Dự án tâm điểm (Top 1)</p>
-                <h2 id="top-project" class="text-xl font-black text-slate-800 truncate uppercase tracking-tight">Đông Bình Dương</h2>
-                <p class="text-[11px] text-orange-600 font-bold mt-2"><i class="fa-solid fa-fire"></i> Lượng quan tâm cao nhất</p>
+            <div class="stats-card border-t-2 border-t-[--vip-color]">
+                <p class="light-title mb-2">Dự án sôi động</p>
+                <h2 id="top-project" class="text-xl font-semibold text-slate-700 truncate tracking-tight uppercase">Đông Bình Dương</h2>
+                <p class="text-[10px] text-[--vip-color] font-bold mt-2 tracking-wide uppercase">Cập nhật xu hướng</p>
             </div>
-            <div class="stats-card border-b-4 border-b-blue-500">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Thời điểm cập nhật</p>
-                <h2 id="current-date" class="text-xl font-black text-slate-800 uppercase tracking-tight">--/--/----</h2>
-                <p class="text-[11px] text-blue-600 font-bold mt-2"><i class="fa-solid fa-sync-alt"></i> Dữ liệu thời gian thực</p>
+            <div class="stats-card">
+                <p class="light-title mb-2">Ngày cập nhật</p>
+                <h2 id="current-date" class="text-xl font-medium text-slate-700 tracking-tight underline decoration-slate-200">--/--/----</h2>
+                <p class="text-[10px] text-slate-400 font-bold mt-2 uppercase tracking-wide">Dữ liệu Real-time</p>
             </div>
         </div>
 
-        <div class="table-container mb-10 shadow-lg">
-            <div class="bg-slate-800 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="text-[11px] font-black uppercase tracking-widest flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-[--vip-color]"></i> Phân tích giá 9 dự án tiêu biểu
+        <div class="table-container mb-12">
+            <div class="bg-white px-8 py-5 border-b border-slate-50 flex justify-between items-center">
+                <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                    Chi tiết giá trị các dự án tiêu biểu
                 </h3>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[700px]">
+                <table class="w-full text-left border-collapse min-w-[750px]">
                     <thead>
-                        <tr class="bg-slate-50 text-slate-500 text-[10px] uppercase tracking-widest border-b">
-                            <th class="px-6 py-4">Tên Dự Án / Khu Vực</th>
-                            <th class="px-6 py-4 text-center">Lượng Tin</th>
-                            <th class="px-6 py-4">Giá Thấp Nhất</th>
-                            <th class="px-6 py-4">Giá Cao Nhất</th>
-                            <th class="px-6 py-4 bg-slate-100 text-slate-800">Giá Trung Bình</th>
+                        <tr class="text-slate-400 text-[10px] uppercase tracking-widest border-b border-slate-50">
+                            <th class="px-8 py-5 font-semibold">Tên Dự Án</th>
+                            <th class="px-8 py-5 text-center font-semibold">Số tin</th>
+                            <th class="px-8 py-5 font-semibold">Min (Tr)</th>
+                            <th class="px-8 py-5 font-semibold">Max (Tr)</th>
+                            <th class="px-8 py-5 text-slate-800 font-bold">Trung bình</th>
                         </tr>
                     </thead>
-                    <tbody id="price-table-body" class="text-[13px] font-semibold text-slate-700 italic">
+                    <tbody id="price-table-body" class="text-[13px] text-slate-600">
                         </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="bg-white rounded-2xl border p-6 shadow-lg mb-10 min-h-[400px]">
-            <h2 class="text-[11px] font-black text-slate-700 uppercase mb-8 tracking-widest flex items-center gap-2">
-                <i class="fa-solid fa-chart-area text-[--vip-color]"></i> Biểu đồ so sánh đơn giá giữa các dự án (Đơn vị: Tr/m²)
-            </h2>
-            <div class="relative h-[350px] md:h-[450px]">
+        <div class="bg-white rounded-[24px] border border-slate-100 p-8 shadow-sm mb-12">
+            <h2 class="light-title mb-10 text-center">So sánh giá trị thị trường (Tr/m²)</h2>
+            <div class="relative h-[300px] md:h-[400px]">
                 <canvas id="priceChart"></canvas>
             </div>
         </div>
 
-        <div class="bg-white p-6 md:p-10 rounded-2xl border-l-[10px] border-[--vip-color] shadow-xl">
-            <h2 class="text-slate-800 font-black text-xl md:text-2xl mb-6 uppercase tracking-tight">
-                Phân tích biến động giá nhà đất tại Bình Dương & Dĩ An
+        <div class="bg-slate-50 p-8 md:p-12 rounded-[32px] border border-slate-100">
+            <h2 class="text-slate-800 font-semibold text-lg md:text-xl mb-6 tracking-tight">
+                Phân tích diễn biến thị trường BĐS Bình Dương
             </h2>
             
-            <div class="space-y-5 text-[14px] md:text-[15px] leading-relaxed text-slate-600">
-                <p>
-                    Chào mừng quý nhà đầu tư đến với chuyên mục thống kê giá của <strong>Tổ Ấm Việt</strong>. Hiện nay, <strong>giá nhà đất tại Bình Dương</strong> đang trải qua giai đoạn điều chỉnh mạnh mẽ với sự tập trung nguồn cung lớn tại khu vực Dĩ An và Thuận An. Đặc biệt, <strong>giá đất nền dự án Đông Bình Dương</strong> vẫn duy trì được sức hút nhờ quy mô đô thị đồng bộ và mức giá cực kỳ cạnh tranh so với mặt bằng chung của khu vực.
-                </p>
-                
-                <p>
-                    Hệ thống dữ liệu của chúng tôi cho thấy sự phân hóa rõ rệt giữa các phân khúc. Các dự án căn hộ như <em>Bcons City</em> hay <em>Charm City</em> có biên độ giá ổn định, phục vụ nhu cầu ở thực. Trong khi đó, phân khúc đất nền tại các khu đô thị mới đang là tâm điểm cho dòng tiền đầu tư dài hạn. Việc minh bạch <strong>giá trung bình trên m2</strong> giúp người mua tránh được các rủi ro về "giá ảo" thường gặp trong các đợt sốt đất.
-                </p>
-
-                <p class="hidden md:block p-4 bg-slate-50 rounded-xl italic border-dashed border-2 border-slate-200">
-                    Công cụ <strong>biểu đồ biến động giá</strong> của chúng tôi được thiết lập để tự động loại bỏ các tin đăng không chính xác, giúp thông tin <em>giá nhà đất Dĩ An</em> trở nên tin cậy hơn bao giờ hết. Chúng tôi khuyến nghị nhà đầu tư nên bám sát bảng giá trung bình để tìm kiếm các sản phẩm "vùng trũng" có tiềm năng sinh lời cao trong tương lai.
-                </p>
-
-                <div class="flex flex-wrap gap-3 mt-6">
-                    <span class="bg-slate-100 px-3 py-1 rounded text-[11px] font-bold text-slate-500 uppercase">#GiaNhaDatBinhDuong</span>
-                    <span class="bg-slate-100 px-3 py-1 rounded text-[11px] font-bold text-slate-500 uppercase">#DatNenDongBinhDuong</span>
-                    <span class="bg-slate-100 px-3 py-1 rounded text-[11px] font-bold text-slate-500 uppercase">#ToAmViet</span>
-                    <span class="bg-slate-100 px-3 py-1 rounded text-[11px] font-bold text-slate-500 uppercase">#BDS2026</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-[14px] leading-relaxed text-slate-500">
+                <div class="space-y-4">
+                    <p>
+                        Dữ liệu <strong>giá nhà đất Bình Dương</strong> được Tổ Ấm Việt cập nhật minh bạch, giúp bạn dễ dàng nắm bắt <strong>giá đất nền Đông Bình Dương</strong> và các dự án trọng điểm tại Dĩ An. Hệ thống tự động sàng lọc để đưa ra các con số tiệm cận nhất với giá trị thực tế.
+                    </p>
                 </div>
+                <div class="space-y-4">
+                    <p>
+                        Việc theo dõi <strong>biến động giá nhà đất Dĩ An</strong> qua biểu đồ trực quan là cách tốt nhất để nhà đầu tư tối ưu hóa dòng vốn, nhận diện vùng giá an toàn và tránh các bẫy giá ảo trên thị trường hiện nay.
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-4 mt-8 pt-8 border-t border-slate-200/50">
+                <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">#ToAmViet</span>
+                <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">#BinhDuongProperty</span>
+                <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">#RealEstate2026</span>
             </div>
         </div>
     </div>
 
     <script>
-        // Cập nhật ngày tháng hiện tại
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN');
 
-        // DỮ LIỆU 9 DỰ ÁN TIÊU BIỂU (Kết nối tự động trong tương lai)
         const realEstateData = [
             { project: "Đông Bình Dương", price: 1250, area: 80 },
             { project: "Đông Bình Dương", price: 1080, area: 80 },
@@ -144,15 +141,13 @@
             { project: "Phú Hồng Thịnh", price: 3200, area: 60 },
             { project: "Midori Park", price: 5500, area: 100 },
             { project: "The Habitat", price: 2900, area: 70 },
-            { project: "EcoLakes", price: 2400, area: 120 },
-            { project: "Oasis City", price: 1800, area: 85 }
+            { project: "EcoLakes", price: 2400, area: 120 }
         ];
 
-        function initData() {
+        function initApp() {
             const tableBody = document.getElementById('price-table-body');
             const stats = {};
 
-            // Logic tính toán
             realEstateData.forEach(item => {
                 if (!stats[item.project]) {
                     stats[item.project] = { count: 0, min: 9999, max: 0, total: 0 };
@@ -164,11 +159,7 @@
                 if (uPrice > stats[item.project].max) stats[item.project].max = uPrice;
             });
 
-            // Sắp xếp lấy 9 dự án có lượng tin nhiều nhất (count)
-            const sortedProjects = Object.keys(stats)
-                .sort((a, b) => stats[b].count - stats[a].count)
-                .slice(0, 9);
-
+            const sortedProjects = Object.keys(stats).sort((a, b) => stats[b].count - stats[a].count).slice(0, 9);
             let sumAvg = 0;
             const labels = [];
             const dataPoints = [];
@@ -181,16 +172,15 @@
                 dataPoints.push(avg.toFixed(1));
 
                 tableBody.innerHTML += `
-                    <tr class="border-b hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4 font-black text-slate-800 decoration-[--vip-color] decoration-2 underline underline-offset-4">${p}</td>
-                        <td class="px-6 py-4 text-center text-slate-400 font-mono font-bold">${stats[p].count}</td>
-                        <td class="px-6 py-4 text-slate-500 font-mono">${stats[p].min.toFixed(1)} Tr</td>
-                        <td class="px-6 py-4 text-slate-500 font-mono">${stats[p].max.toFixed(1)} Tr</td>
-                        <td class="px-6 py-4 bg-slate-50"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
+                    <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                        <td class="px-8 py-5 font-medium text-slate-700">${p}</td>
+                        <td class="px-8 py-5 text-center text-slate-400 font-medium">${stats[p].count}</td>
+                        <td class="px-8 py-5 text-slate-400">${stats[p].min.toFixed(1)}</td>
+                        <td class="px-8 py-5 text-slate-400">${stats[p].max.toFixed(1)}</td>
+                        <td class="px-8 py-5"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
                     </tr>`;
             });
 
-            // Cập nhật thẻ thống kê
             document.getElementById('avg-land-price').innerText = (sumAvg / sortedProjects.length).toFixed(1);
             document.getElementById('total-ads').innerText = realEstateData.length;
             document.getElementById('top-project').innerText = sortedProjects[0];
@@ -199,27 +189,22 @@
         }
 
         function renderChart(labels, dataPoints) {
-            const ctx = document.getElementById('priceChart');
-            if (typeof Chart === 'undefined') {
-                setTimeout(() => renderChart(labels, dataPoints), 500);
-                return;
-            }
-
-            const isMobile = window.innerWidth < 768;
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            
+            // Gradient cho cột
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(0, 139, 139, 0.8)');
+            gradient.addColorStop(1, 'rgba(0, 139, 139, 0.1)');
 
             new Chart(ctx, {
-                type: isMobile ? 'line' : 'bar', // Dùng biểu đồ đường trên Mobile cho thanh thoát
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Giá (Tr/m²)',
                         data: dataPoints,
-                        backgroundColor: 'rgba(0, 139, 139, 0.7)',
-                        borderColor: 'rgba(0, 139, 139, 1)',
-                        borderWidth: 2,
-                        borderRadius: 8,
-                        tension: 0.4, // Độ cong của đường nếu là line chart
-                        fill: true
+                        backgroundColor: gradient,
+                        borderRadius: 12,
+                        barThickness: 24,
                     }]
                 },
                 options: {
@@ -228,30 +213,28 @@
                     plugins: { 
                         legend: { display: false },
                         tooltip: { 
-                            padding: 15,
-                            backgroundColor: '#1e293b',
-                            titleFont: { size: 14, weight: 'bold' }
+                            padding: 12,
+                            backgroundColor: '#334155',
+                            titleFont: { size: 12 },
+                            bodyFont: { size: 14, weight: 'bold' }
                         }
                     },
                     scales: {
                         y: { 
                             beginAtZero: true, 
-                            grid: { color: '#f1f5f9' },
-                            ticks: { font: { weight: 'bold' } }
+                            grid: { color: '#f8fafc', drawBorder: false },
+                            ticks: { color: '#cbd5e1', font: { size: 10 } }
                         },
                         x: { 
                             grid: { display: false },
-                            ticks: { 
-                                font: { size: 11, weight: 'bold' },
-                                maxRotation: isMobile ? 45 : 0 // Xoay chữ trên mobile
-                            }
+                            ticks: { color: '#94a3b8', font: { size: 10, weight: '600' } }
                         }
                     }
                 }
             });
         }
 
-        window.onload = initData;
+        window.onload = initApp;
     </script>
 </body>
 </html>
