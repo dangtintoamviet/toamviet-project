@@ -85,12 +85,12 @@
         }
 
         .footer-link-group h4 {
-            font-weight: 800;
+            font-weight: 700;
             font-size: 14px;
             margin-bottom: 15px;
             color: #2C2C2C;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
         }
 
         .footer-link-group ul {
@@ -113,6 +113,17 @@
             position: relative;
             height: 380px;
             width: 100%;
+        }
+
+        .empty-note {
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 16px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 20px;
         }
 
         @media (max-width: 640px) {
@@ -201,15 +212,17 @@
                     Báo cáo <span class="text-[--vip-color]">Giá Nhà Đất Bình Dương</span>
                 </h1>
                 <p class="text-[13px] text-slate-500 mt-1 font-medium italic">
-                    Cập nhật từ <span id="total-ads" class="font-bold">0</span> tin đăng thực tế
+                    Cập nhật từ <span id="total-ads" class="font-bold">0</span> tin đăng bán thực tế
                 </p>
             </div>
             <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-1">
                 <button class="bg-slate-800 text-white px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider shrink-0">Bình Dương</button>
-                <button class="bg-white text-slate-500 border border-slate-200 px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider shrink-0">Hà Nội</button>
-                <button class="bg-white text-slate-500 border border-slate-200 px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider shrink-0">TP.HCM</button>
+                <button class="bg-white text-slate-500 border border-slate-200 px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider shrink-0" disabled>Hà Nội</button>
+                <button class="bg-white text-slate-500 border border-slate-200 px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider shrink-0" disabled>TP.HCM</button>
             </div>
         </div>
+
+        <div id="empty-note" class="empty-note hidden"></div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <div class="stats-card">
@@ -220,8 +233,8 @@
                 </div>
             </div>
             <div class="stats-card border-l-4 border-l-[--vip-color]">
-                <span class="sub-title">Dự án tâm điểm</span>
-                <h2 id="top-project" class="text-lg font-bold text-slate-700 mt-2 truncate">Đông Bình Dương</h2>
+                <span class="sub-title">Khu vực tâm điểm</span>
+                <h2 id="top-project" class="text-lg font-bold text-slate-700 mt-2 truncate">Đang cập nhật</h2>
             </div>
             <div class="stats-card">
                 <span class="sub-title">Cập nhật lúc</span>
@@ -231,16 +244,16 @@
 
         <div class="table-container mb-8 shadow-sm">
             <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
-                <h3 class="sub-title text-[--vip-color]">Phân tích chi tiết dự án</h3>
+                <h3 class="sub-title text-[--vip-color]">Phân tích chi tiết khu vực / loại bất động sản</h3>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-[600px]">
                     <thead>
                         <tr class="bg-white text-slate-400 text-[10px] uppercase tracking-wider border-b">
-                            <th class="px-6 py-4 font-bold">Dự án / Khu vực</th>
+                            <th class="px-6 py-4 font-bold">Khu vực / Sản phẩm</th>
                             <th class="px-6 py-4 text-center font-bold">Số tin</th>
-                            <th class="px-6 py-4 font-bold text-nowrap">Giá Thấp (Tr)</th>
-                            <th class="px-6 py-4 font-bold text-nowrap">Giá Cao (Tr)</th>
+                            <th class="px-6 py-4 font-bold text-nowrap">Giá thấp</th>
+                            <th class="px-6 py-4 font-bold text-nowrap">Giá cao</th>
                             <th class="px-6 py-4 text-slate-900 font-black">Trung bình</th>
                         </tr>
                     </thead>
@@ -263,10 +276,10 @@
 
             <div class="text-[14px] md:text-[15px] text-slate-600 leading-relaxed space-y-4">
                 <p>
-                    Hệ thống dữ liệu từ Tổ Ấm Việt cập nhật liên tục <strong>giá nhà đất Bình Dương</strong>, tập trung vào các điểm nóng tại Dĩ An và Thuận An. Đặc biệt, phân khúc <strong>giá đất nền dự án Đông Bình Dương</strong> đang giữ vai trò dẫn dắt thị trường nhờ hạ tầng đồng bộ và pháp lý ổn định. Đây là khu vực có tính thanh khoản cao, thu hút lượng lớn nhà đầu tư tìm kiếm cơ hội sinh lời an toàn.
+                    Hệ thống dữ liệu từ Tổ Ấm Việt đang ưu tiên lấy <strong>đơn giá từ các tin đăng bán thực tế</strong> để tính ra mặt bằng giá trung bình theo khu vực. Cách làm này giúp trang giá nhà đất bám sát dữ liệu người dùng đăng lên website, thay vì chỉ hiển thị số liệu cố định.
                 </p>
                 <p>
-                    Việc nắm bắt <strong>giá nhà đất Dĩ An</strong> thông qua bảng thống kê và biểu đồ trực quan giúp nhà đầu tư loại bỏ rủi ro từ các tin đăng ảo hoặc hiện tượng thổi giá. Chúng tôi cam kết mang lại những con số trung bình xác thực nhất dựa trên các giao dịch thực tế, hỗ trợ khách hàng có cái nhìn tổng quan và chiều sâu trước khi thực hiện quyết định đầu tư quan trọng.
+                    Khi lượng tin bán ngày càng nhiều, hệ thống sẽ cho ra bức tranh rõ hơn về <strong>giá nhà đất Bình Dương</strong>, đặc biệt ở các khu vực như Dĩ An, Thuận An và Thủ Dầu Một. Đây sẽ là nền tảng rất tốt để mở rộng thêm báo cáo giá theo quận huyện, loại sản phẩm và xu hướng tăng giảm theo thời gian.
                 </p>
             </div>
         </div>
@@ -386,69 +399,135 @@
     </div>
 
     <script>
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN');
+        let chartInstance = null;
 
-        const realEstateData = [
-            { project: "Đông Bình Dương", price: 1250, area: 80 },
-            { project: "Đông Bình Dương", price: 1080, area: 80 },
-            { project: "Bcons City", price: 2100, area: 55 },
-            { project: "Charm City", price: 4200, area: 90 },
-            { project: "Icon Central", price: 3800, area: 80 },
-            { project: "Phú Hồng Thịnh", price: 3200, area: 60 },
-            { project: "Midori Park", price: 5500, area: 100 },
-            { project: "The Habitat", price: 2900, area: 70 },
-            { project: "EcoLakes", price: 2400, area: 120 }
-        ];
+        function parseVietnamesePriceToMillion(priceText) {
+            if (!priceText) return null;
 
-        function initApp() {
-            const tableBody = document.getElementById('price-table-body');
+            const raw = String(priceText).toLowerCase().trim().replace(/,/g, '.');
+            const cleaned = raw.replace(/\s+/g, ' ').trim();
+
+            const nums = cleaned.match(/\d+(\.\d+)?/g);
+            if (!nums || !nums.length) return null;
+
+            if (cleaned.includes('tỷ')) {
+                if (nums.length >= 2) {
+                    return parseFloat(nums[0]) * 1000 + parseFloat(nums[1]);
+                }
+                return parseFloat(nums[0]) * 1000;
+            }
+
+            if (cleaned.includes('triệu')) {
+                return parseFloat(nums[0]);
+            }
+
+            const numericOnly = cleaned.replace(/[^\d.]/g, '');
+            if (!numericOnly) return null;
+
+            const value = parseFloat(numericOnly);
+            if (Number.isNaN(value)) return null;
+
+            if (value > 1000000000) return value / 1000000;
+            if (value > 1000000) return value / 1000000;
+
+            return value;
+        }
+
+        function getFallbackData() {
+            return [
+                { title: "Bán đất nền Đông Bình Dương", city: "Bình Dương", district: "Dĩ An", propertyType: "Đất nền", propertyPrice: "1.25 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate" },
+                { title: "Bán đất nền Đông Bình Dương", city: "Bình Dương", district: "Dĩ An", propertyType: "Đất nền", propertyPrice: "1.08 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate" },
+                { title: "Bán căn hộ Bcons City", city: "Bình Dương", district: "Dĩ An", propertyType: "Căn hộ", propertyPrice: "2.1 tỷ", propertyArea: "55", postType: "ban", flow: "real_estate" },
+                { title: "Bán căn hộ Charm City", city: "Bình Dương", district: "Thuận An", propertyType: "Căn hộ", propertyPrice: "4.2 tỷ", propertyArea: "90", postType: "ban", flow: "real_estate" },
+                { title: "Bán nhà phố Icon Central", city: "Bình Dương", district: "Thuận An", propertyType: "Nhà phố", propertyPrice: "3.8 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate" },
+                { title: "Bán nhà Phú Hồng Thịnh", city: "Bình Dương", district: "Dĩ An", propertyType: "Nhà phố", propertyPrice: "3.2 tỷ", propertyArea: "60", postType: "ban", flow: "real_estate" },
+                { title: "Bán căn hộ Midori Park", city: "Bình Dương", district: "Thủ Dầu Một", propertyType: "Căn hộ", propertyPrice: "5.5 tỷ", propertyArea: "100", postType: "ban", flow: "real_estate" },
+                { title: "Bán căn hộ The Habitat", city: "Bình Dương", district: "Thuận An", propertyType: "Căn hộ", propertyPrice: "2.9 tỷ", propertyArea: "70", postType: "ban", flow: "real_estate" },
+                { title: "Bán biệt thự EcoLakes", city: "Bình Dương", district: "Thủ Dầu Một", propertyType: "Biệt thự", propertyPrice: "2.4 tỷ", propertyArea: "120", postType: "ban", flow: "real_estate" }
+            ];
+        }
+
+        function getPropertyPosts() {
+            const savedPosts = JSON.parse(localStorage.getItem('propertyPosts') || '[]');
+
+            const validPosts = savedPosts.filter(post => {
+                return post &&
+                    post.flow === 'real_estate' &&
+                    post.postType === 'ban' &&
+                    (post.city || '').toLowerCase().includes('bình dương');
+            });
+
+            if (validPosts.length > 0) {
+                document.getElementById('empty-note').classList.add('hidden');
+                return validPosts;
+            }
+
+            document.getElementById('empty-note').classList.remove('hidden');
+            document.getElementById('empty-note').innerHTML = `
+                <strong>Chưa có đủ dữ liệu tin bán thật từ người dùng.</strong><br>
+                Hệ thống đang tạm dùng dữ liệu mẫu để giữ giao diện hoạt động. Khi bạn đăng tin bán ở Bình Dương từ trang đăng tin, bảng giá này sẽ tự động lấy dữ liệu mới từ localStorage.
+            `;
+            return getFallbackData();
+        }
+
+        function normalizePostsForPrice(posts) {
+            return posts
+                .map(post => {
+                    const priceInMillion = parseVietnamesePriceToMillion(post.propertyPrice);
+                    const area = parseFloat(post.propertyArea);
+
+                    if (!priceInMillion || !area || area <= 0) return null;
+
+                    const unitPrice = priceInMillion / area;
+                    const district = post.district && !post.district.startsWith('Chọn') ? post.district : 'Khu vực khác';
+                    const propertyType = post.propertyType || 'Bất động sản';
+                    const groupKey = `${district} - ${propertyType}`;
+
+                    return {
+                        groupKey,
+                        district,
+                        propertyType,
+                        priceInMillion,
+                        area,
+                        unitPrice
+                    };
+                })
+                .filter(Boolean);
+        }
+
+        function buildStats(data) {
             const stats = {};
 
-            realEstateData.forEach(item => {
-                if (!stats[item.project]) {
-                    stats[item.project] = { count: 0, min: 9999, max: 0, total: 0 };
+            data.forEach(item => {
+                if (!stats[item.groupKey]) {
+                    stats[item.groupKey] = {
+                        count: 0,
+                        min: Infinity,
+                        max: 0,
+                        total: 0,
+                        district: item.district,
+                        propertyType: item.propertyType
+                    };
                 }
-                const uPrice = item.price / item.area;
-                stats[item.project].count++;
-                stats[item.project].total += uPrice;
-                if (uPrice < stats[item.project].min) stats[item.project].min = uPrice;
-                if (uPrice > stats[item.project].max) stats[item.project].max = uPrice;
+
+                stats[item.groupKey].count += 1;
+                stats[item.groupKey].total += item.unitPrice;
+                stats[item.groupKey].min = Math.min(stats[item.groupKey].min, item.unitPrice);
+                stats[item.groupKey].max = Math.max(stats[item.groupKey].max, item.unitPrice);
             });
 
-            const sortedProjects = Object.keys(stats).sort((a, b) => stats[b].count - stats[a].count).slice(0, 9);
-            let sumAvg = 0;
-            const labels = [];
-            const dataPoints = [];
-
-            tableBody.innerHTML = "";
-            sortedProjects.forEach(p => {
-                const avg = stats[p].total / stats[p].count;
-                sumAvg += avg;
-                labels.push(p);
-                dataPoints.push(avg.toFixed(1));
-
-                tableBody.innerHTML += `
-                    <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-3 font-bold text-slate-800">${p}</td>
-                        <td class="px-6 py-3 text-center text-slate-500">${stats[p].count}</td>
-                        <td class="px-6 py-3 text-slate-500 font-mono">${stats[p].min.toFixed(1)}</td>
-                        <td class="px-6 py-3 text-slate-500 font-mono">${stats[p].max.toFixed(1)}</td>
-                        <td class="px-6 py-3"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
-                    </tr>`;
-            });
-
-            document.getElementById('avg-land-price').innerText = (sumAvg / sortedProjects.length).toFixed(1);
-            document.getElementById('total-ads').innerText = realEstateData.length;
-            document.getElementById('top-project').innerText = sortedProjects[0];
-
-            renderChart(labels, dataPoints);
+            return stats;
         }
 
         function renderChart(labels, dataPoints) {
             const ctx = document.getElementById('priceChart').getContext('2d');
             const isMobile = window.innerWidth < 768;
 
-            new Chart(ctx, {
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels,
@@ -456,7 +535,7 @@
                         data: dataPoints,
                         backgroundColor: 'rgba(0, 139, 139, 0.8)',
                         borderRadius: 6,
-                        barThickness: isMobile ? 12 : 30
+                        barThickness: isMobile ? 12 : 28
                     }]
                 },
                 options: {
@@ -479,6 +558,63 @@
             });
         }
 
+        function initApp() {
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN');
+
+            const posts = getPropertyPosts();
+            const normalized = normalizePostsForPrice(posts);
+            const stats = buildStats(normalized);
+            const tableBody = document.getElementById('price-table-body');
+
+            if (normalized.length === 0) {
+                document.getElementById('avg-land-price').innerText = '0';
+                document.getElementById('total-ads').innerText = '0';
+                document.getElementById('top-project').innerText = 'Chưa có dữ liệu';
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-slate-400">
+                            Chưa có đủ dữ liệu tin bán để tính báo cáo giá.
+                        </td>
+                    </tr>
+                `;
+                renderChart(['Chưa có dữ liệu'], [0]);
+                return;
+            }
+
+            const sortedKeys = Object.keys(stats)
+                .sort((a, b) => stats[b].count - stats[a].count || (stats[b].total / stats[b].count) - (stats[a].total / stats[a].count))
+                .slice(0, 10);
+
+            let totalAvgSum = 0;
+            const labels = [];
+            const dataPoints = [];
+            tableBody.innerHTML = '';
+
+            sortedKeys.forEach(key => {
+                const row = stats[key];
+                const avg = row.total / row.count;
+                totalAvgSum += avg;
+                labels.push(key);
+                dataPoints.push(avg.toFixed(1));
+
+                tableBody.innerHTML += `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-3 font-bold text-slate-800">${row.district} - ${row.propertyType}</td>
+                        <td class="px-6 py-3 text-center text-slate-500">${row.count}</td>
+                        <td class="px-6 py-3 text-slate-500 font-mono">${row.min.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-3 text-slate-500 font-mono">${row.max.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-3"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('avg-land-price').innerText = (totalAvgSum / sortedKeys.length).toFixed(1);
+            document.getElementById('total-ads').innerText = normalized.length;
+            document.getElementById('top-project').innerText = sortedKeys[0] || 'Đang cập nhật';
+
+            renderChart(labels, dataPoints);
+        }
+
         function sendToZalo() {
             const name = document.getElementById("cusName").value;
             const msg = document.getElementById("cusMsg").value;
@@ -494,7 +630,11 @@
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
 
-        window.onload = initApp;
+        window.addEventListener('load', initApp);
+        window.addEventListener('resize', () => {
+            clearTimeout(window.__priceChartResizeTimer);
+            window.__priceChartResizeTimer = setTimeout(initApp, 250);
+        });
     </script>
     <script src="../assets/js/main.js"></script>
 </body>
