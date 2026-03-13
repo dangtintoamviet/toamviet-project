@@ -1,41 +1,71 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng tin chuyên nghiệp | toamviet.com.vn</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
-    <style>
-        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Roboto', sans-serif; background-color: #f4f7fa; color: #1e293b; }
-        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+<header class="bg-white border-b sticky top-0 z-[1000]">
+    <div class="max-w-[1366px] mx-auto h-[80px] flex justify-between items-center px-4 md:px-6">
         
-        .nav-link { font-size: 14px; font-weight: 600; color: #1e293b; transition: 0.3s; }
-        .nav-link:hover { color: var(--hover-color); }
-        .btn-post { border: 1.5px solid var(--vip-color); color: var(--vip-color); padding: 6px 16px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
-        .btn-post:hover { background: var(--vip-color); color: white; }
+        <div class="flex items-center gap-6 lg:gap-8">
+            <a href="index.html" class="shrink-0">
+                <img src="Logo ToamViet.png" alt="Logo ToamViet" class="h-10 w-auto">
+            </a>
+            
+            <nav class="hidden xl:flex items-center gap-4 lg:gap-5">
+                <a href="index.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Trang chủ</a>
+                <a href="nha-dat-ban.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Nhà đất bán</a>
+                <a href="nha-dat-cho-thue.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Nhà đất cho thuê</a>
+                <a href="du-an.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Dự án</a>
+                
+                <a href="xay-dung.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Xây dựng</a>
+                
+                <a href="gia-nha-dat.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Giá nhà đất</a>
+                
+                <a href="tin-tuc.html" class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition text-nowrap">Tin tức</a>
+                
+                <div class="relative group py-4">
+                    <button class="text-[14px] font-semibold text-[#2C2C2C] hover:text-[#008B8B] transition flex items-center gap-1.5 uppercase">
+                        Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="absolute top-[90%] left-0 bg-white shadow-xl rounded-xl p-2 min-w-[200px] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="danh-ba.html" class="block p-3 text-sm font-semibold hover:bg-slate-50 rounded-lg text-slate-700">Danh bạ Môi giới</a>
+                        <a href="danh-ba-doanh-nghiep.html" class="block p-3 text-sm font-semibold hover:bg-slate-50 rounded-lg text-slate-700">Danh bạ Doanh nghiệp</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <div class="flex items-center gap-3 sm:gap-4 lg:gap-5 pl-4 border-l border-slate-100">
+            <div class="flex items-center gap-3 sm:gap-4 text-slate-500">
+                <button class="relative hover:text-[#008B8B] transition p-1">
+                    <i class="fa-regular fa-message text-lg"></i>
+                </button>
+                <button class="relative hover:text-[#008B8B] transition p-1">
+                    <i class="fa-regular fa-heart text-lg"></i>
+                    <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+                <button class="relative hover:text-[#008B8B] transition p-1">
+                    <i class="fa-regular fa-bell text-lg"></i>
+                </button>
+            </div>
 
-        /* Tabs */
-        .tab-btn { padding: 18px; font-weight: 700; border-bottom: 4px solid transparent; transition: 0.3s; cursor: pointer; text-transform: uppercase; font-size: 13px; color: #64748b; }
-        .tab-btn.active { color: var(--vip-color); border-bottom-color: var(--vip-color); background: white; }
-
-        /* Input */
-        .input-field { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; outline: none; transition: 0.3s; background: #fff; font-size: 14px; font-weight: 500; }
-        .input-field:focus { border-color: var(--vip-color); box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.1); }
-        .step-label { font-size: 11px; font-weight: 900; color: var(--vip-color); text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 15px; border-left: 4px solid var(--vip-color); padding-left: 12px; }
-
-        /* Profile Selector */
-        .profile-opt { border: 2px solid #e2e8f0; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s; }
-        .profile-opt.selected { border-color: var(--vip-color); background: #f0fdfa; }
-    </style>
-</head>
+            <div class="flex items-center gap-2 lg:gap-3">
+                <div class="text-right hidden sm:block">
+                    <p class="text-[11px] font-black text-slate-800 leading-none">THÀNH VIÊN</p>
+                    <p class="text-[10px] text-green-500 font-bold mt-1 uppercase">Đang trực tuyến</p>
+                </div>
+                <button class="w-10 h-10 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold text-sm border-2 border-white shadow-sm">
+                    AV
+                </button>
+            </div>
+            
+            <a href="dang-tin.html" class="bg-[#008B8B] text-white px-5 sm:px-6 py-2.5 rounded-xl text-[11px] sm:text-[12px] font-black uppercase tracking-wider hover:bg-slate-800 transition shadow-sm text-nowrap">
+                Đăng tin
+            </a>
+            
+            <button class="xl:hidden p-2 text-slate-600">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </div>
+</header>
 <body>
 
     <header class="bg-white border-b sticky top-0 z-[1000]">
