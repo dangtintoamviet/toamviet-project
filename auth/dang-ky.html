@@ -3,42 +3,394 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký thành viên | toamviet.com.vn</title>
+    <title>Đăng ký tài khoản | ToamViet.com.vn</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <style>
-        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f7; }
-        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        
-        /* Header Sync */
-        .nav-link { font-size: 14px; font-weight: 600; color: #2C2C2C; transition: 0.3s; }
-        .nav-link:hover { color: var(--hover-color); }
-        .btn-post { border: 1.5px solid var(--vip-color); color: var(--vip-color); padding: 6px 16px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
-        .btn-post:hover { background: var(--vip-color); color: white; }
+        :root {
+            --vip-color: #008B8B;
+            --hover-color: #FF8C00;
+        }
 
-        /* Register Card */
-        .reg-card { background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; display: flex; max-width: 900px; margin: 40px auto; }
-        .reg-side { width: 35%; background: var(--vip-color); color: white; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-        .reg-form { width: 65%; padding: 40px; }
-        
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px; }
-        .input-group input, .input-group select { width: 100%; border: 1px solid #ddd; padding: 10px 12px; border-radius: 6px; outline: none; font-size: 14px; transition: 0.3s; }
-        .input-group input:focus { border-color: var(--vip-color); box-shadow: 0 0 0 3px rgba(0,139,139,0.1); }
-        
-        .btn-reg { background: var(--vip-color); color: white; width: 100%; padding: 12px; border-radius: 6px; font-weight: bold; margin-top: 20px; transition: 0.3s; cursor: pointer; border: none; }
-        .btn-reg:hover { background: #006b6b; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,139,139,0.3); }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f7;
+            color: #2C2C2C;
+        }
 
-        .type-selector { display: flex; gap: 10px; margin-bottom: 20px; }
-        .type-option { flex: 1; border: 2px solid #eee; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .type-option.active { border-color: var(--vip-color); background: #f0fafa; color: var(--vip-color); }
-        .type-option i { display: block; font-size: 20px; margin-bottom: 5px; }
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
 
-        /* Footer Sync */
-        .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; }
-        .footer-list li { margin-bottom: 10px; font-size: 13.5px; color: #555; cursor: pointer; transition: 0.2s; }
-        .footer-list li:hover { color: var(--hover-color); padding-left: 4px; }
+        .nav-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2C2C2C;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--hover-color);
+        }
+
+        .btn-post {
+            border: 1.5px solid var(--vip-color);
+            color: var(--vip-color);
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-post:hover {
+            background: var(--vip-color);
+            color: white;
+        }
+
+        .reg-card {
+            background: white;
+            border-radius: 22px;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: flex;
+            max-width: 1080px;
+            margin: 40px auto;
+            border: 1px solid #e8eef1;
+        }
+
+        .reg-side {
+            width: 38%;
+            background: linear-gradient(135deg, #008B8B, #006b6b);
+            color: white;
+            padding: 40px 34px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .reg-form {
+            width: 62%;
+            padding: 34px;
+        }
+
+        .side-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: fit-content;
+            margin-bottom: 18px;
+        }
+
+        .side-title {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.35;
+            margin-bottom: 14px;
+        }
+
+        .side-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.92);
+            margin-bottom: 24px;
+        }
+
+        .side-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .side-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .side-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.14);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .reg-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .reg-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 22px;
+        }
+
+        .section-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .type-option {
+            border: 2px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.25s;
+            background: white;
+        }
+
+        .type-option.active {
+            border-color: var(--vip-color);
+            background: #f0fdfa;
+            color: var(--vip-color);
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.08);
+        }
+
+        .type-option i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .type-option-title {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .type-option-desc {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .input-box {
+            position: relative;
+        }
+
+        .input-box .left-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .input-box .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            border: 1px solid #dbe3eb;
+            padding: 12px 42px 12px 42px;
+            border-radius: 12px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.25s;
+            background: white;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0,139,139,0.10);
+        }
+
+        .field-note {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .checkbox-wrap {
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .checkbox-wrap input {
+            accent-color: var(--vip-color);
+            margin-top: 2px;
+        }
+
+        .status-box {
+            display: none;
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .btn-reg {
+            background: var(--vip-color);
+            color: white;
+            width: 100%;
+            padding: 13px;
+            border-radius: 12px;
+            font-weight: 800;
+            margin-top: 18px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-size: 13px;
+        }
+
+        .btn-reg:hover {
+            background: #006b6b;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(0,139,139,0.2);
+        }
+
+        .btn-reg:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .footer-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 20px;
+            color: #2C2C2C;
+            text-transform: uppercase;
+        }
+
+        .footer-list li {
+            margin-bottom: 10px;
+            font-size: 13.5px;
+            color: #555;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .footer-list li:hover {
+            color: var(--hover-color);
+            padding-left: 4px;
+        }
+
+        @media (max-width: 991px) {
+            .reg-card {
+                flex-direction: column;
+            }
+
+            .reg-side,
+            .reg-form {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid-2,
+            .type-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .reg-form {
+                padding: 22px 16px 28px;
+            }
+
+            .reg-title {
+                font-size: 24px;
+            }
+
+            .side-title {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -46,23 +398,22 @@
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[75px] flex justify-between items-center">
             <div class="flex items-center gap-6">
-                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
+                <a href="../index.html"><img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
                 <nav class="hidden xl:flex items-center gap-5">
-                    <a href="#" class="nav-link">Nhà đất bán</a>
-                    <a href="#" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="#" class="nav-link">Dự án</a>
-                    <a href="#" class="nav-link">Tin tức</a>
-                    <div class="relative group">
-                        <button class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
-                    </div>
+                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
+                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
+                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
+                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
                 </nav>
             </div>
-            
+
             <div class="flex items-center gap-4 font-semibold text-sm">
-                <a href="dang-nhap.html" class="text-gray-700 hover:text-[--vip-color]">Đăng nhập</a>
+                <a href="../auth/dang-nhap.html" class="text-gray-700 hover:text-[--vip-color]">Đăng nhập</a>
                 <span class="text-gray-300">|</span>
-                <a href="dang-ky.html" class="text-[--vip-color]">Đăng ký</a>
-                <a href="#" class="btn-post text-xs uppercase ml-2">Đăng tin</a>
+                <a href="../auth/dang-ky.html" class="text-[--vip-color]">Đăng ký</a>
+                <a href="../user/dang-tin.html" class="btn-post text-xs uppercase ml-2">Đăng tin</a>
             </div>
         </div>
     </header>
@@ -70,65 +421,173 @@
     <main class="container-custom py-10">
         <div class="reg-card">
             <div class="reg-side hidden md:flex">
-                <h2 class="text-2xl font-bold mb-6">Trở thành đối tác của Tổ Ấm Việt</h2>
-                <ul class="space-y-5 text-sm">
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1 text-teal-200"></i> Tiếp cận 1.000.000+ khách hàng tiềm năng mỗi tháng.</li>
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1 text-teal-200"></i> Công cụ quản lý tin đăng thông minh, chuyên nghiệp.</li>
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-check mt-1 text-teal-200"></i> Xây dựng thương hiệu cá nhân/doanh nghiệp uy tín.</li>
-                </ul>
-                <div class="mt-12 pt-8 border-t border-teal-600 text-[11px] opacity-70 italic text-center leading-relaxed">
-                    "Giải pháp công nghệ dẫn đầu<br>cho môi giới Bất động sản"
+                <div class="side-badge">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Tài khoản hệ thống
+                </div>
+
+                <h2 class="side-title">Đăng ký đúng nhóm để dữ liệu đi đúng trang</h2>
+                <p class="side-desc">
+                    Tài khoản đăng ký ở đây sẽ được dùng xuyên suốt cho đăng nhập, đăng tin, hiển thị người đăng và phân loại nội dung theo đúng luồng bất động sản hoặc xây dựng.
+                </p>
+
+                <div class="side-list">
+                    <div class="side-item">
+                        <span class="side-icon"><i class="fa-solid fa-house"></i></span>
+                        <span>Nhóm Bất động sản dùng cho cá nhân, môi giới, doanh nghiệp đăng tin bán và cho thuê.</span>
+                    </div>
+                    <div class="side-item">
+                        <span class="side-icon"><i class="fa-solid fa-helmet-safety"></i></span>
+                        <span>Nhóm Xây dựng dùng cho công ty xây dựng, kỹ sư, kiến trúc sư và nhà thầu dịch vụ.</span>
+                    </div>
+                    <div class="side-item">
+                        <span class="side-icon"><i class="fa-solid fa-chart-line"></i></span>
+                        <span>Tên, vai trò, công ty và khu vực hoạt động sẽ được các trang khác lấy lại để hiển thị đồng bộ.</span>
+                    </div>
                 </div>
             </div>
 
             <div class="reg-form">
-                <h1 class="text-xl font-bold text-gray-800 mb-2">Tạo tài khoản mới</h1>
-                <p class="text-gray-400 text-[11px] mb-6">Vui lòng điền chính xác thông tin để Admin duyệt hồ sơ nhanh chóng.</p>
+                <h1 class="reg-title">Tạo tài khoản mới</h1>
+                <p class="reg-subtitle">
+                    Vui lòng điền chính xác thông tin để hệ thống phân luồng nội dung đúng và đồng bộ với các trang liên quan.
+                </p>
 
-                <form action="#">
-                    <label class="text-[13px] font-bold text-gray-700 block mb-2">Bạn đăng ký với tư cách:</label>
-                    <div class="type-selector">
-                        <div class="type-option active" onclick="selectType(this, 'broker')">
-                            <i class="fa-solid fa-user-tie"></i>
-                            <span class="text-[10px] font-bold uppercase">Môi giới</span>
-                        </div>
-                        <div class="type-option" onclick="selectType(this, 'company')">
-                            <i class="fa-solid fa-building"></i>
-                            <span class="text-[10px] font-bold uppercase">Doanh nghiệp</span>
-                        </div>
-                    </div>
+                <form id="register-form" novalidate>
+                    <div class="section-box">
+                        <div class="section-title">1. Chọn nhóm tài khoản</div>
+                        <div class="type-selector">
+                            <div class="type-option active" id="group-real-estate" data-group="real_estate">
+                                <i class="fa-solid fa-house"></i>
+                                <span class="type-option-title">Bất động sản</span>
+                                <span class="type-option-desc">Dành cho đăng tin bán, cho thuê, môi giới, doanh nghiệp BĐS.</span>
+                            </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="input-group">
-                            <label>Họ và tên *</label>
-                            <input type="text" placeholder="Nguyễn Văn A" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Số điện thoại *</label>
-                            <input type="text" placeholder="09xx xxx xxx" required>
+                            <div class="type-option" id="group-construction" data-group="construction">
+                                <i class="fa-solid fa-helmet-safety"></i>
+                                <span class="type-option-title">Xây dựng</span>
+                                <span class="type-option-desc">Dành cho công ty xây dựng, kỹ sư, kiến trúc sư, nhà thầu.</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label>Địa chỉ Email *</label>
-                        <input type="email" placeholder="example@gmail.com" required>
+                    <div class="section-box">
+                        <div class="section-title">2. Vai trò tài khoản</div>
+                        <div class="input-group !mb-0">
+                            <label for="register-role">Vai trò cụ thể *</label>
+                            <div class="input-box">
+                                <i class="fa-solid fa-briefcase left-icon"></i>
+                                <select id="register-role" required>
+                                    <option value="">Chọn vai trò</option>
+                                </select>
+                            </div>
+                            <div class="field-note">
+                                Vai trò này sẽ được các trang đăng tin, nhà đất bán, nhà đất cho thuê hoặc xây dựng dùng lại để hiển thị đúng loại người đăng.
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="company-field" class="input-group hidden">
-                        <label>Tên Công ty / Sàn giao dịch *</label>
-                        <input type="text" placeholder="Công ty BĐS Tổ Ấm Việt">
+                    <div class="section-box">
+                        <div class="section-title">3. Thông tin cá nhân</div>
+
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label for="register-name">Họ và tên *</label>
+                                <div class="input-box">
+                                    <i class="fa-solid fa-user left-icon"></i>
+                                    <input id="register-name" type="text" placeholder="Nguyễn Văn A" required>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="register-phone">Số điện thoại *</label>
+                                <div class="input-box">
+                                    <i class="fa-solid fa-phone left-icon"></i>
+                                    <input id="register-phone" type="text" placeholder="09xx xxx xxx" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group !mb-0">
+                            <label for="register-email">Địa chỉ Email *</label>
+                            <div class="input-box">
+                                <i class="fa-solid fa-envelope left-icon"></i>
+                                <input id="register-email" type="email" placeholder="example@gmail.com" required>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="input-group">
-                        <label>Mật khẩu *</label>
-                        <input type="password" placeholder="Tối thiểu 6 ký tự" required>
+                    <div class="section-box">
+                        <div class="section-title">4. Thông tin đồng bộ hiển thị</div>
+
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label for="register-brand">Tên công ty / thương hiệu</label>
+                                <div class="input-box">
+                                    <i class="fa-solid fa-building left-icon"></i>
+                                    <input id="register-brand" type="text" placeholder="Công ty BĐS Tổ Ấm Việt">
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="register-area">Khu vực hoạt động</label>
+                                <div class="input-box">
+                                    <i class="fa-solid fa-location-dot left-icon"></i>
+                                    <input id="register-area" type="text" placeholder="Ví dụ: Bình Dương, TP.HCM">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group !mb-0">
+                            <label for="register-specialty">Chuyên môn / mảng hoạt động chính</label>
+                            <div class="input-box">
+                                <i class="fa-solid fa-screwdriver-wrench left-icon"></i>
+                                <input id="register-specialty" type="text" placeholder="Ví dụ: Đất nền, căn hộ, xây nhà trọn gói...">
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="text-[11px] text-gray-500 mt-4 leading-relaxed">
-                        Bằng việc nhấn "Đăng ký thành viên", bạn đã đồng ý với <a href="#" class="text-[--vip-color] underline">Điều khoản dịch vụ</a> và <a href="#" class="text-[--vip-color] underline">Chính sách bảo mật</a>
+                    <div class="section-box">
+                        <div class="section-title">5. Bảo mật tài khoản</div>
+
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label for="register-password">Mật khẩu *</label>
+                                <div class="input-box">
+                                    <i class="fa-solid fa-lock left-icon"></i>
+                                    <input id="register-password" type="password" placeholder="Tối thiểu 6 ký tự" required>
+                                    <button type="button" class="toggle-password" data-target="register-password">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="register-confirm-password">Nhập lại mật khẩu *</label>
+                                <div class="input-box">
+                                    <i class="fa-solid fa-lock left-icon"></i>
+                                    <input id="register-confirm-password" type="password" placeholder="Nhập lại mật khẩu" required>
+                                    <button type="button" class="toggle-password" data-target="register-confirm-password">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label class="checkbox-wrap">
+                            <input type="checkbox" id="agree-policy">
+                            <span>
+                                Bằng việc nhấn "Đăng ký thành viên", bạn đồng ý với
+                                <a href="#" class="text-[--vip-color] underline">Điều khoản dịch vụ</a>
+                                và
+                                <a href="#" class="text-[--vip-color] underline">Chính sách bảo mật</a>.
+                            </span>
+                        </label>
                     </div>
 
-                    <button type="submit" class="btn-reg uppercase tracking-widest text-sm">Đăng ký thành viên</button>
+                    <div id="register-status" class="status-box"></div>
+
+                    <button type="submit" class="btn-reg" id="register-submit">Đăng ký thành viên</button>
                 </form>
             </div>
         </div>
@@ -176,10 +635,10 @@
 
             <div class="border-t pt-10 flex flex-col lg:flex-row justify-between items-start gap-8">
                 <div class="max-w-md">
-                    <img src="DAI TRONG SUOT (2).png" class="h-8 mb-6 opacity-80" alt="Logo">
+                    <img src="../DAI TRONG SUOT (2).png" class="h-8 mb-6 opacity-80" alt="Logo">
                     <h5 class="font-bold text-gray-800 text-sm uppercase">Bất động sản Tổ Ấm Việt</h5>
                     <p class="text-xs text-gray-500 mt-2 flex items-start gap-2 leading-relaxed">
-                        <i class="fa-solid fa-location-dot mt-1 text-[--vip-color]"></i> 
+                        <i class="fa-solid fa-location-dot mt-1 text-[--vip-color]"></i>
                         Tầng 31, Keangnam Landmark 72, Nam Từ Liêm, Hà Nội
                     </p>
                     <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
@@ -200,34 +659,204 @@
             </div>
         </div>
     </footer>
-<script>
-    function selectType(element, type) {
-        document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('active'));
-        element.classList.add('active');
-        const companyField = document.getElementById('company-field');
-        if (type === 'company') {
-            companyField.classList.remove('hidden');
-        } else {
-            companyField.classList.add('hidden');
+
+    <script>
+        let currentGroup = 'real_estate';
+
+        const realEstateRoles = [
+            { value: "individual_poster", label: "Cá nhân đăng tin bất động sản" },
+            { value: "broker", label: "Môi giới bất động sản" },
+            { value: "real_estate_company", label: "Doanh nghiệp / Sàn bất động sản" }
+        ];
+
+        const constructionRoles = [
+            { value: "construction_company", label: "Công ty xây dựng" },
+            { value: "engineer_architect", label: "Kỹ sư / Kiến trúc sư / Nhà thầu" }
+        ];
+
+        const groupRealEstate = document.getElementById('group-real-estate');
+        const groupConstruction = document.getElementById('group-construction');
+        const roleSelect = document.getElementById('register-role');
+        const registerForm = document.getElementById('register-form');
+        const registerStatus = document.getElementById('register-status');
+        const registerSubmit = document.getElementById('register-submit');
+
+        function populateRoleOptions(groupValue) {
+            roleSelect.innerHTML = '<option value="">Chọn vai trò</option>';
+            const roles = groupValue === 'construction' ? constructionRoles : realEstateRoles;
+
+            roles.forEach(role => {
+                const option = document.createElement('option');
+                option.value = role.value;
+                option.textContent = role.label;
+                roleSelect.appendChild(option);
+            });
         }
-    }
 
-    // --- CODE XỬ LÝ ĐĂNG KÝ MỚI ---
-    document.querySelector('form').addEventListener('submit', function(e) {
-        e.preventDefault(); // Chặn việc tải lại trang
-        
-        const name = document.querySelector('input[placeholder="Nguyễn Văn A"]').value;
-        const phone = document.querySelector('input[placeholder="09xx xxx xxx"]').value;
-        const email = document.querySelector('input[type="email"]').value;
-        const password = document.querySelector('input[type="password"]').value;
-        
-        // Lưu vào bộ nhớ trình duyệt (LocalStorage)
-        const userData = { name, phone, email, password, role: 'user', status: 'pending' };
-        localStorage.setItem('registeredUser', JSON.stringify(userData));
+        function setGroup(group) {
+            currentGroup = group;
+            groupRealEstate.classList.toggle('active', group === 'real_estate');
+            groupConstruction.classList.toggle('active', group === 'construction');
+            populateRoleOptions(group);
+        }
 
-        alert('Đăng ký thành công! Thông tin của bạn đã được gửi đến Admin chờ duyệt.');
-        window.location.href = 'dang-nhap.html'; // Chuyển sang trang đăng nhập
-    });
-</script>
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidPhone(phone) {
+            return /^(0|\+84)[0-9]{9,10}$/.test(phone.replace(/\s+/g, ''));
+        }
+
+        function getRoleLabel(roleValue) {
+            const allRoles = [...realEstateRoles, ...constructionRoles];
+            const found = allRoles.find(item => item.value === roleValue);
+            return found ? found.label : roleValue;
+        }
+
+        function getAccountGroupLabel(groupValue) {
+            return groupValue === 'construction' ? 'Xây dựng' : 'Bất động sản';
+        }
+
+        function getRegisteredUsers() {
+            return JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+        }
+
+        function saveRegisteredUsers(users) {
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+        }
+
+        function saveLegacyUser(user) {
+            localStorage.setItem('registeredUser', JSON.stringify(user));
+        }
+
+        function saveCurrentUser(user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+        }
+
+        groupRealEstate.addEventListener('click', () => setGroup('real_estate'));
+        groupConstruction.addEventListener('click', () => setGroup('construction'));
+
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.className = 'fa-regular fa-eye-slash';
+                } else {
+                    input.type = 'password';
+                    icon.className = 'fa-regular fa-eye';
+                }
+            });
+        });
+
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            registerStatus.className = 'status-box';
+            registerStatus.textContent = '';
+
+            const role = roleSelect.value;
+            const fullName = document.getElementById('register-name').value.trim();
+            const phone = document.getElementById('register-phone').value.trim();
+            const email = document.getElementById('register-email').value.trim().toLowerCase();
+            const brandName = document.getElementById('register-brand').value.trim();
+            const serviceArea = document.getElementById('register-area').value.trim();
+            const specialty = document.getElementById('register-specialty').value.trim();
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const agreePolicy = document.getElementById('agree-policy').checked;
+
+            if (!role || !fullName || !phone || !email || !password || !confirmPassword) {
+                registerStatus.className = 'status-box error';
+                registerStatus.textContent = 'Vui lòng điền đầy đủ các trường bắt buộc.';
+                return;
+            }
+
+            if (!isValidPhone(phone)) {
+                registerStatus.className = 'status-box error';
+                registerStatus.textContent = 'Số điện thoại chưa đúng định dạng Việt Nam.';
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                registerStatus.className = 'status-box error';
+                registerStatus.textContent = 'Email chưa đúng định dạng.';
+                return;
+            }
+
+            if (password.length < 6) {
+                registerStatus.className = 'status-box error';
+                registerStatus.textContent = 'Mật khẩu phải có ít nhất 6 ký tự.';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                registerStatus.className = 'status-box error';
+                registerStatus.textContent = 'Mật khẩu nhập lại chưa khớp.';
+                return;
+            }
+
+            if (!agreePolicy) {
+                registerStatus.className = 'status-box error';
+                registerStatus.textContent = 'Bạn cần đồng ý với điều khoản và chính sách trước khi tiếp tục.';
+                return;
+            }
+
+            const users = getRegisteredUsers();
+
+            if (users.some(user => user.email === email)) {
+                registerStatus.className = 'status-box error';
+                registerStatus.textContent = 'Email này đã được đăng ký trước đó.';
+                return;
+            }
+
+            if (users.some(user => user.phone === phone)) {
+                registerStatus.className = 'status-box error';
+                registerStatus.textContent = 'Số điện thoại này đã được đăng ký trước đó.';
+                return;
+            }
+
+            registerSubmit.disabled = true;
+            registerSubmit.textContent = 'Đang tạo tài khoản...';
+
+            const newUser = {
+                id: 'user_' + Date.now(),
+                accountGroup: currentGroup,
+                accountGroupLabel: getAccountGroupLabel(currentGroup),
+                role: role,
+                roleLabel: getRoleLabel(role),
+                fullName: fullName,
+                phone: phone,
+                email: email,
+                brandName: brandName,
+                serviceArea: serviceArea,
+                specialty: specialty,
+                password: password,
+                status: 'active',
+                createdAt: new Date().toISOString()
+            };
+
+            users.unshift(newUser);
+            saveRegisteredUsers(users);
+            saveLegacyUser(newUser);
+            saveCurrentUser(newUser);
+
+            registerStatus.className = 'status-box success';
+            registerStatus.innerHTML = `
+                Đăng ký thành công cho nhóm <strong>${newUser.accountGroupLabel}</strong>.<br>
+                Hệ thống đã lưu dữ liệu để các trang đăng nhập, đăng tin và hiển thị người đăng dùng lại ngay.
+            `;
+
+            setTimeout(() => {
+                window.location.href = '../auth/dang-nhap.html';
+            }, 1200);
+        });
+
+        setGroup('real_estate');
+    </script>
 </body>
 </html>
