@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biến động giá nhà đất | toamviet.com.vn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f4f8; padding: 20px; }
+        .stats-card { background: white; border-radius: 16px; padding: 24px; shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .price-up { color: #10b981; font-size: 12px; font-weight: bold; }
+        .price-down { color: #ef4444; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tight">Phân tích giá thị trường</h1>
+                <p class="text-sm text-gray-500 italic">Dữ liệu được tính toán tự động từ <span id="total-ads" class="font-bold text-[--vip-color]">0</span> tin đăng thực tế</p>
+            </div>
+            <div class="bg-white p-2 rounded-lg border flex gap-2">
+                <button onclick="calculatePrice('binh-duong')" class="bg-[--vip-color] text-white px-4 py-2 rounded-md text-xs font-bold uppercase">Bình Dương</button>
+                <button onclick="calculatePrice('hanoi')" class="hover:bg-gray-100 px-4 py-2 rounded-md text-xs font-bold uppercase transition">Hà Nội</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="stats-card">
+                <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Giá trung bình đất nền</p>
+                <div class="flex items-baseline gap-2">
+                    <h2 id="avg-land-price" class="text-3xl font-bold text-slate-800">0</h2>
+                    <span class="text-sm font-bold text-gray-500 text-sm">Tr/m²</span>
+                </div>
+                <p class="price-up mt-2"><i class="fa-solid fa-arrow-trend-up"></i> +2.4% <span class="text-gray-400 font-normal">so với tháng trước</span></p>
+            </div>
+
+            <div class="stats-card">
+                <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Dự án biến động nhất</p>
+                <h2 id="hot-project" class="text-xl font-bold text-slate-800">Đông Bình Dương</h2>
+                <p class="text-xs text-[--vip-color] font-bold mt-2 underline cursor-pointer">Xem 1,245 tin rao tại đây</p>
+            </div>
+
+            <div class="stats-card">
+                <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Tổng nguồn cung mới</p>
+                <h2 id="new-supply" class="text-3xl font-bold text-slate-800">0</h2>
+                <p class="text-xs text-gray-400 mt-2">Tin đăng mới trong 30 ngày qua</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border shadow-sm overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-800 text-white text-[11px] uppercase tracking-widest">
+                        <th class="px-6 py-4">Khu vực / Dự án</th>
+                        <th class="px-6 py-4 text-center">Số tin rao</th>
+                        <th class="px-6 py-4">Giá thấp nhất</th>
+                        <th class="px-6 py-4">Giá cao nhất</th>
+                        <th class="px-6 py-4 bg-slate-700">Giá trung bình</th>
+                    </tr>
+                </thead>
+                <tbody id="price-table-body" class="text-sm">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // DỮ LIỆU TIN ĐĂNG (Sau này sẽ được kết nối tự động từ file dang-tin.html)
+        const realEstateData = [
+            { id: 1, title: "Lô đất A", project: "Đông Bình Dương", district: "Dĩ An", price: 1250, area: 80, type: "Đất nền" }, // 1250 triệu = 1.25 tỷ
+            { id: 2, title: "Lô đất B", project: "Đông Bình Dương", district: "Dĩ An", price: 1100, area: 80, type: "Đất nền" },
+            { id: 3, title: "Căn hộ C", project: "Bcons City", district: "Dĩ An", price: 2100, area: 55, type: "Căn hộ" },
+            { id: 4, title: "Nhà phố D", project: "Charm City", district: "Dĩ An", price: 4500, area: 100, type: "Nhà phố" }
+        ];
+
+        function calculatePrice(region) {
+            const tableBody = document.getElementById('price-table-body');
+            const totalAdsElem = document.getElementById('total-ads');
+            tableBody.innerHTML = ""; // Xóa dữ liệu cũ
+            
+            // Gom nhóm theo dự án
+            const stats = {};
+
+            realEstateData.forEach(item => {
+                if (!stats[item.project]) {
+                    stats[item.project] = {
+                        count: 0,
+                        min: item.price / item.area,
+                        max: item.price / item.area,
+                        totalUnitPrice: 0
+                    };
+                }
+                
+                let unitPrice = item.price / item.area;
+                stats[item.project].count++;
+                stats[item.project].totalUnitPrice += unitPrice;
+                if (unitPrice < stats[item.project].min) stats[item.project].min = unitPrice;
+                if (unitPrice > stats[item.project].max) stats[item.project].max = unitPrice;
+            });
+
+            // Hiển thị ra bảng
+            let grandTotalUnitPrice = 0;
+            let projectCount = 0;
+
+            for (const project in stats) {
+                const avg = stats[project].totalUnitPrice / stats[project].count;
+                grandTotalUnitPrice += avg;
+                projectCount++;
+
+                const row = `
+                    <tr class="border-b hover:bg-slate-50 transition">
+                        <td class="px-6 py-4 font-bold text-slate-700">${project}</td>
+                        <td class="px-6 py-4 text-center font-semibold text-gray-500">${stats[project].count}</td>
+                        <td class="px-6 py-4 text-gray-400">${stats[project].min.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-4 text-gray-400">${stats[project].max.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-4 bg-teal-50 font-black text-[--vip-color]">${avg.toFixed(1)} Tr/m²</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            }
+
+            // Cập nhật các con số tổng quát
+            document.getElementById('avg-land-price').innerText = (grandTotalUnitPrice / projectCount).toFixed(1);
+            document.getElementById('total-ads').innerText = realEstateData.length;
+            document.getElementById('new-supply').innerText = realEstateData.length;
+        }
+
+        // Chạy lần đầu khi load trang
+        calculatePrice('binh-duong');
+    </script>
+
+</body>
+</html>
