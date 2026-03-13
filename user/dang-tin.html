@@ -31,19 +31,10 @@
             padding: 0 15px;
         }
 
-        .nav-link {
-            transition: all 0.3s;
-            position: relative;
-        }
+        .nav-link { transition: all 0.3s; position: relative; }
+        .nav-link:hover { color: var(--hover-color) !important; }
 
-        .nav-link:hover {
-            color: var(--hover-color) !important;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -55,7 +46,6 @@
             border-top: 2px solid var(--vip-color);
             z-index: 50;
         }
-
         .dropdown-item {
             padding: 10px 20px;
             display: block;
@@ -63,7 +53,6 @@
             font-size: 14px;
             border-bottom: 1px solid #f2f2f2;
         }
-
         .dropdown-item:hover {
             background: #f9f9f9;
             color: var(--hover-color);
@@ -187,9 +176,7 @@
             line-height: 1.5;
         }
 
-        .user-card {
-            padding: 24px;
-        }
+        .user-card { padding: 24px; }
 
         .user-top {
             display: flex;
@@ -239,9 +226,7 @@
             border-bottom: 1px dashed #e2e8f0;
         }
 
-        .user-meta-item:last-child {
-            border-bottom: none;
-        }
+        .user-meta-item:last-child { border-bottom: none; }
 
         .user-meta-item .meta-label {
             color: #64748b;
@@ -260,9 +245,7 @@
             gap: 24px;
         }
 
-        .form-card {
-            padding: 26px;
-        }
+        .form-card { padding: 26px; }
 
         .preview-card {
             padding: 22px;
@@ -304,6 +287,11 @@
             border-color: var(--vip-color);
             background: #f0fdfa;
             box-shadow: 0 8px 20px rgba(0, 139, 139, 0.08);
+        }
+
+        .flow-card.locked {
+            opacity: 0.65;
+            cursor: not-allowed;
         }
 
         .flow-card-title {
@@ -532,47 +520,29 @@
             list-style: none;
         }
 
-        .footer-link-group li {
-            margin-bottom: 8px;
-        }
-
+        .footer-link-group li { margin-bottom: 8px; }
         .footer-link-group li a:hover {
             color: var(--hover-color);
             text-decoration: underline;
         }
 
         @media (max-width: 1100px) {
-            .page-hero,
-            .layout-grid {
+            .page-hero, .layout-grid {
                 grid-template-columns: 1fr;
             }
-
-            .preview-card {
-                position: static;
-            }
+            .preview-card { position: static; }
         }
 
         @media (max-width: 768px) {
-            .hero-points {
-                grid-template-columns: 1fr;
-            }
-
-            .form-card,
-            .preview-card,
-            .user-card,
-            .hero-card {
+            .hero-points { grid-template-columns: 1fr; }
+            .form-card, .preview-card, .user-card, .hero-card {
                 padding: 18px;
                 border-radius: 20px;
             }
-
-            .upload-grid,
-            .preview-meta {
+            .upload-grid, .preview-meta {
                 grid-template-columns: 1fr;
             }
-
-            .hero-title {
-                font-size: 25px;
-            }
+            .hero-title { font-size: 25px; }
         }
     </style>
 </head>
@@ -1006,7 +976,10 @@
             'thu-dau-mot': ['Phú Cường', 'Hiệp Thành', 'Chánh Nghĩa', 'Phú Lợi', 'Phú Mỹ']
         };
 
-        const registeredUser = JSON.parse(localStorage.getItem('registeredUser')) || null;
+        const currentUser =
+            JSON.parse(localStorage.getItem('currentUser')) ||
+            JSON.parse(localStorage.getItem('registeredUser')) ||
+            null;
 
         const flowRealEstate = document.getElementById('flow-real-estate');
         const flowConstruction = document.getElementById('flow-construction');
@@ -1025,6 +998,15 @@
         const previewPoster = document.getElementById('previewPoster');
         const previewTitle = document.getElementById('previewTitle');
 
+        function getInitials(name) {
+            return (name || 'TV')
+                .split(' ')
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(w => w[0].toUpperCase())
+                .join('') || 'TV';
+        }
+
         function fillUserInfo() {
             const userName = document.getElementById('userName');
             const userRole = document.getElementById('userRole');
@@ -1036,9 +1018,9 @@
             const contactName = document.getElementById('contactName');
             const contactPhone = document.getElementById('contactPhone');
 
-            if (!registeredUser) {
+            if (!currentUser) {
                 userName.textContent = 'Tài khoản thành viên';
-                userRole.textContent = 'Chưa đăng ký dữ liệu thử nghiệm';
+                userRole.textContent = 'Chưa đăng nhập / chưa có dữ liệu';
                 userGroup.textContent = 'Khách';
                 userEmail.textContent = '---';
                 userPhone.textContent = '---';
@@ -1046,27 +1028,38 @@
                 userAvatar.textContent = 'TV';
                 contactName.value = '';
                 contactPhone.value = '';
+                previewPoster.textContent = 'Chưa có';
                 return;
             }
 
-            userName.textContent = registeredUser.fullName || 'Tài khoản thành viên';
-            userRole.textContent = registeredUser.role || 'Không rõ vai trò';
-            userGroup.textContent = registeredUser.accountGroup === 'construction' ? 'Xây dựng' : 'Bất động sản';
-            userEmail.textContent = registeredUser.email || '---';
-            userPhone.textContent = registeredUser.phone || '---';
-            userBrand.textContent = registeredUser.brandName || '---';
+            userName.textContent = currentUser.fullName || 'Tài khoản thành viên';
+            userRole.textContent = currentUser.roleLabel || currentUser.role || 'Không rõ vai trò';
+            userGroup.textContent = currentUser.accountGroupLabel || (currentUser.accountGroup === 'construction' ? 'Xây dựng' : 'Bất động sản');
+            userEmail.textContent = currentUser.email || '---';
+            userPhone.textContent = currentUser.phone || '---';
+            userBrand.textContent = currentUser.brandName || '---';
+            userAvatar.textContent = getInitials(currentUser.fullName);
 
-            const initials = (registeredUser.fullName || 'TV')
-                .split(' ')
-                .filter(Boolean)
-                .slice(0, 2)
-                .map(w => w[0].toUpperCase())
-                .join('');
-            userAvatar.textContent = initials || 'TV';
+            contactName.value = currentUser.brandName || currentUser.fullName || '';
+            contactPhone.value = currentUser.phone || '';
+            previewPoster.textContent = currentUser.brandName || currentUser.fullName || 'Chưa có';
+        }
 
-            contactName.value = registeredUser.brandName || registeredUser.fullName || '';
-            contactPhone.value = registeredUser.phone || '';
-            previewPoster.textContent = registeredUser.brandName || registeredUser.fullName || 'Chưa có';
+        function lockFlowByAccountGroup() {
+            if (!currentUser || !currentUser.accountGroup) return;
+
+            if (currentUser.accountGroup === 'construction') {
+                currentFlow = 'construction';
+                flowRealEstate.classList.add('locked');
+                flowRealEstate.style.pointerEvents = 'none';
+                setFlow('construction');
+                setProfile('doanhnghiep');
+            } else {
+                currentFlow = 'real_estate';
+                flowConstruction.classList.add('locked');
+                flowConstruction.style.pointerEvents = 'none';
+                setFlow('real_estate');
+            }
         }
 
         function updateWards() {
@@ -1082,10 +1075,10 @@
             updatePreview();
         }
 
-        function setProfile(p) {
-            currentProfile = p;
-            document.getElementById('prof-canhan').classList.toggle('selected', p === 'canhan');
-            document.getElementById('prof-doanhnghiep').classList.toggle('selected', p === 'doanhnghiep');
+        function setProfile(profile) {
+            currentProfile = profile;
+            document.getElementById('prof-canhan').classList.toggle('selected', profile === 'canhan');
+            document.getElementById('prof-doanhnghiep').classList.toggle('selected', profile === 'doanhnghiep');
         }
 
         function setFlow(flow) {
@@ -1211,13 +1204,12 @@
             const ward = wardSelect.options[wardSelect.selectedIndex]?.text || '';
             const contactName = document.getElementById('contactName').value.trim();
 
-            let locationText = [ward, district, city].filter(v => v && !v.startsWith('Chọn')).join(', ');
+            const locationText = [ward, district, city].filter(v => v && !v.startsWith('Chọn')).join(', ');
             previewLocation.textContent = locationText || 'Chưa chọn';
-            previewPoster.textContent = contactName || (registeredUser?.brandName || registeredUser?.fullName || 'Chưa có');
+            previewPoster.textContent = contactName || (currentUser?.brandName || currentUser?.fullName || 'Chưa có');
             previewTitle.textContent = title || 'Tiêu đề sẽ hiện ở đây sau khi bạn nhập';
 
             if (currentFlow === 'construction') {
-                const serviceType = document.getElementById('serviceType')?.value || 'Dịch vụ xây dựng';
                 const servicePrice = document.getElementById('servicePrice')?.value || 'Chưa nhập';
                 const serviceExp = document.getElementById('serviceExp')?.value || 'Chưa nhập';
 
@@ -1228,9 +1220,8 @@
             } else {
                 const propertyPrice = document.getElementById('propertyPrice')?.value || 'Chưa nhập';
                 const propertyArea = document.getElementById('propertyArea')?.value || 'Chưa nhập';
-                const flowText = currentPostType === 'ban' ? 'Bất động sản bán' : 'Bất động sản cho thuê';
 
-                previewFlow.textContent = flowText;
+                previewFlow.textContent = currentPostType === 'ban' ? 'Bất động sản bán' : 'Bất động sản cho thuê';
                 previewDescription.textContent = currentPostType === 'ban'
                     ? 'Tin này sẽ hiển thị ở mục Nhà đất bán và dữ liệu giá có thể dùng để tổng hợp cho trang Giá nhà đất.'
                     : 'Tin này sẽ hiển thị ở mục Nhà đất cho thuê và phục vụ nhu cầu tìm thuê thực tế.';
@@ -1248,6 +1239,12 @@
             const contactName = document.getElementById('contactName').value.trim();
             const contactPhone = document.getElementById('contactPhone').value.trim();
             const description = document.getElementById('postDescription').value.trim();
+
+            if (!currentUser) {
+                postStatus.className = 'status-box error';
+                postStatus.textContent = 'Bạn cần đăng nhập hoặc đăng ký tài khoản trước khi đăng nội dung.';
+                return false;
+            }
 
             if (!title) {
                 postStatus.className = 'status-box error';
@@ -1296,8 +1293,46 @@
             return true;
         }
 
-        function saveDemoPost() {
+        function savePostToStorage(postData) {
+            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+            allPosts.unshift(postData);
+            localStorage.setItem('allPosts', JSON.stringify(allPosts));
+
+            if (postData.flow === 'construction') {
+                const constructionPosts = JSON.parse(localStorage.getItem('constructionPosts') || '[]');
+                constructionPosts.unshift(postData);
+                localStorage.setItem('constructionPosts', JSON.stringify(constructionPosts));
+            } else {
+                const propertyPosts = JSON.parse(localStorage.getItem('propertyPosts') || '[]');
+                propertyPosts.unshift(postData);
+                localStorage.setItem('propertyPosts', JSON.stringify(propertyPosts));
+
+                if (postData.postType === 'ban') {
+                    const salePosts = JSON.parse(localStorage.getItem('salePosts') || '[]');
+                    salePosts.unshift(postData);
+                    localStorage.setItem('salePosts', JSON.stringify(salePosts));
+                }
+
+                if (postData.postType === 'thue') {
+                    const rentalPosts = JSON.parse(localStorage.getItem('rentalPosts') || '[]');
+                    rentalPosts.unshift(postData);
+                    localStorage.setItem('rentalPosts', JSON.stringify(rentalPosts));
+                }
+            }
+        }
+
+        function buildPostData() {
             const baseData = {
+                id: 'post_' + Date.now(),
+                userId: currentUser?.id || '',
+                accountGroup: currentUser?.accountGroup || '',
+                accountGroupLabel: currentUser?.accountGroupLabel || '',
+                role: currentUser?.role || '',
+                roleLabel: currentUser?.roleLabel || '',
+                brandName: currentUser?.brandName || '',
+                fullName: currentUser?.fullName || '',
+                email: currentUser?.email || '',
+                phone: currentUser?.phone || '',
                 flow: currentFlow,
                 postType: currentFlow === 'construction' ? 'xaydung' : currentPostType,
                 profileType: currentProfile,
@@ -1309,14 +1344,13 @@
                 description: document.getElementById('postDescription').value.trim(),
                 contactName: document.getElementById('contactName').value.trim(),
                 contactPhone: document.getElementById('contactPhone').value.trim(),
+                status: 'pending',
                 createdAt: new Date().toISOString()
             };
 
-            let finalData = { ...baseData };
-
             if (currentFlow === 'construction') {
-                finalData = {
-                    ...finalData,
+                return {
+                    ...baseData,
                     serviceType: document.getElementById('serviceType')?.value || '',
                     servicePrice: document.getElementById('servicePrice')?.value || '',
                     serviceExp: document.getElementById('serviceExp')?.value || '',
@@ -1324,25 +1358,27 @@
                     serviceBrand: document.getElementById('serviceBrand')?.value || '',
                     serviceSpecialty: document.getElementById('serviceSpecialty')?.value || ''
                 };
-
-                const oldConstructionPosts = JSON.parse(localStorage.getItem('constructionPosts') || '[]');
-                oldConstructionPosts.unshift(finalData);
-                localStorage.setItem('constructionPosts', JSON.stringify(oldConstructionPosts));
-            } else {
-                finalData = {
-                    ...finalData,
-                    propertyType: document.getElementById('propertyType')?.value || '',
-                    propertyPrice: document.getElementById('propertyPrice')?.value || '',
-                    propertyArea: document.getElementById('propertyArea')?.value || '',
-                    propertyLegal: document.getElementById('propertyLegal')?.value || '',
-                    propertyDirection: document.getElementById('propertyDirection')?.value || '',
-                    propertyBeds: document.getElementById('propertyBeds')?.value || ''
-                };
-
-                const oldPropertyPosts = JSON.parse(localStorage.getItem('propertyPosts') || '[]');
-                oldPropertyPosts.unshift(finalData);
-                localStorage.setItem('propertyPosts', JSON.stringify(oldPropertyPosts));
             }
+
+            return {
+                ...baseData,
+                propertyType: document.getElementById('propertyType')?.value || '',
+                propertyPrice: document.getElementById('propertyPrice')?.value || '',
+                propertyArea: document.getElementById('propertyArea')?.value || '',
+                propertyLegal: document.getElementById('propertyLegal')?.value || '',
+                propertyDirection: document.getElementById('propertyDirection')?.value || '',
+                propertyBeds: document.getElementById('propertyBeds')?.value || ''
+            };
+        }
+
+        function resetFormAfterSubmit(formElement) {
+            formElement.reset();
+            document.getElementById('city').value = 'Bình Dương';
+            wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+            setProfile(currentUser?.accountGroup === 'construction' ? 'doanhnghiep' : 'canhan');
+            renderDynamicFields();
+            fillUserInfo();
+            updatePreview();
         }
 
         document.getElementById('smart-post-form').addEventListener('submit', function (e) {
@@ -1350,28 +1386,17 @@
 
             if (!validateForm()) return;
 
-            saveDemoPost();
+            const postData = buildPostData();
+            savePostToStorage(postData);
 
             postStatus.className = 'status-box success';
             postStatus.textContent = currentFlow === 'construction'
-                ? 'Đăng dịch vụ xây dựng thành công ở chế độ demo. Dữ liệu đã được lưu tạm và có thể dùng để hiển thị ở trang Xây dựng sau này.'
+                ? 'Đăng dịch vụ xây dựng thành công ở chế độ demo. Nội dung đã được lưu với trạng thái chờ duyệt.'
                 : (currentPostType === 'ban'
-                    ? 'Đăng tin bán thành công ở chế độ demo. Dữ liệu giá bán đã được lưu tạm và có thể dùng để tổng hợp cho trang Giá nhà đất.'
-                    : 'Đăng tin cho thuê thành công ở chế độ demo. Dữ liệu đã được lưu tạm cho luồng Nhà đất cho thuê.');
+                    ? 'Đăng tin bán thành công ở chế độ demo. Dữ liệu đã được lưu và có thể dùng cho tổng hợp giá nhà đất sau này.'
+                    : 'Đăng tin cho thuê thành công ở chế độ demo. Nội dung đã được lưu với trạng thái chờ duyệt.');
 
-            this.reset();
-            document.getElementById('city').value = 'Bình Dương';
-            wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
-
-            setProfile('canhan');
-            if (currentFlow === 'real_estate') {
-                setSubtab(currentPostType);
-            } else {
-                renderDynamicFields();
-            }
-
-            fillUserInfo();
-            updatePreview();
+            resetFormAfterSubmit(this);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
@@ -1410,11 +1435,9 @@
 
         fillUserInfo();
         renderDynamicFields();
+        lockFlowByAccountGroup();
 
-        if (registeredUser?.accountGroup === 'construction') {
-            setFlow('construction');
-            setProfile('doanhnghiep');
-        } else {
+        if (!currentUser) {
             setFlow('real_estate');
         }
 
