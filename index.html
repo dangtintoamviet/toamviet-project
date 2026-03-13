@@ -11,25 +11,44 @@
         :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f2f2f2; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        .nav-link { transition: all 0.3s; position: relative; }
         .nav-link:hover { color: var(--hover-color) !important; }
         .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; z-index: 100; border-top: 3px solid var(--vip-color); padding: 10px 0; }
-        .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; }
-        .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
-        .save-icon { position: relative; cursor: pointer; font-size: 20px; }
-        .save-count { position: absolute; top: -8px; right: -10px; background: #E03C31; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold; }
+        .dropdown-item:hover { color: var(--hover-color); background: #f9f9f9; }
+        .save-count { position: absolute; top: -8px; right: -10px; background: #E03C31; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; }
         .search-tab.active { background: rgba(0,0,0,0.7); color: white; border-radius: 4px 4px 0 0; }
         .section-title { font-size: 24px; font-weight: 700; color: #2C2C2C; margin-bottom: 24px; }
-        #goToTop { display: none; position: fixed; bottom: 100px; right: 25px; z-index: 999; width: 45px; height: 45px; background-color: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.3s; align-items: center; justify-content: center; font-size: 18px; }
-        .zalo-chat-btn { position: fixed; bottom: 30px; right: 20px; z-index: 999; width: 55px; height: 55px; background-color: var(--vip-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 139, 139, 0.4); transition: all 0.3s; }
+        
+        /* NÚT GO TO TOP */
+        #goToTop {
+            display: none; position: fixed; bottom: 100px; right: 25px; z-index: 999;
+            width: 45px; height: 45px; background-color: #fff; color: #333;
+            border: 1px solid #ddd; border-radius: 50%; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.3s;
+            align-items: center; justify-content: center; font-size: 18px;
+        }
+        #goToTop:hover { background-color: #f8f8f8; transform: translateY(-3px); }
+
+        /* NÚT ZALO CHAT */
+        .zalo-chat-btn {
+            position: fixed; bottom: 30px; right: 20px; z-index: 999;
+            width: 55px; height: 55px; background-color: var(--vip-color);
+            color: white; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 26px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 139, 139, 0.4); transition: all 0.3s;
+        }
         .wiggle { animation: wiggle-ani 2s infinite; }
         @keyframes wiggle-ani { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
-        #chatForm { display: none; position: fixed; bottom: 95px; right: 20px; width: 320px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; overflow: hidden; }
-        .chat-header { background: var(--vip-color); color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+
+        #chatForm {
+            display: none; position: fixed; bottom: 95px; right: 20px; width: 320px;
+            background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000; overflow: hidden;
+        }
+        .chat-header { background: var(--vip-color); color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
         .chat-body { padding: 20px; }
-        .chat-body input, .chat-body textarea { width: 100%; margin-bottom: 15px; padding: 10px; border: 1px solid #eee; border-radius: 8px; outline: none; }
-        .btn-send { width: 100%; background: var(--vip-color); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .chat-body input, .chat-body textarea { width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #eee; border-radius: 8px; outline: none; }
+        .btn-send { width: 100%; background: var(--vip-color); color: white; padding: 12px; border-radius: 8px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -39,53 +58,41 @@
             <div class="flex items-center gap-8">
                 <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="index.html" class="nav-link text-[#008B8B]">Trang chủ</a>
                     <a href="nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
                     <a href="nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="du-an.html" class="nav-link">Dự án</a>
+                    <a href="du-an.html" class="nav-link text-gray-500">Dự án</a>
                     <a href="tin-tuc.html" class="nav-link text-gray-500">Tin tức</a>
                     <div class="dropdown relative h-full flex items-center cursor-pointer">
                         <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
                         <div class="dropdown-menu">
-                            <a href="danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
+                            <a href="danh-ba-doanh-nghiep.html" class="dropdown-item p-2 block px-4">Doanh nghiệp</a>
+                            <a href="danh-ba-moi-gioi.html" class="dropdown-item p-2 block px-4">Môi giới</a>
                         </div>
                     </div>
                 </nav>
             </div>
-            
             <div class="flex items-center gap-5">
-                <div class="save-icon nav-link text-gray-600">
-                    <i class="fa-regular fa-heart"></i>
-                    <span id="saveCountHeader" class="save-count">0</span>
+                <div class="save-icon nav-link text-gray-600 relative cursor-pointer">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                    <span class="save-count">0</span>
                 </div>
-                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
-                    <a href="dang-nhap.html" class="nav-link">Đăng nhập</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="dang-ky.html" class="nav-link">Đăng ký</a>
-                </div>
-                <a href="dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
-                    Đăng tin
-                </a>
+                <a href="dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
             </div>
         </div>
     </header>
 
-    <section class="relative h-[480px] flex items-center justify-center overflow-hidden">
+    <section class="relative h-[480px] flex items-center justify-center">
         <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920" class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/30"></div>
         <div class="relative z-10 w-full max-w-[850px] px-4 text-center">
-            <div class="flex justify-center gap-1 mb-0">
+            <div class="flex justify-center gap-1">
                 <button class="search-tab active px-6 py-2.5 text-white font-bold uppercase text-[12px]">Bán</button>
-                <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px] hover:bg-black/40">Cho thuê</button>
-                <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px] hover:bg-black/40">Dự án</button>
+                <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px]">Cho thuê</button>
             </div>
             <div class="bg-black/60 p-2 rounded-lg backdrop-blur-md">
                 <div class="bg-white rounded flex items-center p-1 shadow-2xl">
                     <input type="text" placeholder="Tìm nhanh: Vinhomes, Quận 2, Nhà phố..." class="flex-1 p-3.5 outline-none text-[15px]">
-                    <button class="bg-[#008B8B] text-white px-10 py-3.5 rounded font-bold flex items-center gap-2 hover:opacity-90 transition">
-                        <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
-                    </button>
+                    <button class="bg-[#008B8B] text-white px-10 py-3.5 rounded font-bold hover:opacity-90 transition">Tìm kiếm</button>
                 </div>
             </div>
         </div>
@@ -93,63 +100,137 @@
 
     <section class="py-12 container-custom">
         <div class="flex justify-between items-end mb-8">
-            <h2 class="section-title mb-0">Bất động sản mới nhất</h2>
-            <a href="nha-dat-ban.html" class="text-[#008B8B] font-semibold hover:underline text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+            <h2 class="section-title mb-0">Bất động sản dành cho bạn</h2>
+            <a href="#" class="text-[#008B8B] font-semibold text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
         </div>
         <div id="home-posts-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="text-gray-400 text-center col-span-full py-10">Đang cập nhật tin đăng mới...</div>
+            </div>
+    </section>
+
+    <section class="py-16 container-custom">
+        <h2 class="section-title">Bất động sản theo địa điểm</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 h-[500px]">
+            <div class="md:col-span-2 md:row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group">
+                <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-8 flex flex-col justify-end text-white">
+                    <h4 class="text-2xl font-bold">TP. Hồ Chí Minh</h4>
+                    <p class="text-sm">23.815 tin đăng</p>
+                </div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden cursor-pointer group">
+                <img src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=400" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-bold">Hà Nội</div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden cursor-pointer group">
+                <img src="https://images.unsplash.com/photo-1559592481-74488ea56144?w=400" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-bold">Đà Nẵng</div>
+            </div>
         </div>
     </section>
 
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()"><i class="fa-solid fa-comment-dots"></i></div>
+    <footer class="bg-white pt-16 border-t mt-12">
+        <div class="container-custom">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+                <div>
+                    <h4 class="font-bold mb-4">CHỦ ĐỀ NỔI BẬT</h4>
+                    <ul class="text-gray-500 text-sm space-y-2">
+                        <li>Bất động sản Hà Nội</li>
+                        <li>Bất động sản Hồ Chí Minh</li>
+                        <li>Mua nhà chung cư</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">BẤT ĐỘNG SẢN BÁN</h4>
+                    <ul class="text-gray-500 text-sm space-y-2">
+                        <li>Bán căn hộ chung cư</li>
+                        <li>Bán nhà riêng</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between">
+                <div>
+                    <img src="DAI TRONG SUOT (2).png" class="h-10 mb-4">
+                    <p class="font-bold uppercase text-sm">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
+                    <p class="text-xs text-gray-500 mt-2">Địa chỉ: Tầng 31, Keangnam Landmark 72, Hà Nội</p>
+                    <p class="text-xs text-gray-500">Hotline: 0946 239 289</p>
+                </div>
+            </div>
+            <div class="py-8 text-center text-gray-400 text-xs border-t mt-8">
+                © 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm.
+            </div>
+        </div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+    
+    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+
+    <div id="chatForm">
+        <div class="chat-header">
+            <span>Hỗ trợ Toàn Việt</span>
+            <span onclick="toggleForm()" class="cursor-pointer">&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn...">
+            <textarea id="cusMsg" placeholder="Bạn cần tư vấn gì?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">CHAT TRÊN ZALO</button>
+        </div>
+    </div>
+
     <script>
-        // Hàm hiển thị tin đăng từ localStorage
+        // Hiển thị tin từ localStorage
         function displayPosts() {
             const container = document.getElementById('home-posts-container');
             const savedPosts = JSON.parse(localStorage.getItem('toamviet_posts') || '[]');
             
             if (savedPosts.length === 0) {
-                container.innerHTML = '<div class="col-span-full text-center py-10 text-gray-400">Chưa có tin đăng nào.</div>';
+                container.innerHTML = `<div class="bg-white p-4 border rounded-xl shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1560448204-61dc36dc98c8?w=400" class="rounded-lg mb-4">
+                    <h3 class="font-bold text-sm">Căn hộ mẫu cao cấp Diamond Alnata</h3>
+                    <p class="text-[#008B8B] font-bold mt-2">4.2 tỷ - 85 m²</p>
+                </div>`;
                 return;
             }
 
             container.innerHTML = savedPosts.map(post => `
-                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition cursor-pointer group">
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition group">
                     <div class="relative h-[180px] overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <div class="absolute top-2 right-2 bg-white/90 p-2 rounded-full shadow-sm hover:text-red-500"><i class="fa-regular fa-heart"></i></div>
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-[14px] line-clamp-2 h-10 group-hover:text-[#008B8B]">${post.title}</h3>
                         <div class="flex items-center gap-3 text-[#008B8B] font-bold text-[16px] mt-2">
                             <span>${post.price}</span><span>${post.area || '--'} m²</span>
                         </div>
-                        <p class="text-gray-500 text-[12px] mt-3"><i class="fa-solid fa-location-dot mr-1"></i> ${post.district}, Bình Dương</p>
+                        <p class="text-gray-500 text-[12px] mt-3"><i class="fa-solid fa-location-dot mr-1"></i> ${post.district}</p>
                     </div>
                 </div>
-            `).reverse().join(''); // Hiển thị tin mới nhất lên đầu
+            `).reverse().join('');
         }
 
-        window.onload = function() {
-            displayPosts();
-            // Cập nhật số lượng tin đã lưu (nếu có tính năng này)
-            const savedCount = JSON.parse(localStorage.getItem('saved_list') || '[]').length;
-            document.getElementById('saveCountHeader').innerText = savedCount;
-        };
+        window.onload = displayPosts;
 
-        // Scripts cuộn trang và Chat của bạn giữ nguyên
+        // Xử lý nút Go to top
         window.onscroll = function() {
             const btn = document.getElementById("goToTop");
             if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) btn.style.display = "flex";
             else btn.style.display = "none";
         };
+
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function toggleForm() { 
-            var form = document.getElementById("chatForm"); 
-            form.style.display = (form.style.display === "none") ? "block" : "none"; 
+
+        function toggleForm() {
+            var form = document.getElementById("chatForm");
+            form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
+        }
+
+        function sendToZalo() {
+            var name = document.getElementById("cusName").value;
+            var phone = "0946239289";
+            if(!name) { alert("Vui lòng nhập tên"); return; }
+            window.open("https://zalo.me/" + phone + "?text=Chào admin, tôi là " + name, "_blank");
         }
     </script>
 </body>
