@@ -8,34 +8,183 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
     <style>
-        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f2f2f2; }
-        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        :root {
+            --vip-color: #008B8B;
+            --hover-color: #FF8C00;
+        }
 
-        .nav-link { transition: all 0.3s; position: relative; }
-        .nav-link:hover { color: var(--hover-color) !important; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f2f2;
+        }
 
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; border-top: 2px solid var(--vip-color); z-index: 50; }
-        .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; border-bottom: 1px solid #f2f2f2; }
-        .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
 
-        .save-icon { position: relative; cursor: pointer; font-size: 20px; }
-        .save-count { position: absolute; top: -8px; right: -10px; background: #E03C31; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; border: 1px solid white; }
+        .nav-link {
+            transition: all 0.3s;
+            position: relative;
+        }
 
-        .card-container { background: white; border-radius: 8px; border: 1px solid #e5e5e5; overflow: hidden; display: flex; transition: 0.3s; }
-        .card-container:hover { border-color: var(--vip-color); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .nav-link:hover {
+            color: var(--hover-color) !important;
+        }
 
-        .footer-link-group h4 { font-weight: 700; font-size: 14px; margin-bottom: 15px; color: #2C2C2C; text-transform: uppercase; }
-        .footer-link-group ul li { margin-bottom: 8px; font-size: 13px; color: #555; cursor: pointer; transition: 0.2s; }
-        .footer-link-group ul li:hover { color: var(--hover-color); text-decoration: underline; }
-        .footer-bottom-box { background: #f9f9f9; border-radius: 12px; padding: 30px; }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 200px;
+            border-top: 2px solid var(--vip-color);
+            z-index: 50;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+        .dropdown-item:hover {
+            background: #f9f9f9;
+            color: var(--hover-color);
+        }
+
+        .save-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .save-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #E03C31;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        .card-container {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e5e5e5;
+            overflow: hidden;
+            display: flex;
+            transition: 0.3s;
+        }
+
+        .card-container:hover {
+            border-color: var(--vip-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-desc {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .filter-select,
+        .filter-input {
+            border: 1px solid #d1d5db;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+        }
+
+        .filter-select:focus,
+        .filter-input:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.08);
+        }
+
+        .empty-box {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 18px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .sidebar-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .footer-link-group h4 {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #2C2C2C;
+            text-transform: uppercase;
+        }
+
+        .footer-link-group ul li {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #555;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .footer-link-group ul li:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
 
         @media (max-width: 768px) {
-            .card-container { flex-direction: column; }
-            .card-image-box { width: 100% !important; height: 220px !important; }
-            .filter-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; scrollbar-width: none; }
-            .filter-select { min-width: 120px; flex-shrink: 0; }
+            .card-container {
+                flex-direction: column;
+            }
+
+            .card-image-box {
+                width: 100% !important;
+                height: 220px !important;
+            }
+
+            .filter-scroll {
+                display: flex;
+                overflow-x: auto;
+                gap: 8px;
+                padding-bottom: 10px;
+                scrollbar-width: none;
+            }
+
+            .filter-select,
+            .filter-input {
+                min-width: 140px;
+                flex-shrink: 0;
+            }
         }
     </style>
 </head>
@@ -103,108 +252,60 @@
 
     <div class="container-custom py-6">
         <div class="bg-white p-4 rounded-lg shadow-sm mb-6 border border-gray-100 filter-scroll">
-            <select class="filter-select border border-gray-300 p-2 rounded text-sm"><option>Loại nhà đất</option></select>
-            <select class="filter-select border border-gray-300 p-2 rounded text-sm"><option>Toàn quốc</option></select>
-            <select class="filter-select border border-gray-300 p-2 rounded text-sm"><option>Mức giá</option></select>
-            <select class="filter-select border border-gray-300 p-2 rounded text-sm"><option>Diện tích</option></select>
-            <button class="bg-[--vip-color] text-white px-6 py-2 rounded font-bold text-sm shrink-0"><i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm</button>
+            <input id="keywordFilter" type="text" class="filter-input" placeholder="Tìm theo tiêu đề...">
+            <select id="typeFilter" class="filter-select">
+                <option value="">Loại nhà đất</option>
+                <option value="Nhà phố">Nhà phố</option>
+                <option value="Đất nền">Đất nền</option>
+                <option value="Căn hộ">Căn hộ</option>
+                <option value="Biệt thự">Biệt thự</option>
+                <option value="Văn phòng">Văn phòng</option>
+            </select>
+            <select id="cityFilter" class="filter-select">
+                <option value="">Toàn quốc</option>
+                <option value="Bình Dương">Bình Dương</option>
+                <option value="TP.HCM">TP.HCM</option>
+                <option value="Hà Nội">Hà Nội</option>
+            </select>
+            <select id="sortFilter" class="filter-select">
+                <option value="newest">Mới nhất</option>
+                <option value="price-asc">Giá tăng dần</option>
+                <option value="price-desc">Giá giảm dần</option>
+                <option value="area-desc">Diện tích lớn</option>
+            </select>
+            <button id="applyFilterBtn" class="bg-[--vip-color] text-white px-6 py-2 rounded font-bold text-sm shrink-0">
+                <i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm
+            </button>
         </div>
+
+        <div id="data-note" class="empty-box mb-6 hidden"></div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div class="lg:col-span-3 space-y-6">
                 <div>
                     <h1 class="text-xl font-bold text-[#2C2C2C] uppercase">Mua bán nhà đất tại Việt Nam</h1>
-                    <p class="text-gray-500 text-sm mt-1">Hiện có hơn <span class="font-bold text-gray-700">125,400</span> bất động sản đang giao dịch</p>
+                    <p class="text-gray-500 text-sm mt-1">
+                        Hiện có <span id="listing-count" class="font-bold text-gray-700">0</span> tin đăng bán đang hiển thị
+                    </p>
                 </div>
 
-                <div class="card-container">
-                    <div class="card-image-box w-[280px] h-auto shrink-0 relative">
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500" alt="Biệt thự Vinhomes Đan Phượng" class="w-full h-full object-cover">
-                        <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1"><i class="fa-regular fa-image"></i> 8</div>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-bold text-[16px] text-gray-800 uppercase line-clamp-2 leading-snug hover:text-[--vip-color] cursor-pointer">NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN</h3>
-                            <div class="flex items-center gap-3 mt-3 text-sm flex-wrap font-medium">
-                                <span class="text-red-600 font-bold text-lg">60 tỷ</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-red-600 font-bold text-lg">300 m²</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600">200 tr/m²</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600 flex items-center gap-1">5 <i class="fa-solid fa-bed"></i></span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600 flex items-center gap-1">5 <i class="fa-solid fa-bath"></i></span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600">Hà Nội</span>
-                            </div>
-                            <p class="text-gray-500 text-sm mt-3 line-clamp-2 italic">Căn biệt thự có vị trí kim cương, bàn giao full nội thất cao cấp. Môi giới hỗ trợ pháp lý...</p>
-                        </div>
-                        <div class="flex justify-between items-center mt-4 pt-3 border-t">
-                            <a href="../pages/danh-ba-moi-gioi.html" class="flex items-center gap-3 group">
-                                <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs group-hover:opacity-80 transition">MG</div>
-                                <div>
-                                    <p class="text-sm font-bold text-gray-700 group-hover:text-[--vip-color] transition">Nguyễn Thành An</p>
-                                    <p class="text-[11px] text-gray-400">Môi giới chuyên nghiệp</p>
-                                </div>
-                            </a>
-                            <div class="flex gap-2">
-                                <button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm"><i class="fa-solid fa-phone"></i> 0912 598 *** · Hiện số</button>
-                                <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-container">
-                    <div class="card-image-box w-[280px] h-auto shrink-0 relative">
-                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500" alt="Căn hộ cao cấp trung tâm" class="w-full h-full object-cover">
-                        <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1"><i class="fa-regular fa-image"></i> 12</div>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-bold text-[16px] text-gray-800 uppercase line-clamp-2 leading-snug hover:text-[--vip-color] cursor-pointer">BÁN CĂN HỘ CAO CẤP 2 PHÒNG NGỦ TRUNG TÂM THÀNH PHỐ, FULL NỘI THẤT</h3>
-                            <div class="flex items-center gap-3 mt-3 text-sm flex-wrap font-medium">
-                                <span class="text-red-600 font-bold text-lg">4.2 tỷ</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-red-600 font-bold text-lg">85 m²</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600">49 tr/m²</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600 flex items-center gap-1">2 <i class="fa-solid fa-bed"></i></span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600 flex items-center gap-1">2 <i class="fa-solid fa-bath"></i></span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600">TP.HCM</span>
-                            </div>
-                            <p class="text-gray-500 text-sm mt-3 line-clamp-2 italic">Căn hộ view đẹp, gần trung tâm thương mại, phù hợp để ở hoặc đầu tư cho thuê...</p>
-                        </div>
-                        <div class="flex justify-between items-center mt-4 pt-3 border-t">
-                            <a href="../pages/danh-ba-moi-gioi.html" class="flex items-center gap-3 group">
-                                <div class="w-10 h-10 rounded-full bg-emerald-700 flex items-center justify-center text-white font-bold text-xs group-hover:opacity-80 transition">TV</div>
-                                <div>
-                                    <p class="text-sm font-bold text-gray-700 group-hover:text-[--vip-color] transition">Trần Văn Bình</p>
-                                    <p class="text-[11px] text-gray-400">Chuyên viên tư vấn</p>
-                                </div>
-                            </a>
-                            <div class="flex gap-2">
-                                <button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm"><i class="fa-solid fa-phone"></i> 0988 123 *** · Hiện số</button>
-                                <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <div id="listing-container" class="space-y-6"></div>
             </div>
 
-            <aside class="hidden lg:block lg:col-span-1">
-                <div class="bg-white p-5 rounded-lg border border-gray-200">
+            <aside class="hidden lg:block lg:col-span-1 space-y-6">
+                <div class="sidebar-card">
                     <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Khu vực nổi bật</h4>
+                    <ul id="hot-areas" class="text-sm space-y-3 text-gray-600">
+                        <li class="flex justify-between"><span>Bình Dương</span> <span class="text-gray-400 text-[11px]">0 tin</span></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-card">
+                    <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Gợi ý hệ thống</h4>
                     <ul class="text-sm space-y-3 text-gray-600">
-                        <li class="flex justify-between hover:text-[--hover-color] cursor-pointer"><span>Bán nhà đất TP.HCM</span> <span class="text-gray-400 text-[11px]">12k+</span></li>
-                        <li class="flex justify-between hover:text-[--hover-color] cursor-pointer"><span>Bán nhà đất Hà Nội</span> <span class="text-gray-400 text-[11px]">15k+</span></li>
-                        <li class="flex justify-between hover:text-[--hover-color] cursor-pointer"><span>Bán nhà đất Đà Nẵng</span> <span class="text-gray-400 text-[11px]">3k+</span></li>
-                        <li class="flex justify-between hover:text-[--hover-color] cursor-pointer"><span>Bán nhà đất Bình Dương</span> <span class="text-gray-400 text-[11px]">4k+</span></li>
+                        <li class="leading-6">Tin bán được đăng từ trang Đăng tin sẽ tự động hiển thị tại đây.</li>
+                        <li class="leading-6">Dữ liệu giá bán cũng có thể dùng để tổng hợp cho trang Giá nhà đất.</li>
+                        <li class="leading-6">Bạn nên nhập giá và diện tích rõ ràng để hệ thống tính đơn giá chính xác hơn.</li>
                     </ul>
                 </div>
             </aside>
@@ -254,7 +355,7 @@
                     <h4>DỰ ÁN NỔI BẬT</h4>
                     <ul>
                         <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
-                        <li><a href="../pages/du_an.html">Căn hộ cao cấp Quận 2</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
                         <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
                         <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
                     </ul>
@@ -345,6 +446,5 @@
         }
     </script>
     <script src="../assets/js/main.js"></script>
-
 </body>
 </html>
