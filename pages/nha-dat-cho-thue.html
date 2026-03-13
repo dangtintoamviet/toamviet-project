@@ -141,6 +141,36 @@
             border: 1px solid #e5e7eb;
         }
 
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 6px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.04em;
+        }
+
+        .status-chip.pending {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+        }
+
+        .status-chip.approved {
+            background: #f0fdfa;
+            color: #0f766e;
+            border: 1px solid #99f6e4;
+        }
+
+        .status-chip.demo {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
+        }
+
         .footer-link-group h4 {
             font-weight: 700;
             font-size: 14px;
@@ -199,7 +229,7 @@
 
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
                     <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link text-[#008B8B]">Nhà đất cho thuê</a>
                     <a href="../pages/du-an.html" class="nav-link">Dự án</a>
                     <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
                     <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
@@ -237,7 +267,7 @@
     <div class="lg:hidden bg-white border-t">
         <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
             <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
-            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
+            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link text-[#008B8B] font-bold">Nhà đất cho thuê</a>
             <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
             <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
             <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
@@ -430,16 +460,22 @@
                 title: "Cho thuê căn hộ cao cấp Vinhomes Central Park full nội thất",
                 city: "TP.HCM",
                 district: "Bình Thạnh",
-                ward: "22",
+                ward: "Phường 22",
                 propertyType: "Căn hộ",
                 propertyPrice: "25 triệu/tháng",
                 propertyArea: "85",
                 propertyBeds: "2",
+                propertyLegal: "Hợp đồng rõ ràng",
+                propertyDirection: "Đông Nam",
                 description: "Căn hộ tầng cao thoáng mát, view sông đẹp, đầy đủ nội thất cao cấp.",
                 contactName: "Trần Thị Lan Anh",
                 contactPhone: "0901234567",
                 profileType: "canhan",
-                createdAt: "2026-01-07T08:00:00.000Z"
+                roleLabel: "Chuyên viên cho thuê",
+                createdAt: "2026-01-07T08:00:00.000Z",
+                status: "demo",
+                flow: "real_estate",
+                postType: "thue"
             },
             {
                 title: "Cho thuê nhà nguyên căn gần trung tâm Cầu Giấy phù hợp gia đình",
@@ -450,11 +486,17 @@
                 propertyPrice: "18 triệu/tháng",
                 propertyArea: "120",
                 propertyBeds: "4",
+                propertyLegal: "Hợp đồng dài hạn",
+                propertyDirection: "Nam",
                 description: "Nhà rộng, phù hợp ở gia đình hoặc làm văn phòng nhỏ, giao thông thuận tiện.",
                 contactName: "Phạm Văn Dũng",
                 contactPhone: "0918456789",
                 profileType: "canhan",
-                createdAt: "2026-01-06T10:00:00.000Z"
+                roleLabel: "Môi giới cho thuê",
+                createdAt: "2026-01-06T10:00:00.000Z",
+                status: "demo",
+                flow: "real_estate",
+                postType: "thue"
             },
             {
                 title: "Cho thuê văn phòng tại Thuận An, vị trí đẹp, giá tốt",
@@ -465,101 +507,134 @@
                 propertyPrice: "12 triệu/tháng",
                 propertyArea: "60",
                 propertyBeds: "",
+                propertyLegal: "Hợp đồng thương mại",
+                propertyDirection: "Đông",
                 description: "Diện tích phù hợp doanh nghiệp nhỏ, mặt bằng đẹp, dễ setup.",
                 contactName: "Công ty BĐS Minh Phát",
+                brandName: "Công ty BĐS Minh Phát",
                 contactPhone: "0988123456",
                 profileType: "doanhnghiep",
-                createdAt: "2026-01-05T11:00:00.000Z"
+                roleLabel: "Doanh nghiệp / Sàn BĐS",
+                createdAt: "2026-01-05T11:00:00.000Z",
+                status: "demo",
+                flow: "real_estate",
+                postType: "thue"
             }
         ];
 
-        function parseRentalPrice(priceText) {
-            if (!priceText) return null;
+        const listingContainer = document.getElementById('listing-container');
+        const listingCount = document.getElementById('listing-count');
+        const hotAreas = document.getElementById('hot-areas');
+        const dataNote = document.getElementById('data-note');
 
-            const raw = String(priceText).toLowerCase().trim().replace(/,/g, '.');
-            const nums = raw.match(/\d+(\.\d+)?/g);
-            if (!nums || !nums.length) return null;
+        const keywordFilter = document.getElementById('keywordFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const cityFilter = document.getElementById('cityFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
 
-            if (raw.includes('tỷ')) {
-                return parseFloat(nums[0]) * 1000;
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value;
+            const msg = document.getElementById("cusMsg").value;
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
             }
 
-            if (raw.includes('triệu')) {
-                return parseFloat(nums[0]);
-            }
-
-            if (raw.includes('nghìn')) {
-                return parseFloat(nums[0]) / 1000;
-            }
-
-            const value = parseFloat(nums[0]);
-            return Number.isNaN(value) ? null : value;
+            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
 
-        function formatPriceText(priceText) {
-            return priceText || "Thỏa thuận";
-        }
+        function getRentalPosts() {
+            const rentalPosts = JSON.parse(localStorage.getItem('rentalPosts') || '[]');
+            const propertyPosts = JSON.parse(localStorage.getItem('propertyPosts') || '[]');
+            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
 
-        function getPosts() {
-            const saved = JSON.parse(localStorage.getItem('propertyPosts') || '[]');
-            const valid = saved.filter(post => post && post.flow === 'real_estate' && post.postType === 'thue');
+            if (rentalPosts.length) return rentalPosts;
 
-            const note = document.getElementById('data-note');
+            const fromPropertyPosts = propertyPosts.filter(post =>
+                post && post.flow === 'real_estate' && post.postType === 'thue'
+            );
+            if (fromPropertyPosts.length) return fromPropertyPosts;
 
-            if (valid.length > 0) {
-                note.classList.add('hidden');
-                return valid;
-            }
-
-            note.classList.remove('hidden');
-            note.innerHTML = `
-                <strong>Hiện chưa có tin cho thuê thật từ trang đăng tin.</strong><br>
-                Hệ thống đang hiển thị dữ liệu mẫu để bạn dễ kiểm tra giao diện. Khi bạn đăng tin cho thuê từ trang Đăng tin, bài mới sẽ tự xuất hiện ở đây.
-            `;
+            const fromAllPosts = allPosts.filter(post =>
+                post && post.flow === 'real_estate' && post.postType === 'thue'
+            );
+            if (fromAllPosts.length) return fromAllPosts;
 
             return fallbackPosts;
         }
 
-        function renderHotAreas(posts) {
-            const counter = {};
-            posts.forEach(post => {
-                const city = post.city || 'Khác';
-                counter[city] = (counter[city] || 0) + 1;
-            });
+        function parseRentalPrice(priceText) {
+            if (!priceText) return 0;
 
-            const hotAreas = document.getElementById('hot-areas');
-            const sorted = Object.entries(counter).sort((a, b) => b[1] - a[1]);
+            const raw = String(priceText).toLowerCase().trim().replace(/,/g, '.');
+            const nums = raw.match(/\d+(\.\d+)?/g);
+            if (!nums || !nums.length) return 0;
 
-            hotAreas.innerHTML = sorted.map(([city, count]) => `
-                <li class="flex justify-between hover:text-[--hover-color] cursor-pointer">
-                    <span>Thuê nhà đất ${city}</span>
-                    <span class="text-gray-400 text-[11px]">${count} tin</span>
-                </li>
-            `).join('');
+            if (raw.includes('tỷ')) return parseFloat(nums[0]) * 1000;
+            if (raw.includes('triệu')) return parseFloat(nums[0]);
+            if (raw.includes('nghìn')) return parseFloat(nums[0]) / 1000;
+
+            const value = parseFloat(nums[0]);
+            return Number.isNaN(value) ? 0 : value;
         }
 
-        function buildCard(post) {
+        function buildLocation(post) {
+            return [post.ward, post.district, post.city].filter(Boolean).join(', ');
+        }
+
+        function getPosterName(post) {
+            return post.brandName || post.contactName || post.fullName || 'Người đăng';
+        }
+
+        function getPosterRole(post) {
+            return post.roleLabel || post.role || (post.profileType === 'doanhnghiep' ? 'Doanh nghiệp / Sàn BĐS' : 'Cá nhân / Môi giới');
+        }
+
+        function getAvatarText(post) {
+            const source = getPosterName(post);
+            return source.split(' ')
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(word => word[0].toUpperCase())
+                .join('') || 'TV';
+        }
+
+        function getStatusChip(post) {
+            if (post.status === 'approved') {
+                return '<span class="status-chip approved"><i class="fa-solid fa-circle-check"></i> Đã duyệt</span>';
+            }
+            if (post.status === 'pending') {
+                return '<span class="status-chip pending"><i class="fa-solid fa-clock"></i> Chờ duyệt</span>';
+            }
+            return '<span class="status-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>';
+        }
+
+        function buildCardData(post) {
             const priceInMillion = parseRentalPrice(post.propertyPrice);
             const area = parseFloat(post.propertyArea || 0);
             const unitPrice = priceInMillion && area ? ((priceInMillion * 1000) / area).toFixed(0) : null;
-
             const city = post.city || 'Đang cập nhật';
-            const district = post.district || '';
-            const ward = post.ward || '';
-            const location = [ward, district, city].filter(Boolean).join(', ');
+            const location = buildLocation(post) || 'Đang cập nhật vị trí';
             const beds = post.propertyBeds ? `${post.propertyBeds} <i class="fa-solid fa-bed"></i>` : null;
-            const profileName = post.contactName || 'Người đăng';
-            const phone = post.contactPhone || 'Đang cập nhật';
+            const profileName = getPosterName(post);
+            const profileDesc = getPosterRole(post);
+            const phone = post.contactPhone || post.phone || 'Đang cập nhật';
             const shortPhone = phone.length >= 7 ? `${phone.slice(0, 4)} ${phone.slice(4, 7)} ***` : phone;
-            const avatarText = profileName.split(' ').filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('').slice(0, 2) || 'TV';
-            const profileDesc = post.profileType === 'doanhnghiep' ? 'Doanh nghiệp / Sàn BĐS' : 'Cá nhân / Môi giới';
+            const avatarText = getAvatarText(post);
             const img = post.imageUrl || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900';
             const createdTime = post.createdAt ? new Date(post.createdAt).getTime() : 0;
+            const direction = post.propertyDirection || 'Đang cập nhật';
+            const legal = post.propertyLegal || 'Đang cập nhật';
 
             return {
                 createdTime,
-                priceInMillion: priceInMillion || 0,
-                area: area || 0,
+                priceInMillion,
+                area,
                 propertyType: post.propertyType || '',
                 city,
                 title: post.title || 'Tin cho thuê bất động sản',
@@ -567,7 +642,10 @@
                     <div class="card-container">
                         <div class="card-image-box w-[280px] h-auto shrink-0 relative">
                             <img src="${img}" alt="${post.title || 'Tin cho thuê'}" class="w-full h-full object-cover">
-                            <div class="absolute top-3 left-3 bg-[--vip-color] text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase">${post.propertyType || 'BĐS'}</div>
+                            <div class="absolute top-3 left-3">${getStatusChip(post)}</div>
+                            <div class="absolute top-3 right-3 bg-[--vip-color] text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase">
+                                ${post.propertyType || 'BĐS'}
+                            </div>
                             <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
                                 <i class="fa-regular fa-image"></i> 3+
                             </div>
@@ -580,9 +658,11 @@
                                 </h3>
 
                                 <div class="flex items-center gap-3 mt-3 text-sm flex-wrap font-medium">
-                                    <span class="text-red-600 font-bold text-lg">${formatPriceText(post.propertyPrice)}</span>
+                                    <span class="text-red-600 font-bold text-lg">${post.propertyPrice || 'Thỏa thuận'}</span>
                                     ${area ? `<span class="text-gray-300">•</span><span class="text-red-600 font-bold text-lg">${area} m²</span>` : ''}
                                     ${unitPrice ? `<span class="text-gray-300">•</span><span class="text-gray-600">${unitPrice} nghìn/m²</span>` : ''}
+                                    <span class="text-gray-300">•</span>
+                                    <span class="text-gray-600">${direction}</span>
                                     ${beds ? `<span class="text-gray-300">•</span><span class="text-gray-600 flex items-center gap-1">${beds}</span>` : ''}
                                     <span class="text-gray-300">•</span>
                                     <span class="text-gray-600">${city}</span>
@@ -593,8 +673,13 @@
                                 </p>
 
                                 <p class="text-gray-500 text-[12px] mt-3">
-                                    <i class="fa-solid fa-location-dot mr-1"></i>${location || 'Đang cập nhật vị trí'}
+                                    <i class="fa-solid fa-location-dot mr-1"></i>${location}
                                 </p>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-[12px] text-slate-500">
+                                    <div><strong class="text-slate-700">Pháp lý:</strong> ${legal}</div>
+                                    <div><strong class="text-slate-700">Loại hình:</strong> ${post.propertyType || 'Đang cập nhật'}</div>
+                                </div>
                             </div>
 
                             <div class="flex justify-between items-center mt-4 pt-3 border-t">
@@ -623,13 +708,47 @@
             };
         }
 
-        function applyFilters() {
-            const keyword = document.getElementById('keywordFilter').value.trim().toLowerCase();
-            const type = document.getElementById('typeFilter').value;
-            const city = document.getElementById('cityFilter').value;
-            const sort = document.getElementById('sortFilter').value;
+        function renderHotAreas(posts) {
+            const counter = {};
+            posts.forEach(post => {
+                const city = post.city || 'Khác';
+                counter[city] = (counter[city] || 0) + 1;
+            });
 
-            let posts = getPosts().map(buildCard);
+            const sorted = Object.entries(counter).sort((a, b) => b[1] - a[1]);
+            hotAreas.innerHTML = sorted.length
+                ? sorted.map(([city, count]) => `
+                    <li class="flex justify-between hover:text-[--hover-color] cursor-pointer">
+                        <span>Thuê nhà đất ${city}</span>
+                        <span class="text-gray-400 text-[11px]">${count} tin</span>
+                    </li>
+                `).join('')
+                : `<li class="flex justify-between"><span>Chưa có dữ liệu</span><span class="text-gray-400 text-[11px]">0 tin</span></li>`;
+        }
+
+        function applyFilters() {
+            const keyword = keywordFilter.value.trim().toLowerCase();
+            const type = typeFilter.value;
+            const city = cityFilter.value;
+            const sort = sortFilter.value;
+
+            const rawPosts = getRentalPosts();
+            const usingFallback = rawPosts === fallbackPosts || JSON.stringify(rawPosts) === JSON.stringify(fallbackPosts);
+
+            if (usingFallback) {
+                dataNote.classList.remove('hidden');
+                dataNote.innerHTML = `
+                    <strong>Hiện chưa có tin cho thuê thật từ trang đăng tin.</strong><br>
+                    Hệ thống đang hiển thị dữ liệu mẫu để bạn dễ kiểm tra giao diện. Khi bạn đăng tin cho thuê từ trang Đăng tin, bài mới sẽ tự xuất hiện ở đây.
+                `;
+            } else {
+                dataNote.classList.add('hidden');
+                dataNote.innerHTML = '';
+            }
+
+            renderHotAreas(rawPosts);
+
+            let posts = rawPosts.map(buildCardData);
 
             if (keyword) {
                 posts = posts.filter(post => post.title.toLowerCase().includes(keyword));
@@ -653,13 +772,10 @@
                 posts.sort((a, b) => b.createdTime - a.createdTime);
             }
 
-            const container = document.getElementById('listing-container');
-            const countEl = document.getElementById('listing-count');
+            listingCount.textContent = posts.length;
 
-            countEl.textContent = posts.length;
-
-            if (posts.length === 0) {
-                container.innerHTML = `
+            if (!posts.length) {
+                listingContainer.innerHTML = `
                     <div class="empty-box">
                         <strong>Không tìm thấy tin phù hợp.</strong><br>
                         Bạn thử đổi bộ lọc hoặc đăng thêm tin cho thuê mới từ trang Đăng tin.
@@ -668,35 +784,18 @@
                 return;
             }
 
-            container.innerHTML = posts.map(post => post.html).join('');
+            listingContainer.innerHTML = posts.map(post => post.html).join('');
         }
 
         function initPage() {
-            const posts = getPosts();
-            renderHotAreas(posts);
             applyFilters();
         }
 
-        document.getElementById('applyFilterBtn').addEventListener('click', applyFilters);
-        document.getElementById('keywordFilter').addEventListener('input', applyFilters);
-        document.getElementById('typeFilter').addEventListener('change', applyFilters);
-        document.getElementById('cityFilter').addEventListener('change', applyFilters);
-        document.getElementById('sortFilter').addEventListener('change', applyFilters);
-
-        function sendToZalo() {
-            const name = document.getElementById("cusName").value;
-            const msg = document.getElementById("cusMsg").value;
-            const phone = "0946239289";
-
-            if (!name) {
-                alert("Vui lòng cho biết tên của bạn");
-                return;
-            }
-
-            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
-            const encodedMsg = encodeURIComponent(fullMsg);
-            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
-        }
+        applyFilterBtn.addEventListener('click', applyFilters);
+        keywordFilter.addEventListener('input', applyFilters);
+        typeFilter.addEventListener('change', applyFilters);
+        cityFilter.addEventListener('change', applyFilters);
+        sortFilter.addEventListener('change', applyFilters);
 
         window.addEventListener('load', initPage);
     </script>
