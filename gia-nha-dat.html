@@ -8,150 +8,147 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <style>
-        :root { --vip-color: #008B8B; --text-light: #64748b; --text-main: #334155; }
+        :root { --vip-color: #008B8B; --text-dark: #1e293b; --text-muted: #64748b; }
         
-        /* Áp dụng Font Roboto */
         body { 
             font-family: 'Roboto', sans-serif; 
-            background-color: #fcfdfe; 
-            color: var(--text-main); 
-            line-height: 1.6; 
+            background-color: #f4f7fa; 
+            color: var(--text-dark); 
+            line-height: 1.5; 
         }
         
-        /* Tinh chỉnh tiêu đề nhạt và thanh */
-        h1 { font-weight: 300; letter-spacing: -0.02em; }
-        h2 { font-weight: 400; letter-spacing: -0.01em; }
-        .sub-title { font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px; }
+        /* Tiêu đề sắc nét, không mờ */
+        h1 { font-weight: 700; color: #0f172a; letter-spacing: -0.01em; }
+        h2 { font-weight: 700; color: #1e293b; }
+        .sub-title { font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
         
         .stats-card { 
             background: white; 
-            border-radius: 24px; 
-            padding: 24px; 
-            border: 1px solid #f1f5f9; 
-            transition: all 0.4s ease;
-        }
-        .stats-card:hover { 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.03); 
-            border-color: #e2e8f0;
+            border-radius: 16px; 
+            padding: 20px; 
+            border: 1px solid #e2e8f0; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         
         .price-badge { 
             background: #f0fdfa; 
             color: var(--vip-color); 
-            padding: 4px 12px; 
+            padding: 5px 10px; 
             border-radius: 6px; 
-            font-weight: 500; 
-            font-size: 13px; 
+            font-weight: 700; 
+            font-size: 12px; 
             border: 1px solid #ccfbf1; 
+            white-space: nowrap;
         }
         
         .table-container { 
-            border-radius: 24px; 
+            border-radius: 16px; 
             overflow: hidden; 
             background: white; 
-            border: 1px solid #f1f5f9;
+            border: 1px solid #e2e8f0;
         }
 
-        /* Tùy chỉnh biểu đồ */
-        .chart-wrapper {
-            position: relative;
-            height: 350px;
-            width: 100%;
+        /* Nén bảng trên Mobile */
+        @media (max-width: 640px) {
+            .table-container th, .table-container td {
+                padding: 10px 8px !important; /* Thu gọn hàng */
+                font-size: 12px !important;
+            }
+            .stats-card { padding: 15px; }
+            .chart-wrapper { height: 320px; }
         }
 
-        @media (max-width: 768px) {
-            .chart-wrapper { height: 400px; }
-        }
+        .chart-wrapper { position: relative; height: 380px; width: 100%; }
     </style>
 </head>
 <body>
 
-    <div class="max-w-6xl mx-auto py-10 md:py-16 px-5">
-        <div class="flex flex-col md:flex-row justify-between items-baseline mb-12 gap-6">
+    <div class="max-w-6xl mx-auto py-6 md:py-12 px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
-                <h1 class="text-3xl md:text-4xl text-slate-700">
-                    Báo cáo <span class="font-medium text-slate-900">Giá Nhà Đất Bình Dương</span>
+                <h1 class="text-2xl md:text-3xl uppercase">
+                    Báo cáo <span class="text-[--vip-color]">Giá Nhà Đất Bình Dương</span>
                 </h1>
-                <p class="text-[13px] text-slate-400 mt-3 font-normal tracking-wide">
-                    Phân tích từ <span id="total-ads" class="text-[--vip-color] font-medium">0</span> tin đăng • Cập nhật trực tuyến
+                <p class="text-[13px] text-slate-500 mt-1 font-medium italic">
+                    Cập nhật từ <span id="total-ads" class="font-bold">0</span> tin đăng thực tế
                 </p>
             </div>
-            <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2">
-                <button class="bg-slate-900 text-white px-6 py-2 rounded-full text-[10px] font-medium uppercase tracking-widest shrink-0 shadow-sm">Bình Dương</button>
-                <button class="bg-white text-slate-400 border border-slate-100 px-6 py-2 rounded-full text-[10px] font-medium uppercase tracking-widest shrink-0 hover:bg-slate-50 transition">Hà Nội</button>
-                <button class="bg-white text-slate-400 border border-slate-100 px-6 py-2 rounded-full text-[10px] font-medium uppercase tracking-widest shrink-0 hover:bg-slate-50 transition">TP.HCM</button>
+            <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-1">
+                <button class="bg-slate-800 text-white px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider shrink-0">Bình Dương</button>
+                <button class="bg-white text-slate-500 border border-slate-200 px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider shrink-0">Hà Nội</button>
+                <button class="bg-white text-slate-500 border border-slate-200 px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider shrink-0">TP.HCM</button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-10 mb-16">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <div class="stats-card">
                 <span class="sub-title">Giá trung bình</span>
-                <div class="flex items-baseline gap-2 mt-2">
-                    <h2 id="avg-land-price" class="text-4xl font-light text-slate-800 tracking-tighter">0</h2>
-                    <span class="text-[11px] font-medium text-slate-400 uppercase">Triệu/m²</span>
+                <div class="flex items-baseline gap-1 mt-2">
+                    <h2 id="avg-land-price" class="text-3xl font-black text-slate-800">0</h2>
+                    <span class="text-[12px] font-bold text-slate-400 uppercase">Tr/m²</span>
                 </div>
             </div>
-            <div class="stats-card">
-                <span class="sub-title">Dự án sôi động</span>
-                <h2 id="top-project" class="text-xl font-normal text-slate-700 mt-2 truncate">--</h2>
-                <div class="w-8 h-1 bg-[--vip-color] mt-3 rounded-full"></div>
+            <div class="stats-card border-l-4 border-l-[--vip-color]">
+                <span class="sub-title">Dự án tâm điểm</span>
+                <h2 id="top-project" class="text-lg font-bold text-slate-700 mt-2 truncate">Đông Bình Dương</h2>
             </div>
             <div class="stats-card">
-                <span class="sub-title">Dữ liệu ngày</span>
-                <h2 id="current-date" class="text-xl font-normal text-slate-700 mt-2 tracking-tight">--/--/----</h2>
-                <p class="text-[10px] text-green-500 font-medium mt-3 uppercase tracking-wider">Hệ thống sẵn sàng</p>
+                <span class="sub-title">Cập nhật lúc</span>
+                <h2 id="current-date" class="text-lg font-bold text-slate-700 mt-2">--/--/----</h2>
             </div>
         </div>
 
-        <div class="table-container mb-16 shadow-sm">
-            <div class="bg-white px-8 py-6 border-b border-slate-50">
-                <h3 class="sub-title">Thống kê chi tiết dự án</h3>
+        <div class="table-container mb-8 shadow-sm">
+            <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                <h3 class="sub-title text-[--vip-color]">Phân tích chi tiết dự án</h3>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[700px]">
+                <table class="w-full text-left border-collapse min-w-[600px]">
                     <thead>
-                        <tr class="text-slate-400 text-[10px] uppercase tracking-[0.15em] border-b border-slate-50">
-                            <th class="px-8 py-5 font-medium">Khu vực dự án</th>
-                            <th class="px-8 py-5 text-center font-medium">Lượng tin</th>
-                            <th class="px-8 py-5 font-medium">Thấp nhất</th>
-                            <th class="px-8 py-5 font-medium">Cao nhất</th>
-                            <th class="px-8 py-5 text-slate-900 font-bold">Trung bình</th>
+                        <tr class="bg-white text-slate-400 text-[10px] uppercase tracking-wider border-b">
+                            <th class="px-6 py-4 font-bold">Dự án / Khu vực</th>
+                            <th class="px-6 py-4 text-center font-bold">Số tin</th>
+                            <th class="px-6 py-4 font-bold text-nowrap">Giá Thấp (Tr)</th>
+                            <th class="px-6 py-4 font-bold text-nowrap">Giá Cao (Tr)</th>
+                            <th class="px-6 py-4 text-slate-900 font-black">Trung bình</th>
                         </tr>
                     </thead>
-                    <tbody id="price-table-body" class="text-[14px] text-slate-600">
+                    <tbody id="price-table-body" class="text-[13px] text-slate-700 font-medium">
                         </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="bg-white rounded-[32px] border border-slate-50 p-8 md:p-12 shadow-sm mb-16">
-            <div class="text-center mb-10">
-                <span class="sub-title">Biểu đồ so sánh đơn giá</span>
-            </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm mb-8">
+            <h2 class="sub-title mb-6"><i class="fa-solid fa-chart-simple mr-2"></i>So sánh biến động đơn giá</h2>
             <div class="chart-wrapper">
                 <canvas id="priceChart"></canvas>
             </div>
         </div>
 
-        <div class="bg-white p-10 md:p-16 rounded-[40px] border border-slate-50 shadow-sm">
-            <h2 class="text-slate-900 font-light text-2xl md:text-3xl mb-8 tracking-tight">
-                Phân tích thị trường <span class="font-normal border-b-2 border-[--vip-color]/20">Bất động sản Bình Dương</span>
+        <div class="bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-sm border-t-8 border-t-[--vip-color]">
+            <h2 class="text-slate-900 text-xl md:text-2xl mb-6">
+                Xu hướng <span class="text-[--vip-color]">Giá Nhà Đất Bình Dương</span> năm 2026
             </h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-[15px] text-slate-500 font-light leading-loose">
-                <p>
-                    Dữ liệu trực tuyến từ Tổ Ấm Việt giúp nhà đầu tư nắm bắt nhanh chóng <strong>giá nhà đất Bình Dương</strong>. Đặc biệt, phân khúc <strong>giá đất nền Đông Bình Dương</strong> đang nhận được sự quan tâm lớn nhờ tính thanh khoản cao và hạ tầng hoàn thiện. Việc theo dõi giá trung bình theo thời gian thực là chìa khóa để đưa ra quyết định đầu tư đúng đắn.
-                </p>
-                <p>
-                    Hệ thống của chúng tôi tự động cập nhật và phân tích <strong>giá nhà đất Dĩ An</strong> từ các nguồn tin đăng đã qua xác thực. Biểu đồ trực quan phía trên minh chứng cho sự biến động giá ổn định của các dự án trọng điểm, giúp loại bỏ các thông tin giá ảo và mang lại cái nhìn khách quan nhất cho thị trường năm 2026.
-                </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-[14px] md:text-[15px] text-slate-600 leading-relaxed">
+                <div>
+                    <p class="mb-4">
+                        Hệ thống dữ liệu từ Tổ Ấm Việt cập nhật liên tục <strong>giá nhà đất Bình Dương</strong>, tập trung vào các điểm nóng tại Dĩ An và Thuận An. Đặc biệt, phân khúc <strong>giá đất nền Đông Bình Dương</strong> đang giữ vai trò dẫn dắt thị trường nhờ hạ tầng đồng bộ và pháp lý ổn định.
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        Việc nắm bắt <strong>giá nhà đất Dĩ An</strong> thông qua bảng thống kê và biểu đồ giúp nhà đầu tư loại bỏ rủi ro từ các tin đăng ảo. Chúng tôi cam kết mang lại những con số trung bình xác thực nhất, hỗ trợ khách hàng có cái nhìn tổng quan trước khi thực hiện giao dịch.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -199,12 +196,12 @@
                 dataPoints.push(avg.toFixed(1));
 
                 tableBody.innerHTML += `
-                    <tr class="border-b border-slate-50 hover:bg-slate-50/30 transition-colors">
-                        <td class="px-8 py-5 font-normal text-slate-800">${p}</td>
-                        <td class="px-8 py-5 text-center text-slate-400 font-light">${stats[p].count}</td>
-                        <td class="px-8 py-5 text-slate-400 font-light">${stats[p].min.toFixed(1)}</td>
-                        <td class="px-8 py-5 text-slate-400 font-light">${stats[p].max.toFixed(1)}</td>
-                        <td class="px-8 py-5"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
+                    <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-3 font-bold text-slate-800">${p}</td>
+                        <td class="px-6 py-3 text-center text-slate-500">${stats[p].count}</td>
+                        <td class="px-6 py-3 text-slate-500 font-mono">${stats[p].min.toFixed(1)}</td>
+                        <td class="px-6 py-3 text-slate-500 font-mono">${stats[p].max.toFixed(1)}</td>
+                        <td class="px-6 py-3"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
                     </tr>`;
             });
 
@@ -225,9 +222,8 @@
                     labels: labels,
                     datasets: [{
                         data: dataPoints,
-                        backgroundColor: 'rgba(0, 139, 139, 0.6)',
-                        hoverBackgroundColor: 'rgba(0, 139, 139, 0.9)',
-                        borderRadius: 20,
+                        backgroundColor: 'rgba(0, 139, 139, 0.8)',
+                        borderRadius: 6,
                         barThickness: isMobile ? 12 : 30,
                     }]
                 },
@@ -235,24 +231,16 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     indexAxis: isMobile ? 'y' : 'x',
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: { 
-                            backgroundColor: '#1e293b',
-                            padding: 15,
-                            titleFont: { family: 'Roboto', size: 12 },
-                            bodyFont: { family: 'Roboto', size: 15, weight: 'bold' }
-                        }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
                         y: { 
                             beginAtZero: true, 
-                            grid: { color: '#f8fafc', drawBorder: false },
-                            ticks: { color: '#94a3b8', font: { family: 'Roboto', size: 11 } }
+                            grid: { color: '#f1f5f9' },
+                            ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } }
                         },
                         x: { 
                             grid: { display: false },
-                            ticks: { color: '#64748b', font: { family: 'Roboto', size: 11 } }
+                            ticks: { color: '#1e293b', font: { weight: 'bold', size: 10 } }
                         }
                     }
                 }
