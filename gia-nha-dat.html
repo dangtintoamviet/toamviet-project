@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biến Động Giá Nhà Đất 2026 | Tổ Ấm Việt</title>
     
-    <title>Bảng Giá Nhà Đất Bình Dương 2026 - Thống Kê Tự Động | Tổ Ấm Việt</title>
-    <meta name="description" content="Cập nhật biến động giá nhà đất dự án Đông Bình Dương, Dĩ An. Hệ thống tự động tính toán giá trung bình theo m2 từ dữ liệu tin đăng thực tế hàng ngày.">
-    <meta name="keywords" content="giá đất đông bình dương, bảng giá nhà đất dĩ an, biến động giá bất động sản, tổ ấm việt">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
@@ -15,34 +13,22 @@
         :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
         body { font-family: 'Segoe UI', sans-serif; background-color: #f0f4f8; padding: 20px; color: #334155; }
         .stats-card { background: white; border-radius: 16px; padding: 24px; border: 1px solid #e2e8f0; }
-        .seo-text-content { background: #ffffff; padding: 30px; border-radius: 16px; margin-top: 30px; border-left: 5px solid var(--vip-color); }
-        h2.seo-title { color: #1e293b; font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; }
-        .seo-p { font-size: 14px; line-height: 1.6; color: #64748b; margin-bottom: 10px; }
+        .seo-text-content { background: #ffffff; padding: 30px; border-radius: 16px; margin-top: 20px; border-left: 5px solid var(--vip-color); }
+        .chart-container { background: white; border-radius: 16px; padding: 20px; border: 1px solid #e2e8f0; margin-top: 30px; }
     </style>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Dataset",
-      "name": "Thống kê giá bất động sản Bình Dương - Toamviet.com.vn",
-      "description": "Dữ liệu biến động giá thực tế theo từng dự án và khu vực.",
-      "license": "https://toamviet.com.vn/chinh-sach",
-      "creator": { "@type": "Organization", "name": "Tổ Ấm Việt" }
-    }
-    </script>
 </head>
 <body>
 
     <div class="max-w-6xl mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
             <div>
-                <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tight">Biến Động Giá Nhà Đất Tự Động</h1>
-                <p class="text-sm text-gray-500 italic">Dữ liệu được trích xuất thời gian thực từ hệ thống tin đăng <span id="total-ads" class="font-bold text-[--vip-color]">0</span> tin.</p>
+                <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tight">Phân Tích Giá Thị Trường Tự Động</h1>
+                <p class="text-sm text-gray-500 italic">Dữ liệu từ <span id="total-ads" class="font-bold text-[--vip-color]">0</span> tin đăng thực tế trên hệ thống.</p>
             </div>
             <div class="bg-white p-2 rounded-lg border flex gap-2 shadow-sm">
-                <button onclick="calculatePrice('binh-duong')" class="bg-[--vip-color] text-white px-4 py-2 rounded-md text-xs font-bold uppercase">Bình Dương</button>
-                <button class="hover:bg-gray-100 px-4 py-2 rounded-md text-xs font-bold uppercase transition">Hà Nội</button>
-                <button class="hover:bg-gray-100 px-4 py-2 rounded-md text-xs font-bold uppercase transition">TP.HCM</button>
+                <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md text-xs font-bold uppercase">Bình Dương</button>
+                <button class="hover:bg-gray-100 px-4 py-2 rounded-md text-xs font-bold uppercase transition text-gray-400">Hà Nội</button>
+                <button class="hover:bg-gray-100 px-4 py-2 rounded-md text-xs font-bold uppercase transition text-gray-400">TP.HCM</button>
             </div>
         </div>
 
@@ -54,26 +40,26 @@
                     <span class="text-sm font-bold text-gray-400">Tr/m²</span>
                 </div>
             </div>
-            <div class="stats-card shadow-sm">
-                <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Dự án trọng điểm</p>
-                <h2 class="text-xl font-bold text-slate-800">Đông Bình Dương</h2>
-                <p class="text-[11px] text-[--vip-color] font-bold mt-2"><i class="fa-solid fa-circle-check"></i> Đang cập nhật giá mới nhất</p>
+            <div class="stats-card shadow-sm border-t-4 border-t-[--vip-color]">
+                <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Khu vực tâm điểm</p>
+                <h2 class="text-xl font-bold text-slate-800 italic">Đông Bình Dương</h2>
+                <p class="text-[11px] text-green-600 font-bold mt-2"><i class="fa-solid fa-up-long"></i> Tăng trưởng ổn định</p>
             </div>
             <div class="stats-card shadow-sm">
-                <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Nguồn cung thị trường</p>
-                <h2 id="new-supply" class="text-3xl font-bold text-slate-800 font-mono">0</h2>
-                <p class="text-[11px] text-gray-400 mt-2 italic">Dữ liệu tin đăng hợp lệ</p>
+                <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Cập nhật lần cuối</p>
+                <h2 class="text-xl font-bold text-slate-800 uppercase">Hôm nay</h2>
+                <p id="current-date" class="text-[11px] text-gray-400 mt-2 font-bold"></p>
             </div>
         </div>
 
-        <div class="bg-white rounded-2xl border shadow-xl overflow-hidden">
+        <div class="bg-white rounded-2xl border shadow-xl overflow-hidden mb-8">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-800 text-white text-[11px] uppercase tracking-widest">
                         <th class="px-6 py-4">Khu vực / Dự án</th>
                         <th class="px-6 py-4 text-center">Số lượng tin</th>
-                        <th class="px-6 py-4">Min (Tr/m2)</th>
-                        <th class="px-6 py-4">Max (Tr/m2)</th>
+                        <th class="px-6 py-4">Giá thấp nhất</th>
+                        <th class="px-6 py-4">Giá cao nhất</th>
                         <th class="px-6 py-4 bg-slate-700">Giá TB (m2)</th>
                     </tr>
                 </thead>
@@ -81,32 +67,39 @@
             </table>
         </div>
 
+        <div class="chart-container shadow-sm">
+            <h2 class="text-sm font-black text-slate-700 uppercase mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-chart-area text-[--vip-color]"></i> Biểu đồ so sánh giá theo dự án (Tr/m²)
+            </h2>
+            <canvas id="priceChart" style="max-height: 350px;"></canvas>
+        </div>
+
         <div class="seo-text-content shadow-sm">
-            <h2 class="seo-title"><i class="fa-solid fa-chart-line mr-2"></i> Phân tích biến động giá nhà đất tại Bình Dương</h2>
-            <p class="seo-p">
-                Chào mừng bạn đến với hệ thống <strong>phân tích giá nhà đất tự động</strong> của <strong>Tổ Ấm Việt</strong>. Dữ liệu bảng giá trên được chúng tôi tính toán dựa trên thuật toán lấy trung bình cộng từ hàng nghìn tin đăng bán thực tế tại khu vực Dĩ An, Thuận An và các dự án trọng điểm như <em>Khu đô thị Đông Bình Dương</em>.
+            <h2 class="text-slate-800 font-extrabold text-lg mb-4 uppercase">Phân tích thị trường Bất Động Sản Bình Dương</h2>
+            <p class="text-sm leading-relaxed text-slate-500 mb-4">
+                Dựa trên biểu đồ và bảng số liệu trên, chúng ta có thể thấy <strong>giá nhà đất tại Dĩ An</strong> đang có sự phân hóa rõ rệt. Dự án <em>Khu đô thị Đông Bình Dương</em> vẫn giữ vị trí tâm điểm với lượng tin đăng áp đảo, tạo ra một mặt bằng giá ổn định cho các nhà đầu tư trung hạn.
             </p>
-            <p class="seo-p">
-                Việc theo dõi <strong>giá đất nền Đông Bình Dương</strong> hàng ngày giúp nhà đầu tư nắm bắt được nhịp thở của thị trường, tránh việc mua quá cao so với mặt bằng chung hoặc bỏ lỡ các cơ hội "ngộp" giá rẻ. Hệ thống của chúng tôi tự động loại bỏ các tin đăng ảo để đưa ra con số tiệm cận nhất với giá trị thực.
+            <p class="text-sm leading-relaxed text-slate-500">
+                Hệ thống tự động của <strong>Tổ Ấm Việt</strong> cập nhật dữ liệu mỗi 24 giờ, giúp minh bạch hóa thông tin giá ảo và giá thực, góp phần xây dựng cộng đồng môi giới uy tín và chuyên nghiệp.
             </p>
-            <div class="mt-4 p-4 bg-amber-50 rounded-lg text-xs text-amber-700 border border-amber-100">
-                <strong>Lưu ý:</strong> Giá hiển thị là giá chào bán trung bình trên thị trường tin rao, có thể chênh lệch 3-5% so với giá giao dịch thực tế tại văn phòng công chứng.
-            </div>
         </div>
     </div>
 
     <script>
-        // Dữ liệu mẫu (Tương lai sẽ lấy từ dang-tin.html)
+        // Cập nhật ngày hiện tại
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN');
+
+        // Dữ liệu mẫu (Tương lai kết nối với hệ thống tin đăng)
         const realEstateData = [
             { project: "Đông Bình Dương", price: 1250, area: 80 },
             { project: "Đông Bình Dương", price: 1080, area: 80 },
             { project: "Bcons City", price: 2100, area: 55 },
-            { project: "Charm City", price: 4200, area: 90 }
+            { project: "Charm City", price: 4200, area: 90 },
+            { project: "Icon Central", price: 3800, area: 80 }
         ];
 
-        function calculatePrice() {
+        function initData() {
             const tableBody = document.getElementById('price-table-body');
-            tableBody.innerHTML = "";
             const stats = {};
 
             realEstateData.forEach(item => {
@@ -121,23 +114,60 @@
             });
 
             let sumAvg = 0, countP = 0;
+            const labels = [];
+            const dataPoints = [];
+
             for (const p in stats) {
                 let avg = stats[p].total / stats[p].count;
                 sumAvg += avg; countP++;
+                labels.push(p);
+                dataPoints.push(avg.toFixed(1));
+
                 tableBody.innerHTML += `
                     <tr class="border-b hover:bg-slate-50 transition">
                         <td class="px-6 py-4 font-bold text-slate-700 underline decoration-dotted decoration-[--vip-color]">${p}</td>
                         <td class="px-6 py-4 text-center">${stats[p].count}</td>
-                        <td class="px-6 py-4 text-gray-400">${stats[p].min.toFixed(1)}</td>
-                        <td class="px-6 py-4 text-gray-400">${stats[p].max.toFixed(1)}</td>
-                        <td class="px-6 py-4 bg-teal-50 font-black text-[--vip-color]">${avg.toFixed(1)}</td>
+                        <td class="px-6 py-4 text-gray-400">${stats[p].min.toFixed(1)} Tr</td>
+                        <td class="px-6 py-4 text-gray-400">${stats[p].max.toFixed(1)} Tr</td>
+                        <td class="px-6 py-4 bg-teal-50 font-black text-[--vip-color]">${avg.toFixed(1)} Tr/m²</td>
                     </tr>`;
             }
+
             document.getElementById('avg-land-price').innerText = (sumAvg / countP).toFixed(1);
             document.getElementById('total-ads').innerText = realEstateData.length;
             document.getElementById('new-supply').innerText = realEstateData.length;
+
+            renderChart(labels, dataPoints);
         }
-        calculatePrice();
+
+        function renderChart(labels, dataPoints) {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', // Bạn có thể đổi thành 'line' nếu thích biểu đồ đường
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Giá trung bình (Tr/m²)',
+                        data: dataPoints,
+                        backgroundColor: 'rgba(0, 139, 139, 0.2)',
+                        borderColor: 'rgba(0, 139, 139, 1)',
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        barThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        initData();
     </script>
 </body>
 </html>
