@@ -13,15 +13,78 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f2f2f2; color: #2C2C2C; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 
+        /* Menu & Hover */
         .nav-link { transition: all 0.3s; position: relative; }
         .nav-link:hover { color: var(--hover-color) !important; }
         .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; border-top: 2px solid var(--vip-color); z-index: 50; }
-        .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; border-bottom: 1px solid #f2f2f2; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 200px;
+            border-top: 2px solid var(--vip-color);
+            z-index: 50;
+        }
+        .dropdown-item {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #f2f2f2;
+        }
         .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
 
-        .project-card { background: white; border-radius: 8px; border: 1px solid #e5e5e5; overflow: hidden; transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
-        .project-card:hover { border-color: var(--vip-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        /* Save icon */
+        .save-icon { position: relative; cursor: pointer; font-size: 20px; }
+        .save-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #E03C31;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        /* Card dự án */
+        .project-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+            overflow: hidden;
+            transition: 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            border-color: var(--vip-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Footer styles - sửa để đồng bộ đẹp như trang nhà đất */
+        .footer-link-group h4 {
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #2C2C2C;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .footer-link-group ul li {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+        .footer-link-group ul li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
 
         @media (max-width: 768px) {
             .filter-item { min-width: 120px; }
