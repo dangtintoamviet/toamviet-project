@@ -141,6 +141,36 @@
             border: 1px solid #e5e7eb;
         }
 
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 6px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.04em;
+        }
+
+        .status-chip.pending {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+        }
+
+        .status-chip.approved {
+            background: #f0fdfa;
+            color: #0f766e;
+            border: 1px solid #99f6e4;
+        }
+
+        .status-chip.demo {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
+        }
+
         .footer-link-group h4 {
             font-weight: 700;
             font-size: 14px;
@@ -198,7 +228,7 @@
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="../pages/nha-dat-ban.html" class="nav-link text-[#008B8B]">Nhà đất bán</a>
                     <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
                     <a href="../pages/du-an.html" class="nav-link">Dự án</a>
                     <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
@@ -236,7 +266,7 @@
 
     <div class="lg:hidden bg-white border-t">
         <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
-            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
+            <a href="../pages/nha-dat-ban.html" class="block nav-link text-[#008B8B] font-bold">Nhà đất bán</a>
             <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
             <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
             <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
@@ -430,6 +460,17 @@
     </div>
 
     <script>
+        const listingContainer = document.getElementById('listing-container');
+        const listingCount = document.getElementById('listing-count');
+        const hotAreas = document.getElementById('hot-areas');
+        const dataNote = document.getElementById('data-note');
+
+        const keywordFilter = document.getElementById('keywordFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const cityFilter = document.getElementById('cityFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+
         function sendToZalo() {
             const name = document.getElementById("cusName").value;
             const msg = document.getElementById("cusMsg").value;
@@ -444,6 +485,326 @@
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
+
+        function getSalePosts() {
+            const salePosts = JSON.parse(localStorage.getItem('salePosts') || '[]');
+            const propertyPosts = JSON.parse(localStorage.getItem('propertyPosts') || '[]');
+            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+
+            if (salePosts.length) return salePosts;
+
+            const fromPropertyPosts = propertyPosts.filter(post =>
+                post.flow === 'real_estate' && post.postType === 'ban'
+            );
+            if (fromPropertyPosts.length) return fromPropertyPosts;
+
+            return allPosts.filter(post =>
+                post.flow === 'real_estate' && post.postType === 'ban'
+            );
+        }
+
+        function parsePriceToNumber(priceText) {
+            if (!priceText) return 0;
+            const text = String(priceText).toLowerCase().replace(/,/g, '.').trim();
+
+            if (text.includes('tỷ')) {
+                const value = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
+                return value * 1000000000;
+            }
+
+            if (text.includes('triệu')) {
+                const value = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
+                return value * 1000000;
+            }
+
+            const raw = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
+            return raw;
+        }
+
+        function formatPrice(priceText) {
+            return priceText || 'Liên hệ';
+        }
+
+        function formatArea(area) {
+            if (!area) return 'Chưa rõ';
+            return `${area} m²`;
+        }
+
+        function buildLocation(post) {
+            return [post.ward, post.district, post.city].filter(Boolean).join(', ');
+        }
+
+        function buildPoster(post) {
+            return post.brandName || post.contactName || post.fullName || 'Người đăng';
+        }
+
+        function getPosterSub(post) {
+            return post.roleLabel || post.role || (post.profileType === 'doanhnghiep' ? 'Doanh nghiệp' : 'Người đăng');
+        }
+
+        function getAvatarText(post) {
+            const source = buildPoster(post);
+            return source
+                .split(' ')
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(word => word[0].toUpperCase())
+                .join('') || 'TV';
+        }
+
+        function getStatusChip(post) {
+            if (post.status === 'approved') {
+                return '<span class="status-chip approved"><i class="fa-solid fa-circle-check"></i> Đã duyệt</span>';
+            }
+            if (post.status === 'pending') {
+                return '<span class="status-chip pending"><i class="fa-solid fa-clock"></i> Chờ duyệt</span>';
+            }
+            return '<span class="status-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>';
+        }
+
+        function renderCard(post) {
+            const price = formatPrice(post.propertyPrice);
+            const area = formatArea(post.propertyArea);
+            const location = buildLocation(post) || 'Chưa cập nhật khu vực';
+            const poster = buildPoster(post);
+            const posterSub = getPosterSub(post);
+            const avatarText = getAvatarText(post);
+            const propertyType = post.propertyType || 'Bất động sản';
+            const legal = post.propertyLegal || 'Đang cập nhật';
+            const direction = post.propertyDirection || 'Đang cập nhật';
+            const beds = post.propertyBeds || '0';
+            const description = post.description || 'Đang cập nhật mô tả chi tiết cho bất động sản này.';
+            const phone = post.contactPhone || post.phone || 'Liên hệ';
+            const pricePerM2 = (() => {
+                const priceNumber = parsePriceToNumber(post.propertyPrice);
+                const areaNumber = Number(post.propertyArea || 0);
+                if (!priceNumber || !areaNumber) return 'Chưa rõ';
+                const unit = priceNumber / areaNumber;
+                if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + ' tỷ/m²';
+                if (unit >= 1000000) return Math.round(unit / 1000000) + ' triệu/m²';
+                return Math.round(unit).toLocaleString('vi-VN') + ' đ/m²';
+            })();
+
+            return `
+                <div class="card-container">
+                    <div class="card-image-box w-[280px] h-auto shrink-0 relative bg-slate-100 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500" alt="${post.title || 'Bất động sản'}" class="w-full h-full object-cover">
+                        <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
+                            <i class="fa-regular fa-image"></i> 3
+                        </div>
+                        <div class="absolute top-3 left-3">${getStatusChip(post)}</div>
+                    </div>
+
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                <span class="text-[10px] uppercase font-bold bg-cyan-50 text-cyan-700 px-2 py-1 rounded">${propertyType}</span>
+                                <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">Tin bán</span>
+                            </div>
+
+                            <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] cursor-pointer">
+                                ${post.title || 'Tiêu đề bất động sản'}
+                            </h3>
+
+                            <div class="flex items-center gap-3 mt-3 text-sm flex-wrap font-medium">
+                                <span class="text-red-600 font-bold text-lg">${price}</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="text-red-600 font-bold text-lg">${area}</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="text-gray-600">${pricePerM2}</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="text-gray-600">${direction}</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="text-gray-600 flex items-center gap-1">${beds} <i class="fa-solid fa-bed"></i></span>
+                            </div>
+
+                            <p class="text-gray-500 text-[12px] mt-3">
+                                <i class="fa-solid fa-location-dot mr-1"></i> ${location}
+                            </p>
+
+                            <p class="card-desc text-gray-500 text-sm mt-3 italic">${description}</p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-[12px] text-slate-500">
+                                <div><strong class="text-slate-700">Pháp lý:</strong> ${legal}</div>
+                                <div><strong class="text-slate-700">Loại hình:</strong> ${propertyType}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mt-4 pt-3 border-t">
+                            <div class="flex items-center gap-3 group">
+                                <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs group-hover:opacity-80 transition">
+                                    ${avatarText}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-gray-700 group-hover:text-[--vip-color] transition">${poster}</p>
+                                    <p class="text-[11px] text-gray-400">${posterSub}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-phone"></i> ${phone}
+                                </button>
+                                <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition">
+                                    <i class="fa-regular fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getFallbackDemoPosts() {
+            return [
+                {
+                    title: 'NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN',
+                    propertyType: 'Biệt thự',
+                    propertyPrice: '60 tỷ',
+                    propertyArea: '300',
+                    propertyLegal: 'Sổ đỏ đầy đủ',
+                    propertyDirection: 'Đông Nam',
+                    propertyBeds: '5',
+                    city: 'Hà Nội',
+                    district: 'Đan Phượng',
+                    ward: '',
+                    description: 'Căn biệt thự có vị trí kim cương, bàn giao full nội thất cao cấp. Môi giới hỗ trợ pháp lý và thủ tục nhanh gọn.',
+                    contactName: 'Nguyễn Thành An',
+                    roleLabel: 'Môi giới chuyên nghiệp',
+                    contactPhone: '0912 598 ***',
+                    status: 'demo',
+                    createdAt: new Date().toISOString(),
+                    flow: 'real_estate',
+                    postType: 'ban'
+                },
+                {
+                    title: 'BÁN CĂN HỘ CAO CẤP 2 PHÒNG NGỦ TRUNG TÂM THÀNH PHỐ, FULL NỘI THẤT',
+                    propertyType: 'Căn hộ',
+                    propertyPrice: '4.2 tỷ',
+                    propertyArea: '85',
+                    propertyLegal: 'Sổ hồng',
+                    propertyDirection: 'Nam',
+                    propertyBeds: '2',
+                    city: 'TP.HCM',
+                    district: 'Quận 1',
+                    ward: '',
+                    description: 'Căn hộ view đẹp, gần trung tâm thương mại, phù hợp để ở hoặc đầu tư cho thuê lâu dài.',
+                    contactName: 'Trần Văn Bình',
+                    roleLabel: 'Chuyên viên tư vấn',
+                    contactPhone: '0988 123 ***',
+                    status: 'demo',
+                    createdAt: new Date().toISOString(),
+                    flow: 'real_estate',
+                    postType: 'ban'
+                }
+            ];
+        }
+
+        function applyFilters(posts) {
+            let filtered = [...posts];
+
+            const keyword = keywordFilter.value.trim().toLowerCase();
+            const propertyType = typeFilter.value;
+            const city = cityFilter.value;
+            const sortType = sortFilter.value;
+
+            if (keyword) {
+                filtered = filtered.filter(post =>
+                    (post.title || '').toLowerCase().includes(keyword) ||
+                    (post.description || '').toLowerCase().includes(keyword) ||
+                    (post.propertyType || '').toLowerCase().includes(keyword) ||
+                    buildLocation(post).toLowerCase().includes(keyword)
+                );
+            }
+
+            if (propertyType) {
+                filtered = filtered.filter(post => (post.propertyType || '') === propertyType);
+            }
+
+            if (city) {
+                filtered = filtered.filter(post => (post.city || '') === city);
+            }
+
+            if (sortType === 'price-asc') {
+                filtered.sort((a, b) => parsePriceToNumber(a.propertyPrice) - parsePriceToNumber(b.propertyPrice));
+            } else if (sortType === 'price-desc') {
+                filtered.sort((a, b) => parsePriceToNumber(b.propertyPrice) - parsePriceToNumber(a.propertyPrice));
+            } else if (sortType === 'area-desc') {
+                filtered.sort((a, b) => Number(b.propertyArea || 0) - Number(a.propertyArea || 0));
+            } else {
+                filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            }
+
+            return filtered;
+        }
+
+        function renderHotAreas(posts) {
+            const areaMap = {};
+
+            posts.forEach(post => {
+                const city = post.city || 'Khác';
+                areaMap[city] = (areaMap[city] || 0) + 1;
+            });
+
+            const sortedAreas = Object.entries(areaMap)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+
+            if (!sortedAreas.length) {
+                hotAreas.innerHTML = `<li class="flex justify-between"><span>Chưa có dữ liệu</span> <span class="text-gray-400 text-[11px]">0 tin</span></li>`;
+                return;
+            }
+
+            hotAreas.innerHTML = sortedAreas.map(([area, count]) => `
+                <li class="flex justify-between hover:text-[--hover-color] cursor-pointer">
+                    <span>${area}</span>
+                    <span class="text-gray-400 text-[11px]">${count} tin</span>
+                </li>
+            `).join('');
+        }
+
+        function renderListings() {
+            let posts = getSalePosts();
+
+            if (!posts.length) {
+                posts = getFallbackDemoPosts();
+                dataNote.classList.remove('hidden');
+                dataNote.innerHTML = `
+                    Hiện tại chưa có tin bán thật nào được lấy từ bộ nhớ trình duyệt. 
+                    Tôi đang hiển thị 2 tin mẫu để giao diện không bị trống. 
+                    Sau khi bạn đăng tin bán từ trang <strong>Đăng tin</strong>, dữ liệu sẽ tự động xuất hiện ở đây.
+                `;
+            } else {
+                dataNote.classList.add('hidden');
+                dataNote.innerHTML = '';
+            }
+
+            const filteredPosts = applyFilters(posts);
+            listingCount.textContent = filteredPosts.length;
+
+            renderHotAreas(posts);
+
+            if (!filteredPosts.length) {
+                listingContainer.innerHTML = `
+                    <div class="empty-box">
+                        Không tìm thấy tin bán nào phù hợp với bộ lọc hiện tại. Bạn thử đổi từ khóa, loại nhà đất hoặc khu vực.
+                    </div>
+                `;
+                return;
+            }
+
+            listingContainer.innerHTML = filteredPosts.map(renderCard).join('');
+        }
+
+        applyFilterBtn.addEventListener('click', renderListings);
+        keywordFilter.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') renderListings();
+        });
+        typeFilter.addEventListener('change', renderListings);
+        cityFilter.addEventListener('change', renderListings);
+        sortFilter.addEventListener('change', renderListings);
+
+        renderListings();
     </script>
     <script src="../assets/js/main.js"></script>
 </body>
