@@ -6,36 +6,114 @@
     <title>Tin tức Thị trường Bất Động Sản Việt Nam | Tổ Ấm Việt</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
     <style>
         :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fff; color: #2C2C2C; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        
+
         /* Menu & Header */
         .nav-link { transition: all 0.3s; position: relative; }
         .nav-link:hover { color: var(--hover-color) !important; }
         .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; border-top: 2px solid var(--vip-color); z-index: 50; }
-        .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; border-bottom: 1px solid #f2f2f2; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 200px;
+            border-top: 2px solid var(--vip-color);
+            z-index: 50;
+        }
+        .dropdown-item {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #f2f2f2;
+        }
         .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
+
+        /* Save icon */
+        .save-icon { position: relative; cursor: pointer; font-size: 20px; }
+        .save-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #E03C31;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
 
         /* Wiki Layout */
         .wiki-title { font-size: 28px; font-weight: 700; color: #222; margin-bottom: 8px; }
         .wiki-sub-title { font-size: 14px; color: #777; margin-bottom: 25px; }
         .featured-post { position: relative; border-radius: 4px; overflow: hidden; height: 420px; margin-bottom: 40px; }
-        .featured-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; color: white; }
-        
+        .featured-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: white;
+        }
+
         /* Sidebar */
         .sidebar-box { border: 1px solid #f0f0f0; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
-        .rank-number { width: 24px; height: 24px; background: #f2f2f2; color: #888; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: bold; flex-shrink: 0; }
+        .rank-number {
+            width: 24px;
+            height: 24px;
+            background: #f2f2f2;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
         .rank-item:nth-child(1) .rank-number { background: #FF8C00; color: white; }
-        .city-tag { position: relative; border-radius: 6px; overflow: hidden; height: 80px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .city-tag {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
 
-        /* Footer Groups */
-        .footer-link-group h4 { font-weight: bold; font-size: 14px; margin-bottom: 16px; color: #2C2C2C; }
-        .footer-link-group ul { font-size: 13px; color: #666; padding: 0; list-style: none; }
-        .footer-link-group li { margin-bottom: 8px; cursor: pointer; transition: 0.3s; }
-        .footer-link-group li:hover { color: var(--hover-color); }
+        /* Footer */
+        .footer-link-group h4 {
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #2C2C2C;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .footer-link-group ul {
+            font-size: 13px;
+            color: #666;
+            padding: 0;
+            list-style: none;
+        }
+        .footer-link-group li { margin-bottom: 8px; }
+        .footer-link-group li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -43,33 +121,62 @@
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[70px] flex justify-between items-center">
             <div class="flex items-center gap-8">
-                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
+                <a href="../index.html">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
+                </a>
+
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="du-an.html" class="nav-link">Dự án</a>
-                    <a href="tin-tuc.html" class="nav-link text-[--vip-color]">Tin tức</a>
-                    <div class="dropdown relative">
-                        <a href="#" class="nav-link flex items-center gap-1">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
+                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
+                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
+                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
+
+                    <div class="dropdown relative h-full flex items-center cursor-pointer">
+                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Danh bạ môi giới</a>
-                            <a href="#" class="dropdown-item">Danh bạ doanh nghiệp</a>
+                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
+                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
                         </div>
                     </div>
                 </nav>
             </div>
-            <div class="flex items-center gap-6">
-                <div class="relative cursor-pointer text-gray-500">
-                    <i class="fa-regular fa-heart text-xl"></i>
-                    <span class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-1.5 rounded-full">0</span>
+
+            <div class="flex items-center gap-5">
+                <div class="save-icon nav-link text-gray-600">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="save-count">0</span>
                 </div>
-                <div class="hidden md:flex items-center gap-3 text-[14px] font-semibold">
-                    <a href="#" class="hover:text-[--hover-color]">Đăng nhập</a> <span class="text-gray-300">|</span> <a href="#" class="hover:text-[--hover-color]">Đăng ký</a>
+
+                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
+                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
                 </div>
-                <button class="border border-[--vip-color] text-[--vip-color] px-4 py-1.5 rounded-lg font-bold hover:bg-[--vip-color] hover:text-white transition uppercase text-[12px]">Đăng tin</button>
+
+                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
+                    Đăng tin
+                </a>
             </div>
         </div>
     </header>
+
+    <div class="lg:hidden bg-white border-t">
+        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
+            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
+            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
+            <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
+            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
+            <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
+            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
+            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
+            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
+            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
+            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
+            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
+        </div>
+    </div>
 
     <main class="py-8">
         <div class="container-custom">
@@ -77,7 +184,7 @@
             <p class="wiki-sub-title">Cập nhật tin tức mới nhất trên thị trường Bất Động Sản.</p>
 
             <div class="featured-post group cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200" alt="Tin nổi bật thị trường bất động sản" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                 <div class="featured-overlay">
                     <span class="text-xs font-bold bg-black/50 w-fit px-2 py-1 rounded mb-3">14/11/2025 17:00 • Nội - Ngoại thất</span>
                     <h2 class="text-2xl md:text-3xl font-bold leading-tight">Hành Trình Chạm Tới "Trái Tim" Của Mọi Công Trình</h2>
@@ -91,7 +198,7 @@
                     <div class="space-y-10">
                         <div class="flex flex-col md:flex-row gap-6 group">
                             <div class="md:w-[260px] h-[160px] shrink-0 overflow-hidden rounded-lg">
-                                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400" alt="Bài viết mới về nội ngoại thất" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                             </div>
                             <div>
                                 <span class="bg-gray-100 text-[10px] px-2 py-1 font-bold rounded text-gray-500 uppercase">Nội - Ngoại thất</span>
@@ -103,13 +210,25 @@
 
                         <div class="flex flex-col md:flex-row gap-6 group">
                             <div class="md:w-[260px] h-[160px] shrink-0 overflow-hidden rounded-lg">
-                                <img src="https://images.unsplash.com/photo-1556912177-c54038a3da74?w=400" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                <img src="https://images.unsplash.com/photo-1556912177-c54038a3da74?w=400" alt="Showroom nội thất OPPEIN tại TP.HCM" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                             </div>
                             <div>
                                 <span class="bg-gray-100 text-[10px] px-2 py-1 font-bold rounded text-gray-500 uppercase">Nội - Ngoại thất</span>
                                 <h4 class="text-lg font-bold mt-2 group-hover:text-[--vip-color] transition line-clamp-2">OPPEIN - Thương Hiệu Nội Thất Tỷ Đô Mở Showroom Tại TP.HCM</h4>
                                 <p class="text-[11px] text-gray-400 mt-1">31/10/2025 08:00 • Hải Âu</p>
                                 <p class="text-sm text-gray-500 mt-2 line-clamp-2">OPPEIN được biết đến như thương hiệu nội thất hàng đầu thế giới với bề dày 31 năm, hiện diện tại hơn 130 quốc gia...</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-6 group">
+                            <div class="md:w-[260px] h-[160px] shrink-0 overflow-hidden rounded-lg">
+                                <img src="https://images.unsplash.com/photo-1460317442991-0ec209397118?w=400" alt="Phân tích xu hướng thị trường bất động sản" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            </div>
+                            <div>
+                                <span class="bg-gray-100 text-[10px] px-2 py-1 font-bold rounded text-gray-500 uppercase">Thị trường</span>
+                                <h4 class="text-lg font-bold mt-2 group-hover:text-[--vip-color] transition line-clamp-2">Xu Hướng Dòng Tiền Đầu Tư Bất Động Sản Trong Năm 2026</h4>
+                                <p class="text-[11px] text-gray-400 mt-1">28/10/2025 10:30 • Minh Quân</p>
+                                <p class="text-sm text-gray-500 mt-2 line-clamp-2">Giới đầu tư đang dần chuyển hướng sang những khu vực có hạ tầng phát triển mạnh, pháp lý rõ ràng và nhu cầu ở thực tăng cao...</p>
                             </div>
                         </div>
                     </div>
@@ -119,13 +238,17 @@
                     <div class="sidebar-box shadow-sm">
                         <h4 class="font-bold text-base mb-5 border-l-4 border-[--vip-color] pl-3 uppercase">Bài viết xem nhiều nhất</h4>
                         <div class="space-y-5">
-                            <a href="#" class="flex gap-4 group">
+                            <a href="#" class="rank-item flex gap-4 group">
                                 <span class="rank-number">1</span>
                                 <span class="text-[13px] font-semibold group-hover:text-[--vip-color] leading-snug">Mệnh Thổ Hợp Cây Gì? 12 Loại Cây Hợp Mệnh Thổ Hút Tài Lộc</span>
                             </a>
-                            <a href="#" class="flex gap-4 group border-t pt-4">
+                            <a href="#" class="rank-item flex gap-4 group border-t pt-4">
                                 <span class="rank-number">2</span>
                                 <span class="text-[13px] font-semibold group-hover:text-[--vip-color] leading-snug">Cách Tính M2 Xây Dựng Ứng Dụng Trong Xây Sửa Nhà</span>
+                            </a>
+                            <a href="#" class="rank-item flex gap-4 group border-t pt-4">
+                                <span class="rank-number">3</span>
+                                <span class="text-[13px] font-semibold group-hover:text-[--vip-color] leading-snug">5 Kinh Nghiệm Mua Nhà Đầu Tiên Cho Người Trẻ</span>
                             </a>
                         </div>
                     </div>
@@ -133,22 +256,22 @@
                     <div class="sidebar-box shadow-sm">
                         <h4 class="font-bold text-base mb-5 uppercase">Thị trường BĐS sôi động</h4>
                         <div class="grid grid-cols-2 gap-3">
-                            <a href="#" class="city-tag" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1555921015-5532091f6026?w=200'); background-size: cover;">Hà Nội</a>
-                            <a href="#" class="city-tag" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1528127269322-539801943592?w=200'); background-size: cover;">TP. HCM</a>
+                            <a href="../pages/gia-nha-dat.html" class="city-tag" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1555921015-5532091f6026?w=200'); background-size: cover;">Hà Nội</a>
+                            <a href="../pages/gia-nha-dat.html" class="city-tag" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1528127269322-539801943592?w=200'); background-size: cover;">TP. HCM</a>
                         </div>
                     </div>
 
                     <div class="sidebar-box shadow-sm">
                         <h4 class="font-bold text-base mb-5 uppercase">Thị trường 10 tỉnh thành</h4>
                         <div class="space-y-3">
-                            <a href="#" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color] border-b pb-2">
-                                <img src="https://flagcdn.com/w20/vn.png" class="w-5"> Bà Rịa - Vũng Tàu
+                            <a href="../pages/gia-nha-dat.html" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color] border-b pb-2">
+                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5"> Bà Rịa - Vũng Tàu
                             </a>
-                            <a href="#" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color] border-b pb-2">
-                                <img src="https://flagcdn.com/w20/vn.png" class="w-5"> Bình Dương
+                            <a href="../pages/gia-nha-dat.html" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color] border-b pb-2">
+                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5"> Bình Dương
                             </a>
-                            <a href="#" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color]">
-                                <img src="https://flagcdn.com/w20/vn.png" class="w-5"> Đà Nẵng
+                            <a href="../pages/gia-nha-dat.html" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color]">
+                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5"> Đà Nẵng
                             </a>
                         </div>
                     </div>
@@ -157,92 +280,135 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t mt-12 pt-12 pb-8">
+    <footer class="bg-white pt-16 border-t">
         <div class="container-custom">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div class="mb-12 border-b pb-12">
+                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
+                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
                 <div class="footer-link-group">
                     <h4>CHỦ ĐỀ NỔI BẬT</h4>
                     <ul>
-                        <li>Bất động sản Hà Nội</li>
-                        <li>Bất động sản Hồ Chí Minh</li>
-                        <li>Mua nhà chung cư</li>
-                        <li>Báo cáo thị trường</li>
+                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
+                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
+                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
                     </ul>
                 </div>
                 <div class="footer-link-group">
                     <h4>BẤT ĐỘNG SẢN BÁN</h4>
                     <ul>
-                        <li>Bán căn hộ chung cư</li>
-                        <li>Bán nhà riêng</li>
-                        <li>Bán đất nền dự án</li>
-                        <li>Bán biệt thự, liền kề</li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
                     </ul>
                 </div>
                 <div class="footer-link-group">
                     <h4>BẤT ĐỘNG SẢN THUÊ</h4>
                     <ul>
-                        <li>Thuê căn hộ chung cư</li>
-                        <li>Thuê nhà riêng</li>
-                        <li>Thuê văn phòng</li>
-                        <li>Thuê phòng trọ giá rẻ</li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
                     </ul>
                 </div>
                 <div class="footer-link-group">
                     <h4>DỰ ÁN NỔI BẬT</h4>
                     <ul>
-                        <li>Dự án Vinhomes</li>
-                        <li>Căn hộ cao cấp Quận 2</li>
-                        <li>Đất nền Bình Dương</li>
-                        <li>Căn hộ Studio giá rẻ</li>
+                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
+                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="footer-bottom-box flex flex-wrap justify-between items-start gap-8 border-t pt-8">
-                <div class="w-full lg:w-1/3">
-                    <img src="DAI TRONG SUOT (2).png" class="h-10 mb-6">
-                    <h5 class="font-bold text-gray-800 text-sm mb-4 uppercase">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</h5>
-                    <p class="text-[13px] text-gray-500 flex items-center gap-2 mb-2"><i class="fa-solid fa-location-dot"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[13px] text-gray-500 flex items-center gap-2 mb-4"><i class="fa-solid fa-phone"></i> Hotline: 0946 239 289</p>
-                    <div class="flex gap-4">
-                        <img src="https://img.icons8.com/color/48/google-play.png" class="w-6 h-6 grayscale opacity-70">
-                        <img src="https://img.icons8.com/ios-filled/50/apple-app-store--v1.png" class="w-6 h-6 grayscale opacity-70">
+            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
+                <div class="max-w-sm">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6">
+                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
+                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
+                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
+                    <div class="flex gap-4 mt-6">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer">
                     </div>
                 </div>
-                <div class="flex-1 grid grid-cols-2 gap-8">
+
+                <div class="grid grid-cols-2 gap-10 text-[13px]">
                     <div>
-                        <h5 class="font-bold text-gray-800 text-[12px] mb-4 uppercase">HƯỚNG DẪN</h5>
-                        <ul class="text-[13px] text-gray-500 space-y-2">
-                            <li class="hover:text-[--hover-color]">Về chúng tôi</li>
-                            <li class="hover:text-[--hover-color]">Báo giá dịch vụ</li>
-                            <li class="hover:text-[--hover-color]">Câu hỏi thường gặp</li>
-                            <li class="hover:text-[--hover-color]">Sitemap</li>
+                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
+                        <ul class="text-gray-500 space-y-2">
+                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h5 class="font-bold text-gray-800 text-[12px] mb-4 uppercase">QUY ĐỊNH</h5>
-                        <ul class="text-[13px] text-gray-500 space-y-2">
-                            <li class="hover:text-[--hover-color]">Điều khoản thỏa thuận</li>
-                            <li class="hover:text-[--hover-color]">Chính sách bảo mật</li>
-                            <li class="hover:text-[--hover-color]">Giải quyết khiếu nại</li>
+                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
+                        <ul class="text-gray-500 space-y-2">
+                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="w-full lg:w-1/4">
-                    <h5 class="font-bold text-gray-800 text-[12px] mb-4 uppercase">ĐĂNG KÝ NHẬN TIN</h5>
-                    <div class="flex bg-white border border-gray-200 rounded-lg overflow-hidden p-1 shadow-sm">
-                        <input type="text" placeholder="Email của bạn..." class="flex-1 px-3 py-2 outline-none text-sm">
-                        <button class="bg-[--vip-color] text-white px-4 py-2 rounded-md hover:bg-opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
+
+                <div class="w-full lg:max-w-xs">
+                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
+                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
+                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm">
+                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
-                    <p class="text-[11px] text-gray-400 mt-2 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
+                    <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
                 </div>
+            </div>
+
+            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
+                <p>© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
             </div>
         </div>
     </footer>
 
-    <div class="fixed bottom-6 right-6 z-[1001] cursor-pointer hover:scale-110 transition-transform">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-14 h-14 shadow-xl rounded-full">
+    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+
+    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+        <i class="fa-solid fa-comment-dots"></i>
     </div>
 
+    <div id="chatForm">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required>
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+        </div>
+    </div>
+
+    <script>
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value;
+            const msg = document.getElementById("cusMsg").value;
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+    </script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>
