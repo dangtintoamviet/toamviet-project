@@ -1,1 +1,208 @@
+:root {
+    --primary-color: #008B8B;
+    --hover-color: #FF8C00;
+    --gold-vip: #ffce3d;
+    --text-color: #2C2C2C;
+    --bg-color: #f2f2f2;
+    --white: #ffffff;
+    --border-color: #e5e7eb;
+    --danger-color: #E03C31;
+    --info-color: #2563eb;
+}
 
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container-custom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header / Menu */
+.nav-link {
+    transition: all 0.3s;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--hover-color) !important;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--white);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    z-index: 100;
+    border-top: 3px solid var(--primary-color);
+    padding: 10px 0;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    display: block;
+    color: #333;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background: #f9f9f9;
+    color: var(--hover-color);
+}
+
+/* Button chung */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-outline-primary {
+    border: 1.5px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+/* Card */
+.card-vip-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(45deg, #f1c40f, #f39c12);
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+}
+
+/* Filter box */
+.filter-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.filter-item {
+    background: white;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .filter-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Floating buttons */
+.zalo-chat-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    z-index: 999;
+    width: 55px;
+    height: 55px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 139, 139, 0.4);
+}
+
+#goToTop {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    z-index: 999;
+    width: 45px;
+    height: 45px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Utility */
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #1f2937;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.text-price-sale {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+.text-price-rent {
+    color: var(--info-color);
+    font-weight: bold;
+}
