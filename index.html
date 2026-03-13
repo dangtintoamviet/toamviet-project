@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="assets/css/main.css">
+
     <style>
         :root {
             --vip-color: #008B8B; 
@@ -46,7 +48,7 @@
         .filter-item {
             background: white; border-radius: 4px; padding: 8px 12px;
             font-size: 13px; color: #333; cursor: pointer;
-            display: flex; justify-content: space-between; items-center: center;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
         /* Giữ các hiệu ứng Zalo/GoTop của bạn */
@@ -61,27 +63,27 @@
             <div class="flex items-center gap-8">
                 <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10"></a>
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="#" class="nav-link">Nhà đất bán</a>
-                    <a href="#" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="#" class="nav-link">Dự án</a>
-                    <a href="#" class="nav-link">Tin tức</a>
+                    <a href="pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="pages/du-an.html" class="nav-link">Dự án</a>
+                    <a href="pages/tin-tuc.html" class="nav-link">Tin tức</a>
                     <div class="dropdown relative h-full flex items-center cursor-pointer">
                         <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="#" class="dropdown-item">Môi giới</a>
+                            <a href="pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
+                            <a href="pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
                         </div>
                     </div>
                 </nav>
             </div>
             <div class="flex items-center gap-5">
-                <a href="dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
+                <a href="user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
             </div>
         </div>
     </header>
 
     <section class="relative h-[520px] flex items-center justify-center overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920" class="absolute inset-0 w-full h-full object-cover">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920" alt="Banner bất động sản" class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/40"></div>
         
         <div class="relative z-10 w-full max-w-[900px] px-4">
@@ -112,7 +114,7 @@
     <section class="py-12 container-custom">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-bold text-gray-800 uppercase border-l-4 border-[#008B8B] pl-3">Tin rao bán mới nhất</h2>
-            <a href="#" class="text-[#008B8B] font-bold text-sm">Xem tất cả <i class="fa-solid fa-arrow-right ml-1"></i></a>
+            <a href="pages/nha-dat-ban.html" class="text-[#008B8B] font-bold text-sm">Xem tất cả <i class="fa-solid fa-arrow-right ml-1"></i></a>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -120,7 +122,7 @@
                 <div class="card-vip-label"><i class="fa-solid fa-crown mr-1"></i> Tin VIP</div>
                 
                 <div class="relative h-[180px] overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1560448204-61dc36dc98c8?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <img src="https://images.unsplash.com/photo-1560448204-61dc36dc98c8?w=400" alt="Căn hộ Diamond Alnata Plus" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     <div class="absolute bottom-2 left-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded">4 ảnh</div>
                 </div>
                 <div class="p-4">
@@ -131,19 +133,19 @@
                     <p class="text-gray-500 text-[12px] mt-2"><i class="fa-solid fa-location-dot mr-1"></i> Tân Phú, TP.HCM</p>
                 </div>
             </div>
-            </div>
+        </div>
     </section>
 
     <section class="py-12 bg-gray-50">
         <div class="container-custom">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-gray-800 uppercase border-l-4 border-orange-500 pl-3">Tin cho thuê gấp</h2>
-                <a href="#" class="text-orange-600 font-bold text-sm">Xem tất cả</a>
+                <a href="pages/nha-dat-cho-thue.html" class="text-orange-600 font-bold text-sm">Xem tất cả</a>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition group">
                     <div class="relative h-[180px] overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" class="w-full h-full object-cover group-hover:scale-105 transition">
+                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="Cho thuê chung cư mini Quận 1" class="w-full h-full object-cover group-hover:scale-105 transition">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-[14px] line-clamp-2 h-10 group-hover:text-[#008B8B]">Cho thuê chung cư mini Full nội thất - Quận 1</h3>
@@ -163,26 +165,36 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         // Swiper của bạn
-        new Swiper(".projectSwiper", {
-            slidesPerView: 1, spaceBetween: 20,
-            navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-            breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 4 } }
-        });
+        if (document.querySelector(".projectSwiper")) {
+            new Swiper(".projectSwiper", {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+                breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 4 } }
+            });
+        }
 
-        // Xử lý Go To Top
+        // Tạm giữ lại để trang không bị gãy trong giai đoạn chuyển tiếp
         window.onscroll = function() {
             const btn = document.getElementById("goToTop");
+            if (!btn) return;
             if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
                 btn.style.display = "flex";
             } else {
                 btn.style.display = "none";
             }
         };
-        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function toggleForm() { 
-            var form = document.getElementById("chatForm");
+            const form = document.getElementById("chatForm");
+            if (!form) return;
             form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
         }
     </script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
