@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Báo Cáo Giá Nhà Đất Bình Dương 2026 | Tổ Ấm Việt</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giá Nhà Đất | Tổ Ấm Việt</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
 
     <style>
         :root {
@@ -31,6 +31,50 @@
 
         h1 { font-weight: 700; color: #0f172a; letter-spacing: -0.01em; }
         h2 { font-weight: 700; color: #1e293b; }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .nav-link {
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--hover-color) !important;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 200px;
+            border-top: 2px solid var(--vip-color);
+            z-index: 50;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+        .dropdown-item:hover {
+            background: #f9f9f9;
+            color: var(--hover-color);
+        }
 
         .sub-title {
             font-weight: 700;
@@ -306,7 +350,7 @@
         <div class="container-custom h-[70px] flex justify-between items-center">
             <div class="flex items-center gap-8">
                 <a href="../index.html">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10" />
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
@@ -369,11 +413,11 @@
                 <div>
                     <div class="hero-badge">
                         <i class="fa-solid fa-chart-line"></i>
-                        Dữ liệu tổng hợp từ tin đăng bán
+                        Dữ liệu tổng hợp từ tin đăng bán đã duyệt
                     </div>
 
                     <h1 id="page-title" class="hero-title">
-                        Báo cáo Giá Nhà Đất Bình Dương
+                        Báo cáo Giá Nhà Đất Toàn hệ thống
                     </h1>
 
                     <p class="hero-desc">
@@ -478,15 +522,15 @@
 
         <div class="bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-sm border-t-8 border-t-[--vip-color]">
             <h2 class="text-slate-900 text-xl md:text-2xl mb-6">
-                Xu hướng <span class="text-[--vip-color]">Giá Nhà Đất Bình Dương</span> năm 2026
+                Xu hướng <span class="text-[--vip-color]">Giá Nhà Đất</span> từ dữ liệu hệ thống
             </h2>
 
             <div class="text-[14px] md:text-[15px] text-slate-600 leading-relaxed space-y-4">
                 <p>
-                    Hệ thống dữ liệu từ Tổ Ấm Việt đang ưu tiên lấy <strong>đơn giá từ các tin đăng bán thực tế</strong> để tính ra mặt bằng giá trung bình theo khu vực. Cách làm này giúp trang giá nhà đất bám sát dữ liệu người dùng đăng lên website, thay vì chỉ hiển thị số liệu cố định.
+                    Hệ thống dữ liệu từ Tổ Ấm Việt đang ưu tiên lấy <strong>đơn giá từ các tin đăng bán thực tế đã được duyệt</strong> để tính ra mặt bằng giá trung bình theo khu vực. Cách làm này giúp trang giá nhà đất bám sát dữ liệu người dùng đăng lên website.
                 </p>
                 <p>
-                    Khi lượng tin bán ngày càng nhiều, hệ thống sẽ cho ra bức tranh rõ hơn về <strong>giá nhà đất</strong>, đặc biệt theo từng quận huyện và loại sản phẩm như đất nền, căn hộ, nhà phố hay biệt thự. Đây là nền tảng rất tốt để mở rộng thêm báo cáo giá theo thời gian sau này.
+                    Khi lượng tin bán ngày càng nhiều, hệ thống sẽ cho ra bức tranh rõ hơn về <strong>giá nhà đất</strong>, đặc biệt theo từng quận huyện và loại sản phẩm như đất nền, căn hộ, nhà phố hay biệt thự.
                 </p>
             </div>
         </div>
@@ -496,7 +540,7 @@
         <div class="container-custom">
             <div class="mb-12 border-b pb-12">
                 <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
+                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình.
                 </p>
             </div>
 
@@ -541,13 +585,13 @@
 
             <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
                 <div class="max-w-sm">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6" />
                     <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
                     <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
                     <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
                     <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer" />
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer" />
                     </div>
                 </div>
 
@@ -574,7 +618,7 @@
                 <div class="w-full lg:max-w-xs">
                     <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
                     <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
-                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm">
+                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm" />
                         <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                     <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
@@ -599,11 +643,15 @@
             <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
-            <input type="text" id="cusName" placeholder="Tên của bạn..." required>
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
             <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
         </div>
     </div>
+
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
 
     <script>
         let chartInstance = null;
@@ -613,8 +661,8 @@
 
             const raw = String(priceText).toLowerCase().trim().replace(/,/g, '.');
             const cleaned = raw.replace(/\s+/g, ' ').trim();
-
             const nums = cleaned.match(/\d+(\.\d+)?/g);
+
             if (!nums || !nums.length) return null;
 
             if (cleaned.includes('tỷ')) {
@@ -642,27 +690,38 @@
 
         function getFallbackData() {
             return [
-                { title: "Bán đất nền Đông Bình Dương", city: "Bình Dương", district: "Dĩ An", propertyType: "Đất nền", propertyPrice: "1.25 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate" },
-                { title: "Bán đất nền Đông Bình Dương", city: "Bình Dương", district: "Dĩ An", propertyType: "Đất nền", propertyPrice: "1.08 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate" },
-                { title: "Bán căn hộ Bcons City", city: "Bình Dương", district: "Dĩ An", propertyType: "Căn hộ", propertyPrice: "2.1 tỷ", propertyArea: "55", postType: "ban", flow: "real_estate" },
-                { title: "Bán căn hộ Charm City", city: "Bình Dương", district: "Thuận An", propertyType: "Căn hộ", propertyPrice: "4.2 tỷ", propertyArea: "90", postType: "ban", flow: "real_estate" },
-                { title: "Bán nhà phố Icon Central", city: "Bình Dương", district: "Thuận An", propertyType: "Nhà phố", propertyPrice: "3.8 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate" },
-                { title: "Bán nhà Phú Hồng Thịnh", city: "Bình Dương", district: "Dĩ An", propertyType: "Nhà phố", propertyPrice: "3.2 tỷ", propertyArea: "60", postType: "ban", flow: "real_estate" },
-                { title: "Bán căn hộ Midori Park", city: "Bình Dương", district: "Thủ Dầu Một", propertyType: "Căn hộ", propertyPrice: "5.5 tỷ", propertyArea: "100", postType: "ban", flow: "real_estate" },
-                { title: "Bán căn hộ The Habitat", city: "Bình Dương", district: "Thuận An", propertyType: "Căn hộ", propertyPrice: "2.9 tỷ", propertyArea: "70", postType: "ban", flow: "real_estate" },
-                { title: "Bán biệt thự EcoLakes", city: "Bình Dương", district: "Thủ Dầu Một", propertyType: "Biệt thự", propertyPrice: "2.4 tỷ", propertyArea: "120", postType: "ban", flow: "real_estate" }
+                { title: "Bán đất nền Đông Bình Dương", city: "Bình Dương", district: "Dĩ An", propertyType: "Đất nền", propertyPrice: "1.25 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán đất nền Đông Bình Dương", city: "Bình Dương", district: "Dĩ An", propertyType: "Đất nền", propertyPrice: "1.08 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán căn hộ Bcons City", city: "Bình Dương", district: "Dĩ An", propertyType: "Căn hộ", propertyPrice: "2.1 tỷ", propertyArea: "55", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán căn hộ Charm City", city: "Bình Dương", district: "Thuận An", propertyType: "Căn hộ", propertyPrice: "4.2 tỷ", propertyArea: "90", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán nhà phố Icon Central", city: "Bình Dương", district: "Thuận An", propertyType: "Nhà phố", propertyPrice: "3.8 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán nhà Phú Hồng Thịnh", city: "Bình Dương", district: "Dĩ An", propertyType: "Nhà phố", propertyPrice: "3.2 tỷ", propertyArea: "60", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán căn hộ Midori Park", city: "Bình Dương", district: "Thủ Dầu Một", propertyType: "Căn hộ", propertyPrice: "5.5 tỷ", propertyArea: "100", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán căn hộ The Habitat", city: "Bình Dương", district: "Thuận An", propertyType: "Căn hộ", propertyPrice: "2.9 tỷ", propertyArea: "70", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán biệt thự EcoLakes", city: "Bình Dương", district: "Thủ Dầu Một", propertyType: "Biệt thự", propertyPrice: "6.4 tỷ", propertyArea: "120", postType: "ban", flow: "real_estate", status: "demo" }
             ];
         }
 
         function getPropertyPosts() {
-            const savedPosts = JSON.parse(localStorage.getItem('propertyPosts') || '[]');
+            if (window.postStorage && typeof window.postStorage.getSalePosts === 'function') {
+                const approvedPosts = window.postStorage.getSalePosts()
+                    .filter(post => post && post.status === 'approved');
 
-            const validPosts = savedPosts.filter(post => {
-                return post && post.flow === 'real_estate' && post.postType === 'ban';
-            });
+                if (approvedPosts.length > 0) {
+                    return { posts: approvedPosts, fallback: false };
+                }
+            }
 
-            if (validPosts.length > 0) {
-                return { posts: validPosts, fallback: false };
+            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+            const approvedPosts = allPosts.filter(post =>
+                post &&
+                post.flow === 'real_estate' &&
+                post.postType === 'ban' &&
+                post.status === 'approved'
+            );
+
+            if (approvedPosts.length > 0) {
+                return { posts: approvedPosts, fallback: false };
             }
 
             return { posts: getFallbackData(), fallback: true };
@@ -677,8 +736,8 @@
                     if (!priceInMillion || !area || area <= 0) return null;
 
                     const unitPrice = priceInMillion / area;
-                    const city = post.city && !post.city.startsWith('Chọn') ? post.city : 'Khác';
-                    const district = post.district && !post.district.startsWith('Chọn') ? post.district : 'Khu vực khác';
+                    const city = post.city && !String(post.city).startsWith('Chọn') ? post.city : 'Khác';
+                    const district = post.district && !String(post.district).startsWith('Chọn') ? post.district : 'Khu vực khác';
                     const propertyType = post.propertyType || 'Bất động sản';
                     const groupKey = `${district} - ${propertyType}`;
 
@@ -689,7 +748,8 @@
                         propertyType,
                         priceInMillion,
                         area,
-                        unitPrice
+                        unitPrice,
+                        title: post.title || ''
                     };
                 })
                 .filter(Boolean);
@@ -721,7 +781,8 @@
         }
 
         function renderChart(labels, dataPoints) {
-            const ctx = document.getElementById('priceChart').getContext('2d');
+            const canvas = document.getElementById('priceChart');
+            const ctx = canvas.getContext('2d');
             const isMobile = window.innerWidth < 768;
 
             if (chartInstance) {
@@ -817,7 +878,7 @@
             } else if (city) {
                 parts.push(city);
             } else {
-                parts.push('Toàn bộ dữ liệu');
+                parts.push('Toàn hệ thống');
             }
 
             if (type) {
@@ -849,8 +910,8 @@
             if (source.fallback) {
                 emptyNote.classList.remove('hidden');
                 emptyNote.innerHTML = `
-                    <strong>Chưa có đủ dữ liệu tin bán thật từ người dùng.</strong><br>
-                    Hệ thống đang tạm dùng dữ liệu mẫu để giữ giao diện hoạt động. Khi bạn đăng tin bán từ trang đăng tin, bảng giá này sẽ tự động lấy dữ liệu mới từ localStorage.
+                    <strong>Chưa có đủ dữ liệu tin bán thật đã duyệt.</strong><br>
+                    Hệ thống đang tạm dùng dữ liệu mẫu để giữ giao diện hoạt động. Khi bạn đăng tin bán và được admin duyệt, bảng giá này sẽ tự động lấy dữ liệu mới từ hệ thống.
                 `;
             } else {
                 emptyNote.classList.add('hidden');
@@ -860,7 +921,6 @@
             if (normalized.length === 0) {
                 document.getElementById('avg-land-price').innerText = '0';
                 document.getElementById('hero-avg-price').innerText = '0';
-                document.getElementById('total-ads').innerText = '0';
                 document.getElementById('hero-total-ads').innerText = '0';
                 document.getElementById('top-project').innerText = 'Chưa có dữ liệu';
                 document.getElementById('hero-top-area').innerText = 'Chưa có dữ liệu';
@@ -872,6 +932,7 @@
                         </td>
                     </tr>
                 `;
+
                 renderChart(['Chưa có dữ liệu'], [0]);
                 return;
             }
@@ -890,7 +951,7 @@
                 const avg = row.total / row.count;
                 totalAvgSum += avg;
                 labels.push(key);
-                dataPoints.push(avg.toFixed(1));
+                dataPoints.push(Number(avg.toFixed(1)));
 
                 tableBody.innerHTML += `
                     <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
@@ -908,7 +969,6 @@
 
             document.getElementById('avg-land-price').innerText = finalAvg;
             document.getElementById('hero-avg-price').innerText = finalAvg;
-            document.getElementById('total-ads').innerText = normalized.length;
             document.getElementById('hero-total-ads').innerText = normalized.length;
             document.getElementById('top-project').innerText = topArea;
             document.getElementById('hero-top-area').innerText = topArea;
