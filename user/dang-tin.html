@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Đăng tin chuyên nghiệp | ToamViet.com.vn</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
 
     <style>
         :root {
-            --vip-color: #008B8B;
-            --hover-color: #FF8C00;
+            --vip-color: #008b8b;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --stroke: #e2e8f0;
+            --text-main: #0f172a;
+            --text-soft: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f7fa;
+            font-family: "Roboto", sans-serif;
+            background: var(--soft-bg);
             color: #1e293b;
         }
 
@@ -31,30 +39,41 @@
             padding: 0 15px;
         }
 
-        .nav-link { transition: all 0.3s; position: relative; }
-        .nav-link:hover { color: var(--hover-color) !important; }
+        .nav-link {
+            transition: all 0.25s ease;
+            position: relative;
+        }
 
-        .dropdown:hover .dropdown-menu { display: block; }
+        .nav-link:hover {
+            color: var(--hover-color) !important;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
         .dropdown-menu {
             display: none;
             position: absolute;
             top: 100%;
             left: 0;
             background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            min-width: 220px;
             border-top: 2px solid var(--vip-color);
             z-index: 50;
         }
+
         .dropdown-item {
-            padding: 10px 20px;
+            padding: 10px 18px;
             display: block;
             color: #333;
             font-size: 14px;
-            border-bottom: 1px solid #f2f2f2;
+            border-bottom: 1px solid #f1f5f9;
         }
+
         .dropdown-item:hover {
-            background: #f9f9f9;
+            background: #f8fafc;
             color: var(--hover-color);
         }
 
@@ -68,7 +87,7 @@
             position: absolute;
             top: -8px;
             right: -10px;
-            background: #E03C31;
+            background: #e03c31;
             color: white;
             font-size: 10px;
             padding: 2px 5px;
@@ -93,14 +112,14 @@
         .form-card,
         .preview-card {
             background: white;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--stroke);
             border-radius: 24px;
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
         }
 
         .hero-card {
             padding: 28px;
-            background: linear-gradient(135deg, #0f766e, #008B8B);
+            background: linear-gradient(135deg, #0f766e, #008b8b);
             color: white;
             overflow: hidden;
             position: relative;
@@ -121,7 +140,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.22);
             background: rgba(255,255,255,0.12);
             border-radius: 999px;
             padding: 8px 14px;
@@ -176,7 +195,9 @@
             line-height: 1.5;
         }
 
-        .user-card { padding: 24px; }
+        .user-card {
+            padding: 24px;
+        }
 
         .user-top {
             display: flex;
@@ -226,7 +247,9 @@
             border-bottom: 1px dashed #e2e8f0;
         }
 
-        .user-meta-item:last-child { border-bottom: none; }
+        .user-meta-item:last-child {
+            border-bottom: none;
+        }
 
         .user-meta-item .meta-label {
             color: #64748b;
@@ -245,7 +268,9 @@
             gap: 24px;
         }
 
-        .form-card { padding: 26px; }
+        .form-card {
+            padding: 26px;
+        }
 
         .preview-card {
             padding: 22px;
@@ -385,18 +410,112 @@
             line-height: 1.5;
         }
 
+        .project-box,
         .upload-box {
-            border: 2px dashed #cbd5e1;
+            border: 1px solid #dbe3eb;
             border-radius: 20px;
-            padding: 28px;
-            text-align: center;
+            padding: 20px;
             background: #f8fafc;
-            transition: 0.25s;
+        }
+
+        .upload-box {
+            border-style: dashed;
+            text-align: center;
         }
 
         .upload-box:hover {
             border-color: var(--vip-color);
             background: #f0fdfa;
+        }
+
+        .switch-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+        }
+
+        .switch-pill {
+            position: relative;
+            width: 54px;
+            height: 30px;
+            background: #cbd5e1;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .switch-pill.active {
+            background: var(--vip-color);
+        }
+
+        .switch-pill::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: white;
+            transition: all 0.25s ease;
+        }
+
+        .switch-pill.active::after {
+            left: 28px;
+        }
+
+        .suggest-list {
+            display: none;
+            margin-top: 10px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .suggest-item {
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .suggest-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggest-item:hover {
+            background: #f0fdfa;
+        }
+
+        .suggest-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .suggest-meta {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .project-badge {
+            display: none;
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: #ecfeff;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 700;
         }
 
         .upload-grid {
@@ -406,7 +525,8 @@
             margin-top: 14px;
         }
 
-        .upload-demo {
+        .upload-demo,
+        .image-preview-item {
             background: white;
             border: 1px solid #e2e8f0;
             border-radius: 16px;
@@ -414,6 +534,21 @@
             font-size: 12px;
             color: #64748b;
             text-align: center;
+        }
+
+        .image-preview-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 92px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 8px;
         }
 
         .preview-title {
@@ -504,11 +639,18 @@
             color: #0f766e;
         }
 
+        .status-box.info {
+            display: block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+
         .footer-link-group h4 {
             font-weight: 700;
             font-size: 14px;
             margin-bottom: 15px;
-            color: #2C2C2C;
+            color: #2c2c2c;
             text-transform: uppercase;
             letter-spacing: 0.2px;
         }
@@ -520,39 +662,63 @@
             list-style: none;
         }
 
-        .footer-link-group li { margin-bottom: 8px; }
+        .footer-link-group li {
+            margin-bottom: 8px;
+        }
+
         .footer-link-group li a:hover {
             color: var(--hover-color);
             text-decoration: underline;
         }
 
+        .hidden-block {
+            display: none !important;
+        }
+
         @media (max-width: 1100px) {
-            .page-hero, .layout-grid {
+            .page-hero,
+            .layout-grid {
                 grid-template-columns: 1fr;
             }
-            .preview-card { position: static; }
+
+            .preview-card {
+                position: static;
+            }
         }
 
         @media (max-width: 768px) {
-            .hero-points { grid-template-columns: 1fr; }
-            .form-card, .preview-card, .user-card, .hero-card {
+            .hero-points,
+            .upload-grid,
+            .preview-meta,
+            .image-preview-list {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 25px;
+            }
+
+            .form-card,
+            .preview-card,
+            .user-card,
+            .hero-card {
                 padding: 18px;
                 border-radius: 20px;
             }
-            .upload-grid, .preview-meta {
-                grid-template-columns: 1fr;
+
+            .switch-line {
+                align-items: flex-start;
+                flex-direction: column;
             }
-            .hero-title { font-size: 25px; }
         }
     </style>
 </head>
 <body>
-
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[70px] flex justify-between items-center">
             <div class="flex items-center gap-8">
                 <a href="../index.html">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10" />
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
@@ -611,7 +777,6 @@
     <main class="py-8 md:py-10">
         <div class="container-custom">
             <div class="dashboard-shell">
-
                 <section class="page-hero">
                     <div class="hero-card">
                         <div class="hero-badge">
@@ -620,7 +785,7 @@
                         </div>
                         <h1 class="hero-title">Đăng đúng loại nội dung để hệ thống đưa dữ liệu ra đúng trang</h1>
                         <p class="hero-desc">
-                            Tin đăng thuộc luồng Bất động sản sẽ được phân sang mục bán hoặc cho thuê. Dịch vụ thuộc luồng Xây dựng sẽ được đưa ra trang Xây dựng. Riêng dữ liệu giá bán sau này có thể dùng để tổng hợp báo cáo giá nhà đất.
+                            Tin đăng thuộc luồng Bất động sản sẽ được phân sang mục bán hoặc cho thuê. Dịch vụ thuộc luồng Xây dựng sẽ được đưa ra trang Xây dựng. Riêng dữ liệu giá bán sẽ được chuẩn hóa để có thể dùng cho trang Giá nhà đất và nhóm theo dự án.
                         </p>
 
                         <div class="hero-points">
@@ -633,8 +798,8 @@
                                 <div class="value">Dịch vụ xây dựng / kỹ sư / nhà thầu</div>
                             </div>
                             <div class="hero-point">
-                                <div class="label">Tổng hợp giá</div>
-                                <div class="value">Dùng đơn giá từ tin bán để tính trung bình</div>
+                                <div class="label">Dự án & Giá</div>
+                                <div class="value">Gom nhóm tin theo dự án và chuẩn hóa dữ liệu giá</div>
                             </div>
                         </div>
                     </div>
@@ -672,7 +837,6 @@
                 <div class="layout-grid">
                     <section class="form-card">
                         <form id="smart-post-form" novalidate>
-
                             <div class="section-title">1. Chọn luồng đăng nội dung</div>
 
                             <div class="flow-switcher">
@@ -718,24 +882,10 @@
 
                             <div class="section-title">3. Khu vực và vị trí</div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label class="field-label" for="city">Tỉnh / Thành phố</label>
-                                    <select id="city" class="select-field">
-                                        <option value="Bình Dương">Bình Dương</option>
-                                        <option value="TP.HCM">TP.HCM</option>
-                                        <option value="Hà Nội">Hà Nội</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="field-label" for="district">Quận / Huyện</label>
-                                    <select id="district" class="select-field">
-                                        <option value="">Chọn Quận/Huyện</option>
-                                        <option value="di-an">Dĩ An</option>
-                                        <option value="thuan-an">Thuận An</option>
-                                        <option value="thu-dau-mot">Thủ Dầu Một</option>
-                                    </select>
+                                    <select id="city" class="select-field"></select>
                                 </div>
 
                                 <div>
@@ -748,14 +898,63 @@
 
                             <div class="mb-8">
                                 <label class="field-label" for="addressDetail">Địa chỉ chi tiết</label>
-                                <input id="addressDetail" type="text" class="input-field" placeholder="Số nhà, tên đường, tên dự án hoặc khu vực cụ thể">
+                                <input id="addressDetail" type="text" class="input-field" placeholder="Số nhà, tên đường, khu vực cụ thể" />
                             </div>
 
-                            <div class="section-title">4. Nội dung đăng</div>
+                            <div class="section-title">4. Gắn nhóm theo dự án</div>
+
+                            <div class="project-box mb-8">
+                                <div class="switch-line mb-4">
+                                    <div>
+                                        <div class="font-extrabold text-[14px] text-slate-800">Tin này thuộc một dự án cụ thể</div>
+                                        <div class="text-[12px] text-slate-500 mt-1">
+                                            Nếu dự án đã có trên hệ thống thì chọn lại để gom nhóm SEO. Nếu chưa có thì nhập mới để tạo nhóm dự án.
+                                        </div>
+                                    </div>
+                                    <div id="projectSwitch" class="switch-pill" aria-label="Bật hoặc tắt dự án"></div>
+                                </div>
+
+                                <div id="projectFields" class="hidden-block">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="md:col-span-2">
+                                            <label class="field-label" for="projectSearch">Tìm dự án đã có</label>
+                                            <input id="projectSearch" type="text" class="input-field" placeholder="Nhập tên dự án để tìm kiếm..." autocomplete="off" />
+                                            <div id="projectSuggestList" class="suggest-list"></div>
+                                            <div id="selectedProjectBadge" class="project-badge"></div>
+                                        </div>
+
+                                        <div class="md:col-span-2">
+                                            <label class="field-label" for="newProjectName">Hoặc nhập tên dự án mới</label>
+                                            <input id="newProjectName" type="text" class="input-field" placeholder="VD: Khu đô thị Tổ Ấm Việt Riverside" />
+                                            <div class="field-note">Chỉ nhập khi dự án này chưa có trên hệ thống.</div>
+                                        </div>
+
+                                        <div>
+                                            <label class="field-label" for="projectDeveloper">Chủ đầu tư / Đơn vị phát triển</label>
+                                            <input id="projectDeveloper" type="text" class="input-field" placeholder="Tên chủ đầu tư hoặc đơn vị phát triển" />
+                                        </div>
+
+                                        <div>
+                                            <label class="field-label" for="projectType">Loại dự án</label>
+                                            <select id="projectType" class="select-field">
+                                                <option value="">Chọn loại dự án</option>
+                                                <option value="Căn hộ">Căn hộ</option>
+                                                <option value="Nhà phố">Nhà phố</option>
+                                                <option value="Biệt thự">Biệt thự</option>
+                                                <option value="Đất nền">Đất nền</option>
+                                                <option value="Khu đô thị">Khu đô thị</option>
+                                                <option value="Tổ hợp thương mại">Tổ hợp thương mại</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="section-title">5. Nội dung đăng</div>
 
                             <div class="mb-4">
                                 <label class="field-label" for="postTitle">Tiêu đề</label>
-                                <input id="postTitle" type="text" class="input-field" placeholder="Nhập tiêu đề nổi bật, rõ khu vực, rõ sản phẩm / dịch vụ">
+                                <input id="postTitle" type="text" class="input-field" placeholder="Nhập tiêu đề nổi bật, rõ khu vực, rõ sản phẩm / dịch vụ" />
                             </div>
 
                             <div id="dynamic-fields" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-4"></div>
@@ -763,40 +962,49 @@
                             <div class="mb-8">
                                 <label class="field-label" for="postDescription">Mô tả chi tiết</label>
                                 <textarea id="postDescription" rows="6" class="textarea-field" placeholder="Mô tả rõ sản phẩm / dịch vụ, ưu điểm, pháp lý, nội thất, kinh nghiệm, khu vực phục vụ, tiến độ, hồ sơ năng lực..."></textarea>
-                                <div class="field-note">Mô tả càng rõ thì tỷ lệ liên hệ thật càng cao. Với tin bán, đây cũng là phần giúp dữ liệu sau này dễ tổng hợp và lọc tốt hơn.</div>
+                                <div class="field-note">Mô tả càng rõ thì tỷ lệ liên hệ thật càng cao. Với tin bán, đây cũng là phần giúp dữ liệu sau này dễ tổng hợp, lọc theo dự án và tính giá tốt hơn.</div>
                             </div>
 
-                            <div class="section-title">5. Hình ảnh thực tế</div>
+                            <div class="section-title">6. Hình ảnh thực tế</div>
 
                             <div class="upload-box mb-8">
                                 <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-300 mb-3"></i>
-                                <p class="text-sm font-bold text-slate-600">Kéo thả hoặc chọn ảnh thực tế để tải lên</p>
+                                <p class="text-sm font-bold text-slate-600">Chọn ảnh thực tế để tải lên</p>
                                 <p class="text-xs text-slate-400 mt-2">Khuyến nghị ít nhất 3 ảnh thật. Với dịch vụ xây dựng nên có ảnh công trình hoặc hồ sơ năng lực.</p>
+
+                                <div class="mt-4">
+                                    <input id="imageInput" type="file" accept="image/*" multiple class="hidden" />
+                                    <button type="button" id="selectImagesBtn" class="border border-[#008B8B] text-[#008B8B] px-5 py-2 rounded-xl font-bold hover:bg-[#008B8B] hover:text-white transition">
+                                        Chọn hình ảnh
+                                    </button>
+                                </div>
 
                                 <div class="upload-grid">
                                     <div class="upload-demo">Ảnh mặt tiền / tổng quan</div>
                                     <div class="upload-demo">Ảnh nội thất / công trình</div>
                                     <div class="upload-demo">Ảnh pháp lý / hồ sơ năng lực</div>
                                 </div>
+
+                                <div id="imagePreviewList" class="image-preview-list"></div>
                             </div>
 
-                            <div class="section-title">6. Thông tin liên hệ hiển thị</div>
+                            <div class="section-title">7. Thông tin liên hệ hiển thị</div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                                 <div>
                                     <label class="field-label" for="contactName">Tên hiển thị</label>
-                                    <input id="contactName" type="text" class="input-field" placeholder="Tên người đăng / tên công ty">
+                                    <input id="contactName" type="text" class="input-field" placeholder="Tên người đăng / tên công ty" />
                                 </div>
 
                                 <div>
                                     <label class="field-label" for="contactPhone">Số điện thoại liên hệ</label>
-                                    <input id="contactPhone" type="text" class="input-field" placeholder="Số điện thoại khách nhìn thấy">
+                                    <input id="contactPhone" type="text" class="input-field" placeholder="Số điện thoại khách nhìn thấy" />
                                 </div>
                             </div>
 
                             <div id="post-status" class="status-box"></div>
 
-                            <button type="submit" class="w-full bg-slate-800 hover:bg-[--vip-color] text-white font-black py-5 rounded-2xl transition-all uppercase shadow-xl tracking-widest">
+                            <button id="submitBtn" type="submit" class="w-full bg-slate-800 hover:bg-[--vip-color] text-white font-black py-5 rounded-2xl transition-all uppercase shadow-xl tracking-widest">
                                 Gửi nội dung kiểm duyệt
                             </button>
                         </form>
@@ -829,6 +1037,14 @@
                                     <div class="label">Người đăng</div>
                                     <div class="value" id="previewPoster">Chưa có</div>
                                 </div>
+                                <div class="preview-meta-item">
+                                    <div class="label">Dự án</div>
+                                    <div class="value" id="previewProject">Không thuộc dự án</div>
+                                </div>
+                                <div class="preview-meta-item">
+                                    <div class="label">Ảnh đã chọn</div>
+                                    <div class="value" id="previewImagesCount">0 ảnh</div>
+                                </div>
                             </div>
                         </div>
 
@@ -843,11 +1059,11 @@
                                 <li>Tin bán sẽ là nguồn dữ liệu quan trọng cho trang giá nhà đất.</li>
                                 <li>Tin cho thuê sẽ hiển thị ở mục nhà đất cho thuê.</li>
                                 <li>Dịch vụ xây dựng sẽ hiển thị ở trang xây dựng.</li>
+                                <li>Tin thuộc dự án sẽ được gom nhóm để tối ưu SEO trang dự án.</li>
                             </ul>
                         </div>
                     </aside>
                 </div>
-
             </div>
         </div>
     </main>
@@ -901,13 +1117,13 @@
 
             <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
                 <div class="max-w-sm">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6" />
                     <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
                     <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
                     <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
                     <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer" />
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer" />
                     </div>
                 </div>
 
@@ -934,7 +1150,7 @@
                 <div class="w-full lg:max-w-xs">
                     <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
                     <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
-                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm">
+                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm" />
                         <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                     <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
@@ -959,138 +1175,343 @@
             <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
-            <input type="text" id="cusName" placeholder="Tên của bạn..." required>
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
             <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
         </div>
     </div>
 
-    <script>
-        let currentFlow = 'real_estate';
-        let currentPostType = 'ban';
-        let currentProfile = 'canhan';
+    <script src="../assets/js/locations.js"></script>
+    <script src="../assets/js/location-helper.js"></script>
 
-        const wardData = {
-            'di-an': ['Dĩ An', 'An Bình', 'Bình An', 'Bình Thắng', 'Đông Hòa', 'Tân Bình', 'Tân Đông Hiệp'],
-            'thuan-an': ['An Thạnh', 'An Phú', 'Bình Hòa', 'Bình Chuẩn', 'Thuận Giao', 'Vĩnh Phú'],
-            'thu-dau-mot': ['Phú Cường', 'Hiệp Thành', 'Chánh Nghĩa', 'Phú Lợi', 'Phú Mỹ']
+    <script>
+        let currentFlow = "real_estate";
+        let currentPostType = "ban";
+        let currentProfile = "canhan";
+        let selectedProject = null;
+        let selectedImages = [];
+        let locationSource = { provinces: [] };
+
+        const FALLBACK_LOCATIONS = {
+            provinces: [
+                {
+                    name: "Hà Nội",
+                    wards: ["Phường Ba Đình", "Phường Hoàn Kiếm", "Phường Cầu Giấy", "Phường Tây Hồ"]
+                },
+                {
+                    name: "TP.HCM",
+                    wards: ["Phường Bến Nghé", "Phường Thủ Thiêm", "Phường Tân Định", "Phường An Khánh"]
+                },
+                {
+                    name: "Bình Dương",
+                    wards: ["Phường Dĩ An", "Phường An Bình", "Phường Thuận Giao", "Phường Phú Cường"]
+                }
+            ]
         };
 
         const currentUser =
-            JSON.parse(localStorage.getItem('currentUser')) ||
-            JSON.parse(localStorage.getItem('registeredUser')) ||
+            JSON.parse(localStorage.getItem("currentUser")) ||
+            JSON.parse(localStorage.getItem("registeredUser")) ||
             null;
 
-        const flowRealEstate = document.getElementById('flow-real-estate');
-        const flowConstruction = document.getElementById('flow-construction');
-        const subtabContainer = document.getElementById('real-estate-subtabs');
-        const dynamicFields = document.getElementById('dynamic-fields');
-        const postTitle = document.getElementById('postTitle');
-        const districtSelect = document.getElementById('district');
-        const wardSelect = document.getElementById('ward');
-        const postStatus = document.getElementById('post-status');
+        const flowRealEstate = document.getElementById("flow-real-estate");
+        const flowConstruction = document.getElementById("flow-construction");
+        const subtabContainer = document.getElementById("real-estate-subtabs");
+        const dynamicFields = document.getElementById("dynamic-fields");
+        const postTitle = document.getElementById("postTitle");
+        const citySelect = document.getElementById("city");
+        const wardSelect = document.getElementById("ward");
+        const postStatus = document.getElementById("post-status");
+        const submitBtn = document.getElementById("submitBtn");
 
-        const previewFlow = document.getElementById('previewFlow');
-        const previewDescription = document.getElementById('previewDescription');
-        const previewPrice = document.getElementById('previewPrice');
-        const previewArea = document.getElementById('previewArea');
-        const previewLocation = document.getElementById('previewLocation');
-        const previewPoster = document.getElementById('previewPoster');
-        const previewTitle = document.getElementById('previewTitle');
+        const projectSwitch = document.getElementById("projectSwitch");
+        const projectFields = document.getElementById("projectFields");
+        const projectSearch = document.getElementById("projectSearch");
+        const projectSuggestList = document.getElementById("projectSuggestList");
+        const selectedProjectBadge = document.getElementById("selectedProjectBadge");
+        const newProjectName = document.getElementById("newProjectName");
+        const projectDeveloper = document.getElementById("projectDeveloper");
+        const projectTypeField = document.getElementById("projectType");
+
+        const imageInput = document.getElementById("imageInput");
+        const selectImagesBtn = document.getElementById("selectImagesBtn");
+        const imagePreviewList = document.getElementById("imagePreviewList");
+
+        const previewFlow = document.getElementById("previewFlow");
+        const previewDescription = document.getElementById("previewDescription");
+        const previewPrice = document.getElementById("previewPrice");
+        const previewArea = document.getElementById("previewArea");
+        const previewLocation = document.getElementById("previewLocation");
+        const previewPoster = document.getElementById("previewPoster");
+        const previewTitle = document.getElementById("previewTitle");
+        const previewProject = document.getElementById("previewProject");
+        const previewImagesCount = document.getElementById("previewImagesCount");
 
         function getInitials(name) {
-            return (name || 'TV')
-                .split(' ')
+            return (name || "TV")
+                .split(" ")
                 .filter(Boolean)
                 .slice(0, 2)
                 .map(w => w[0].toUpperCase())
-                .join('') || 'TV';
+                .join("") || "TV";
+        }
+
+        function slugify(str) {
+            return (str || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/[^a-z0-9\s-]/g, "")
+                .trim()
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function normalizeText(str) {
+            return (str || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function formatCurrencyVND(value) {
+            if (!Number.isFinite(value) || value <= 0) return "Chưa nhập";
+            return new Intl.NumberFormat("vi-VN").format(Math.round(value)) + " đ";
+        }
+
+        function sanitizePhone(phone) {
+            return (phone || "").replace(/[^\d]/g, "");
+        }
+
+        function parseVietnamesePrice(rawText, type) {
+            const text = (rawText || "").toLowerCase().replace(/,/g, ".").trim();
+            if (!text) {
+                return {
+                    raw: "",
+                    value: null,
+                    unit: "",
+                    unitLabel: "",
+                    display: "Chưa nhập",
+                    pricePerSquareMeter: null
+                };
+            }
+
+            const numMatch = text.match(/\d+(\.\d+)?/);
+            const number = numMatch ? parseFloat(numMatch[0]) : null;
+            let value = null;
+            let unit = "";
+            let unitLabel = "";
+
+            if (number !== null) {
+                if (text.includes("ty")) {
+                    value = number * 1000000000;
+                    unit = "tong_gia";
+                    unitLabel = "tỷ";
+                } else if (text.includes("trieu")) {
+                    value = number * 1000000;
+                    unit = type === "thue" ? "thang" : "tong_gia";
+                    unitLabel = "triệu";
+                } else if (text.includes("nghin")) {
+                    value = number * 1000;
+                    unit = type === "thue" ? "thang" : "tong_gia";
+                    unitLabel = "nghìn";
+                } else if (text.includes("m2")) {
+                    value = number;
+                    unit = "m2";
+                    unitLabel = "/m²";
+                } else {
+                    value = number;
+                    unit = type === "thue" ? "thang" : "tong_gia";
+                    unitLabel = "";
+                }
+            }
+
+            return {
+                raw: rawText,
+                value,
+                unit,
+                unitLabel,
+                display: rawText || "Chưa nhập",
+                pricePerSquareMeter: null
+            };
+        }
+
+        function showStatus(type, message) {
+            postStatus.className = "status-box " + type;
+            postStatus.textContent = message;
+        }
+
+        function hideStatus() {
+            postStatus.className = "status-box";
+            postStatus.textContent = "";
         }
 
         function fillUserInfo() {
-            const userName = document.getElementById('userName');
-            const userRole = document.getElementById('userRole');
-            const userGroup = document.getElementById('userGroup');
-            const userEmail = document.getElementById('userEmail');
-            const userPhone = document.getElementById('userPhone');
-            const userBrand = document.getElementById('userBrand');
-            const userAvatar = document.getElementById('userAvatar');
-            const contactName = document.getElementById('contactName');
-            const contactPhone = document.getElementById('contactPhone');
+            const userName = document.getElementById("userName");
+            const userRole = document.getElementById("userRole");
+            const userGroup = document.getElementById("userGroup");
+            const userEmail = document.getElementById("userEmail");
+            const userPhone = document.getElementById("userPhone");
+            const userBrand = document.getElementById("userBrand");
+            const userAvatar = document.getElementById("userAvatar");
+            const contactName = document.getElementById("contactName");
+            const contactPhone = document.getElementById("contactPhone");
 
             if (!currentUser) {
-                userName.textContent = 'Tài khoản thành viên';
-                userRole.textContent = 'Chưa đăng nhập / chưa có dữ liệu';
-                userGroup.textContent = 'Khách';
-                userEmail.textContent = '---';
-                userPhone.textContent = '---';
-                userBrand.textContent = '---';
-                userAvatar.textContent = 'TV';
-                contactName.value = '';
-                contactPhone.value = '';
-                previewPoster.textContent = 'Chưa có';
+                userName.textContent = "Tài khoản thành viên";
+                userRole.textContent = "Chưa đăng nhập / chưa có dữ liệu";
+                userGroup.textContent = "Khách";
+                userEmail.textContent = "---";
+                userPhone.textContent = "---";
+                userBrand.textContent = "---";
+                userAvatar.textContent = "TV";
+                contactName.value = "";
+                contactPhone.value = "";
+                previewPoster.textContent = "Chưa có";
                 return;
             }
 
-            userName.textContent = currentUser.fullName || 'Tài khoản thành viên';
-            userRole.textContent = currentUser.roleLabel || currentUser.role || 'Không rõ vai trò';
-            userGroup.textContent = currentUser.accountGroupLabel || (currentUser.accountGroup === 'construction' ? 'Xây dựng' : 'Bất động sản');
-            userEmail.textContent = currentUser.email || '---';
-            userPhone.textContent = currentUser.phone || '---';
-            userBrand.textContent = currentUser.brandName || '---';
+            userName.textContent = currentUser.fullName || "Tài khoản thành viên";
+            userRole.textContent = currentUser.roleLabel || currentUser.role || "Không rõ vai trò";
+            userGroup.textContent = currentUser.accountGroupLabel || (currentUser.accountGroup === "construction" ? "Xây dựng" : "Bất động sản");
+            userEmail.textContent = currentUser.email || "---";
+            userPhone.textContent = currentUser.phone || "---";
+            userBrand.textContent = currentUser.brandName || "---";
             userAvatar.textContent = getInitials(currentUser.fullName);
 
-            contactName.value = currentUser.brandName || currentUser.fullName || '';
-            contactPhone.value = currentUser.phone || '';
-            previewPoster.textContent = currentUser.brandName || currentUser.fullName || 'Chưa có';
+            contactName.value = currentUser.brandName || currentUser.fullName || "";
+            contactPhone.value = currentUser.phone || "";
+            previewPoster.textContent = currentUser.brandName || currentUser.fullName || "Chưa có";
         }
 
         function lockFlowByAccountGroup() {
             if (!currentUser || !currentUser.accountGroup) return;
 
-            if (currentUser.accountGroup === 'construction') {
-                currentFlow = 'construction';
-                flowRealEstate.classList.add('locked');
-                flowRealEstate.style.pointerEvents = 'none';
-                setFlow('construction');
-                setProfile('doanhnghiep');
+            if (currentUser.accountGroup === "construction") {
+                currentFlow = "construction";
+                flowRealEstate.classList.add("locked");
+                flowRealEstate.style.pointerEvents = "none";
+                setFlow("construction");
+                setProfile("doanhnghiep");
             } else {
-                currentFlow = 'real_estate';
-                flowConstruction.classList.add('locked');
-                flowConstruction.style.pointerEvents = 'none';
-                setFlow('real_estate');
+                currentFlow = "real_estate";
+                flowConstruction.classList.add("locked");
+                flowConstruction.style.pointerEvents = "none";
+                setFlow("real_estate");
             }
         }
 
+        function extractLocationsFromCommonFiles() {
+            try {
+                if (window.locationHelper && typeof window.locationHelper.getAllLocations === "function") {
+                    const data = window.locationHelper.getAllLocations();
+                    if (Array.isArray(data) && data.length) {
+                        return {
+                            provinces: data.map(item => ({
+                                name: item.name || item.province || item.city || "",
+                                wards: item.wards || item.children || item.commune || item.phuongXa || []
+                            })).filter(item => item.name)
+                        };
+                    }
+                }
+
+                if (Array.isArray(window.LOCATIONS_DATA) && window.LOCATIONS_DATA.length) {
+                    return {
+                        provinces: window.LOCATIONS_DATA.map(item => ({
+                            name: item.name || item.province || item.city || "",
+                            wards: item.wards || item.children || item.commune || item.phuongXa || []
+                        })).filter(item => item.name)
+                    };
+                }
+
+                if (window.locations && Array.isArray(window.locations)) {
+                    return {
+                        provinces: window.locations.map(item => ({
+                            name: item.name || item.province || item.city || "",
+                            wards: item.wards || item.children || item.commune || item.phuongXa || []
+                        })).filter(item => item.name)
+                    };
+                }
+            } catch (error) {
+                console.warn("Không đọc được dữ liệu địa chỉ dùng chung:", error);
+            }
+
+            return FALLBACK_LOCATIONS;
+        }
+
+        function initLocationData() {
+            locationSource = extractLocationsFromCommonFiles();
+            renderCityOptions();
+        }
+
+        function renderCityOptions() {
+            const provinces = locationSource.provinces || [];
+            citySelect.innerHTML = "";
+
+            if (!provinces.length) {
+                citySelect.innerHTML = '<option value="">Chưa có dữ liệu tỉnh/thành</option>';
+                wardSelect.innerHTML = '<option value="">Chưa có dữ liệu phường/xã</option>';
+                return;
+            }
+
+            provinces.forEach((province, index) => {
+                const option = document.createElement("option");
+                option.value = province.name;
+                option.textContent = province.name;
+                if (index === 0) option.selected = true;
+                citySelect.appendChild(option);
+            });
+
+            updateWards();
+        }
+
+        function getProvinceByName(cityName) {
+            return (locationSource.provinces || []).find(item => item.name === cityName);
+        }
+
         function updateWards() {
-            const district = districtSelect.value;
+            const selectedCity = citySelect.value;
+            const cityData = getProvinceByName(selectedCity);
+
             wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
 
-            if (wardData[district]) {
-                wardData[district].forEach(w => {
-                    wardSelect.innerHTML += `<option value="${w}">${w}</option>`;
-                });
-            }
+            const wards = Array.isArray(cityData?.wards) ? cityData.wards : [];
+            wards.forEach(ward => {
+                const wardName = typeof ward === "string" ? ward : ward.name || ward.ward || ward.commune || "";
+                if (!wardName) return;
+                const option = document.createElement("option");
+                option.value = wardName;
+                option.textContent = wardName;
+                wardSelect.appendChild(option);
+            });
 
             updatePreview();
         }
 
         function setProfile(profile) {
             currentProfile = profile;
-            document.getElementById('prof-canhan').classList.toggle('selected', profile === 'canhan');
-            document.getElementById('prof-doanhnghiep').classList.toggle('selected', profile === 'doanhnghiep');
+            document.getElementById("prof-canhan").classList.toggle("selected", profile === "canhan");
+            document.getElementById("prof-doanhnghiep").classList.toggle("selected", profile === "doanhnghiep");
         }
 
         function setFlow(flow) {
             currentFlow = flow;
 
-            flowRealEstate.classList.toggle('active', flow === 'real_estate');
-            flowConstruction.classList.toggle('active', flow === 'construction');
+            flowRealEstate.classList.toggle("active", flow === "real_estate");
+            flowConstruction.classList.toggle("active", flow === "construction");
 
-            if (flow === 'construction') {
-                subtabContainer.style.display = 'none';
+            if (flow === "construction") {
+                subtabContainer.style.display = "none";
+                projectSwitch.classList.remove("active");
+                projectFields.classList.add("hidden-block");
+                selectedProject = null;
+                resetProjectInputs();
             } else {
-                subtabContainer.style.display = 'flex';
+                subtabContainer.style.display = "flex";
             }
 
             renderDynamicFields();
@@ -1099,16 +1520,16 @@
 
         function setSubtab(type) {
             currentPostType = type;
-            document.querySelectorAll('.subtab-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-post-type') === type);
+            document.querySelectorAll(".subtab-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.getAttribute("data-post-type") === type);
             });
             renderDynamicFields();
             updatePreview();
         }
 
         function renderDynamicFields() {
-            if (currentFlow === 'construction') {
-                postTitle.placeholder = "VD: Công ty An Phát - Nhận thi công nhà phố trọn gói tại Dĩ An";
+            if (currentFlow === "construction") {
+                postTitle.placeholder = "VD: Công ty An Phát - Nhận thi công nhà phố trọn gói tại Hà Giang";
                 dynamicFields.innerHTML = `
                     <div>
                         <label class="field-label" for="serviceType">Loại dịch vụ</label>
@@ -1122,29 +1543,29 @@
                     </div>
                     <div>
                         <label class="field-label" for="servicePrice">Đơn giá tham khảo</label>
-                        <input id="servicePrice" type="text" class="input-field dynamic-input" placeholder="VD: 5.8 - 6.5 Tr/m² hoặc Liên hệ">
+                        <input id="servicePrice" type="text" class="input-field dynamic-input" placeholder="VD: 5.8 - 6.5 triệu/m² hoặc Liên hệ" />
                     </div>
                     <div>
                         <label class="field-label" for="serviceExp">Kinh nghiệm / Năng lực</label>
-                        <input id="serviceExp" type="text" class="input-field dynamic-input" placeholder="VD: 8 năm kinh nghiệm">
+                        <input id="serviceExp" type="text" class="input-field dynamic-input" placeholder="VD: 8 năm kinh nghiệm" />
                     </div>
                     <div>
                         <label class="field-label" for="serviceArea">Khu vực thi công</label>
-                        <input id="serviceArea" type="text" class="input-field dynamic-input" placeholder="VD: Bình Dương, TP.HCM">
+                        <input id="serviceArea" type="text" class="input-field dynamic-input" placeholder="VD: Hà Giang, Hà Nội, TP.HCM" />
                     </div>
                     <div>
                         <label class="field-label" for="serviceBrand">Tên công ty / Đơn vị</label>
-                        <input id="serviceBrand" type="text" class="input-field dynamic-input" placeholder="Tên công ty hoặc thương hiệu">
+                        <input id="serviceBrand" type="text" class="input-field dynamic-input" placeholder="Tên công ty hoặc thương hiệu" />
                     </div>
                     <div>
                         <label class="field-label" for="serviceSpecialty">Chuyên môn chính</label>
-                        <input id="serviceSpecialty" type="text" class="input-field dynamic-input" placeholder="VD: Biệt thự, nhà phố, cải tạo">
+                        <input id="serviceSpecialty" type="text" class="input-field dynamic-input" placeholder="VD: Biệt thự, nhà phố, cải tạo" />
                     </div>
                 `;
             } else {
-                postTitle.placeholder = currentPostType === 'ban'
-                    ? "VD: Bán đất nền 80m2 gần trung tâm Dĩ An, sổ sẵn"
-                    : "VD: Cho thuê căn hộ 2PN full nội thất gần trung tâm Thuận An";
+                postTitle.placeholder = currentPostType === "ban"
+                    ? "VD: Bán căn hộ 2PN view đẹp tại dự án Tổ Ấm Việt Riverside"
+                    : "VD: Cho thuê shophouse tại dự án Tổ Ấm Việt Riverside";
 
                 dynamicFields.innerHTML = `
                     <div>
@@ -1155,19 +1576,20 @@
                             <option value="Căn hộ">Căn hộ</option>
                             <option value="Biệt thự">Biệt thự</option>
                             <option value="Văn phòng">Văn phòng</option>
+                            <option value="Shophouse">Shophouse</option>
                         </select>
                     </div>
                     <div>
-                        <label class="field-label" for="propertyPrice">${currentPostType === 'ban' ? 'Giá bán' : 'Giá cho thuê'}</label>
-                        <input id="propertyPrice" type="text" class="input-field dynamic-input" placeholder="${currentPostType === 'ban' ? 'VD: 3.2 tỷ' : 'VD: 12 triệu/tháng'}">
+                        <label class="field-label" for="propertyPrice">${currentPostType === "ban" ? "Giá bán" : "Giá cho thuê"}</label>
+                        <input id="propertyPrice" type="text" class="input-field dynamic-input" placeholder="${currentPostType === "ban" ? "VD: 3.2 tỷ" : "VD: 12 triệu/tháng"}" />
                     </div>
                     <div>
                         <label class="field-label" for="propertyArea">Diện tích</label>
-                        <input id="propertyArea" type="number" class="input-field dynamic-input" placeholder="VD: 80">
+                        <input id="propertyArea" type="number" class="input-field dynamic-input" placeholder="VD: 80" min="1" />
                     </div>
                     <div>
                         <label class="field-label" for="propertyLegal">Pháp lý</label>
-                        <input id="propertyLegal" type="text" class="input-field dynamic-input" placeholder="VD: Sổ riêng, đã hoàn công">
+                        <input id="propertyLegal" type="text" class="input-field dynamic-input" placeholder="VD: Sổ riêng, đã hoàn công" />
                     </div>
                     <div>
                         <label class="field-label" for="propertyDirection">Hướng</label>
@@ -1178,11 +1600,12 @@
                             <option value="Bắc">Bắc</option>
                             <option value="Đông Nam">Đông Nam</option>
                             <option value="Tây Bắc">Tây Bắc</option>
+                            <option value="Không xác định">Không xác định</option>
                         </select>
                     </div>
                     <div>
                         <label class="field-label" for="propertyBeds">Số phòng ngủ</label>
-                        <input id="propertyBeds" type="number" class="input-field dynamic-input" placeholder="VD: 2">
+                        <input id="propertyBeds" type="number" class="input-field dynamic-input" placeholder="VD: 2" min="0" />
                     </div>
                 `;
             }
@@ -1191,232 +1614,561 @@
         }
 
         function bindDynamicEvents() {
-            document.querySelectorAll('.dynamic-input').forEach(el => {
-                el.addEventListener('input', updatePreview);
-                el.addEventListener('change', updatePreview);
+            document.querySelectorAll(".dynamic-input").forEach(el => {
+                el.addEventListener("input", updatePreview);
+                el.addEventListener("change", updatePreview);
             });
+        }
+
+        function isProjectEnabled() {
+            return currentFlow === "real_estate" && projectSwitch.classList.contains("active");
+        }
+
+        function toggleProjectMode(forceValue = null) {
+            if (currentFlow !== "real_estate") return;
+
+            const nextState = forceValue !== null ? forceValue : !projectSwitch.classList.contains("active");
+            projectSwitch.classList.toggle("active", nextState);
+            projectFields.classList.toggle("hidden-block", !nextState);
+
+            if (!nextState) {
+                selectedProject = null;
+                resetProjectInputs();
+            }
+
+            updateSelectedProjectBadge();
+            updatePreview();
+        }
+
+        function resetProjectInputs() {
+            projectSearch.value = "";
+            newProjectName.value = "";
+            projectDeveloper.value = "";
+            projectTypeField.value = "";
+            projectSuggestList.style.display = "none";
+            projectSuggestList.innerHTML = "";
+            selectedProjectBadge.style.display = "none";
+            selectedProjectBadge.textContent = "";
+        }
+
+        function getProjectsStore() {
+            return JSON.parse(localStorage.getItem("projects") || "[]");
+        }
+
+        function saveProjectsStore(projects) {
+            localStorage.setItem("projects", JSON.stringify(projects));
+        }
+
+        function searchProjects(keyword) {
+            const list = getProjectsStore();
+            const key = normalizeText(keyword);
+            if (!key) return list.slice(0, 5);
+            return list.filter(item =>
+                normalizeText(item.name).includes(key) ||
+                normalizeText(item.slug).includes(key) ||
+                normalizeText(item.city || "").includes(key)
+            ).slice(0, 8);
+        }
+
+        function renderProjectSuggestions(keyword) {
+            const projects = searchProjects(keyword);
+            if (!projects.length || !isProjectEnabled()) {
+                projectSuggestList.style.display = "none";
+                projectSuggestList.innerHTML = "";
+                return;
+            }
+
+            projectSuggestList.innerHTML = projects.map(item => `
+                <div class="suggest-item" data-project-id="${item.id}">
+                    <div class="suggest-name">${item.name}</div>
+                    <div class="suggest-meta">${item.city || "Chưa có tỉnh/thành"} • ${item.type || "Chưa phân loại"} • ${item.postCount || 0} tin</div>
+                </div>
+            `).join("");
+
+            projectSuggestList.style.display = "block";
+
+            projectSuggestList.querySelectorAll(".suggest-item").forEach(item => {
+                item.addEventListener("click", () => {
+                    const projectId = item.getAttribute("data-project-id");
+                    const project = getProjectsStore().find(p => p.id === projectId);
+                    if (project) {
+                        selectedProject = project;
+                        projectSearch.value = project.name;
+                        newProjectName.value = "";
+                        if (project.developer) projectDeveloper.value = project.developer;
+                        if (project.type) projectTypeField.value = project.type;
+                        projectSuggestList.style.display = "none";
+                        updateSelectedProjectBadge();
+                        updatePreview();
+                    }
+                });
+            });
+        }
+
+        function updateSelectedProjectBadge() {
+            if (selectedProject && isProjectEnabled()) {
+                selectedProjectBadge.style.display = "block";
+                selectedProjectBadge.textContent = `Đã chọn dự án có sẵn: ${selectedProject.name}`;
+                return;
+            }
+
+            const newName = newProjectName.value.trim();
+            if (isProjectEnabled() && newName) {
+                selectedProjectBadge.style.display = "block";
+                selectedProjectBadge.textContent = `Dự án mới sẽ được tạo: ${newName}`;
+                return;
+            }
+
+            selectedProjectBadge.style.display = "none";
+            selectedProjectBadge.textContent = "";
+        }
+
+        function resolveProjectData() {
+            if (!isProjectEnabled()) {
+                return {
+                    enabled: false,
+                    projectId: "",
+                    projectName: "",
+                    projectSlug: "",
+                    projectType: "",
+                    projectDeveloper: "",
+                    isNewProject: false
+                };
+            }
+
+            if (selectedProject) {
+                return {
+                    enabled: true,
+                    projectId: selectedProject.id,
+                    projectName: selectedProject.name,
+                    projectSlug: selectedProject.slug,
+                    projectType: selectedProject.type || "",
+                    projectDeveloper: selectedProject.developer || "",
+                    isNewProject: false
+                };
+            }
+
+            const name = newProjectName.value.trim();
+            const slug = slugify(name);
+
+            return {
+                enabled: !!name,
+                projectId: slug ? "project_" + slug : "",
+                projectName: name,
+                projectSlug: slug,
+                projectType: projectTypeField.value,
+                projectDeveloper: projectDeveloper.value.trim(),
+                isNewProject: !!name
+            };
+        }
+
+        function upsertProjectForPost(projectData, postData) {
+            if (!projectData.enabled || !projectData.projectSlug) return null;
+
+            const projects = getProjectsStore();
+            const existing = projects.find(p => p.slug === projectData.projectSlug || normalizeText(p.name) === normalizeText(projectData.projectName));
+
+            if (existing) {
+                existing.postCount = (existing.postCount || 0) + 1;
+                existing.lastPostAt = new Date().toISOString();
+                existing.city = existing.city || postData.city;
+                existing.ward = existing.ward || postData.ward;
+                existing.type = existing.type || projectData.projectType || postData.propertyType || "";
+                existing.developer = existing.developer || projectData.projectDeveloper || "";
+                saveProjectsStore(projects);
+                return existing;
+            }
+
+            const newProject = {
+                id: projectData.projectId,
+                name: projectData.projectName,
+                slug: projectData.projectSlug,
+                city: postData.city,
+                ward: postData.ward,
+                addressDetail: postData.addressDetail || "",
+                type: projectData.projectType || postData.propertyType || "",
+                developer: projectData.projectDeveloper || "",
+                postCount: 1,
+                createdAt: new Date().toISOString(),
+                lastPostAt: new Date().toISOString()
+            };
+
+            projects.unshift(newProject);
+            saveProjectsStore(projects);
+            return newProject;
+        }
+
+        function handleProjectSearchInput() {
+            const keyword = projectSearch.value.trim();
+            selectedProject = null;
+            updateSelectedProjectBadge();
+            renderProjectSuggestions(keyword);
         }
 
         function updatePreview() {
             const title = postTitle.value.trim();
-            const city = document.getElementById('city').value;
-            const district = districtSelect.options[districtSelect.selectedIndex]?.text || '';
-            const ward = wardSelect.options[wardSelect.selectedIndex]?.text || '';
-            const contactName = document.getElementById('contactName').value.trim();
+            const city = citySelect.value;
+            const ward = wardSelect.value;
+            const contactName = document.getElementById("contactName").value.trim();
+            const locationText = [ward, city].filter(Boolean).join(", ");
 
-            const locationText = [ward, district, city].filter(v => v && !v.startsWith('Chọn')).join(', ');
-            previewLocation.textContent = locationText || 'Chưa chọn';
-            previewPoster.textContent = contactName || (currentUser?.brandName || currentUser?.fullName || 'Chưa có');
-            previewTitle.textContent = title || 'Tiêu đề sẽ hiện ở đây sau khi bạn nhập';
+            previewLocation.textContent = locationText || "Chưa chọn";
+            previewPoster.textContent = contactName || (currentUser?.brandName || currentUser?.fullName || "Chưa có");
+            previewTitle.textContent = title || "Tiêu đề sẽ hiện ở đây sau khi bạn nhập";
+            previewImagesCount.textContent = `${selectedImages.length} ảnh`;
 
-            if (currentFlow === 'construction') {
-                const servicePrice = document.getElementById('servicePrice')?.value || 'Chưa nhập';
-                const serviceExp = document.getElementById('serviceExp')?.value || 'Chưa nhập';
+            if (currentFlow === "construction") {
+                const servicePrice = document.getElementById("servicePrice")?.value || "Chưa nhập";
+                const serviceExp = document.getElementById("serviceExp")?.value || "Chưa nhập";
 
-                previewFlow.textContent = 'Dịch vụ xây dựng';
-                previewDescription.textContent = 'Nội dung này sẽ được đẩy ra trang Xây dựng để khách hàng tìm thấy công ty xây dựng, kỹ sư hoặc nhà thầu phù hợp.';
+                previewFlow.textContent = "Dịch vụ xây dựng";
+                previewDescription.textContent = "Nội dung này sẽ được đẩy ra trang Xây dựng để khách hàng tìm thấy công ty xây dựng, kỹ sư hoặc nhà thầu phù hợp.";
                 previewPrice.textContent = servicePrice;
                 previewArea.textContent = serviceExp;
+                previewProject.textContent = "Không áp dụng";
             } else {
-                const propertyPrice = document.getElementById('propertyPrice')?.value || 'Chưa nhập';
-                const propertyArea = document.getElementById('propertyArea')?.value || 'Chưa nhập';
+                const propertyPrice = document.getElementById("propertyPrice")?.value || "Chưa nhập";
+                const propertyArea = document.getElementById("propertyArea")?.value || "";
 
-                previewFlow.textContent = currentPostType === 'ban' ? 'Bất động sản bán' : 'Bất động sản cho thuê';
-                previewDescription.textContent = currentPostType === 'ban'
-                    ? 'Tin này sẽ hiển thị ở mục Nhà đất bán và dữ liệu giá có thể dùng để tổng hợp cho trang Giá nhà đất.'
-                    : 'Tin này sẽ hiển thị ở mục Nhà đất cho thuê và phục vụ nhu cầu tìm thuê thực tế.';
-                previewPrice.textContent = propertyPrice;
-                previewArea.textContent = propertyArea !== 'Chưa nhập' ? `${propertyArea} m²` : 'Chưa nhập';
+                previewFlow.textContent = currentPostType === "ban" ? "Bất động sản bán" : "Bất động sản cho thuê";
+                previewDescription.textContent = currentPostType === "ban"
+                    ? "Tin này sẽ hiển thị ở mục Nhà đất bán và dữ liệu giá có thể dùng để tổng hợp cho trang Giá nhà đất."
+                    : "Tin này sẽ hiển thị ở mục Nhà đất cho thuê và phục vụ nhu cầu tìm thuê thực tế.";
+                previewPrice.textContent = propertyPrice || "Chưa nhập";
+                previewArea.textContent = propertyArea ? `${propertyArea} m²` : "Chưa nhập";
+
+                if (isProjectEnabled()) {
+                    previewProject.textContent =
+                        selectedProject?.name ||
+                        newProjectName.value.trim() ||
+                        "Đang chờ chọn / nhập dự án";
+                } else {
+                    previewProject.textContent = "Không thuộc dự án";
+                }
             }
         }
 
+        function renderSelectedImages() {
+            imagePreviewList.innerHTML = "";
+            selectedImages.forEach((fileObj, index) => {
+                const wrapper = document.createElement("div");
+                wrapper.className = "image-preview-item";
+                wrapper.innerHTML = `
+                    <img src="${fileObj.dataUrl}" alt="Ảnh ${index + 1}" />
+                    <div class="text-[11px] break-all">${fileObj.name}</div>
+                `;
+                imagePreviewList.appendChild(wrapper);
+            });
+            updatePreview();
+        }
+
+        function handleImageFiles(files) {
+            const fileList = Array.from(files || []).slice(0, 12);
+            if (!fileList.length) return;
+
+            const readers = fileList.map(file => {
+                return new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        resolve({
+                            name: file.name,
+                            type: file.type,
+                            size: file.size,
+                            dataUrl: e.target.result
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(readers).then(images => {
+                selectedImages = images;
+                renderSelectedImages();
+            });
+        }
+
         function validateForm() {
-            postStatus.className = 'status-box';
-            postStatus.textContent = '';
+            hideStatus();
 
             const title = postTitle.value.trim();
-            const district = districtSelect.value;
-            const contactName = document.getElementById('contactName').value.trim();
-            const contactPhone = document.getElementById('contactPhone').value.trim();
-            const description = document.getElementById('postDescription').value.trim();
+            const city = citySelect.value;
+            const ward = wardSelect.value;
+            const contactName = document.getElementById("contactName").value.trim();
+            const contactPhone = sanitizePhone(document.getElementById("contactPhone").value.trim());
+            const description = document.getElementById("postDescription").value.trim();
 
             if (!currentUser) {
-                postStatus.className = 'status-box error';
-                postStatus.textContent = 'Bạn cần đăng nhập hoặc đăng ký tài khoản trước khi đăng nội dung.';
+                showStatus("error", "Bạn cần đăng nhập hoặc đăng ký tài khoản trước khi đăng nội dung.");
                 return false;
             }
 
             if (!title) {
-                postStatus.className = 'status-box error';
-                postStatus.textContent = 'Vui lòng nhập tiêu đề nội dung.';
+                showStatus("error", "Vui lòng nhập tiêu đề nội dung.");
                 return false;
             }
 
-            if (!district) {
-                postStatus.className = 'status-box error';
-                postStatus.textContent = 'Vui lòng chọn Quận/Huyện.';
+            if (!city) {
+                showStatus("error", "Vui lòng chọn Tỉnh / Thành phố.");
+                return false;
+            }
+
+            if (!ward) {
+                showStatus("error", "Vui lòng chọn Phường / Xã.");
                 return false;
             }
 
             if (!description || description.length < 30) {
-                postStatus.className = 'status-box error';
-                postStatus.textContent = 'Mô tả cần chi tiết hơn, tối thiểu khoảng 30 ký tự.';
+                showStatus("error", "Mô tả cần chi tiết hơn, tối thiểu khoảng 30 ký tự.");
                 return false;
             }
 
             if (!contactName || !contactPhone) {
-                postStatus.className = 'status-box error';
-                postStatus.textContent = 'Vui lòng điền đủ thông tin liên hệ hiển thị.';
+                showStatus("error", "Vui lòng điền đủ thông tin liên hệ hiển thị.");
                 return false;
             }
 
-            if (currentFlow === 'construction') {
-                const serviceType = document.getElementById('serviceType')?.value;
-                const servicePrice = document.getElementById('servicePrice')?.value.trim();
+            if (contactPhone.length < 9 || contactPhone.length > 11) {
+                showStatus("error", "Số điện thoại liên hệ chưa hợp lệ.");
+                return false;
+            }
+
+            if (currentFlow === "construction") {
+                const serviceType = document.getElementById("serviceType")?.value;
+                const servicePrice = document.getElementById("servicePrice")?.value.trim();
 
                 if (!serviceType || !servicePrice) {
-                    postStatus.className = 'status-box error';
-                    postStatus.textContent = 'Vui lòng điền đủ loại dịch vụ và đơn giá tham khảo cho nội dung xây dựng.';
+                    showStatus("error", "Vui lòng điền đủ loại dịch vụ và đơn giá tham khảo cho nội dung xây dựng.");
                     return false;
                 }
             } else {
-                const propertyPrice = document.getElementById('propertyPrice')?.value.trim();
-                const propertyArea = document.getElementById('propertyArea')?.value.trim();
+                const propertyPrice = document.getElementById("propertyPrice")?.value.trim();
+                const propertyArea = document.getElementById("propertyArea")?.value.trim();
 
                 if (!propertyPrice || !propertyArea) {
-                    postStatus.className = 'status-box error';
-                    postStatus.textContent = 'Vui lòng điền đủ giá và diện tích cho tin bất động sản.';
+                    showStatus("error", "Vui lòng điền đủ giá và diện tích cho tin bất động sản.");
                     return false;
+                }
+
+                if (isProjectEnabled()) {
+                    const hasExistingProject = !!selectedProject;
+                    const hasNewProject = !!newProjectName.value.trim();
+
+                    if (!hasExistingProject && !hasNewProject) {
+                        showStatus("error", "Bạn đã bật chế độ dự án, vui lòng chọn dự án có sẵn hoặc nhập tên dự án mới.");
+                        return false;
+                    }
                 }
             }
 
             return true;
         }
 
-        function savePostToStorage(postData) {
-            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
-            allPosts.unshift(postData);
-            localStorage.setItem('allPosts', JSON.stringify(allPosts));
-
-            if (postData.flow === 'construction') {
-                const constructionPosts = JSON.parse(localStorage.getItem('constructionPosts') || '[]');
-                constructionPosts.unshift(postData);
-                localStorage.setItem('constructionPosts', JSON.stringify(constructionPosts));
-            } else {
-                const propertyPosts = JSON.parse(localStorage.getItem('propertyPosts') || '[]');
-                propertyPosts.unshift(postData);
-                localStorage.setItem('propertyPosts', JSON.stringify(propertyPosts));
-
-                if (postData.postType === 'ban') {
-                    const salePosts = JSON.parse(localStorage.getItem('salePosts') || '[]');
-                    salePosts.unshift(postData);
-                    localStorage.setItem('salePosts', JSON.stringify(salePosts));
-                }
-
-                if (postData.postType === 'thue') {
-                    const rentalPosts = JSON.parse(localStorage.getItem('rentalPosts') || '[]');
-                    rentalPosts.unshift(postData);
-                    localStorage.setItem('rentalPosts', JSON.stringify(rentalPosts));
-                }
-            }
-        }
-
         function buildPostData() {
             const baseData = {
-                id: 'post_' + Date.now(),
-                userId: currentUser?.id || '',
-                accountGroup: currentUser?.accountGroup || '',
-                accountGroupLabel: currentUser?.accountGroupLabel || '',
-                role: currentUser?.role || '',
-                roleLabel: currentUser?.roleLabel || '',
-                brandName: currentUser?.brandName || '',
-                fullName: currentUser?.fullName || '',
-                email: currentUser?.email || '',
-                phone: currentUser?.phone || '',
+                id: "post_" + Date.now(),
+                userId: currentUser?.id || "",
+                accountGroup: currentUser?.accountGroup || "",
+                accountGroupLabel: currentUser?.accountGroupLabel || "",
+                role: currentUser?.role || "",
+                roleLabel: currentUser?.roleLabel || "",
+                brandName: currentUser?.brandName || "",
+                fullName: currentUser?.fullName || "",
+                email: currentUser?.email || "",
+                phone: currentUser?.phone || "",
                 flow: currentFlow,
-                postType: currentFlow === 'construction' ? 'xaydung' : currentPostType,
+                postType: currentFlow === "construction" ? "xaydung" : currentPostType,
                 profileType: currentProfile,
                 title: postTitle.value.trim(),
-                city: document.getElementById('city').value,
-                district: districtSelect.options[districtSelect.selectedIndex]?.text || '',
-                ward: wardSelect.options[wardSelect.selectedIndex]?.text || '',
-                addressDetail: document.getElementById('addressDetail').value.trim(),
-                description: document.getElementById('postDescription').value.trim(),
-                contactName: document.getElementById('contactName').value.trim(),
-                contactPhone: document.getElementById('contactPhone').value.trim(),
-                status: 'pending',
-                createdAt: new Date().toISOString()
+                slug: slugify(postTitle.value.trim() + "-" + Date.now()),
+                city: citySelect.value,
+                ward: wardSelect.value,
+                addressDetail: document.getElementById("addressDetail").value.trim(),
+                description: document.getElementById("postDescription").value.trim(),
+                contactName: document.getElementById("contactName").value.trim(),
+                contactPhone: sanitizePhone(document.getElementById("contactPhone").value.trim()),
+                status: "pending",
+                images: selectedImages,
+                imageCount: selectedImages.length,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
             };
 
-            if (currentFlow === 'construction') {
+            if (currentFlow === "construction") {
+                const servicePriceRaw = document.getElementById("servicePrice")?.value || "";
                 return {
                     ...baseData,
-                    serviceType: document.getElementById('serviceType')?.value || '',
-                    servicePrice: document.getElementById('servicePrice')?.value || '',
-                    serviceExp: document.getElementById('serviceExp')?.value || '',
-                    serviceArea: document.getElementById('serviceArea')?.value || '',
-                    serviceBrand: document.getElementById('serviceBrand')?.value || '',
-                    serviceSpecialty: document.getElementById('serviceSpecialty')?.value || ''
+                    serviceType: document.getElementById("serviceType")?.value || "",
+                    servicePrice: servicePriceRaw,
+                    servicePriceData: parseVietnamesePrice(servicePriceRaw, "xaydung"),
+                    serviceExp: document.getElementById("serviceExp")?.value || "",
+                    serviceArea: document.getElementById("serviceArea")?.value || "",
+                    serviceBrand: document.getElementById("serviceBrand")?.value || "",
+                    serviceSpecialty: document.getElementById("serviceSpecialty")?.value || ""
                 };
             }
 
-            return {
+            const propertyPriceRaw = document.getElementById("propertyPrice")?.value || "";
+            const propertyAreaRaw = document.getElementById("propertyArea")?.value || "";
+            const areaNumber = Number(propertyAreaRaw || 0);
+            const parsedPrice = parseVietnamesePrice(propertyPriceRaw, currentPostType);
+
+            const projectData = resolveProjectData();
+
+            const postData = {
                 ...baseData,
-                propertyType: document.getElementById('propertyType')?.value || '',
-                propertyPrice: document.getElementById('propertyPrice')?.value || '',
-                propertyArea: document.getElementById('propertyArea')?.value || '',
-                propertyLegal: document.getElementById('propertyLegal')?.value || '',
-                propertyDirection: document.getElementById('propertyDirection')?.value || '',
-                propertyBeds: document.getElementById('propertyBeds')?.value || ''
+                propertyType: document.getElementById("propertyType")?.value || "",
+                propertyPrice: propertyPriceRaw,
+                propertyPriceData: parsedPrice,
+                propertyArea: propertyAreaRaw,
+                propertyAreaNumber: areaNumber || null,
+                propertyLegal: document.getElementById("propertyLegal")?.value || "",
+                propertyDirection: document.getElementById("propertyDirection")?.value || "",
+                propertyBeds: document.getElementById("propertyBeds")?.value || "",
+                projectEnabled: projectData.enabled,
+                projectId: projectData.projectId,
+                projectName: projectData.projectName,
+                projectSlug: projectData.projectSlug,
+                projectTypeName: projectData.projectType,
+                projectDeveloper: projectData.projectDeveloper,
+                isNewProject: projectData.isNewProject
             };
+
+            if (parsedPrice.value && areaNumber && currentPostType === "ban") {
+                postData.pricePerSquareMeter = Math.round(parsedPrice.value / areaNumber);
+            } else {
+                postData.pricePerSquareMeter = null;
+            }
+
+            return postData;
+        }
+
+        function saveSingleSourcePost(postData) {
+            const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+            allPosts.unshift(postData);
+            localStorage.setItem("allPosts", JSON.stringify(allPosts));
+            return allPosts;
+        }
+
+        function rebuildCompatibilityStores(allPosts) {
+            const propertyPosts = allPosts.filter(item => item.flow === "real_estate");
+            const salePosts = propertyPosts.filter(item => item.postType === "ban");
+            const rentalPosts = propertyPosts.filter(item => item.postType === "thue");
+            const constructionPosts = allPosts.filter(item => item.flow === "construction");
+
+            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
+            localStorage.setItem("salePosts", JSON.stringify(salePosts));
+            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
+            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+        }
+
+        function savePostToStorage(postData) {
+            const savedProject = upsertProjectForPost(resolveProjectData(), postData);
+
+            if (savedProject) {
+                postData.projectId = savedProject.id;
+                postData.projectName = savedProject.name;
+                postData.projectSlug = savedProject.slug;
+                postData.projectTypeName = savedProject.type || postData.projectTypeName || "";
+                postData.projectDeveloper = savedProject.developer || postData.projectDeveloper || "";
+                postData.isNewProject = false;
+            }
+
+            const allPosts = saveSingleSourcePost(postData);
+            rebuildCompatibilityStores(allPosts);
         }
 
         function resetFormAfterSubmit(formElement) {
             formElement.reset();
-            document.getElementById('city').value = 'Bình Dương';
-            wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
-            setProfile(currentUser?.accountGroup === 'construction' ? 'doanhnghiep' : 'canhan');
+            selectedImages = [];
+            renderSelectedImages();
+
+            selectedProject = null;
+            projectSwitch.classList.remove("active");
+            projectFields.classList.add("hidden-block");
+            resetProjectInputs();
+
+            setProfile(currentUser?.accountGroup === "construction" ? "doanhnghiep" : "canhan");
+            currentPostType = "ban";
+            document.querySelectorAll(".subtab-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.getAttribute("data-post-type") === "ban");
+            });
+
             renderDynamicFields();
             fillUserInfo();
+            renderCityOptions();
             updatePreview();
         }
 
-        document.getElementById('smart-post-form').addEventListener('submit', function (e) {
+        document.getElementById("smart-post-form").addEventListener("submit", function (e) {
             e.preventDefault();
 
             if (!validateForm()) return;
 
+            submitBtn.disabled = true;
+            submitBtn.classList.add("opacity-70", "cursor-not-allowed");
+
             const postData = buildPostData();
             savePostToStorage(postData);
 
-            postStatus.className = 'status-box success';
-            postStatus.textContent = currentFlow === 'construction'
-                ? 'Đăng dịch vụ xây dựng thành công ở chế độ demo. Nội dung đã được lưu với trạng thái chờ duyệt.'
-                : (currentPostType === 'ban'
-                    ? 'Đăng tin bán thành công ở chế độ demo. Dữ liệu đã được lưu và có thể dùng cho tổng hợp giá nhà đất sau này.'
-                    : 'Đăng tin cho thuê thành công ở chế độ demo. Nội dung đã được lưu với trạng thái chờ duyệt.');
+            showStatus(
+                "success",
+                currentFlow === "construction"
+                    ? "Đăng dịch vụ xây dựng thành công ở chế độ demo. Nội dung đã được lưu với trạng thái chờ duyệt."
+                    : currentPostType === "ban"
+                        ? "Đăng tin bán thành công ở chế độ demo. Dữ liệu đã được lưu, có thể dùng cho tổng hợp giá nhà đất và gom nhóm theo dự án."
+                        : "Đăng tin cho thuê thành công ở chế độ demo. Nội dung đã được lưu với trạng thái chờ duyệt và có thể gom nhóm theo dự án."
+            );
 
             resetFormAfterSubmit(this);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
+            }, 500);
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
         });
 
-        districtSelect.addEventListener('change', updateWards);
-        document.getElementById('city').addEventListener('change', updatePreview);
-        wardSelect.addEventListener('change', updatePreview);
-        document.getElementById('addressDetail').addEventListener('input', updatePreview);
-        postTitle.addEventListener('input', updatePreview);
-        document.getElementById('postDescription').addEventListener('input', updatePreview);
-        document.getElementById('contactName').addEventListener('input', updatePreview);
-        document.getElementById('contactPhone').addEventListener('input', updatePreview);
+        citySelect.addEventListener("change", updateWards);
+        wardSelect.addEventListener("change", updatePreview);
+        document.getElementById("addressDetail").addEventListener("input", updatePreview);
+        postTitle.addEventListener("input", updatePreview);
+        document.getElementById("postDescription").addEventListener("input", updatePreview);
+        document.getElementById("contactName").addEventListener("input", updatePreview);
+        document.getElementById("contactPhone").addEventListener("input", updatePreview);
 
-        flowRealEstate.addEventListener('click', () => setFlow('real_estate'));
-        flowConstruction.addEventListener('click', () => setFlow('construction'));
+        flowRealEstate.addEventListener("click", () => setFlow("real_estate"));
+        flowConstruction.addEventListener("click", () => setFlow("construction"));
 
-        document.querySelectorAll('.subtab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                setSubtab(btn.getAttribute('data-post-type'));
+        document.querySelectorAll(".subtab-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                setSubtab(btn.getAttribute("data-post-type"));
             });
         });
+
+        projectSwitch.addEventListener("click", () => toggleProjectMode());
+        projectSearch.addEventListener("input", handleProjectSearchInput);
+        newProjectName.addEventListener("input", () => {
+            if (newProjectName.value.trim()) {
+                selectedProject = null;
+                projectSearch.value = "";
+                projectSuggestList.style.display = "none";
+            }
+            updateSelectedProjectBadge();
+            updatePreview();
+        });
+        projectDeveloper.addEventListener("input", updatePreview);
+        projectTypeField.addEventListener("change", updatePreview);
+
+        document.addEventListener("click", function (e) {
+            const clickedInside = projectSuggestList.contains(e.target) || projectSearch.contains(e.target);
+            if (!clickedInside) {
+                projectSuggestList.style.display = "none";
+            }
+        });
+
+        selectImagesBtn.addEventListener("click", () => imageInput.click());
+        imageInput.addEventListener("change", e => handleImageFiles(e.target.files));
 
         function sendToZalo() {
             const name = document.getElementById("cusName").value;
@@ -1434,15 +2186,17 @@
         }
 
         fillUserInfo();
+        initLocationData();
         renderDynamicFields();
         lockFlowByAccountGroup();
 
         if (!currentUser) {
-            setFlow('real_estate');
+            setFlow("real_estate");
         }
 
         updatePreview();
     </script>
+
     <script src="../assets/js/main.js"></script>
 </body>
 </html>
