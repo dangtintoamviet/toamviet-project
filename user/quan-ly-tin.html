@@ -1,1 +1,1798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý tin đăng | ToamViet.com.vn</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --stroke: #e2e8f0;
+            --text-main: #0f172a;
+            --text-soft: #64748b;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #0f766e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            background: var(--soft-bg);
+            color: #1e293b;
+        }
+
+        .container-custom {
+            max-width: 1366px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .nav-link {
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--hover-color) !important;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            min-width: 220px;
+            border-top: 2px solid var(--vip-color);
+            z-index: 50;
+        }
+
+        .dropdown-item {
+            padding: 10px 18px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .dropdown-item:hover {
+            background: #f8fafc;
+            color: var(--hover-color);
+        }
+
+        .save-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .save-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #e03c31;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        .dashboard-shell {
+            max-width: 1280px;
+            margin: 28px auto 0;
+        }
+
+        .page-header {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+
+        .hero-card,
+        .account-card,
+        .toolbar-card,
+        .stats-card,
+        .list-card,
+        .empty-card,
+        .detail-panel {
+            background: white;
+            border: 1px solid var(--stroke);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .hero-card {
+            padding: 28px;
+            background: linear-gradient(135deg, #0f766e, #008b8b);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-size: 30px;
+            line-height: 1.3;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.92);
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hero-point {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 14px;
+        }
+
+        .hero-point .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.78);
+            margin-bottom: 6px;
+        }
+
+        .hero-point .value {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .account-card {
+            padding: 24px;
+        }
+
+        .account-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .account-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .account-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .account-role {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .account-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .account-meta-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 13px;
+        }
+
+        .account-meta-item:last-child {
+            border-bottom: none;
+        }
+
+        .account-meta-label {
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .account-meta-value {
+            color: #0f172a;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .toolbar-card,
+        .list-card,
+        .empty-card,
+        .detail-panel {
+            padding: 22px;
+        }
+
+        .toolbar-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .toolbar-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .toolbar-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+
+        .toolbar-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr auto;
+            gap: 12px;
+        }
+
+        .field-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-field,
+        .select-field {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--stroke);
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            background: white;
+            transition: 0.25s ease;
+        }
+
+        .input-field:focus,
+        .select-field:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0,139,139,0.08);
+        }
+
+        .btn-primary,
+        .btn-soft,
+        .btn-danger,
+        .btn-warning,
+        .btn-dark {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--vip-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--vip-dark);
+        }
+
+        .btn-soft {
+            background: #eef2ff;
+            color: #334155;
+        }
+
+        .btn-soft:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1e293b;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        .btn-warning {
+            background: #fff7ed;
+            color: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background: #ffedd5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-top: 22px;
+            margin-bottom: 24px;
+        }
+
+        .stats-card {
+            padding: 18px;
+        }
+
+        .stats-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .stats-value {
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .stats-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .content-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 24px;
+        }
+
+        .list-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .list-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .list-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .post-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            padding: 18px;
+            background: #fff;
+            transition: 0.25s ease;
+        }
+
+        .post-item:hover {
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            border-color: #cbd5e1;
+        }
+
+        .post-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .post-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-flow {
+            background: #ecfeff;
+            color: #0f766e;
+        }
+
+        .badge-sale {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .badge-rent {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .badge-construction {
+            background: #f5f3ff;
+            color: #6d28d9;
+        }
+
+        .badge-status-pending {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .badge-status-approved {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .badge-status-rejected {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .badge-status-hidden {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .badge-project {
+            background: #f0fdfa;
+            color: #0f766e;
+        }
+
+        .post-title {
+            font-size: 20px;
+            font-weight: 900;
+            line-height: 1.5;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .post-meta-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 12px;
+        }
+
+        .post-meta-line span {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .post-desc {
+            font-size: 13px;
+            line-height: 1.75;
+            color: #64748b;
+            margin-bottom: 14px;
+        }
+
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .post-grid-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        .post-grid-item .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .post-grid-item .value {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.5;
+        }
+
+        .post-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .empty-card {
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 82px;
+            height: 82px;
+            border-radius: 24px;
+            background: #f8fafc;
+            color: var(--vip-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            margin-bottom: 18px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.8;
+            max-width: 520px;
+            margin: 0 auto 20px;
+        }
+
+        .detail-panel {
+            position: sticky;
+            top: 92px;
+            height: fit-content;
+        }
+
+        .detail-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .detail-sub {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .detail-box-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .detail-box-value {
+            font-size: 14px;
+            line-height: 1.8;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .detail-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .detail-gallery img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        .detail-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .status-box {
+            display: none;
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .footer-link-group h4 {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #2c2c2c;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        .footer-link-group ul {
+            font-size: 13px;
+            color: #666;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-link-group li {
+            margin-bottom: 8px;
+        }
+
+        .footer-link-group li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1180px) {
+            .page-header,
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-panel {
+                position: static;
+            }
+
+            .toolbar-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .post-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-points,
+            .stats-grid,
+            .post-grid,
+            .detail-gallery,
+            .toolbar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-card,
+            .account-card,
+            .toolbar-card,
+            .stats-card,
+            .list-card,
+            .empty-card,
+            .detail-panel {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .post-item-top,
+            .list-head,
+            .toolbar-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white border-b sticky top-0 z-[1000]">
+        <div class="container-custom h-[70px] flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <a href="../index.html">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10" />
+                </a>
+
+                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
+                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
+                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
+                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
+                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
+
+                    <div class="dropdown relative h-full flex items-center cursor-pointer">
+                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                        <div class="dropdown-menu">
+                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
+                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="flex items-center gap-5">
+                <div class="save-icon nav-link text-gray-600">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="save-count">0</span>
+                </div>
+
+                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
+                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
+                </div>
+
+                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] bg-[#008B8B] text-white px-4 py-2 rounded-lg font-bold hover:opacity-90 transition uppercase text-[13px]">
+                    Đăng tin
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="lg:hidden bg-white border-t">
+        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
+            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
+            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
+            <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
+            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
+            <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
+            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
+            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
+            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
+            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
+            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
+            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] bg-[#008B8B] text-white px-4 py-2 rounded-lg font-bold hover:opacity-90 transition uppercase text-[13px]">Đăng tin</a>
+        </div>
+    </div>
+
+    <main class="py-8 md:py-10">
+        <div class="container-custom">
+            <div class="dashboard-shell">
+                <section class="page-header">
+                    <div class="hero-card">
+                        <div class="hero-badge">
+                            <i class="fa-solid fa-layer-group"></i>
+                            Trung tâm quản lý tin
+                        </div>
+                        <h1 class="hero-title">Quản lý toàn bộ tin đăng của bạn theo đúng luồng dữ liệu đã chuẩn hóa</h1>
+                        <p class="hero-desc">
+                            Tại đây bạn có thể xem nhanh toàn bộ tin đã đăng, lọc theo bất động sản bán, cho thuê hoặc xây dựng, đồng thời kiểm tra trạng thái chờ duyệt, đã duyệt, ẩn tin và tin thuộc dự án để tiếp tục đồng bộ nhóm user một cách sạch sẽ.
+                        </p>
+
+                        <div class="hero-points">
+                            <div class="hero-point">
+                                <div class="label">Theo dõi trạng thái</div>
+                                <div class="value">Biết ngay tin nào đang chờ duyệt, đã duyệt hoặc đang ẩn</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Quản lý theo luồng</div>
+                                <div class="value">Bán / Cho thuê / Xây dựng được tách rõ nhưng vẫn chung một nguồn dữ liệu</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Hỗ trợ SEO dự án</div>
+                                <div class="value">Tin thuộc dự án được nhận diện để dễ gom nhóm ngoài trang dự án</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="account-card">
+                        <div class="account-top">
+                            <div class="account-avatar" id="userAvatar">TV</div>
+                            <div>
+                                <div class="account-name" id="userName">Tài khoản thành viên</div>
+                                <div class="account-role" id="userRole">Chưa nhận diện vai trò</div>
+                            </div>
+                        </div>
+
+                        <div class="account-meta">
+                            <div class="account-meta-item">
+                                <span class="account-meta-label">Nhóm tài khoản</span>
+                                <span class="account-meta-value" id="userGroup">Chưa có</span>
+                            </div>
+                            <div class="account-meta-item">
+                                <span class="account-meta-label">Email</span>
+                                <span class="account-meta-value" id="userEmail">---</span>
+                            </div>
+                            <div class="account-meta-item">
+                                <span class="account-meta-label">Số điện thoại</span>
+                                <span class="account-meta-value" id="userPhone">---</span>
+                            </div>
+                            <div class="account-meta-item">
+                                <span class="account-meta-label">Thương hiệu / Công ty</span>
+                                <span class="account-meta-value" id="userBrand">---</span>
+                            </div>
+                        </div>
+                    </aside>
+                </section>
+
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stats-card">
+                        <div class="stats-label">Tổng tin của bạn</div>
+                        <div class="stats-value" id="statTotal">0</div>
+                        <div class="stats-note">Tổng số bài thuộc tài khoản hiện tại.</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-label">Tin chờ duyệt</div>
+                        <div class="stats-value" id="statPending">0</div>
+                        <div class="stats-note">Đang chờ hệ thống hoặc admin kiểm duyệt.</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-label">Tin đã duyệt</div>
+                        <div class="stats-value" id="statApproved">0</div>
+                        <div class="stats-note">Có thể hiển thị ngoài trang chuyên mục.</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-label">Tin thuộc dự án</div>
+                        <div class="stats-value" id="statProject">0</div>
+                        <div class="stats-note">Đang gắn với dự án để gom nhóm SEO.</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-label">Tin đang ẩn</div>
+                        <div class="stats-value" id="statHidden">0</div>
+                        <div class="stats-note">Đã ẩn tạm, có thể bật hiển thị lại.</div>
+                    </div>
+                </div>
+
+                <section class="toolbar-card">
+                    <div class="toolbar-head">
+                        <div>
+                            <div class="toolbar-title">Bộ lọc & tìm kiếm tin đăng</div>
+                            <div class="toolbar-sub">Lọc đúng theo luồng và trạng thái để kiểm tra dữ liệu trước khi đồng bộ tiếp các trang trong nhóm user.</div>
+                        </div>
+                        <div class="flex gap-2 flex-wrap">
+                            <a href="../user/dang-tin.html" class="btn-primary inline-flex items-center gap-2">
+                                <i class="fa-solid fa-plus"></i>
+                                Đăng tin mới
+                            </a>
+                            <button id="refreshBtn" class="btn-soft" type="button">
+                                <i class="fa-solid fa-rotate-right mr-2"></i>Làm mới
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="globalStatus" class="status-box"></div>
+
+                    <div class="toolbar-grid">
+                        <div>
+                            <label class="field-label" for="searchInput">Tìm theo tiêu đề / khu vực / dự án</label>
+                            <input id="searchInput" type="text" class="input-field" placeholder="Nhập từ khóa cần tìm..." />
+                        </div>
+
+                        <div>
+                            <label class="field-label" for="flowFilter">Luồng nội dung</label>
+                            <select id="flowFilter" class="select-field">
+                                <option value="all">Tất cả luồng</option>
+                                <option value="real_estate">Bất động sản</option>
+                                <option value="construction">Xây dựng</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="field-label" for="typeFilter">Loại tin</label>
+                            <select id="typeFilter" class="select-field">
+                                <option value="all">Tất cả loại tin</option>
+                                <option value="ban">Bất động sản bán</option>
+                                <option value="thue">Bất động sản cho thuê</option>
+                                <option value="xaydung">Xây dựng</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="field-label" for="statusFilter">Trạng thái</label>
+                            <select id="statusFilter" class="select-field">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="pending">Chờ duyệt</option>
+                                <option value="approved">Đã duyệt</option>
+                                <option value="rejected">Từ chối</option>
+                                <option value="hidden">Đang ẩn</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-end">
+                            <button id="clearFilterBtn" class="btn-dark w-full" type="button">Xóa lọc</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="content-layout mt-6">
+                    <section class="list-card">
+                        <div class="list-head">
+                            <div>
+                                <div class="list-title">Danh sách tin của bạn</div>
+                                <div class="list-sub" id="resultInfo">Đang tải dữ liệu tin đăng...</div>
+                            </div>
+                        </div>
+
+                        <div id="postList" class="post-list"></div>
+
+                        <div id="emptyState" class="empty-card hidden">
+                            <div class="empty-icon">
+                                <i class="fa-regular fa-folder-open"></i>
+                            </div>
+                            <div class="empty-title">Chưa có tin nào phù hợp</div>
+                            <div class="empty-text">
+                                Có thể bạn chưa đăng tin, hoặc bộ lọc hiện tại đang quá hẹp. Hãy thử xóa lọc hoặc đăng tin mới để bắt đầu luồng dữ liệu cho website.
+                            </div>
+                            <a href="../user/dang-tin.html" class="btn-primary inline-flex items-center gap-2">
+                                <i class="fa-solid fa-plus"></i>
+                                Đăng tin ngay
+                            </a>
+                        </div>
+                    </section>
+
+                    <aside class="detail-panel">
+                        <div class="detail-title">Chi tiết nhanh tin đăng</div>
+                        <div class="detail-sub">Chọn một tin trong danh sách để xem nhanh dữ liệu chính, tình trạng dự án và hình ảnh đã lưu.</div>
+
+                        <div id="detailDefault">
+                            <div class="detail-box">
+                                <div class="detail-box-label">Trạng thái xem nhanh</div>
+                                <div class="detail-box-value">Chưa chọn tin nào để xem chi tiết.</div>
+                            </div>
+                            <div class="detail-note">
+                                Bảng này giúp bạn rà dữ liệu trước khi tiếp tục đồng bộ sang các trang quản lý khác trong nhóm user, tránh bị lệch giữa dữ liệu hiển thị và dữ liệu lưu trữ.
+                            </div>
+                        </div>
+
+                        <div id="detailContent" class="hidden">
+                            <div class="detail-box">
+                                <div class="detail-box-label">Tiêu đề</div>
+                                <div class="detail-box-value" id="detailTitle">---</div>
+                            </div>
+
+                            <div class="detail-box">
+                                <div class="detail-box-label">Thông tin chính</div>
+                                <div class="detail-box-value" id="detailMeta">---</div>
+                            </div>
+
+                            <div class="detail-box">
+                                <div class="detail-box-label">Mô tả</div>
+                                <div class="detail-box-value" id="detailDescription">---</div>
+                            </div>
+
+                            <div class="detail-box">
+                                <div class="detail-box-label">Dự án / Khu vực</div>
+                                <div class="detail-box-value" id="detailProject">---</div>
+                            </div>
+
+                            <div class="detail-box">
+                                <div class="detail-box-label">Hình ảnh</div>
+                                <div id="detailGallery" class="detail-gallery"></div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white pt-16 border-t mt-12">
+        <div class="container-custom">
+            <div class="mb-12 border-b pb-12">
+                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
+                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+                <div class="footer-link-group">
+                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
+                    <ul>
+                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
+                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
+                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
+                    <ul>
+                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
+                    <ul>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>DỰ ÁN NỔI BẬT</h4>
+                    <ul>
+                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
+                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
+                <div class="max-w-sm">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6" />
+                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
+                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
+                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
+                    <div class="flex gap-4 mt-6">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer" />
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-10 text-[13px]">
+                    <div>
+                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
+                        <ul class="text-gray-500 space-y-2">
+                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
+                        <ul class="text-gray-500 space-y-2">
+                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="w-full lg:max-w-xs">
+                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
+                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
+                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm" />
+                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
+                </div>
+            </div>
+
+            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
+                <p>© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+
+    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+
+    <div id="chatForm">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+        </div>
+    </div>
+
+    <script>
+        const currentUser =
+            JSON.parse(localStorage.getItem("currentUser")) ||
+            JSON.parse(localStorage.getItem("registeredUser")) ||
+            null;
+
+        const searchInput = document.getElementById("searchInput");
+        const flowFilter = document.getElementById("flowFilter");
+        const typeFilter = document.getElementById("typeFilter");
+        const statusFilter = document.getElementById("statusFilter");
+        const clearFilterBtn = document.getElementById("clearFilterBtn");
+        const refreshBtn = document.getElementById("refreshBtn");
+
+        const postList = document.getElementById("postList");
+        const emptyState = document.getElementById("emptyState");
+        const resultInfo = document.getElementById("resultInfo");
+        const globalStatus = document.getElementById("globalStatus");
+
+        const detailDefault = document.getElementById("detailDefault");
+        const detailContent = document.getElementById("detailContent");
+        const detailTitle = document.getElementById("detailTitle");
+        const detailMeta = document.getElementById("detailMeta");
+        const detailDescription = document.getElementById("detailDescription");
+        const detailProject = document.getElementById("detailProject");
+        const detailGallery = document.getElementById("detailGallery");
+
+        let allPosts = [];
+        let myPosts = [];
+        let filteredPosts = [];
+        let selectedPostId = null;
+
+        function getInitials(name) {
+            return (name || "TV")
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(w => w[0].toUpperCase())
+                .join("") || "TV";
+        }
+
+        function slugify(str) {
+            return (str || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/[^a-z0-9\s-]/g, "")
+                .trim()
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function normalizeText(str) {
+            return (str || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function formatDateTime(iso) {
+            if (!iso) return "---";
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return "---";
+            return d.toLocaleString("vi-VN");
+        }
+
+        function showStatus(type, message) {
+            globalStatus.className = "status-box " + type;
+            globalStatus.textContent = message;
+        }
+
+        function hideStatus() {
+            globalStatus.className = "status-box";
+            globalStatus.textContent = "";
+        }
+
+        function fillUserInfo() {
+            const userAvatar = document.getElementById("userAvatar");
+            const userName = document.getElementById("userName");
+            const userRole = document.getElementById("userRole");
+            const userGroup = document.getElementById("userGroup");
+            const userEmail = document.getElementById("userEmail");
+            const userPhone = document.getElementById("userPhone");
+            const userBrand = document.getElementById("userBrand");
+
+            if (!currentUser) {
+                userAvatar.textContent = "TV";
+                userName.textContent = "Tài khoản thành viên";
+                userRole.textContent = "Chưa đăng nhập / chưa có dữ liệu";
+                userGroup.textContent = "Khách";
+                userEmail.textContent = "---";
+                userPhone.textContent = "---";
+                userBrand.textContent = "---";
+                return;
+            }
+
+            userAvatar.textContent = getInitials(currentUser.fullName || currentUser.brandName);
+            userName.textContent = currentUser.fullName || "Tài khoản thành viên";
+            userRole.textContent = currentUser.roleLabel || currentUser.role || "Không rõ vai trò";
+            userGroup.textContent = currentUser.accountGroupLabel || currentUser.accountGroup || "---";
+            userEmail.textContent = currentUser.email || "---";
+            userPhone.textContent = currentUser.phone || "---";
+            userBrand.textContent = currentUser.brandName || "---";
+        }
+
+        function getStatusLabel(status) {
+            if (status === "approved") return "Đã duyệt";
+            if (status === "rejected") return "Từ chối";
+            if (status === "hidden") return "Đang ẩn";
+            return "Chờ duyệt";
+        }
+
+        function getStatusBadgeClass(status) {
+            if (status === "approved") return "badge-status-approved";
+            if (status === "rejected") return "badge-status-rejected";
+            if (status === "hidden") return "badge-status-hidden";
+            return "badge-status-pending";
+        }
+
+        function getFlowLabel(post) {
+            if (post.flow === "construction") return "Xây dựng";
+            return "Bất động sản";
+        }
+
+        function getPostTypeLabel(post) {
+            if (post.postType === "ban") return "Tin bán";
+            if (post.postType === "thue") return "Tin cho thuê";
+            return "Xây dựng";
+        }
+
+        function getPostTypeClass(post) {
+            if (post.postType === "ban") return "badge-sale";
+            if (post.postType === "thue") return "badge-rent";
+            return "badge-construction";
+        }
+
+        function getSafeArray(value) {
+            return Array.isArray(value) ? value : [];
+        }
+
+        function getAllPosts() {
+            return JSON.parse(localStorage.getItem("allPosts") || "[]");
+        }
+
+        function saveAllPosts(posts) {
+            localStorage.setItem("allPosts", JSON.stringify(posts));
+        }
+
+        function rebuildCompatibilityStores(posts) {
+            const propertyPosts = posts.filter(item => item.flow === "real_estate");
+            const salePosts = propertyPosts.filter(item => item.postType === "ban");
+            const rentalPosts = propertyPosts.filter(item => item.postType === "thue");
+            const constructionPosts = posts.filter(item => item.flow === "construction");
+
+            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
+            localStorage.setItem("salePosts", JSON.stringify(salePosts));
+            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
+            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+        }
+
+        function updateProjectCountsFromPosts(posts) {
+            const projects = JSON.parse(localStorage.getItem("projects") || "[]");
+            const nextProjects = projects.map(project => {
+                const count = posts.filter(post => post.projectSlug && project.slug === post.projectSlug).length;
+                return {
+                    ...project,
+                    postCount: count,
+                    lastPostAt: posts
+                        .filter(post => post.projectSlug && project.slug === post.projectSlug)
+                        .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))[0]?.createdAt || project.lastPostAt || project.createdAt || new Date().toISOString()
+                };
+            });
+            localStorage.setItem("projects", JSON.stringify(nextProjects));
+        }
+
+        function syncStores() {
+            const posts = getAllPosts();
+            rebuildCompatibilityStores(posts);
+            updateProjectCountsFromPosts(posts);
+        }
+
+        function loadPosts() {
+            allPosts = getAllPosts();
+
+            if (!currentUser) {
+                myPosts = [];
+                return;
+            }
+
+            myPosts = allPosts.filter(post => {
+                if (currentUser.id && post.userId) {
+                    return post.userId === currentUser.id;
+                }
+
+                const sameEmail = currentUser.email && post.email && normalizeText(currentUser.email) === normalizeText(post.email);
+                const samePhone = currentUser.phone && post.phone && normalizeText(currentUser.phone) === normalizeText(post.phone);
+
+                return sameEmail || samePhone;
+            });
+
+            myPosts.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+        }
+
+        function updateStats() {
+            const total = myPosts.length;
+            const pending = myPosts.filter(p => (p.status || "pending") === "pending").length;
+            const approved = myPosts.filter(p => p.status === "approved").length;
+            const project = myPosts.filter(p => p.projectSlug || p.projectName).length;
+            const hidden = myPosts.filter(p => p.status === "hidden").length;
+
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statPending").textContent = pending;
+            document.getElementById("statApproved").textContent = approved;
+            document.getElementById("statProject").textContent = project;
+            document.getElementById("statHidden").textContent = hidden;
+        }
+
+        function applyFilters() {
+            const keyword = normalizeText(searchInput.value);
+            const flowValue = flowFilter.value;
+            const typeValue = typeFilter.value;
+            const statusValue = statusFilter.value;
+
+            filteredPosts = myPosts.filter(post => {
+                const searchable = normalizeText([
+                    post.title,
+                    post.city,
+                    post.ward,
+                    post.addressDetail,
+                    post.projectName,
+                    post.propertyType,
+                    post.serviceType,
+                    post.description
+                ].filter(Boolean).join(" "));
+
+                const matchKeyword = !keyword || searchable.includes(keyword);
+                const matchFlow = flowValue === "all" || post.flow === flowValue;
+                const matchType = typeValue === "all" || post.postType === typeValue;
+                const matchStatus = statusValue === "all" || (post.status || "pending") === statusValue;
+
+                return matchKeyword && matchFlow && matchType && matchStatus;
+            });
+
+            renderPosts();
+            updateResultInfo();
+        }
+
+        function updateResultInfo() {
+            if (!currentUser) {
+                resultInfo.textContent = "Bạn cần đăng nhập để xem danh sách tin đăng của mình.";
+                return;
+            }
+
+            if (!myPosts.length) {
+                resultInfo.textContent = "Hiện tài khoản này chưa có tin nào trong hệ thống.";
+                return;
+            }
+
+            resultInfo.textContent = `Tìm thấy ${filteredPosts.length} / ${myPosts.length} tin phù hợp với bộ lọc hiện tại.`;
+        }
+
+        function getPriceDisplay(post) {
+            if (post.flow === "construction") {
+                return post.servicePrice || post.servicePriceData?.display || "Chưa nhập";
+            }
+            return post.propertyPrice || post.propertyPriceData?.display || "Chưa nhập";
+        }
+
+        function getAreaDisplay(post) {
+            if (post.flow === "construction") {
+                return post.serviceExp || post.serviceArea || "Chưa nhập";
+            }
+            return post.propertyArea ? `${post.propertyArea} m²` : "Chưa nhập";
+        }
+
+        function getProjectDisplay(post) {
+            if (post.projectName) return post.projectName;
+            return "Không thuộc dự án";
+        }
+
+        function getLocationDisplay(post) {
+            return [post.ward, post.city].filter(Boolean).join(", ") || "Chưa rõ khu vực";
+        }
+
+        function truncateText(text, max = 180) {
+            if (!text) return "";
+            return text.length > max ? text.slice(0, max) + "..." : text;
+        }
+
+        function buildPostCard(post) {
+            const status = post.status || "pending";
+            const images = getSafeArray(post.images);
+            const projectBadge = post.projectName
+                ? `<span class="badge badge-project"><i class="fa-solid fa-diagram-project"></i>${post.projectName}</span>`
+                : "";
+
+            const pricePerM2 = post.pricePerSquareMeter
+                ? new Intl.NumberFormat("vi-VN").format(post.pricePerSquareMeter) + " đ/m²"
+                : "---";
+
+            return `
+                <article class="post-item" data-post-id="${post.id}">
+                    <div class="post-item-top">
+                        <div class="flex-1 min-w-0">
+                            <div class="post-badges">
+                                <span class="badge badge-flow"><i class="fa-solid fa-layer-group"></i>${getFlowLabel(post)}</span>
+                                <span class="badge ${getPostTypeClass(post)}"><i class="fa-solid fa-tag"></i>${getPostTypeLabel(post)}</span>
+                                <span class="badge ${getStatusBadgeClass(status)}"><i class="fa-solid fa-circle-info"></i>${getStatusLabel(status)}</span>
+                                ${projectBadge}
+                            </div>
+
+                            <h3 class="post-title">${post.title || "Chưa có tiêu đề"}</h3>
+
+                            <div class="post-meta-line">
+                                <span><i class="fa-regular fa-clock"></i>${formatDateTime(post.createdAt)}</span>
+                                <span><i class="fa-solid fa-location-dot"></i>${getLocationDisplay(post)}</span>
+                                <span><i class="fa-solid fa-image"></i>${images.length} ảnh</span>
+                            </div>
+
+                            <div class="post-desc">${truncateText(post.description || "Chưa có mô tả.", 220)}</div>
+                        </div>
+                    </div>
+
+                    <div class="post-grid">
+                        <div class="post-grid-item">
+                            <div class="label">Giá / Đơn giá</div>
+                            <div class="value">${getPriceDisplay(post)}</div>
+                        </div>
+                        <div class="post-grid-item">
+                            <div class="label">Diện tích / Hạng mục</div>
+                            <div class="value">${getAreaDisplay(post)}</div>
+                        </div>
+                        <div class="post-grid-item">
+                            <div class="label">Dự án</div>
+                            <div class="value">${getProjectDisplay(post)}</div>
+                        </div>
+                        <div class="post-grid-item">
+                            <div class="label">${post.postType === "ban" ? "Đơn giá m²" : "Người liên hệ"}</div>
+                            <div class="value">${post.postType === "ban" ? pricePerM2 : (post.contactName || "---")}</div>
+                        </div>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="btn-soft btn-view" data-id="${post.id}" type="button">
+                            <i class="fa-regular fa-eye mr-2"></i>Xem nhanh
+                        </button>
+
+                        <button class="btn-primary btn-duplicate" data-id="${post.id}" type="button">
+                            <i class="fa-regular fa-copy mr-2"></i>Nhân bản
+                        </button>
+
+                        ${status === "hidden"
+                            ? `<button class="btn-warning btn-show" data-id="${post.id}" type="button"><i class="fa-solid fa-eye mr-2"></i>Hiện lại</button>`
+                            : `<button class="btn-warning btn-hide" data-id="${post.id}" type="button"><i class="fa-solid fa-eye-slash mr-2"></i>Ẩn tin</button>`
+                        }
+
+                        <button class="btn-danger btn-delete" data-id="${post.id}" type="button">
+                            <i class="fa-regular fa-trash-can mr-2"></i>Xóa
+                        </button>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderPosts() {
+            if (!filteredPosts.length) {
+                postList.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                clearDetailPanel();
+                return;
+            }
+
+            emptyState.classList.add("hidden");
+            postList.innerHTML = filteredPosts.map(buildPostCard).join("");
+
+            attachPostActions();
+
+            if (!selectedPostId || !filteredPosts.find(p => p.id === selectedPostId)) {
+                selectedPostId = filteredPosts[0].id;
+            }
+
+            renderDetailById(selectedPostId);
+            highlightSelectedCard();
+        }
+
+        function highlightSelectedCard() {
+            document.querySelectorAll(".post-item").forEach(card => {
+                const isActive = card.getAttribute("data-post-id") === selectedPostId;
+                card.style.borderColor = isActive ? "#14b8a6" : "#e2e8f0";
+                card.style.boxShadow = isActive ? "0 10px 26px rgba(20, 184, 166, 0.14)" : "";
+            });
+        }
+
+        function attachPostActions() {
+            document.querySelectorAll(".btn-view").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    selectedPostId = btn.getAttribute("data-id");
+                    renderDetailById(selectedPostId);
+                    highlightSelectedCard();
+                });
+            });
+
+            document.querySelectorAll(".btn-hide").forEach(btn => {
+                btn.addEventListener("click", () => togglePostVisibility(btn.getAttribute("data-id"), "hidden"));
+            });
+
+            document.querySelectorAll(".btn-show").forEach(btn => {
+                btn.addEventListener("click", () => togglePostVisibility(btn.getAttribute("data-id"), "pending"));
+            });
+
+            document.querySelectorAll(".btn-delete").forEach(btn => {
+                btn.addEventListener("click", () => deletePost(btn.getAttribute("data-id")));
+            });
+
+            document.querySelectorAll(".btn-duplicate").forEach(btn => {
+                btn.addEventListener("click", () => duplicatePost(btn.getAttribute("data-id")));
+            });
+        }
+
+        function clearDetailPanel() {
+            detailDefault.classList.remove("hidden");
+            detailContent.classList.add("hidden");
+        }
+
+        function renderDetailById(postId) {
+            const post = filteredPosts.find(item => item.id === postId) || myPosts.find(item => item.id === postId);
+            if (!post) {
+                clearDetailPanel();
+                return;
+            }
+
+            detailDefault.classList.add("hidden");
+            detailContent.classList.remove("hidden");
+
+            detailTitle.textContent = post.title || "---";
+
+            const metaParts = [
+                getFlowLabel(post),
+                getPostTypeLabel(post),
+                getStatusLabel(post.status || "pending"),
+                getLocationDisplay(post),
+                formatDateTime(post.createdAt)
+            ].filter(Boolean);
+
+            detailMeta.textContent = metaParts.join(" • ");
+            detailDescription.textContent = post.description || "Chưa có mô tả.";
+
+            const projectText = post.projectName
+                ? `${post.projectName} • ${post.projectTypeName || post.propertyType || "Chưa phân loại"}`
+                : `Không thuộc dự án • ${getLocationDisplay(post)}`;
+
+            detailProject.textContent = projectText;
+
+            const images = getSafeArray(post.images);
+            if (!images.length) {
+                detailGallery.innerHTML = `<div class="detail-note col-span-2">Tin này chưa có hình ảnh đã lưu.</div>`;
+            } else {
+                detailGallery.innerHTML = images.slice(0, 6).map(img => {
+                    const src = img?.dataUrl || img?.url || "";
+                    return src
+                        ? `<img src="${src}" alt="Ảnh tin đăng" />`
+                        : `<div class="detail-note">Ảnh không hợp lệ</div>`;
+                }).join("");
+            }
+        }
+
+        function togglePostVisibility(postId, nextStatus) {
+            const posts = getAllPosts();
+            const index = posts.findIndex(item => item.id === postId);
+            if (index === -1) {
+                showStatus("error", "Không tìm thấy tin cần cập nhật trạng thái.");
+                return;
+            }
+
+            posts[index].status = nextStatus;
+            posts[index].updatedAt = new Date().toISOString();
+
+            saveAllPosts(posts);
+            syncStores();
+            loadPosts();
+            updateStats();
+            applyFilters();
+
+            showStatus(
+                "success",
+                nextStatus === "hidden"
+                    ? "Đã chuyển tin sang trạng thái ẩn."
+                    : "Đã bật hiển thị lại tin đăng và đưa về trạng thái chờ duyệt."
+            );
+        }
+
+        function deletePost(postId) {
+            const confirmDelete = confirm("Bạn có chắc muốn xóa tin này không? Thao tác này sẽ xóa khỏi danh sách quản lý của bạn.");
+            if (!confirmDelete) return;
+
+            const posts = getAllPosts();
+            const nextPosts = posts.filter(item => item.id !== postId);
+
+            saveAllPosts(nextPosts);
+            syncStores();
+            loadPosts();
+            updateStats();
+            applyFilters();
+
+            showStatus("success", "Đã xóa tin đăng khỏi hệ thống local demo.");
+        }
+
+        function duplicatePost(postId) {
+            const post = getAllPosts().find(item => item.id === postId);
+            if (!post) {
+                showStatus("error", "Không tìm thấy tin để nhân bản.");
+                return;
+            }
+
+            const copy = {
+                ...post,
+                id: "post_" + Date.now(),
+                title: (post.title || "Tin đăng") + " - Bản sao",
+                slug: slugify((post.title || "tin-dang") + "-ban-sao-" + Date.now()),
+                status: "pending",
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            const posts = getAllPosts();
+            posts.unshift(copy);
+            saveAllPosts(posts);
+            syncStores();
+            loadPosts();
+            updateStats();
+            applyFilters();
+
+            showStatus("success", "Đã nhân bản tin đăng. Bản sao mới ở trạng thái chờ duyệt.");
+        }
+
+        function clearFilters() {
+            searchInput.value = "";
+            flowFilter.value = "all";
+            typeFilter.value = "all";
+            statusFilter.value = "all";
+            applyFilters();
+        }
+
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value;
+            const msg = document.getElementById("cusMsg").value;
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        function initPage() {
+            fillUserInfo();
+            syncStores();
+            loadPosts();
+            updateStats();
+            applyFilters();
+
+            if (!currentUser) {
+                showStatus("error", "Bạn chưa đăng nhập. Trang này chỉ hiển thị tin của tài khoản đã đăng nhập.");
+            } else if (!myPosts.length) {
+                showStatus("success", "Tài khoản đã đăng nhập nhưng hiện chưa có tin nào. Bạn có thể bắt đầu từ trang Đăng tin.");
+            } else {
+                hideStatus();
+            }
+        }
+
+        searchInput.addEventListener("input", applyFilters);
+        flowFilter.addEventListener("change", applyFilters);
+        typeFilter.addEventListener("change", applyFilters);
+        statusFilter.addEventListener("change", applyFilters);
+
+        clearFilterBtn.addEventListener("click", clearFilters);
+        refreshBtn.addEventListener("click", () => {
+            initPage();
+            showStatus("success", "Đã làm mới dữ liệu quản lý tin từ localStorage.");
+        });
+
+        initPage();
+    </script>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
