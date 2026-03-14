@@ -7,6 +7,36 @@
         }
     }
 
+    function ensureProjectService() {
+        return !!window.projectService;
+    }
+
+    function syncDerivedStores(posts) {
+        ensureUserStorage();
+
+        const safePosts = Array.isArray(posts) ? posts : getAllPosts();
+
+        if (typeof window.userStorage.syncDerivedPostStores === "function") {
+            window.userStorage.syncDerivedPostStores(safePosts);
+        } else {
+            const propertyPosts = safePosts.filter((post) => post && post.flow === "real_estate");
+            const salePosts = propertyPosts.filter((post) => post && post.postType === "ban");
+            const rentalPosts = propertyPosts.filter((post) => post && post.postType === "thue");
+            const constructionPosts = safePosts.filter((post) => post && post.flow === "construction");
+
+            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
+            localStorage.setItem("salePosts", JSON.stringify(salePosts));
+            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
+            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+        }
+
+        if (ensureProjectService() && typeof window.projectService.syncProjectCounts === "function") {
+            window.projectService.syncProjectCounts(safePosts);
+        }
+
+        return safePosts;
+    }
+
     function getAllPosts() {
         ensureUserStorage();
         return window.userStorage.getAllPosts();
@@ -14,24 +44,44 @@
 
     function saveAllPosts(posts) {
         ensureUserStorage();
-        return window.userStorage.saveAllPosts(posts);
+        const safePosts = Array.isArray(posts) ? posts : [];
+        window.userStorage.saveAllPosts(safePosts);
+        syncDerivedStores(safePosts);
+        return safePosts;
     }
 
-    function getSalePosts() {
-        return getAllPosts().filter((post) => post && post.flow === "real_estate" && post.postType === "ban");
+    function filterPostsByStatus(posts, status) {
+        if (!status) return posts;
+        return posts.filter((post) => post && (post.status || "pending") === status);
     }
 
-    function getRentalPosts() {
-        return getAllPosts().filter((post) => post && post.flow === "real_estate" && post.postType === "thue");
+    function getSalePosts(status) {
+        const posts = getAllPosts().filter(
+            (post) => post && post.flow === "real_estate" && post.postType === "ban"
+        );
+        return filterPostsByStatus(posts, status);
     }
 
-    function getConstructionPosts() {
-        return getAllPosts().filter((post) => post && post.flow === "construction");
+    function getRentalPosts(status) {
+        const posts = getAllPosts().filter(
+            (post) => post && post.flow === "real_estate" && post.postType === "thue"
+        );
+        return filterPostsByStatus(posts, status);
     }
 
-    function getPostsByProjectSlug(projectSlug) {
+    function getConstructionPosts(status) {
+        const posts = getAllPosts().filter(
+            (post) => post && post.flow === "construction"
+        );
+        return filterPostsByStatus(posts, status);
+    }
+
+    function getPostsByProjectSlug(projectSlug, status) {
         if (!projectSlug) return [];
-        return getAllPosts().filter((post) => post && post.projectSlug === projectSlug);
+        const posts = getAllPosts().filter(
+            (post) => post && post.projectSlug === projectSlug
+        );
+        return filterPostsByStatus(posts, status);
     }
 
     function getPostsByUser(user) {
@@ -44,6 +94,11 @@
         return window.userStorage.getPostById(postId);
     }
 
+    function getPostBySlug(slug) {
+        if (!slug) return null;
+        return getAllPosts().find((post) => post && post.slug === slug) || null;
+    }
+
     function createPost(postData) {
         ensureUserStorage();
 
@@ -51,51 +106,93 @@
             throw new Error("createPost: postData không hợp lệ");
         }
 
+        const now = new Date().toISOString();
+
         const nextPost = {
             ...postData,
             id: postData.id || "post_" + Date.now(),
             status: postData.status || "pending",
-            createdAt: postData.createdAt || new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            createdAt: postData.createdAt || now,
+            updatedAt: now
         };
 
         window.userStorage.addPost(nextPost);
+        syncDerivedStores();
+
         return nextPost;
     }
 
     function updatePost(postId, updatedData) {
         ensureUserStorage();
-        return window.userStorage.updatePost(postId, updatedData || {});
+
+        if (!postId) {
+            throw new Error("updatePost: thiếu postId");
+        }
+
+        const patchData = {
+            ...(updatedData || {}),
+            updatedAt: new Date().toISOString()
+        };
+
+        const result = window.userStorage.updatePost(postId, patchData);
+        syncDerivedStores();
+
+        return result;
     }
 
     function deletePost(postId) {
         ensureUserStorage();
-        return window.userStorage.deletePost(postId);
+
+        if (!postId) {
+            throw new Error("deletePost: thiếu postId");
+        }
+
+        const result = window.userStorage.deletePost(postId);
+        syncDerivedStores();
+
+        return result;
     }
 
     function duplicatePost(postId) {
         const original = getPostById(postId);
         if (!original) return null;
 
+        const timestamp = Date.now();
+
         const copy = {
             ...original,
-            id: "post_" + Date.now(),
-            slug: (original.slug || "tin-dang") + "-copy-" + Date.now(),
+            id: "post_" + timestamp,
+            slug: (original.slug || "tin-dang") + "-copy-" + timestamp,
             title: (original.title || "Tin đăng") + " - Bản sao",
             status: "pending",
+            approvedAt: "",
+            rejectedAt: "",
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         };
 
-        createPost(copy);
-        return copy;
+        return createPost(copy);
     }
 
     function togglePostStatus(postId, nextStatus) {
-        return updatePost(postId, {
-            status: nextStatus,
-            updatedAt: new Date().toISOString()
-        });
+        if (!nextStatus) {
+            throw new Error("togglePostStatus: thiếu nextStatus");
+        }
+
+        const patch = {
+            status: nextStatus
+        };
+
+        if (nextStatus === "approved") {
+            patch.approvedAt = new Date().toISOString();
+            patch.rejectedAt = "";
+        }
+
+        if (nextStatus === "rejected") {
+            patch.rejectedAt = new Date().toISOString();
+        }
+
+        return updatePost(postId, patch);
     }
 
     function getPostStats(postsInput) {
@@ -114,8 +211,11 @@
         };
     }
 
-    function getAverageSalePriceByProject(projectSlug) {
-        const salePosts = getPostsByProjectSlug(projectSlug).filter(
+    function getAverageSalePriceByProject(projectSlug, approvedOnly) {
+        const salePosts = getPostsByProjectSlug(
+            projectSlug,
+            approvedOnly ? "approved" : ""
+        ).filter(
             (post) =>
                 post &&
                 post.flow === "real_estate" &&
@@ -133,12 +233,14 @@
     window.postStorage = {
         getAllPosts,
         saveAllPosts,
+        syncDerivedStores,
         getSalePosts,
         getRentalPosts,
         getConstructionPosts,
         getPostsByProjectSlug,
         getPostsByUser,
         getPostById,
+        getPostBySlug,
         createPost,
         updatePost,
         deletePost,
