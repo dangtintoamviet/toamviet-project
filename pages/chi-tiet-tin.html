@@ -1,1 +1,1013 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giá Nhà Đất | Tổ Ấm Việt</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+
+    <style>
+        :root {
+            --vip-color: #008B8B;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --hover-color: #FF8C00;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        h1 { font-weight: 700; color: #0f172a; letter-spacing: -0.01em; }
+        h2 { font-weight: 700; color: #1e293b; }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .nav-link {
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--hover-color) !important;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 200px;
+            border-top: 2px solid var(--vip-color);
+            z-index: 50;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+        .dropdown-item:hover {
+            background: #f9f9f9;
+            color: var(--hover-color);
+        }
+
+        .sub-title {
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 11px;
+        }
+
+        .hero-price {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #0f766e 0%, #008B8B 55%, #0f172a 100%);
+            color: white;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+        }
+
+        .hero-price::before,
+        .hero-price::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            pointer-events: none;
+        }
+
+        .hero-price::before {
+            width: 220px;
+            height: 220px;
+            right: -60px;
+            top: -60px;
+        }
+
+        .hero-price::after {
+            width: 140px;
+            height: 140px;
+            left: -35px;
+            bottom: -45px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.14);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 14px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 0.9fr;
+            gap: 24px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 30px;
+            font-weight: 900;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.88);
+            max-width: 720px;
+        }
+
+        .hero-mini-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .hero-mini-card {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 16px;
+            backdrop-filter: blur(6px);
+        }
+
+        .hero-mini-label {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.76);
+            margin-bottom: 6px;
+        }
+
+        .hero-mini-value {
+            font-size: 18px;
+            font-weight: 900;
+            line-height: 1.4;
+        }
+
+        .filter-wrap {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 800;
+            color: #475569;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .filter-select {
+            width: 100%;
+            border: 1px solid #dbe3eb;
+            padding: 12px 14px;
+            border-radius: 12px;
+            outline: none;
+            font-size: 14px;
+            background: white;
+            transition: 0.25s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0,139,139,0.08);
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .price-badge {
+            background: #f0fdfa;
+            color: var(--vip-color);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            border: 1px solid #ccfbf1;
+            white-space: nowrap;
+        }
+
+        .table-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        .save-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .save-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #E03C31;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        .footer-link-group h4 {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #2C2C2C;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        .footer-link-group ul {
+            font-size: 13px;
+            color: #666;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-link-group li {
+            margin-bottom: 8px;
+        }
+
+        .footer-link-group li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 380px;
+            width: 100%;
+        }
+
+        .empty-note {
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 16px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .table-container th,
+            .table-container td {
+                padding: 10px 8px !important;
+                font-size: 12px !important;
+            }
+
+            .stats-card {
+                padding: 15px;
+            }
+
+            .chart-wrapper {
+                height: 320px;
+            }
+
+            .hero-price {
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .filter-wrap {
+                padding: 14px;
+                border-radius: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white border-b sticky top-0 z-[1000]">
+        <div class="container-custom h-[70px] flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <a href="../index.html">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10" />
+                </a>
+
+                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
+                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
+                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
+                    <a href="../pages/gia-nha-dat.html" class="nav-link text-[#008B8B]">Giá nhà đất</a>
+                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
+
+                    <div class="dropdown relative h-full flex items-center cursor-pointer">
+                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                        <div class="dropdown-menu">
+                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
+                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="flex items-center gap-5">
+                <div class="save-icon nav-link text-gray-600">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="save-count">0</span>
+                </div>
+
+                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
+                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
+                </div>
+
+                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
+                    Đăng tin
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="lg:hidden bg-white border-t">
+        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
+            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
+            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
+            <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
+            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
+            <a href="../pages/gia-nha-dat.html" class="block nav-link text-[#008B8B] font-bold">Giá nhà đất</a>
+            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
+            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
+            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
+            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
+            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
+            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto py-6 md:py-12 px-4">
+
+        <section class="hero-price">
+            <div class="hero-grid">
+                <div>
+                    <div class="hero-badge">
+                        <i class="fa-solid fa-chart-line"></i>
+                        Dữ liệu tổng hợp từ tin đăng bán đã duyệt
+                    </div>
+
+                    <h1 id="page-title" class="hero-title">
+                        Báo cáo Giá Nhà Đất Toàn hệ thống
+                    </h1>
+
+                    <p class="hero-desc">
+                        Theo dõi mặt bằng giá bất động sản từ dữ liệu tin bán thực tế trên hệ thống. Bộ lọc bên dưới giúp bạn xem nhanh theo tỉnh thành, khu vực và loại sản phẩm để đối chiếu xu hướng rõ hơn.
+                    </p>
+                </div>
+
+                <div class="hero-mini-stats">
+                    <div class="hero-mini-card">
+                        <div class="hero-mini-label">Số tin đang phân tích</div>
+                        <div class="hero-mini-value"><span id="hero-total-ads">0</span> tin bán</div>
+                    </div>
+                    <div class="hero-mini-card">
+                        <div class="hero-mini-label">Khu vực nổi bật</div>
+                        <div class="hero-mini-value" id="hero-top-area">Đang cập nhật</div>
+                    </div>
+                    <div class="hero-mini-card">
+                        <div class="hero-mini-label">Đơn giá trung bình</div>
+                        <div class="hero-mini-value"><span id="hero-avg-price">0</span> Tr/m²</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="filter-wrap">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="filter-label" for="filter-city">Tỉnh / Thành phố</label>
+                    <select id="filter-city" class="filter-select">
+                        <option value="">Tất cả tỉnh/thành</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="filter-label" for="filter-district">Quận / Huyện</label>
+                    <select id="filter-district" class="filter-select">
+                        <option value="">Tất cả quận/huyện</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="filter-label" for="filter-type">Loại bất động sản</label>
+                    <select id="filter-type" class="filter-select">
+                        <option value="">Tất cả loại hình</option>
+                    </select>
+                </div>
+
+                <div class="flex items-end">
+                    <button id="btn-reset-filter" class="w-full bg-[#008B8B] text-white px-5 py-3 rounded-xl text-[13px] font-bold uppercase tracking-wide hover:opacity-90 transition">
+                        <i class="fa-solid fa-rotate-right mr-2"></i>Đặt lại bộ lọc
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div id="empty-note" class="empty-note hidden"></div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="stats-card">
+                <span class="sub-title">Giá trung bình</span>
+                <div class="flex items-baseline gap-1 mt-2">
+                    <h2 id="avg-land-price" class="text-3xl font-black text-slate-800">0</h2>
+                    <span class="text-[12px] font-bold text-slate-400 uppercase">Tr/m²</span>
+                </div>
+            </div>
+            <div class="stats-card border-l-4 border-l-[--vip-color]">
+                <span class="sub-title">Khu vực tâm điểm</span>
+                <h2 id="top-project" class="text-lg font-bold text-slate-700 mt-2 truncate">Đang cập nhật</h2>
+            </div>
+            <div class="stats-card">
+                <span class="sub-title">Cập nhật lúc</span>
+                <h2 id="current-date" class="text-lg font-bold text-slate-700 mt-2">--/--/----</h2>
+            </div>
+        </div>
+
+        <div class="table-container mb-8 shadow-sm">
+            <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                <h3 class="sub-title text-[--vip-color]">Phân tích chi tiết khu vực / loại bất động sản</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="bg-white text-slate-400 text-[10px] uppercase tracking-wider border-b">
+                            <th class="px-6 py-4 font-bold">Khu vực / Sản phẩm</th>
+                            <th class="px-6 py-4 text-center font-bold">Số tin</th>
+                            <th class="px-6 py-4 font-bold text-nowrap">Giá thấp</th>
+                            <th class="px-6 py-4 font-bold text-nowrap">Giá cao</th>
+                            <th class="px-6 py-4 text-slate-900 font-black">Trung bình</th>
+                        </tr>
+                    </thead>
+                    <tbody id="price-table-body" class="text-[13px] text-slate-700 font-medium"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm mb-8">
+            <h2 class="sub-title mb-6"><i class="fa-solid fa-chart-simple mr-2"></i>So sánh biến động đơn giá</h2>
+            <div class="chart-wrapper">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-sm border-t-8 border-t-[--vip-color]">
+            <h2 class="text-slate-900 text-xl md:text-2xl mb-6">
+                Xu hướng <span class="text-[--vip-color]">Giá Nhà Đất</span> từ dữ liệu hệ thống
+            </h2>
+
+            <div class="text-[14px] md:text-[15px] text-slate-600 leading-relaxed space-y-4">
+                <p>
+                    Hệ thống dữ liệu từ Tổ Ấm Việt đang ưu tiên lấy <strong>đơn giá từ các tin đăng bán thực tế đã được duyệt</strong> để tính ra mặt bằng giá trung bình theo khu vực. Cách làm này giúp trang giá nhà đất bám sát dữ liệu người dùng đăng lên website.
+                </p>
+                <p>
+                    Khi lượng tin bán ngày càng nhiều, hệ thống sẽ cho ra bức tranh rõ hơn về <strong>giá nhà đất</strong>, đặc biệt theo từng quận huyện và loại sản phẩm như đất nền, căn hộ, nhà phố hay biệt thự.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white pt-16 border-t">
+        <div class="container-custom">
+            <div class="mb-12 border-b pb-12">
+                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
+                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+                <div class="footer-link-group">
+                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
+                    <ul>
+                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
+                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
+                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
+                    <ul>
+                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
+                    <ul>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>DỰ ÁN NỔI BẬT</h4>
+                    <ul>
+                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
+                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
+                <div class="max-w-sm">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6" />
+                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
+                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
+                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
+                    <div class="flex gap-4 mt-6">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer" />
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-10 text-[13px]">
+                    <div>
+                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
+                        <ul class="text-gray-500 space-y-2">
+                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
+                        <ul class="text-gray-500 space-y-2">
+                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="w-full lg:max-w-xs">
+                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
+                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
+                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm" />
+                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
+                </div>
+            </div>
+
+            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
+                <p>© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+
+    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+
+    <div id="chatForm">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+        </div>
+    </div>
+
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+
+    <script>
+        let chartInstance = null;
+
+        function parseVietnamesePriceToMillion(priceText) {
+            if (!priceText) return null;
+
+            const raw = String(priceText).toLowerCase().trim().replace(/,/g, '.');
+            const cleaned = raw.replace(/\s+/g, ' ').trim();
+            const nums = cleaned.match(/\d+(\.\d+)?/g);
+
+            if (!nums || !nums.length) return null;
+
+            if (cleaned.includes('tỷ')) {
+                if (nums.length >= 2) {
+                    return parseFloat(nums[0]) * 1000 + parseFloat(nums[1]);
+                }
+                return parseFloat(nums[0]) * 1000;
+            }
+
+            if (cleaned.includes('triệu')) {
+                return parseFloat(nums[0]);
+            }
+
+            const numericOnly = cleaned.replace(/[^\d.]/g, '');
+            if (!numericOnly) return null;
+
+            const value = parseFloat(numericOnly);
+            if (Number.isNaN(value)) return null;
+
+            if (value > 1000000000) return value / 1000000;
+            if (value > 1000000) return value / 1000000;
+
+            return value;
+        }
+
+        function getFallbackData() {
+            return [
+                { title: "Bán đất nền Đông Bình Dương", city: "Bình Dương", district: "Dĩ An", propertyType: "Đất nền", propertyPrice: "1.25 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán đất nền Đông Bình Dương", city: "Bình Dương", district: "Dĩ An", propertyType: "Đất nền", propertyPrice: "1.08 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán căn hộ Bcons City", city: "Bình Dương", district: "Dĩ An", propertyType: "Căn hộ", propertyPrice: "2.1 tỷ", propertyArea: "55", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán căn hộ Charm City", city: "Bình Dương", district: "Thuận An", propertyType: "Căn hộ", propertyPrice: "4.2 tỷ", propertyArea: "90", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán nhà phố Icon Central", city: "Bình Dương", district: "Thuận An", propertyType: "Nhà phố", propertyPrice: "3.8 tỷ", propertyArea: "80", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán nhà Phú Hồng Thịnh", city: "Bình Dương", district: "Dĩ An", propertyType: "Nhà phố", propertyPrice: "3.2 tỷ", propertyArea: "60", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán căn hộ Midori Park", city: "Bình Dương", district: "Thủ Dầu Một", propertyType: "Căn hộ", propertyPrice: "5.5 tỷ", propertyArea: "100", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán căn hộ The Habitat", city: "Bình Dương", district: "Thuận An", propertyType: "Căn hộ", propertyPrice: "2.9 tỷ", propertyArea: "70", postType: "ban", flow: "real_estate", status: "demo" },
+                { title: "Bán biệt thự EcoLakes", city: "Bình Dương", district: "Thủ Dầu Một", propertyType: "Biệt thự", propertyPrice: "6.4 tỷ", propertyArea: "120", postType: "ban", flow: "real_estate", status: "demo" }
+            ];
+        }
+
+        function getPropertyPosts() {
+            if (window.postStorage && typeof window.postStorage.getSalePosts === 'function') {
+                const approvedPosts = window.postStorage.getSalePosts()
+                    .filter(post => post && post.status === 'approved');
+
+                if (approvedPosts.length > 0) {
+                    return { posts: approvedPosts, fallback: false };
+                }
+            }
+
+            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+            const approvedPosts = allPosts.filter(post =>
+                post &&
+                post.flow === 'real_estate' &&
+                post.postType === 'ban' &&
+                post.status === 'approved'
+            );
+
+            if (approvedPosts.length > 0) {
+                return { posts: approvedPosts, fallback: false };
+            }
+
+            return { posts: getFallbackData(), fallback: true };
+        }
+
+        function normalizePostsForPrice(posts) {
+            return posts
+                .map(post => {
+                    const priceInMillion = parseVietnamesePriceToMillion(post.propertyPrice);
+                    const area = parseFloat(post.propertyArea);
+
+                    if (!priceInMillion || !area || area <= 0) return null;
+
+                    const unitPrice = priceInMillion / area;
+                    const city = post.city && !String(post.city).startsWith('Chọn') ? post.city : 'Khác';
+                    const district = post.district && !String(post.district).startsWith('Chọn') ? post.district : 'Khu vực khác';
+                    const propertyType = post.propertyType || 'Bất động sản';
+                    const groupKey = `${district} - ${propertyType}`;
+
+                    return {
+                        groupKey,
+                        city,
+                        district,
+                        propertyType,
+                        priceInMillion,
+                        area,
+                        unitPrice,
+                        title: post.title || ''
+                    };
+                })
+                .filter(Boolean);
+        }
+
+        function buildStats(data) {
+            const stats = {};
+
+            data.forEach(item => {
+                if (!stats[item.groupKey]) {
+                    stats[item.groupKey] = {
+                        count: 0,
+                        min: Infinity,
+                        max: 0,
+                        total: 0,
+                        city: item.city,
+                        district: item.district,
+                        propertyType: item.propertyType
+                    };
+                }
+
+                stats[item.groupKey].count += 1;
+                stats[item.groupKey].total += item.unitPrice;
+                stats[item.groupKey].min = Math.min(stats[item.groupKey].min, item.unitPrice);
+                stats[item.groupKey].max = Math.max(stats[item.groupKey].max, item.unitPrice);
+            });
+
+            return stats;
+        }
+
+        function renderChart(labels, dataPoints) {
+            const canvas = document.getElementById('priceChart');
+            const ctx = canvas.getContext('2d');
+            const isMobile = window.innerWidth < 768;
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataPoints,
+                        backgroundColor: 'rgba(0, 139, 139, 0.8)',
+                        borderRadius: 6,
+                        barThickness: isMobile ? 12 : 28
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    indexAxis: isMobile ? 'y' : 'x',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' },
+                            ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#1e293b', font: { weight: 'bold', size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function uniqueSorted(values) {
+            return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'vi'));
+        }
+
+        function populateFilters(allNormalizedPosts) {
+            const citySelect = document.getElementById('filter-city');
+            const districtSelect = document.getElementById('filter-district');
+            const typeSelect = document.getElementById('filter-type');
+
+            const selectedCity = citySelect.value;
+            const selectedDistrict = districtSelect.value;
+            const selectedType = typeSelect.value;
+
+            const cities = uniqueSorted(allNormalizedPosts.map(item => item.city));
+            citySelect.innerHTML = `<option value="">Tất cả tỉnh/thành</option>` + cities.map(city => `<option value="${city}">${city}</option>`).join('');
+            citySelect.value = cities.includes(selectedCity) ? selectedCity : '';
+
+            const districtSource = citySelect.value
+                ? allNormalizedPosts.filter(item => item.city === citySelect.value)
+                : allNormalizedPosts;
+
+            const districts = uniqueSorted(districtSource.map(item => item.district));
+            districtSelect.innerHTML = `<option value="">Tất cả quận/huyện</option>` + districts.map(district => `<option value="${district}">${district}</option>`).join('');
+            districtSelect.value = districts.includes(selectedDistrict) ? selectedDistrict : '';
+
+            const typeSource = allNormalizedPosts.filter(item => {
+                const cityOk = citySelect.value ? item.city === citySelect.value : true;
+                const districtOk = districtSelect.value ? item.district === districtSelect.value : true;
+                return cityOk && districtOk;
+            });
+
+            const types = uniqueSorted(typeSource.map(item => item.propertyType));
+            typeSelect.innerHTML = `<option value="">Tất cả loại bất động sản</option>` + types.map(type => `<option value="${type}">${type}</option>`).join('');
+            typeSelect.value = types.includes(selectedType) ? selectedType : '';
+        }
+
+        function getFilteredNormalizedPosts(allNormalizedPosts) {
+            const city = document.getElementById('filter-city').value;
+            const district = document.getElementById('filter-district').value;
+            const type = document.getElementById('filter-type').value;
+
+            return allNormalizedPosts.filter(item => {
+                const cityOk = city ? item.city === city : true;
+                const districtOk = district ? item.district === district : true;
+                const typeOk = type ? item.propertyType === type : true;
+                return cityOk && districtOk && typeOk;
+            });
+        }
+
+        function updateTitle(city, district, type) {
+            const pageTitle = document.getElementById('page-title');
+            const parts = ['Báo cáo Giá Nhà Đất'];
+
+            if (district) {
+                parts.push(district);
+            } else if (city) {
+                parts.push(city);
+            } else {
+                parts.push('Toàn hệ thống');
+            }
+
+            if (type) {
+                parts.push(`- ${type}`);
+            }
+
+            pageTitle.textContent = parts.join(' ');
+        }
+
+        function renderReport() {
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN');
+
+            const source = getPropertyPosts();
+            const allNormalized = normalizePostsForPrice(source.posts);
+
+            populateFilters(allNormalized);
+
+            const city = document.getElementById('filter-city').value;
+            const district = document.getElementById('filter-district').value;
+            const type = document.getElementById('filter-type').value;
+
+            updateTitle(city, district, type);
+
+            const normalized = getFilteredNormalizedPosts(allNormalized);
+            const stats = buildStats(normalized);
+            const tableBody = document.getElementById('price-table-body');
+            const emptyNote = document.getElementById('empty-note');
+
+            if (source.fallback) {
+                emptyNote.classList.remove('hidden');
+                emptyNote.innerHTML = `
+                    <strong>Chưa có đủ dữ liệu tin bán thật đã duyệt.</strong><br>
+                    Hệ thống đang tạm dùng dữ liệu mẫu để giữ giao diện hoạt động. Khi bạn đăng tin bán và được admin duyệt, bảng giá này sẽ tự động lấy dữ liệu mới từ hệ thống.
+                `;
+            } else {
+                emptyNote.classList.add('hidden');
+                emptyNote.innerHTML = '';
+            }
+
+            if (normalized.length === 0) {
+                document.getElementById('avg-land-price').innerText = '0';
+                document.getElementById('hero-avg-price').innerText = '0';
+                document.getElementById('hero-total-ads').innerText = '0';
+                document.getElementById('top-project').innerText = 'Chưa có dữ liệu';
+                document.getElementById('hero-top-area').innerText = 'Chưa có dữ liệu';
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-slate-400">
+                            Không có dữ liệu phù hợp với bộ lọc hiện tại.
+                        </td>
+                    </tr>
+                `;
+
+                renderChart(['Chưa có dữ liệu'], [0]);
+                return;
+            }
+
+            const sortedKeys = Object.keys(stats)
+                .sort((a, b) => stats[b].count - stats[a].count || (stats[b].total / stats[b].count) - (stats[a].total / stats[a].count))
+                .slice(0, 10);
+
+            let totalAvgSum = 0;
+            const labels = [];
+            const dataPoints = [];
+            tableBody.innerHTML = '';
+
+            sortedKeys.forEach(key => {
+                const row = stats[key];
+                const avg = row.total / row.count;
+                totalAvgSum += avg;
+                labels.push(key);
+                dataPoints.push(Number(avg.toFixed(1)));
+
+                tableBody.innerHTML += `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-3 font-bold text-slate-800">${row.district} - ${row.propertyType}</td>
+                        <td class="px-6 py-3 text-center text-slate-500">${row.count}</td>
+                        <td class="px-6 py-3 text-slate-500 font-mono">${row.min.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-3 text-slate-500 font-mono">${row.max.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-3"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
+                    </tr>
+                `;
+            });
+
+            const finalAvg = (totalAvgSum / sortedKeys.length).toFixed(1);
+            const topArea = sortedKeys[0] || 'Đang cập nhật';
+
+            document.getElementById('avg-land-price').innerText = finalAvg;
+            document.getElementById('hero-avg-price').innerText = finalAvg;
+            document.getElementById('hero-total-ads').innerText = normalized.length;
+            document.getElementById('top-project').innerText = topArea;
+            document.getElementById('hero-top-area').innerText = topArea;
+
+            renderChart(labels, dataPoints);
+        }
+
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value;
+            const msg = document.getElementById("cusMsg").value;
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        document.getElementById('filter-city').addEventListener('change', renderReport);
+        document.getElementById('filter-district').addEventListener('change', renderReport);
+        document.getElementById('filter-type').addEventListener('change', renderReport);
+
+        document.getElementById('btn-reset-filter').addEventListener('click', function () {
+            document.getElementById('filter-city').value = '';
+            document.getElementById('filter-district').value = '';
+            document.getElementById('filter-type').value = '';
+            renderReport();
+        });
+
+        window.addEventListener('load', renderReport);
+        window.addEventListener('resize', () => {
+            clearTimeout(window.__priceChartResizeTimer);
+            window.__priceChartResizeTimer = setTimeout(renderReport, 250);
+        });
+    </script>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
