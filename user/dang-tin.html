@@ -2046,10 +2046,8 @@
         }
 
         function saveSingleSourcePost(postData) {
-            const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
-            allPosts.unshift(postData);
-            localStorage.setItem("allPosts", JSON.stringify(allPosts));
-            return allPosts;
+    postStorage.createPost(postData);
+    return postStorage.getAllPosts();
         }
 
         function rebuildCompatibilityStores(allPosts) {
