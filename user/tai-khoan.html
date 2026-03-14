@@ -1,1 +1,1354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tài khoản cá nhân | ToAmViet.com.vn</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --stroke: #e2e8f0;
+            --text-main: #0f172a;
+            --text-soft: #64748b;
+            --danger: #dc2626;
+            --success: #0f766e;
+            --warning: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            background: var(--soft-bg);
+            color: #1e293b;
+        }
+
+        .container-custom {
+            max-width: 1366px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .nav-link {
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--hover-color) !important;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            min-width: 220px;
+            border-top: 2px solid var(--vip-color);
+            z-index: 50;
+        }
+
+        .dropdown-item {
+            padding: 10px 18px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .dropdown-item:hover {
+            background: #f8fafc;
+            color: var(--hover-color);
+        }
+
+        .save-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .save-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #e03c31;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        .dashboard-shell {
+            max-width: 1280px;
+            margin: 28px auto 0;
+        }
+
+        .page-hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+
+        .hero-card,
+        .profile-card,
+        .panel-card,
+        .stat-card,
+        .sidebar-card {
+            background: white;
+            border: 1px solid var(--stroke);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .hero-card {
+            padding: 28px;
+            background: linear-gradient(135deg, #0f766e, #008b8b);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-size: 30px;
+            line-height: 1.3;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.92);
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hero-point {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 14px;
+        }
+
+        .hero-point .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.78);
+            margin-bottom: 6px;
+        }
+
+        .hero-point .value {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .profile-card {
+            padding: 24px;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .profile-avatar {
+            width: 58px;
+            height: 58px;
+            border-radius: 20px;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .profile-role {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .profile-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .profile-meta-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            font-size: 13px;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .profile-meta-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-meta-label {
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .profile-meta-value {
+            color: #0f172a;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            padding: 18px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .stat-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .content-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 24px;
+        }
+
+        .panel-card {
+            padding: 24px;
+            margin-bottom: 22px;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .panel-sub {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .field-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-field,
+        .select-field,
+        .textarea-field {
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 14px;
+            border: 1px solid var(--stroke);
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            background: white;
+            transition: 0.25s ease;
+        }
+
+        .input-field:focus,
+        .select-field:focus,
+        .textarea-field:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0,139,139,0.08);
+        }
+
+        .textarea-field {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .field-note {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-top: 6px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn-primary,
+        .btn-soft,
+        .btn-dark,
+        .btn-danger {
+            border: none;
+            border-radius: 14px;
+            padding: 13px 18px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .btn-primary {
+            background: var(--vip-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--vip-dark);
+        }
+
+        .btn-soft {
+            background: #eef2ff;
+            color: #334155;
+        }
+
+        .btn-soft:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1e293b;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        .status-box {
+            display: none;
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .status-box.info {
+            display: block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        .sidebar-card {
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 14px;
+        }
+
+        .mini-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mini-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 13px 14px;
+            background: #f8fafc;
+        }
+
+        .mini-item-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .mini-item-meta {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+
+        .empty-note {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .footer-link-group h4 {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #2c2c2c;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        .footer-link-group ul {
+            font-size: 13px;
+            color: #666;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-link-group li {
+            margin-bottom: 8px;
+        }
+
+        .footer-link-group li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1180px) {
+            .page-hero,
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-points,
+            .stats-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-card,
+            .profile-card,
+            .panel-card,
+            .stat-card,
+            .sidebar-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white border-b sticky top-0 z-[1000]">
+        <div class="container-custom h-[70px] flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <a href="../index.html">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo Tổ Ấm Việt" class="h-10" />
+                </a>
+
+                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
+                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
+                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
+                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
+                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
+                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
+                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
+
+                    <div class="dropdown relative h-full flex items-center cursor-pointer">
+                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                        <div class="dropdown-menu">
+                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
+                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="flex items-center gap-5">
+                <div class="save-icon nav-link text-gray-600">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="save-count">0</span>
+                </div>
+
+                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
+                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
+                </div>
+
+                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] bg-[#008B8B] text-white px-4 py-2 rounded-lg font-bold hover:opacity-90 transition uppercase text-[13px]">
+                    Đăng tin
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="lg:hidden bg-white border-t">
+        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
+            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
+            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
+            <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
+            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
+            <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
+            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
+            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
+            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
+            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
+            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
+            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] bg-[#008B8B] text-white px-4 py-2 rounded-lg font-bold hover:opacity-90 transition uppercase text-[13px]">Đăng tin</a>
+        </div>
+    </div>
+
+    <main class="py-8 md:py-10">
+        <div class="container-custom">
+            <div class="dashboard-shell">
+                <section class="page-hero">
+                    <div class="hero-card">
+                        <div class="hero-badge">
+                            <i class="fa-solid fa-id-card"></i>
+                            Trung tâm tài khoản
+                        </div>
+                        <h1 class="hero-title">Quản lý hồ sơ thành viên để đồng bộ tốt hơn cho toàn bộ nhóm user</h1>
+                        <p class="hero-desc">
+                            Trang này giúp chuẩn hóa thông tin tài khoản, thương hiệu, số điện thoại hiển thị, nhóm nghề nghiệp và mật khẩu demo. Khi dữ liệu tài khoản sạch, các trang đăng tin, quản lý tin và nhóm dự án sẽ chạy đồng bộ hơn rất nhiều.
+                        </p>
+
+                        <div class="hero-points">
+                            <div class="hero-point">
+                                <div class="label">Thông tin hồ sơ</div>
+                                <div class="value">Chuẩn hóa tên, email, điện thoại, thương hiệu và mô tả ngắn</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Liên kết dữ liệu</div>
+                                <div class="value">Ăn khớp với tin đăng đã lưu trong allPosts và currentUser</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Nền để mở rộng</div>
+                                <div class="value">Làm sạch trước khi tiếp tục tách file dùng chung toàn nhóm user</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="profile-card">
+                        <div class="profile-top">
+                            <div class="profile-avatar" id="profileAvatar">TV</div>
+                            <div>
+                                <div class="profile-name" id="profileName">Tài khoản thành viên</div>
+                                <div class="profile-role" id="profileRole">Chưa nhận diện vai trò</div>
+                            </div>
+                        </div>
+
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <span class="profile-meta-label">Nhóm tài khoản</span>
+                                <span class="profile-meta-value" id="profileGroup">---</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <span class="profile-meta-label">Email</span>
+                                <span class="profile-meta-value" id="profileEmail">---</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <span class="profile-meta-label">Điện thoại</span>
+                                <span class="profile-meta-value" id="profilePhone">---</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <span class="profile-meta-label">Thương hiệu</span>
+                                <span class="profile-meta-value" id="profileBrand">---</span>
+                            </div>
+                        </div>
+                    </aside>
+                </section>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Tổng tin đã đăng</div>
+                        <div class="stat-value" id="statTotalPosts">0</div>
+                        <div class="stat-note">Tổng số bài đang gắn với tài khoản này.</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Tin thuộc dự án</div>
+                        <div class="stat-value" id="statProjectPosts">0</div>
+                        <div class="stat-note">Số bài đã được gắn nhóm theo dự án.</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Dự án đã tham gia</div>
+                        <div class="stat-value" id="statProjects">0</div>
+                        <div class="stat-note">Số dự án mà tài khoản đã từng đăng tin vào.</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Tin chờ duyệt</div>
+                        <div class="stat-value" id="statPendingPosts">0</div>
+                        <div class="stat-note">Tin đang chờ kiểm duyệt hoặc xử lý tiếp.</div>
+                    </div>
+                </div>
+
+                <div class="content-layout">
+                    <section>
+                        <div class="panel-card">
+                            <div class="panel-title">Thông tin hồ sơ cơ bản</div>
+                            <div class="panel-sub">
+                                Cập nhật đúng hồ sơ thành viên để các trang đăng tin và quản lý tin hiển thị chuẩn hơn. Những thay đổi ở đây sẽ đồng bộ lại vào `currentUser` và `registeredUser`.
+                            </div>
+
+                            <div id="profileStatus" class="status-box"></div>
+
+                            <form id="profileForm">
+                                <div class="form-grid">
+                                    <div>
+                                        <label class="field-label" for="fullName">Họ và tên</label>
+                                        <input id="fullName" type="text" class="input-field" placeholder="Nhập họ và tên" />
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label" for="email">Email</label>
+                                        <input id="email" type="email" class="input-field" placeholder="email@example.com" />
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label" for="phone">Số điện thoại</label>
+                                        <input id="phone" type="text" class="input-field" placeholder="Số điện thoại" />
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label" for="brandName">Thương hiệu / Công ty</label>
+                                        <input id="brandName" type="text" class="input-field" placeholder="Tên thương hiệu hoặc công ty" />
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label" for="accountGroup">Nhóm tài khoản</label>
+                                        <select id="accountGroup" class="select-field">
+                                            <option value="real_estate">Bất động sản</option>
+                                            <option value="construction">Xây dựng</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label" for="roleLabel">Vai trò hiển thị</label>
+                                        <input id="roleLabel" type="text" class="input-field" placeholder="VD: Môi giới, Trưởng phòng kinh doanh, Nhà thầu..." />
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label class="field-label" for="bio">Mô tả ngắn</label>
+                                        <textarea id="bio" class="textarea-field" placeholder="Giới thiệu ngắn về bản thân, công ty hoặc lĩnh vực chuyên môn"></textarea>
+                                        <div class="field-note">
+                                            Phần này hữu ích để sau này tái sử dụng ở trang hồ sơ môi giới, hồ sơ doanh nghiệp hoặc trang giới thiệu tài khoản.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="button-row">
+                                    <button type="submit" class="btn-primary">Lưu thông tin tài khoản</button>
+                                    <button type="button" id="resetProfileBtn" class="btn-soft">Khôi phục dữ liệu hiện tại</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="panel-card">
+                            <div class="panel-title">Đổi mật khẩu demo</div>
+                            <div class="panel-sub">
+                                Đây là phần đổi mật khẩu mô phỏng trong localStorage để hoàn thiện giao diện nhóm user. Sau này khi có backend thật thì chỉ cần thay logic lưu là được.
+                            </div>
+
+                            <div id="passwordStatus" class="status-box"></div>
+
+                            <form id="passwordForm">
+                                <div class="form-grid">
+                                    <div>
+                                        <label class="field-label" for="currentPassword">Mật khẩu hiện tại</label>
+                                        <input id="currentPassword" type="password" class="input-field" placeholder="Nhập mật khẩu hiện tại" />
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label" for="newPassword">Mật khẩu mới</label>
+                                        <input id="newPassword" type="password" class="input-field" placeholder="Nhập mật khẩu mới" />
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label" for="confirmPassword">Xác nhận mật khẩu mới</label>
+                                        <input id="confirmPassword" type="password" class="input-field" placeholder="Nhập lại mật khẩu mới" />
+                                    </div>
+                                </div>
+
+                                <div class="button-row">
+                                    <button type="submit" class="btn-dark">Cập nhật mật khẩu</button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+
+                    <aside>
+                        <div class="sidebar-card">
+                            <div class="sidebar-title">Thông tin dùng nhanh</div>
+                            <div class="mini-list">
+                                <div class="mini-item">
+                                    <div class="mini-item-title">Tên hiển thị đang dùng cho tin đăng</div>
+                                    <div class="mini-item-meta" id="quickDisplayName">---</div>
+                                </div>
+                                <div class="mini-item">
+                                    <div class="mini-item-title">Liên hệ ưu tiên</div>
+                                    <div class="mini-item-meta" id="quickContact">---</div>
+                                </div>
+                                <div class="mini-item">
+                                    <div class="mini-item-title">Luồng chính của tài khoản</div>
+                                    <div class="mini-item-meta" id="quickFlow">---</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <div class="sidebar-title">Dự án đã từng đăng</div>
+                            <div id="projectList" class="mini-list"></div>
+                            <div id="projectEmpty" class="empty-note" style="display:none;">
+                                Tài khoản này chưa có tin nào gắn vào dự án. Khi đăng tin thuộc dự án, danh sách này sẽ tự cập nhật.
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <div class="sidebar-title">3 tin gần nhất</div>
+                            <div id="recentPosts" class="mini-list"></div>
+                            <div id="recentPostsEmpty" class="empty-note" style="display:none;">
+                                Chưa có tin nào để hiển thị.
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <div class="sidebar-title">Hành động nhanh</div>
+                            <div class="button-row" style="margin-top:0;">
+                                <a href="../user/dang-tin.html" class="btn-primary" style="text-decoration:none;">Đăng tin mới</a>
+                                <a href="../user/quan-ly-tin.html" class="btn-soft" style="text-decoration:none;">Quản lý tin</a>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white pt-16 border-t mt-12">
+        <div class="container-custom">
+            <div class="mb-12 border-b pb-12">
+                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
+                    <strong>ToAmViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+                <div class="footer-link-group">
+                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
+                    <ul>
+                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
+                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
+                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
+                    <ul>
+                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
+                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
+                    <ul>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
+                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-group">
+                    <h4>DỰ ÁN NỔI BẬT</h4>
+                    <ul>
+                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
+                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
+                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
+                <div class="max-w-sm">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo Tổ Ấm Việt footer" class="h-10 mb-6" />
+                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
+                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
+                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
+                    <div class="flex gap-4 mt-6">
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer" />
+                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-10 text-[13px]">
+                    <div>
+                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
+                        <ul class="text-gray-500 space-y-2">
+                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
+                        <ul class="text-gray-500 space-y-2">
+                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
+                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="w-full lg:max-w-xs">
+                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
+                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
+                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm" />
+                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
+                </div>
+            </div>
+
+            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
+                <p>© 2026 ToAmViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+
+    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+
+    <div id="chatForm">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+        </div>
+    </div>
+
+    <script>
+        const currentUser =
+            JSON.parse(localStorage.getItem("currentUser")) ||
+            JSON.parse(localStorage.getItem("registeredUser")) ||
+            null;
+
+        function normalizeText(str) {
+            return (str || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function getInitials(name) {
+            return (name || "TV")
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(w => w[0].toUpperCase())
+                .join("") || "TV";
+        }
+
+        function sanitizePhone(phone) {
+            return (phone || "").replace(/[^\d]/g, "");
+        }
+
+        function showStatus(targetId, type, message) {
+            const box = document.getElementById(targetId);
+            box.className = "status-box " + type;
+            box.textContent = message;
+        }
+
+        function hideStatus(targetId) {
+            const box = document.getElementById(targetId);
+            box.className = "status-box";
+            box.textContent = "";
+        }
+
+        function getAllPosts() {
+            return JSON.parse(localStorage.getItem("allPosts") || "[]");
+        }
+
+        function saveAllPosts(posts) {
+            localStorage.setItem("allPosts", JSON.stringify(posts));
+        }
+
+        function getProjects() {
+            return JSON.parse(localStorage.getItem("projects") || "[]");
+        }
+
+        function saveCurrentUser(user) {
+            localStorage.setItem("currentUser", JSON.stringify(user));
+            localStorage.setItem("registeredUser", JSON.stringify(user));
+        }
+
+        function getMyPosts() {
+            const posts = getAllPosts();
+
+            if (!currentUser) return [];
+
+            return posts.filter(post => {
+                if (currentUser.id && post.userId) {
+                    return post.userId === currentUser.id;
+                }
+
+                const sameEmail = currentUser.email && post.email && normalizeText(currentUser.email) === normalizeText(post.email);
+                const samePhone = currentUser.phone && post.phone && normalizeText(currentUser.phone) === normalizeText(post.phone);
+                return sameEmail || samePhone;
+            });
+        }
+
+        function fillHeaderProfile() {
+            const avatar = document.getElementById("profileAvatar");
+            const name = document.getElementById("profileName");
+            const role = document.getElementById("profileRole");
+            const group = document.getElementById("profileGroup");
+            const email = document.getElementById("profileEmail");
+            const phone = document.getElementById("profilePhone");
+            const brand = document.getElementById("profileBrand");
+
+            if (!currentUser) {
+                avatar.textContent = "TV";
+                name.textContent = "Tài khoản thành viên";
+                role.textContent = "Chưa đăng nhập / chưa có dữ liệu";
+                group.textContent = "---";
+                email.textContent = "---";
+                phone.textContent = "---";
+                brand.textContent = "---";
+                return;
+            }
+
+            avatar.textContent = getInitials(currentUser.fullName || currentUser.brandName);
+            name.textContent = currentUser.fullName || "Tài khoản thành viên";
+            role.textContent = currentUser.roleLabel || currentUser.role || "Không rõ vai trò";
+            group.textContent = currentUser.accountGroupLabel || (currentUser.accountGroup === "construction" ? "Xây dựng" : "Bất động sản");
+            email.textContent = currentUser.email || "---";
+            phone.textContent = currentUser.phone || "---";
+            brand.textContent = currentUser.brandName || "---";
+        }
+
+        function fillProfileForm() {
+            if (!currentUser) return;
+
+            document.getElementById("fullName").value = currentUser.fullName || "";
+            document.getElementById("email").value = currentUser.email || "";
+            document.getElementById("phone").value = currentUser.phone || "";
+            document.getElementById("brandName").value = currentUser.brandName || "";
+            document.getElementById("accountGroup").value = currentUser.accountGroup || "real_estate";
+            document.getElementById("roleLabel").value = currentUser.roleLabel || currentUser.role || "";
+            document.getElementById("bio").value = currentUser.bio || "";
+        }
+
+        function updateQuickInfo() {
+            if (!currentUser) {
+                document.getElementById("quickDisplayName").textContent = "---";
+                document.getElementById("quickContact").textContent = "---";
+                document.getElementById("quickFlow").textContent = "---";
+                return;
+            }
+
+            const displayName = currentUser.brandName || currentUser.fullName || "---";
+            const flow = currentUser.accountGroup === "construction" ? "Xây dựng" : "Bất động sản";
+            const contact = [currentUser.phone, currentUser.email].filter(Boolean).join(" • ") || "---";
+
+            document.getElementById("quickDisplayName").textContent = displayName;
+            document.getElementById("quickContact").textContent = contact;
+            document.getElementById("quickFlow").textContent = flow;
+        }
+
+        function updateStats() {
+            const myPosts = getMyPosts();
+            const totalPosts = myPosts.length;
+            const projectPosts = myPosts.filter(post => post.projectSlug || post.projectName).length;
+            const pendingPosts = myPosts.filter(post => (post.status || "pending") === "pending").length;
+            const projectSlugs = new Set(
+                myPosts
+                    .filter(post => post.projectSlug || post.projectName)
+                    .map(post => post.projectSlug || normalizeText(post.projectName))
+            );
+
+            document.getElementById("statTotalPosts").textContent = totalPosts;
+            document.getElementById("statProjectPosts").textContent = projectPosts;
+            document.getElementById("statProjects").textContent = projectSlugs.size;
+            document.getElementById("statPendingPosts").textContent = pendingPosts;
+        }
+
+        function renderProjectList() {
+            const myPosts = getMyPosts();
+            const projects = getProjects();
+            const projectList = document.getElementById("projectList");
+            const projectEmpty = document.getElementById("projectEmpty");
+
+            const map = new Map();
+
+            myPosts.forEach(post => {
+                const slug = post.projectSlug || normalizeText(post.projectName || "");
+                if (!slug) return;
+
+                if (!map.has(slug)) {
+                    const matchedProject = projects.find(p => p.slug === slug) || null;
+                    map.set(slug, {
+                        name: post.projectName || matchedProject?.name || "Dự án chưa rõ tên",
+                        city: post.city || matchedProject?.city || "",
+                        type: post.projectTypeName || matchedProject?.type || post.propertyType || "",
+                        count: 0
+                    });
+                }
+
+                map.get(slug).count += 1;
+            });
+
+            const items = Array.from(map.values()).sort((a, b) => b.count - a.count);
+
+            if (!items.length) {
+                projectList.innerHTML = "";
+                projectEmpty.style.display = "block";
+                return;
+            }
+
+            projectEmpty.style.display = "none";
+            projectList.innerHTML = items.map(item => `
+                <div class="mini-item">
+                    <div class="mini-item-title">${item.name}</div>
+                    <div class="mini-item-meta">${item.city || "Chưa rõ khu vực"} • ${item.type || "Chưa phân loại"} • ${item.count} tin</div>
+                </div>
+            `).join("");
+        }
+
+        function renderRecentPosts() {
+            const myPosts = getMyPosts()
+                .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+                .slice(0, 3);
+
+            const recentPosts = document.getElementById("recentPosts");
+            const recentPostsEmpty = document.getElementById("recentPostsEmpty");
+
+            if (!myPosts.length) {
+                recentPosts.innerHTML = "";
+                recentPostsEmpty.style.display = "block";
+                return;
+            }
+
+            recentPostsEmpty.style.display = "none";
+            recentPosts.innerHTML = myPosts.map(post => `
+                <div class="mini-item">
+                    <div class="mini-item-title">${post.title || "Chưa có tiêu đề"}</div>
+                    <div class="mini-item-meta">
+                        ${(post.postType === "ban" ? "Tin bán" : post.postType === "thue" ? "Tin cho thuê" : "Xây dựng")}
+                        • ${post.city || "Chưa rõ khu vực"}
+                        • ${(post.status || "pending") === "pending" ? "Chờ duyệt" : (post.status || "pending")}
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function syncPostsWithNewProfile(userData) {
+            const posts = getAllPosts();
+            const updatedPosts = posts.map(post => {
+                let isMine = false;
+
+                if (currentUser?.id && post.userId) {
+                    isMine = post.userId === currentUser.id;
+                } else {
+                    const sameEmail = currentUser?.email && post.email && normalizeText(currentUser.email) === normalizeText(post.email);
+                    const samePhone = currentUser?.phone && post.phone && normalizeText(currentUser.phone) === normalizeText(post.phone);
+                    isMine = sameEmail || samePhone;
+                }
+
+                if (!isMine) return post;
+
+                return {
+                    ...post,
+                    fullName: userData.fullName || post.fullName || "",
+                    email: userData.email || post.email || "",
+                    phone: userData.phone || post.phone || "",
+                    brandName: userData.brandName || "",
+                    contactName: userData.brandName || userData.fullName || post.contactName || "",
+                    contactPhone: userData.phone || post.contactPhone || "",
+                    accountGroup: userData.accountGroup || post.accountGroup || "",
+                    accountGroupLabel: userData.accountGroup === "construction" ? "Xây dựng" : "Bất động sản",
+                    roleLabel: userData.roleLabel || post.roleLabel || "",
+                    updatedAt: new Date().toISOString()
+                };
+            });
+
+            saveAllPosts(updatedPosts);
+        }
+
+        document.getElementById("profileForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            if (!currentUser) {
+                showStatus("profileStatus", "error", "Bạn cần đăng nhập trước khi cập nhật hồ sơ.");
+                return;
+            }
+
+            hideStatus("profileStatus");
+
+            const fullName = document.getElementById("fullName").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = sanitizePhone(document.getElementById("phone").value.trim());
+            const brandName = document.getElementById("brandName").value.trim();
+            const accountGroup = document.getElementById("accountGroup").value;
+            const roleLabel = document.getElementById("roleLabel").value.trim();
+            const bio = document.getElementById("bio").value.trim();
+
+            if (!fullName) {
+                showStatus("profileStatus", "error", "Vui lòng nhập họ và tên.");
+                return;
+            }
+
+            if (!email || !email.includes("@")) {
+                showStatus("profileStatus", "error", "Email chưa hợp lệ.");
+                return;
+            }
+
+            if (!phone || phone.length < 9 || phone.length > 11) {
+                showStatus("profileStatus", "error", "Số điện thoại chưa hợp lệ.");
+                return;
+            }
+
+            const nextUser = {
+                ...currentUser,
+                fullName,
+                email,
+                phone,
+                brandName,
+                accountGroup,
+                accountGroupLabel: accountGroup === "construction" ? "Xây dựng" : "Bất động sản",
+                roleLabel: roleLabel || currentUser.roleLabel || currentUser.role || "",
+                bio,
+                updatedAt: new Date().toISOString()
+            };
+
+            saveCurrentUser(nextUser);
+            syncPostsWithNewProfile(nextUser);
+
+            showStatus("profileStatus", "success", "Đã cập nhật thông tin tài khoản và đồng bộ lại dữ liệu liên quan.");
+            setTimeout(() => window.location.reload(), 500);
+        });
+
+        document.getElementById("resetProfileBtn").addEventListener("click", function () {
+            fillProfileForm();
+            hideStatus("profileStatus");
+        });
+
+        document.getElementById("passwordForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            if (!currentUser) {
+                showStatus("passwordStatus", "error", "Bạn cần đăng nhập trước khi đổi mật khẩu.");
+                return;
+            }
+
+            hideStatus("passwordStatus");
+
+            const currentPassword = document.getElementById("currentPassword").value.trim();
+            const newPassword = document.getElementById("newPassword").value.trim();
+            const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+            const savedPassword = currentUser.password || "";
+
+            if (!currentPassword) {
+                showStatus("passwordStatus", "error", "Vui lòng nhập mật khẩu hiện tại.");
+                return;
+            }
+
+            if (savedPassword && currentPassword !== savedPassword) {
+                showStatus("passwordStatus", "error", "Mật khẩu hiện tại không đúng.");
+                return;
+            }
+
+            if (!newPassword || newPassword.length < 6) {
+                showStatus("passwordStatus", "error", "Mật khẩu mới phải có ít nhất 6 ký tự.");
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showStatus("passwordStatus", "error", "Xác nhận mật khẩu mới chưa khớp.");
+                return;
+            }
+
+            const nextUser = {
+                ...currentUser,
+                password: newPassword,
+                updatedAt: new Date().toISOString()
+            };
+
+            saveCurrentUser(nextUser);
+
+            showStatus("passwordStatus", "success", "Đã cập nhật mật khẩu demo thành công.");
+            document.getElementById("passwordForm").reset();
+        });
+
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value;
+            const msg = document.getElementById("cusMsg").value;
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        function initPage() {
+            fillHeaderProfile();
+            fillProfileForm();
+            updateQuickInfo();
+            updateStats();
+            renderProjectList();
+            renderRecentPosts();
+
+            if (!currentUser) {
+                showStatus("profileStatus", "error", "Bạn chưa đăng nhập. Hãy đăng nhập để quản lý tài khoản.");
+            }
+        }
+
+        initPage();
+    </script>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
