@@ -1,40 +1,166 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kiểm duyệt tin đăng | toamviet.com.vn</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f8fafb; color: #2C2C2C; }
-        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        
-        /* Sidebar Sync */
-        .admin-sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 10px; transition: 0.3s; color: #4b5563; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-        .admin-sidebar-item:hover, .admin-sidebar-item.active { background: var(--vip-color); color: white; box-shadow: 0 4px 12px rgba(0,139,139,0.2); }
 
-        /* Badge Styles */
-        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
-        .badge-pending { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
-        
-        /* Info Row */
-        .info-tag { background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-size: 11px; color: #475569; font-weight: 600; }
-        
-        /* Footer Sync */
-        .footer-title { font-weight: bold; font-size: 15px; margin-bottom: 20px; color: #2C2C2C; text-transform: uppercase; border-left: 3px solid var(--vip-color); padding-left: 10px; }
-        .footer-list li { margin-bottom: 10px; font-size: 13.5px; color: #555; display: flex; align-items: center; gap: 8px; }
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/admin-dashboard.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --hover-color: #ff8c00;
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f8fafb;
+            color: #2c2c2c;
+        }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .admin-sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            transition: 0.3s;
+            color: #4b5563;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .admin-sidebar-item:hover,
+        .admin-sidebar-item.active {
+            background: var(--vip-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 139, 139, 0.2);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pending {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #ffedd5;
+        }
+
+        .type-badge {
+            background: #f0fdfa;
+            color: #0f766e;
+            border: 1px solid #99f6e4;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .info-tag {
+            background: #f1f5f9;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            color: #475569;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-enter {
+            transition: 0.3s ease;
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+            font-style: italic;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            background: #fff;
+        }
+
+        .news-thumb {
+            width: 140px;
+            height: 110px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            background: #f8fafc;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .footer-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 20px;
+            color: #2c2c2c;
+            text-transform: uppercase;
+            border-left: 3px solid var(--vip-color);
+            padding-left: 10px;
+        }
+
+        .footer-list li {
+            margin-bottom: 10px;
+            font-size: 13.5px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .news-thumb {
+                width: 100%;
+                height: 180px;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[75px] flex justify-between items-center">
             <div class="flex items-center gap-6">
-                <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
-                <p class="hidden md:block text-sm font-bold text-gray-400 uppercase tracking-tighter">Hệ thống quản trị nội bộ</p>
+                <a href="../index.html">
+                    <img src="../DAI TRONG SUOT (2).png" alt="Logo" class="h-10" />
+                </a>
+                <p class="hidden md:block text-sm font-bold text-gray-400 uppercase tracking-tighter">
+                    Hệ thống quản trị nội bộ
+                </p>
             </div>
+
             <div class="flex items-center gap-4">
                 <div class="text-right">
                     <p class="text-[10px] font-bold text-[--vip-color] uppercase leading-none">Quản trị viên</p>
@@ -48,101 +174,220 @@
     <main class="py-10">
         <div class="container-custom">
             <div class="flex flex-col lg:flex-row gap-8">
-                
+
                 <aside class="lg:w-1/4">
                     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <nav>
-                            <a href="admin-dashboard.html" class="admin-sidebar-item"><i class="fa-solid fa-chart-line text-lg"></i> Tổng quan</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-user-shield text-lg"></i> Duyệt thành viên</a>
-                            <a href="kiem-duyet-tin.html" class="admin-sidebar-item active"><i class="fa-solid fa-file-circle-check text-lg"></i> Kiểm duyệt tin đăng</a>
-                            <a href="#" class="admin-sidebar-item"><i class="fa-solid fa-newspaper text-lg"></i> Quản lý tin tức</a>
+                            <a href="admin-dashboard.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-chart-line text-lg"></i> Tổng quan
+                            </a>
+                            <a href="#" class="admin-sidebar-item">
+                                <i class="fa-solid fa-user-shield text-lg"></i> Duyệt thành viên
+                            </a>
+                            <a href="kiem-duyet-tin.html" class="admin-sidebar-item active">
+                                <i class="fa-solid fa-file-circle-check text-lg"></i> Kiểm duyệt tin đăng
+                            </a>
+                            <a href="#" class="admin-sidebar-item">
+                                <i class="fa-solid fa-newspaper text-lg"></i> Quản lý tin tức
+                            </a>
                         </nav>
                     </div>
                 </aside>
 
                 <div class="lg:w-3/4">
                     <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-                        <div class="flex justify-between items-center mb-8">
+                        <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
                             <div>
                                 <h2 class="font-bold text-xl text-slate-800">Danh sách tin chờ phê duyệt</h2>
-                                <p class="text-xs text-gray-400 mt-1">Vui lòng kiểm tra kỹ pháp lý và video trước khi duyệt.</p>
+                                <p class="text-xs text-gray-400 mt-1">
+                                    Chỉ các tin được duyệt mới nên xuất hiện công khai ở trang bán, thuê, dự án và giá nhà đất.
+                                </p>
                             </div>
-                            <span class="bg-orange-100 text-orange-600 px-4 py-1 rounded-full text-xs font-bold" id="pending-count">0 Tin mới</span>
+                            <span class="bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-xs font-bold" id="pending-count">
+                                0 Tin mới
+                            </span>
                         </div>
 
-                        <div class="space-y-4" id="news-list-container">
-                            </div>
+                        <div class="space-y-4" id="news-list-container"></div>
                     </div>
                 </div>
+
             </div>
         </div>
     </main>
 
     <footer class="bg-white border-t pt-12 pb-8 mt-20">
         <div class="container-custom text-center">
-            <img src="DAI TRONG SUOT (2).png" class="h-8 mx-auto mb-6 opacity-70">
+            <img src="../DAI TRONG SUOT (2).png" class="h-8 mx-auto mb-6 opacity-70" alt="Logo footer" />
             <p class="text-[11px] text-gray-400">© 2026 toamviet.com.vn - Phiên bản quản trị nội bộ v2.0</p>
         </div>
     </footer>
 
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', renderPendingNews);
+        document.addEventListener("DOMContentLoaded", renderPendingNews);
+
+        function formatCurrencyVND(value) {
+            if (!Number.isFinite(value) || value <= 0) return "Chưa có";
+            return new Intl.NumberFormat("vi-VN").format(Math.round(value)) + " đ";
+        }
+
+        function getPendingPosts() {
+            return postStorage
+                .getAllPosts()
+                .filter(post => post && (post.status || "pending") === "pending")
+                .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+        }
+
+        function getPostDisplayType(post) {
+            if (post.flow === "construction") return "Xây dựng";
+            if (post.postType === "ban") return "Tin bán";
+            if (post.postType === "thue") return "Tin thuê";
+            return "Tin đăng";
+        }
+
+        function getPostThumb(post) {
+            if (Array.isArray(post.images) && post.images.length && post.images[0]?.dataUrl) {
+                return post.images[0].dataUrl;
+            }
+            return "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop";
+        }
+
+        function getPostPriceText(post) {
+            if (post.flow === "construction") {
+                return post.servicePrice || post.servicePriceData?.display || "Chưa có giá";
+            }
+            return post.propertyPrice || post.propertyPriceData?.display || "Chưa có giá";
+        }
+
+        function getPostAreaText(post) {
+            if (post.flow === "construction") {
+                return post.serviceExp || "Chưa có";
+            }
+            return post.propertyArea ? `${post.propertyArea} m²` : "Chưa có";
+        }
+
+        function getPostLocationText(post) {
+            return [post.ward, post.city].filter(Boolean).join(", ") || "Chưa có vị trí";
+        }
 
         function renderPendingNews() {
-            const container = document.getElementById('news-list-container');
-            const newsData = JSON.parse(localStorage.getItem('pendingNews')) || [];
-            document.getElementById('pending-count').innerText = newsData.length + ' Tin mới';
+            const container = document.getElementById("news-list-container");
+            const newsData = getPendingPosts();
 
-            if (newsData.length === 0) {
-                container.innerHTML = `<div class="text-center py-20 text-gray-400 italic">Hiện không có tin nào cần duyệt.</div>`;
+            document.getElementById("pending-count").innerText = `${newsData.length} Tin mới`;
+
+            if (!newsData.length) {
+                container.innerHTML = `<div class="empty-box">Hiện không có tin nào cần duyệt.</div>`;
                 return;
             }
 
-            container.innerHTML = newsData.map(news => `
-                <div class="border rounded-xl p-5 hover:border-[--vip-color] transition shadow-sm bg-white" id="news-${news.id}">
-                    <div class="flex flex-col md:flex-row justify-between gap-4">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="status-badge badge-pending">Chờ duyệt</span>
-                                <span class="text-[11px] font-bold text-[--vip-color] uppercase">${news.type === 'ban' ? 'Mua bán' : 'Cho thuê'}</span>
-                            </div>
-                            <h3 class="font-bold text-slate-800 text-lg mb-2">${news.title}</h3>
-                            
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="info-tag"><i class="fa-solid fa-tag"></i> ${news.price}</span>
-                                <span class="info-tag"><i class="fa-solid fa-expand"></i> ${news.area} m2</span>
-                                <span class="info-tag"><i class="fa-solid fa-phone"></i> LH: ${news.contact}</span>
+            container.innerHTML = newsData.map(news => {
+                const projectText = news.projectName
+                    ? `<span class="info-tag"><i class="fa-solid fa-building"></i> ${news.projectName}</span>`
+                    : "";
+
+                const mediaText = Array.isArray(news.images) && news.images.length
+                    ? `<span class="text-blue-600 text-sm"><i class="fa-solid fa-image"></i> ${news.images.length} ảnh đính kèm</span>`
+                    : `<span class="text-gray-400 text-sm"><i class="fa-solid fa-image"></i> Không có ảnh</span>`;
+
+                return `
+                    <div class="border rounded-xl p-5 hover:border-[--vip-color] transition shadow-sm bg-white card-enter" id="news-${news.id}">
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <img class="news-thumb" src="${getPostThumb(news)}" alt="${news.title || "Tin đăng"}" />
+
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <span class="status-badge badge-pending">
+                                        <i class="fa-solid fa-clock"></i> Chờ duyệt
+                                    </span>
+                                    <span class="type-badge">${getPostDisplayType(news)}</span>
+                                    ${projectText}
+                                </div>
+
+                                <h3 class="font-bold text-slate-800 text-lg mb-2">${news.title || "Chưa có tiêu đề"}</h3>
+
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="info-tag"><i class="fa-solid fa-tag"></i> ${getPostPriceText(news)}</span>
+                                    <span class="info-tag"><i class="fa-solid fa-expand"></i> ${getPostAreaText(news)}</span>
+                                    <span class="info-tag"><i class="fa-solid fa-location-dot"></i> ${getPostLocationText(news)}</span>
+                                    <span class="info-tag"><i class="fa-solid fa-phone"></i> ${news.contactPhone || news.phone || "Chưa có SĐT"}</span>
+                                </div>
+
+                                <div class="meta-grid mb-4">
+                                    <div class="bg-slate-50 p-3 rounded-lg text-sm text-slate-600">
+                                        <div class="font-bold text-slate-800 mb-1">Người đăng</div>
+                                        <div>${news.contactName || news.fullName || news.brandName || "Chưa rõ"}</div>
+                                    </div>
+
+                                    <div class="bg-slate-50 p-3 rounded-lg text-sm text-slate-600">
+                                        <div class="font-bold text-slate-800 mb-1">Pháp lý / Loại hình</div>
+                                        <div>${news.propertyLegal || news.propertyType || news.serviceType || "Chưa cập nhật"}</div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-50 p-3 rounded-lg flex flex-wrap items-center gap-4">
+                                    <span class="text-xs font-bold text-gray-500">Tài nguyên:</span>
+                                    ${mediaText}
+                                    <span class="text-slate-500 text-sm"><i class="fa-regular fa-calendar"></i> ${new Date(news.createdAt || Date.now()).toLocaleString("vi-VN")}</span>
+                                </div>
                             </div>
 
-                            <div class="bg-slate-50 p-3 rounded-lg flex items-center gap-4">
-                                <span class="text-xs font-bold text-gray-500">Truyền thông:</span>
-                                <a href="#" class="text-red-600 text-sm hover:underline"><i class="fa-brands fa-youtube"></i> Xem Video Review</a>
-                                <a href="#" class="text-blue-600 text-sm hover:underline"><i class="fa-solid fa-image"></i> Xem 5 ảnh kèm theo</a>
+                            <div class="flex md:flex-col justify-end gap-2 border-t md:border-t-0 pt-4 md:pt-0 md:pl-6 md:border-l border-gray-100">
+                                <button onclick="handleNews('${news.id}', 'approve')" class="px-6 py-2 bg-green-500 text-white rounded-lg font-bold text-xs uppercase hover:bg-green-600 transition">
+                                    Duyệt đăng
+                                </button>
+                                <button onclick="handleNews('${news.id}', 'reject')" class="px-6 py-2 bg-red-50 text-red-600 rounded-lg font-bold text-xs uppercase hover:bg-red-100 transition">
+                                    Từ chối
+                                </button>
                             </div>
-                        </div>
-
-                        <div class="flex md:flex-col justify-end gap-2 border-t md:border-t-0 pt-4 md:pt-0 md:pl-6 md:border-l border-gray-100">
-                            <button onclick="handleNews(${news.id}, 'approve')" class="px-6 py-2 bg-green-500 text-white rounded-lg font-bold text-xs uppercase hover:bg-green-600 transition">Duyệt đăng</button>
-                            <button onclick="handleNews(${news.id}, 'reject')" class="px-6 py-2 bg-red-50 text-red-600 rounded-lg font-bold text-xs uppercase hover:bg-red-100 transition">Từ chối</button>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join("");
         }
 
         function handleNews(id, action) {
-            if(confirm(action === 'approve' ? 'Bạn có chắc chắn muốn cho tin này hiển thị công khai?' : 'Bạn muốn xóa tin này?')) {
-                let newsData = JSON.parse(localStorage.getItem('pendingNews')) || [];
-                newsData = newsData.filter(item => item.id !== id);
-                localStorage.setItem('pendingNews', JSON.stringify(newsData));
-                
-                const element = document.getElementById(`news-${id}`);
-                element.style.transform = 'scale(0.95)';
-                element.style.opacity = '0';
-                setTimeout(() => {
-                    renderPendingNews();
-                }, 300);
+            const post = postStorage.getPostById(id);
+            if (!post) {
+                alert("Không tìm thấy tin đăng.");
+                return;
             }
+
+            const message = action === "approve"
+                ? "Bạn có chắc chắn muốn duyệt và cho tin này hiển thị công khai?"
+                : "Bạn có chắc chắn muốn từ chối tin này?";
+
+            if (!confirm(message)) return;
+
+            if (action === "approve") {
+                postStorage.updatePost(id, {
+                    status: "approved",
+                    approvedAt: new Date().toISOString()
+                });
+            } else {
+                postStorage.updatePost(id, {
+                    status: "rejected",
+                    rejectedAt: new Date().toISOString()
+                });
+            }
+
+            const refreshedPosts = postStorage.getAllPosts();
+            userStorage.syncDerivedPostStores(refreshedPosts);
+            projectService.syncProjectCounts(refreshedPosts);
+
+            const element = document.getElementById(`news-${id}`);
+            if (element) {
+                element.style.transform = "scale(0.96)";
+                element.style.opacity = "0";
+            }
+
+            setTimeout(() => {
+                renderPendingNews();
+            }, 250);
         }
     </script>
 </body>
