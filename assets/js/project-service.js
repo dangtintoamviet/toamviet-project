@@ -36,7 +36,9 @@
 
     function saveProjects(projects) {
         ensureUserStorage();
-        return window.userStorage.saveProjects(projects);
+        const safeProjects = Array.isArray(projects) ? projects : [];
+        window.userStorage.saveProjects(safeProjects);
+        return safeProjects;
     }
 
     function findProjectBySlug(slug) {
@@ -50,20 +52,24 @@
         return getProjects().find((item) => normalizeText(item.name) === normalized) || null;
     }
 
-    function searchProjects(keyword) {
+    function searchProjects(keyword, limit) {
         const key = normalizeText(keyword);
         const projects = getProjects();
+        const maxItems = typeof limit === "number" && limit > 0 ? limit : 8;
 
-        if (!key) return projects.slice(0, 8);
+        if (!key) return projects.slice(0, maxItems);
 
-        return projects.filter((item) => {
-            return (
-                normalizeText(item.name).includes(key) ||
-                normalizeText(item.slug).includes(key) ||
-                normalizeText(item.city || "").includes(key) ||
-                normalizeText(item.type || "").includes(key)
-            );
-        }).slice(0, 8);
+        return projects
+            .filter((item) => {
+                return (
+                    normalizeText(item.name).includes(key) ||
+                    normalizeText(item.slug).includes(key) ||
+                    normalizeText(item.city || "").includes(key) ||
+                    normalizeText(item.type || "").includes(key) ||
+                    normalizeText(item.developer || "").includes(key)
+                );
+            })
+            .slice(0, maxItems);
     }
 
     function upsertProject(projectData) {
@@ -80,15 +86,33 @@
                 normalizeText(item.name) === normalizeText(projectData.name)
         );
 
+        const now = new Date().toISOString();
+
         if (existing) {
-            existing.name = existing.name || projectData.name;
+            existing.name = projectData.name || existing.name;
             existing.slug = existing.slug || projectSlug;
-            existing.city = existing.city || projectData.city || "";
-            existing.ward = existing.ward || projectData.ward || "";
-            existing.addressDetail = existing.addressDetail || projectData.addressDetail || "";
-            existing.type = existing.type || projectData.type || "";
-            existing.developer = existing.developer || projectData.developer || "";
-            existing.updatedAt = new Date().toISOString();
+            existing.city = projectData.city || existing.city || "";
+            existing.ward = projectData.ward || existing.ward || "";
+            existing.addressDetail = projectData.addressDetail || existing.addressDetail || "";
+            existing.type = projectData.type || existing.type || "";
+            existing.developer = projectData.developer || existing.developer || "";
+            existing.seoTitle =
+                projectData.seoTitle ||
+                existing.seoTitle ||
+                `Mua bán, cho thuê bất động sản ${existing.name}`;
+            existing.seoDescription =
+                projectData.seoDescription ||
+                existing.seoDescription ||
+                `Tổng hợp tin mua bán, cho thuê bất động sản tại ${existing.name}. Cập nhật giá, vị trí và thông tin dự án mới nhất.`;
+            existing.postCount = typeof projectData.postCount === "number" ? projectData.postCount : (existing.postCount || 0);
+            existing.saleCount = typeof projectData.saleCount === "number" ? projectData.saleCount : (existing.saleCount || 0);
+            existing.rentalCount = typeof projectData.rentalCount === "number" ? projectData.rentalCount : (existing.rentalCount || 0);
+            existing.averageSalePricePerSquareMeter =
+                typeof projectData.averageSalePricePerSquareMeter === "number"
+                    ? projectData.averageSalePricePerSquareMeter
+                    : (existing.averageSalePricePerSquareMeter || null);
+            existing.lastPostAt = projectData.lastPostAt || existing.lastPostAt || "";
+            existing.updatedAt = now;
 
             saveProjects(projects);
             return existing;
@@ -108,8 +132,14 @@
                 projectData.seoDescription ||
                 `Tổng hợp tin mua bán, cho thuê bất động sản tại ${projectData.name}. Cập nhật giá, vị trí và thông tin dự án mới nhất.`,
             postCount: projectData.postCount || 0,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+            saleCount: projectData.saleCount || 0,
+            rentalCount: projectData.rentalCount || 0,
+            averageSalePricePerSquareMeter:
+                typeof projectData.averageSalePricePerSquareMeter === "number"
+                    ? projectData.averageSalePricePerSquareMeter
+                    : null,
+            createdAt: now,
+            updatedAt: now,
             lastPostAt: projectData.lastPostAt || ""
         };
 
@@ -118,11 +148,24 @@
         return newProject;
     }
 
-    function syncProjectCounts(postsInput) {
-        const posts = Array.isArray(postsInput)
-            ? postsInput
-            : (window.postStorage ? window.postStorage.getAllPosts() : window.userStorage.getAllPosts());
+    function getSourcePosts(postsInput) {
+        if (Array.isArray(postsInput)) return postsInput;
 
+        if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+            return window.postStorage.getAllPosts();
+        }
+
+        ensureUserStorage();
+        return window.userStorage.getAllPosts();
+    }
+
+    function filterPostsByApproval(posts, approvedOnly) {
+        if (!approvedOnly) return posts;
+        return posts.filter((post) => post && post.status === "approved");
+    }
+
+    function syncProjectCounts(postsInput, approvedOnly) {
+        const posts = filterPostsByApproval(getSourcePosts(postsInput), !!approvedOnly);
         const projects = getProjects();
 
         const nextProjects = projects.map((project) => {
@@ -130,19 +173,24 @@
                 (post) => post && post.projectSlug && post.projectSlug === project.slug
             );
 
-            const salePosts = relatedPosts.filter((post) => post.postType === "ban");
-            const rentalPosts = relatedPosts.filter((post) => post.postType === "thue");
+            const salePosts = relatedPosts.filter(
+                (post) => post && post.flow === "real_estate" && post.postType === "ban"
+            );
+            const rentalPosts = relatedPosts.filter(
+                (post) => post && post.flow === "real_estate" && post.postType === "thue"
+            );
 
-            let avgPricePerSquareMeter = null;
             const validSalePrices = salePosts
                 .map((post) => post.pricePerSquareMeter)
                 .filter((value) => typeof value === "number" && value > 0);
 
-            if (validSalePrices.length) {
-                avgPricePerSquareMeter = Math.round(
-                    validSalePrices.reduce((sum, value) => sum + value, 0) / validSalePrices.length
-                );
-            }
+            const avgPricePerSquareMeter = validSalePrices.length
+                ? Math.round(validSalePrices.reduce((sum, value) => sum + value, 0) / validSalePrices.length)
+                : null;
+
+            const latestPost = relatedPosts
+                .slice()
+                .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))[0];
 
             return {
                 ...project,
@@ -150,10 +198,7 @@
                 saleCount: salePosts.length,
                 rentalCount: rentalPosts.length,
                 averageSalePricePerSquareMeter: avgPricePerSquareMeter,
-                lastPostAt:
-                    relatedPosts.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))[0]?.createdAt ||
-                    project.lastPostAt ||
-                    project.createdAt,
+                lastPostAt: latestPost?.createdAt || project.lastPostAt || project.createdAt || "",
                 updatedAt: new Date().toISOString()
             };
         });
@@ -162,25 +207,27 @@
         return nextProjects;
     }
 
-    function getProjectPosts(projectSlug) {
+    function getProjectPosts(projectSlug, approvedOnly) {
         if (!projectSlug) return [];
 
-        if (window.postStorage) {
-            return window.postStorage.getPostsByProjectSlug(projectSlug);
-        }
+        const posts = window.postStorage && typeof window.postStorage.getPostsByProjectSlug === "function"
+            ? window.postStorage.getPostsByProjectSlug(projectSlug)
+            : getSourcePosts().filter((post) => post && post.projectSlug === projectSlug);
 
-        return window.userStorage.getAllPosts().filter(
-            (post) => post && post.projectSlug === projectSlug
-        );
+        return filterPostsByApproval(posts, !!approvedOnly);
     }
 
-    function getProjectDetail(projectSlug) {
+    function getProjectDetail(projectSlug, approvedOnly) {
         const project = findProjectBySlug(projectSlug);
         if (!project) return null;
 
-        const posts = getProjectPosts(projectSlug);
-        const salePosts = posts.filter((post) => post.postType === "ban");
-        const rentalPosts = posts.filter((post) => post.postType === "thue");
+        const posts = getProjectPosts(projectSlug, !!approvedOnly);
+        const salePosts = posts.filter(
+            (post) => post && post.flow === "real_estate" && post.postType === "ban"
+        );
+        const rentalPosts = posts.filter(
+            (post) => post && post.flow === "real_estate" && post.postType === "thue"
+        );
 
         return {
             ...project,
@@ -190,11 +237,21 @@
         };
     }
 
+    function getPublicProjects() {
+        return getProjects()
+            .filter((project) => (project.postCount || 0) > 0)
+            .sort((a, b) => {
+                const aTime = new Date(a.lastPostAt || a.updatedAt || 0).getTime();
+                const bTime = new Date(b.lastPostAt || b.updatedAt || 0).getTime();
+                return bTime - aTime;
+            });
+    }
+
     function getProjectsByUser(user) {
         const currentUser = user || (window.userStorage ? window.userStorage.getCurrentUser() : null);
         if (!currentUser) return [];
 
-        const allPosts = window.postStorage
+        const allPosts = window.postStorage && typeof window.postStorage.getPostsByUser === "function"
             ? window.postStorage.getPostsByUser(currentUser)
             : window.userStorage.getMyPosts(currentUser);
 
@@ -214,6 +271,7 @@
         syncProjectCounts,
         getProjectPosts,
         getProjectDetail,
+        getPublicProjects,
         getProjectsByUser
     };
 })();
