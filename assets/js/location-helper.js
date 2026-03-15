@@ -1,57 +1,122 @@
-let locationData = [];
+(function () {
+    "use strict";
 
-async function loadLocations() {
-    const res = await fetch("../assets/data/vietnam-address.json");
-    locationData = await res.json();
+    let locationData = [];
 
-    const citySelect = document.getElementById("city");
+    function normalizeProvince(item) {
+        if (!item || typeof item !== "object") {
+            return null;
+        }
 
-    citySelect.innerHTML = '<option value="">Chọn tỉnh/thành</option>';
+        const name = item.name || item.province || item.city || "";
+        if (!name) return null;
 
-    locationData.forEach(city => {
-        const option = document.createElement("option");
-        option.value = city.name;
-        option.textContent = city.name;
-        citySelect.appendChild(option);
-    });
-}
+        return {
+            name: name,
+            slug: item.slug || "",
+            wards: Array.isArray(item.wards)
+                ? item.wards
+                : Array.isArray(item.children)
+                    ? item.children
+                    : Array.isArray(item.phuongXa)
+                        ? item.phuongXa
+                        : []
+        };
+    }
 
-function updateDistricts() {
-    const city = document.getElementById("city").value;
-    const districtSelect = document.getElementById("district");
+    async function loadLocations() {
+        try {
+            const res = await fetch("../assets/data/vietnam-address.json");
 
-    districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+            if (!res.ok) {
+                throw new Error("Không thể tải file vietnam-address.json");
+            }
 
-    const found = locationData.find(c => c.name === city);
-    if (!found) return;
+            const data = await res.json();
 
-    found.districts.forEach(d => {
-        const option = document.createElement("option");
-        option.value = d.name;
-        option.textContent = d.name;
-        districtSelect.appendChild(option);
-    });
-}
+            if (!Array.isArray(data)) {
+                throw new Error("Dữ liệu địa chỉ không đúng định dạng mảng");
+            }
 
-function updateWards() {
-    const city = document.getElementById("city").value;
-    const district = document.getElementById("district").value;
-    const wardSelect = document.getElementById("ward");
+            locationData = data
+                .map(normalizeProvince)
+                .filter(Boolean);
 
-    wardSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+            const citySelect = document.getElementById("city");
+            if (!citySelect) return locationData;
 
-    const found = locationData.find(c => c.name === city);
-    if (!found) return;
+            citySelect.innerHTML = '<option value="">Chọn tỉnh/thành</option>';
 
-    const foundDistrict = found.districts.find(d => d.name === district);
-    if (!foundDistrict) return;
+            locationData.forEach(function (city) {
+                const option = document.createElement("option");
+                option.value = city.name;
+                option.textContent = city.name;
+                citySelect.appendChild(option);
+            });
 
-    foundDistrict.wards.forEach(w => {
-        const option = document.createElement("option");
-        option.value = w;
-        option.textContent = w;
-        wardSelect.appendChild(option);
-    });
-}
+            if (locationData.length > 0 && citySelect.options.length > 1) {
+                citySelect.selectedIndex = 1;
+                updateWards();
+            }
 
-window.addEventListener("load", loadLocations);
+            return locationData;
+        } catch (error) {
+            console.error("Lỗi loadLocations:", error);
+            locationData = [];
+            return [];
+        }
+    }
+
+    function updateWards() {
+        const citySelect = document.getElementById("city");
+        const wardSelect = document.getElementById("ward");
+
+        if (!citySelect || !wardSelect) return;
+
+        const cityName = citySelect.value;
+        wardSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+
+        const foundCity = locationData.find(function (c) {
+            return c.name === cityName;
+        });
+
+        if (!foundCity || !Array.isArray(foundCity.wards)) return;
+
+        foundCity.wards.forEach(function (ward) {
+            const wardName =
+                typeof ward === "string"
+                    ? ward
+                    : (ward.name || ward.ward || ward.commune || "");
+
+            if (!wardName) return;
+
+            const option = document.createElement("option");
+            option.value = wardName;
+            option.textContent = wardName;
+            wardSelect.appendChild(option);
+        });
+
+        if (wardSelect.options.length > 1) {
+            wardSelect.selectedIndex = 1;
+        }
+    }
+
+    function getAllLocations() {
+        return locationData.slice();
+    }
+
+    function getProvinceByName(name) {
+        return locationData.find(function (item) {
+            return item.name === name;
+        }) || null;
+    }
+
+    window.locationHelper = {
+        loadLocations: loadLocations,
+        updateWards: updateWards,
+        getAllLocations: getAllLocations,
+        getProvinceByName: getProvinceByName
+    };
+
+    window.addEventListener("load", loadLocations);
+})();
