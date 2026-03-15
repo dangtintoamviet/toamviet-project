@@ -146,24 +146,6 @@
             border: 1px solid #e5e7eb;
         }
 
-        .status-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 6px 10px;
-            border-radius: 999px;
-            letter-spacing: 0.04em;
-        }
-
-        .status-chip.demo {
-            background: #eff6ff;
-            color: #1d4ed8;
-            border: 1px solid #93c5fd;
-        }
-
         .footer-link-group h4 {
             font-weight: 700;
             font-size: 14px;
@@ -183,6 +165,58 @@
         .footer-link-group ul li:hover {
             color: var(--hover-color);
             text-decoration: underline;
+        }
+
+        .vip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: 1px solid rgba(255,255,255,0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        .vip-badge.kim-cuong {
+            background: linear-gradient(135deg, rgba(34,211,238,0.92), rgba(37,99,235,0.92));
+            color: #fff;
+        }
+
+        .vip-badge.vang {
+            background: linear-gradient(135deg, rgba(251,191,36,0.94), rgba(245,158,11,0.94));
+            color: #fff;
+        }
+
+        .vip-badge.bac {
+            background: linear-gradient(135deg, rgba(226,232,240,0.94), rgba(148,163,184,0.94));
+            color: #1f2937;
+        }
+
+        .vip-badge.dong {
+            background: linear-gradient(135deg, rgba(251,146,60,0.94), rgba(180,83,9,0.94));
+            color: #fff;
+        }
+
+        .image-count-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.38);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18);
         }
 
         @media (max-width: 768px) {
@@ -327,6 +361,7 @@
                 status: "demo",
                 flow: "real_estate",
                 postType: "thue",
+                vipLevel: "kim-cuong",
                 images: [FALLBACK_IMAGE]
             },
             {
@@ -350,6 +385,7 @@
                 status: "demo",
                 flow: "real_estate",
                 postType: "thue",
+                vipLevel: "vang",
                 images: [FALLBACK_IMAGE]
             },
             {
@@ -374,6 +410,7 @@
                 status: "demo",
                 flow: "real_estate",
                 postType: "thue",
+                vipLevel: "bac",
                 images: [FALLBACK_IMAGE]
             }
         ];
@@ -534,13 +571,6 @@
                 .join('') || 'TV';
         }
 
-        function getStatusChip(post) {
-            if (post.status === 'demo') {
-                return '<span class="status-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>';
-            }
-            return '';
-        }
-
         function getCardImage(post) {
             if (Array.isArray(post.images) && post.images.length) {
                 const firstImage = post.images[0];
@@ -549,6 +579,34 @@
                 if (firstImage && firstImage.url) return firstImage.url;
             }
             return FALLBACK_IMAGE;
+        }
+
+        function getVipLevel(post, index) {
+            const raw = String(
+                post.vipLevel ||
+                post.vipType ||
+                post.vipPackage ||
+                post.packageType ||
+                ''
+            ).toLowerCase().trim();
+
+            if (raw.includes('kim') || raw.includes('diamond')) return 'kim-cuong';
+            if (raw.includes('vang') || raw.includes('gold')) return 'vang';
+            if (raw.includes('bac') || raw.includes('silver')) return 'bac';
+            if (raw.includes('dong') || raw.includes('bronze')) return 'dong';
+
+            const autoLevels = ['kim-cuong', 'vang', 'bac', 'dong'];
+            return autoLevels[index % autoLevels.length];
+        }
+
+        function getVipLabel(level) {
+            const map = {
+                'kim-cuong': 'Tin VIP Kim cương',
+                'vang': 'Tin VIP Vàng',
+                'bac': 'Tin VIP Bạc',
+                'dong': 'Tin VIP Đồng'
+            };
+            return map[level] || 'Tin VIP Đồng';
         }
 
         function fillCityFilter(posts) {
@@ -615,6 +673,8 @@
             const safeDescription = escapeHtml(post.description || 'Nội dung đang được cập nhật...');
             const safeLocation = escapeHtml(location);
             const safePrice = escapeHtml(post.propertyPrice || 'Thỏa thuận');
+            const vipLevel = getVipLevel(post, index);
+            const vipLabel = escapeHtml(getVipLabel(vipLevel));
 
             return {
                 priceInMillion,
@@ -628,24 +688,22 @@
                                 <img src="${img}" alt="${safeTitle}" class="w-full h-full object-cover" onerror="this.src='${FALLBACK_IMAGE}'">
                             </a>
 
-                            <div class="absolute top-3 left-3">${getStatusChip(post)}</div>
-
-                            <div class="absolute top-3 right-3 bg-[--vip-color] text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase">
-                                ${safePropertyType}
+                            <div class="absolute top-3 left-3">
+                                <span class="vip-badge ${vipLevel}">
+                                    <i class="fa-solid fa-crown"></i>
+                                    ${vipLabel}
+                                </span>
                             </div>
 
-                            <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
-                                <i class="fa-regular fa-image"></i> ${imageCount || 1}
+                            <div class="absolute bottom-3 left-3">
+                                <span class="image-count-badge">
+                                    <i class="fa-regular fa-image"></i> ${imageCount || 1}
+                                </span>
                             </div>
                         </div>
 
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <div class="flex flex-wrap items-center gap-2 mb-2">
-                                    <span class="text-[10px] uppercase font-bold bg-cyan-50 text-cyan-700 px-2 py-1 rounded">${safePropertyType}</span>
-                                    <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">Tin thuê</span>
-                                </div>
-
                                 <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] cursor-pointer">
                                     <a href="${detailUrl}">${safeTitle}</a>
                                 </h3>
