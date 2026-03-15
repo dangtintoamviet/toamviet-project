@@ -44,9 +44,69 @@ function getPageContext() {
   };
 }
 
+function ensureHeaderSpacer() {
+  const siteHeader = document.getElementById("site-header");
+  if (!siteHeader) return null;
+
+  let spacer = document.getElementById("header-spacer");
+
+  if (!spacer) {
+    spacer = document.createElement("div");
+    spacer.id = "header-spacer";
+    siteHeader.insertAdjacentElement("afterend", spacer);
+  }
+
+  return spacer;
+}
+
+function setupFixedHeaderSpacing() {
+  const siteHeader = document.getElementById("site-header");
+  if (!siteHeader) return;
+
+  const innerHeader = siteHeader.querySelector("header");
+  const spacer = ensureHeaderSpacer();
+  if (!spacer) return;
+
+  siteHeader.style.position = "fixed";
+  siteHeader.style.top = "0";
+  siteHeader.style.left = "0";
+  siteHeader.style.right = "0";
+  siteHeader.style.zIndex = "1000";
+  siteHeader.style.background = "#ffffff";
+  siteHeader.style.boxShadow = "0 1px 0 rgba(0,0,0,0.04)";
+
+  if (innerHeader) {
+    innerHeader.style.position = "static";
+    innerHeader.style.top = "auto";
+    innerHeader.style.left = "auto";
+    innerHeader.style.right = "auto";
+    innerHeader.style.zIndex = "auto";
+    innerHeader.style.margin = "0";
+  }
+
+  const headerHeight = Math.ceil(siteHeader.offsetHeight || 0);
+  const extraGap = window.innerWidth <= 768 ? 18 : 24;
+
+  spacer.style.height = `${headerHeight + extraGap}px`;
+  spacer.style.width = "100%";
+}
+
+function watchHeaderSpacing() {
+  let tries = 0;
+
+  const timer = setInterval(() => {
+    tries += 1;
+    setupFixedHeaderSpacing();
+
+    const siteHeader = document.getElementById("site-header");
+    if ((siteHeader && siteHeader.offsetHeight > 0) || tries > 30) {
+      clearInterval(timer);
+    }
+  }, 120);
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
   const context = getPageContext();
-
   const tasks = [];
 
   if (document.getElementById("site-header")) {
@@ -77,4 +137,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   await Promise.all(tasks);
+
+  watchHeaderSpacing();
+  window.addEventListener("resize", setupFixedHeaderSpacing);
+
+  setTimeout(setupFixedHeaderSpacing, 300);
+  setTimeout(setupFixedHeaderSpacing, 800);
 });
