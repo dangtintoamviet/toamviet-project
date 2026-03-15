@@ -58,7 +58,7 @@
             top: 100%;
             left: 0;
             background: white;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
             min-width: 220px;
             border-top: 2px solid var(--vip-color);
             z-index: 50;
@@ -132,7 +132,7 @@
             bottom: -60px;
             width: 180px;
             height: 180px;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 50%;
         }
 
@@ -140,8 +140,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            border: 1px solid rgba(255,255,255,0.22);
-            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.12);
             border-radius: 999px;
             padding: 8px 14px;
             font-size: 11px;
@@ -162,7 +162,7 @@
         .hero-desc {
             font-size: 14px;
             line-height: 1.8;
-            color: rgba(255,255,255,0.92);
+            color: rgba(255, 255, 255, 0.92);
             max-width: 720px;
         }
 
@@ -174,8 +174,8 @@
         }
 
         .hero-point {
-            background: rgba(255,255,255,0.10);
-            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 18px;
             padding: 14px;
         }
@@ -185,7 +185,7 @@
             text-transform: uppercase;
             font-weight: 800;
             letter-spacing: 0.05em;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.8);
             margin-bottom: 6px;
         }
 
@@ -549,6 +549,12 @@
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 8px;
+        }
+
+        .image-preview-item .meta-line {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 4px;
         }
 
         .preview-title {
@@ -971,6 +977,7 @@
                                 <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-300 mb-3"></i>
                                 <p class="text-sm font-bold text-slate-600">Chọn ảnh thực tế để tải lên</p>
                                 <p class="text-xs text-slate-400 mt-2">Khuyến nghị ít nhất 3 ảnh thật. Với dịch vụ xây dựng nên có ảnh công trình hoặc hồ sơ năng lực.</p>
+                                <p class="text-xs text-slate-400 mt-1">Hệ thống sẽ tự nén ảnh để giảm lỗi localStorage. Tối đa 8 ảnh.</p>
 
                                 <div class="mt-4">
                                     <input id="imageInput" type="file" accept="image/*" multiple class="hidden" />
@@ -1122,8 +1129,7 @@
                     <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
                     <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
                     <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer" />
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer" />
+                        
                     </div>
                 </div>
 
@@ -1195,6 +1201,12 @@
         let selectedImages = [];
         let locationSource = { provinces: [] };
 
+        const MAX_IMAGES = 8;
+        const MAX_IMAGE_WIDTH = 1600;
+        const MAX_IMAGE_HEIGHT = 1600;
+        const IMAGE_QUALITY = 0.82;
+        const MAX_FINAL_IMAGE_KB = 450;
+
         const FALLBACK_LOCATIONS = {
             provinces: [
                 {
@@ -1212,9 +1224,19 @@
             ]
         };
 
+        function safeParseLocalStorage(key) {
+            try {
+                const raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : null;
+            } catch (error) {
+                console.warn("Lỗi parse localStorage tại key:", key, error);
+                return null;
+            }
+        }
+
         const currentUser =
-            JSON.parse(localStorage.getItem("currentUser")) ||
-            JSON.parse(localStorage.getItem("registeredUser")) ||
+            safeParseLocalStorage("currentUser") ||
+            safeParseLocalStorage("registeredUser") ||
             null;
 
         const flowRealEstate = document.getElementById("flow-real-estate");
@@ -1255,7 +1277,9 @@
                 .split(" ")
                 .filter(Boolean)
                 .slice(0, 2)
-                .map(w => w[0].toUpperCase())
+                .map(function (w) {
+                    return w[0].toUpperCase();
+                })
                 .join("") || "TV";
         }
 
@@ -1281,13 +1305,20 @@
                 .trim();
         }
 
-        function formatCurrencyVND(value) {
-            if (!Number.isFinite(value) || value <= 0) return "Chưa nhập";
-            return new Intl.NumberFormat("vi-VN").format(Math.round(value)) + " đ";
-        }
-
         function sanitizePhone(phone) {
             return (phone || "").replace(/[^\d]/g, "");
+        }
+
+        function bytesToKB(bytes) {
+            return Math.round(bytes / 1024);
+        }
+
+        function estimateBase64Bytes(dataUrl) {
+            if (!dataUrl || typeof dataUrl !== "string") return 0;
+            const parts = dataUrl.split(",");
+            if (parts.length < 2) return 0;
+            const base64 = parts[1];
+            return Math.ceil((base64.length * 3) / 4);
         }
 
         function parseVietnamesePrice(rawText, type) {
@@ -1335,9 +1366,9 @@
 
             return {
                 raw: rawText,
-                value,
-                unit,
-                unitLabel,
+                value: value,
+                unit: unit,
+                unitLabel: unitLabel,
                 display: rawText || "Chưa nhập",
                 pricePerSquareMeter: null
             };
@@ -1414,29 +1445,41 @@
                     const data = window.locationHelper.getAllLocations();
                     if (Array.isArray(data) && data.length) {
                         return {
-                            provinces: data.map(item => ({
-                                name: item.name || item.province || item.city || "",
-                                wards: item.wards || item.children || item.commune || item.phuongXa || []
-                            })).filter(item => item.name)
+                            provinces: data.map(function (item) {
+                                return {
+                                    name: item.name || item.province || item.city || "",
+                                    wards: item.wards || item.children || item.commune || item.phuongXa || []
+                                };
+                            }).filter(function (item) {
+                                return item.name;
+                            })
                         };
                     }
                 }
 
                 if (Array.isArray(window.LOCATIONS_DATA) && window.LOCATIONS_DATA.length) {
                     return {
-                        provinces: window.LOCATIONS_DATA.map(item => ({
-                            name: item.name || item.province || item.city || "",
-                            wards: item.wards || item.children || item.commune || item.phuongXa || []
-                        })).filter(item => item.name)
+                        provinces: window.LOCATIONS_DATA.map(function (item) {
+                            return {
+                                name: item.name || item.province || item.city || "",
+                                wards: item.wards || item.children || item.commune || item.phuongXa || []
+                            };
+                        }).filter(function (item) {
+                            return item.name;
+                        })
                     };
                 }
 
                 if (window.locations && Array.isArray(window.locations)) {
                     return {
-                        provinces: window.locations.map(item => ({
-                            name: item.name || item.province || item.city || "",
-                            wards: item.wards || item.children || item.commune || item.phuongXa || []
-                        })).filter(item => item.name)
+                        provinces: window.locations.map(function (item) {
+                            return {
+                                name: item.name || item.province || item.city || "",
+                                wards: item.wards || item.children || item.commune || item.phuongXa || []
+                            };
+                        }).filter(function (item) {
+                            return item.name;
+                        })
                     };
                 }
             } catch (error) {
@@ -1461,7 +1504,7 @@
                 return;
             }
 
-            provinces.forEach((province, index) => {
+            provinces.forEach(function (province, index) {
                 const option = document.createElement("option");
                 option.value = province.name;
                 option.textContent = province.name;
@@ -1473,7 +1516,9 @@
         }
 
         function getProvinceByName(cityName) {
-            return (locationSource.provinces || []).find(item => item.name === cityName);
+            return (locationSource.provinces || []).find(function (item) {
+                return item.name === cityName;
+            });
         }
 
         function updateWards() {
@@ -1482,8 +1527,8 @@
 
             wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
 
-            const wards = Array.isArray(cityData?.wards) ? cityData.wards : [];
-            wards.forEach(ward => {
+            const wards = Array.isArray(cityData && cityData.wards) ? cityData.wards : [];
+            wards.forEach(function (ward) {
                 const wardName = typeof ward === "string" ? ward : ward.name || ward.ward || ward.commune || "";
                 if (!wardName) return;
                 const option = document.createElement("option");
@@ -1491,6 +1536,10 @@
                 option.textContent = wardName;
                 wardSelect.appendChild(option);
             });
+
+            if (wardSelect.options.length > 1) {
+                wardSelect.selectedIndex = 1;
+            }
 
             updatePreview();
         }
@@ -1500,6 +1549,8 @@
             document.getElementById("prof-canhan").classList.toggle("selected", profile === "canhan");
             document.getElementById("prof-doanhnghiep").classList.toggle("selected", profile === "doanhnghiep");
         }
+
+        window.setProfile = setProfile;
 
         function setFlow(flow) {
             currentFlow = flow;
@@ -1523,7 +1574,7 @@
 
         function setSubtab(type) {
             currentPostType = type;
-            document.querySelectorAll(".subtab-btn").forEach(btn => {
+            document.querySelectorAll(".subtab-btn").forEach(function (btn) {
                 btn.classList.toggle("active", btn.getAttribute("data-post-type") === type);
             });
             renderDynamicFields();
@@ -1617,7 +1668,7 @@
         }
 
         function bindDynamicEvents() {
-            document.querySelectorAll(".dynamic-input").forEach(el => {
+            document.querySelectorAll(".dynamic-input").forEach(function (el) {
                 el.addEventListener("input", updatePreview);
                 el.addEventListener("change", updatePreview);
             });
@@ -1627,10 +1678,13 @@
             return currentFlow === "real_estate" && projectSwitch.classList.contains("active");
         }
 
-        function toggleProjectMode(forceValue = null) {
+        function toggleProjectMode(forceValue) {
             if (currentFlow !== "real_estate") return;
 
-            const nextState = forceValue !== null ? forceValue : !projectSwitch.classList.contains("active");
+            const nextState = forceValue !== null && forceValue !== undefined
+                ? forceValue
+                : !projectSwitch.classList.contains("active");
+
             projectSwitch.classList.toggle("active", nextState);
             projectFields.classList.toggle("hidden-block", !nextState);
 
@@ -1655,7 +1709,7 @@
         }
 
         function getProjectsStore() {
-            return JSON.parse(localStorage.getItem("projects") || "[]");
+            return safeParseLocalStorage("projects") || [];
         }
 
         function saveProjectsStore(projects) {
@@ -1666,11 +1720,12 @@
             const list = getProjectsStore();
             const key = normalizeText(keyword);
             if (!key) return list.slice(0, 5);
-            return list.filter(item =>
-                normalizeText(item.name).includes(key) ||
-                normalizeText(item.slug).includes(key) ||
-                normalizeText(item.city || "").includes(key)
-            ).slice(0, 8);
+
+            return list.filter(function (item) {
+                return normalizeText(item.name).includes(key) ||
+                    normalizeText(item.slug).includes(key) ||
+                    normalizeText(item.city || "").includes(key);
+            }).slice(0, 8);
         }
 
         function renderProjectSuggestions(keyword) {
@@ -1681,19 +1736,26 @@
                 return;
             }
 
-            projectSuggestList.innerHTML = projects.map(item => `
-                <div class="suggest-item" data-project-id="${item.id}">
-                    <div class="suggest-name">${item.name}</div>
-                    <div class="suggest-meta">${item.city || "Chưa có tỉnh/thành"} • ${item.type || "Chưa phân loại"} • ${item.postCount || 0} tin</div>
-                </div>
-            `).join("");
+            projectSuggestList.innerHTML = projects.map(function (item) {
+                const approved = item.postCount || 0;
+                const pending = item.pendingCount || 0;
+                return `
+                    <div class="suggest-item" data-project-id="${item.id}">
+                        <div class="suggest-name">${item.name}</div>
+                        <div class="suggest-meta">${item.city || "Chưa có tỉnh/thành"} • ${item.type || "Chưa phân loại"} • ${approved} đã duyệt / ${pending} chờ duyệt</div>
+                    </div>
+                `;
+            }).join("");
 
             projectSuggestList.style.display = "block";
 
-            projectSuggestList.querySelectorAll(".suggest-item").forEach(item => {
-                item.addEventListener("click", () => {
+            projectSuggestList.querySelectorAll(".suggest-item").forEach(function (item) {
+                item.addEventListener("click", function () {
                     const projectId = item.getAttribute("data-project-id");
-                    const project = getProjectsStore().find(p => p.id === projectId);
+                    const project = getProjectsStore().find(function (p) {
+                        return p.id === projectId;
+                    });
+
                     if (project) {
                         selectedProject = project;
                         projectSearch.value = project.name;
@@ -1711,14 +1773,14 @@
         function updateSelectedProjectBadge() {
             if (selectedProject && isProjectEnabled()) {
                 selectedProjectBadge.style.display = "block";
-                selectedProjectBadge.textContent = `Đã chọn dự án có sẵn: ${selectedProject.name}`;
+                selectedProjectBadge.textContent = "Đã chọn dự án có sẵn: " + selectedProject.name;
                 return;
             }
 
             const newName = newProjectName.value.trim();
             if (isProjectEnabled() && newName) {
                 selectedProjectBadge.style.display = "block";
-                selectedProjectBadge.textContent = `Dự án mới sẽ được tạo: ${newName}`;
+                selectedProjectBadge.textContent = "Dự án mới sẽ được tạo: " + newName;
                 return;
             }
 
@@ -1765,47 +1827,74 @@
             };
         }
 
-        function upsertProjectForPost(projectData, postData) {
-            if (!projectData.enabled || !projectData.projectSlug) return null;
+        function syncProjectStoreFromPosts(allPosts) {
+            const posts = Array.isArray(allPosts) ? allPosts : [];
+            const oldProjects = getProjectsStore();
+            const map = new Map();
 
-            const projects = getProjectsStore();
-            const existing = projects.find(p => p.slug === projectData.projectSlug || normalizeText(p.name) === normalizeText(projectData.projectName));
+            oldProjects.forEach(function (project) {
+                if (!project || !project.slug) return;
+                map.set(project.slug, {
+                    ...project,
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0
+                });
+            });
 
-            if (existing) {
-                existing.postCount = (existing.postCount || 0) + 1;
-                existing.lastPostAt = new Date().toISOString();
-                existing.city = existing.city || postData.city;
-                existing.ward = existing.ward || postData.ward;
-                existing.type = existing.type || projectData.projectType || postData.propertyType || "";
-                existing.developer = existing.developer || projectData.projectDeveloper || "";
-                saveProjectsStore(projects);
-                return existing;
-            }
+            posts.forEach(function (post) {
+                if (!post || !post.projectSlug || !post.projectName) return;
 
-            const newProject = {
-                id: projectData.projectId,
-                name: projectData.projectName,
-                slug: projectData.projectSlug,
-                city: postData.city,
-                ward: postData.ward,
-                addressDetail: postData.addressDetail || "",
-                type: projectData.projectType || postData.propertyType || "",
-                developer: projectData.projectDeveloper || "",
-                postCount: 1,
-                createdAt: new Date().toISOString(),
-                lastPostAt: new Date().toISOString()
-            };
+                const slug = post.projectSlug;
+                const existing = map.get(slug) || {
+                    id: post.projectId || ("project_" + slug),
+                    name: post.projectName,
+                    slug: slug,
+                    city: post.city || "",
+                    ward: post.ward || "",
+                    addressDetail: post.addressDetail || "",
+                    type: post.projectTypeName || post.propertyType || "",
+                    developer: post.projectDeveloper || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0,
+                    createdAt: new Date().toISOString(),
+                    lastPostAt: post.createdAt || new Date().toISOString()
+                };
 
-            projects.unshift(newProject);
-            saveProjectsStore(projects);
-            return newProject;
-        }
+                existing.name = existing.name || post.projectName;
+                existing.city = existing.city || post.city || "";
+                existing.ward = existing.ward || post.ward || "";
+                existing.addressDetail = existing.addressDetail || post.addressDetail || "";
+                existing.type = existing.type || post.projectTypeName || post.propertyType || "";
+                existing.developer = existing.developer || post.projectDeveloper || "";
+                existing.totalPosts = (existing.totalPosts || 0) + 1;
+                existing.lastPostAt = post.createdAt || post.updatedAt || existing.lastPostAt || new Date().toISOString();
 
-        function handleProjectSearchInput() {
-            const keyword = projectSearch.value.trim();
-            selectedProject = null;
-            updateSelectedProjectBadge();
-            renderProjectSuggestions(keyword);
+                const status = post.status || "pending";
+                if (status === "approved") {
+                    existing.postCount = (existing.postCount || 0) + 1;
+                } else if (status === "pending") {
+                    existing.pendingCount = (existing.pendingCount || 0) + 1;
+                } else if (status === "rejected") {
+                    existing.rejectedCount = (existing.rejectedCount || 0) + 1;
+                } else if (status === "hidden") {
+                    existing.hiddenCount = (existing.hiddenCount || 0) + 1;
+                }
+
+                map.set(slug, existing);
+            });
+
+            const nextProjects = Array.from(map.values()).sort(function (a, b) {
+                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
+            });
+
+            saveProjectsStore(nextProjects);
+            return nextProjects;
         }
 
         function updatePreview() {
@@ -1816,33 +1905,33 @@
             const locationText = [ward, city].filter(Boolean).join(", ");
 
             previewLocation.textContent = locationText || "Chưa chọn";
-            previewPoster.textContent = contactName || (currentUser?.brandName || currentUser?.fullName || "Chưa có");
+            previewPoster.textContent = contactName || (currentUser && (currentUser.brandName || currentUser.fullName) || "Chưa có");
             previewTitle.textContent = title || "Tiêu đề sẽ hiện ở đây sau khi bạn nhập";
-            previewImagesCount.textContent = `${selectedImages.length} ảnh`;
+            previewImagesCount.textContent = selectedImages.length + " ảnh";
 
             if (currentFlow === "construction") {
-                const servicePrice = document.getElementById("servicePrice")?.value || "Chưa nhập";
-                const serviceExp = document.getElementById("serviceExp")?.value || "Chưa nhập";
+                const servicePrice = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value : "Chưa nhập";
+                const serviceExp = document.getElementById("serviceExp") ? document.getElementById("serviceExp").value : "Chưa nhập";
 
                 previewFlow.textContent = "Dịch vụ xây dựng";
                 previewDescription.textContent = "Nội dung này sẽ được đẩy ra trang Xây dựng để khách hàng tìm thấy công ty xây dựng, kỹ sư hoặc nhà thầu phù hợp.";
-                previewPrice.textContent = servicePrice;
-                previewArea.textContent = serviceExp;
+                previewPrice.textContent = servicePrice || "Chưa nhập";
+                previewArea.textContent = serviceExp || "Chưa nhập";
                 previewProject.textContent = "Không áp dụng";
             } else {
-                const propertyPrice = document.getElementById("propertyPrice")?.value || "Chưa nhập";
-                const propertyArea = document.getElementById("propertyArea")?.value || "";
+                const propertyPrice = document.getElementById("propertyPrice") ? document.getElementById("propertyPrice").value : "Chưa nhập";
+                const propertyArea = document.getElementById("propertyArea") ? document.getElementById("propertyArea").value : "";
 
                 previewFlow.textContent = currentPostType === "ban" ? "Bất động sản bán" : "Bất động sản cho thuê";
                 previewDescription.textContent = currentPostType === "ban"
                     ? "Tin này sẽ hiển thị ở mục Nhà đất bán và dữ liệu giá có thể dùng để tổng hợp cho trang Giá nhà đất."
                     : "Tin này sẽ hiển thị ở mục Nhà đất cho thuê và phục vụ nhu cầu tìm thuê thực tế.";
                 previewPrice.textContent = propertyPrice || "Chưa nhập";
-                previewArea.textContent = propertyArea ? `${propertyArea} m²` : "Chưa nhập";
+                previewArea.textContent = propertyArea ? propertyArea + " m²" : "Chưa nhập";
 
                 if (isProjectEnabled()) {
                     previewProject.textContent =
-                        selectedProject?.name ||
+                        (selectedProject && selectedProject.name) ||
                         newProjectName.value.trim() ||
                         "Đang chờ chọn / nhập dự án";
                 } else {
@@ -1853,41 +1942,136 @@
 
         function renderSelectedImages() {
             imagePreviewList.innerHTML = "";
-            selectedImages.forEach((fileObj, index) => {
+            selectedImages.forEach(function (fileObj, index) {
                 const wrapper = document.createElement("div");
                 wrapper.className = "image-preview-item";
                 wrapper.innerHTML = `
                     <img src="${fileObj.dataUrl}" alt="Ảnh ${index + 1}" />
                     <div class="text-[11px] break-all">${fileObj.name}</div>
+                    <div class="meta-line">${fileObj.width}×${fileObj.height} • ~${fileObj.sizeKB} KB</div>
                 `;
                 imagePreviewList.appendChild(wrapper);
             });
             updatePreview();
         }
 
-        function handleImageFiles(files) {
-            const fileList = Array.from(files || []).slice(0, 12);
-            if (!fileList.length) return;
-
-            const readers = fileList.map(file => {
-                return new Promise(resolve => {
-                    const reader = new FileReader();
-                    reader.onload = e => {
+        function loadImageElement(file) {
+            return new Promise(function (resolve, reject) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const img = new Image();
+                    img.onload = function () {
                         resolve({
-                            name: file.name,
-                            type: file.type,
-                            size: file.size,
-                            dataUrl: e.target.result
+                            image: img,
+                            originalDataUrl: event.target.result
                         });
                     };
-                    reader.readAsDataURL(file);
-                });
+                    img.onerror = reject;
+                    img.src = event.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
             });
+        }
 
-            Promise.all(readers).then(images => {
-                selectedImages = images;
+        function compressCanvasToDataUrl(canvas, mimeType, quality, maxKB) {
+            let currentQuality = quality;
+            let dataUrl = canvas.toDataURL(mimeType, currentQuality);
+            let sizeKB = bytesToKB(estimateBase64Bytes(dataUrl));
+
+            while (sizeKB > maxKB && currentQuality > 0.45) {
+                currentQuality -= 0.07;
+                dataUrl = canvas.toDataURL(mimeType, currentQuality);
+                sizeKB = bytesToKB(estimateBase64Bytes(dataUrl));
+            }
+
+            return {
+                dataUrl: dataUrl,
+                sizeKB: sizeKB,
+                quality: currentQuality
+            };
+        }
+
+        async function optimizeSingleImage(file) {
+            const loaded = await loadImageElement(file);
+            const img = loaded.image;
+
+            const ratio = Math.min(
+                MAX_IMAGE_WIDTH / img.width,
+                MAX_IMAGE_HEIGHT / img.height,
+                1
+            );
+
+            const targetWidth = Math.max(1, Math.round(img.width * ratio));
+            const targetHeight = Math.max(1, Math.round(img.height * ratio));
+
+            const canvas = document.createElement("canvas");
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+            const compressed = compressCanvasToDataUrl(
+                canvas,
+                "image/jpeg",
+                IMAGE_QUALITY,
+                MAX_FINAL_IMAGE_KB
+            );
+
+            return {
+                id: "img_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8),
+                name: file.name,
+                originalType: file.type || "image/*",
+                type: "image/jpeg",
+                originalSize: file.size,
+                size: estimateBase64Bytes(compressed.dataUrl),
+                sizeKB: compressed.sizeKB,
+                width: targetWidth,
+                height: targetHeight,
+                quality: compressed.quality,
+                dataUrl: compressed.dataUrl
+            };
+        }
+
+        async function handleImageFiles(files) {
+            const fileList = Array.from(files || []);
+            if (!fileList.length) return;
+
+            if (fileList.length > MAX_IMAGES) {
+                showStatus("info", "Bạn chọn quá nhiều ảnh. Hệ thống chỉ lấy " + MAX_IMAGES + " ảnh đầu tiên.");
+            }
+
+            const limitedFiles = fileList.slice(0, MAX_IMAGES);
+
+            selectImagesBtn.disabled = true;
+            selectImagesBtn.classList.add("opacity-70", "cursor-not-allowed");
+            showStatus("info", "Đang xử lý và nén ảnh để tối ưu lưu trữ...");
+
+            try {
+                const optimizedImages = [];
+                for (let i = 0; i < limitedFiles.length; i += 1) {
+                    const optimized = await optimizeSingleImage(limitedFiles[i]);
+                    optimizedImages.push(optimized);
+                }
+
+                selectedImages = optimizedImages;
                 renderSelectedImages();
-            });
+
+                const totalKB = optimizedImages.reduce(function (sum, item) {
+                    return sum + (item.sizeKB || 0);
+                }, 0);
+
+                hideStatus();
+                showStatus("success", "Đã xử lý " + optimizedImages.length + " ảnh. Tổng dung lượng ước tính sau nén khoảng " + totalKB + " KB.");
+            } catch (error) {
+                console.error("Lỗi xử lý ảnh:", error);
+                showStatus("error", "Không thể xử lý ảnh. Vui lòng thử lại với ảnh khác hoặc giảm số lượng ảnh.");
+            } finally {
+                selectImagesBtn.disabled = false;
+                selectImagesBtn.classList.remove("opacity-70", "cursor-not-allowed");
+                imageInput.value = "";
+            }
         }
 
         function validateForm() {
@@ -1936,16 +2120,16 @@
             }
 
             if (currentFlow === "construction") {
-                const serviceType = document.getElementById("serviceType")?.value;
-                const servicePrice = document.getElementById("servicePrice")?.value.trim();
+                const serviceType = document.getElementById("serviceType") ? document.getElementById("serviceType").value : "";
+                const servicePrice = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value.trim() : "";
 
                 if (!serviceType || !servicePrice) {
                     showStatus("error", "Vui lòng điền đủ loại dịch vụ và đơn giá tham khảo cho nội dung xây dựng.");
                     return false;
                 }
             } else {
-                const propertyPrice = document.getElementById("propertyPrice")?.value.trim();
-                const propertyArea = document.getElementById("propertyArea")?.value.trim();
+                const propertyPrice = document.getElementById("propertyPrice") ? document.getElementById("propertyPrice").value.trim() : "";
+                const propertyArea = document.getElementById("propertyArea") ? document.getElementById("propertyArea").value.trim() : "";
 
                 if (!propertyPrice || !propertyArea) {
                     showStatus("error", "Vui lòng điền đủ giá và diện tích cho tin bất động sản.");
@@ -1969,15 +2153,15 @@
         function buildPostData() {
             const baseData = {
                 id: "post_" + Date.now(),
-                userId: currentUser?.id || "",
-                accountGroup: currentUser?.accountGroup || "",
-                accountGroupLabel: currentUser?.accountGroupLabel || "",
-                role: currentUser?.role || "",
-                roleLabel: currentUser?.roleLabel || "",
-                brandName: currentUser?.brandName || "",
-                fullName: currentUser?.fullName || "",
-                email: currentUser?.email || "",
-                phone: currentUser?.phone || "",
+                userId: currentUser && currentUser.id ? currentUser.id : "",
+                accountGroup: currentUser && currentUser.accountGroup ? currentUser.accountGroup : "",
+                accountGroupLabel: currentUser && currentUser.accountGroupLabel ? currentUser.accountGroupLabel : "",
+                role: currentUser && currentUser.role ? currentUser.role : "",
+                roleLabel: currentUser && currentUser.roleLabel ? currentUser.roleLabel : "",
+                brandName: currentUser && currentUser.brandName ? currentUser.brandName : "",
+                fullName: currentUser && currentUser.fullName ? currentUser.fullName : "",
+                email: currentUser && currentUser.email ? currentUser.email : "",
+                phone: currentUser && currentUser.phone ? currentUser.phone : "",
                 flow: currentFlow,
                 postType: currentFlow === "construction" ? "xaydung" : currentPostType,
                 profileType: currentProfile,
@@ -1997,36 +2181,35 @@
             };
 
             if (currentFlow === "construction") {
-                const servicePriceRaw = document.getElementById("servicePrice")?.value || "";
+                const servicePriceRaw = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value : "";
                 return {
                     ...baseData,
-                    serviceType: document.getElementById("serviceType")?.value || "",
+                    serviceType: document.getElementById("serviceType") ? document.getElementById("serviceType").value : "",
                     servicePrice: servicePriceRaw,
                     servicePriceData: parseVietnamesePrice(servicePriceRaw, "xaydung"),
-                    serviceExp: document.getElementById("serviceExp")?.value || "",
-                    serviceArea: document.getElementById("serviceArea")?.value || "",
-                    serviceBrand: document.getElementById("serviceBrand")?.value || "",
-                    serviceSpecialty: document.getElementById("serviceSpecialty")?.value || ""
+                    serviceExp: document.getElementById("serviceExp") ? document.getElementById("serviceExp").value : "",
+                    serviceArea: document.getElementById("serviceArea") ? document.getElementById("serviceArea").value : "",
+                    serviceBrand: document.getElementById("serviceBrand") ? document.getElementById("serviceBrand").value : "",
+                    serviceSpecialty: document.getElementById("serviceSpecialty") ? document.getElementById("serviceSpecialty").value : ""
                 };
             }
 
-            const propertyPriceRaw = document.getElementById("propertyPrice")?.value || "";
-            const propertyAreaRaw = document.getElementById("propertyArea")?.value || "";
+            const propertyPriceRaw = document.getElementById("propertyPrice") ? document.getElementById("propertyPrice").value : "";
+            const propertyAreaRaw = document.getElementById("propertyArea") ? document.getElementById("propertyArea").value : "";
             const areaNumber = Number(propertyAreaRaw || 0);
             const parsedPrice = parseVietnamesePrice(propertyPriceRaw, currentPostType);
-
             const projectData = resolveProjectData();
 
             const postData = {
                 ...baseData,
-                propertyType: document.getElementById("propertyType")?.value || "",
+                propertyType: document.getElementById("propertyType") ? document.getElementById("propertyType").value : "",
                 propertyPrice: propertyPriceRaw,
                 propertyPriceData: parsedPrice,
                 propertyArea: propertyAreaRaw,
                 propertyAreaNumber: areaNumber || null,
-                propertyLegal: document.getElementById("propertyLegal")?.value || "",
-                propertyDirection: document.getElementById("propertyDirection")?.value || "",
-                propertyBeds: document.getElementById("propertyBeds")?.value || "",
+                propertyLegal: document.getElementById("propertyLegal") ? document.getElementById("propertyLegal").value : "",
+                propertyDirection: document.getElementById("propertyDirection") ? document.getElementById("propertyDirection").value : "",
+                propertyBeds: document.getElementById("propertyBeds") ? document.getElementById("propertyBeds").value : "",
                 projectEnabled: projectData.enabled,
                 projectId: projectData.projectId,
                 projectName: projectData.projectName,
@@ -2045,41 +2228,48 @@
             return postData;
         }
 
-        function saveSingleSourcePost(postData) {
-    postStorage.createPost(postData);
-    return postStorage.getAllPosts();
+        function ensureStorageReady() {
+            if (!window.userStorage) {
+                throw new Error("window.userStorage chưa được load");
+            }
+
+            if (!window.postStorage) {
+                throw new Error("window.postStorage chưa được load");
+            }
+
+            if (typeof window.postStorage.createPost !== "function") {
+                throw new Error("window.postStorage.createPost không tồn tại");
+            }
+
+            if (typeof window.postStorage.getAllPosts !== "function") {
+                throw new Error("window.postStorage.getAllPosts không tồn tại");
+            }
         }
 
-        function rebuildCompatibilityStores(allPosts) {
-            const propertyPosts = allPosts.filter(item => item.flow === "real_estate");
-            const salePosts = propertyPosts.filter(item => item.postType === "ban");
-            const rentalPosts = propertyPosts.filter(item => item.postType === "thue");
-            const constructionPosts = allPosts.filter(item => item.flow === "construction");
-
-            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
-            localStorage.setItem("salePosts", JSON.stringify(salePosts));
-            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
-            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+        function saveSingleSourcePost(postData) {
+            ensureStorageReady();
+            window.postStorage.createPost(postData);
+            return window.postStorage.getAllPosts();
         }
 
         function savePostToStorage(postData) {
-            const savedProject = upsertProjectForPost(resolveProjectData(), postData);
+            const allPosts = saveSingleSourcePost(postData);
+            syncProjectStoreFromPosts(allPosts);
 
-            if (savedProject) {
-                postData.projectId = savedProject.id;
-                postData.projectName = savedProject.name;
-                postData.projectSlug = savedProject.slug;
-                postData.projectTypeName = savedProject.type || postData.projectTypeName || "";
-                postData.projectDeveloper = savedProject.developer || postData.projectDeveloper || "";
-                postData.isNewProject = false;
+            if (window.projectService && typeof window.projectService.syncProjectCounts === "function") {
+                try {
+                    window.projectService.syncProjectCounts(allPosts);
+                } catch (error) {
+                    console.warn("projectService.syncProjectCounts lỗi:", error);
+                }
             }
 
-            const allPosts = saveSingleSourcePost(postData);
-            rebuildCompatibilityStores(allPosts);
+            return allPosts;
         }
 
         function resetFormAfterSubmit(formElement) {
             formElement.reset();
+
             selectedImages = [];
             renderSelectedImages();
 
@@ -2088,9 +2278,10 @@
             projectFields.classList.add("hidden-block");
             resetProjectInputs();
 
-            setProfile(currentUser?.accountGroup === "construction" ? "doanhnghiep" : "canhan");
+            setProfile(currentUser && currentUser.accountGroup === "construction" ? "doanhnghiep" : "canhan");
             currentPostType = "ban";
-            document.querySelectorAll(".subtab-btn").forEach(btn => {
+
+            document.querySelectorAll(".subtab-btn").forEach(function (btn) {
                 btn.classList.toggle("active", btn.getAttribute("data-post-type") === "ban");
             });
 
@@ -2108,26 +2299,36 @@
             submitBtn.disabled = true;
             submitBtn.classList.add("opacity-70", "cursor-not-allowed");
 
-            const postData = buildPostData();
-            savePostToStorage(postData);
+            try {
+                console.log("=== SUBMIT START ===");
+                console.log("currentUser:", currentUser);
+                console.log("window.userStorage:", window.userStorage);
+                console.log("window.postStorage:", window.postStorage);
+                console.log("window.projectService:", window.projectService);
 
-            showStatus(
-                "success",
-                currentFlow === "construction"
-                    ? "Đăng dịch vụ xây dựng thành công ở chế độ demo. Nội dung đã được lưu với trạng thái chờ duyệt."
-                    : currentPostType === "ban"
-                        ? "Đăng tin bán thành công ở chế độ demo. Dữ liệu đã được lưu, có thể dùng cho tổng hợp giá nhà đất và gom nhóm theo dự án."
-                        : "Đăng tin cho thuê thành công ở chế độ demo. Nội dung đã được lưu với trạng thái chờ duyệt và có thể gom nhóm theo dự án."
-            );
+                const postData = buildPostData();
+                console.log("postData:", postData);
 
-            resetFormAfterSubmit(this);
+                savePostToStorage(postData);
 
-            setTimeout(() => {
+                showStatus(
+                    "success",
+                    currentFlow === "construction"
+                        ? "Đăng dịch vụ xây dựng thành công. Nội dung đã được lưu với trạng thái chờ duyệt."
+                        : currentPostType === "ban"
+                            ? "Đăng tin bán thành công. Dữ liệu đã được lưu với trạng thái chờ duyệt."
+                            : "Đăng tin cho thuê thành công. Dữ liệu đã được lưu với trạng thái chờ duyệt."
+                );
+
+                resetFormAfterSubmit(this);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } catch (error) {
+                console.error("Lỗi khi gửi tin:", error);
+                showStatus("error", "Không thể gửi nội dung. Vui lòng mở Console trình duyệt để xem lỗi kỹ thuật chi tiết.");
+            } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
-            }, 500);
-
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            }
         });
 
         citySelect.addEventListener("change", updateWards);
@@ -2138,18 +2339,34 @@
         document.getElementById("contactName").addEventListener("input", updatePreview);
         document.getElementById("contactPhone").addEventListener("input", updatePreview);
 
-        flowRealEstate.addEventListener("click", () => setFlow("real_estate"));
-        flowConstruction.addEventListener("click", () => setFlow("construction"));
+        flowRealEstate.addEventListener("click", function () {
+            setFlow("real_estate");
+        });
 
-        document.querySelectorAll(".subtab-btn").forEach(btn => {
-            btn.addEventListener("click", () => {
+        flowConstruction.addEventListener("click", function () {
+            setFlow("construction");
+        });
+
+        document.querySelectorAll(".subtab-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
                 setSubtab(btn.getAttribute("data-post-type"));
             });
         });
 
-        projectSwitch.addEventListener("click", () => toggleProjectMode());
+        projectSwitch.addEventListener("click", function () {
+            toggleProjectMode();
+        });
+
         projectSearch.addEventListener("input", handleProjectSearchInput);
-        newProjectName.addEventListener("input", () => {
+
+        function handleProjectSearchInput() {
+            const keyword = projectSearch.value.trim();
+            selectedProject = null;
+            updateSelectedProjectBadge();
+            renderProjectSuggestions(keyword);
+        }
+
+        newProjectName.addEventListener("input", function () {
             if (newProjectName.value.trim()) {
                 selectedProject = null;
                 projectSearch.value = "";
@@ -2158,6 +2375,7 @@
             updateSelectedProjectBadge();
             updatePreview();
         });
+
         projectDeveloper.addEventListener("input", updatePreview);
         projectTypeField.addEventListener("change", updatePreview);
 
@@ -2168,8 +2386,13 @@
             }
         });
 
-        selectImagesBtn.addEventListener("click", () => imageInput.click());
-        imageInput.addEventListener("change", e => handleImageFiles(e.target.files));
+        selectImagesBtn.addEventListener("click", function () {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener("change", function (e) {
+            handleImageFiles(e.target.files);
+        });
 
         function sendToZalo() {
             const name = document.getElementById("cusName").value;
@@ -2184,6 +2407,26 @@
             const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        window.sendToZalo = sendToZalo;
+
+        console.log("currentUser loaded:", currentUser);
+        console.log("window.userStorage:", window.userStorage);
+        console.log("window.postStorage:", window.postStorage);
+        console.log("window.projectService:", window.projectService);
+
+        if (window.userStorage && typeof window.userStorage.getStorageSummary === "function") {
+            console.log("storage summary:", window.userStorage.getStorageSummary());
+        }
+
+        try {
+            if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                const currentPosts = window.postStorage.getAllPosts();
+                syncProjectStoreFromPosts(currentPosts);
+            }
+        } catch (error) {
+            console.warn("Không thể đồng bộ project store lúc khởi tạo:", error);
         }
 
         fillUserInfo();
