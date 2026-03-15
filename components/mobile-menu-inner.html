@@ -1,15 +1,152 @@
-<div class="lg:hidden bg-white border-t">
-    <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
-        <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
-        <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
-        <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
-        <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
-        <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
-        <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
-        <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
-        <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
-        <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
-        <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
-        <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
+<div id="mobileMenuOverlay" class="fixed inset-0 bg-black/40 z-[999] hidden"></div>
+
+<div id="mobileMenu"
+class="fixed top-0 right-0 w-[86%] max-w-[360px] h-full bg-white z-[1000] shadow-2xl translate-x-full transition-transform duration-300 flex flex-col">
+
+    <div class="p-4 border-b flex gap-3">
+        <a href="../auth/dang-nhap.html" class="flex-1 border rounded-xl py-3 text-center font-semibold text-gray-700">
+            Đăng nhập
+        </a>
+
+        <a href="../auth/dang-ky.html" class="flex-1 bg-red-500 text-white rounded-xl py-3 text-center font-semibold">
+            Đăng ký
+        </a>
+    </div>
+
+    <div class="p-4 border-b">
+        <a href="../user/dang-tin.html" class="block text-center border rounded-xl py-3 font-semibold text-gray-700">
+            Đăng tin
+        </a>
+    </div>
+
+    <div class="flex-1 overflow-y-auto">
+        <a class="mobile-item" href="javascript:void(0)">
+            <i class="fa-regular fa-heart"></i>
+            Tin đăng đã lưu
+        </a>
+
+        <div class="mobile-item has-sub">
+            <i class="fa-solid fa-house"></i>
+            Nhà đất bán
+            <i class="fa-solid fa-chevron-down ml-auto text-xs"></i>
+        </div>
+        <div class="sub-menu">
+            <a href="../pages/nha-dat-ban.html">Bán căn hộ</a>
+            <a href="../pages/nha-dat-ban.html">Bán nhà riêng</a>
+            <a href="../pages/nha-dat-ban.html">Bán đất nền</a>
+            <a href="../pages/nha-dat-ban.html">Bán biệt thự</a>
+        </div>
+
+        <div class="mobile-item has-sub">
+            <i class="fa-solid fa-building"></i>
+            Nhà đất cho thuê
+            <i class="fa-solid fa-chevron-down ml-auto text-xs"></i>
+        </div>
+        <div class="sub-menu">
+            <a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ</a>
+            <a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a>
+            <a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a>
+        </div>
+
+        <div class="mobile-item has-sub">
+            <i class="fa-solid fa-city"></i>
+            Dự án
+            <i class="fa-solid fa-chevron-down ml-auto text-xs"></i>
+        </div>
+        <div class="sub-menu">
+            <a href="../pages/du-an.html">Dự án mới</a>
+            <a href="../pages/du-an.html">Dự án nổi bật</a>
+        </div>
+
+        <a class="mobile-item" href="../pages/tin-tuc.html">
+            <i class="fa-regular fa-newspaper"></i>
+            Tin tức
+        </a>
+
+        <a class="mobile-item" href="../pages/gia-nha-dat.html">
+            <i class="fa-solid fa-chart-line"></i>
+            Phân tích đánh giá
+        </a>
+
+        <div class="mobile-item has-sub">
+            <i class="fa-regular fa-address-book"></i>
+            Danh bạ
+            <i class="fa-solid fa-chevron-down ml-auto text-xs"></i>
+        </div>
+        <div class="sub-menu">
+            <a href="../pages/danh-ba-doanh-nghiep.html">Doanh nghiệp</a>
+            <a href="../pages/danh-ba-moi-gioi.html">Môi giới</a>
+        </div>
+
+        <div class="border-t mt-4"></div>
+
+        <a class="mobile-item" href="javascript:void(0)">Góp ý - Báo lỗi</a>
+        <a class="mobile-item" href="../pages/gioi-thieu.html">Giới thiệu về chúng tôi</a>
     </div>
 </div>
+
+<style>
+    .mobile-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 18px;
+        font-size: 15px;
+        color: #333;
+        border-bottom: 1px solid #f1f1f1;
+        cursor: pointer;
+    }
+
+    .mobile-item i {
+        width: 20px;
+        text-align: center;
+        color: #666;
+    }
+
+    .sub-menu {
+        display: none;
+        background: #fafafa;
+    }
+
+    .sub-menu a {
+        display: block;
+        padding: 12px 48px;
+        font-size: 14px;
+        color: #555;
+        border-bottom: 1px solid #eee;
+    }
+
+    .sub-menu a:hover {
+        color: #008B8B;
+        background: #f5ffff;
+    }
+</style>
+
+<script>
+    function openMobileMenu() {
+        const menu = document.getElementById("mobileMenu");
+        const overlay = document.getElementById("mobileMenuOverlay");
+        if (menu) menu.style.transform = "translateX(0)";
+        if (overlay) overlay.classList.remove("hidden");
+    }
+
+    function closeMobileMenu() {
+        const menu = document.getElementById("mobileMenu");
+        const overlay = document.getElementById("mobileMenuOverlay");
+        if (menu) menu.style.transform = "translateX(100%)";
+        if (overlay) overlay.classList.add("hidden");
+    }
+
+    (function () {
+        const overlay = document.getElementById("mobileMenuOverlay");
+        if (overlay) overlay.onclick = closeMobileMenu;
+
+        document.querySelectorAll(".has-sub").forEach(item => {
+            item.onclick = function () {
+                const menu = this.nextElementSibling;
+                if (!menu) return;
+                menu.style.display = menu.style.display === "block" ? "none" : "block";
+            };
+        });
+    })();
+</script>
