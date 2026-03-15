@@ -1,30 +1,44 @@
+/* =========================
+   GLOBAL VARIABLES
+========================= */
+
 :root {
     --primary-color: #008B8B;
     --hover-color: #FF8C00;
     --gold-vip: #ffce3d;
+
     --text-color: #2C2C2C;
     --bg-color: #f2f2f2;
+
     --white: #ffffff;
     --border-color: #e5e7eb;
+
     --danger-color: #E03C31;
     --info-color: #2563eb;
 }
+
+
+/* =========================
+   RESET
+========================= */
 
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
     margin: 0;
     padding: 0;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 img {
-    max-width: 100%;
     display: block;
+    max-width: 100%;
 }
 
 a {
@@ -32,33 +46,52 @@ a {
     color: inherit;
 }
 
+
+/* =========================
+   LAYOUT
+========================= */
+
 .container-custom {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
 }
 
-/* Header / Menu */
+
+/* =========================
+   HEADER / MENU
+========================= */
+
 .nav-link {
-    transition: all 0.3s;
     position: relative;
+    transition: color 0.3s ease;
 }
 
 .nav-link:hover {
     color: var(--hover-color) !important;
 }
 
+
+/* Dropdown */
+
 .dropdown-menu {
     display: none;
+
     position: absolute;
     top: 100%;
     left: 0;
-    background: var(--white);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
     min-width: 200px;
-    z-index: 100;
+
+    background: var(--white);
+
     border-top: 3px solid var(--primary-color);
+
     padding: 10px 0;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+    z-index: 100;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -66,10 +99,13 @@ a {
 }
 
 .dropdown-item {
-    padding: 10px 20px;
     display: block;
-    color: #333;
+
+    padding: 10px 20px;
+
     font-size: 14px;
+
+    color: #333;
 }
 
 .dropdown-item:hover {
@@ -77,207 +113,367 @@ a {
     color: var(--hover-color);
 }
 
-/* Button chung */
+
+/* =========================
+   BUTTONS
+========================= */
+
 .btn-primary {
+
     background-color: var(--primary-color);
     color: var(--white);
+
     border: none;
+
     padding: 10px 18px;
+
     border-radius: 8px;
-    font-weight: bold;
+
+    font-weight: 700;
+
     cursor: pointer;
-    transition: 0.3s;
+
+    transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
 .btn-primary:hover {
     opacity: 0.9;
 }
 
+
 .btn-outline-primary {
+
     border: 1.5px solid var(--primary-color);
+
     color: var(--primary-color);
+
     background: transparent;
+
     padding: 10px 16px;
+
     border-radius: 8px;
-    font-weight: bold;
+
+    font-weight: 700;
+
     cursor: pointer;
-    transition: 0.3s;
+
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btn-outline-primary:hover {
+
     background: var(--primary-color);
     color: var(--white);
 }
 
-/* Card */
+
+/* =========================
+   VIP LABEL
+========================= */
+
 .card-vip-label {
+
     position: absolute;
+
     top: 10px;
     left: 10px;
-    background: linear-gradient(45deg, #f1c40f, #f39c12);
-    color: #fff;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 4px;
+
     z-index: 10;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    padding: 3px 8px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
     text-transform: uppercase;
+
+    border-radius: 4px;
+
+    background: linear-gradient(45deg,#f1c40f,#f39c12);
+
+    color: white;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Filter box */
+
+/* =========================
+   FILTER BOX
+========================= */
+
 .filter-box {
+
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+
+    grid-template-columns: repeat(4,1fr);
+
     gap: 10px;
+
     margin-top: 10px;
 }
 
 .filter-item {
-    background: white;
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-size: 13px;
-    color: #333;
-    cursor: pointer;
+
     display: flex;
-    justify-content: space-between;
+
     align-items: center;
+    justify-content: space-between;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+    background: var(--white);
+
+    font-size: 13px;
+
+    color: #333;
+
+    cursor: pointer;
 }
 
-@media (max-width: 768px) {
+
+@media (max-width:768px) {
+
     .filter-box {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2,1fr);
     }
+
 }
 
-/* Floating buttons */
+
+/* =========================
+   FLOATING BUTTONS
+========================= */
+
 .zalo-chat-btn {
+
     position: fixed;
-    bottom: 30px;
+
     right: 20px;
+    bottom: 30px;
+
     z-index: 999;
+
     width: 55px;
     height: 55px;
-    background-color: var(--primary-color);
-    color: white;
+
     border-radius: 50%;
+
+    background-color: var(--primary-color);
+
+    color: white;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 26px;
+
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 139, 139, 0.4);
+
+    box-shadow: 0 4px 15px rgba(0,139,139,0.4);
 }
 
+
+
 #goToTop {
+
     display: none;
+
     position: fixed;
-    bottom: 100px;
+
     right: 25px;
+    bottom: 100px;
+
     z-index: 999;
+
     width: 45px;
     height: 45px;
-    background-color: #fff;
-    color: #333;
-    border: 1px solid #ddd;
+
     border-radius: 50%;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    color: #333;
+
     cursor: pointer;
+
     align-items: center;
     justify-content: center;
 }
 
-/* Utility */
+
+/* =========================
+   SECTION TITLE
+========================= */
+
 .section-title {
+
     font-size: 20px;
-    font-weight: bold;
+
+    font-weight: 700;
+
     text-transform: uppercase;
+
     color: #1f2937;
+
     padding-left: 12px;
+
     border-left: 4px solid var(--primary-color);
 }
 
+
+/* =========================
+   PRICE COLORS
+========================= */
+
 .text-price-sale {
+
     color: var(--danger-color);
-    font-weight: bold;
+
+    font-weight: 700;
 }
 
 .text-price-rent {
+
     color: var(--info-color);
-    font-weight: bold;
+
+    font-weight: 700;
 }
-/* Chat box */
+
+
+/* =========================
+   CHAT BOX
+========================= */
+
 #chatForm {
+
     display: none;
+
     position: fixed;
-    bottom: 95px;
+
     right: 20px;
+    bottom: 95px;
+
     width: 320px;
+
     background: white;
+
     border-radius: 15px;
+
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
     z-index: 1000;
+
     overflow: hidden;
 }
 
 .chat-header {
+
     background: var(--primary-color);
+
     color: white;
+
     padding: 15px;
-    font-weight: bold;
+
+    font-weight: 700;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .chat-body {
+
     padding: 20px;
 }
 
 .chat-body input,
 .chat-body textarea {
+
     width: 100%;
+
     margin-bottom: 15px;
+
     padding: 10px;
+
     border: 1px solid #eee;
+
     border-radius: 8px;
-    box-sizing: border-box;
+
     outline: none;
+
     font-size: 14px;
 }
 
 .btn-send {
+
     width: 100%;
-    background: var(--primary-color);
-    color: white;
-    border: none;
+
     padding: 12px;
+
+    background: var(--primary-color);
+
+    color: white;
+
+    border: none;
+
     border-radius: 8px;
+
+    font-weight: 700;
+
     cursor: pointer;
-    font-weight: bold;
 }
 
 .btn-send:hover {
+
     opacity: 0.95;
 }
-/* Logo */
+
+
+/* =========================
+   LOGO
+========================= */
+
 .site-logo {
+
     height: 42px;
+
     width: auto;
+
     object-fit: contain;
+
     display: block;
 }
 
-@media (max-width: 768px) {
+@media (max-width:768px) {
+
     .site-logo {
         height: 36px;
     }
+
 }
+
+
+/* =========================
+   FOOTER
+========================= */
+
 .footer-link-group h4 {
+
     font-weight: 600;
+
     font-size: 14px;
+
     margin-bottom: 15px;
+
     color: #2C2C2C;
+
     text-transform: uppercase;
+
     letter-spacing: 0.2px;
 }
