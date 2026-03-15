@@ -19,6 +19,7 @@
             --soft-bg: #f5f7fa;
             --text-main: #2c2c2c;
             --border-color: #e5e7eb;
+            --header-offset: 120px;
         }
 
         * {
@@ -42,7 +43,7 @@
             padding: 0 15px;
         }
 
-        /* FIX CỨNG HEADER */
+        /* HEADER CỐ ĐỊNH */
         #site-header {
             position: fixed;
             top: 0;
@@ -50,9 +51,10 @@
             right: 0;
             z-index: 1000;
             background: #fff;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.04);
         }
 
-        /* tránh header component tự ghi đè */
+        /* vô hiệu sticky bên trong component để tránh xung đột */
         #site-header > header {
             position: static !important;
             top: auto !important;
@@ -62,9 +64,9 @@
             margin: 0 !important;
         }
 
-        /* khoảng cách rõ ràng giữa header và bộ lọc */
+        /* khoảng cách tự động theo chiều cao header */
         .page-shell {
-            padding-top: 128px;
+            padding-top: var(--header-offset);
             padding-bottom: 24px;
         }
 
@@ -310,11 +312,6 @@
         }
 
         @media (max-width: 768px) {
-            .page-shell {
-                padding-top: 116px;
-                padding-bottom: 18px;
-            }
-
             .filter-panel {
                 padding: 14px;
                 border-radius: 16px;
@@ -530,6 +527,28 @@
         const cityFilter = document.getElementById("cityFilter");
         const sortFilter = document.getElementById("sortFilter");
         const applyFilterBtn = document.getElementById("applyFilterBtn");
+
+        function setHeaderOffset() {
+            const root = document.documentElement;
+            const siteHeader = document.getElementById("site-header");
+            if (!siteHeader) return;
+
+            const height = Math.ceil(siteHeader.offsetHeight || 0);
+            const extraSpace = window.innerWidth <= 768 ? 20 : 28;
+            root.style.setProperty("--header-offset", (height + extraSpace) + "px");
+        }
+
+        function waitAndSetHeaderOffset() {
+            let tries = 0;
+            const timer = setInterval(() => {
+                tries += 1;
+                setHeaderOffset();
+                const siteHeader = document.getElementById("site-header");
+                if ((siteHeader && siteHeader.offsetHeight > 0) || tries > 30) {
+                    clearInterval(timer);
+                }
+            }, 150);
+        }
 
         function escapeHtml(value) {
             return String(value || "")
@@ -1017,9 +1036,17 @@
         cityFilter.addEventListener("change", renderListings);
         sortFilter.addEventListener("change", renderListings);
 
-        updateFavoriteCount();
-        renderListings();
-        setTimeout(updateFavoriteCount, 300);
+        window.addEventListener("load", () => {
+            waitAndSetHeaderOffset();
+            updateFavoriteCount();
+            renderListings();
+            setTimeout(() => {
+                waitAndSetHeaderOffset();
+                updateFavoriteCount();
+            }, 400);
+        });
+
+        window.addEventListener("resize", setHeaderOffset);
 
         window.filterByHotArea = filterByHotArea;
         window.toggleFavorite = toggleFavorite;
