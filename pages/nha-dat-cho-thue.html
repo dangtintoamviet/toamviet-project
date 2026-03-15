@@ -115,18 +115,54 @@
 
         .filter-select,
         .filter-input {
+            width: 100%;
             border: 1px solid #d1d5db;
-            padding: 10px 12px;
-            border-radius: 8px;
+            padding: 12px 14px;
+            border-radius: 12px;
             font-size: 14px;
             background: white;
             outline: none;
+            min-height: 46px;
+            transition: all 0.25s ease;
         }
 
         .filter-select:focus,
         .filter-input:focus {
             border-color: var(--vip-color);
             box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.08);
+        }
+
+        .filter-panel {
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.95fr) minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-submit-btn {
+            min-height: 46px;
+            padding: 0 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            white-space: nowrap;
+            background: var(--vip-color);
+            color: white;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.18);
+        }
+
+        .filter-submit-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
         }
 
         .empty-box {
@@ -219,6 +255,20 @@
             box-shadow: 0 4px 14px rgba(0,0,0,0.18);
         }
 
+        @media (max-width: 1024px) {
+            .filter-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .filter-grid .filter-submit-wrap {
+                grid-column: span 2;
+            }
+
+            .filter-grid .filter-submit-btn {
+                width: 100%;
+            }
+        }
+
         @media (max-width: 768px) {
             .card-container {
                 flex-direction: column;
@@ -229,18 +279,18 @@
                 height: 220px !important;
             }
 
-            .filter-scroll {
-                display: flex;
-                overflow-x: auto;
-                gap: 8px;
-                padding-bottom: 10px;
-                scrollbar-width: none;
+            .filter-panel {
+                padding: 14px;
+                border-radius: 16px;
             }
 
-            .filter-select,
-            .filter-input {
-                min-width: 140px;
-                flex-shrink: 0;
+            .filter-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .filter-grid .filter-submit-wrap {
+                grid-column: span 1;
             }
         }
     </style>
@@ -251,29 +301,45 @@
     <div id="site-mobile-menu"></div>
 
     <div class="container-custom py-6">
-        <div class="bg-white p-4 rounded-lg shadow-sm mb-6 border border-gray-100 filter-scroll">
-            <input id="keywordFilter" type="text" class="filter-input" placeholder="Tìm theo tiêu đề..." />
-            <select id="typeFilter" class="filter-select">
-                <option value="">Loại nhà đất thuê</option>
-                <option value="Nhà phố">Nhà phố</option>
-                <option value="Đất nền">Đất nền</option>
-                <option value="Căn hộ">Căn hộ</option>
-                <option value="Biệt thự">Biệt thự</option>
-                <option value="Văn phòng">Văn phòng</option>
-                <option value="Shophouse">Shophouse</option>
-            </select>
-            <select id="cityFilter" class="filter-select">
-                <option value="">Toàn quốc</option>
-            </select>
-            <select id="sortFilter" class="filter-select">
-                <option value="newest">Mới nhất</option>
-                <option value="price-asc">Giá thuê tăng dần</option>
-                <option value="price-desc">Giá thuê giảm dần</option>
-                <option value="area-desc">Diện tích lớn</option>
-            </select>
-            <button id="applyFilterBtn" class="bg-[--vip-color] text-white px-6 py-2 rounded font-bold text-sm shrink-0">
-                <i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm
-            </button>
+        <div class="filter-panel mb-6">
+            <div class="filter-grid">
+                <div>
+                    <input id="keywordFilter" type="text" class="filter-input" placeholder="Tìm theo tiêu đề..." />
+                </div>
+
+                <div>
+                    <select id="typeFilter" class="filter-select">
+                        <option value="">Loại nhà đất thuê</option>
+                        <option value="Nhà phố">Nhà phố</option>
+                        <option value="Đất nền">Đất nền</option>
+                        <option value="Căn hộ">Căn hộ</option>
+                        <option value="Biệt thự">Biệt thự</option>
+                        <option value="Văn phòng">Văn phòng</option>
+                        <option value="Shophouse">Shophouse</option>
+                    </select>
+                </div>
+
+                <div>
+                    <select id="cityFilter" class="filter-select">
+                        <option value="">Toàn quốc</option>
+                    </select>
+                </div>
+
+                <div>
+                    <select id="sortFilter" class="filter-select">
+                        <option value="newest">Mới nhất</option>
+                        <option value="price-asc">Giá thuê tăng dần</option>
+                        <option value="price-desc">Giá thuê giảm dần</option>
+                        <option value="area-desc">Diện tích lớn</option>
+                    </select>
+                </div>
+
+                <div class="filter-submit-wrap">
+                    <button id="applyFilterBtn" class="filter-submit-btn">
+                        <i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div id="data-note" class="empty-box mb-6 hidden"></div>
@@ -581,7 +647,7 @@
             return FALLBACK_IMAGE;
         }
 
-        function getVipLevel(post, index) {
+        function getVipLevel(post) {
             const raw = String(
                 post.vipLevel ||
                 post.vipType ||
@@ -590,23 +656,24 @@
                 ''
             ).toLowerCase().trim();
 
+            if (!raw) return '';
+
             if (raw.includes('kim') || raw.includes('diamond')) return 'kim-cuong';
             if (raw.includes('vang') || raw.includes('gold')) return 'vang';
             if (raw.includes('bac') || raw.includes('silver')) return 'bac';
             if (raw.includes('dong') || raw.includes('bronze')) return 'dong';
 
-            const autoLevels = ['kim-cuong', 'vang', 'bac', 'dong'];
-            return autoLevels[index % autoLevels.length];
+            return '';
         }
 
         function getVipLabel(level) {
             const map = {
-                'kim-cuong': 'Tin VIP Kim cương',
-                'vang': 'Tin VIP Vàng',
-                'bac': 'Tin VIP Bạc',
-                'dong': 'Tin VIP Đồng'
+                'kim-cuong': 'VIP Kim cương',
+                'vang': 'VIP Vàng',
+                'bac': 'VIP Bạc',
+                'dong': 'VIP Đồng'
             };
-            return map[level] || 'Tin VIP Đồng';
+            return map[level] || '';
         }
 
         function fillCityFilter(posts) {
@@ -673,8 +740,18 @@
             const safeDescription = escapeHtml(post.description || 'Nội dung đang được cập nhật...');
             const safeLocation = escapeHtml(location);
             const safePrice = escapeHtml(post.propertyPrice || 'Thỏa thuận');
-            const vipLevel = getVipLevel(post, index);
+            const vipLevel = getVipLevel(post);
             const vipLabel = escapeHtml(getVipLabel(vipLevel));
+            const vipHtml = vipLevel
+                ? `
+                    <div class="absolute top-3 left-3">
+                        <span class="vip-badge ${vipLevel}">
+                            <i class="fa-solid fa-crown"></i>
+                            ${vipLabel}
+                        </span>
+                    </div>
+                `
+                : '';
 
             return {
                 priceInMillion,
@@ -688,12 +765,7 @@
                                 <img src="${img}" alt="${safeTitle}" class="w-full h-full object-cover" onerror="this.src='${FALLBACK_IMAGE}'">
                             </a>
 
-                            <div class="absolute top-3 left-3">
-                                <span class="vip-badge ${vipLevel}">
-                                    <i class="fa-solid fa-crown"></i>
-                                    ${vipLabel}
-                                </span>
-                            </div>
+                            ${vipHtml}
 
                             <div class="absolute bottom-3 left-3">
                                 <span class="image-count-badge">
