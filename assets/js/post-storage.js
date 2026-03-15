@@ -31,7 +31,11 @@
         }
 
         if (ensureProjectService() && typeof window.projectService.syncProjectCounts === "function") {
-            window.projectService.syncProjectCounts(safePosts);
+            try {
+                window.projectService.syncProjectCounts(safePosts);
+            } catch (error) {
+                console.warn("projectService.syncProjectCounts lỗi:", error);
+            }
         }
 
         return safePosts;
@@ -116,7 +120,15 @@
             updatedAt: now
         };
 
-        window.userStorage.addPost(nextPost);
+        try {
+            window.userStorage.addPost(nextPost);
+        } catch (error) {
+            if (error && (error.name === "QuotaExceededError" || String(error.message || "").toLowerCase().includes("quota"))) {
+                throw new Error("Bộ nhớ localStorage đã đầy. Hãy giảm số lượng ảnh hoặc xóa bớt dữ liệu demo cũ.");
+            }
+            throw error;
+        }
+
         syncDerivedStores();
 
         return nextPost;
