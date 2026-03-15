@@ -1,8 +1,8 @@
-<header class="bg-white border-b sticky top-0 z-[1000]">
-    <div class="container-custom h-[70px] flex justify-between items-center">
+<header class="bg-white border-b sticky top-0 z-[1000] shadow-sm">
+    <div class="container-custom h-[72px] flex justify-between items-center">
         <div class="flex items-center gap-8">
-            <a href="../index.html">
-                <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
+            <a href="../index.html" class="shrink-0">
+                <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10" />
             </a>
 
             <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
@@ -23,11 +23,11 @@
             </nav>
         </div>
 
-        <div class="flex items-center gap-5">
-            <div class="save-icon nav-link text-gray-600">
+        <div class="flex items-center gap-4">
+            <a href="javascript:void(0)" class="save-icon nav-link text-gray-600" title="Tin đã lưu">
                 <i class="fa-regular fa-heart"></i>
-                <span class="save-count">0</span>
-            </div>
+                <span class="save-count" id="headerFavoriteCount">0</span>
+            </a>
 
             <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
                 <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
@@ -35,9 +35,94 @@
                 <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
             </div>
 
-            <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
+            <a href="../user/dang-tin.html" class="hidden sm:inline-flex border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
                 Đăng tin
             </a>
+
+            <button onclick="openMobileMenu()" class="lg:hidden w-11 h-11 rounded-lg border border-gray-200 flex items-center justify-center text-[18px] text-gray-700 hover:bg-gray-50">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </div>
     </div>
 </header>
+
+<style>
+    .container-custom {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .nav-link {
+        transition: all 0.25s ease;
+        position: relative;
+    }
+
+    .nav-link:hover {
+        color: #FF8C00 !important;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        min-width: 210px;
+        border-top: 2px solid #008B8B;
+        border-radius: 0 0 10px 10px;
+        overflow: hidden;
+        z-index: 50;
+    }
+
+    .dropdown-item {
+        padding: 11px 16px;
+        display: block;
+        color: #333;
+        font-size: 14px;
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    .dropdown-item:hover {
+        background: #f9f9f9;
+        color: #FF8C00;
+    }
+
+    .save-icon {
+        position: relative;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    .save-count {
+        position: absolute;
+        top: -8px;
+        right: -10px;
+        background: #E03C31;
+        color: white;
+        font-size: 10px;
+        min-width: 18px;
+        height: 18px;
+        padding: 2px 5px;
+        border-radius: 999px;
+        border: 1px solid white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<script>
+    (function () {
+        try {
+            const favorites = JSON.parse(localStorage.getItem('favoriteSalePosts') || '[]');
+            const badge = document.getElementById('headerFavoriteCount');
+            if (badge) badge.textContent = favorites.length;
+        } catch (e) {}
+    })();
+</script>
