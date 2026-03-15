@@ -420,7 +420,8 @@
 
     <script>
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
-        const FAVORITE_STORAGE_KEY = "favoriteSalePosts";
+        const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
+        const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
 
         const fallbackPosts = [
             {
@@ -566,36 +567,48 @@
             );
         }
 
-        function getFavorites() {
+        function getStorageArray(key) {
             try {
-                return JSON.parse(localStorage.getItem(FAVORITE_STORAGE_KEY) || "[]");
+                return JSON.parse(localStorage.getItem(key) || "[]");
             } catch (error) {
                 return [];
             }
         }
 
-        function setFavorites(favorites) {
-            localStorage.setItem(FAVORITE_STORAGE_KEY, JSON.stringify(favorites));
+        function getSaleFavorites() {
+            return getStorageArray(FAVORITE_SALE_STORAGE_KEY);
+        }
+
+        function getRentalFavorites() {
+            return getStorageArray(FAVORITE_RENTAL_STORAGE_KEY);
+        }
+
+        function setSaleFavorites(favorites) {
+            localStorage.setItem(FAVORITE_SALE_STORAGE_KEY, JSON.stringify(favorites));
             updateFavoriteCount();
         }
 
+        function getTotalFavoritesCount() {
+            return getSaleFavorites().length + getRentalFavorites().length;
+        }
+
         function updateFavoriteCount() {
-            const favorites = getFavorites();
+            const total = getTotalFavoritesCount();
             const badges = document.querySelectorAll("#favorite-count-badge, #headerFavoriteCount");
             badges.forEach((badge) => {
-                badge.textContent = favorites.length;
+                badge.textContent = total;
             });
         }
 
         function isFavorite(postId) {
-            return getFavorites().includes(postId);
+            return getSaleFavorites().includes(postId);
         }
 
         function toggleFavorite(postId) {
-            const favorites = getFavorites();
+            const favorites = getSaleFavorites();
             const exists = favorites.includes(postId);
             const next = exists ? favorites.filter(id => id !== postId) : [...favorites, postId];
-            setFavorites(next);
+            setSaleFavorites(next);
             renderListings();
         }
 
