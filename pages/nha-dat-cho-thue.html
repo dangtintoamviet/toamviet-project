@@ -386,10 +386,6 @@
                     <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
                     <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
                     <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946239289</p>
-                    <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer" />
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer" />
-                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-10 text-[13px]">
@@ -447,6 +443,8 @@
     <script src="../assets/js/project-service.js"></script>
 
     <script>
+        const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+
         const fallbackPosts = [
             {
                 title: "Cho thuê căn hộ cao cấp Vinhomes Central Park full nội thất",
@@ -467,7 +465,8 @@
                 createdAt: "2026-01-07T08:00:00.000Z",
                 status: "demo",
                 flow: "real_estate",
-                postType: "thue"
+                postType: "thue",
+                images: [FALLBACK_IMAGE]
             },
             {
                 title: "Cho thuê nhà nguyên căn gần trung tâm Cầu Giấy phù hợp gia đình",
@@ -488,7 +487,8 @@
                 createdAt: "2026-01-06T10:00:00.000Z",
                 status: "demo",
                 flow: "real_estate",
-                postType: "thue"
+                postType: "thue",
+                images: [FALLBACK_IMAGE]
             },
             {
                 title: "Cho thuê văn phòng tại Thuận An, vị trí đẹp, giá tốt",
@@ -510,7 +510,8 @@
                 createdAt: "2026-01-05T11:00:00.000Z",
                 status: "demo",
                 flow: "real_estate",
-                postType: "thue"
+                postType: "thue",
+                images: [FALLBACK_IMAGE]
             }
         ];
 
@@ -524,6 +525,35 @@
         const cityFilter = document.getElementById('cityFilter');
         const sortFilter = document.getElementById('sortFilter');
         const applyFilterBtn = document.getElementById('applyFilterBtn');
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function normalizePhone(phone) {
+            return String(phone || '').replace(/[^\d+]/g, '');
+        }
+
+        function createPostId(post, index) {
+            return (
+                post.id ||
+                post.postId ||
+                post.slug ||
+                `${post.title || "tin"}-${post.city || ""}-${post.district || ""}-${index}`
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")
+            );
+        }
+
+        function getDetailUrl(post, postId) {
+            if (post.detailUrl) return post.detailUrl;
+            return `../pages/chi-tiet-tin.html?id=${encodeURIComponent(postId)}`;
+        }
 
         function sendToZalo() {
             const name = document.getElementById("cusName").value;
@@ -600,10 +630,13 @@
         }
 
         function getCardImage(post) {
-            if (Array.isArray(post.images) && post.images.length && post.images[0]?.dataUrl) {
-                return post.images[0].dataUrl;
+            if (Array.isArray(post.images) && post.images.length) {
+                const firstImage = post.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
+                if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
+                if (firstImage && firstImage.url) return firstImage.url;
             }
-            return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900';
+            return FALLBACK_IMAGE;
         }
 
         function fillCityFilter(posts) {
@@ -611,11 +644,17 @@
             const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))];
 
             cityFilter.innerHTML = '<option value="">Toàn quốc</option>' +
-                uniqueCities.map(city => `<option value="${city}">${city}</option>`).join('');
+                uniqueCities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join('');
 
             if (uniqueCities.includes(currentValue)) {
                 cityFilter.value = currentValue;
             }
+        }
+
+        function filterByHotArea(area) {
+            cityFilter.value = area;
+            renderListings();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function renderHotAreas(posts) {
@@ -626,33 +665,45 @@
             });
 
             const sorted = Object.entries(counter).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
             hotAreas.innerHTML = sorted.length
                 ? sorted.map(([city, count]) => `
-                    <li class="flex justify-between hover:text-[--hover-color] cursor-pointer">
-                        <span>Thuê nhà đất ${city}</span>
-                        <span class="text-gray-400 text-[11px]">${count} tin</span>
+                    <li>
+                        <button type="button" onclick="filterByHotArea('${String(city).replace(/'/g, "\\'")}')" class="w-full flex justify-between hover:text-[--hover-color] cursor-pointer text-left">
+                            <span>Thuê nhà đất ${escapeHtml(city)}</span>
+                            <span class="text-gray-400 text-[11px]">${count} tin</span>
+                        </button>
                     </li>
                 `).join('')
                 : `<li class="flex justify-between"><span>Chưa có dữ liệu</span><span class="text-gray-400 text-[11px]">0 tin</span></li>`;
         }
 
-        function buildCardData(post) {
+        function buildCardData(post, index) {
+            const postId = createPostId(post, index);
+            const detailUrl = getDetailUrl(post, postId);
+
             const priceInMillion = parseRentalPriceToMillion(post.propertyPrice);
             const area = parseFloat(post.propertyArea || 0);
             const unitPrice = priceInMillion && area ? ((priceInMillion * 1000) / area).toFixed(0) : null;
             const city = post.city || 'Đang cập nhật';
             const location = buildLocation(post) || 'Đang cập nhật vị trí';
-            const beds = post.propertyBeds ? `${post.propertyBeds} <i class="fa-solid fa-bed"></i>` : null;
-            const profileName = getPosterName(post);
-            const profileDesc = getPosterRole(post);
+            const beds = post.propertyBeds ? `${escapeHtml(post.propertyBeds)} <i class="fa-solid fa-bed"></i>` : null;
+            const profileName = escapeHtml(getPosterName(post));
+            const profileDesc = escapeHtml(getPosterRole(post));
             const phone = post.contactPhone || post.phone || 'Đang cập nhật';
             const shortPhone = phone.length >= 7 ? `${phone.slice(0, 4)} ${phone.slice(4, 7)} ***` : phone;
-            const avatarText = getAvatarText(post);
-            const img = getCardImage(post);
+            const avatarText = escapeHtml(getAvatarText(post));
+            const img = escapeHtml(getCardImage(post));
             const createdTime = post.createdAt ? new Date(post.createdAt).getTime() : 0;
-            const direction = post.propertyDirection || 'Đang cập nhật';
-            const legal = post.propertyLegal || 'Đang cập nhật';
+            const direction = escapeHtml(post.propertyDirection || 'Đang cập nhật');
+            const legal = escapeHtml(post.propertyLegal || 'Đang cập nhật');
             const imageCount = Array.isArray(post.images) ? post.images.length : 0;
+            const phoneLink = normalizePhone(phone);
+            const safeTitle = escapeHtml(post.title || 'Tin cho thuê bất động sản');
+            const safePropertyType = escapeHtml(post.propertyType || 'Bất động sản');
+            const safeDescription = escapeHtml(post.description || 'Nội dung đang được cập nhật...');
+            const safeLocation = escapeHtml(location);
+            const safePrice = escapeHtml(post.propertyPrice || 'Thỏa thuận');
 
             return {
                 createdTime,
@@ -667,11 +718,16 @@
                 html: `
                     <div class="card-container">
                         <div class="card-image-box w-[280px] h-auto shrink-0 relative">
-                            <img src="${img}" alt="${post.title || 'Tin cho thuê'}" class="w-full h-full object-cover">
+                            <a href="${detailUrl}" aria-label="${safeTitle}">
+                                <img src="${img}" alt="${safeTitle}" class="w-full h-full object-cover" onerror="this.src='${FALLBACK_IMAGE}'">
+                            </a>
+
                             <div class="absolute top-3 left-3">${getStatusChip(post)}</div>
+
                             <div class="absolute top-3 right-3 bg-[--vip-color] text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase">
-                                ${post.propertyType || 'BĐS'}
+                                ${safePropertyType}
                             </div>
+
                             <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
                                 <i class="fa-regular fa-image"></i> ${imageCount || 1}
                             </div>
@@ -680,36 +736,36 @@
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div>
                                 <div class="flex flex-wrap items-center gap-2 mb-2">
-                                    <span class="text-[10px] uppercase font-bold bg-cyan-50 text-cyan-700 px-2 py-1 rounded">${post.propertyType || 'Bất động sản'}</span>
+                                    <span class="text-[10px] uppercase font-bold bg-cyan-50 text-cyan-700 px-2 py-1 rounded">${safePropertyType}</span>
                                     <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">Tin thuê</span>
                                 </div>
 
                                 <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] cursor-pointer">
-                                    ${post.title || 'Tin cho thuê bất động sản'}
+                                    <a href="${detailUrl}">${safeTitle}</a>
                                 </h3>
 
                                 <div class="flex items-center gap-3 mt-3 text-sm flex-wrap font-medium">
-                                    <span class="text-red-600 font-bold text-lg">${post.propertyPrice || 'Thỏa thuận'}</span>
+                                    <span class="text-red-600 font-bold text-lg">${safePrice}</span>
                                     ${area ? `<span class="text-gray-300">•</span><span class="text-red-600 font-bold text-lg">${area} m²</span>` : ''}
                                     ${unitPrice ? `<span class="text-gray-300">•</span><span class="text-gray-600">${unitPrice} nghìn/m²</span>` : ''}
                                     <span class="text-gray-300">•</span>
                                     <span class="text-gray-600">${direction}</span>
                                     ${beds ? `<span class="text-gray-300">•</span><span class="text-gray-600 flex items-center gap-1">${beds}</span>` : ''}
                                     <span class="text-gray-300">•</span>
-                                    <span class="text-gray-600">${city}</span>
+                                    <span class="text-gray-600">${escapeHtml(city)}</span>
                                 </div>
 
                                 <p class="card-desc text-gray-500 text-sm mt-3 italic">
-                                    ${post.description || 'Nội dung đang được cập nhật...'}
+                                    ${safeDescription}
                                 </p>
 
                                 <p class="text-gray-500 text-[12px] mt-3">
-                                    <i class="fa-solid fa-location-dot mr-1"></i>${location}
+                                    <i class="fa-solid fa-location-dot mr-1"></i>${safeLocation}
                                 </p>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-[12px] text-slate-500">
                                     <div><strong class="text-slate-700">Pháp lý:</strong> ${legal}</div>
-                                    <div><strong class="text-slate-700">Loại hình:</strong> ${post.propertyType || 'Đang cập nhật'}</div>
+                                    <div><strong class="text-slate-700">Loại hình:</strong> ${safePropertyType}</div>
                                 </div>
                             </div>
 
@@ -725,9 +781,16 @@
                                 </a>
 
                                 <div class="flex gap-2">
-                                    <button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm">
-                                        <i class="fa-solid fa-phone"></i> ${shortPhone}
-                                    </button>
+                                    ${
+                                        phoneLink
+                                            ? `<a href="tel:${phoneLink}" class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm">
+                                                    <i class="fa-solid fa-phone"></i> ${escapeHtml(shortPhone)}
+                                               </a>`
+                                            : `<button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm cursor-default">
+                                                    <i class="fa-solid fa-phone"></i> ${escapeHtml(shortPhone)}
+                                               </button>`
+                                    }
+
                                     <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition">
                                         <i class="fa-regular fa-heart"></i>
                                     </button>
@@ -810,7 +873,7 @@
                 return;
             }
 
-            listingContainer.innerHTML = filteredPosts.map(post => buildCardData(post).html).join('');
+            listingContainer.innerHTML = filteredPosts.map((post, index) => buildCardData(post, index).html).join('');
         }
 
         function initPage() {
@@ -825,6 +888,7 @@
         cityFilter.addEventListener('change', renderListings);
         sortFilter.addEventListener('change', renderListings);
 
+        window.filterByHotArea = filterByHotArea;
         window.addEventListener('load', initPage);
     </script>
     <script src="../assets/js/main.js"></script>
