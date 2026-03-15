@@ -29,64 +29,8 @@
             padding: 0 15px;
         }
 
-        .nav-link {
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--hover-color) !important;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
-            border-top: 2px solid var(--vip-color);
-            z-index: 50;
-        }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            display: block;
-            color: #333;
-            font-size: 14px;
-            border-bottom: 1px solid #f2f2f2;
-        }
-
-        .dropdown-item:hover {
-            background: #f9f9f9;
-            color: var(--hover-color);
-        }
-
-        .save-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .save-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background: #E03C31;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            border: 1px solid white;
-        }
-
         .page-shell {
-            padding-top: 26px;
+            padding-top: 0;
             padding-bottom: 24px;
         }
 
@@ -203,27 +147,6 @@
             border: 1px solid #e5e7eb;
         }
 
-        .footer-link-group h4 {
-            font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: #2C2C2C;
-            text-transform: uppercase;
-        }
-
-        .footer-link-group ul li {
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: #555;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .footer-link-group ul li:hover {
-            color: var(--hover-color);
-            text-decoration: underline;
-        }
-
         .vip-badge {
             display: inline-flex;
             align-items: center;
@@ -276,6 +199,12 @@
             box-shadow: 0 4px 14px rgba(0,0,0,0.18);
         }
 
+        .favorite-btn.active {
+            color: #dc2626 !important;
+            border-color: #fecaca !important;
+            background: #fff5f5 !important;
+        }
+
         @media (max-width: 1024px) {
             .filter-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -291,11 +220,6 @@
         }
 
         @media (max-width: 768px) {
-            .page-shell {
-                padding-top: 18px;
-                padding-bottom: 18px;
-            }
-
             .card-container {
                 flex-direction: column;
             }
@@ -303,6 +227,11 @@
             .card-image-box {
                 width: 100% !important;
                 height: 220px !important;
+            }
+
+            .page-shell {
+                padding-top: 0;
+                padding-bottom: 18px;
             }
 
             .filter-panel {
@@ -580,18 +509,40 @@
             }
         }
 
-        function updateFavoriteCount() {
-            let favorites = [];
+        function getFavorites() {
             try {
-                favorites = JSON.parse(localStorage.getItem(FAVORITE_STORAGE_KEY) || "[]");
+                return JSON.parse(localStorage.getItem(FAVORITE_STORAGE_KEY) || "[]");
             } catch (error) {
-                favorites = [];
+                return [];
             }
+        }
 
+        function setFavorites(favorites) {
+            localStorage.setItem(FAVORITE_STORAGE_KEY, JSON.stringify(favorites));
+            updateFavoriteCount();
+        }
+
+        function updateFavoriteCount() {
+            const favorites = getFavorites();
             const badges = document.querySelectorAll("#favorite-count-badge, #headerFavoriteCount");
             badges.forEach((badge) => {
                 badge.textContent = favorites.length;
             });
+        }
+
+        function isFavorite(postId) {
+            return getFavorites().includes(postId);
+        }
+
+        function toggleFavorite(postId) {
+            const favorites = getFavorites();
+            const exists = favorites.includes(postId);
+            const next = exists
+                ? favorites.filter(id => id !== postId)
+                : [...favorites, postId];
+
+            setFavorites(next);
+            renderListings();
         }
 
         function getRentalPosts() {
@@ -768,6 +719,8 @@
             const safePrice = escapeHtml(post.propertyPrice || 'Thỏa thuận');
             const vipLevel = getVipLevel(post);
             const vipLabel = escapeHtml(getVipLabel(vipLevel));
+            const favoriteActive = isFavorite(postId);
+
             const vipHtml = vipLevel
                 ? `
                     <div class="absolute top-3 left-3">
@@ -780,10 +733,15 @@
                 : '';
 
             return {
+                createdTime: post.createdAt ? new Date(post.createdAt).getTime() : 0,
                 priceInMillion,
                 area,
                 propertyType: post.propertyType || '',
                 city,
+                title: post.title || 'Tin cho thuê bất động sản',
+                location,
+                description: post.description || '',
+                projectName: post.projectName || '',
                 html: `
                     <div class="card-container">
                         <div class="card-image-box w-[280px] h-auto shrink-0 relative">
@@ -860,8 +818,12 @@
                                                </button>`
                                     }
 
-                                    <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition">
-                                        <i class="fa-regular fa-heart"></i>
+                                    <button
+                                        type="button"
+                                        class="favorite-btn ${favoriteActive ? "active" : ""} border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition"
+                                        onclick="toggleFavorite('${escapeHtml(postId).replace(/'/g, "\\'")}')"
+                                        title="Lưu tin">
+                                        <i class="${favoriteActive ? "fa-solid" : "fa-regular"} fa-heart"></i>
                                     </button>
                                 </div>
                             </div>
@@ -961,6 +923,7 @@
         sortFilter.addEventListener('change', renderListings);
 
         window.filterByHotArea = filterByHotArea;
+        window.toggleFavorite = toggleFavorite;
         window.addEventListener('load', initPage);
     </script>
 
