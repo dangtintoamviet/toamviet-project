@@ -143,7 +143,7 @@
         .detail-title {
             font-size: 26px;
             font-weight: 700;
-            line-height: 1.55;
+            line-height: 1.5;
             color: #1f2937;
         }
 
@@ -320,7 +320,7 @@
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="../pages/nha-dat-ban.html" class="nav-link text-[#008B8B]">Nhà đất bán</a>
+                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
                     <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
                     <a href="../pages/du-an.html" class="nav-link">Dự án</a>
                     <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
@@ -358,7 +358,7 @@
 
     <div class="lg:hidden bg-white border-t">
         <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
-            <a href="../pages/nha-dat-ban.html" class="block nav-link text-[#008B8B] font-bold">Nhà đất bán</a>
+            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
             <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
             <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
             <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
@@ -376,7 +376,7 @@
         <div class="mb-5 text-sm text-slate-500">
             <a href="../index.html" class="hover:text-[--vip-color]">Trang chủ</a>
             <span class="mx-2">/</span>
-            <a href="../pages/nha-dat-ban.html" class="hover:text-[--vip-color]">Nhà đất bán</a>
+            <a id="breadcrumb-parent-link" href="../pages/nha-dat-ban.html" class="hover:text-[--vip-color]">Nhà đất bán</a>
             <span class="mx-2">/</span>
             <span id="breadcrumb-title" class="text-slate-700 font-semibold">Chi tiết tin đăng</span>
         </div>
@@ -391,7 +391,7 @@
                 <div class="page-card p-5 md:p-6">
                     <div class="flex flex-wrap items-center gap-2 mb-3">
                         <span id="property-type-badge" class="text-[10px] uppercase font-bold bg-cyan-50 text-cyan-700 px-2 py-1 rounded">Bất động sản</span>
-                        <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">Tin bán</span>
+                        <span id="listing-mode-badge" class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">Tin đăng</span>
                     </div>
 
                     <h1 id="detail-title" class="detail-title">Đang tải dữ liệu tin đăng...</h1>
@@ -522,7 +522,7 @@
         <section class="mt-8">
             <div class="flex items-center justify-between gap-4 mb-4">
                 <h2 class="section-title mb-0">Tin đăng liên quan</h2>
-                <a href="../pages/nha-dat-ban.html" class="text-sm font-semibold text-[--vip-color] hover:underline">Xem thêm</a>
+                <a id="related-more-link" href="../pages/nha-dat-ban.html" class="text-sm font-semibold text-[--vip-color] hover:underline">Xem thêm</a>
             </div>
             <div id="related-posts" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
         </section>
@@ -788,6 +788,11 @@
                 return value * 1000000;
             }
 
+            if (text.includes("nghìn")) {
+                const value = parseFloat((text.match(/[\d.]+/) || [0])[0]) || 0;
+                return value * 1000;
+            }
+
             const raw = parseFloat(text.replace(/[^\d.]/g, "")) || 0;
             return raw;
         }
@@ -801,18 +806,19 @@
         }
 
         function calculatePricePerM2(post) {
-            if (typeof post.pricePerSquareMeter === "number" && post.pricePerSquareMeter > 0) {
-                const unit = post.pricePerSquareMeter;
-                if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + " tỷ/m²";
-                if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
-                return Math.round(unit).toLocaleString("vi-VN") + " đ/m²";
-            }
-
             const totalPrice = parsePriceToNumber(post.propertyPrice);
             const areaNumber = Number(post.propertyArea || 0);
             if (!totalPrice || !areaNumber) return "Chưa rõ";
 
             const unit = totalPrice / areaNumber;
+            const isRental = String(post.postType || "").toLowerCase() === "thue";
+
+            if (isRental) {
+                if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
+                if (unit >= 1000) return Math.round(unit / 1000) + " nghìn/m²";
+                return Math.round(unit).toLocaleString("vi-VN") + " đ/m²";
+            }
+
             if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + " tỷ/m²";
             if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
             return Math.round(unit).toLocaleString("vi-VN") + " đ/m²";
@@ -854,26 +860,38 @@
             );
         }
 
-        function getAllSalePosts() {
-            if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
-                const posts = window.postStorage.getSalePosts()
-                    .filter(post => post && (post.status === "approved" || post.status === "demo"));
-                if (posts.length) return posts;
+        function getAllPostsMixed() {
+            let posts = [];
+
+            if (window.postStorage) {
+                if (typeof window.postStorage.getSalePosts === "function") {
+                    posts = posts.concat(
+                        window.postStorage.getSalePosts().filter(post => post && (post.status === "approved" || post.status === "demo" || post.status === "pending" || !post.status))
+                    );
+                }
+
+                if (typeof window.postStorage.getRentalPosts === "function") {
+                    posts = posts.concat(
+                        window.postStorage.getRentalPosts().filter(post => post && (post.status === "approved" || post.status === "demo" || post.status === "pending" || !post.status))
+                    );
+                }
             }
+
+            if (posts.length) return posts;
 
             const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
             return allPosts.filter(post =>
                 post &&
                 post.flow === "real_estate" &&
-                post.postType === "ban" &&
-                (post.status === "approved" || post.status === "demo")
+                (post.postType === "ban" || post.postType === "thue" || post.postType === "cho-thue" || post.postType === "rent") &&
+                (post.status === "approved" || post.status === "demo" || post.status === "pending" || !post.status)
             );
         }
 
-        function getFallbackDemoPosts() {
+        function getFallbackMixedPosts() {
             return [
                 {
-                    id: "demo-1",
+                    id: "demo-sale-1",
                     title: "NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN",
                     propertyType: "Biệt thự",
                     propertyPrice: "60 tỷ",
@@ -895,59 +913,46 @@
                     images: [FALLBACK_IMAGE]
                 },
                 {
-                    id: "demo-2",
-                    title: "BÁN CĂN HỘ CAO CẤP 2 PHÒNG NGỦ TRUNG TÂM THÀNH PHỐ, FULL NỘI THẤT",
+                    id: "demo-rent-1",
+                    title: "CHO THUÊ CĂN HỘ CAO CẤP VINHOMES CENTRAL PARK FULL NỘI THẤT",
                     propertyType: "Căn hộ",
-                    propertyPrice: "4.2 tỷ",
+                    propertyPrice: "25 triệu/tháng",
                     propertyArea: "85",
-                    propertyLegal: "Sổ hồng",
-                    propertyDirection: "Nam",
+                    propertyLegal: "Hợp đồng rõ ràng",
+                    propertyDirection: "Đông Nam",
                     propertyBeds: "2",
                     city: "TP.HCM",
-                    district: "Quận 1",
-                    ward: "",
-                    description: "Căn hộ view đẹp, gần trung tâm thương mại, phù hợp để ở hoặc đầu tư cho thuê lâu dài.",
-                    contactName: "Trần Văn Bình",
-                    roleLabel: "Chuyên viên tư vấn",
-                    contactPhone: "0988123456",
+                    district: "Bình Thạnh",
+                    ward: "Phường 22",
+                    description: "Căn hộ tầng cao thoáng mát, view sông đẹp, đầy đủ nội thất cao cấp.",
+                    contactName: "Trần Thị Lan Anh",
+                    roleLabel: "Chuyên viên cho thuê",
+                    contactPhone: "0901234567",
                     status: "demo",
                     createdAt: new Date().toISOString(),
                     flow: "real_estate",
-                    postType: "ban",
-                    images: [FALLBACK_IMAGE]
-                },
-                {
-                    id: "demo-3",
-                    title: "BÁN NHÀ PHỐ THƯƠNG MẠI VỊ TRÍ ĐẸP GẦN TRUNG TÂM HÀ ĐÔNG",
-                    propertyType: "Nhà phố",
-                    propertyPrice: "8.8 tỷ",
-                    propertyArea: "92",
-                    propertyLegal: "Sổ đỏ",
-                    propertyDirection: "Tây Nam",
-                    propertyBeds: "4",
-                    city: "Hà Nội",
-                    district: "Hà Đông",
-                    ward: "Phú Lương",
-                    description: "Nhà phố mặt tiền rộng, khu dân cư đông đúc, phù hợp ở kết hợp kinh doanh.",
-                    contactName: "Lê Minh Quân",
-                    roleLabel: "Môi giới nhà phố",
-                    contactPhone: "0977333444",
-                    status: "demo",
-                    createdAt: new Date().toISOString(),
-                    flow: "real_estate",
-                    postType: "ban",
+                    postType: "thue",
                     images: [FALLBACK_IMAGE]
                 }
             ];
         }
 
         function getDataSource() {
-            const posts = getAllSalePosts();
-            return posts.length ? posts : getFallbackDemoPosts();
+            const posts = getAllPostsMixed();
+            return posts.length ? posts : getFallbackMixedPosts();
         }
 
         function findPostById(posts, targetId) {
-            return posts.find((post, index) => createPostId(post, index) === targetId);
+            return posts.find((post, index) => {
+                const candidates = [
+                    post.id,
+                    post.postId,
+                    post.slug,
+                    createPostId(post, index)
+                ].filter(Boolean);
+
+                return candidates.includes(targetId);
+            });
         }
 
         function formatDate(dateString) {
@@ -1014,6 +1019,8 @@
             const phone = post.contactPhone || post.phone || "Liên hệ";
             const phoneLink = normalizePhone(phone);
             const images = getPostImages(post);
+            const isRental = String(post.postType || "").toLowerCase() === "thue" || String(post.postType || "").toLowerCase() === "cho-thue" || String(post.postType || "").toLowerCase() === "rent";
+            const modeText = isRental ? "Tin thuê" : "Tin bán";
 
             document.title = `${title} - ToamViet.com.vn`;
 
@@ -1056,6 +1063,14 @@
             }
 
             fillText("property-type-badge", propertyType);
+            fillText("listing-mode-badge", modeText);
+
+            const breadcrumbParentLink = document.getElementById("breadcrumb-parent-link");
+            breadcrumbParentLink.textContent = isRental ? "Nhà đất cho thuê" : "Nhà đất bán";
+            breadcrumbParentLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
+
+            const relatedMoreLink = document.getElementById("related-more-link");
+            relatedMoreLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
 
             renderGallery(images);
 
@@ -1070,9 +1085,12 @@
             const relatedContainer = document.getElementById("related-posts");
             const posts = getDataSource();
 
+            const currentType = String(currentPost.postType || "").toLowerCase().trim();
+
             const related = posts
                 .map((post, index) => ({ post, id: createPostId(post, index) }))
                 .filter(item => item.id !== currentPostId)
+                .filter(item => String(item.post.postType || "").toLowerCase().trim() === currentType)
                 .filter(item => {
                     const sameCity = currentPost.city && item.post.city === currentPost.city;
                     const sameType = currentPost.propertyType && item.post.propertyType === currentPost.propertyType;
@@ -1085,6 +1103,7 @@
                 : posts
                     .map((post, index) => ({ post, id: createPostId(post, index) }))
                     .filter(item => item.id !== currentPostId)
+                    .filter(item => String(item.post.postType || "").toLowerCase().trim() === currentType)
                     .slice(0, 6);
 
             if (!finalRelated.length) {
@@ -1102,6 +1121,7 @@
                 const area = formatArea(post.propertyArea);
                 const image = escapeHtml(getCardImage(post));
                 const location = escapeHtml(buildLocation(post) || "Chưa cập nhật khu vực");
+                const mode = (String(post.postType || "").toLowerCase() === "thue" || String(post.postType || "").toLowerCase() === "cho-thue" || String(post.postType || "").toLowerCase() === "rent") ? "Tin thuê" : "Tin bán";
 
                 return `
                     <a href="../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}" class="related-card">
@@ -1109,7 +1129,7 @@
                         <div class="p-4">
                             <div class="flex flex-wrap items-center gap-2 mb-2">
                                 <span class="text-[10px] uppercase font-bold bg-cyan-50 text-cyan-700 px-2 py-1 rounded">${escapeHtml(post.propertyType || "Bất động sản")}</span>
-                                <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">Tin bán</span>
+                                <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">${mode}</span>
                             </div>
                             <h3 class="font-bold text-[15px] leading-6 text-slate-800 line-clamp-2 min-h-[48px]">${title}</h3>
                             <div class="flex items-center gap-2 mt-3 text-sm flex-wrap">
