@@ -7,7 +7,10 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
     <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
 
     <style>
         :root {
@@ -210,65 +213,8 @@
 </head>
 <body>
 
-    <header class="bg-white border-b sticky top-0 z-[1000]">
-        <div class="container-custom h-[70px] flex justify-between items-center">
-            <div class="flex items-center gap-8">
-                <a href="../index.html">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10" />
-                </a>
-
-                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link text-[#008B8B]">Nhà đất cho thuê</a>
-                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
-                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
-                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
-                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
-
-                    <div class="dropdown relative h-full flex items-center cursor-pointer">
-                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
-                        <div class="dropdown-menu">
-                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-
-            <div class="flex items-center gap-5">
-                <div class="save-icon nav-link text-gray-600">
-                    <i class="fa-regular fa-heart"></i>
-                    <span class="save-count">0</span>
-                </div>
-
-                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
-                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
-                </div>
-
-                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
-                    Đăng tin
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <div class="lg:hidden bg-white border-t">
-        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
-            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
-            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link text-[#008B8B] font-bold">Nhà đất cho thuê</a>
-            <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
-            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
-            <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
-            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
-            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
-            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
-            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
-            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
-            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
-        </div>
-    </div>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
 
     <div class="container-custom py-6">
         <div class="bg-white p-4 rounded-lg shadow-sm mb-6 border border-gray-100 filter-scroll">
@@ -330,106 +276,18 @@
         </div>
     </div>
 
-    <footer class="bg-white pt-16 border-t">
-        <div class="container-custom">
-            <div class="mb-12 border-b pb-12">
-                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
-                </p>
-            </div>
+    <div id="site-footer"></div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                <div class="footer-link-group">
-                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
-                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
-                    </ul>
-                </div>
+    <button id="goToTop" onclick="safeScrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
 
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-link-group">
-                    <h4>DỰ ÁN NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
-                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
-                <div class="max-w-sm">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6" />
-                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
-                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946239289</p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-10 text-[13px]">
-                    <div>
-                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="w-full lg:max-w-xs">
-                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
-                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
-                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm" />
-                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
-
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
@@ -441,9 +299,11 @@
     <script src="../assets/js/user-storage.js"></script>
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
 
     <script>
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+        const FAVORITE_STORAGE_KEY = "favoriteSalePosts";
 
         const fallbackPosts = [
             {
@@ -571,6 +431,38 @@
             const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === "function") {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById("chatForm");
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
+            }
+        }
+
+        function updateFavoriteCount() {
+            let favorites = [];
+            try {
+                favorites = JSON.parse(localStorage.getItem(FAVORITE_STORAGE_KEY) || "[]");
+            } catch (error) {
+                favorites = [];
+            }
+
+            const badges = document.querySelectorAll("#favorite-count-badge, #headerFavoriteCount");
+            badges.forEach((badge) => {
+                badge.textContent = favorites.length;
+            });
         }
 
         function getRentalPosts() {
@@ -714,7 +606,6 @@
             const shortPhone = phone.length >= 7 ? `${phone.slice(0, 4)} ${phone.slice(4, 7)} ***` : phone;
             const avatarText = escapeHtml(getAvatarText(post));
             const img = escapeHtml(getCardImage(post));
-            const createdTime = post.createdAt ? new Date(post.createdAt).getTime() : 0;
             const direction = escapeHtml(post.propertyDirection || 'Đang cập nhật');
             const legal = escapeHtml(post.propertyLegal || 'Đang cập nhật');
             const imageCount = Array.isArray(post.images) ? post.images.length : 0;
@@ -726,15 +617,10 @@
             const safePrice = escapeHtml(post.propertyPrice || 'Thỏa thuận');
 
             return {
-                createdTime,
                 priceInMillion,
                 area,
                 propertyType: post.propertyType || '',
                 city,
-                title: post.title || 'Tin cho thuê bất động sản',
-                location,
-                description: post.description || '',
-                projectName: post.projectName || '',
                 html: `
                     <div class="card-container">
                         <div class="card-image-box w-[280px] h-auto shrink-0 relative">
@@ -894,10 +780,13 @@
             }
 
             listingContainer.innerHTML = filteredPosts.map((post, index) => buildCardData(post, index).html).join('');
+            updateFavoriteCount();
         }
 
         function initPage() {
             renderListings();
+            updateFavoriteCount();
+            setTimeout(updateFavoriteCount, 300);
         }
 
         applyFilterBtn.addEventListener('click', renderListings);
@@ -911,6 +800,7 @@
         window.filterByHotArea = filterByHotArea;
         window.addEventListener('load', initPage);
     </script>
+
     <script src="../assets/js/main.js"></script>
 </body>
 </html>
