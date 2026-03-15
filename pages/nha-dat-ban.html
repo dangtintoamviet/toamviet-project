@@ -33,6 +33,7 @@
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--soft-bg);
             color: var(--text-main);
+            margin: 0;
         }
 
         .container-custom {
@@ -41,9 +42,29 @@
             padding: 0 15px;
         }
 
-        /* tăng khoảng cách dưới header cho thoáng hơn */
+        /* FIX CỨNG HEADER */
+        #site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #fff;
+        }
+
+        /* tránh header component tự ghi đè */
+        #site-header > header {
+            position: static !important;
+            top: auto !important;
+            left: auto !important;
+            right: auto !important;
+            z-index: auto !important;
+            margin: 0 !important;
+        }
+
+        /* khoảng cách rõ ràng giữa header và bộ lọc */
         .page-shell {
-            padding-top: 34px;
+            padding-top: 128px;
             padding-bottom: 24px;
         }
 
@@ -290,7 +311,7 @@
 
         @media (max-width: 768px) {
             .page-shell {
-                padding-top: 22px;
+                padding-top: 116px;
                 padding-bottom: 18px;
             }
 
