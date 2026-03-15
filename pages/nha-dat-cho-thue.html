@@ -447,6 +447,7 @@
 
         const fallbackPosts = [
             {
+                id: "demo-rent-1",
                 title: "Cho thuê căn hộ cao cấp Vinhomes Central Park full nội thất",
                 city: "TP.HCM",
                 district: "Bình Thạnh",
@@ -469,6 +470,7 @@
                 images: [FALLBACK_IMAGE]
             },
             {
+                id: "demo-rent-2",
                 title: "Cho thuê nhà nguyên căn gần trung tâm Cầu Giấy phù hợp gia đình",
                 city: "Hà Nội",
                 district: "Cầu Giấy",
@@ -491,6 +493,7 @@
                 images: [FALLBACK_IMAGE]
             },
             {
+                id: "demo-rent-3",
                 title: "Cho thuê văn phòng tại Thuận An, vị trí đẹp, giá tốt",
                 city: "Bình Dương",
                 district: "Thuận An",
@@ -571,18 +574,35 @@
         }
 
         function getRentalPosts() {
+            let posts = [];
+
             if (window.postStorage && typeof window.postStorage.getRentalPosts === 'function') {
-                return window.postStorage.getRentalPosts()
-                    .filter(post => post && post.status === 'approved');
+                posts = window.postStorage.getRentalPosts() || [];
+            } else {
+                posts = JSON.parse(localStorage.getItem('allPosts') || '[]');
             }
 
-            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
-            return allPosts.filter(post =>
-                post &&
-                post.flow === 'real_estate' &&
-                post.postType === 'thue' &&
-                post.status === 'approved'
-            );
+            return posts.filter(post => {
+                if (!post) return false;
+
+                const flow = String(post.flow || '').toLowerCase().trim();
+                const postType = String(post.postType || '').toLowerCase().trim();
+                const status = String(post.status || '').toLowerCase().trim();
+
+                const isRealEstate = flow === 'real_estate';
+                const isRental =
+                    postType === 'thue' ||
+                    postType === 'cho-thue' ||
+                    postType === 'rent';
+
+                const isVisible =
+                    status === 'approved' ||
+                    status === 'demo' ||
+                    status === 'pending' ||
+                    status === '';
+
+                return isRealEstate && isRental && isVisible;
+            });
         }
 
         function parseRentalPriceToMillion(priceText) {
