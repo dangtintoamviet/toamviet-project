@@ -42,39 +42,11 @@
             padding: 0 15px;
         }
 
-        /* Header cố định thật */
-        #site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: #ffffff;
-            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
-        }
-
-        /* bỏ sticky bên trong component để tránh xung đột */
-        #site-header > header {
-            position: static !important;
-            top: auto !important;
-            left: auto !important;
-            right: auto !important;
-            z-index: auto !important;
-            margin: 0 !important;
-        }
-
-        /* khoảng đệm nằm dưới header */
-        #header-spacer {
-            height: 110px;
-        }
-
-        /* khoảng thoáng giữa header và bộ lọc */
         .page-shell {
-            padding-top: 22px;
+            padding-top: 0;
             padding-bottom: 24px;
         }
 
-        .filter-box,
         .sidebar-card,
         .empty-box {
             background: #fff;
@@ -316,12 +288,8 @@
         }
 
         @media (max-width: 768px) {
-            #header-spacer {
-                height: 96px;
-            }
-
             .page-shell {
-                padding-top: 18px;
+                padding-top: 0;
                 padding-bottom: 18px;
             }
 
@@ -347,7 +315,6 @@
 </head>
 <body>
     <div id="site-header"></div>
-    <div id="header-spacer"></div>
     <div id="site-mobile-menu"></div>
 
     <main class="container-custom page-shell">
@@ -542,29 +509,6 @@
         const sortFilter = document.getElementById("sortFilter");
         const applyFilterBtn = document.getElementById("applyFilterBtn");
 
-        function syncHeaderSpacer() {
-            const siteHeader = document.getElementById("site-header");
-            const spacer = document.getElementById("header-spacer");
-            if (!siteHeader || !spacer) return;
-
-            const height = Math.ceil(siteHeader.offsetHeight || 0);
-            if (height > 0) {
-                spacer.style.height = height + "px";
-            }
-        }
-
-        function watchHeaderSpacer() {
-            let tries = 0;
-            const timer = setInterval(() => {
-                tries += 1;
-                syncHeaderSpacer();
-                const siteHeader = document.getElementById("site-header");
-                if ((siteHeader && siteHeader.offsetHeight > 0) || tries > 30) {
-                    clearInterval(timer);
-                }
-            }, 150);
-        }
-
         function escapeHtml(value) {
             return String(value || "")
                 .replace(/&/g, "&amp;")
@@ -678,7 +622,7 @@
                 return 0;
             }
 
-            if (text.includes("/m2") || text.includes("/m²") || text.includes("m2") && text.includes("triệu")) {
+            if (text.includes("/m2") || text.includes("/m²") || (text.includes("m2") && text.includes("triệu"))) {
                 return 0;
             }
 
@@ -1052,17 +996,10 @@
         sortFilter.addEventListener("change", renderListings);
 
         window.addEventListener("load", () => {
-            watchHeaderSpacer();
             updateFavoriteCount();
             renderListings();
-
-            setTimeout(() => {
-                watchHeaderSpacer();
-                updateFavoriteCount();
-            }, 400);
+            setTimeout(updateFavoriteCount, 400);
         });
-
-        window.addEventListener("resize", syncHeaderSpacer);
 
         window.filterByHotArea = filterByHotArea;
         window.toggleFavorite = toggleFavorite;
