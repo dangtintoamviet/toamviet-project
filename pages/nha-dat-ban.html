@@ -11,13 +11,21 @@
 
     <style>
         :root {
-            --vip-color: #008B8B;
-            --hover-color: #FF8C00;
+            --vip-color: #008b8b;
+            --hover-color: #ff8c00;
+            --soft-bg: #f5f7fa;
+            --text-main: #2c2c2c;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f2f2f2;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--soft-bg);
+            color: var(--text-main);
         }
 
         .container-custom {
@@ -27,7 +35,7 @@
         }
 
         .nav-link {
-            transition: all 0.3s;
+            transition: all 0.25s ease;
             position: relative;
         }
 
@@ -44,80 +52,51 @@
             position: absolute;
             top: 100%;
             left: 0;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
+            min-width: 210px;
+            background: #fff;
+            border-radius: 0 0 10px 10px;
             border-top: 2px solid var(--vip-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
             z-index: 50;
         }
 
         .dropdown-item {
-            padding: 10px 20px;
             display: block;
-            color: #333;
+            padding: 11px 16px;
             font-size: 14px;
-            border-bottom: 1px solid #f2f2f2;
+            color: #374151;
+            border-bottom: 1px solid #f3f4f6;
+            transition: 0.2s ease;
         }
 
         .dropdown-item:hover {
-            background: #f9f9f9;
+            background: #f9fafb;
             color: var(--hover-color);
         }
 
-        .save-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 20px;
+        .filter-box,
+        .sidebar-card,
+        .empty-box {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
         }
 
-        .save-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background: #E03C31;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            border: 1px solid white;
-        }
-
-        .card-container {
-            background: white;
-            border-radius: 14px;
-            border: 1px solid #e5e5e5;
-            overflow: hidden;
-            display: flex;
-            transition: 0.3s;
-        }
-
-        .card-container:hover {
-            border-color: var(--vip-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .card-title {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-desc {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .filter-box {
+            padding: 16px;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
         }
 
         .filter-select,
         .filter-input {
             border: 1px solid #d1d5db;
             padding: 10px 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
-            background: white;
+            background: #fff;
             outline: none;
+            min-height: 42px;
         }
 
         .filter-select:focus,
@@ -126,21 +105,62 @@
             box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.08);
         }
 
+        .listing-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            transition: 0.28s ease;
+        }
+
+        .listing-card:hover {
+            border-color: rgba(0, 139, 139, 0.45);
+            box-shadow: 0 10px 28px rgba(2, 132, 199, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .card-image-box {
+            width: 285px;
+            min-height: 100%;
+            background: #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.45;
+        }
+
+        .card-desc {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.65;
+        }
+
         .empty-box {
-            background: white;
-            border: 1px dashed #cbd5e1;
-            border-radius: 14px;
             padding: 18px;
+            border-style: dashed;
             color: #64748b;
             font-size: 13px;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         .sidebar-card {
-            background: white;
             padding: 20px;
-            border-radius: 14px;
-            border: 1px solid #e5e7eb;
         }
 
         .status-chip {
@@ -150,9 +170,9 @@
             font-size: 10px;
             font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
             padding: 6px 10px;
             border-radius: 999px;
-            letter-spacing: 0.04em;
         }
 
         .status-chip.demo {
@@ -165,7 +185,7 @@
             font-weight: 700;
             font-size: 14px;
             margin-bottom: 15px;
-            color: #2C2C2C;
+            color: var(--text-main);
             text-transform: uppercase;
         }
 
@@ -173,8 +193,7 @@
             margin-bottom: 8px;
             font-size: 13px;
             color: #555;
-            cursor: pointer;
-            transition: 0.2s;
+            transition: 0.2s ease;
         }
 
         .footer-link-group ul li:hover {
@@ -182,34 +201,96 @@
             text-decoration: underline;
         }
 
-        @media (max-width: 768px) {
-            .card-container {
+        .save-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+            color: #4b5563;
+        }
+
+        .save-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            min-width: 18px;
+            height: 18px;
+            background: #e03c31;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 999px;
+            border: 1px solid white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .hot-area-btn {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            border: 1px solid #eef2f7;
+            padding: 10px 12px;
+            border-radius: 10px;
+            transition: 0.2s ease;
+            background: #fff;
+            text-align: left;
+        }
+
+        .hot-area-btn:hover {
+            border-color: rgba(0, 139, 139, 0.3);
+            background: #f8ffff;
+            color: var(--hover-color);
+        }
+
+        .favorite-btn.active {
+            color: #dc2626 !important;
+            border-color: #fecaca !important;
+            background: #fff5f5 !important;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 992px) {
+            .listing-card {
                 flex-direction: column;
             }
 
             .card-image-box {
-                width: 100% !important;
-                height: 220px !important;
+                width: 100%;
+                height: 230px;
             }
+        }
 
+        @media (max-width: 768px) {
             .filter-scroll {
                 display: flex;
-                overflow-x: auto;
                 gap: 8px;
-                padding-bottom: 10px;
+                overflow-x: auto;
+                padding-bottom: 8px;
                 scrollbar-width: none;
             }
 
             .filter-select,
             .filter-input {
-                min-width: 140px;
+                min-width: 150px;
                 flex-shrink: 0;
+            }
+
+            .section-title {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
-
     <header class="bg-white border-b sticky top-0 z-[1000]">
         <div class="container-custom h-[70px] flex justify-between items-center">
             <div class="flex items-center gap-8">
@@ -236,10 +317,10 @@
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="save-icon nav-link text-gray-600">
+                <a href="javascript:void(0)" class="save-icon nav-link" title="Tin đã lưu">
                     <i class="fa-regular fa-heart"></i>
-                    <span class="save-count">0</span>
-                </div>
+                    <span class="save-count" id="favorite-count-badge">0</span>
+                </a>
 
                 <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
                     <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
@@ -270,9 +351,9 @@
         </div>
     </div>
 
-    <div class="container-custom py-6">
-        <div class="bg-white p-4 rounded-lg shadow-sm mb-6 border border-gray-100 filter-scroll">
-            <input id="keywordFilter" type="text" class="filter-input" placeholder="Tìm theo tiêu đề..." />
+    <main class="container-custom py-6">
+        <div class="filter-box mb-6 filter-scroll">
+            <input id="keywordFilter" type="text" class="filter-input" placeholder="Tìm theo tiêu đề, mô tả, khu vực..." />
             <select id="typeFilter" class="filter-select">
                 <option value="">Loại nhà đất</option>
                 <option value="Nhà phố">Nhà phố</option>
@@ -291,7 +372,7 @@
                 <option value="price-desc">Giá giảm dần</option>
                 <option value="area-desc">Diện tích lớn</option>
             </select>
-            <button id="applyFilterBtn" class="bg-[--vip-color] text-white px-6 py-2 rounded font-bold text-sm shrink-0">
+            <button id="applyFilterBtn" class="bg-[--vip-color] text-white px-6 py-2 rounded-lg font-bold text-sm shrink-0 hover:opacity-90 transition">
                 <i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm
             </button>
         </div>
@@ -299,48 +380,51 @@
         <div id="data-note" class="empty-box mb-6 hidden"></div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div class="lg:col-span-3 space-y-6">
-                <div>
-                    <h1 class="text-xl font-bold text-[#2C2C2C] uppercase">Mua bán nhà đất tại Việt Nam</h1>
+            <section class="lg:col-span-3 space-y-6">
+                <div class="bg-white rounded-2xl border border-gray-200 p-5">
+                    <h1 class="section-title">Mua bán nhà đất tại Việt Nam</h1>
                     <p class="text-gray-500 text-sm mt-1">
                         Hiện có <span id="listing-count" class="font-bold text-gray-700">0</span> tin đăng bán đang hiển thị
                     </p>
                 </div>
 
                 <div id="listing-container" class="space-y-6"></div>
-            </div>
+            </section>
 
             <aside class="hidden lg:block lg:col-span-1 space-y-6">
                 <div class="sidebar-card">
                     <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Khu vực nổi bật</h4>
-                    <ul id="hot-areas" class="text-sm space-y-3 text-gray-600">
-                        <li class="flex justify-between"><span>Chưa có dữ liệu</span> <span class="text-gray-400 text-[11px]">0 tin</span></li>
-                    </ul>
+                    <div id="hot-areas" class="space-y-3 text-sm text-gray-600">
+                        <div class="text-gray-400 text-[13px]">Chưa có dữ liệu</div>
+                    </div>
                 </div>
 
                 <div class="sidebar-card">
                     <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Gợi ý hệ thống</h4>
                     <ul class="text-sm space-y-3 text-gray-600">
                         <li class="leading-6">Tin bán được đăng từ trang Đăng tin sau khi được duyệt sẽ tự động hiển thị tại đây.</li>
-                        <li class="leading-6">Dữ liệu giá bán cũng có thể dùng để tổng hợp cho trang Giá nhà đất.</li>
+                        <li class="leading-6">Dữ liệu giá bán có thể dùng để tổng hợp cho trang Giá nhà đất.</li>
                         <li class="leading-6">Bạn nên nhập giá và diện tích rõ ràng để hệ thống tính đơn giá chính xác hơn.</li>
                     </ul>
                 </div>
             </aside>
         </div>
-    </div>
+    </main>
 
-    <footer class="bg-white pt-16 border-t">
+    <footer class="bg-white pt-16 border-t mt-10">
         <div class="container-custom">
             <div class="mb-12 border-b pb-12">
                 <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
+                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm
+                    <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>,
+                    <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>,
+                    biệt thự và liền kề, đất nền dự án. Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất phù hợp với danh sách tin rao được cập nhật liên tục.
                 </p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
                 <div class="footer-link-group">
-                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
+                    <h4>Chủ đề nổi bật</h4>
                     <ul>
                         <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
                         <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
@@ -350,7 +434,7 @@
                 </div>
 
                 <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
+                    <h4>Bất động sản bán</h4>
                     <ul>
                         <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
                         <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
@@ -360,7 +444,7 @@
                 </div>
 
                 <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
+                    <h4>Bất động sản thuê</h4>
                     <ul>
                         <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
                         <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
@@ -370,7 +454,7 @@
                 </div>
 
                 <div class="footer-link-group">
-                    <h4>DỰ ÁN NỔI BẬT</h4>
+                    <h4>Dự án nổi bật</h4>
                     <ul>
                         <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
                         <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
@@ -386,15 +470,11 @@
                     <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
                     <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
                     <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
-                    <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer" />
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer" />
-                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-10 text-[13px]">
                     <div>
-                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
+                        <p class="font-bold mb-4 uppercase">Hướng dẫn</p>
                         <ul class="text-gray-500 space-y-2">
                             <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
                             <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
@@ -404,7 +484,7 @@
                     </div>
 
                     <div>
-                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
+                        <p class="font-bold mb-4 uppercase">Quy định</p>
                         <ul class="text-gray-500 space-y-2">
                             <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
                             <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
@@ -414,7 +494,7 @@
                 </div>
 
                 <div class="w-full lg:max-w-xs">
-                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
+                    <p class="font-bold mb-4 uppercase text-[13px]">Đăng ký nhận tin</p>
                     <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
                         <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm" />
                         <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
@@ -429,16 +509,16 @@
         </div>
     </footer>
 
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+    <button id="goToTop" onclick="safeScrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
 
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
@@ -452,20 +532,50 @@
     <script src="../assets/js/project-service.js"></script>
 
     <script>
-        const listingContainer = document.getElementById('listing-container');
-        const listingCount = document.getElementById('listing-count');
-        const hotAreas = document.getElementById('hot-areas');
-        const dataNote = document.getElementById('data-note');
+        const listingContainer = document.getElementById("listing-container");
+        const listingCount = document.getElementById("listing-count");
+        const hotAreas = document.getElementById("hot-areas");
+        const dataNote = document.getElementById("data-note");
+        const favoriteCountBadge = document.getElementById("favorite-count-badge");
 
-        const keywordFilter = document.getElementById('keywordFilter');
-        const typeFilter = document.getElementById('typeFilter');
-        const cityFilter = document.getElementById('cityFilter');
-        const sortFilter = document.getElementById('sortFilter');
-        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const keywordFilter = document.getElementById("keywordFilter");
+        const typeFilter = document.getElementById("typeFilter");
+        const cityFilter = document.getElementById("cityFilter");
+        const sortFilter = document.getElementById("sortFilter");
+        const applyFilterBtn = document.getElementById("applyFilterBtn");
+
+        const FAVORITE_STORAGE_KEY = "favoriteSalePosts";
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === "function") {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById("chatForm");
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
+            }
+        }
 
         function sendToZalo() {
-            const name = document.getElementById("cusName").value;
-            const msg = document.getElementById("cusMsg").value;
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
             const phone = "0946239289";
 
             if (!name) {
@@ -478,128 +588,344 @@
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
 
-        function getSalePosts() {
-            if (window.postStorage && typeof window.postStorage.getSalePosts === 'function') {
-                return window.postStorage.getSalePosts()
-                    .filter(post => post && post.status === 'approved');
-            }
+        function normalizePhone(phone) {
+            return String(phone || "").replace(/[^\d+]/g, "");
+        }
 
-            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
-            return allPosts.filter(post =>
-                post &&
-                post.flow === 'real_estate' &&
-                post.postType === 'ban' &&
-                post.status === 'approved'
+        function createPostId(post, index) {
+            return (
+                post.id ||
+                post.postId ||
+                post.slug ||
+                `${post.title || "tin"}-${post.city || ""}-${post.district || ""}-${index}`
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")
             );
+        }
+
+        function getFavorites() {
+            try {
+                return JSON.parse(localStorage.getItem(FAVORITE_STORAGE_KEY) || "[]");
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function setFavorites(favorites) {
+            localStorage.setItem(FAVORITE_STORAGE_KEY, JSON.stringify(favorites));
+            updateFavoriteCount();
+        }
+
+        function updateFavoriteCount() {
+            const favorites = getFavorites();
+            favoriteCountBadge.textContent = favorites.length;
+        }
+
+        function isFavorite(postId) {
+            return getFavorites().includes(postId);
+        }
+
+        function toggleFavorite(postId) {
+            const favorites = getFavorites();
+            const exists = favorites.includes(postId);
+            const next = exists
+                ? favorites.filter(id => id !== postId)
+                : [...favorites, postId];
+            setFavorites(next);
+            renderListings();
+        }
+
+        function getCardImage(post) {
+            if (Array.isArray(post.images) && post.images.length) {
+                const firstImage = post.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) {
+                    return firstImage;
+                }
+                if (firstImage && firstImage.dataUrl) {
+                    return firstImage.dataUrl;
+                }
+                if (firstImage && firstImage.url) {
+                    return firstImage.url;
+                }
+            }
+            return "../assets/images/fallback-property.jpg";
         }
 
         function parsePriceToNumber(priceText) {
             if (!priceText) return 0;
-            const text = String(priceText).toLowerCase().replace(/,/g, '.').trim();
 
-            if (text.includes('tỷ')) {
-                const value = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
-                return value * 1000000000;
+            const text = String(priceText).toLowerCase().trim().replace(/,/g, ".");
+            if (
+                text.includes("thỏa thuận") ||
+                text.includes("thoả thuận") ||
+                text.includes("liên hệ") ||
+                text.includes("lien he")
+            ) {
+                return 0;
             }
 
-            if (text.includes('triệu')) {
-                const value = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
-                return value * 1000000;
+            if (text.includes("/m2") || text.includes("/m²") || text.includes("m2") && text.includes("triệu")) {
+                return 0;
             }
 
-            const raw = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
-            return raw;
+            const numbers = text.match(/[\d.]+/g) || [];
+            const first = parseFloat(numbers[0]) || 0;
+
+            if (text.includes("tỷ")) return first * 1000000000;
+            if (text.includes("triệu")) return first * 1000000;
+            if (text.includes("nghìn") || text.includes("ngàn")) return first * 1000;
+
+            return first;
         }
 
         function formatPrice(priceText) {
-            return priceText || 'Liên hệ';
+            const text = String(priceText || "").trim();
+            return text || "Liên hệ";
         }
 
         function formatArea(area) {
-            if (!area) return 'Chưa rõ';
-            return `${area} m²`;
+            if (!area) return "Chưa rõ";
+            return `${escapeHtml(area)} m²`;
         }
 
         function buildLocation(post) {
-            return [post.ward, post.district, post.city].filter(Boolean).join(', ');
+            return [post.ward, post.district, post.city].filter(Boolean).join(", ");
         }
 
         function buildPoster(post) {
-            return post.brandName || post.contactName || post.fullName || 'Người đăng';
+            return post.brandName || post.contactName || post.fullName || "Người đăng";
         }
 
         function getPosterSub(post) {
-            return post.roleLabel || post.role || (post.profileType === 'doanhnghiep' ? 'Doanh nghiệp' : 'Người đăng');
+            return post.roleLabel || post.role || (post.profileType === "doanhnghiep" ? "Doanh nghiệp" : "Người đăng");
         }
 
         function getAvatarText(post) {
             const source = buildPoster(post);
             return source
-                .split(' ')
+                .split(" ")
                 .filter(Boolean)
                 .slice(0, 2)
-                .map(word => word[0].toUpperCase())
-                .join('') || 'TV';
+                .map(word => word.charAt(0).toUpperCase())
+                .join("") || "TV";
         }
 
         function getStatusChip(post) {
-            if (post.status === 'demo') {
+            if (post.status === "demo") {
                 return '<span class="status-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>';
             }
-            return '';
+            return "";
         }
 
-        function getCardImage(post) {
-            if (Array.isArray(post.images) && post.images.length && post.images[0]?.dataUrl) {
-                return post.images[0].dataUrl;
+        function calculatePricePerM2(post) {
+            if (typeof post.pricePerSquareMeter === "number" && post.pricePerSquareMeter > 0) {
+                const unit = post.pricePerSquareMeter;
+                if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + " tỷ/m²";
+                if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
+                return Math.round(unit).toLocaleString("vi-VN") + " đ/m²";
             }
-            return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900';
+
+            const totalPrice = parsePriceToNumber(post.propertyPrice);
+            const areaNumber = Number(post.propertyArea || 0);
+
+            if (!totalPrice || !areaNumber) return "Chưa rõ";
+
+            const unit = totalPrice / areaNumber;
+            if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + " tỷ/m²";
+            if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
+            return Math.round(unit).toLocaleString("vi-VN") + " đ/m²";
         }
 
-        function renderCard(post) {
-            const price = formatPrice(post.propertyPrice);
-            const area = formatArea(post.propertyArea);
-            const location = buildLocation(post) || 'Chưa cập nhật khu vực';
-            const poster = buildPoster(post);
-            const posterSub = getPosterSub(post);
-            const avatarText = getAvatarText(post);
-            const propertyType = post.propertyType || 'Bất động sản';
-            const legal = post.propertyLegal || 'Đang cập nhật';
-            const direction = post.propertyDirection || 'Đang cập nhật';
-            const beds = post.propertyBeds || '0';
-            const description = post.description || 'Đang cập nhật mô tả chi tiết cho bất động sản này.';
-            const phone = post.contactPhone || post.phone || 'Liên hệ';
-            const imageCount = Array.isArray(post.images) ? post.images.length : 0;
+        function getDetailUrl(post, postId) {
+            if (post.detailUrl) return post.detailUrl;
+            return `../pages/chi-tiet-tin.html?id=${encodeURIComponent(postId)}`;
+        }
 
-            const pricePerM2 = (() => {
-                if (typeof post.pricePerSquareMeter === 'number' && post.pricePerSquareMeter > 0) {
-                    if (post.pricePerSquareMeter >= 1000000000) {
-                        return (post.pricePerSquareMeter / 1000000000).toFixed(2) + ' tỷ/m²';
-                    }
-                    if (post.pricePerSquareMeter >= 1000000) {
-                        return Math.round(post.pricePerSquareMeter / 1000000) + ' triệu/m²';
-                    }
-                    return Math.round(post.pricePerSquareMeter).toLocaleString('vi-VN') + ' đ/m²';
+        function getSalePosts() {
+            if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
+                return window.postStorage.getSalePosts()
+                    .filter(post => post && (post.status === "approved" || post.status === "demo"));
+            }
+
+            const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+            return allPosts.filter(post =>
+                post &&
+                post.flow === "real_estate" &&
+                post.postType === "ban" &&
+                (post.status === "approved" || post.status === "demo")
+            );
+        }
+
+        function getFallbackDemoPosts() {
+            return [
+                {
+                    id: "demo-1",
+                    title: "NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN",
+                    propertyType: "Biệt thự",
+                    propertyPrice: "60 tỷ",
+                    propertyArea: "300",
+                    propertyLegal: "Sổ đỏ đầy đủ",
+                    propertyDirection: "Đông Nam",
+                    propertyBeds: "5",
+                    city: "Hà Nội",
+                    district: "Đan Phượng",
+                    ward: "",
+                    description: "Căn biệt thự có vị trí đẹp, bàn giao full nội thất cao cấp. Hỗ trợ pháp lý và thủ tục nhanh gọn.",
+                    contactName: "Nguyễn Thành An",
+                    roleLabel: "Môi giới chuyên nghiệp",
+                    contactPhone: "0912598888",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "ban"
+                },
+                {
+                    id: "demo-2",
+                    title: "BÁN CĂN HỘ CAO CẤP 2 PHÒNG NGỦ TRUNG TÂM THÀNH PHỐ, FULL NỘI THẤT",
+                    propertyType: "Căn hộ",
+                    propertyPrice: "4.2 tỷ",
+                    propertyArea: "85",
+                    propertyLegal: "Sổ hồng",
+                    propertyDirection: "Nam",
+                    propertyBeds: "2",
+                    city: "TP.HCM",
+                    district: "Quận 1",
+                    ward: "",
+                    description: "Căn hộ view đẹp, gần trung tâm thương mại, phù hợp để ở hoặc đầu tư cho thuê lâu dài.",
+                    contactName: "Trần Văn Bình",
+                    roleLabel: "Chuyên viên tư vấn",
+                    contactPhone: "0988123456",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "ban"
                 }
+            ];
+        }
 
-                const priceNumber = parsePriceToNumber(post.propertyPrice);
-                const areaNumber = Number(post.propertyArea || 0);
-                if (!priceNumber || !areaNumber) return 'Chưa rõ';
+        function fillCityFilter(posts) {
+            const currentValue = cityFilter.value;
+            const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, "vi"));
 
-                const unit = priceNumber / areaNumber;
-                if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + ' tỷ/m²';
-                if (unit >= 1000000) return Math.round(unit / 1000000) + ' triệu/m²';
-                return Math.round(unit).toLocaleString('vi-VN') + ' đ/m²';
-            })();
+            cityFilter.innerHTML = '<option value="">Toàn quốc</option>' +
+                uniqueCities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("");
+
+            if (uniqueCities.includes(currentValue)) {
+                cityFilter.value = currentValue;
+            }
+        }
+
+        function applyFilters(posts) {
+            let filtered = [...posts];
+
+            const keyword = keywordFilter.value.trim().toLowerCase();
+            const propertyType = typeFilter.value;
+            const city = cityFilter.value;
+            const sortType = sortFilter.value;
+
+            if (keyword) {
+                filtered = filtered.filter(post => {
+                    const rawText = [
+                        post.title,
+                        post.description,
+                        post.propertyType,
+                        buildLocation(post),
+                        post.projectName
+                    ].filter(Boolean).join(" ").toLowerCase();
+
+                    return rawText.includes(keyword);
+                });
+            }
+
+            if (propertyType) {
+                filtered = filtered.filter(post => (post.propertyType || "") === propertyType);
+            }
+
+            if (city) {
+                filtered = filtered.filter(post => (post.city || "") === city);
+            }
+
+            if (sortType === "price-asc") {
+                filtered.sort((a, b) => parsePriceToNumber(a.propertyPrice) - parsePriceToNumber(b.propertyPrice));
+            } else if (sortType === "price-desc") {
+                filtered.sort((a, b) => parsePriceToNumber(b.propertyPrice) - parsePriceToNumber(a.propertyPrice));
+            } else if (sortType === "area-desc") {
+                filtered.sort((a, b) => Number(b.propertyArea || 0) - Number(a.propertyArea || 0));
+            } else {
+                filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            }
+
+            return filtered;
+        }
+
+        function renderHotAreas(posts) {
+            const areaMap = {};
+
+            posts.forEach(post => {
+                const city = post.city || "Khác";
+                areaMap[city] = (areaMap[city] || 0) + 1;
+            });
+
+            const sortedAreas = Object.entries(areaMap)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+
+            if (!sortedAreas.length) {
+                hotAreas.innerHTML = '<div class="text-gray-400 text-[13px]">Chưa có dữ liệu</div>';
+                return;
+            }
+
+            hotAreas.innerHTML = sortedAreas.map(([area, count]) => `
+                <button type="button" class="hot-area-btn" onclick="filterByHotArea('${escapeHtml(area).replace(/'/g, "\\'")}')">
+                    <span>${escapeHtml(area)}</span>
+                    <span class="text-gray-400 text-[11px]">${count} tin</span>
+                </button>
+            `).join("");
+        }
+
+        function filterByHotArea(area) {
+            cityFilter.value = area;
+            renderListings();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function renderCard(post, index) {
+            const postId = createPostId(post, index);
+            const detailUrl = getDetailUrl(post, postId);
+            const imageUrl = escapeHtml(getCardImage(post));
+            const title = escapeHtml(post.title || "Tiêu đề bất động sản");
+            const price = escapeHtml(formatPrice(post.propertyPrice));
+            const area = formatArea(post.propertyArea);
+            const location = escapeHtml(buildLocation(post) || "Chưa cập nhật khu vực");
+            const poster = escapeHtml(buildPoster(post));
+            const posterSub = escapeHtml(getPosterSub(post));
+            const avatarText = escapeHtml(getAvatarText(post));
+            const propertyType = escapeHtml(post.propertyType || "Bất động sản");
+            const legal = escapeHtml(post.propertyLegal || "Đang cập nhật");
+            const direction = escapeHtml(post.propertyDirection || "Đang cập nhật");
+            const beds = escapeHtml(post.propertyBeds || "0");
+            const description = escapeHtml(post.description || "Đang cập nhật mô tả chi tiết cho bất động sản này.");
+            const phoneRaw = post.contactPhone || post.phone || "";
+            const phoneText = escapeHtml(phoneRaw || "Liên hệ");
+            const phoneLink = normalizePhone(phoneRaw);
+            const imageCount = Array.isArray(post.images) ? post.images.length : 1;
+            const pricePerM2 = escapeHtml(calculatePricePerM2(post));
+            const favoriteActive = isFavorite(postId);
 
             return `
-                <div class="card-container">
-                    <div class="card-image-box w-[280px] h-auto shrink-0 relative bg-slate-100 flex items-center justify-center">
-                        <img src="${getCardImage(post)}" alt="${post.title || 'Bất động sản'}" class="w-full h-full object-cover">
+                <article class="listing-card">
+                    <div class="card-image-box shrink-0">
+                        <a href="${detailUrl}" aria-label="${title}">
+                            <img src="${imageUrl}" alt="${title}" onerror="this.src='../assets/images/fallback-property.jpg'">
+                        </a>
+
                         <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
-                            <i class="fa-regular fa-image"></i> ${imageCount || 1}
+                            <i class="fa-regular fa-image"></i> ${imageCount}
                         </div>
-                        <div class="absolute top-3 left-3">${getStatusChip(post)}</div>
+
+                        <div class="absolute top-3 left-3">
+                            ${getStatusChip(post)}
+                        </div>
                     </div>
 
                     <div class="p-4 flex-1 flex flex-col justify-between">
@@ -609,8 +935,8 @@
                                 <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">Tin bán</span>
                             </div>
 
-                            <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] cursor-pointer">
-                                ${post.title || 'Tiêu đề bất động sản'}
+                            <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] transition">
+                                <a href="${detailUrl}">${title}</a>
                             </h3>
 
                             <div class="flex items-center gap-3 mt-3 text-sm flex-wrap font-medium">
@@ -637,150 +963,40 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-between items-center mt-4 pt-3 border-t">
-                            <div class="flex items-center gap-3 group">
-                                <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs group-hover:opacity-80 transition">
+                        <div class="flex justify-between items-center mt-4 pt-3 border-t gap-4 flex-wrap">
+                            <div class="flex items-center gap-3 group min-w-0">
+                                <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs shrink-0">
                                     ${avatarText}
                                 </div>
-                                <div>
-                                    <p class="text-sm font-bold text-gray-700 group-hover:text-[--vip-color] transition">${poster}</p>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-bold text-gray-700 truncate">${poster}</p>
                                     <p class="text-[11px] text-gray-400">${posterSub}</p>
                                 </div>
                             </div>
 
-                            <div class="flex gap-2">
-                                <button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm">
-                                    <i class="fa-solid fa-phone"></i> ${phone}
-                                </button>
-                                <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition">
-                                    <i class="fa-regular fa-heart"></i>
+                            <div class="flex gap-2 flex-wrap">
+                                ${
+                                    phoneLink
+                                        ? `<a href="tel:${phoneLink}" class="bg-[--vip-color] text-white px-4 py-2 rounded-lg font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm hover:opacity-90 transition">
+                                            <i class="fa-solid fa-phone"></i> ${phoneText}
+                                           </a>`
+                                        : `<button class="bg-[--vip-color] text-white px-4 py-2 rounded-lg font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm cursor-default">
+                                            <i class="fa-solid fa-phone"></i> ${phoneText}
+                                           </button>`
+                                }
+
+                                <button
+                                    type="button"
+                                    class="favorite-btn ${favoriteActive ? "active" : ""} border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition"
+                                    onclick="toggleFavorite('${escapeHtml(postId).replace(/'/g, "\\'")}')"
+                                    title="Lưu tin">
+                                    <i class="${favoriteActive ? "fa-solid" : "fa-regular"} fa-heart"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </article>
             `;
-        }
-
-        function getFallbackDemoPosts() {
-            return [
-                {
-                    title: 'NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN',
-                    propertyType: 'Biệt thự',
-                    propertyPrice: '60 tỷ',
-                    propertyArea: '300',
-                    propertyLegal: 'Sổ đỏ đầy đủ',
-                    propertyDirection: 'Đông Nam',
-                    propertyBeds: '5',
-                    city: 'Hà Nội',
-                    district: 'Đan Phượng',
-                    ward: '',
-                    description: 'Căn biệt thự có vị trí kim cương, bàn giao full nội thất cao cấp. Môi giới hỗ trợ pháp lý và thủ tục nhanh gọn.',
-                    contactName: 'Nguyễn Thành An',
-                    roleLabel: 'Môi giới chuyên nghiệp',
-                    contactPhone: '0912 598 ***',
-                    status: 'demo',
-                    createdAt: new Date().toISOString(),
-                    flow: 'real_estate',
-                    postType: 'ban'
-                },
-                {
-                    title: 'BÁN CĂN HỘ CAO CẤP 2 PHÒNG NGỦ TRUNG TÂM THÀNH PHỐ, FULL NỘI THẤT',
-                    propertyType: 'Căn hộ',
-                    propertyPrice: '4.2 tỷ',
-                    propertyArea: '85',
-                    propertyLegal: 'Sổ hồng',
-                    propertyDirection: 'Nam',
-                    propertyBeds: '2',
-                    city: 'TP.HCM',
-                    district: 'Quận 1',
-                    ward: '',
-                    description: 'Căn hộ view đẹp, gần trung tâm thương mại, phù hợp để ở hoặc đầu tư cho thuê lâu dài.',
-                    contactName: 'Trần Văn Bình',
-                    roleLabel: 'Chuyên viên tư vấn',
-                    contactPhone: '0988 123 ***',
-                    status: 'demo',
-                    createdAt: new Date().toISOString(),
-                    flow: 'real_estate',
-                    postType: 'ban'
-                }
-            ];
-        }
-
-        function fillCityFilter(posts) {
-            const currentValue = cityFilter.value;
-            const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))];
-
-            cityFilter.innerHTML = '<option value="">Toàn quốc</option>' +
-                uniqueCities.map(city => `<option value="${city}">${city}</option>`).join('');
-
-            if (uniqueCities.includes(currentValue)) {
-                cityFilter.value = currentValue;
-            }
-        }
-
-        function applyFilters(posts) {
-            let filtered = [...posts];
-
-            const keyword = keywordFilter.value.trim().toLowerCase();
-            const propertyType = typeFilter.value;
-            const city = cityFilter.value;
-            const sortType = sortFilter.value;
-
-            if (keyword) {
-                filtered = filtered.filter(post =>
-                    (post.title || '').toLowerCase().includes(keyword) ||
-                    (post.description || '').toLowerCase().includes(keyword) ||
-                    (post.propertyType || '').toLowerCase().includes(keyword) ||
-                    buildLocation(post).toLowerCase().includes(keyword) ||
-                    (post.projectName || '').toLowerCase().includes(keyword)
-                );
-            }
-
-            if (propertyType) {
-                filtered = filtered.filter(post => (post.propertyType || '') === propertyType);
-            }
-
-            if (city) {
-                filtered = filtered.filter(post => (post.city || '') === city);
-            }
-
-            if (sortType === 'price-asc') {
-                filtered.sort((a, b) => parsePriceToNumber(a.propertyPrice) - parsePriceToNumber(b.propertyPrice));
-            } else if (sortType === 'price-desc') {
-                filtered.sort((a, b) => parsePriceToNumber(b.propertyPrice) - parsePriceToNumber(a.propertyPrice));
-            } else if (sortType === 'area-desc') {
-                filtered.sort((a, b) => Number(b.propertyArea || 0) - Number(a.propertyArea || 0));
-            } else {
-                filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-            }
-
-            return filtered;
-        }
-
-        function renderHotAreas(posts) {
-            const areaMap = {};
-
-            posts.forEach(post => {
-                const city = post.city || 'Khác';
-                areaMap[city] = (areaMap[city] || 0) + 1;
-            });
-
-            const sortedAreas = Object.entries(areaMap)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 6);
-
-            if (!sortedAreas.length) {
-                hotAreas.innerHTML = `<li class="flex justify-between"><span>Chưa có dữ liệu</span> <span class="text-gray-400 text-[11px]">0 tin</span></li>`;
-                return;
-            }
-
-            hotAreas.innerHTML = sortedAreas.map(([area, count]) => `
-                <li class="flex justify-between hover:text-[--hover-color] cursor-pointer">
-                    <span>${area}</span>
-                    <span class="text-gray-400 text-[11px]">${count} tin</span>
-                </li>
-            `).join('');
         }
 
         function renderListings() {
@@ -788,15 +1004,15 @@
 
             if (!posts.length) {
                 posts = getFallbackDemoPosts();
-                dataNote.classList.remove('hidden');
+                dataNote.classList.remove("hidden");
                 dataNote.innerHTML = `
                     Hiện tại chưa có tin bán thật nào đã được duyệt để hiển thị ngoài public.
-                    Tôi đang hiển thị 2 tin mẫu để giao diện không bị trống.
+                    Hệ thống đang hiển thị <strong>2 tin mẫu</strong> để giao diện không bị trống.
                     Sau khi bạn đăng tin bán từ trang <strong>Đăng tin</strong> và được admin duyệt, dữ liệu sẽ tự động xuất hiện ở đây.
                 `;
             } else {
-                dataNote.classList.add('hidden');
-                dataNote.innerHTML = '';
+                dataNote.classList.add("hidden");
+                dataNote.innerHTML = "";
             }
 
             fillCityFilter(posts);
@@ -804,30 +1020,37 @@
             const filteredPosts = applyFilters(posts);
             listingCount.textContent = filteredPosts.length;
 
-            renderHotAreas(posts);
+            renderHotAreas(filteredPosts.length ? filteredPosts : posts);
 
             if (!filteredPosts.length) {
                 listingContainer.innerHTML = `
                     <div class="empty-box">
-                        Không tìm thấy tin bán nào phù hợp với bộ lọc hiện tại. Bạn thử đổi từ khóa, loại nhà đất hoặc khu vực.
+                        Không tìm thấy tin bán nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, loại nhà đất hoặc khu vực để tìm lại.
                     </div>
                 `;
                 return;
             }
 
-            listingContainer.innerHTML = filteredPosts.map(renderCard).join('');
+            listingContainer.innerHTML = filteredPosts.map((post, index) => renderCard(post, index)).join("");
         }
 
-        applyFilterBtn.addEventListener('click', renderListings);
-        keywordFilter.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') renderListings();
-        });
-        typeFilter.addEventListener('change', renderListings);
-        cityFilter.addEventListener('change', renderListings);
-        sortFilter.addEventListener('change', renderListings);
+        applyFilterBtn.addEventListener("click", renderListings);
 
+        keywordFilter.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") renderListings();
+        });
+
+        typeFilter.addEventListener("change", renderListings);
+        cityFilter.addEventListener("change", renderListings);
+        sortFilter.addEventListener("change", renderListings);
+
+        updateFavoriteCount();
         renderListings();
+
+        window.filterByHotArea = filterByHotArea;
+        window.toggleFavorite = toggleFavorite;
     </script>
+
     <script src="../assets/js/main.js"></script>
 </body>
 </html>
