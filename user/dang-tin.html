@@ -1192,51 +1192,6 @@
     <script src="../assets/js/user-storage.js"></script>
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
-    <script>
-
-let provinces = [];
-
-function loadVietnamAddress() {
-
-    fetch("../assets/data/vietnam-address.json")
-        .then(res => res.json())
-        .then(data => {
-
-            provinces = data;
-
-            renderCityOptions();
-
-        })
-        .catch(err => {
-            console.error("Không tải được dữ liệu địa chỉ:", err);
-        });
-
-}
-
-function renderCityOptions() {
-
-    const citySelect = document.getElementById("city");
-
-    if (!citySelect) return;
-
-    citySelect.innerHTML = '<option value="">Chọn tỉnh / thành</option>';
-
-    provinces.forEach(p => {
-
-        const option = document.createElement("option");
-
-        option.value = p.name;
-        option.textContent = p.name;
-
-        citySelect.appendChild(option);
-
-    });
-
-}
-
-document.addEventListener("DOMContentLoaded", loadVietnamAddress);
-
-</script>
 
     <script>
         let currentFlow = "real_estate";
@@ -1256,15 +1211,18 @@ document.addEventListener("DOMContentLoaded", loadVietnamAddress);
             provinces: [
                 {
                     name: "Hà Nội",
-                    wards: ["Phường Ba Đình", "Phường Hoàn Kiếm", "Phường Cầu Giấy", "Phường Tây Hồ"]
+                    slug: "ha-noi",
+                    wards: ["Ba Đình", "Hoàn Kiếm", "Cầu Giấy", "Đống Đa", "Tây Hồ"]
                 },
                 {
-                    name: "TP.HCM",
-                    wards: ["Phường Bến Nghé", "Phường Thủ Thiêm", "Phường Tân Định", "Phường An Khánh"]
+                    name: "TP Hồ Chí Minh",
+                    slug: "tp-ho-chi-minh",
+                    wards: ["Quận 1", "Quận 3", "Thủ Đức", "Bình Thạnh", "Tân Bình"]
                 },
                 {
                     name: "Bình Dương",
-                    wards: ["Phường Dĩ An", "Phường An Bình", "Phường Thuận Giao", "Phường Phú Cường"]
+                    slug: "binh-duong",
+                    wards: ["Thủ Dầu Một", "Thuận An", "Dĩ An", "Tân Uyên"]
                 }
             ]
         };
@@ -1493,6 +1451,7 @@ document.addEventListener("DOMContentLoaded", loadVietnamAddress);
                             provinces: data.map(function (item) {
                                 return {
                                     name: item.name || item.province || item.city || "",
+                                    slug: item.slug || slugify(item.name || item.province || item.city || ""),
                                     wards: item.wards || item.children || item.commune || item.phuongXa || []
                                 };
                             }).filter(function (item) {
@@ -1507,6 +1466,7 @@ document.addEventListener("DOMContentLoaded", loadVietnamAddress);
                         provinces: window.LOCATIONS_DATA.map(function (item) {
                             return {
                                 name: item.name || item.province || item.city || "",
+                                slug: item.slug || slugify(item.name || item.province || item.city || ""),
                                 wards: item.wards || item.children || item.commune || item.phuongXa || []
                             };
                         }).filter(function (item) {
@@ -1520,6 +1480,7 @@ document.addEventListener("DOMContentLoaded", loadVietnamAddress);
                         provinces: window.locations.map(function (item) {
                             return {
                                 name: item.name || item.province || item.city || "",
+                                slug: item.slug || slugify(item.name || item.province || item.city || ""),
                                 wards: item.wards || item.children || item.commune || item.phuongXa || []
                             };
                         }).filter(function (item) {
@@ -1534,9 +1495,40 @@ document.addEventListener("DOMContentLoaded", loadVietnamAddress);
             return FALLBACK_LOCATIONS;
         }
 
-        function initLocationData() {
-            locationSource = extractLocationsFromCommonFiles();
-            renderCityOptions();
+        function loadVietnamAddress() {
+            fetch("../assets/data/vietnam-address.json")
+                .then(function (res) {
+                    if (!res.ok) {
+                        throw new Error("Không đọc được file vietnam-address.json");
+                    }
+                    return res.json();
+                })
+                .then(function (data) {
+                    if (!Array.isArray(data) || !data.length) {
+                        throw new Error("Dữ liệu địa chỉ rỗng hoặc không đúng định dạng");
+                    }
+
+                    locationSource = {
+                        provinces: data.map(function (item) {
+                            return {
+                                name: item.name || "",
+                                slug: item.slug || slugify(item.name || ""),
+                                wards: Array.isArray(item.wards) ? item.wards : []
+                            };
+                        }).filter(function (item) {
+                            return item.name;
+                        })
+                    };
+
+                    renderCityOptions();
+                    updateWards();
+                })
+                .catch(function (error) {
+                    console.warn("Load JSON địa chỉ thất bại, dùng fallback/common source:", error);
+                    locationSource = extractLocationsFromCommonFiles();
+                    renderCityOptions();
+                    updateWards();
+                });
         }
 
         function renderCityOptions() {
@@ -2333,6 +2325,7 @@ document.addEventListener("DOMContentLoaded", loadVietnamAddress);
             renderDynamicFields();
             fillUserInfo();
             renderCityOptions();
+            updateWards();
             updatePreview();
         }
 
@@ -2475,7 +2468,7 @@ document.addEventListener("DOMContentLoaded", loadVietnamAddress);
         }
 
         fillUserInfo();
-        initLocationData();
+        loadVietnamAddress();
         renderDynamicFields();
         lockFlowByAccountGroup();
 
