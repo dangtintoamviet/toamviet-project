@@ -1192,6 +1192,51 @@
     <script src="../assets/js/user-storage.js"></script>
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
+    <script>
+
+let provinces = [];
+
+function loadVietnamAddress() {
+
+    fetch("../assets/data/vietnam-address.json")
+        .then(res => res.json())
+        .then(data => {
+
+            provinces = data;
+
+            renderCityOptions();
+
+        })
+        .catch(err => {
+            console.error("Không tải được dữ liệu địa chỉ:", err);
+        });
+
+}
+
+function renderCityOptions() {
+
+    const citySelect = document.getElementById("city");
+
+    if (!citySelect) return;
+
+    citySelect.innerHTML = '<option value="">Chọn tỉnh / thành</option>';
+
+    provinces.forEach(p => {
+
+        const option = document.createElement("option");
+
+        option.value = p.name;
+        option.textContent = p.name;
+
+        citySelect.appendChild(option);
+
+    });
+
+}
+
+document.addEventListener("DOMContentLoaded", loadVietnamAddress);
+
+</script>
 
     <script>
         let currentFlow = "real_estate";
