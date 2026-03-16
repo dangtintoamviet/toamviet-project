@@ -238,30 +238,6 @@
             border: 1px solid #d6a583;
         }
 
-        .info-list-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #eef2f7;
-        }
-
-        .info-list-row:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .info-label {
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .info-value {
-            color: #0f172a;
-            font-weight: 700;
-            text-align: right;
-        }
-
         @media (max-width: 992px) {
             .detail-main-image {
                 height: 320px;
@@ -371,6 +347,10 @@
                             <span id="extra-phone">Liên hệ</span>
                         </div>
                         <div class="flex justify-between gap-4 border-b pb-3">
+                            <span class="font-semibold text-slate-700">Email</span>
+                            <span id="extra-email">Đang cập nhật</span>
+                        </div>
+                        <div class="flex justify-between gap-4 border-b pb-3">
                             <span class="font-semibold text-slate-700">Ngày đăng</span>
                             <span id="extra-date">Đang cập nhật</span>
                         </div>
@@ -379,8 +359,12 @@
                             <span id="extra-city">Đang cập nhật</span>
                         </div>
                         <div class="flex justify-between gap-4 border-b pb-3">
-                            <span class="font-semibold text-slate-700">Khu vực phụ</span>
+                            <span class="font-semibold text-slate-700">Quận / Huyện</span>
                             <span id="extra-district">Đang cập nhật</span>
+                        </div>
+                        <div class="flex justify-between gap-4 border-b pb-3">
+                            <span class="font-semibold text-slate-700">Phường / Xã</span>
+                            <span id="extra-ward">Đang cập nhật</span>
                         </div>
                     </div>
                 </div>
@@ -483,7 +467,8 @@
     <script src="../assets/js/component-loader.js"></script>
 
     <script>
-        const FAVORITE_STORAGE_KEY = "favoriteSalePosts";
+        const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
+        const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
 
         function escapeHtml(value) {
@@ -537,39 +522,83 @@
             return String(phone || "").replace(/[^\d+]/g, "");
         }
 
-        function getFavorites() {
+        function getStorageArray(key) {
             try {
-                return JSON.parse(localStorage.getItem(FAVORITE_STORAGE_KEY) || "[]");
+                return JSON.parse(localStorage.getItem(key) || "[]");
             } catch (error) {
                 return [];
             }
         }
 
-        function setFavorites(favorites) {
-            localStorage.setItem(FAVORITE_STORAGE_KEY, JSON.stringify(favorites));
+        function setStorageArray(key, value) {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+
+        function getSaleFavorites() {
+            return getStorageArray(FAVORITE_SALE_STORAGE_KEY);
+        }
+
+        function getRentalFavorites() {
+            return getStorageArray(FAVORITE_RENTAL_STORAGE_KEY);
+        }
+
+        function setSaleFavorites(favorites) {
+            setStorageArray(FAVORITE_SALE_STORAGE_KEY, favorites);
             updateFavoriteCount();
         }
 
+        function setRentalFavorites(favorites) {
+            setStorageArray(FAVORITE_RENTAL_STORAGE_KEY, favorites);
+            updateFavoriteCount();
+        }
+
+        function getTotalFavoritesCount() {
+            return getSaleFavorites().length + getRentalFavorites().length;
+        }
+
         function updateFavoriteCount() {
-            const badge = document.getElementById("headerFavoriteCount") || document.getElementById("favorite-count-badge");
-            if (badge) badge.textContent = getFavorites().length;
+            const badges = document.querySelectorAll("#headerFavoriteCount, #favorite-count-badge");
+            const total = getTotalFavoritesCount();
+            badges.forEach((badge) => {
+                badge.textContent = total;
+            });
         }
 
-        function isFavorite(postId) {
-            return getFavorites().includes(postId);
+        function getFavoriteKeyByPost(post) {
+            const postType = String(post.postType || "").toLowerCase().trim();
+            return postType === "thue" ? FAVORITE_RENTAL_STORAGE_KEY : FAVORITE_SALE_STORAGE_KEY;
         }
 
-        function toggleFavorite(postId) {
-            const favorites = getFavorites();
+        function getFavoritesByPost(post) {
+            const key = getFavoriteKeyByPost(post);
+            return key === FAVORITE_RENTAL_STORAGE_KEY ? getRentalFavorites() : getSaleFavorites();
+        }
+
+        function isFavorite(postId, post) {
+            if (!post) return false;
+            return getFavoritesByPost(post).includes(postId);
+        }
+
+        function toggleFavorite(postId, post) {
+            if (!post) return;
+
+            const key = getFavoriteKeyByPost(post);
+            const favorites = getStorageArray(key);
             const exists = favorites.includes(postId);
             const next = exists ? favorites.filter(id => id !== postId) : [...favorites, postId];
-            setFavorites(next);
-            updateFavoriteButton(postId);
+
+            if (key === FAVORITE_RENTAL_STORAGE_KEY) {
+                setRentalFavorites(next);
+            } else {
+                setSaleFavorites(next);
+            }
+
+            updateFavoriteButton(postId, post);
         }
 
-        function updateFavoriteButton(postId) {
+        function updateFavoriteButton(postId, post) {
             const favoriteButton = document.getElementById("favorite-button");
-            const active = isFavorite(postId);
+            const active = isFavorite(postId, post);
 
             favoriteButton.classList.toggle("active", active);
             favoriteButton.innerHTML = active
@@ -631,6 +660,21 @@
             return raw;
         }
 
+        function parseRentalPriceToMillion(priceText) {
+            if (!priceText) return 0;
+
+            const raw = String(priceText).toLowerCase().trim().replace(/,/g, ".");
+            const nums = raw.match(/\d+(\.\d+)?/g);
+            if (!nums || !nums.length) return 0;
+
+            if (raw.includes("tỷ")) return parseFloat(nums[0]) * 1000;
+            if (raw.includes("triệu")) return parseFloat(nums[0]);
+            if (raw.includes("nghìn")) return parseFloat(nums[0]) / 1000;
+
+            const value = parseFloat(nums[0]);
+            return Number.isNaN(value) ? 0 : value;
+        }
+
         function formatPrice(priceText) {
             return String(priceText || "").trim() || "Liên hệ";
         }
@@ -667,6 +711,10 @@
         }
 
         function getCardImage(post) {
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+                return post.thumbnail;
+            }
+
             if (Array.isArray(post.images) && post.images.length) {
                 const firstImage = post.images[0];
                 if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
@@ -678,7 +726,7 @@
 
         function getPostImages(post) {
             if (!Array.isArray(post.images) || !post.images.length) {
-                return [FALLBACK_IMAGE];
+                return [post.thumbnail || FALLBACK_IMAGE];
             }
 
             const images = post.images.map(item => {
@@ -687,6 +735,12 @@
                 if (item && item.url) return item.url;
                 return null;
             }).filter(Boolean);
+
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+                if (!images.includes(post.thumbnail)) {
+                    images.unshift(post.thumbnail);
+                }
+            }
 
             return images.length ? images : [FALLBACK_IMAGE];
         }
@@ -739,12 +793,14 @@
                     contactName: "Nguyễn Thành An",
                     roleLabel: "Môi giới chuyên nghiệp",
                     contactPhone: "0912598888",
+                    contactEmail: "demo@toamviet.vn",
                     status: "demo",
                     createdAt: new Date().toISOString(),
                     flow: "real_estate",
                     postType: "ban",
                     vipLevel: "vang",
-                    images: [FALLBACK_IMAGE]
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
                 },
                 {
                     id: "demo-rent-1",
@@ -762,12 +818,14 @@
                     contactName: "Trần Thị Lan Anh",
                     roleLabel: "Chuyên viên cho thuê",
                     contactPhone: "0901234567",
+                    contactEmail: "rent@toamviet.vn",
                     status: "demo",
                     createdAt: new Date().toISOString(),
                     flow: "real_estate",
                     postType: "thue",
                     vipLevel: "bac",
-                    images: [FALLBACK_IMAGE]
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
                 },
                 {
                     id: "demo-build-1",
@@ -786,11 +844,13 @@
                     brandName: "Công ty Xây dựng An Phát",
                     roleLabel: "Doanh nghiệp / Nhà thầu",
                     contactPhone: "0988123456",
+                    contactEmail: "build@toamviet.vn",
                     status: "demo",
                     createdAt: new Date().toISOString(),
                     flow: "construction",
                     postType: "xaydung",
-                    images: [FALLBACK_IMAGE]
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
                 }
             ];
         }
@@ -907,6 +967,7 @@
             const poster = buildPoster(post);
             const role = getPosterSub(post);
             const phone = post.contactPhone || post.phone || "Liên hệ";
+            const email = post.contactEmail || post.email || "Đang cập nhật";
             const phoneLink = normalizePhone(phone);
             const images = getPostImages(post);
             const isRental = String(post.postType || "").toLowerCase() === "thue" || String(post.postType || "").toLowerCase() === "cho-thue" || String(post.postType || "").toLowerCase() === "rent";
@@ -936,9 +997,11 @@
             fillText("extra-poster", poster);
             fillText("extra-role", role);
             fillText("extra-phone", phone);
+            fillText("extra-email", email);
             fillText("extra-date", formatDate(post.createdAt));
             fillText("extra-city", post.city || "Đang cập nhật");
-            fillText("extra-district", post.district || post.ward || "Đang cập nhật");
+            fillText("extra-district", post.district || "Đang cập nhật");
+            fillText("extra-ward", post.ward || "Đang cập nhật");
 
             fillText("poster-name", poster);
             fillText("poster-role", role);
@@ -976,10 +1039,10 @@
 
             const favoriteButton = document.getElementById("favorite-button");
             favoriteButton.onclick = function () {
-                toggleFavorite(postId);
+                toggleFavorite(postId, post);
             };
             favoriteButton.classList.remove("hidden");
-            updateFavoriteButton(postId);
+            updateFavoriteButton(postId, post);
         }
 
         function renderConstructionDetail(post) {
@@ -992,10 +1055,10 @@
             const brand = post.serviceBrand || buildPoster(post);
             const role = getPosterSub(post);
             const phone = post.contactPhone || post.phone || "Liên hệ";
+            const email = post.contactEmail || post.email || "Đang cập nhật";
             const phoneLink = normalizePhone(phone);
             const images = getPostImages(post);
             const description = post.description || "Đang cập nhật mô tả chi tiết dịch vụ.";
-            const vipBadge = "";
 
             document.title = `${title} - ToamViet.com.vn`;
 
@@ -1020,9 +1083,11 @@
             fillText("extra-poster", brand);
             fillText("extra-role", role);
             fillText("extra-phone", phone);
+            fillText("extra-email", email);
             fillText("extra-date", formatDate(post.createdAt));
             fillText("extra-city", post.city || "Đang cập nhật");
-            fillText("extra-district", post.serviceArea || post.ward || "Đang cập nhật");
+            fillText("extra-district", post.district || post.serviceArea || "Đang cập nhật");
+            fillText("extra-ward", post.ward || "Đang cập nhật");
 
             fillText("poster-name", brand);
             fillText("poster-role", role);
@@ -1046,7 +1111,7 @@
 
             fillText("property-type-badge", "Xây dựng");
             fillText("listing-mode-badge", "Dịch vụ");
-            fillHTML("vip-badge-wrap", vipBadge);
+            fillHTML("vip-badge-wrap", "");
 
             const breadcrumbParentLink = document.getElementById("breadcrumb-parent-link");
             breadcrumbParentLink.textContent = "Xây dựng";
@@ -1066,7 +1131,7 @@
             const isConstruction = String(post.flow || "").toLowerCase() === "construction";
 
             if (isConstruction) {
-                renderConstructionDetail(post, postId);
+                renderConstructionDetail(post);
             } else {
                 renderRealEstateDetail(post, postId);
             }
