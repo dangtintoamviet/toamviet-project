@@ -1,1 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết Doanh nghiệp | ToamViet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+
+    <style>
+        :root {
+            --vip-color: #008B8B;
+            --hover-color: #FF8C00;
+            --soft-bg: #f4f6f8;
+            --text-main: #1f2937;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--soft-bg);
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .page-shell {
+            padding: 40px 0 80px;
+        }
+
+        .detail-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .company-logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+            object-fit: contain;
+            border: 1px solid #e5e7eb;
+            padding: 8px;
+            background: #f8fafc;
+        }
+
+        .company-title {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--vip-color);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .company-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+        }
+
+        .tag-blue { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+        .tag-green { background: #ecfdf5; color: #059669; border-color: #a7f3d0; }
+        .tag-orange { background: #fff7ed; color: #ea580c; border-color: #fdba74; }
+        .tag-purple { background: #faf5ff; color: #9333ea; border-color: #d8b4fe; }
+
+        .meta-line { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; color: #4b5563; margin-top: 8px; }
+        .meta-line i { width: 20px; color: #9ca3af; flex-shrink: 0; margin-top: 2px; }
+
+        .description-box { margin-top: 20px; line-height: 1.8; font-size: 15px; color: #374151; }
+
+        .action-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+        .btn-primary {
+            background: var(--vip-color);
+            color: white;
+            padding: 12px 18px;
+            font-weight: 800;
+            border-radius: 12px;
+            text-transform: uppercase;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+        .btn-primary:hover { opacity: 0.9; }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--vip-color);
+            border: 1px solid var(--vip-color);
+            padding: 12px 18px;
+            font-weight: 800;
+            border-radius: 12px;
+            text-transform: uppercase;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+        .btn-secondary:hover { background: var(--vip-color); color: white; }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <main class="page-shell container-custom">
+        <div id="detailContainer" class="detail-card">
+            <!-- Nội dung chi tiết sẽ render từ JS -->
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        const FALLBACK_LOGO = "https://via.placeholder.com/220x220?text=LOGO";
+
+        const directoryData = [
+            {
+                id: "dn-001",
+                type: "doanh-nghiep",
+                name: "CÔNG TY CỔ PHẦN ĐẦU TƯ TỔ ẤM VIỆT",
+                logo: FALLBACK_LOGO,
+                address: "Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội",
+                city: "Hà Nội",
+                phone: "0946 239 289",
+                website: "www.toamviet.com.vn",
+                tags: ["chu-dau-tu","san-giao-dich"],
+                description: "Doanh nghiệp hoạt động trong lĩnh vực đầu tư, môi giới, phát triển dự án và phân phối bất động sản tại nhiều khu vực trọng điểm."
+            },
+            {
+                id: "mg-001",
+                type: "moi-gioi",
+                name: "NGUYỄN VĂN HÙNG",
+                logo: "https://ui-avatars.com/api/?name=Nguyen+Van+Hung&background=008B8B&color=fff",
+                address: "Nam Từ Liêm, Hà Nội",
+                city: "Hà Nội",
+                phone: "0988 123 456",
+                website: "facebook.com/nguyenvanhung",
+                tags: ["san-giao-dich"],
+                description: "Môi giới chuyên nhà phố, chung cư cao cấp và mặt bằng kinh doanh tại Hà Nội."
+            }
+        ];
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function tagTemplate(tag) {
+            const map = {
+                "chu-dau-tu": {text:"Chủ đầu tư",cls:"tag-blue"},
+                "san-giao-dich": {text:"Sàn giao dịch",cls:"tag-green"},
+                "noi-that": {text:"Dịch vụ nội thất",cls:"tag-purple"},
+                "xay-dung": {text:"Xây dựng & Kiến trúc",cls:"tag-orange"}
+            };
+            return map[tag] ? `<span class="tag-chip ${map[tag].cls}">${map[tag].text}</span>` : "";
+        }
+
+        function typeBadge(item){
+            if(item.type==="moi-gioi") return `<span class="tag-chip tag-green">Môi giới</span>`;
+            return `<span class="tag-chip tag-blue">Doanh nghiệp</span>`;
+        }
+
+        function renderDetail(item){
+            if(!item){
+                document.getElementById("detailContainer").innerHTML = "<p>Không tìm thấy thông tin doanh nghiệp/môi giới.</p>";
+                return;
+            }
+
+            document.getElementById("detailContainer").innerHTML = `
+                <div class="flex flex-col md:flex-row gap-8">
+                    <img src="${item.logo || FALLBACK_LOGO}" alt="${item.name}" class="company-logo">
+                    <div class="flex-1">
+                        <h1 class="company-title">${item.name}</h1>
+                        <div class="company-tags">
+                            ${typeBadge(item)}
+                            ${(item.tags || []).map(tagTemplate).join("")}
+                        </div>
+                        <div class="meta-line"><i class="fa-solid fa-location-dot"></i>${item.address || "-"}</div>
+                        <div class="meta-line"><i class="fa-solid fa-phone"></i>${item.phone || "-"}</div>
+                        <div class="meta-line"><i class="fa-solid fa-globe"></i>${item.website || "-"}</div>
+                        <div class="description-box">${item.description || "-"}</div>
+                        <div class="action-row">
+                            <button class="btn-primary" onclick="window.location.href='tel:${item.phone}'">Gọi ngay</button>
+                            <button class="btn-secondary" onclick="window.open('https://zalo.me/${item.phone}','_blank')">Chat Zalo</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initDetailPage(){
+            const id = getQueryParam("id");
+            const type = getQueryParam("type");
+            const item = directoryData.find(d=>d.id===id && d.type===type);
+            renderDetail(item);
+        }
+
+        window.addEventListener("load", initDetailPage);
+    </script>
+</body>
+</html>
