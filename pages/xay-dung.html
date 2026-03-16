@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dịch vụ Xây dựng & Sửa chữa | ToamViet.com.vn</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/components.css">
-    <link rel="stylesheet" href="../assets/css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
 
     <style>
         :root {
@@ -26,7 +26,7 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: "Roboto", sans-serif;
             background-color: var(--soft-bg);
             color: #1e293b;
         }
@@ -296,10 +296,10 @@
             border: 1px solid #93c5fd;
         }
 
-        .service-chip.vip {
-            background: #fff7cc;
-            color: #a16207;
-            border: 1px solid #facc15;
+        .service-chip.live {
+            background: #ecfeff;
+            color: #0f766e;
+            border: 1px solid #99f6e4;
         }
 
         @media (max-width: 768px) {
@@ -412,7 +412,7 @@
             <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
-            <input type="text" id="cusName" placeholder="Tên của bạn..." required>
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dịch vụ nào?"></textarea>
             <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
         </div>
@@ -493,7 +493,7 @@
         }
 
         function buildLocation(post) {
-            return [post.ward, post.district, post.city].filter(Boolean).join(", ");
+            return [post.ward, post.city].filter(Boolean).join(", ");
         }
 
         function buildPoster(post) {
@@ -515,6 +515,10 @@
         }
 
         function getCardImage(post) {
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+                return post.thumbnail;
+            }
+
             if (Array.isArray(post.images) && post.images.length) {
                 const firstImage = post.images[0];
                 if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
@@ -592,10 +596,13 @@
                     description: "Giải pháp thi công đồng bộ từ thiết kế đến bàn giao hoàn thiện, phù hợp khách hàng cần tiến độ rõ ràng và kiểm soát chi phí tốt.",
                     contactName: "Bình Dương Cons Co., Ltd",
                     contactPhone: "0946239289",
+                    contactEmail: "demo1@toamviet.vn",
+                    contactProfileUrl: "../pages/danh-ba-doanh-nghiep.html",
                     profileType: "doanhnghiep",
                     roleLabel: "Doanh nghiệp / Nhà thầu",
                     createdAt: "2026-01-08T08:00:00.000Z",
-                    images: [FALLBACK_IMAGE]
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
                 },
                 {
                     id: "demo-build-2",
@@ -614,10 +621,13 @@
                     description: "Phù hợp gia chủ cần hồ sơ thiết kế hiện đại, tối ưu công năng, phối cảnh 3D đẹp và dễ triển khai thi công thực tế.",
                     contactName: "Studio Kiến Trúc Việt",
                     contactPhone: "0901234567",
+                    contactEmail: "demo2@toamviet.vn",
+                    contactProfileUrl: "../pages/danh-ba-doanh-nghiep.html",
                     profileType: "doanhnghiep",
                     roleLabel: "Đơn vị thiết kế",
                     createdAt: "2026-01-06T09:00:00.000Z",
-                    images: [FALLBACK_IMAGE]
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
                 },
                 {
                     id: "demo-build-3",
@@ -636,10 +646,13 @@
                     description: "Dành cho khách hàng cần nâng cấp nhà ở nhanh, xử lý hạng mục xuống cấp và tối ưu lại thẩm mỹ trước khi ở hoặc cho thuê.",
                     contactName: "Fix Home Service",
                     contactPhone: "0988123456",
+                    contactEmail: "demo3@toamviet.vn",
+                    contactProfileUrl: "../pages/danh-ba-doanh-nghiep.html",
                     profileType: "doanhnghiep",
                     roleLabel: "Đội thi công cải tạo",
                     createdAt: "2026-01-04T10:00:00.000Z",
-                    images: [FALLBACK_IMAGE]
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
                 }
             ];
         }
@@ -702,10 +715,7 @@
             if (status === "demo") {
                 return '<span class="service-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>';
             }
-            if (post.vipLevel) {
-                return '<span class="service-chip vip"><i class="fa-solid fa-crown"></i> VIP</span>';
-            }
-            return "";
+            return '<span class="service-chip live"><i class="fa-solid fa-bolt"></i> Đang hiển thị</span>';
         }
 
         function getDetailUrl(post, postId) {
