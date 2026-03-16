@@ -7,7 +7,7 @@ const response = await fetch(filePath);
 
 ```
 if (!response.ok) {
-  throw new Error(`Không load được: ${filePath}`);
+  throw new Error(`HTTP ${response.status} - ${filePath}`);
 }
 
 const html = await response.text();
@@ -15,14 +15,14 @@ target.innerHTML = html;
 ```
 
 } catch (error) {
-console.error("Component load lỗi:", filePath, error);
+console.error("Không load được component:", filePath, error);
 }
 }
 
-function getBasePath() {
+function getPageContext() {
 const path = window.location.pathname.toLowerCase();
 
-const isRoot =
+const isRootPage =
 path.endsWith("/index.html") ||
 path.endsWith("/") ||
 (!path.includes("/pages/") &&
@@ -30,20 +30,33 @@ path.endsWith("/") ||
 !path.includes("/auth/") &&
 !path.includes("/admin/"));
 
-return isRoot ? "." : "..";
+if (isRootPage) {
+return {
+basePath: ".",
+headerFile: "header-root.html",
+footerFile: "footer-root.html",
+mobileMenuFile: "mobile-menu-root.html"
+};
+}
+
+return {
+basePath: "..",
+headerFile: "header-inner.html",
+footerFile: "footer-inner.html",
+mobileMenuFile: "mobile-menu-inner.html"
+};
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
 
-const basePath = getBasePath();
-
+const context = getPageContext();
 const tasks = [];
 
 if (document.getElementById("site-header")) {
 tasks.push(
 loadComponent(
 "site-header",
-`${basePath}/components/header-inner.html`
+`${context.basePath}/components/${context.headerFile}`
 )
 );
 }
@@ -52,7 +65,7 @@ if (document.getElementById("site-footer")) {
 tasks.push(
 loadComponent(
 "site-footer",
-`${basePath}/components/footer-inner.html`
+`${context.basePath}/components/${context.footerFile}`
 )
 );
 }
@@ -61,7 +74,7 @@ if (document.getElementById("site-mobile-menu")) {
 tasks.push(
 loadComponent(
 "site-mobile-menu",
-`${basePath}/components/mobile-menu-inner.html`
+`${context.basePath}/components/${context.mobileMenuFile}`
 )
 );
 }
