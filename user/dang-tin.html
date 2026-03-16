@@ -794,10 +794,15 @@
 
                             <div class="section-title">3. Khu vực và vị trí</div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
                                     <label class="field-label" for="city">Tỉnh / Thành phố</label>
                                     <select id="city" class="select-field"></select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="district">Quận / Huyện</label>
+                                    <input id="district" type="text" class="input-field" placeholder="VD: TP. Hà Giang / Cầu Giấy / Thuận An" />
                                 </div>
 
                                 <div>
@@ -939,7 +944,7 @@
 
                             <div class="section-title">8. Thông tin liên hệ hiển thị</div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                                 <div>
                                     <label class="field-label" for="contactName">Tên hiển thị</label>
                                     <input id="contactName" type="text" class="input-field" placeholder="Tên người đăng / tên công ty" />
@@ -948,6 +953,11 @@
                                 <div>
                                     <label class="field-label" for="contactPhone">Số điện thoại liên hệ</label>
                                     <input id="contactPhone" type="text" class="input-field" placeholder="Số điện thoại khách nhìn thấy" />
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="contactEmail">Email liên hệ</label>
+                                    <input id="contactEmail" type="email" class="input-field" placeholder="email@domain.com" />
                                 </div>
                             </div>
 
@@ -1000,7 +1010,7 @@
                                 </div>
                                 <div class="preview-meta-item">
                                     <div class="label">Trạng thái</div>
-                                    <div class="value" id="previewStatus">Chờ duyệt</div>
+                                    <div class="value" id="previewStatus">Đã duyệt để test</div>
                                 </div>
                             </div>
                         </div>
@@ -1066,6 +1076,7 @@
         const MAX_IMAGE_HEIGHT = 1600;
         const IMAGE_QUALITY = 0.82;
         const MAX_FINAL_IMAGE_KB = 450;
+        const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
 
         const FALLBACK_LOCATIONS = {
             provinces: [
@@ -1261,6 +1272,7 @@
             const userAvatar = document.getElementById("userAvatar");
             const contactName = document.getElementById("contactName");
             const contactPhone = document.getElementById("contactPhone");
+            const contactEmail = document.getElementById("contactEmail");
 
             if (!currentUser) {
                 userName.textContent = "Tài khoản thành viên";
@@ -1272,6 +1284,7 @@
                 userAvatar.textContent = "TV";
                 contactName.value = "";
                 contactPhone.value = "";
+                contactEmail.value = "";
                 previewPoster.textContent = "Chưa có";
                 return;
             }
@@ -1286,6 +1299,7 @@
 
             contactName.value = currentUser.brandName || currentUser.fullName || "";
             contactPhone.value = currentUser.phone || "";
+            contactEmail.value = currentUser.email || "";
             previewPoster.textContent = currentUser.brandName || currentUser.fullName || "Chưa có";
         }
 
@@ -1809,16 +1823,17 @@
         function updatePreview() {
             const title = postTitle.value.trim();
             const city = citySelect.value;
+            const district = document.getElementById("district").value.trim();
             const ward = wardSelect.value;
             const contactName = document.getElementById("contactName").value.trim();
-            const locationText = [ward, city].filter(Boolean).join(", ");
+            const locationText = [ward, district, city].filter(Boolean).join(", ");
 
             previewLocation.textContent = locationText || "Chưa chọn";
             previewPoster.textContent = contactName || (currentUser && (currentUser.brandName || currentUser.fullName) || "Chưa có");
             previewTitle.textContent = title || "Tiêu đề sẽ hiện ở đây sau khi bạn nhập";
             previewImagesCount.textContent = selectedImages.length + " ảnh";
             previewVip.textContent = currentFlow === "real_estate" ? getVipLabel(currentVipLevel) : "Không áp dụng";
-            previewStatus.textContent = "Chờ duyệt";
+            previewStatus.textContent = "Đã duyệt để test";
 
             if (currentFlow === "construction") {
                 const servicePrice = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value : "Chưa nhập";
@@ -1990,6 +2005,7 @@
 
             const title = postTitle.value.trim();
             const city = citySelect.value;
+            const district = document.getElementById("district").value.trim();
             const ward = wardSelect.value;
             const contactName = document.getElementById("contactName").value.trim();
             const contactPhone = sanitizePhone(document.getElementById("contactPhone").value.trim());
@@ -2007,6 +2023,11 @@
 
             if (!city) {
                 showStatus("error", "Vui lòng chọn Tỉnh / Thành phố.");
+                return false;
+            }
+
+            if (!district) {
+                showStatus("error", "Vui lòng nhập Quận / Huyện.");
                 return false;
             }
 
@@ -2069,6 +2090,17 @@
 
         function buildPostData() {
             const baseId = "post_" + Date.now();
+            const nowIso = new Date().toISOString();
+            const districtValue = document.getElementById("district").value.trim();
+            const contactEmailValue = document.getElementById("contactEmail").value.trim();
+
+            const thumbnail =
+                Array.isArray(selectedImages) &&
+                selectedImages.length &&
+                selectedImages[0] &&
+                selectedImages[0].dataUrl
+                    ? selectedImages[0].dataUrl
+                    : FALLBACK_IMAGE;
 
             const baseData = {
                 id: baseId,
@@ -2081,38 +2113,63 @@
                 fullName: currentUser && currentUser.fullName ? currentUser.fullName : "",
                 email: currentUser && currentUser.email ? currentUser.email : "",
                 phone: currentUser && currentUser.phone ? currentUser.phone : "",
+
                 flow: currentFlow,
                 postType: currentFlow === "construction" ? "xaydung" : currentPostType,
                 profileType: currentProfile,
                 vipLevel: currentFlow === "real_estate" ? currentVipLevel : "thuong",
+
                 title: postTitle.value.trim(),
                 slug: slugify(postTitle.value.trim() + "-" + Date.now()),
+
                 city: citySelect.value,
+                district: districtValue,
                 ward: wardSelect.value,
                 addressDetail: document.getElementById("addressDetail").value.trim(),
+
                 description: document.getElementById("postDescription").value.trim(),
+
                 contactName: document.getElementById("contactName").value.trim(),
                 contactPhone: sanitizePhone(document.getElementById("contactPhone").value.trim()),
+                contactEmail: contactEmailValue,
                 contactProfileUrl: resolveContactProfileUrl(),
+
                 detailUrl: "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(baseId),
-                status: "pending",
+
+                status: "approved",
                 images: selectedImages,
                 imageCount: selectedImages.length,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+                thumbnail: thumbnail,
+
+                createdAt: nowIso,
+                updatedAt: nowIso
             };
 
             if (currentFlow === "construction") {
-                const servicePriceRaw = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value : "";
+                const servicePriceRaw = document.getElementById("servicePrice")
+                    ? document.getElementById("servicePrice").value
+                    : "";
+
                 return {
                     ...baseData,
-                    serviceType: document.getElementById("serviceType") ? document.getElementById("serviceType").value : "",
+                    serviceType: document.getElementById("serviceType")
+                        ? document.getElementById("serviceType").value
+                        : "",
                     servicePrice: servicePriceRaw,
                     servicePriceData: parseVietnamesePrice(servicePriceRaw, "xaydung"),
-                    serviceExp: document.getElementById("serviceExp") ? document.getElementById("serviceExp").value : "",
-                    serviceArea: document.getElementById("serviceArea") ? document.getElementById("serviceArea").value : "",
-                    serviceBrand: document.getElementById("serviceBrand") ? document.getElementById("serviceBrand").value : "",
-                    serviceSpecialty: document.getElementById("serviceSpecialty") ? document.getElementById("serviceSpecialty").value : "",
+                    serviceExp: document.getElementById("serviceExp")
+                        ? document.getElementById("serviceExp").value
+                        : "",
+                    serviceArea: document.getElementById("serviceArea")
+                        ? document.getElementById("serviceArea").value
+                        : "",
+                    serviceBrand: document.getElementById("serviceBrand")
+                        ? document.getElementById("serviceBrand").value
+                        : "",
+                    serviceSpecialty: document.getElementById("serviceSpecialty")
+                        ? document.getElementById("serviceSpecialty").value
+                        : "",
+
                     projectEnabled: false,
                     projectId: "",
                     projectName: "",
@@ -2123,22 +2180,43 @@
                 };
             }
 
-            const propertyPriceRaw = document.getElementById("propertyPrice") ? document.getElementById("propertyPrice").value : "";
-            const propertyAreaRaw = document.getElementById("propertyArea") ? document.getElementById("propertyArea").value : "";
+            const propertyPriceRaw = document.getElementById("propertyPrice")
+                ? document.getElementById("propertyPrice").value
+                : "";
+
+            const propertyAreaRaw = document.getElementById("propertyArea")
+                ? document.getElementById("propertyArea").value
+                : "";
+
             const areaNumber = Number(propertyAreaRaw || 0);
             const parsedPrice = parseVietnamesePrice(propertyPriceRaw, currentPostType);
             const projectData = resolveProjectData();
 
             const postData = {
                 ...baseData,
-                propertyType: document.getElementById("propertyType") ? document.getElementById("propertyType").value : "",
+
+                propertyType: document.getElementById("propertyType")
+                    ? document.getElementById("propertyType").value
+                    : "",
+
                 propertyPrice: propertyPriceRaw,
                 propertyPriceData: parsedPrice,
+
                 propertyArea: propertyAreaRaw,
                 propertyAreaNumber: areaNumber || null,
-                propertyLegal: document.getElementById("propertyLegal") ? document.getElementById("propertyLegal").value : "",
-                propertyDirection: document.getElementById("propertyDirection") ? document.getElementById("propertyDirection").value : "",
-                propertyBeds: document.getElementById("propertyBeds") ? document.getElementById("propertyBeds").value : "",
+
+                propertyLegal: document.getElementById("propertyLegal")
+                    ? document.getElementById("propertyLegal").value
+                    : "",
+
+                propertyDirection: document.getElementById("propertyDirection")
+                    ? document.getElementById("propertyDirection").value
+                    : "",
+
+                propertyBeds: document.getElementById("propertyBeds")
+                    ? document.getElementById("propertyBeds").value
+                    : "",
+
                 projectEnabled: projectData.enabled,
                 projectId: projectData.projectId,
                 projectName: projectData.projectName,
@@ -2198,6 +2276,7 @@
 
         function resetFormAfterSubmit(formElement) {
             formElement.reset();
+            document.getElementById("district").value = "";
 
             selectedImages = [];
             renderSelectedImages();
@@ -2238,10 +2317,10 @@
                 showStatus(
                     "success",
                     currentFlow === "construction"
-                        ? "Đăng dịch vụ xây dựng thành công. Nội dung đã được lưu với trạng thái chờ duyệt."
+                        ? "Đăng dịch vụ xây dựng thành công. Nội dung đã được lưu và đang để trạng thái approved để bạn test ngay ngoài public."
                         : currentPostType === "ban"
-                            ? "Đăng tin bán thành công. Dữ liệu đã được lưu với trạng thái chờ duyệt."
-                            : "Đăng tin cho thuê thành công. Dữ liệu đã được lưu với trạng thái chờ duyệt."
+                            ? "Đăng tin bán thành công. Dữ liệu đã được lưu và hiển thị để bạn test ngay ngoài public."
+                            : "Đăng tin cho thuê thành công. Dữ liệu đã được lưu và hiển thị để bạn test ngay ngoài public."
                 );
 
                 resetFormAfterSubmit(this);
@@ -2257,11 +2336,13 @@
 
         citySelect.addEventListener("change", updateWards);
         wardSelect.addEventListener("change", updatePreview);
+        document.getElementById("district").addEventListener("input", updatePreview);
         document.getElementById("addressDetail").addEventListener("input", updatePreview);
         postTitle.addEventListener("input", updatePreview);
         document.getElementById("postDescription").addEventListener("input", updatePreview);
         document.getElementById("contactName").addEventListener("input", updatePreview);
         document.getElementById("contactPhone").addEventListener("input", updatePreview);
+        document.getElementById("contactEmail").addEventListener("input", updatePreview);
 
         flowRealEstate.addEventListener("click", function () {
             setFlow("real_estate");
