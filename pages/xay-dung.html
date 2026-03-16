@@ -44,18 +44,25 @@
 
         .filter-box {
             background: white;
-            border-radius: 22px;
+            border-radius: 24px;
             border: 1px solid #e5e7eb;
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .filter-grid-desktop {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.9fr) minmax(220px, 0.9fr) 180px;
+            gap: 14px;
+            align-items: center;
         }
 
         .filter-input,
         .filter-select {
             width: 100%;
-            min-height: 48px;
-            padding: 12px 14px;
+            min-height: 54px;
+            padding: 12px 16px;
             border: 1px solid #dbe3eb;
-            border-radius: 14px;
+            border-radius: 16px;
             font-size: 14px;
             font-weight: 600;
             color: #334155;
@@ -68,6 +75,24 @@
         .filter-select:focus {
             border-color: var(--vip-color);
             box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.08);
+        }
+
+        .filter-submit-btn {
+            width: 100%;
+            min-height: 54px;
+            border-radius: 16px;
+            background: var(--hover-color);
+            color: white;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            transition: all 0.25s ease;
+            padding: 0 16px;
+        }
+
+        .filter-submit-btn:hover {
+            background: #ea7b00;
         }
 
         .con-card {
@@ -181,7 +206,7 @@
 
         .con-meta-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 12px;
             background: #f8fafc;
             border: 1px solid #eef2f7;
@@ -193,6 +218,7 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
+            min-width: 0;
         }
 
         .con-meta-label {
@@ -207,7 +233,8 @@
             font-size: 14px;
             font-weight: 800;
             color: #0f172a;
-            line-height: 1.4;
+            line-height: 1.45;
+            word-break: break-word;
         }
 
         .con-meta-value.highlight {
@@ -288,6 +315,7 @@
             padding: 6px 10px;
             border-radius: 999px;
             letter-spacing: 0.04em;
+            white-space: nowrap;
         }
 
         .service-chip.demo {
@@ -302,7 +330,29 @@
             border: 1px solid #99f6e4;
         }
 
+        @media (max-width: 1199px) {
+            .filter-grid-desktop {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
+            .filter-box {
+                border-radius: 22px;
+            }
+
+            .filter-grid-desktop {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .filter-input,
+            .filter-select,
+            .filter-submit-btn {
+                min-height: 52px;
+                border-radius: 16px;
+            }
+
             .con-card {
                 border-radius: 20px;
             }
@@ -326,9 +376,17 @@
             }
 
             .con-meta-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 10px;
                 padding: 12px;
+            }
+
+            .con-meta-label {
+                font-size: 9px;
+            }
+
+            .con-meta-value {
+                font-size: 13px;
             }
 
             .con-btn-main {
@@ -355,8 +413,8 @@
                 Kết nối trực tiếp với các đơn vị thi công, kiến trúc sư, kỹ sư và nhà thầu uy tín đang đăng dịch vụ trên ToamViet.
             </p>
 
-            <div class="filter-box max-w-5xl mx-auto p-4 md:p-5">
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+            <div class="filter-box max-w-6xl mx-auto p-4 md:p-5">
+                <div class="filter-grid-desktop">
                     <input id="keywordFilter" type="text" class="filter-input" placeholder="Tìm theo tên dịch vụ, công ty, mô tả..." />
 
                     <select id="serviceTypeFilter" class="filter-select">
@@ -372,7 +430,7 @@
                         <option value="">Khu vực</option>
                     </select>
 
-                    <button id="applyFilterBtn" class="bg-[#FF8C00] text-white px-8 py-3 rounded-xl font-black uppercase text-xs hover:bg-orange-600 transition">
+                    <button id="applyFilterBtn" class="filter-submit-btn">
                         Tìm kiếm
                     </button>
                 </div>
@@ -661,7 +719,8 @@
             const currentValue = cityFilter.value;
             const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, "vi"));
 
-            cityFilter.innerHTML = '<option value="">Khu vực</option>' +
+            cityFilter.innerHTML =
+                '<option value="">Khu vực</option>' +
                 uniqueCities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("");
 
             if (uniqueCities.includes(currentValue)) {
