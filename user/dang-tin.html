@@ -794,15 +794,10 @@
 
                             <div class="section-title">3. Khu vực và vị trí</div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label class="field-label" for="city">Tỉnh / Thành phố</label>
                                     <select id="city" class="select-field"></select>
-                                </div>
-
-                                <div>
-                                    <label class="field-label" for="district">Quận / Huyện</label>
-                                    <input id="district" type="text" class="input-field" placeholder="VD: TP. Hà Giang / Cầu Giấy / Thuận An" />
                                 </div>
 
                                 <div>
@@ -1823,10 +1818,9 @@
         function updatePreview() {
             const title = postTitle.value.trim();
             const city = citySelect.value;
-            const district = document.getElementById("district").value.trim();
             const ward = wardSelect.value;
             const contactName = document.getElementById("contactName").value.trim();
-            const locationText = [ward, district, city].filter(Boolean).join(", ");
+            const locationText = [ward, city].filter(Boolean).join(", ");
 
             previewLocation.textContent = locationText || "Chưa chọn";
             previewPoster.textContent = contactName || (currentUser && (currentUser.brandName || currentUser.fullName) || "Chưa có");
@@ -2005,7 +1999,6 @@
 
             const title = postTitle.value.trim();
             const city = citySelect.value;
-            const district = document.getElementById("district").value.trim();
             const ward = wardSelect.value;
             const contactName = document.getElementById("contactName").value.trim();
             const contactPhone = sanitizePhone(document.getElementById("contactPhone").value.trim());
@@ -2023,11 +2016,6 @@
 
             if (!city) {
                 showStatus("error", "Vui lòng chọn Tỉnh / Thành phố.");
-                return false;
-            }
-
-            if (!district) {
-                showStatus("error", "Vui lòng nhập Quận / Huyện.");
                 return false;
             }
 
@@ -2091,7 +2079,6 @@
         function buildPostData() {
             const baseId = "post_" + Date.now();
             const nowIso = new Date().toISOString();
-            const districtValue = document.getElementById("district").value.trim();
             const contactEmailValue = document.getElementById("contactEmail").value.trim();
 
             const thumbnail =
@@ -2123,7 +2110,7 @@
                 slug: slugify(postTitle.value.trim() + "-" + Date.now()),
 
                 city: citySelect.value,
-                district: districtValue,
+                district: "",
                 ward: wardSelect.value,
                 addressDetail: document.getElementById("addressDetail").value.trim(),
 
@@ -2276,7 +2263,6 @@
 
         function resetFormAfterSubmit(formElement) {
             formElement.reset();
-            document.getElementById("district").value = "";
 
             selectedImages = [];
             renderSelectedImages();
@@ -2336,7 +2322,6 @@
 
         citySelect.addEventListener("change", updateWards);
         wardSelect.addEventListener("change", updatePreview);
-        document.getElementById("district").addEventListener("input", updatePreview);
         document.getElementById("addressDetail").addEventListener("input", updatePreview);
         postTitle.addEventListener("input", updatePreview);
         document.getElementById("postDescription").addEventListener("input", updatePreview);
