@@ -12,16 +12,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/mobile.css">
 
     <style>
         :root {
             --vip-color: #008B8B;
             --hover-color: #FF8C00;
+            --soft-bg: #f8fafc;
+            --border-color: #e5e7eb;
+            --text-main: #0f172a;
+            --text-soft: #64748b;
         }
 
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f8fafc;
+            background-color: var(--soft-bg);
             color: #1e293b;
         }
 
@@ -31,65 +37,37 @@
             padding: 0 15px;
         }
 
-        .nav-link {
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--hover-color) !important;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
-            border-top: 2px solid var(--vip-color);
-            z-index: 50;
-        }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            display: block;
-            color: #333;
-            font-size: 14px;
-            border-bottom: 1px solid #f2f2f2;
-        }
-
-        .dropdown-item:hover {
-            background: #f9f9f9;
-            color: var(--hover-color);
-        }
-
-        .save-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .save-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background: #E03C31;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            border: 1px solid white;
-        }
-
         .main-title {
             font-size: 21.33px;
             font-weight: 900;
+        }
+
+        .filter-box {
+            background: white;
+            border-radius: 22px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .filter-input,
+        .filter-select {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 14px;
+            border: 1px solid #dbe3eb;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            background: white;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.08);
         }
 
         .con-card {
@@ -114,6 +92,7 @@
             position: relative;
             height: 230px;
             overflow: hidden;
+            background: #e5e7eb;
         }
 
         .con-card-image img {
@@ -141,6 +120,7 @@
             letter-spacing: 0.04em;
             box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
             z-index: 2;
+            max-width: calc(100% - 32px);
         }
 
         .con-card-body {
@@ -158,13 +138,18 @@
             min-height: 40px;
         }
 
-        .con-company img {
-            width: 34px;
-            height: 34px;
+        .con-company-avatar {
+            width: 36px;
+            height: 36px;
             border-radius: 999px;
-            object-fit: cover;
+            background: #0f766e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
             flex-shrink: 0;
-            display: block;
         }
 
         .con-company-name {
@@ -188,6 +173,10 @@
             font-size: 14px;
             color: #64748b;
             line-height: 1.65;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .con-meta-grid {
@@ -273,29 +262,44 @@
             background: #fff5f5;
         }
 
-        .footer-link-group h4 {
-            font-weight: 700;
+        .con-btn-outline.active {
+            color: #ef4444;
+            border-color: #fecaca;
+            background: #fff5f5;
+        }
+
+        .empty-box {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            padding: 22px;
+            color: #64748b;
             font-size: 14px;
-            margin-bottom: 15px;
-            color: #2C2C2C;
+            line-height: 1.8;
+        }
+
+        .service-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.2px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.04em;
         }
 
-        .footer-link-group ul {
-            font-size: 13px;
-            color: #666;
-            padding: 0;
-            list-style: none;
+        .service-chip.demo {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
         }
 
-        .footer-link-group li {
-            margin-bottom: 8px;
-        }
-
-        .footer-link-group li a:hover {
-            color: var(--hover-color);
-            text-decoration: underline;
+        .service-chip.vip {
+            background: #fff7cc;
+            color: #a16207;
+            border: 1px solid #facc15;
         }
 
         @media (max-width: 768px) {
@@ -341,347 +345,126 @@
     </style>
 </head>
 <body>
-
-    <header class="bg-white border-b sticky top-0 z-[1000]">
-        <div class="container-custom h-[70px] flex justify-between items-center">
-            <div class="flex items-center gap-8">
-                <a href="../index.html">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
-                </a>
-
-                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
-                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
-                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
-                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
-
-                    <div class="dropdown relative h-full flex items-center cursor-pointer">
-                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
-                        <div class="dropdown-menu">
-                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-
-            <div class="flex items-center gap-5">
-                <div class="save-icon nav-link text-gray-600">
-                    <i class="fa-regular fa-heart"></i>
-                    <span class="save-count">0</span>
-                </div>
-
-                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
-                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
-                </div>
-
-                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
-                    Đăng tin
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <div class="lg:hidden bg-white border-t">
-        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
-            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
-            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
-            <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
-            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
-            <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
-            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
-            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
-            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
-            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
-            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
-            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
-        </div>
-    </div>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
 
     <section class="bg-slate-900 py-16 text-white text-center">
         <div class="container-custom">
-            <h1 class="main-title uppercase mb-4">Tìm kiếm Nhà thầu & Dịch vụ Xây dựng</h1>
-            <p class="text-slate-400 max-w-2xl mx-auto mb-8 text-sm">Kết nối trực tiếp với hơn 500+ đơn vị thi công, kiến trúc sư và nhà thầu uy tín tại Bình Dương và lân cận.</p>
+            <h1 class="main-title uppercase mb-4">Tìm kiếm nhà thầu & dịch vụ xây dựng</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-8 text-sm">
+                Kết nối trực tiếp với các đơn vị thi công, kiến trúc sư, kỹ sư và nhà thầu uy tín đang đăng dịch vụ trên ToamViet.
+            </p>
 
-            <div class="max-w-4xl mx-auto bg-white p-4 rounded-2xl shadow-2xl flex flex-wrap md:flex-nowrap gap-3">
-                <select class="flex-1 min-w-[150px] p-3 border rounded-xl text-slate-700 text-sm font-bold outline-none">
-                    <option>Loại hình thi công</option>
-                    <option>Xây nhà trọn gói</option>
-                    <option>Thi công phần thô</option>
-                    <option>Sửa chữa & Cải tạo</option>
-                    <option>Thiết kế kiến trúc</option>
-                </select>
-                <select class="flex-1 min-w-[150px] p-3 border rounded-xl text-slate-700 text-sm font-bold outline-none">
-                    <option>Khu vực (Quận/Huyện)</option>
-                    <option>Dĩ An</option>
-                    <option>Thuận An</option>
-                    <option>Thủ Dầu Một</option>
-                </select>
-                <button class="bg-[#FF8C00] text-white px-8 py-3 rounded-xl font-black uppercase text-xs hover:bg-orange-600 transition">Tìm kiếm</button>
+            <div class="filter-box max-w-5xl mx-auto p-4 md:p-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+                    <input id="keywordFilter" type="text" class="filter-input" placeholder="Tìm theo tên dịch vụ, công ty, mô tả..." />
+
+                    <select id="serviceTypeFilter" class="filter-select">
+                        <option value="">Loại hình thi công</option>
+                        <option value="Xây nhà trọn gói">Xây nhà trọn gói</option>
+                        <option value="Thi công phần thô">Thi công phần thô</option>
+                        <option value="Sửa chữa / Cải tạo">Sửa chữa / Cải tạo</option>
+                        <option value="Thiết kế kiến trúc">Thiết kế kiến trúc</option>
+                        <option value="Nội thất / Hoàn thiện">Nội thất / Hoàn thiện</option>
+                    </select>
+
+                    <select id="cityFilter" class="filter-select">
+                        <option value="">Khu vực</option>
+                    </select>
+
+                    <button id="applyFilterBtn" class="bg-[#FF8C00] text-white px-8 py-3 rounded-xl font-black uppercase text-xs hover:bg-orange-600 transition">
+                        Tìm kiếm
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
     <main class="py-12">
         <div class="container-custom">
-            <div class="flex justify-between items-end mb-8 border-l-4 border-[--vip-color] pl-4">
+            <div id="data-note" class="empty-box mb-6 hidden"></div>
+
+            <div class="flex justify-between items-end mb-8 border-l-4 border-[--vip-color] pl-4 gap-4 flex-wrap">
                 <div>
                     <h2 class="font-black text-xl text-slate-800">Dịch vụ thi công tiêu biểu</h2>
-                    <p class="text-xs text-slate-500 mt-1 uppercase font-bold tracking-widest">Dữ liệu cập nhật mới nhất từ các doanh nghiệp</p>
+                    <p class="text-xs text-slate-500 mt-1 uppercase font-bold tracking-widest">Dữ liệu cập nhật mới nhất từ doanh nghiệp và cá nhân</p>
                 </div>
-                <div class="text-xs font-bold text-slate-400">Hiển thị 12/450 kết quả</div>
+                <div class="text-xs font-bold text-slate-400">
+                    Hiển thị <span id="resultCount">0</span> kết quả
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                <div class="con-card">
-                    <div class="con-card-image">
-                        <img src="https://images.unsplash.com/photo-1503387762-592dea58ef23?auto=format&fit=crop&q=80&w=800" alt="Xây dựng trọn gói">
-                        <span class="con-badge bg-[#008B8B]">Trọn gói</span>
-                    </div>
-
-                    <div class="con-card-body">
-                        <div class="con-company">
-                            <img src="https://ui-avatars.com/api/?name=BD+Cons&background=008B8B&color=fff" alt="BD Cons">
-                            <div class="con-company-name">Bình Dương Cons Co., Ltd</div>
-                        </div>
-
-                        <h3 class="con-card-title">Thi công biệt thự phố hiện đại - Chìa khóa trao tay 2026</h3>
-
-                        <p class="con-card-desc">
-                            Giải pháp thi công đồng bộ từ thiết kế đến bàn giao hoàn thiện, phù hợp khách hàng cần tiến độ rõ ràng và kiểm soát chi phí tốt.
-                        </p>
-
-                        <div class="con-meta-grid">
-                            <div class="con-meta-item">
-                                <span class="con-meta-label">Đơn giá tham khảo</span>
-                                <span class="con-meta-value highlight">5.8 - 6.5 Tr/m²</span>
-                            </div>
-                            <div class="con-meta-item">
-                                <span class="con-meta-label">Khu vực</span>
-                                <span class="con-meta-value">Dĩ An, Thuận An</span>
-                            </div>
-                        </div>
-
-                        <div class="con-card-footer">
-                            <a href="#" class="con-btn-main">
-                                <i class="fa-solid fa-file-invoice-dollar"></i>
-                                Xem báo giá
-                            </a>
-                            <button class="con-btn-outline" aria-label="Lưu dịch vụ">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="con-card">
-                    <div class="con-card-image">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="Thiết kế kiến trúc">
-                        <span class="con-badge bg-orange-500">Thiết kế</span>
-                    </div>
-
-                    <div class="con-card-body">
-                        <div class="con-company">
-                            <img src="https://ui-avatars.com/api/?name=Arch+Studio&background=FF8C00&color=fff" alt="Studio Kiến Trúc Việt">
-                            <div class="con-company-name">Studio Kiến Trúc Việt</div>
-                        </div>
-
-                        <h3 class="con-card-title">Tư vấn thiết kế kiến trúc và nội thất nhà phố xanh</h3>
-
-                        <p class="con-card-desc">
-                            Phù hợp gia chủ cần hồ sơ thiết kế hiện đại, tối ưu công năng, phối cảnh 3D đẹp và dễ triển khai thi công thực tế.
-                        </p>
-
-                        <div class="con-meta-grid">
-                            <div class="con-meta-item">
-                                <span class="con-meta-label">Đơn giá</span>
-                                <span class="con-meta-value highlight">150k - 250k/m²</span>
-                            </div>
-                            <div class="con-meta-item">
-                                <span class="con-meta-label">Hạng mục</span>
-                                <span class="con-meta-value">3D + hồ sơ kỹ thuật</span>
-                            </div>
-                        </div>
-
-                        <div class="con-card-footer">
-                            <a href="#" class="con-btn-main">
-                                <i class="fa-solid fa-pen-ruler"></i>
-                                Xem hồ sơ
-                            </a>
-                            <button class="con-btn-outline" aria-label="Lưu dịch vụ">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="con-card">
-                    <div class="con-card-image">
-                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=800" alt="Cải tạo sửa chữa nhà">
-                        <span class="con-badge bg-slate-700">Cải tạo</span>
-                    </div>
-
-                    <div class="con-card-body">
-                        <div class="con-company">
-                            <img src="https://ui-avatars.com/api/?name=Fix+Home&background=334155&color=fff" alt="Fix Home">
-                            <div class="con-company-name">Fix Home Service</div>
-                        </div>
-
-                        <h3 class="con-card-title">Cải tạo nhà phố cũ, nâng tầng, chống thấm, sơn sửa hoàn thiện</h3>
-
-                        <p class="con-card-desc">
-                            Dành cho khách hàng cần nâng cấp nhà ở nhanh, xử lý hạng mục xuống cấp và tối ưu lại thẩm mỹ trước khi ở hoặc cho thuê.
-                        </p>
-
-                        <div class="con-meta-grid">
-                            <div class="con-meta-item">
-                                <span class="con-meta-label">Đơn giá</span>
-                                <span class="con-meta-value highlight">Liên hệ báo giá</span>
-                            </div>
-                            <div class="con-meta-item">
-                                <span class="con-meta-label">Hạng mục</span>
-                                <span class="con-meta-value">Trọn gói cải tạo</span>
-                            </div>
-                        </div>
-
-                        <div class="con-card-footer">
-                            <a href="#" class="con-btn-main">
-                                <i class="fa-solid fa-screwdriver-wrench"></i>
-                                Xem chi tiết
-                            </a>
-                            <button class="con-btn-outline" aria-label="Lưu dịch vụ">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <div id="listingContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
     </main>
 
-    <footer class="bg-white pt-16 border-t">
-        <div class="container-custom">
-            <div class="mb-12 border-b pb-12">
-                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
-                </p>
-            </div>
+    <div id="site-footer"></div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                <div class="footer-link-group">
-                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
-                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>DỰ ÁN NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
-                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
-                    </ul>
-                </div>
-            </div>
+    <button id="goToTop" onclick="safeScrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
 
-            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
-                <div class="max-w-sm">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6">
-                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
-                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
-                    <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-10 text-[13px]">
-                    <div>
-                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="w-full lg:max-w-xs">
-                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
-                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
-                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm">
-                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                    <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
-                </div>
-            </div>
-
-            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
-                <p>© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
-            </div>
-        </div>
-    </footer>
-
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
-
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required>
-            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dịch vụ nào?"></textarea>
             <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
         </div>
     </div>
 
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+
     <script>
+        const CONSTRUCTION_FAVORITE_KEY = "favoriteConstructionPosts";
+        const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+
+        const listingContainer = document.getElementById("listingContainer");
+        const resultCount = document.getElementById("resultCount");
+        const dataNote = document.getElementById("data-note");
+        const keywordFilter = document.getElementById("keywordFilter");
+        const serviceTypeFilter = document.getElementById("serviceTypeFilter");
+        const cityFilter = document.getElementById("cityFilter");
+        const applyFilterBtn = document.getElementById("applyFilterBtn");
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === "function") {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById("chatForm");
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
+            }
+        }
+
         function sendToZalo() {
-            const name = document.getElementById("cusName").value;
-            const msg = document.getElementById("cusMsg").value;
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
             const phone = "0946239289";
 
             if (!name) {
@@ -689,11 +472,385 @@
                 return;
             }
 
-            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
+
+        function createPostId(post, index = 0) {
+            return (
+                post.id ||
+                post.postId ||
+                post.slug ||
+                `${post.title || "tin"}-${post.city || ""}-${post.ward || ""}-${index}`
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")
+            );
+        }
+
+        function normalizePhone(phone) {
+            return String(phone || "").replace(/[^\d+]/g, "");
+        }
+
+        function buildLocation(post) {
+            return [post.ward, post.district, post.city].filter(Boolean).join(", ");
+        }
+
+        function buildPoster(post) {
+            return post.brandName || post.contactName || post.fullName || post.serviceBrand || "Đơn vị thi công";
+        }
+
+        function getPosterRole(post) {
+            return post.roleLabel || post.role || (post.profileType === "doanhnghiep" ? "Doanh nghiệp / Nhà thầu" : "Cá nhân / Kỹ sư");
+        }
+
+        function getAvatarText(post) {
+            const source = buildPoster(post);
+            return source
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(word => word.charAt(0).toUpperCase())
+                .join("") || "TV";
+        }
+
+        function getCardImage(post) {
+            if (Array.isArray(post.images) && post.images.length) {
+                const firstImage = post.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
+                if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
+                if (firstImage && firstImage.url) return firstImage.url;
+            }
+            return FALLBACK_IMAGE;
+        }
+
+        function getFavorites() {
+            try {
+                return JSON.parse(localStorage.getItem(CONSTRUCTION_FAVORITE_KEY) || "[]");
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function setFavorites(favorites) {
+            localStorage.setItem(CONSTRUCTION_FAVORITE_KEY, JSON.stringify(favorites));
+        }
+
+        function isFavorite(postId) {
+            return getFavorites().includes(postId);
+        }
+
+        function toggleFavorite(postId) {
+            const favorites = getFavorites();
+            const exists = favorites.includes(postId);
+            const next = exists ? favorites.filter(id => id !== postId) : [...favorites, postId];
+            setFavorites(next);
+            renderListings();
+        }
+
+        function getConstructionPosts() {
+            let posts = [];
+
+            if (window.postStorage && typeof window.postStorage.getConstructionPosts === "function") {
+                posts = window.postStorage.getConstructionPosts() || [];
+            } else if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                posts = (window.postStorage.getAllPosts() || []).filter(post => post && post.flow === "construction");
+            } else {
+                posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+            }
+
+            return posts.filter(post => {
+                if (!post) return false;
+                const flow = String(post.flow || "").toLowerCase().trim();
+                const status = String(post.status || "").toLowerCase().trim();
+
+                return flow === "construction" && (
+                    status === "approved" ||
+                    status === "demo" ||
+                    status === "pending" ||
+                    status === ""
+                );
+            });
+        }
+
+        function getFallbackConstructionPosts() {
+            return [
+                {
+                    id: "demo-build-1",
+                    title: "Thi công biệt thự phố hiện đại - Chìa khóa trao tay 2026",
+                    flow: "construction",
+                    postType: "xaydung",
+                    status: "demo",
+                    serviceType: "Xây nhà trọn gói",
+                    servicePrice: "5.8 - 6.5 triệu/m²",
+                    serviceExp: "8 năm kinh nghiệm",
+                    serviceArea: "Dĩ An, Thuận An",
+                    serviceBrand: "Bình Dương Cons Co., Ltd",
+                    serviceSpecialty: "Biệt thự, nhà phố",
+                    city: "Bình Dương",
+                    ward: "Dĩ An",
+                    description: "Giải pháp thi công đồng bộ từ thiết kế đến bàn giao hoàn thiện, phù hợp khách hàng cần tiến độ rõ ràng và kiểm soát chi phí tốt.",
+                    contactName: "Bình Dương Cons Co., Ltd",
+                    contactPhone: "0946239289",
+                    profileType: "doanhnghiep",
+                    roleLabel: "Doanh nghiệp / Nhà thầu",
+                    createdAt: "2026-01-08T08:00:00.000Z",
+                    images: [FALLBACK_IMAGE]
+                },
+                {
+                    id: "demo-build-2",
+                    title: "Tư vấn thiết kế kiến trúc và nội thất nhà phố xanh",
+                    flow: "construction",
+                    postType: "xaydung",
+                    status: "demo",
+                    serviceType: "Thiết kế kiến trúc",
+                    servicePrice: "150k - 250k/m²",
+                    serviceExp: "6 năm kinh nghiệm",
+                    serviceArea: "TP.HCM, Bình Dương",
+                    serviceBrand: "Studio Kiến Trúc Việt",
+                    serviceSpecialty: "3D + hồ sơ kỹ thuật",
+                    city: "TP.HCM",
+                    ward: "Thủ Đức",
+                    description: "Phù hợp gia chủ cần hồ sơ thiết kế hiện đại, tối ưu công năng, phối cảnh 3D đẹp và dễ triển khai thi công thực tế.",
+                    contactName: "Studio Kiến Trúc Việt",
+                    contactPhone: "0901234567",
+                    profileType: "doanhnghiep",
+                    roleLabel: "Đơn vị thiết kế",
+                    createdAt: "2026-01-06T09:00:00.000Z",
+                    images: [FALLBACK_IMAGE]
+                },
+                {
+                    id: "demo-build-3",
+                    title: "Cải tạo nhà phố cũ, nâng tầng, chống thấm, sơn sửa hoàn thiện",
+                    flow: "construction",
+                    postType: "xaydung",
+                    status: "demo",
+                    serviceType: "Sửa chữa / Cải tạo",
+                    servicePrice: "Liên hệ báo giá",
+                    serviceExp: "10 năm thi công",
+                    serviceArea: "Hà Nội, Bắc Ninh",
+                    serviceBrand: "Fix Home Service",
+                    serviceSpecialty: "Trọn gói cải tạo",
+                    city: "Hà Nội",
+                    ward: "Cầu Giấy",
+                    description: "Dành cho khách hàng cần nâng cấp nhà ở nhanh, xử lý hạng mục xuống cấp và tối ưu lại thẩm mỹ trước khi ở hoặc cho thuê.",
+                    contactName: "Fix Home Service",
+                    contactPhone: "0988123456",
+                    profileType: "doanhnghiep",
+                    roleLabel: "Đội thi công cải tạo",
+                    createdAt: "2026-01-04T10:00:00.000Z",
+                    images: [FALLBACK_IMAGE]
+                }
+            ];
+        }
+
+        function fillCityFilter(posts) {
+            const currentValue = cityFilter.value;
+            const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, "vi"));
+
+            cityFilter.innerHTML = '<option value="">Khu vực</option>' +
+                uniqueCities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("");
+
+            if (uniqueCities.includes(currentValue)) {
+                cityFilter.value = currentValue;
+            }
+        }
+
+        function applyFilters(posts) {
+            let filtered = [...posts];
+
+            const keyword = keywordFilter.value.trim().toLowerCase();
+            const serviceType = serviceTypeFilter.value;
+            const city = cityFilter.value;
+
+            if (keyword) {
+                filtered = filtered.filter(post => {
+                    const text = [
+                        post.title,
+                        post.description,
+                        post.serviceType,
+                        post.serviceBrand,
+                        post.serviceSpecialty,
+                        post.serviceArea,
+                        buildLocation(post),
+                        buildPoster(post)
+                    ].filter(Boolean).join(" ").toLowerCase();
+
+                    return text.includes(keyword);
+                });
+            }
+
+            if (serviceType) {
+                filtered = filtered.filter(post => (post.serviceType || "") === serviceType);
+            }
+
+            if (city) {
+                filtered = filtered.filter(post => (post.city || "") === city);
+            }
+
+            filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            return filtered;
+        }
+
+        function getServiceBadge(post) {
+            const serviceType = String(post.serviceType || "Dịch vụ xây dựng").trim();
+            return serviceType.length > 18 ? serviceType.slice(0, 18) + "..." : serviceType;
+        }
+
+        function getStatusChip(post) {
+            const status = String(post.status || "").toLowerCase();
+            if (status === "demo") {
+                return '<span class="service-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>';
+            }
+            if (post.vipLevel) {
+                return '<span class="service-chip vip"><i class="fa-solid fa-crown"></i> VIP</span>';
+            }
+            return "";
+        }
+
+        function getDetailUrl(post, postId) {
+            if (post.detailUrl) return post.detailUrl;
+            return `../pages/chi-tiet-tin.html?id=${encodeURIComponent(postId)}`;
+        }
+
+        function renderCard(post, index) {
+            const postId = createPostId(post, index);
+            const detailUrl = getDetailUrl(post, postId);
+            const imageUrl = escapeHtml(getCardImage(post));
+            const title = escapeHtml(post.title || "Dịch vụ xây dựng");
+            const company = escapeHtml(buildPoster(post));
+            const role = escapeHtml(getPosterRole(post));
+            const price = escapeHtml(post.servicePrice || "Liên hệ");
+            const area = escapeHtml(post.serviceArea || buildLocation(post) || "Đang cập nhật");
+            const specialty = escapeHtml(post.serviceSpecialty || "Đang cập nhật");
+            const exp = escapeHtml(post.serviceExp || "Đang cập nhật");
+            const desc = escapeHtml(post.description || "Đang cập nhật mô tả dịch vụ.");
+            const avatarText = escapeHtml(getAvatarText(post));
+            const favoriteActive = isFavorite(postId);
+            const phoneRaw = post.contactPhone || post.phone || "";
+            const phoneLink = normalizePhone(phoneRaw);
+            const profileUrl = post.contactProfileUrl || (post.profileType === "doanhnghiep" ? "../pages/danh-ba-doanh-nghiep.html" : "../pages/danh-ba-moi-gioi.html");
+
+            return `
+                <div class="con-card">
+                    <div class="con-card-image">
+                        <a href="${detailUrl}" aria-label="${title}">
+                            <img src="${imageUrl}" alt="${title}" onerror="this.src='${FALLBACK_IMAGE}'">
+                        </a>
+                        <span class="con-badge bg-[#008B8B]">${escapeHtml(getServiceBadge(post))}</span>
+                    </div>
+
+                    <div class="con-card-body">
+                        <div class="flex items-center justify-between gap-3">
+                            <a href="${profileUrl}" class="con-company min-w-0 flex-1">
+                                <div class="con-company-avatar">${avatarText}</div>
+                                <div class="con-company-name truncate">${company}</div>
+                            </a>
+                            ${getStatusChip(post)}
+                        </div>
+
+                        <a href="${detailUrl}">
+                            <h3 class="con-card-title">${title}</h3>
+                        </a>
+
+                        <p class="con-card-desc">${desc}</p>
+
+                        <div class="con-meta-grid">
+                            <div class="con-meta-item">
+                                <span class="con-meta-label">Đơn giá / báo giá</span>
+                                <span class="con-meta-value highlight">${price}</span>
+                            </div>
+                            <div class="con-meta-item">
+                                <span class="con-meta-label">Khu vực</span>
+                                <span class="con-meta-value">${area}</span>
+                            </div>
+                            <div class="con-meta-item">
+                                <span class="con-meta-label">Chuyên môn</span>
+                                <span class="con-meta-value">${specialty}</span>
+                            </div>
+                            <div class="con-meta-item">
+                                <span class="con-meta-label">Năng lực</span>
+                                <span class="con-meta-value">${exp}</span>
+                            </div>
+                        </div>
+
+                        <div class="text-[12px] text-slate-500 leading-6">
+                            <strong class="text-slate-700">Vai trò:</strong> ${role}
+                        </div>
+
+                        <div class="con-card-footer">
+                            ${
+                                phoneLink
+                                    ? `<a href="tel:${phoneLink}" class="con-btn-main">
+                                            <i class="fa-solid fa-phone"></i>
+                                            Liên hệ ngay
+                                       </a>`
+                                    : `<a href="${detailUrl}" class="con-btn-main">
+                                            <i class="fa-solid fa-file-lines"></i>
+                                            Xem chi tiết
+                                       </a>`
+                            }
+
+                            <button
+                                type="button"
+                                class="con-btn-outline ${favoriteActive ? "active" : ""}"
+                                onclick="toggleFavorite('${escapeHtml(postId).replace(/'/g, "\\'")}')"
+                                aria-label="Lưu dịch vụ">
+                                <i class="${favoriteActive ? "fa-solid" : "fa-regular"} fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderListings() {
+            let posts = getConstructionPosts();
+
+            if (!posts.length) {
+                posts = getFallbackConstructionPosts();
+                dataNote.classList.remove("hidden");
+                dataNote.innerHTML = `
+                    Hiện tại chưa có dịch vụ xây dựng thật nào được duyệt để hiển thị ngoài public.
+                    Hệ thống đang hiển thị <strong>dữ liệu mẫu</strong> để bạn dễ kiểm tra giao diện.
+                    Sau khi bạn đăng nội dung từ trang <strong>Đăng tin</strong> theo luồng <strong>Xây dựng</strong>, dữ liệu sẽ tự động xuất hiện tại đây.
+                `;
+            } else {
+                dataNote.classList.add("hidden");
+                dataNote.innerHTML = "";
+            }
+
+            fillCityFilter(posts);
+
+            const filteredPosts = applyFilters(posts);
+            resultCount.textContent = filteredPosts.length;
+
+            if (!filteredPosts.length) {
+                listingContainer.innerHTML = `
+                    <div class="empty-box md:col-span-2 lg:col-span-3">
+                        Không tìm thấy dịch vụ xây dựng phù hợp với bộ lọc hiện tại.
+                        Bạn hãy đổi từ khóa, loại hình thi công hoặc khu vực để tìm lại.
+                    </div>
+                `;
+                return;
+            }
+
+            listingContainer.innerHTML = filteredPosts.map((post, index) => renderCard(post, index)).join("");
+        }
+
+        applyFilterBtn.addEventListener("click", renderListings);
+
+        keywordFilter.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") renderListings();
+        });
+
+        serviceTypeFilter.addEventListener("change", renderListings);
+        cityFilter.addEventListener("change", renderListings);
+
+        window.toggleFavorite = toggleFavorite;
+        window.addEventListener("load", renderListings);
     </script>
+
     <script src="../assets/js/main.js"></script>
 </body>
 </html>
