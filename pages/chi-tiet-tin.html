@@ -359,12 +359,12 @@
                             <span id="extra-city">Đang cập nhật</span>
                         </div>
                         <div class="flex justify-between gap-4 border-b pb-3">
-                            <span class="font-semibold text-slate-700">Quận / Huyện</span>
-                            <span id="extra-district">Đang cập nhật</span>
-                        </div>
-                        <div class="flex justify-between gap-4 border-b pb-3">
                             <span class="font-semibold text-slate-700">Phường / Xã</span>
                             <span id="extra-ward">Đang cập nhật</span>
+                        </div>
+                        <div class="flex justify-between gap-4 border-b pb-3">
+                            <span class="font-semibold text-slate-700">Địa chỉ chi tiết</span>
+                            <span id="extra-address" class="text-right">Đang cập nhật</span>
                         </div>
                     </div>
                 </div>
@@ -625,7 +625,7 @@
         }
 
         function buildLocation(post) {
-            return [post.ward, post.district, post.city].filter(Boolean).join(", ");
+            return [post.ward, post.city].filter(Boolean).join(", ");
         }
 
         function parsePriceToNumber(priceText) {
@@ -658,21 +658,6 @@
 
             const raw = parseFloat(text.replace(/[^\d.]/g, "")) || 0;
             return raw;
-        }
-
-        function parseRentalPriceToMillion(priceText) {
-            if (!priceText) return 0;
-
-            const raw = String(priceText).toLowerCase().trim().replace(/,/g, ".");
-            const nums = raw.match(/\d+(\.\d+)?/g);
-            if (!nums || !nums.length) return 0;
-
-            if (raw.includes("tỷ")) return parseFloat(nums[0]) * 1000;
-            if (raw.includes("triệu")) return parseFloat(nums[0]);
-            if (raw.includes("nghìn")) return parseFloat(nums[0]) / 1000;
-
-            const value = parseFloat(nums[0]);
-            return Number.isNaN(value) ? 0 : value;
         }
 
         function formatPrice(priceText) {
@@ -750,7 +735,7 @@
                 post.id ||
                 post.postId ||
                 post.slug ||
-                `${post.title || "tin"}-${post.city || ""}-${post.district || ""}-${index}`
+                `${post.title || "tin"}-${post.city || ""}-${index}`
                     .toLowerCase()
                     .replace(/\s+/g, "-")
             );
@@ -787,8 +772,9 @@
                     propertyDirection: "Đông Nam",
                     propertyBeds: "5",
                     city: "Hà Nội",
-                    district: "Đan Phượng",
-                    ward: "",
+                    district: "",
+                    ward: "Phường Minh Khai",
+                    addressDetail: "Khu đô thị mới",
                     description: "Căn biệt thự có vị trí đẹp, bàn giao full nội thất cao cấp. Hỗ trợ pháp lý và thủ tục nhanh gọn.",
                     contactName: "Nguyễn Thành An",
                     roleLabel: "Môi giới chuyên nghiệp",
@@ -812,8 +798,9 @@
                     propertyDirection: "Đông Nam",
                     propertyBeds: "2",
                     city: "TP.HCM",
-                    district: "Bình Thạnh",
+                    district: "",
                     ward: "Phường 22",
+                    addressDetail: "Gần Landmark 81",
                     description: "Căn hộ tầng cao thoáng mát, view sông đẹp, đầy đủ nội thất cao cấp.",
                     contactName: "Trần Thị Lan Anh",
                     roleLabel: "Chuyên viên cho thuê",
@@ -839,6 +826,7 @@
                     city: "Hà Giang",
                     district: "",
                     ward: "Phường Nguyễn Trãi",
+                    addressDetail: "Phục vụ toàn tỉnh",
                     description: "Đội ngũ kỹ sư và thi công chuyên nghiệp, nhận hồ sơ thiết kế, thi công phần thô và hoàn thiện trọn gói.",
                     contactName: "Công ty Xây dựng An Phát",
                     brandName: "Công ty Xây dựng An Phát",
@@ -1000,8 +988,8 @@
             fillText("extra-email", email);
             fillText("extra-date", formatDate(post.createdAt));
             fillText("extra-city", post.city || "Đang cập nhật");
-            fillText("extra-district", post.district || "Đang cập nhật");
             fillText("extra-ward", post.ward || "Đang cập nhật");
+            fillText("extra-address", post.addressDetail || "Đang cập nhật");
 
             fillText("poster-name", poster);
             fillText("poster-role", role);
@@ -1086,8 +1074,8 @@
             fillText("extra-email", email);
             fillText("extra-date", formatDate(post.createdAt));
             fillText("extra-city", post.city || "Đang cập nhật");
-            fillText("extra-district", post.district || post.serviceArea || "Đang cập nhật");
             fillText("extra-ward", post.ward || "Đang cập nhật");
+            fillText("extra-address", post.addressDetail || post.serviceArea || "Đang cập nhật");
 
             fillText("poster-name", brand);
             fillText("poster-role", role);
