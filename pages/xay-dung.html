@@ -51,9 +51,13 @@
 
         .filter-grid-desktop {
             display: grid;
-            grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.9fr) minmax(220px, 0.9fr) 180px;
+            grid-template-columns: minmax(260px, 1.4fr) minmax(200px, 1fr) minmax(180px, 1fr) 180px;
             gap: 14px;
             align-items: center;
+        }
+
+        .filter-grid-desktop > * {
+            min-width: 0;
         }
 
         .filter-input,
@@ -75,6 +79,11 @@
         .filter-select:focus {
             border-color: var(--vip-color);
             box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.08);
+        }
+
+        .filter-input::placeholder {
+            color: #94a3b8;
+            font-weight: 600;
         }
 
         .filter-submit-btn {
@@ -192,16 +201,7 @@
             line-height: 1.45;
             color: #0f172a;
             min-height: 56px;
-        }
-
-        .con-card-desc {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.65;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            margin: 0;
         }
 
         .con-meta-grid {
@@ -386,11 +386,6 @@
                 min-height: auto;
             }
 
-            .con-card-desc {
-                font-size: 13px;
-                line-height: 1.6;
-            }
-
             .con-meta-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 10px;
@@ -434,7 +429,7 @@
 
     <section class="bg-slate-900 py-16 text-white text-center">
         <div class="container-custom">
-            <h1 class="main-title uppercase mb-4">Tìm kiếm nhà thầu & dịch vụ xây dựng</h1>
+            <h1 class="main-title uppercase mb-4">TÌM KIẾM NHÀ THẦU & DỊCH VỤ XÂY DỰNG</h1>
             <p class="text-slate-400 max-w-2xl mx-auto mb-8 text-sm">
                 Kết nối trực tiếp với các đơn vị thi công, kiến trúc sư, kỹ sư và nhà thầu uy tín đang đăng dịch vụ trên ToamViet.
             </p>
@@ -566,7 +561,7 @@
                 post.id ||
                 post.postId ||
                 post.slug ||
-                `${post.title || "tin"}-${post.city || ""}-${post.ward || ""}-${index}`
+                ((post.title || "tin") + "-" + (post.city || "") + "-" + (post.ward || "") + "-" + index)
                     .toLowerCase()
                     .replace(/\s+/g, "-")
             );
@@ -611,6 +606,7 @@
                 if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
                 if (firstImage && firstImage.url) return firstImage.url;
             }
+
             return FALLBACK_IMAGE;
         }
 
@@ -633,7 +629,10 @@
         function toggleFavorite(postId) {
             const favorites = getFavorites();
             const exists = favorites.includes(postId);
-            const next = exists ? favorites.filter(function (id) { return id !== postId; }) : favorites.concat(postId);
+            const next = exists
+                ? favorites.filter(function (id) { return id !== postId; })
+                : favorites.concat(postId);
+
             setFavorites(next);
             renderListings();
         }
@@ -662,13 +661,11 @@
 
             return posts.filter(function (post) {
                 if (!post) return false;
+
                 const flow = String(post.flow || "").toLowerCase().trim();
                 const status = String(post.status || "").toLowerCase().trim();
 
-                return flow === "construction" && (
-                    status === "approved" ||
-                    status === "demo"
-                );
+                return flow === "construction" && (status === "approved" || status === "demo");
             });
         }
 
@@ -754,9 +751,13 @@
 
         function fillCityFilter(posts) {
             const currentValue = cityFilter.value;
-            const uniqueCities = Array.from(new Set(posts.map(function (post) {
-                return post.city;
-            }).filter(Boolean))).sort(function (a, b) {
+            const uniqueCities = Array.from(
+                new Set(
+                    posts.map(function (post) {
+                        return post.city;
+                    }).filter(Boolean)
+                )
+            ).sort(function (a, b) {
                 return a.localeCompare(b, "vi");
             });
 
@@ -821,9 +822,11 @@
 
         function getStatusChip(post) {
             const status = String(post.status || "").toLowerCase();
+
             if (status === "demo") {
                 return '<span class="service-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>';
             }
+
             return '<span class="service-chip live"><i class="fa-solid fa-bolt"></i> Đang hiển thị</span>';
         }
 
@@ -843,12 +846,13 @@
             const area = escapeHtml(post.serviceArea || buildLocation(post) || "Đang cập nhật");
             const specialty = escapeHtml(post.serviceSpecialty || "Đang cập nhật");
             const exp = escapeHtml(post.serviceExp || "Đang cập nhật");
-            const desc = escapeHtml(post.description || "Đang cập nhật mô tả dịch vụ.");
             const avatarText = escapeHtml(getAvatarText(post));
             const favoriteActive = isFavorite(postId);
             const phoneRaw = post.contactPhone || post.phone || "";
             const phoneLink = normalizePhone(phoneRaw);
-            const profileUrl = post.contactProfileUrl || (post.profileType === "doanhnghiep" ? "../pages/danh-ba-doanh-nghiep.html" : "../pages/danh-ba-moi-gioi.html");
+            const profileUrl = post.contactProfileUrl || (post.profileType === "doanhnghiep"
+                ? "../pages/danh-ba-doanh-nghiep.html"
+                : "../pages/danh-ba-moi-gioi.html");
 
             return `
                 <div class="con-card">
@@ -871,8 +875,6 @@
                         <a href="${detailUrl}">
                             <h3 class="con-card-title">${title}</h3>
                         </a>
-
-                        <p class="con-card-desc">${desc}</p>
 
                         <div class="con-meta-grid">
                             <div class="con-meta-item">
