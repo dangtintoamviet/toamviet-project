@@ -49,7 +49,6 @@
         }
 
         .page-shell {
-            padding-top: 0;
             padding-bottom: 28px;
         }
 
@@ -265,11 +264,6 @@
             border-color: var(--vip-color);
             background: #f0fdfa;
             box-shadow: 0 8px 20px rgba(0, 139, 139, 0.08);
-        }
-
-        .flow-card.locked {
-            opacity: 0.65;
-            cursor: not-allowed;
         }
 
         .flow-card-title {
@@ -819,50 +813,52 @@
                                 <input id="addressDetail" type="text" class="input-field" placeholder="Số nhà, tên đường, khu vực cụ thể" />
                             </div>
 
-                            <div class="section-title">4. Gắn nhóm theo dự án</div>
+                            <div id="projectSection">
+                                <div class="section-title">4. Gắn nhóm theo dự án</div>
 
-                            <div class="project-box mb-8">
-                                <div class="switch-line mb-4">
-                                    <div>
-                                        <div class="font-extrabold text-[14px] text-slate-800">Tin này thuộc một dự án cụ thể</div>
-                                        <div class="text-[12px] text-slate-500 mt-1">
-                                            Nếu dự án đã có trên hệ thống thì chọn lại để gom nhóm SEO. Nếu chưa có thì nhập mới để tạo nhóm dự án.
+                                <div class="project-box mb-8">
+                                    <div class="switch-line mb-4">
+                                        <div>
+                                            <div class="font-extrabold text-[14px] text-slate-800">Tin này thuộc một dự án cụ thể</div>
+                                            <div class="text-[12px] text-slate-500 mt-1">
+                                                Nếu dự án đã có trên hệ thống thì chọn lại để gom nhóm SEO. Nếu chưa có thì nhập mới để tạo nhóm dự án.
+                                            </div>
                                         </div>
+                                        <div id="projectSwitch" class="switch-pill" aria-label="Bật hoặc tắt dự án"></div>
                                     </div>
-                                    <div id="projectSwitch" class="switch-pill" aria-label="Bật hoặc tắt dự án"></div>
-                                </div>
 
-                                <div id="projectFields" class="hidden-block">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div class="md:col-span-2">
-                                            <label class="field-label" for="projectSearch">Tìm dự án đã có</label>
-                                            <input id="projectSearch" type="text" class="input-field" placeholder="Nhập tên dự án để tìm kiếm..." autocomplete="off" />
-                                            <div id="projectSuggestList" class="suggest-list"></div>
-                                            <div id="selectedProjectBadge" class="project-badge"></div>
-                                        </div>
+                                    <div id="projectFields" class="hidden-block">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="md:col-span-2">
+                                                <label class="field-label" for="projectSearch">Tìm dự án đã có</label>
+                                                <input id="projectSearch" type="text" class="input-field" placeholder="Nhập tên dự án để tìm kiếm..." autocomplete="off" />
+                                                <div id="projectSuggestList" class="suggest-list"></div>
+                                                <div id="selectedProjectBadge" class="project-badge"></div>
+                                            </div>
 
-                                        <div class="md:col-span-2">
-                                            <label class="field-label" for="newProjectName">Hoặc nhập tên dự án mới</label>
-                                            <input id="newProjectName" type="text" class="input-field" placeholder="VD: Khu đô thị Tổ Ấm Việt Riverside" />
-                                            <div class="field-note">Chỉ nhập khi dự án này chưa có trên hệ thống.</div>
-                                        </div>
+                                            <div class="md:col-span-2">
+                                                <label class="field-label" for="newProjectName">Hoặc nhập tên dự án mới</label>
+                                                <input id="newProjectName" type="text" class="input-field" placeholder="VD: Khu đô thị Tổ Ấm Việt Riverside" />
+                                                <div class="field-note">Chỉ nhập khi dự án này chưa có trên hệ thống.</div>
+                                            </div>
 
-                                        <div>
-                                            <label class="field-label" for="projectDeveloper">Chủ đầu tư / Đơn vị phát triển</label>
-                                            <input id="projectDeveloper" type="text" class="input-field" placeholder="Tên chủ đầu tư hoặc đơn vị phát triển" />
-                                        </div>
+                                            <div>
+                                                <label class="field-label" for="projectDeveloper">Chủ đầu tư / Đơn vị phát triển</label>
+                                                <input id="projectDeveloper" type="text" class="input-field" placeholder="Tên chủ đầu tư hoặc đơn vị phát triển" />
+                                            </div>
 
-                                        <div>
-                                            <label class="field-label" for="projectType">Loại dự án</label>
-                                            <select id="projectType" class="select-field">
-                                                <option value="">Chọn loại dự án</option>
-                                                <option value="Căn hộ">Căn hộ</option>
-                                                <option value="Nhà phố">Nhà phố</option>
-                                                <option value="Biệt thự">Biệt thự</option>
-                                                <option value="Đất nền">Đất nền</option>
-                                                <option value="Khu đô thị">Khu đô thị</option>
-                                                <option value="Tổ hợp thương mại">Tổ hợp thương mại</option>
-                                            </select>
+                                            <div>
+                                                <label class="field-label" for="projectType">Loại dự án</label>
+                                                <select id="projectType" class="select-field">
+                                                    <option value="">Chọn loại dự án</option>
+                                                    <option value="Căn hộ">Căn hộ</option>
+                                                    <option value="Nhà phố">Nhà phố</option>
+                                                    <option value="Biệt thự">Biệt thự</option>
+                                                    <option value="Đất nền">Đất nền</option>
+                                                    <option value="Khu đô thị">Khu đô thị</option>
+                                                    <option value="Tổ hợp thương mại">Tổ hợp thương mại</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1116,6 +1112,7 @@
         const postStatus = document.getElementById("post-status");
         const submitBtn = document.getElementById("submitBtn");
         const vipSection = document.getElementById("vipSection");
+        const projectSection = document.getElementById("projectSection");
 
         const projectSwitch = document.getElementById("projectSwitch");
         const projectFields = document.getElementById("projectFields");
@@ -1292,23 +1289,6 @@
             previewPoster.textContent = currentUser.brandName || currentUser.fullName || "Chưa có";
         }
 
-        function lockFlowByAccountGroup() {
-            if (!currentUser || !currentUser.accountGroup) return;
-
-            if (currentUser.accountGroup === "construction") {
-                currentFlow = "construction";
-                flowRealEstate.classList.add("locked");
-                flowRealEstate.style.pointerEvents = "none";
-                setFlow("construction");
-                setProfile("doanhnghiep");
-            } else {
-                currentFlow = "real_estate";
-                flowConstruction.classList.add("locked");
-                flowConstruction.style.pointerEvents = "none";
-                setFlow("real_estate");
-            }
-        }
-
         function extractLocationsFromCommonFiles() {
             try {
                 if (window.locationHelper && typeof window.locationHelper.getAllLocations === "function") {
@@ -1472,15 +1452,18 @@
             flowConstruction.classList.toggle("active", flow === "construction");
 
             if (flow === "construction") {
-                subtabContainer.style.display = "none";
-                vipSection.style.display = "none";
+                subtabContainer.classList.add("hidden-block");
+                vipSection.classList.add("hidden-block");
+                projectSection.classList.add("hidden-block");
                 projectSwitch.classList.remove("active");
                 projectFields.classList.add("hidden-block");
                 selectedProject = null;
                 resetProjectInputs();
+                setProfile("doanhnghiep");
             } else {
-                subtabContainer.style.display = "flex";
-                vipSection.style.display = "block";
+                subtabContainer.classList.remove("hidden-block");
+                vipSection.classList.remove("hidden-block");
+                projectSection.classList.remove("hidden-block");
             }
 
             renderDynamicFields();
@@ -2129,7 +2112,14 @@
                     serviceExp: document.getElementById("serviceExp") ? document.getElementById("serviceExp").value : "",
                     serviceArea: document.getElementById("serviceArea") ? document.getElementById("serviceArea").value : "",
                     serviceBrand: document.getElementById("serviceBrand") ? document.getElementById("serviceBrand").value : "",
-                    serviceSpecialty: document.getElementById("serviceSpecialty") ? document.getElementById("serviceSpecialty").value : ""
+                    serviceSpecialty: document.getElementById("serviceSpecialty") ? document.getElementById("serviceSpecialty").value : "",
+                    projectEnabled: false,
+                    projectId: "",
+                    projectName: "",
+                    projectSlug: "",
+                    projectTypeName: "",
+                    projectDeveloper: "",
+                    pricePerSquareMeter: null
                 };
             }
 
@@ -2217,9 +2207,10 @@
             projectFields.classList.add("hidden-block");
             resetProjectInputs();
 
-            setVipLevel("thuong");
-            setProfile(currentUser && currentUser.accountGroup === "construction" ? "doanhnghiep" : "canhan");
             currentPostType = "ban";
+            setVipLevel("thuong");
+            setProfile("canhan");
+            setFlow("real_estate");
 
             document.querySelectorAll(".subtab-btn").forEach(function (btn) {
                 btn.classList.toggle("active", btn.getAttribute("data-post-type") === "ban");
@@ -2356,13 +2347,8 @@
         fillUserInfo();
         loadVietnamAddress();
         renderDynamicFields();
-        lockFlowByAccountGroup();
-
-        if (!currentUser) {
-            setFlow("real_estate");
-        }
-
         setVipLevel("thuong");
+        setFlow("real_estate");
         updatePreview();
     </script>
 
