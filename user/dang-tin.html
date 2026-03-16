@@ -1823,7 +1823,7 @@
             const locationText = [ward, city].filter(Boolean).join(", ");
 
             previewLocation.textContent = locationText || "Chưa chọn";
-            previewPoster.textContent = contactName || (currentUser && (currentUser.brandName || currentUser.fullName) || "Chưa có");
+            previewPoster.textContent = contactName || ((currentUser && (currentUser.brandName || currentUser.fullName)) || "Chưa có");
             previewTitle.textContent = title || "Tiêu đề sẽ hiện ở đây sau khi bạn nhập";
             previewImagesCount.textContent = selectedImages.length + " ảnh";
             previewVip.textContent = currentFlow === "real_estate" ? getVipLabel(currentVipLevel) : "Không áp dụng";
@@ -2222,33 +2222,92 @@
             return postData;
         }
 
-        function ensureStorageReady() {
-            if (!window.userStorage) {
-                throw new Error("window.userStorage chưa được load");
-            }
-
-            if (!window.postStorage) {
-                throw new Error("window.postStorage chưa được load");
-            }
-
-            if (typeof window.postStorage.createPost !== "function") {
-                throw new Error("window.postStorage.createPost không tồn tại");
-            }
-
-            if (typeof window.postStorage.getAllPosts !== "function") {
-                throw new Error("window.postStorage.getAllPosts không tồn tại");
+        function getSafeAllPostsFromLocal() {
+            try {
+                const raw = localStorage.getItem("allPosts");
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                console.warn("Không đọc được allPosts từ localStorage:", error);
+                return [];
             }
         }
 
-        function saveSingleSourcePost(postData) {
-            ensureStorageReady();
-            window.postStorage.createPost(postData);
-            return window.postStorage.getAllPosts();
+        function saveSafeAllPostsToLocal(posts) {
+            const safePosts = Array.isArray(posts) ? posts : [];
+            localStorage.setItem("allPosts", JSON.stringify(safePosts));
+
+            const propertyPosts = safePosts.filter(function (post) {
+                return post && post.flow === "real_estate";
+            });
+
+            const salePosts = safePosts.filter(function (post) {
+                return post && post.flow === "real_estate" && post.postType === "ban";
+            });
+
+            const rentalPosts = safePosts.filter(function (post) {
+                return post && post.flow === "real_estate" && post.postType === "thue";
+            });
+
+            const constructionPosts = safePosts.filter(function (post) {
+                return post && post.flow === "construction";
+            });
+
+            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
+            localStorage.setItem("salePosts", JSON.stringify(salePosts));
+            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
+            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+        }
+
+        function getPostsFromAnySource() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    const posts = window.postStorage.getAllPosts();
+                    if (Array.isArray(posts)) return posts;
+                }
+            } catch (error) {
+                console.warn("postStorage.getAllPosts lỗi, chuyển sang localStorage:", error);
+            }
+
+            return getSafeAllPostsFromLocal();
+        }
+
+        function createPostWithFallback(postData) {
+            try {
+                if (window.postStorage && typeof window.postStorage.createPost === "function") {
+                    const created = window.postStorage.createPost(postData);
+
+                    try {
+                        const postsAfterCreate = getPostsFromAnySource();
+                        if (Array.isArray(postsAfterCreate) && postsAfterCreate.length) {
+                            saveSafeAllPostsToLocal(postsAfterCreate);
+                        }
+                    } catch (syncError) {
+                        console.warn("Không sync được dữ liệu sau khi createPost:", syncError);
+                    }
+
+                    return created;
+                }
+            } catch (error) {
+                console.warn("postStorage.createPost lỗi, chuyển sang fallback localStorage:", error);
+            }
+
+            const currentPosts = getSafeAllPostsFromLocal();
+            currentPosts.unshift(postData);
+            saveSafeAllPostsToLocal(currentPosts);
+            return postData;
         }
 
         function savePostToStorage(postData) {
-            const allPosts = saveSingleSourcePost(postData);
-            syncProjectStoreFromPosts(allPosts);
+            createPostWithFallback(postData);
+
+            const allPosts = getPostsFromAnySource();
+
+            try {
+                syncProjectStoreFromPosts(allPosts);
+            } catch (error) {
+                console.warn("syncProjectStoreFromPosts lỗi:", error);
+            }
 
             if (window.projectService && typeof window.projectService.syncProjectCounts === "function") {
                 try {
@@ -2402,10 +2461,8 @@
         window.sendToZalo = sendToZalo;
 
         try {
-            if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
-                const currentPosts = window.postStorage.getAllPosts();
-                syncProjectStoreFromPosts(currentPosts);
-            }
+            const currentPosts = getPostsFromAnySource();
+            syncProjectStoreFromPosts(currentPosts);
         } catch (error) {
             console.warn("Không thể đồng bộ project store lúc khởi tạo:", error);
         }
