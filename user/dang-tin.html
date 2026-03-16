@@ -919,7 +919,7 @@
                                 <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-300 mb-3"></i>
                                 <p class="text-sm font-bold text-slate-600">Chọn ảnh thực tế để tải lên</p>
                                 <p class="text-xs text-slate-400 mt-2">Khuyến nghị ít nhất 3 ảnh thật. Với dịch vụ xây dựng nên có ảnh công trình hoặc hồ sơ năng lực.</p>
-                                <p class="text-xs text-slate-400 mt-1">Hệ thống sẽ tự nén ảnh để giảm lỗi localStorage. Tối đa 8 ảnh.</p>
+                                <p class="text-xs text-slate-400 mt-1">Hệ thống sẽ tự nén ảnh để giảm lỗi localStorage. Tối đa 5 ảnh.</p>
 
                                 <div class="mt-4">
                                     <input id="imageInput" type="file" accept="image/*" multiple class="hidden" />
@@ -1066,11 +1066,12 @@
         let selectedImages = [];
         let locationSource = { provinces: [] };
 
-        const MAX_IMAGES = 8;
-        const MAX_IMAGE_WIDTH = 1600;
-        const MAX_IMAGE_HEIGHT = 1600;
-        const IMAGE_QUALITY = 0.82;
-        const MAX_FINAL_IMAGE_KB = 450;
+        const MAX_IMAGES = 5;
+        const MAX_IMAGE_WIDTH = 1280;
+        const MAX_IMAGE_HEIGHT = 1280;
+        const IMAGE_QUALITY = 0.72;
+        const MAX_FINAL_IMAGE_KB = 180;
+        const MAX_TOTAL_IMAGES_KB = 900;
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
 
         const FALLBACK_LOCATIONS = {
@@ -1101,6 +1102,18 @@
                 console.warn("Lỗi parse localStorage tại key:", key, error);
                 return null;
             }
+        }
+
+        function isQuotaExceededError(error) {
+            if (!error) return false;
+
+            return (
+                error.name === "QuotaExceededError" ||
+                error.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
+                error.code === 22 ||
+                error.code === 1014 ||
+                error.message === "LOCAL_STORAGE_QUOTA_EXCEEDED"
+            );
         }
 
         const currentUser =
@@ -1192,6 +1205,26 @@
             if (parts.length < 2) return 0;
             const base64 = parts[1];
             return Math.ceil((base64.length * 3) / 4);
+        }
+
+        function getSelectedImagesTotalKB() {
+            return selectedImages.reduce(function (sum, item) {
+                return sum + Number(item && item.sizeKB ? item.sizeKB : 0);
+            }, 0);
+        }
+
+        function prepareImagesForStorage(images) {
+            return (Array.isArray(images) ? images : []).map(function (img) {
+                return {
+                    id: img.id || ("img_" + Date.now()),
+                    name: img.name || "image.jpg",
+                    type: img.type || "image/jpeg",
+                    width: img.width || 0,
+                    height: img.height || 0,
+                    sizeKB: img.sizeKB || 0,
+                    dataUrl: img.dataUrl || ""
+                };
+            });
         }
 
         function parseVietnamesePrice(rawText, type) {
@@ -1975,15 +2008,25 @@
                     optimizedImages.push(optimized);
                 }
 
-                selectedImages = optimizedImages;
-                renderSelectedImages();
-
                 const totalKB = optimizedImages.reduce(function (sum, item) {
                     return sum + (item.sizeKB || 0);
                 }, 0);
 
+                if (totalKB > MAX_TOTAL_IMAGES_KB) {
+                    selectedImages = [];
+                    renderSelectedImages();
+                    showStatus(
+                        "error",
+                        "Tổng dung lượng ảnh sau nén vẫn còn quá lớn (" + totalKB + " KB). Vui lòng chọn ít ảnh hơn hoặc ảnh nhẹ hơn."
+                    );
+                    return;
+                }
+
+                selectedImages = optimizedImages;
+                renderSelectedImages();
+
                 hideStatus();
-                showStatus("success", "Đã xử lý " + optimizedImages.length + " ảnh. Tổng dung lượng ước tính sau nén khoảng " + totalKB + " KB.");
+                showStatus("success", "Đã xử lý " + optimizedImages.length + " ảnh. Tổng dung lượng sau nén khoảng " + totalKB + " KB.");
             } catch (error) {
                 console.error("Lỗi xử lý ảnh:", error);
                 showStatus("error", "Không thể xử lý ảnh. Vui lòng thử lại với ảnh khác hoặc giảm số lượng ảnh.");
@@ -2039,6 +2082,12 @@
                 return false;
             }
 
+            const totalImagesKB = getSelectedImagesTotalKB();
+            if (totalImagesKB > MAX_TOTAL_IMAGES_KB) {
+                showStatus("error", "Tổng dung lượng ảnh đang quá lớn cho chế độ lưu thử bằng localStorage.");
+                return false;
+            }
+
             if (currentFlow === "construction") {
                 const serviceType = document.getElementById("serviceType") ? document.getElementById("serviceType").value : "";
                 const servicePrice = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value.trim() : "";
@@ -2081,12 +2130,14 @@
             const nowIso = new Date().toISOString();
             const contactEmailValue = document.getElementById("contactEmail").value.trim();
 
+            const preparedImages = prepareImagesForStorage(selectedImages);
+
             const thumbnail =
-                Array.isArray(selectedImages) &&
-                selectedImages.length &&
-                selectedImages[0] &&
-                selectedImages[0].dataUrl
-                    ? selectedImages[0].dataUrl
+                Array.isArray(preparedImages) &&
+                preparedImages.length &&
+                preparedImages[0] &&
+                preparedImages[0].dataUrl
+                    ? preparedImages[0].dataUrl
                     : FALLBACK_IMAGE;
 
             const baseData = {
@@ -2124,8 +2175,8 @@
                 detailUrl: "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(baseId),
 
                 status: "approved",
-                images: selectedImages,
-                imageCount: selectedImages.length,
+                images: preparedImages,
+                imageCount: preparedImages.length,
                 thumbnail: thumbnail,
 
                 createdAt: nowIso,
@@ -2233,32 +2284,6 @@
             }
         }
 
-        function saveSafeAllPostsToLocal(posts) {
-            const safePosts = Array.isArray(posts) ? posts : [];
-            localStorage.setItem("allPosts", JSON.stringify(safePosts));
-
-            const propertyPosts = safePosts.filter(function (post) {
-                return post && post.flow === "real_estate";
-            });
-
-            const salePosts = safePosts.filter(function (post) {
-                return post && post.flow === "real_estate" && post.postType === "ban";
-            });
-
-            const rentalPosts = safePosts.filter(function (post) {
-                return post && post.flow === "real_estate" && post.postType === "thue";
-            });
-
-            const constructionPosts = safePosts.filter(function (post) {
-                return post && post.flow === "construction";
-            });
-
-            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
-            localStorage.setItem("salePosts", JSON.stringify(salePosts));
-            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
-            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
-        }
-
         function getPostsFromAnySource() {
             try {
                 if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
@@ -2266,40 +2291,33 @@
                     if (Array.isArray(posts)) return posts;
                 }
             } catch (error) {
-                console.warn("postStorage.getAllPosts lỗi, chuyển sang localStorage:", error);
+                console.warn("postStorage.getAllPosts lỗi:", error);
+            }
+
+            try {
+                if (window.userStorage && typeof window.userStorage.getAllPosts === "function") {
+                    const posts = window.userStorage.getAllPosts();
+                    if (Array.isArray(posts)) return posts;
+                }
+            } catch (error) {
+                console.warn("userStorage.getAllPosts lỗi:", error);
             }
 
             return getSafeAllPostsFromLocal();
         }
 
-        function createPostWithFallback(postData) {
-            try {
-                if (window.postStorage && typeof window.postStorage.createPost === "function") {
-                    const created = window.postStorage.createPost(postData);
-
-                    try {
-                        const postsAfterCreate = getPostsFromAnySource();
-                        if (Array.isArray(postsAfterCreate) && postsAfterCreate.length) {
-                            saveSafeAllPostsToLocal(postsAfterCreate);
-                        }
-                    } catch (syncError) {
-                        console.warn("Không sync được dữ liệu sau khi createPost:", syncError);
-                    }
-
-                    return created;
-                }
-            } catch (error) {
-                console.warn("postStorage.createPost lỗi, chuyển sang fallback localStorage:", error);
-            }
-
-            const currentPosts = getSafeAllPostsFromLocal();
-            currentPosts.unshift(postData);
-            saveSafeAllPostsToLocal(currentPosts);
-            return postData;
-        }
-
         function savePostToStorage(postData) {
-            createPostWithFallback(postData);
+            let createdPost = null;
+
+            if (window.postStorage && typeof window.postStorage.createPost === "function") {
+                createdPost = window.postStorage.createPost(postData);
+            } else if (window.userStorage && typeof window.userStorage.addPost === "function") {
+                createdPost = window.userStorage.addPost(postData);
+            } else {
+                const currentPosts = getSafeAllPostsFromLocal();
+                currentPosts.unshift(postData);
+                localStorage.setItem("allPosts", JSON.stringify(currentPosts));
+            }
 
             const allPosts = getPostsFromAnySource();
 
@@ -2317,7 +2335,7 @@
                 }
             }
 
-            return allPosts;
+            return createdPost || postData;
         }
 
         function resetFormAfterSubmit(formElement) {
@@ -2372,7 +2390,15 @@
                 window.scrollTo({ top: 0, behavior: "smooth" });
             } catch (error) {
                 console.error("Lỗi khi gửi tin:", error);
-                showStatus("error", "Không thể gửi nội dung. Vui lòng mở Console trình duyệt để xem lỗi kỹ thuật chi tiết.");
+
+                if (isQuotaExceededError(error)) {
+                    showStatus(
+                        "error",
+                        "Không thể gửi nội dung vì bộ nhớ localStorage của trình duyệt đã gần đầy. Vui lòng giảm số lượng ảnh hoặc giảm dung lượng ảnh rồi thử lại."
+                    );
+                } else {
+                    showStatus("error", "Không thể gửi nội dung. Vui lòng mở Console trình duyệt để xem lỗi kỹ thuật chi tiết.");
+                }
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
