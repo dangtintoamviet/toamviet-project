@@ -11,10 +11,134 @@
         return !!window.projectService;
     }
 
+    function normalizeText(value) {
+        return String(value || "")
+            .trim()
+            .toLowerCase();
+    }
+
+    function slugify(str) {
+        return String(str || "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/đ/g, "d")
+            .replace(/[^a-z0-9\s-]/g, "")
+            .trim()
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-");
+    }
+
+    function normalizeStatus(status) {
+        const raw = normalizeText(status);
+        if (!raw) return "pending";
+
+        if (raw === "approved") return "approved";
+        if (raw === "rejected") return "rejected";
+        if (raw === "hidden") return "hidden";
+        if (raw === "demo") return "demo";
+        if (raw === "pending") return "pending";
+
+        return "pending";
+    }
+
+    function normalizeFlow(flow) {
+        const raw = normalizeText(flow);
+
+        if (raw === "construction") return "construction";
+        if (raw === "real_estate") return "real_estate";
+
+        return "real_estate";
+    }
+
+    function normalizePostType(postType, flow) {
+        const normalizedFlow = normalizeFlow(flow);
+        const raw = normalizeText(postType);
+
+        if (normalizedFlow === "construction") {
+            return "xaydung";
+        }
+
+        if (raw === "ban" || raw === "sale") return "ban";
+        if (raw === "thue" || raw === "cho-thue" || raw === "rent" || raw === "rental") return "thue";
+
+        return "ban";
+    }
+
+    function normalizeVipLevel(vipLevel) {
+        const raw = normalizeText(vipLevel);
+
+        if (!raw) return "thuong";
+        if (raw === "kim-cuong" || raw === "kimcuong" || raw === "diamond") return "kim-cuong";
+        if (raw === "vang" || raw === "gold") return "vang";
+        if (raw === "bac" || raw === "silver") return "bac";
+        if (raw === "dong" || raw === "bronze") return "dong";
+        if (raw === "thuong" || raw === "normal" || raw === "default") return "thuong";
+
+        return "thuong";
+    }
+
+    function normalizeProfileType(profileType) {
+        const raw = normalizeText(profileType);
+        if (raw === "doanhnghiep") return "doanhnghiep";
+        return "canhan";
+    }
+
+    function resolveContactProfileUrl(profileType, existingUrl) {
+        if (existingUrl) return existingUrl;
+        return normalizeProfileType(profileType) === "doanhnghiep"
+            ? "../pages/danh-ba-doanh-nghiep.html"
+            : "../pages/danh-ba-moi-gioi.html";
+    }
+
+    function resolveDetailUrl(post) {
+        if (post.detailUrl) return post.detailUrl;
+        return "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(post.id);
+    }
+
+    function sanitizePost(post) {
+        if (!post || typeof post !== "object") return null;
+
+        const now = new Date().toISOString();
+        const normalizedFlow = normalizeFlow(post.flow);
+        const normalizedPostType = normalizePostType(post.postType, normalizedFlow);
+        const normalizedStatus = normalizeStatus(post.status);
+
+        const safePost = {
+            ...post,
+            id: post.id || "post_" + Date.now(),
+            flow: normalizedFlow,
+            postType: normalizedPostType,
+            profileType: normalizeProfileType(post.profileType),
+            vipLevel: normalizedFlow === "real_estate" ? normalizeVipLevel(post.vipLevel) : "thuong",
+            status: normalizedStatus,
+            slug: post.slug || slugify((post.title || "tin-dang") + "-" + (post.id || Date.now())),
+            createdAt: post.createdAt || now,
+            updatedAt: post.updatedAt || now,
+            images: Array.isArray(post.images) ? post.images : [],
+            imageCount: Array.isArray(post.images) ? post.images.length : (Number(post.imageCount) || 0)
+        };
+
+        safePost.contactProfileUrl = resolveContactProfileUrl(safePost.profileType, post.contactProfileUrl);
+        safePost.detailUrl = resolveDetailUrl(safePost);
+
+        if (normalizedFlow !== "real_estate") {
+            safePost.projectEnabled = false;
+            safePost.projectId = "";
+            safePost.projectName = "";
+            safePost.projectSlug = "";
+            safePost.projectTypeName = "";
+            safePost.projectDeveloper = "";
+            safePost.pricePerSquareMeter = null;
+        }
+
+        return safePost;
+    }
+
     function syncDerivedStores(posts) {
         ensureUserStorage();
 
-        const safePosts = Array.isArray(posts) ? posts : getAllPosts();
+        const safePosts = Array.isArray(posts) ? posts.map(sanitizePost).filter(Boolean) : getAllPosts();
 
         if (typeof window.userStorage.syncDerivedPostStores === "function") {
             window.userStorage.syncDerivedPostStores(safePosts);
@@ -43,12 +167,13 @@
 
     function getAllPosts() {
         ensureUserStorage();
-        return window.userStorage.getAllPosts();
+        const posts = window.userStorage.getAllPosts() || [];
+        return Array.isArray(posts) ? posts.map(sanitizePost).filter(Boolean) : [];
     }
 
     function saveAllPosts(posts) {
         ensureUserStorage();
-        const safePosts = Array.isArray(posts) ? posts : [];
+        const safePosts = Array.isArray(posts) ? posts.map(sanitizePost).filter(Boolean) : [];
         window.userStorage.saveAllPosts(safePosts);
         syncDerivedStores(safePosts);
         return safePosts;
@@ -56,7 +181,16 @@
 
     function filterPostsByStatus(posts, status) {
         if (!status) return posts;
-        return posts.filter((post) => post && (post.status || "pending") === status);
+        const normalized = normalizeStatus(status);
+        return posts.filter((post) => post && normalizeStatus(post.status) === normalized);
+    }
+
+    function getPostsByFlow(flow, status) {
+        const normalizedFlow = normalizeFlow(flow);
+        const posts = getAllPosts().filter(
+            (post) => post && post.flow === normalizedFlow
+        );
+        return filterPostsByStatus(posts, status);
     }
 
     function getSalePosts(status) {
@@ -80,6 +214,18 @@
         return filterPostsByStatus(posts, status);
     }
 
+    function getApprovedSalePosts() {
+        return getSalePosts("approved");
+    }
+
+    function getApprovedRentalPosts() {
+        return getRentalPosts("approved");
+    }
+
+    function getPendingPosts() {
+        return getAllPosts().filter((post) => normalizeStatus(post.status) === "pending");
+    }
+
     function getPostsByProjectSlug(projectSlug, status) {
         if (!projectSlug) return [];
         const posts = getAllPosts().filter(
@@ -90,12 +236,14 @@
 
     function getPostsByUser(user) {
         ensureUserStorage();
-        return window.userStorage.getMyPosts(user);
+        const posts = window.userStorage.getMyPosts(user) || [];
+        return Array.isArray(posts) ? posts.map(sanitizePost).filter(Boolean) : [];
     }
 
     function getPostById(postId) {
         ensureUserStorage();
-        return window.userStorage.getPostById(postId);
+        const post = window.userStorage.getPostById(postId);
+        return sanitizePost(post);
     }
 
     function getPostBySlug(slug) {
@@ -111,26 +259,32 @@
         }
 
         const now = new Date().toISOString();
+        const draftId = postData.id || "post_" + Date.now();
 
-        const nextPost = {
+        const nextPost = sanitizePost({
             ...postData,
-            id: postData.id || "post_" + Date.now(),
+            id: draftId,
             status: postData.status || "pending",
             createdAt: postData.createdAt || now,
             updatedAt: now
-        };
+        });
 
         try {
             window.userStorage.addPost(nextPost);
         } catch (error) {
-            if (error && (error.name === "QuotaExceededError" || String(error.message || "").toLowerCase().includes("quota"))) {
+            if (
+                error &&
+                (
+                    error.name === "QuotaExceededError" ||
+                    String(error.message || "").toLowerCase().includes("quota")
+                )
+            ) {
                 throw new Error("Bộ nhớ localStorage đã đầy. Hãy giảm số lượng ảnh hoặc xóa bớt dữ liệu demo cũ.");
             }
             throw error;
         }
 
         syncDerivedStores();
-
         return nextPost;
     }
 
@@ -141,15 +295,22 @@
             throw new Error("updatePost: thiếu postId");
         }
 
-        const patchData = {
-            ...(updatedData || {}),
-            updatedAt: new Date().toISOString()
-        };
+        const currentPost = getPostById(postId);
+        if (!currentPost) {
+            throw new Error("updatePost: không tìm thấy bài đăng");
+        }
 
-        const result = window.userStorage.updatePost(postId, patchData);
+        const mergedPost = sanitizePost({
+            ...currentPost,
+            ...(updatedData || {}),
+            id: postId,
+            updatedAt: new Date().toISOString()
+        });
+
+        const result = window.userStorage.updatePost(postId, mergedPost);
         syncDerivedStores();
 
-        return result;
+        return sanitizePost(result);
     }
 
     function deletePost(postId) {
@@ -171,7 +332,7 @@
 
         const timestamp = Date.now();
 
-        const copy = {
+        const copy = sanitizePost({
             ...original,
             id: "post_" + timestamp,
             slug: (original.slug || "tin-dang") + "-copy-" + timestamp,
@@ -181,7 +342,7 @@
             rejectedAt: "",
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
-        };
+        });
 
         return createPost(copy);
     }
@@ -191,16 +352,17 @@
             throw new Error("togglePostStatus: thiếu nextStatus");
         }
 
+        const normalizedStatus = normalizeStatus(nextStatus);
         const patch = {
-            status: nextStatus
+            status: normalizedStatus
         };
 
-        if (nextStatus === "approved") {
+        if (normalizedStatus === "approved") {
             patch.approvedAt = new Date().toISOString();
             patch.rejectedAt = "";
         }
 
-        if (nextStatus === "rejected") {
+        if (normalizedStatus === "rejected") {
             patch.rejectedAt = new Date().toISOString();
         }
 
@@ -208,18 +370,25 @@
     }
 
     function getPostStats(postsInput) {
-        const posts = Array.isArray(postsInput) ? postsInput : getAllPosts();
+        const posts = Array.isArray(postsInput)
+            ? postsInput.map(sanitizePost).filter(Boolean)
+            : getAllPosts();
 
         return {
             total: posts.length,
-            pending: posts.filter((p) => (p.status || "pending") === "pending").length,
-            approved: posts.filter((p) => p.status === "approved").length,
-            rejected: posts.filter((p) => p.status === "rejected").length,
-            hidden: posts.filter((p) => p.status === "hidden").length,
+            pending: posts.filter((p) => normalizeStatus(p.status) === "pending").length,
+            approved: posts.filter((p) => normalizeStatus(p.status) === "approved").length,
+            rejected: posts.filter((p) => normalizeStatus(p.status) === "rejected").length,
+            hidden: posts.filter((p) => normalizeStatus(p.status) === "hidden").length,
+            demo: posts.filter((p) => normalizeStatus(p.status) === "demo").length,
             sale: posts.filter((p) => p.flow === "real_estate" && p.postType === "ban").length,
             rental: posts.filter((p) => p.flow === "real_estate" && p.postType === "thue").length,
             construction: posts.filter((p) => p.flow === "construction").length,
-            withProject: posts.filter((p) => p.projectSlug || p.projectName).length
+            withProject: posts.filter((p) => p.projectSlug || p.projectName).length,
+            vipKimCuong: posts.filter((p) => p.vipLevel === "kim-cuong").length,
+            vipVang: posts.filter((p) => p.vipLevel === "vang").length,
+            vipBac: posts.filter((p) => p.vipLevel === "bac").length,
+            vipDong: posts.filter((p) => p.vipLevel === "dong").length
         };
     }
 
@@ -246,9 +415,13 @@
         getAllPosts,
         saveAllPosts,
         syncDerivedStores,
+        getPostsByFlow,
         getSalePosts,
         getRentalPosts,
         getConstructionPosts,
+        getApprovedSalePosts,
+        getApprovedRentalPosts,
+        getPendingPosts,
         getPostsByProjectSlug,
         getPostsByUser,
         getPostById,
