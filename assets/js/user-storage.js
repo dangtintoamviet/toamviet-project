@@ -20,6 +20,17 @@
         }
     }
 
+    function isQuotaExceededError(error) {
+        if (!error) return false;
+
+        return (
+            error.name === "QuotaExceededError" ||
+            error.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
+            error.code === 22 ||
+            error.code === 1014
+        );
+    }
+
     function getItem(key, fallback = null) {
         const raw = localStorage.getItem(key);
         if (raw === null || raw === undefined || raw === "") {
@@ -29,7 +40,16 @@
     }
 
     function setItem(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+            return true;
+        } catch (error) {
+            if (isQuotaExceededError(error)) {
+                console.error("localStorage đã đầy khi lưu key:", key, error);
+                throw new Error("LOCAL_STORAGE_QUOTA_EXCEEDED");
+            }
+            throw error;
+        }
     }
 
     function removeItem(key) {
@@ -68,17 +88,6 @@
         return getItem(STORAGE_KEYS.allPosts, []);
     }
 
-    function saveAllPosts(posts) {
-        if (!Array.isArray(posts)) {
-            throw new Error("saveAllPosts: posts phải là mảng");
-        }
-
-        setItem(STORAGE_KEYS.allPosts, posts);
-        syncDerivedPostStores(posts);
-
-        return posts;
-    }
-
     function getProjects() {
         return getItem(STORAGE_KEYS.projects, []);
     }
@@ -113,15 +122,36 @@
         };
     }
 
+    function saveAllPosts(posts) {
+        if (!Array.isArray(posts)) {
+            throw new Error("saveAllPosts: posts phải là mảng");
+        }
+
+        setItem(STORAGE_KEYS.allPosts, posts);
+        syncDerivedPostStores(posts);
+
+        return posts;
+    }
+
     function addPost(newPost) {
         if (!newPost || typeof newPost !== "object") {
             throw new Error("addPost: newPost không hợp lệ");
         }
 
+        const nowIso = new Date().toISOString();
+
+        const normalizedPost = {
+            id: newPost.id || ("post_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8)),
+            status: newPost.status || "pending",
+            createdAt: newPost.createdAt || nowIso,
+            updatedAt: nowIso,
+            ...newPost
+        };
+
         const posts = getAllPosts();
-        posts.unshift(newPost);
+        posts.unshift(normalizedPost);
         saveAllPosts(posts);
-        return newPost;
+        return normalizedPost;
     }
 
     function updatePost(postId, updatedData) {
@@ -130,7 +160,7 @@
         }
 
         const posts = getAllPosts();
-        const index = posts.findIndex((post) => post && post.id === postId);
+        const index = posts.findIndex((post) => post && String(post.id) === String(postId));
 
         if (index === -1) {
             return null;
@@ -152,7 +182,7 @@
         }
 
         const posts = getAllPosts();
-        const nextPosts = posts.filter((post) => post && post.id !== postId);
+        const nextPosts = posts.filter((post) => post && String(post.id) !== String(postId));
         saveAllPosts(nextPosts);
 
         return true;
@@ -160,7 +190,7 @@
 
     function getPostById(postId) {
         if (!postId) return null;
-        return getAllPosts().find((post) => post && post.id === postId) || null;
+        return getAllPosts().find((post) => post && String(post.id) === String(postId)) || null;
     }
 
     function getMyPosts(user) {
@@ -173,7 +203,7 @@
             if (!post) return false;
 
             if (currentUser.id && post.userId) {
-                return post.userId === currentUser.id;
+                return String(post.userId) === String(currentUser.id);
             }
 
             const sameEmail =
@@ -239,6 +269,8 @@
         getMyPosts,
 
         clearAllPostStores,
-        getStorageSummary
+        getStorageSummary,
+
+        isQuotaExceededError
     };
 })();
