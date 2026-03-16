@@ -11,6 +11,7 @@ if (!response.ok) {
 }
 
 const html = await response.text();
+
 target.innerHTML = html;
 ```
 
@@ -112,6 +113,7 @@ if ((siteHeader && siteHeader.offsetHeight > 0) || tries > 30) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+
 const context = getPageContext();
 const tasks = [];
 
@@ -144,9 +146,17 @@ loadComponent(
 
 await Promise.all(tasks);
 
+/* khởi tạo mobile menu sau khi load component */
+
+if (typeof initMobileMenu === "function") {
+initMobileMenu();
+}
+
 watchHeaderSpacing();
+
 window.addEventListener("resize", setupFixedHeaderSpacing);
 
 setTimeout(setupFixedHeaderSpacing, 300);
 setTimeout(setupFixedHeaderSpacing, 800);
+
 });
