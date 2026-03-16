@@ -11,7 +11,6 @@ if (!response.ok) {
 }
 
 const html = await response.text();
-
 target.innerHTML = html;
 ```
 
@@ -146,10 +145,9 @@ loadComponent(
 
 await Promise.all(tasks);
 
-/* khởi tạo mobile menu sau khi load component */
-
-if (typeof initMobileMenu === "function") {
-initMobileMenu();
+/* nếu mobile menu có hàm init thì mới gọi */
+if (typeof window.initMobileMenu === "function") {
+window.initMobileMenu();
 }
 
 watchHeaderSpacing();
