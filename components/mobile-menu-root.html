@@ -3,32 +3,22 @@
 <div id="mobileMenuContainer"></div>
 
 <script>
-/*
-File root chịu trách nhiệm load mobile-menu-inner.html
-sau khi component-loader đã chèn root vào trang
-*/
-
 (function () {
+    const container = document.getElementById("mobileMenuContainer");
+    if (!container) return;
 
-  const container = document.getElementById("mobileMenuContainer");
-  if (!container) return;
-
-  fetch("../components/mobile-menu-inner.html")
-    .then(res => {
-      if (!res.ok) throw new Error("Không load được mobile-menu-inner");
-      return res.text();
-    })
-    .then(html => {
-      container.innerHTML = html;
-
-      /* nếu có hàm initMobileMenu thì gọi lại */
-      if (typeof window.initMobileMenu === "function") {
-        window.initMobileMenu();
-      }
-    })
-    .catch(err => {
-      console.error("Mobile menu load lỗi:", err);
-    });
-
+    fetch("../components/mobile-menu-inner.html")
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error("Không load được mobile-menu-inner.html");
+            }
+            return res.text();
+        })
+        .then((html) => {
+            container.innerHTML = html;
+        })
+        .catch((err) => {
+            console.error("Mobile menu load lỗi:", err);
+        });
 })();
 </script>
