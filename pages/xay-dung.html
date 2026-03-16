@@ -248,16 +248,14 @@
             align-items: center;
         }
 
-        .con-btn-main {
-            flex: 1;
+        .con-btn-main,
+        .con-btn-phone {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             padding: 13px 16px;
             border-radius: 14px;
-            background: var(--vip-color);
-            color: white;
             font-size: 12px;
             font-weight: 900;
             text-transform: uppercase;
@@ -266,8 +264,25 @@
             text-decoration: none;
         }
 
+        .con-btn-main {
+            flex: 1;
+            background: var(--vip-color);
+            color: white;
+        }
+
         .con-btn-main:hover {
             background: #0f766e;
+        }
+
+        .con-btn-phone {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+            min-width: 46px;
+        }
+
+        .con-btn-phone:hover {
+            background: #ffedd5;
         }
 
         .con-btn-outline {
@@ -358,7 +373,7 @@
             }
 
             .con-card-image {
-                height: 210px;
+                height: 205px;
             }
 
             .con-card-body {
@@ -373,6 +388,7 @@
 
             .con-card-desc {
                 font-size: 13px;
+                line-height: 1.6;
             }
 
             .con-meta-grid {
@@ -389,9 +405,19 @@
                 font-size: 13px;
             }
 
-            .con-btn-main {
+            .con-card-footer {
+                gap: 8px;
+            }
+
+            .con-btn-main,
+            .con-btn-phone {
                 font-size: 11px;
-                padding: 12px 14px;
+                padding: 12px 12px;
+                border-radius: 12px;
+            }
+
+            .con-btn-phone {
+                min-width: 42px;
             }
 
             .con-btn-outline {
@@ -568,7 +594,9 @@
                 .split(" ")
                 .filter(Boolean)
                 .slice(0, 2)
-                .map(word => word.charAt(0).toUpperCase())
+                .map(function (word) {
+                    return word.charAt(0).toUpperCase();
+                })
                 .join("") || "TV";
         }
 
@@ -605,7 +633,7 @@
         function toggleFavorite(postId) {
             const favorites = getFavorites();
             const exists = favorites.includes(postId);
-            const next = exists ? favorites.filter(id => id !== postId) : [...favorites, postId];
+            const next = exists ? favorites.filter(function (id) { return id !== postId; }) : favorites.concat(postId);
             setFavorites(next);
             renderListings();
         }
@@ -613,24 +641,33 @@
         function getConstructionPosts() {
             let posts = [];
 
-            if (window.postStorage && typeof window.postStorage.getConstructionPosts === "function") {
-                posts = window.postStorage.getConstructionPosts() || [];
-            } else if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
-                posts = (window.postStorage.getAllPosts() || []).filter(post => post && post.flow === "construction");
-            } else {
-                posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+            try {
+                if (window.postStorage && typeof window.postStorage.getConstructionPosts === "function") {
+                    posts = window.postStorage.getConstructionPosts() || [];
+                } else if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    posts = (window.postStorage.getAllPosts() || []).filter(function (post) {
+                        return post && post.flow === "construction";
+                    });
+                } else if (window.userStorage && typeof window.userStorage.getAllPosts === "function") {
+                    posts = (window.userStorage.getAllPosts() || []).filter(function (post) {
+                        return post && post.flow === "construction";
+                    });
+                } else {
+                    posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                }
+            } catch (error) {
+                console.warn("Không đọc được dữ liệu xây dựng:", error);
+                posts = [];
             }
 
-            return posts.filter(post => {
+            return posts.filter(function (post) {
                 if (!post) return false;
                 const flow = String(post.flow || "").toLowerCase().trim();
                 const status = String(post.status || "").toLowerCase().trim();
 
                 return flow === "construction" && (
                     status === "approved" ||
-                    status === "demo" ||
-                    status === "pending" ||
-                    status === ""
+                    status === "demo"
                 );
             });
         }
@@ -717,11 +754,17 @@
 
         function fillCityFilter(posts) {
             const currentValue = cityFilter.value;
-            const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, "vi"));
+            const uniqueCities = Array.from(new Set(posts.map(function (post) {
+                return post.city;
+            }).filter(Boolean))).sort(function (a, b) {
+                return a.localeCompare(b, "vi");
+            });
 
             cityFilter.innerHTML =
                 '<option value="">Khu vực</option>' +
-                uniqueCities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("");
+                uniqueCities.map(function (city) {
+                    return '<option value="' + escapeHtml(city) + '">' + escapeHtml(city) + '</option>';
+                }).join("");
 
             if (uniqueCities.includes(currentValue)) {
                 cityFilter.value = currentValue;
@@ -729,14 +772,14 @@
         }
 
         function applyFilters(posts) {
-            let filtered = [...posts];
+            let filtered = posts.slice();
 
             const keyword = keywordFilter.value.trim().toLowerCase();
             const serviceType = serviceTypeFilter.value;
             const city = cityFilter.value;
 
             if (keyword) {
-                filtered = filtered.filter(post => {
+                filtered = filtered.filter(function (post) {
                     const text = [
                         post.title,
                         post.description,
@@ -753,14 +796,21 @@
             }
 
             if (serviceType) {
-                filtered = filtered.filter(post => (post.serviceType || "") === serviceType);
+                filtered = filtered.filter(function (post) {
+                    return (post.serviceType || "") === serviceType;
+                });
             }
 
             if (city) {
-                filtered = filtered.filter(post => (post.city || "") === city);
+                filtered = filtered.filter(function (post) {
+                    return (post.city || "") === city;
+                });
             }
 
-            filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            filtered.sort(function (a, b) {
+                return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+            });
+
             return filtered;
         }
 
@@ -779,7 +829,7 @@
 
         function getDetailUrl(post, postId) {
             if (post.detailUrl) return post.detailUrl;
-            return `../pages/chi-tiet-tin.html?id=${encodeURIComponent(postId)}`;
+            return "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(postId);
         }
 
         function renderCard(post, index) {
@@ -848,16 +898,17 @@
                         </div>
 
                         <div class="con-card-footer">
+                            <a href="${detailUrl}" class="con-btn-main">
+                                <i class="fa-solid fa-file-lines"></i>
+                                Xem chi tiết
+                            </a>
+
                             ${
                                 phoneLink
-                                    ? `<a href="tel:${phoneLink}" class="con-btn-main">
+                                    ? `<a href="tel:${phoneLink}" class="con-btn-phone" aria-label="Gọi điện">
                                             <i class="fa-solid fa-phone"></i>
-                                            Liên hệ ngay
                                        </a>`
-                                    : `<a href="${detailUrl}" class="con-btn-main">
-                                            <i class="fa-solid fa-file-lines"></i>
-                                            Xem chi tiết
-                                       </a>`
+                                    : ``
                             }
 
                             <button
@@ -904,7 +955,9 @@
                 return;
             }
 
-            listingContainer.innerHTML = filteredPosts.map((post, index) => renderCard(post, index)).join("");
+            listingContainer.innerHTML = filteredPosts.map(function (post, index) {
+                return renderCard(post, index);
+            }).join("");
         }
 
         applyFilterBtn.addEventListener("click", renderListings);
