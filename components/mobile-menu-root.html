@@ -4,20 +4,24 @@
     id="mobileMenu"
     class="fixed top-0 right-0 w-[86%] max-w-[360px] h-full bg-white z-[1000] shadow-2xl translate-x-full transition-transform duration-300 flex flex-col"
 >
-    <div class="p-4 border-b flex items-center justify-between">
-        <div class="text-[16px] font-bold text-gray-800 uppercase">Menu</div>
-        <button
-            type="button"
-            onclick="closeMobileMenu()"
-            class="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-50"
-            aria-label="Đóng menu"
-        >
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-    </div>
 
 ```
+<!-- header menu -->
+<div class="p-4 border-b flex items-center justify-between">
+    <div class="text-[16px] font-bold text-gray-800 uppercase">Menu</div>
+
+    <button
+        type="button"
+        onclick="closeMobileMenu()"
+        class="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-50"
+    >
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+
+<!-- login register -->
 <div class="p-4 border-b flex gap-3">
+
     <a
         href="./auth/dang-nhap.html"
         class="flex-1 border rounded-xl py-3 text-center font-semibold text-gray-700"
@@ -31,84 +35,136 @@
     >
         Đăng ký
     </a>
+
 </div>
 
+<!-- đăng tin -->
 <div class="p-4 border-b">
+
     <a
         href="./user/dang-tin.html"
         class="block text-center border rounded-xl py-3 font-semibold text-gray-700"
     >
         Đăng tin
     </a>
+
 </div>
 
+<!-- menu content -->
 <div class="flex-1 overflow-y-auto">
 
-    <!-- Tin đã lưu -->
+    <!-- tin đã lưu -->
     <a class="mobile-item" href="./pages/tin-da-luu.html">
+
         <i class="fa-regular fa-heart"></i>
+
         Tin đăng đã lưu
-        <span id="mobileFavoriteBadge" class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+
+        <span
+            id="mobileFavoriteBadge"
+            class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full hidden"
+        >
+            0
+        </span>
+
     </a>
 
-    <!-- Nhà đất bán -->
-    <button type="button" class="mobile-item has-sub w-full text-left">
+    <!-- nhà đất bán -->
+    <button class="mobile-item has-sub w-full text-left">
+
         <i class="fa-solid fa-house"></i>
+
         Nhà đất bán
+
         <i class="fa-solid fa-chevron-down ml-auto text-xs submenu-arrow"></i>
+
     </button>
 
     <div class="sub-menu">
+
         <a href="./pages/nha-dat-ban.html">Bán căn hộ</a>
+
         <a href="./pages/nha-dat-ban.html">Bán nhà riêng</a>
+
         <a href="./pages/nha-dat-ban.html">Bán đất</a>
+
     </div>
 
-    <!-- Nhà đất cho thuê -->
-    <button type="button" class="mobile-item has-sub w-full text-left">
+    <!-- cho thuê -->
+    <button class="mobile-item has-sub w-full text-left">
+
         <i class="fa-solid fa-building"></i>
+
         Nhà đất cho thuê
+
         <i class="fa-solid fa-chevron-down ml-auto text-xs submenu-arrow"></i>
+
     </button>
 
     <div class="sub-menu">
+
         <a href="./pages/nha-dat-cho-thue.html">Thuê căn hộ</a>
+
         <a href="./pages/nha-dat-cho-thue.html">Thuê nhà riêng</a>
+
         <a href="./pages/nha-dat-cho-thue.html">Thuê văn phòng</a>
+
     </div>
 
-    <!-- Dự án -->
-    <button type="button" class="mobile-item has-sub w-full text-left">
+    <!-- dự án -->
+    <button class="mobile-item has-sub w-full text-left">
+
         <i class="fa-solid fa-city"></i>
+
         Dự án
+
         <i class="fa-solid fa-chevron-down ml-auto text-xs submenu-arrow"></i>
+
     </button>
 
     <div class="sub-menu">
+
         <a href="./pages/du-an.html">Dự án mới</a>
+
         <a href="./pages/du-an.html">Dự án nổi bật</a>
+
     </div>
 
+    <!-- tin tức -->
     <a class="mobile-item" href="./pages/tin-tuc.html">
+
         <i class="fa-regular fa-newspaper"></i>
+
         Tin tức
+
     </a>
 
+    <!-- phân tích -->
     <a class="mobile-item" href="./pages/gia-nha-dat.html">
+
         <i class="fa-solid fa-chart-line"></i>
+
         Phân tích đánh giá
+
     </a>
 
-    <!-- Danh bạ -->
-    <button type="button" class="mobile-item has-sub w-full text-left">
+    <!-- danh bạ -->
+    <button class="mobile-item has-sub w-full text-left">
+
         <i class="fa-regular fa-address-book"></i>
+
         Danh bạ
+
         <i class="fa-solid fa-chevron-down ml-auto text-xs submenu-arrow"></i>
+
     </button>
 
     <div class="sub-menu">
+
         <a href="./pages/danh-ba-doanh-nghiep.html">Doanh nghiệp</a>
+
         <a href="./pages/danh-ba-moi-gioi.html">Môi giới</a>
+
     </div>
 
     <div class="border-t mt-4"></div>
@@ -127,6 +183,7 @@
 </div>
 
 <style>
+
 .mobile-item{
 display:flex;
 align-items:center;
@@ -170,36 +227,51 @@ transform:rotate(180deg);
 .submenu-arrow{
 transition:transform .25s ease;
 }
+
 </style>
 
 <script>
 
+/* mở menu */
+
 function openMobileMenu(){
+
 const menu=document.getElementById("mobileMenu");
+
 const overlay=document.getElementById("mobileMenuOverlay");
 
 if(menu)menu.style.transform="translateX(0)";
+
 if(overlay)overlay.classList.remove("hidden");
+
 }
 
+/* đóng menu */
+
 function closeMobileMenu(){
+
 const menu=document.getElementById("mobileMenu");
+
 const overlay=document.getElementById("mobileMenuOverlay");
 
 if(menu)menu.style.transform="translateX(100%)";
+
 if(overlay)overlay.classList.add("hidden");
+
 }
 
-/* Đợi DOM load xong để submenu hoạt động */
-document.addEventListener("DOMContentLoaded",function(){
+/* khởi tạo menu */
+
+function initMobileMenu(){
 
 const overlay=document.getElementById("mobileMenuOverlay");
-if(overlay){
-overlay.onclick=closeMobileMenu;
-}
 
-/* submenu toggle */
+if(overlay)overlay.onclick=closeMobileMenu;
+
+/* submenu */
+
 document.querySelectorAll("#mobileMenu .has-sub").forEach(item=>{
+
 item.addEventListener("click",function(){
 
 const menu=this.nextElementSibling;
@@ -213,17 +285,16 @@ menu.style.display=isOpen?"none":"block";
 this.classList.toggle("active",!isOpen);
 
 });
+
 });
 
 /* badge tin đã lưu */
 
-function updateMobileFavoriteBadge(){
-
 const sale=JSON.parse(localStorage.getItem("favoriteSalePosts")||"[]");
 
-const rental=JSON.parse(localStorage.getItem("favoriteRentalPosts")||"[]");
+const rent=JSON.parse(localStorage.getItem("favoriteRentalPosts")||"[]");
 
-const total=sale.length+rental.length;
+const total=sale.length+rent.length;
 
 const badge=document.getElementById("mobileFavoriteBadge");
 
@@ -231,13 +302,14 @@ if(badge){
 
 badge.textContent=total;
 
-badge.style.display=total>0?"inline-block":"none";
+if(total>0)badge.classList.remove("hidden");
 
 }
 
 }
 
-updateMobileFavoriteBadge();
+/* chạy sau khi component load */
 
-});
+setTimeout(initMobileMenu,200);
+
 </script>
