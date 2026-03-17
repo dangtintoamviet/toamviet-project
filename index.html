@@ -2079,6 +2079,7 @@
         function renderConstructionCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
+            const profileUrl = getProfileUrl(post);
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Dịch vụ xây dựng");
             const poster = escapeHtml(buildPoster(post));
@@ -2106,10 +2107,10 @@
 
                         <div class="construction-body">
                             <div class="construction-topline">
-                                <div class="construction-mini-poster">
+                                <a href="${profileUrl}" class="construction-mini-poster">
                                     <div class="construction-mini-avatar">${avatarText}</div>
                                     <div class="construction-mini-name">${poster}</div>
-                                </div>
+                                </a>
                                 <span class="construction-state"><i class="fa-solid fa-bolt"></i> Đang hiển thị</span>
                             </div>
 
