@@ -27,7 +27,8 @@
             error.name === "QuotaExceededError" ||
             error.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
             error.code === 22 ||
-            error.code === 1014
+            error.code === 1014 ||
+            error.message === "LOCAL_STORAGE_QUOTA_EXCEEDED"
         );
     }
 
@@ -54,6 +55,110 @@
 
     function removeItem(key) {
         localStorage.removeItem(key);
+    }
+
+    function isDataUrl(value) {
+        return typeof value === "string" && value.startsWith("data:");
+    }
+
+    function compactImageItem(image) {
+        if (!image) return null;
+
+        if (typeof image === "string") {
+            return isDataUrl(image) ? null : image;
+        }
+
+        if (typeof image === "object") {
+            return {
+                id: image.id || "",
+                name: image.name || "",
+                type: image.type || "",
+                width: image.width || 0,
+                height: image.height || 0,
+                sizeKB: image.sizeKB || 0,
+                url: image.url && !isDataUrl(image.url) ? image.url : "",
+                dataUrl: ""
+            };
+        }
+
+        return null;
+    }
+
+    function compactPostForStorage(post) {
+        if (!post || typeof post !== "object") return post;
+
+        const compactImages = Array.isArray(post.images)
+            ? post.images.map(compactImageItem).filter(Boolean)
+            : [];
+
+        return {
+            ...post,
+            images: compactImages,
+            thumbnail: isDataUrl(post.thumbnail) ? "" : (post.thumbnail || ""),
+            imageCount: typeof post.imageCount === "number"
+                ? post.imageCount
+                : (Array.isArray(post.images) ? post.images.length : 0)
+        };
+    }
+
+    function createLightweightPost(post) {
+        if (!post || typeof post !== "object") return null;
+
+        return {
+            id: post.id || "",
+            postId: post.postId || "",
+            slug: post.slug || "",
+            userId: post.userId || "",
+
+            title: post.title || "",
+            flow: post.flow || "",
+            postType: post.postType || "",
+            status: post.status || "",
+            profileType: post.profileType || "",
+            vipLevel: post.vipLevel || "",
+
+            city: post.city || "",
+            district: post.district || "",
+            ward: post.ward || "",
+            addressDetail: post.addressDetail || "",
+
+            propertyType: post.propertyType || "",
+            propertyPrice: post.propertyPrice || "",
+            propertyArea: post.propertyArea || "",
+            propertyLegal: post.propertyLegal || "",
+            propertyDirection: post.propertyDirection || "",
+            propertyBeds: post.propertyBeds || "",
+
+            serviceType: post.serviceType || "",
+            servicePrice: post.servicePrice || "",
+            serviceExp: post.serviceExp || "",
+            serviceArea: post.serviceArea || "",
+            serviceBrand: post.serviceBrand || "",
+            serviceSpecialty: post.serviceSpecialty || "",
+
+            projectEnabled: !!post.projectEnabled,
+            projectId: post.projectId || "",
+            projectName: post.projectName || "",
+            projectSlug: post.projectSlug || "",
+            projectTypeName: post.projectTypeName || "",
+            projectDeveloper: post.projectDeveloper || "",
+
+            brandName: post.brandName || "",
+            fullName: post.fullName || "",
+            contactName: post.contactName || "",
+            contactPhone: post.contactPhone || "",
+            contactEmail: post.contactEmail || "",
+            contactProfileUrl: post.contactProfileUrl || "",
+
+            detailUrl: post.detailUrl || "",
+            thumbnail: isDataUrl(post.thumbnail) ? "" : (post.thumbnail || ""),
+            imageCount: typeof post.imageCount === "number"
+                ? post.imageCount
+                : (Array.isArray(post.images) ? post.images.length : 0),
+
+            createdAt: post.createdAt || "",
+            updatedAt: post.updatedAt || ""
+        };
     }
 
     function getCurrentUser() {
@@ -104,15 +209,35 @@
     function syncDerivedPostStores(sourcePosts) {
         const posts = Array.isArray(sourcePosts) ? sourcePosts : getAllPosts();
 
-        const propertyPosts = posts.filter((post) => post && post.flow === "real_estate");
+        const propertyPosts = posts
+            .filter((post) => post && post.flow === "real_estate")
+            .map(createLightweightPost)
+            .filter(Boolean);
+
         const salePosts = propertyPosts.filter((post) => post && post.postType === "ban");
         const rentalPosts = propertyPosts.filter((post) => post && post.postType === "thue");
-        const constructionPosts = posts.filter((post) => post && post.flow === "construction");
 
-        setItem(STORAGE_KEYS.propertyPosts, propertyPosts);
-        setItem(STORAGE_KEYS.salePosts, salePosts);
-        setItem(STORAGE_KEYS.rentalPosts, rentalPosts);
-        setItem(STORAGE_KEYS.constructionPosts, constructionPosts);
+        const constructionPosts = posts
+            .filter((post) => post && post.flow === "construction")
+            .map(createLightweightPost)
+            .filter(Boolean);
+
+        try {
+            setItem(STORAGE_KEYS.propertyPosts, propertyPosts);
+            setItem(STORAGE_KEYS.salePosts, salePosts);
+            setItem(STORAGE_KEYS.rentalPosts, rentalPosts);
+            setItem(STORAGE_KEYS.constructionPosts, constructionPosts);
+        } catch (error) {
+            if (isQuotaExceededError(error) || error.message === "LOCAL_STORAGE_QUOTA_EXCEEDED") {
+                console.warn("Derived stores quá nặng, sẽ xóa bớt để tránh gãy submit.");
+                removeItem(STORAGE_KEYS.propertyPosts);
+                removeItem(STORAGE_KEYS.salePosts);
+                removeItem(STORAGE_KEYS.rentalPosts);
+                removeItem(STORAGE_KEYS.constructionPosts);
+            } else {
+                throw error;
+            }
+        }
 
         return {
             propertyPosts,
@@ -127,10 +252,22 @@
             throw new Error("saveAllPosts: posts phải là mảng");
         }
 
-        setItem(STORAGE_KEYS.allPosts, posts);
-        syncDerivedPostStores(posts);
+        let finalPosts = posts;
 
-        return posts;
+        try {
+            setItem(STORAGE_KEYS.allPosts, finalPosts);
+        } catch (error) {
+            if (isQuotaExceededError(error) || error.message === "LOCAL_STORAGE_QUOTA_EXCEEDED") {
+                console.warn("allPosts quá nặng, chuyển sang compact để vẫn lưu được.");
+                finalPosts = posts.map(compactPostForStorage);
+                setItem(STORAGE_KEYS.allPosts, finalPosts);
+            } else {
+                throw error;
+            }
+        }
+
+        syncDerivedPostStores(finalPosts);
+        return finalPosts;
     }
 
     function addPost(newPost) {
@@ -141,11 +278,11 @@
         const nowIso = new Date().toISOString();
 
         const normalizedPost = {
+            ...newPost,
             id: newPost.id || ("post_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8)),
             status: newPost.status || "pending",
             createdAt: newPost.createdAt || nowIso,
-            updatedAt: nowIso,
-            ...newPost
+            updatedAt: nowIso
         };
 
         const posts = getAllPosts();
@@ -271,6 +408,8 @@
         clearAllPostStores,
         getStorageSummary,
 
-        isQuotaExceededError
+        isQuotaExceededError,
+        compactPostForStorage,
+        createLightweightPost
     };
 })();
