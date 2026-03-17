@@ -31,7 +31,7 @@
         }
 
         .container-custom {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 15px;
         }
@@ -104,6 +104,7 @@
             font-size: 15px;
             font-weight: 700;
             color: #1f2937;
+            word-break: break-word;
         }
 
         .sidebar-card {
@@ -236,6 +237,21 @@
             background: linear-gradient(135deg, #f7e3d8, #ebc2a8);
             color: #9a3412;
             border: 1px solid #d6a583;
+        }
+
+        .service-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            background: linear-gradient(135deg, rgba(0,139,139,0.94), rgba(15,118,110,0.94));
+            color: white;
+            border: 1px solid rgba(0,139,139,0.2);
         }
 
         @media (max-width: 992px) {
@@ -393,7 +409,7 @@
                             <span id="profile-button-text">Xem hồ sơ</span>
                         </a>
 
-                        <button id="favorite-button" type="button" class="contact-btn contact-btn-outline">
+                        <button id="favorite-button" type="button" class="contact-btn contact-btn-outline favorite-btn">
                             <i class="fa-regular fa-heart"></i>
                             <span>Lưu tin</span>
                         </button>
@@ -469,6 +485,7 @@
     <script>
         const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
+        const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
 
         function escapeHtml(value) {
@@ -478,6 +495,26 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
         }
 
         function safeScrollToTop() {
@@ -524,14 +561,22 @@
 
         function getStorageArray(key) {
             try {
-                return JSON.parse(localStorage.getItem(key) || "[]");
+                const raw = JSON.parse(localStorage.getItem(key) || "[]");
+                return Array.isArray(raw) ? raw.map(function (id) {
+                    return String(id).trim();
+                }).filter(Boolean) : [];
             } catch (error) {
                 return [];
             }
         }
 
         function setStorageArray(key, value) {
-            localStorage.setItem(key, JSON.stringify(value));
+            const normalized = Array.from(new Set(
+                (Array.isArray(value) ? value : []).map(function (id) {
+                    return String(id).trim();
+                }).filter(Boolean)
+            ));
+            localStorage.setItem(key, JSON.stringify(normalized));
         }
 
         function getSaleFavorites() {
@@ -542,18 +587,12 @@
             return getStorageArray(FAVORITE_RENTAL_STORAGE_KEY);
         }
 
-        function setSaleFavorites(favorites) {
-            setStorageArray(FAVORITE_SALE_STORAGE_KEY, favorites);
-            updateFavoriteCount();
-        }
-
-        function setRentalFavorites(favorites) {
-            setStorageArray(FAVORITE_RENTAL_STORAGE_KEY, favorites);
-            updateFavoriteCount();
+        function getConstructionFavorites() {
+            return getStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY);
         }
 
         function getTotalFavoritesCount() {
-            return getSaleFavorites().length + getRentalFavorites().length;
+            return getSaleFavorites().length + getRentalFavorites().length + getConstructionFavorites().length;
         }
 
         function updateFavoriteCount() {
@@ -565,35 +604,36 @@
         }
 
         function getFavoriteKeyByPost(post) {
-            const postType = String(post.postType || "").toLowerCase().trim();
-            return postType === "thue" ? FAVORITE_RENTAL_STORAGE_KEY : FAVORITE_SALE_STORAGE_KEY;
-        }
+            const flow = normalizeText(post.flow);
+            const postType = normalizeText(post.postType);
 
-        function getFavoritesByPost(post) {
-            const key = getFavoriteKeyByPost(post);
-            return key === FAVORITE_RENTAL_STORAGE_KEY ? getRentalFavorites() : getSaleFavorites();
+            if (flow === "construction" || postType === "xaydung") {
+                return FAVORITE_CONSTRUCTION_STORAGE_KEY;
+            }
+            if (postType === "thue" || postType === "cho-thue" || postType === "rent") {
+                return FAVORITE_RENTAL_STORAGE_KEY;
+            }
+            return FAVORITE_SALE_STORAGE_KEY;
         }
 
         function isFavorite(postId, post) {
             if (!post) return false;
-            return getFavoritesByPost(post).includes(postId);
+            const key = getFavoriteKeyByPost(post);
+            return getStorageArray(key).includes(String(postId).trim());
         }
 
         function toggleFavorite(postId, post) {
             if (!post) return;
 
+            const normalizedId = String(postId || "").trim();
             const key = getFavoriteKeyByPost(post);
             const favorites = getStorageArray(key);
-            const exists = favorites.includes(postId);
-            const next = exists ? favorites.filter(id => id !== postId) : [...favorites, postId];
+            const exists = favorites.includes(normalizedId);
+            const next = exists ? favorites.filter(id => id !== normalizedId) : favorites.concat(normalizedId);
 
-            if (key === FAVORITE_RENTAL_STORAGE_KEY) {
-                setRentalFavorites(next);
-            } else {
-                setSaleFavorites(next);
-            }
-
-            updateFavoriteButton(postId, post);
+            setStorageArray(key, next);
+            updateFavoriteCount();
+            updateFavoriteButton(normalizedId, post);
         }
 
         function updateFavoriteButton(postId, post) {
@@ -607,7 +647,7 @@
         }
 
         function buildPoster(post) {
-            return post.brandName || post.contactName || post.fullName || "Người đăng";
+            return post.brandName || post.contactName || post.fullName || post.serviceBrand || "Người đăng";
         }
 
         function getPosterSub(post) {
@@ -682,7 +722,7 @@
             if (!totalPrice || !areaNumber) return "Chưa rõ";
 
             const unit = totalPrice / areaNumber;
-            const isRental = String(post.postType || "").toLowerCase() === "thue";
+            const isRental = normalizeText(post.postType) === "thue";
 
             if (isRental) {
                 if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
@@ -731,33 +771,58 @@
         }
 
         function createPostId(post, index = 0) {
-            return (
-                post.id ||
-                post.postId ||
-                post.slug ||
-                `${post.title || "tin"}-${post.city || ""}-${index}`
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")
-            );
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
+                return String(post.id).trim();
+            }
+
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
+                return String(post.postId).trim();
+            }
+
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
+                return String(post.slug).trim();
+            }
+
+            const stableParts = [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.serviceBrand,
+                post.city,
+                post.ward,
+                post.contactPhone,
+                post.createdAt,
+                index
+            ];
+
+            return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
         }
 
         function getAllPostsMixed() {
             let posts = [];
 
-            if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
-                posts = window.postStorage.getAllPosts().filter(post =>
-                    post &&
-                    (post.status === "approved" || post.status === "demo" || post.status === "pending" || !post.status)
-                );
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    posts = window.postStorage.getAllPosts().filter(post =>
+                        post &&
+                        ["approved", "demo", "pending", "", "published"].includes(normalizeText(post.status))
+                    );
+                }
+            } catch (error) {
+                posts = [];
             }
 
             if (posts.length) return posts;
 
-            const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
-            return allPosts.filter(post =>
-                post &&
-                (post.status === "approved" || post.status === "demo" || post.status === "pending" || !post.status)
-            );
+            try {
+                const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                return allPosts.filter(post =>
+                    post &&
+                    ["approved", "demo", "pending", "", "published"].includes(normalizeText(post.status))
+                );
+            } catch (error) {
+                return [];
+            }
         }
 
         function getFallbackMixedPosts() {
@@ -855,9 +920,11 @@
                     post.postId,
                     post.slug,
                     createPostId(post, index)
-                ].filter(Boolean);
+                ].filter(Boolean).map(function (item) {
+                    return String(item).trim();
+                });
 
-                return candidates.includes(targetId);
+                return candidates.includes(String(targetId).trim());
             });
         }
 
@@ -958,7 +1025,7 @@
             const email = post.contactEmail || post.email || "Đang cập nhật";
             const phoneLink = normalizePhone(phone);
             const images = getPostImages(post);
-            const isRental = String(post.postType || "").toLowerCase() === "thue" || String(post.postType || "").toLowerCase() === "cho-thue" || String(post.postType || "").toLowerCase() === "rent";
+            const isRental = ["thue", "cho-thue", "rent"].includes(normalizeText(post.postType));
             const modeText = isRental ? "Tin thuê" : "Tin bán";
             const vipBadge = getVipBadgeHtml(post.vipLevel);
 
@@ -1026,14 +1093,14 @@
             renderGallery(images);
 
             const favoriteButton = document.getElementById("favorite-button");
+            favoriteButton.classList.remove("hidden");
             favoriteButton.onclick = function () {
                 toggleFavorite(postId, post);
             };
-            favoriteButton.classList.remove("hidden");
             updateFavoriteButton(postId, post);
         }
 
-        function renderConstructionDetail(post) {
+        function renderConstructionDetail(post, postId) {
             const title = post.title || "Dịch vụ xây dựng";
             const price = formatPrice(post.servicePrice);
             const exp = post.serviceExp || "Đang cập nhật";
@@ -1099,7 +1166,7 @@
 
             fillText("property-type-badge", "Xây dựng");
             fillText("listing-mode-badge", "Dịch vụ");
-            fillHTML("vip-badge-wrap", "");
+            fillHTML("vip-badge-wrap", '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>');
 
             const breadcrumbParentLink = document.getElementById("breadcrumb-parent-link");
             breadcrumbParentLink.textContent = "Xây dựng";
@@ -1112,14 +1179,18 @@
             renderGallery(images);
 
             const favoriteButton = document.getElementById("favorite-button");
-            favoriteButton.classList.add("hidden");
+            favoriteButton.classList.remove("hidden");
+            favoriteButton.onclick = function () {
+                toggleFavorite(postId, post);
+            };
+            updateFavoriteButton(postId, post);
         }
 
         function renderDetail(post, postId) {
-            const isConstruction = String(post.flow || "").toLowerCase() === "construction";
+            const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
 
             if (isConstruction) {
-                renderConstructionDetail(post);
+                renderConstructionDetail(post, postId);
             } else {
                 renderRealEstateDetail(post, postId);
             }
@@ -1129,28 +1200,31 @@
             const relatedContainer = document.getElementById("related-posts");
             const posts = getDataSource();
 
-            const currentFlow = String(currentPost.flow || "").toLowerCase().trim();
-            const currentType = String(currentPost.postType || "").toLowerCase().trim();
+            const currentFlow = normalizeText(currentPost.flow);
+            const currentType = normalizeText(currentPost.postType);
+            const currentCity = normalizeText(currentPost.city);
+            const currentPropertyType = normalizeText(currentPost.propertyType);
+            const currentServiceType = normalizeText(currentPost.serviceType);
 
             let related = posts
                 .map((post, index) => ({ post, id: createPostId(post, index) }))
                 .filter(item => item.id !== currentPostId)
-                .filter(item => String(item.post.flow || "").toLowerCase().trim() === currentFlow);
+                .filter(item => normalizeText(item.post.flow) === currentFlow);
 
             if (currentFlow === "construction") {
                 related = related
                     .filter(item => {
-                        const sameCity = currentPost.city && item.post.city === currentPost.city;
-                        const sameService = currentPost.serviceType && item.post.serviceType === currentPost.serviceType;
+                        const sameCity = currentCity && normalizeText(item.post.city) === currentCity;
+                        const sameService = currentServiceType && normalizeText(item.post.serviceType) === currentServiceType;
                         return sameCity || sameService;
                     })
                     .slice(0, 6);
             } else {
                 related = related
-                    .filter(item => String(item.post.postType || "").toLowerCase().trim() === currentType)
+                    .filter(item => normalizeText(item.post.postType) === currentType)
                     .filter(item => {
-                        const sameCity = currentPost.city && item.post.city === currentPost.city;
-                        const sameType = currentPost.propertyType && item.post.propertyType === currentPost.propertyType;
+                        const sameCity = currentCity && normalizeText(item.post.city) === currentCity;
+                        const sameType = currentPropertyType && normalizeText(item.post.propertyType) === currentPropertyType;
                         return sameCity || sameType;
                     })
                     .slice(0, 6);
@@ -1161,7 +1235,7 @@
                 : posts
                     .map((post, index) => ({ post, id: createPostId(post, index) }))
                     .filter(item => item.id !== currentPostId)
-                    .filter(item => String(item.post.flow || "").toLowerCase().trim() === currentFlow)
+                    .filter(item => normalizeText(item.post.flow) === currentFlow)
                     .slice(0, 6);
 
             if (!finalRelated.length) {
@@ -1177,11 +1251,11 @@
                 const title = escapeHtml(post.title || "Tin đăng");
                 const image = escapeHtml(getCardImage(post));
                 const location = escapeHtml(buildLocation(post) || post.serviceArea || "Chưa cập nhật khu vực");
-                const isConstruction = String(post.flow || "").toLowerCase() === "construction";
+                const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
                 const badgeType = isConstruction ? "Xây dựng" : escapeHtml(post.propertyType || "Bất động sản");
                 const badgeMode = isConstruction
                     ? "Dịch vụ"
-                    : ((String(post.postType || "").toLowerCase() === "thue" || String(post.postType || "").toLowerCase() === "cho-thue" || String(post.postType || "").toLowerCase() === "rent") ? "Tin thuê" : "Tin bán");
+                    : (["thue", "cho-thue", "rent"].includes(normalizeText(post.postType)) ? "Tin thuê" : "Tin bán");
 
                 const metaMain = isConstruction
                     ? escapeHtml(formatPrice(post.servicePrice))
@@ -1191,7 +1265,7 @@
                     ? escapeHtml(post.serviceExp || "Đang cập nhật")
                     : formatArea(post.propertyArea);
 
-                const vipBadge = !isConstruction ? getVipBadgeHtml(post.vipLevel) : "";
+                const vipBadge = !isConstruction ? getVipBadgeHtml(post.vipLevel) : '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
 
                 return `
                     <a href="../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}" class="related-card">
@@ -1243,8 +1317,8 @@
                 return;
             }
 
-            renderDetail(post, id);
-            renderRelatedPosts(id, post);
+            renderDetail(post, String(id).trim());
+            renderRelatedPosts(String(id).trim(), post);
         }
 
         window.changeMainImage = changeMainImage;
