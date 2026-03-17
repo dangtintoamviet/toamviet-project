@@ -38,9 +38,9 @@
         }
 
         .container-custom {
-            max-width: 1366px;
+            max-width: 1560px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 18px;
         }
 
         .page-shell {
@@ -185,7 +185,7 @@
 
         .con-card-image {
             position: relative;
-            height: 230px;
+            height: 245px;
             overflow: hidden;
             background: #e5e7eb;
         }
@@ -331,28 +331,30 @@
 
         .con-btn-main {
             flex: 1;
-            min-height: 46px;
-            padding: 13px 16px;
-            border-radius: 14px;
-            background: var(--vip-color);
-            color: white;
-            font-size: 12px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
+            min-height: 42px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #dbe4ee;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
         }
 
         .con-btn-main:hover {
-            background: #0f766e;
+            color: var(--vip-color);
+            border-color: rgba(0, 139, 139, 0.35);
+            background: #f8ffff;
         }
 
         .con-btn-phone,
         .con-btn-outline {
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             background: white;
-            flex: 0 0 46px;
+            flex: 0 0 42px;
         }
 
         .con-btn-phone {
@@ -406,7 +408,7 @@
             border: 1px solid #99f6e4;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1280px) {
             .filter-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -490,17 +492,17 @@
             }
 
             .con-btn-main {
-                min-height: 42px;
-                font-size: 11px;
-                padding: 12px 12px;
+                min-height: 40px;
+                font-size: 10px;
+                padding: 10px 12px;
                 border-radius: 12px;
             }
 
             .con-btn-phone,
             .con-btn-outline {
-                width: 42px;
-                height: 42px;
-                flex: 0 0 42px;
+                width: 40px;
+                height: 40px;
+                flex: 0 0 40px;
                 border-radius: 12px;
             }
         }
@@ -558,8 +560,8 @@
 
         <div id="data-note" class="empty-box mb-6 hidden"></div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <section class="lg:col-span-3 space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_320px] gap-6 xl:gap-8">
+            <section class="space-y-6">
                 <div class="bg-white rounded-2xl border border-gray-200 p-5">
                     <h1 class="section-title">Dịch vụ xây dựng & sửa chữa tại Việt Nam</h1>
                     <p class="text-gray-500 text-sm mt-1">
@@ -567,10 +569,10 @@
                     </p>
                 </div>
 
-                <div id="listing-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+                <div id="listing-container" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
             </section>
 
-            <aside class="hidden lg:block lg:col-span-1 space-y-6">
+            <aside class="hidden lg:block space-y-6">
                 <div class="sidebar-card">
                     <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Khu vực nổi bật</h4>
                     <div id="hot-areas" class="space-y-3 text-sm text-gray-600">
@@ -1102,7 +1104,6 @@
 
                         <div class="con-card-footer">
                             <a href="${detailUrl}" class="con-btn-main">
-                                <i class="fa-solid fa-file-lines"></i>
                                 Xem chi tiết
                             </a>
 
@@ -1152,7 +1153,7 @@
 
             if (!filteredPosts.length) {
                 listingContainer.innerHTML = `
-                    <div class="empty-box md:col-span-2 xl:col-span-3">
+                    <div class="empty-box md:col-span-2">
                         Không tìm thấy dịch vụ xây dựng nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, loại hình hoặc khu vực để tìm lại.
                     </div>
                 `;
