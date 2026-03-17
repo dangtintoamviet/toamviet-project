@@ -222,7 +222,7 @@
             opacity: 0.96;
         }
 
-        /* CARD BÁN - THUÊ - XÂY DỰNG */
+        /* SALE / RENT CARD */
         .listing-card {
             background: #fff;
             border: 1px solid #e8edf3;
@@ -311,9 +311,9 @@
         .listing-title {
             font-size: 16px;
             font-weight: 700;
-            color: #1f2937;
+            color: #2b2f36;
             line-height: 1.45;
-            min-height: 38px;
+            min-height: 46px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -331,16 +331,20 @@
             gap: 10px;
             align-items: center;
             margin-top: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
         }
 
         .listing-price {
             color: #ef4444;
+            font-size: 15px;
+            font-weight: 700;
         }
 
         .listing-area {
             color: var(--brand-green);
+            font-size: 15px;
+            font-weight: 700;
         }
 
         .listing-location {
@@ -523,6 +527,181 @@
             color: #52525b;
             margin-top: 8px;
             line-height: 1.5;
+        }
+
+        /* CONSTRUCTION - giữ form hiện có */
+        .construction-card {
+            background: #fff;
+            border: 1px solid #dce8ea;
+            border-radius: 22px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+        }
+
+        .construction-thumb {
+            position: relative;
+            height: 205px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
+        }
+
+        .construction-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .construction-body {
+            padding: 18px;
+        }
+
+        .construction-topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .construction-mini-poster {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .construction-mini-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .construction-mini-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .construction-state {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--brand-green);
+            border: 1px solid #9ee7df;
+            background: #ecfdfa;
+            white-space: nowrap;
+        }
+
+        .construction-title {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            text-decoration: none;
+            line-height: 1.45;
+            margin-bottom: 16px;
+        }
+
+        .construction-meta-box {
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 18px;
+            padding: 14px 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 18px;
+        }
+
+        .construction-meta-item .label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .construction-meta-item .value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.4;
+        }
+
+        .construction-role-line {
+            margin-top: 16px;
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .construction-role-line strong {
+            color: #334155;
+        }
+
+        .construction-actions {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .construction-detail-btn {
+            min-height: 42px;
+            border-radius: 14px;
+            border: 1px solid #dbe3eb;
+            background: #fff;
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .construction-call-btn,
+        .construction-fav-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            border: 1px solid #dbe3eb;
+            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .construction-call-btn {
+            color: #ea580c;
+            border-color: #fdba74;
+        }
+
+        .construction-fav-btn {
+            color: #64748b;
+        }
+
+        .construction-fav-btn.active {
+            color: #dc2626;
+            background: #fff5f5;
+            border-color: #fecaca;
         }
 
         /* COMPANY / AGENT */
@@ -825,10 +1004,6 @@
                 height: 190px;
             }
 
-            .listing-title {
-                font-size: 14px;
-            }
-
             .project-image-wrap {
                 height: 185px;
             }
@@ -903,11 +1078,11 @@
     </section>
 
     <main>
-        <!-- Nhà đất bán -->
+        <!-- NHÀ ĐẤT BÁN -->
         <section class="section-shell">
             <div class="container-custom">
                 <div class="section-head">
-                    <h2 class="section-title">Nhà đất bán</h2>
+                    <h2 class="section-title">NHÀ ĐẤT BÁN</h2>
                     <a href="pages/nha-dat-ban.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
@@ -921,11 +1096,11 @@
             </div>
         </section>
 
-        <!-- Nhà đất cho thuê -->
+        <!-- NHÀ ĐẤT CHO THUÊ -->
         <section class="section-shell white">
             <div class="container-custom">
                 <div class="section-head">
-                    <h2 class="section-title"> Nhà đất cho thuê</h2>
+                    <h2 class="section-title">NHÀ ĐẤT CHO THUÊ</h2>
                     <a href="pages/nha-dat-cho-thue.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
@@ -939,11 +1114,11 @@
             </div>
         </section>
 
-        <!-- Dự án -->
+        <!-- DỰ ÁN -->
         <section class="section-shell">
             <div class="container-custom relative">
                 <div class="section-head">
-                    <h2 class="section-title">Dự án</h2>
+                    <h2 class="section-title">DỰ ÁN</h2>
                     <a href="pages/du-an.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
@@ -955,11 +1130,11 @@
             </div>
         </section>
 
-        <!-- Xây dựng -->
+        <!-- XÂY DỰNG -->
         <section class="section-shell white">
             <div class="container-custom">
                 <div class="section-head">
-                    <h2 class="section-title">Xây dựng</h2>
+                    <h2 class="section-title">XÂY DỰNG</h2>
                     <a href="pages/xay-dung.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
@@ -969,11 +1144,11 @@
             </div>
         </section>
 
-        <!-- Doanh nghiệp -->
+        <!-- DOANH NGHIỆP -->
         <section class="section-shell">
             <div class="container-custom">
                 <div class="section-head">
-                    <h2 class="section-title">Doanh nghiệp tiêu biểu</h2>
+                    <h2 class="section-title">DOANH NGHIỆP TIÊU BIỂU</h2>
                     <a href="pages/danh-ba-doanh-nghiep.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
@@ -983,11 +1158,11 @@
             </div>
         </section>
 
-        <!-- Môi giới -->
+        <!-- MÔI GIỚI -->
         <section class="section-shell white">
             <div class="container-custom">
                 <div class="section-head">
-                    <h2 class="section-title">Môi giới tiêu biểu</h2>
+                    <h2 class="section-title">MÔI GIỚI TIÊU BIỂU</h2>
                     <a href="pages/danh-ba-moi-gioi.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
@@ -1001,11 +1176,11 @@
             </div>
         </section>
 
-        <!-- Theo địa điểm -->
+        <!-- THEO ĐỊA ĐIỂM -->
         <section class="section-shell">
             <div class="container-custom">
                 <div class="section-head">
-                    <h2 class="section-title">Bất động sản theo địa điểm</h2>
+                    <h2 class="section-title">BẤT ĐỘNG SẢN THEO ĐỊA ĐIỂM</h2>
                     <a href="pages/gia-nha-dat.html" class="section-link">Xem chi tiết <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
@@ -1013,11 +1188,11 @@
             </div>
         </section>
 
-        <!-- Tin tức -->
+        <!-- TIN TỨC -->
         <section class="section-shell white">
             <div class="container-custom">
                 <div class="section-head">
-                    <h2 class="section-title">Tin tức bất động sản</h2>
+                    <h2 class="section-title">TIN TỨC BẤT ĐỘNG SẢN</h2>
                     <a href="pages/tin-tuc.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
@@ -1111,12 +1286,8 @@
                 propertyType: "Căn hộ",
                 propertyPrice: "4.2 tỷ",
                 propertyArea: "85",
-                propertyLegal: "Sổ hồng",
-                propertyDirection: "Nam",
-                propertyBeds: "2",
                 city: "TP.HCM",
                 ward: "Tân Phú",
-                description: "Căn hộ đẹp, full nội thất, phù hợp ở thực hoặc đầu tư lâu dài.",
                 contactName: "Nguyễn Thành An",
                 roleLabel: "Môi giới chuyên nghiệp",
                 contactPhone: "0912598888",
@@ -1134,12 +1305,8 @@
                 propertyType: "Nhà phố",
                 propertyPrice: "12.8 tỷ",
                 propertyArea: "110",
-                propertyLegal: "Sổ riêng",
-                propertyDirection: "Đông Nam",
-                propertyBeds: "4",
                 city: "Bình Dương",
                 ward: "Thuận An",
-                description: "Nhà phố vị trí đẹp, phù hợp ở kết hợp kinh doanh.",
                 contactName: "Công ty BĐS Minh Phát",
                 brandName: "Công ty BĐS Minh Phát",
                 roleLabel: "Doanh nghiệp / Sàn BĐS",
@@ -1158,12 +1325,8 @@
                 propertyType: "Biệt thự",
                 propertyPrice: "26 tỷ",
                 propertyArea: "260",
-                propertyLegal: "Sổ đỏ đầy đủ",
-                propertyDirection: "Tây Bắc",
-                propertyBeds: "5",
                 city: "Hà Nội",
                 ward: "Nam Từ Liêm",
-                description: "Biệt thự hoàn thiện cao cấp, khu dân cư an ninh tốt.",
                 contactName: "Lê Thu Trang",
                 roleLabel: "Môi giới chuyên nghiệp",
                 contactPhone: "0901234567",
@@ -1181,12 +1344,8 @@
                 propertyType: "Đất nền",
                 propertyPrice: "2.3 tỷ",
                 propertyArea: "100",
-                propertyLegal: "Sổ riêng",
-                propertyDirection: "Đông",
-                propertyBeds: "0",
                 city: "Đồng Nai",
                 ward: "Long Thành",
-                description: "Đất nền tiềm năng tăng giá tốt, gần trục giao thông chính.",
                 contactName: "Trần Quang Huy",
                 roleLabel: "Chuyên viên tư vấn",
                 contactPhone: "0988123456",
@@ -1207,12 +1366,8 @@
                 propertyType: "Căn hộ",
                 propertyPrice: "25 triệu/tháng",
                 propertyArea: "85",
-                propertyLegal: "Hợp đồng rõ ràng",
-                propertyDirection: "Đông Nam",
-                propertyBeds: "2",
                 city: "TP.HCM",
                 ward: "Bình Thạnh",
-                description: "Căn hộ đẹp, đầy đủ nội thất, vào ở ngay.",
                 contactName: "Trần Thị Lan Anh",
                 roleLabel: "Chuyên viên cho thuê",
                 contactPhone: "0901234567",
@@ -1230,12 +1385,8 @@
                 propertyType: "Văn phòng",
                 propertyPrice: "45 triệu/tháng",
                 propertyArea: "120",
-                propertyLegal: "Hợp đồng dài hạn",
-                propertyDirection: "Nam",
-                propertyBeds: "0",
                 city: "Đà Nẵng",
                 ward: "Hải Châu",
-                description: "Văn phòng đẹp, trục chính, phù hợp công ty dịch vụ.",
                 contactName: "Doanh nghiệp Sao Việt",
                 brandName: "Doanh nghiệp Sao Việt",
                 roleLabel: "Doanh nghiệp / Cho thuê",
@@ -1254,12 +1405,8 @@
                 propertyType: "Nhà phố",
                 propertyPrice: "18 triệu/tháng",
                 propertyArea: "95",
-                propertyLegal: "Hợp đồng rõ ràng",
-                propertyDirection: "Tây",
-                propertyBeds: "3",
                 city: "Cần Thơ",
                 ward: "Ninh Kiều",
-                description: "Nhà mới đẹp, vị trí thuận tiện, phù hợp gia đình.",
                 contactName: "Lý Minh Quân",
                 roleLabel: "Chuyên viên cho thuê",
                 contactPhone: "0911888999",
@@ -1277,12 +1424,8 @@
                 propertyType: "Shophouse",
                 propertyPrice: "35 triệu/tháng",
                 propertyArea: "105",
-                propertyLegal: "Hợp đồng thương mại",
-                propertyDirection: "Đông Bắc",
-                propertyBeds: "2",
                 city: "Hà Nội",
                 ward: "Gia Lâm",
-                description: "Shophouse đẹp, phù hợp kinh doanh thương hiệu.",
                 contactName: "Công ty BĐS Prime",
                 brandName: "Công ty BĐS Prime",
                 roleLabel: "Doanh nghiệp / Mặt bằng",
@@ -1300,94 +1443,71 @@
         const fallbackConstructionPosts = [
             {
                 id: "home-build-1",
-                title: "Thi công biệt thự phố hiện đại - Chìa khóa trao tay",
+                title: "Xây nhà trọn gói tại Hà Tĩnh",
                 flow: "construction",
                 postType: "xaydung",
                 status: "demo",
                 serviceType: "Xây nhà trọn gói",
-                servicePrice: "5.8 - 6.5 triệu/m²",
-                serviceExp: "8 năm kinh nghiệm",
-                serviceArea: "Dĩ An, Thuận An",
-                serviceBrand: "Bình Dương Cons Co., Ltd",
-                serviceSpecialty: "Biệt thự, nhà phố",
-                city: "Bình Dương",
-                ward: "Dĩ An",
-                description: "Giải pháp thi công đồng bộ từ thiết kế đến bàn giao hoàn thiện.",
-                contactName: "Bình Dương Cons Co., Ltd",
+                servicePrice: "8.5 triệu",
+                serviceExp: "10",
+                serviceArea: "Hà Nội",
+                serviceBrand: "ANP",
+                serviceSpecialty: "Nhà Phố",
+                city: "Hà Nội",
+                ward: "",
+                description: "Cá nhân đăng tin bất động sản",
+                contactName: "ANP",
                 contactPhone: "0946239289",
                 contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
                 profileType: "doanhnghiep",
-                roleLabel: "Doanh nghiệp / Nhà thầu",
+                roleLabel: "Cá nhân đăng tin bất động sản",
                 createdAt: new Date().toISOString(),
                 images: ["https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800"]
             },
             {
                 id: "home-build-2",
-                title: "Tư vấn thiết kế kiến trúc và nội thất nhà phố xanh",
+                title: "Thi công phần thô tại Hà Tĩnh",
                 flow: "construction",
                 postType: "xaydung",
                 status: "demo",
-                serviceType: "Thiết kế kiến trúc",
-                servicePrice: "150k - 250k/m²",
-                serviceExp: "6 năm kinh nghiệm",
-                serviceArea: "TP.HCM, Bình Dương",
-                serviceBrand: "Studio Kiến Trúc Việt",
-                serviceSpecialty: "3D + hồ sơ kỹ thuật",
-                city: "TP.HCM",
-                ward: "Thủ Đức",
-                description: "Thiết kế hiện đại, tối ưu công năng, hồ sơ triển khai thực tế tốt.",
-                contactName: "Studio Kiến Trúc Việt",
+                serviceType: "Thi công phần thô",
+                servicePrice: "3.5 triệu",
+                serviceExp: "10",
+                serviceArea: "Hà Tĩnh",
+                serviceBrand: "ANP",
+                serviceSpecialty: "Nhà Phố",
+                city: "Hà Tĩnh",
+                ward: "",
+                description: "Cá nhân đăng tin bất động sản",
+                contactName: "ANP",
                 contactPhone: "0901234567",
                 contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
                 profileType: "doanhnghiep",
-                roleLabel: "Đơn vị thiết kế",
+                roleLabel: "Cá nhân đăng tin bất động sản",
                 createdAt: new Date(Date.now() - 86400000).toISOString(),
                 images: ["https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800"]
             },
             {
                 id: "home-build-3",
-                title: "Cải tạo nhà phố cũ, nâng tầng, chống thấm, sơn sửa hoàn thiện",
+                title: "Hoàn thiện nội thất căn hộ cao cấp",
                 flow: "construction",
                 postType: "xaydung",
                 status: "demo",
-                serviceType: "Sửa chữa / Cải tạo",
-                servicePrice: "Liên hệ báo giá",
-                serviceExp: "10 năm thi công",
-                serviceArea: "Hà Nội, Bắc Ninh",
-                serviceBrand: "Fix Home Service",
-                serviceSpecialty: "Trọn gói cải tạo",
-                city: "Hà Nội",
-                ward: "Cầu Giấy",
-                description: "Nhận cải tạo trọn gói, xử lý nhà cũ, chống thấm, nâng cấp thẩm mỹ.",
-                contactName: "Fix Home Service",
-                contactPhone: "0988123456",
-                contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
-                profileType: "doanhnghiep",
-                roleLabel: "Đội thi công cải tạo",
-                createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-                images: ["https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800"]
-            },
-            {
-                id: "home-build-4",
-                title: "Nội thất và hoàn thiện căn hộ cao cấp theo phong cách hiện đại",
-                flow: "construction",
-                postType: "xaydung",
-                status: "demo",
-                serviceType: "Nội thất / Hoàn thiện",
-                servicePrice: "Theo gói thiết kế",
-                serviceExp: "7 năm kinh nghiệm",
-                serviceArea: "Hà Nội, TP.HCM",
-                serviceBrand: "Urban Decor",
-                serviceSpecialty: "Nội thất chung cư",
-                city: "Hà Nội",
-                ward: "Hoàng Mai",
-                description: "Giải pháp đồng bộ từ concept đến thi công hoàn thiện nội thất.",
-                contactName: "Urban Decor",
+                serviceType: "Nội thất hoàn thiện",
+                servicePrice: "Liên hệ",
+                serviceExp: "7",
+                serviceArea: "TP.HCM",
+                serviceBrand: "ANP",
+                serviceSpecialty: "Nội thất",
+                city: "TP.HCM",
+                ward: "",
+                description: "Cá nhân đăng tin bất động sản",
+                contactName: "ANP",
                 contactPhone: "0911002003",
                 contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
                 profileType: "doanhnghiep",
-                roleLabel: "Đơn vị hoàn thiện",
-                createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
+                roleLabel: "Cá nhân đăng tin bất động sản",
+                createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
                 images: ["https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"]
             }
         ];
@@ -1881,12 +2001,12 @@
             });
         }
 
-        function createFavoriteButton(postId, type) {
+        function createFavoriteButton(postId, type, className = "poster-save-btn") {
             const active = isFavorite(postId, type);
             return `
                 <button
                     type="button"
-                    class="poster-save-btn ${active ? "active" : ""}"
+                    class="${className} ${active ? "active" : ""}"
                     aria-label="Lưu tin"
                     data-favorite-btn="true"
                     data-fav-id="${escapeHtml(postId)}"
@@ -1959,20 +2079,22 @@
         function renderConstructionCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
-            const profileUrl = getProfileUrl(post);
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Dịch vụ xây dựng");
-            const price = escapeHtml(post.servicePrice || "Liên hệ");
-            const area = escapeHtml(post.serviceArea || buildLocation(post) || "Đang cập nhật");
             const poster = escapeHtml(buildPoster(post));
-            const posterSub = escapeHtml(getPosterSub(post));
             const avatarText = escapeHtml(getAvatarText(buildPoster(post)));
-            const serviceType = escapeHtml(post.serviceType || "Dịch vụ xây dựng");
+            const roleLine = escapeHtml(post.roleLabel || "Cá nhân đăng tin bất động sản");
+            const serviceType = escapeHtml(post.serviceType || "Xây dựng");
+            const servicePrice = escapeHtml(post.servicePrice || "Liên hệ");
+            const serviceArea = escapeHtml(post.serviceArea || post.city || "Đang cập nhật");
+            const serviceSpecialty = escapeHtml(post.serviceSpecialty || "Đang cập nhật");
+            const serviceExp = escapeHtml(post.serviceExp || "Đang cập nhật");
+            const phone = escapeHtml(post.contactPhone || "0946239289");
 
             return `
                 <div class="swiper-slide">
-                    <article class="listing-card">
-                        <div class="listing-thumb">
+                    <article class="construction-card">
+                        <div class="construction-thumb">
                             <a href="${detailUrl}" aria-label="${title}">
                                 <img src="${imageUrl}" alt="${title}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
                             </a>
@@ -1982,25 +2104,46 @@
                             </span>
                         </div>
 
-                        <div class="listing-body">
-                            <a href="${detailUrl}" class="listing-title">${title}</a>
-
-                            <div class="listing-price-line">
-                                <span class="listing-price">${price}</span>
+                        <div class="construction-body">
+                            <div class="construction-topline">
+                                <div class="construction-mini-poster">
+                                    <div class="construction-mini-avatar">${avatarText}</div>
+                                    <div class="construction-mini-name">${poster}</div>
+                                </div>
+                                <span class="construction-state"><i class="fa-solid fa-bolt"></i> Đang hiển thị</span>
                             </div>
 
-                            <p class="listing-location"><i class="fa-solid fa-location-dot mr-1"></i> ${area}</p>
+                            <a href="${detailUrl}" class="construction-title">${title}</a>
 
-                            <div class="listing-footer">
-                                <a href="${profileUrl}" class="poster-box">
-                                    <div class="poster-avatar">${avatarText}</div>
-                                    <div class="min-w-0">
-                                        <div class="poster-name">${poster}</div>
-                                        <div class="poster-role">${posterSub}</div>
-                                    </div>
+                            <div class="construction-meta-box">
+                                <div class="construction-meta-item">
+                                    <div class="label">Đơn giá / Báo giá</div>
+                                    <div class="value" style="color:#0f8b8d;">${servicePrice}</div>
+                                </div>
+                                <div class="construction-meta-item">
+                                    <div class="label">Khu vực</div>
+                                    <div class="value">${serviceArea}</div>
+                                </div>
+                                <div class="construction-meta-item">
+                                    <div class="label">Chuyên môn</div>
+                                    <div class="value">${serviceSpecialty}</div>
+                                </div>
+                                <div class="construction-meta-item">
+                                    <div class="label">Năng lực</div>
+                                    <div class="value">${serviceExp}</div>
+                                </div>
+                            </div>
+
+                            <div class="construction-role-line">
+                                <strong>Vai trò:</strong> ${roleLine}
+                            </div>
+
+                            <div class="construction-actions">
+                                <a href="${detailUrl}" class="construction-detail-btn">Xem chi tiết</a>
+                                <a href="tel:${phone}" class="construction-call-btn" aria-label="Gọi ngay">
+                                    <i class="fa-solid fa-phone"></i>
                                 </a>
-
-                                ${createFavoriteButton(postId, "construction")}
+                                ${createFavoriteButton(postId, "construction", "construction-fav-btn")}
                             </div>
                         </div>
                     </article>
@@ -2209,7 +2352,7 @@
                 spaceBetween: 18,
                 breakpoints: {
                     640: { slidesPerView: 2, spaceBetween: 18 },
-                    1024: { slidesPerView: 3, spaceBetween: 22 }
+                    1024: { slidesPerView: 2, spaceBetween: 22 }
                 }
             });
 
@@ -2225,6 +2368,25 @@
             agentMobileSwiperInstance = new Swiper(".agentMobileSwiper", {
                 slidesPerView: 1.08,
                 spaceBetween: 16
+            });
+        }
+
+        function syncSearchTabs() {
+            const tabs = document.querySelectorAll(".search-tab");
+            const select = document.getElementById("heroCategory");
+
+            tabs.forEach(tab => {
+                tab.addEventListener("click", function () {
+                    tabs.forEach(item => item.classList.remove("active"));
+                    this.classList.add("active");
+                    select.value = this.dataset.category || "sale";
+                });
+            });
+
+            select.addEventListener("change", function () {
+                tabs.forEach(item => {
+                    item.classList.toggle("active", item.dataset.category === this.value);
+                });
             });
         }
 
