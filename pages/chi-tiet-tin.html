@@ -193,6 +193,66 @@
             background: #e5e7eb;
         }
 
+        .related-image-wrap {
+            position: relative;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .related-top-badges {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .related-top-badges .left-group,
+        .related-top-badges .right-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .related-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            border: 1px solid rgba(255,255,255,0.55);
+            white-space: nowrap;
+        }
+
+        .related-pill.type {
+            background: rgba(240, 253, 250, 0.94);
+            color: #0f766e;
+        }
+
+        .related-pill.mode {
+            background: rgba(255, 247, 237, 0.96);
+            color: #ea580c;
+        }
+
+        .related-vip-wrap .vip-badge,
+        .related-vip-wrap .service-badge {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            border-color: rgba(255,255,255,0.6);
+        }
+
         .empty-box {
             background: #fff;
             border: 1px dashed #cbd5e1;
@@ -275,6 +335,24 @@
 
             .detail-title {
                 font-size: 20px;
+            }
+
+            .related-top-badges {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                gap: 6px;
+            }
+
+            .related-pill {
+                font-size: 9px;
+                padding: 5px 8px;
+            }
+
+            .related-vip-wrap .vip-badge,
+            .related-vip-wrap .service-badge {
+                font-size: 9px;
+                padding: 5px 8px;
             }
         }
     </style>
@@ -446,7 +524,7 @@
 
         <section class="mt-8">
             <div class="flex items-center justify-between gap-4 mb-4">
-                <h2 class="section-title mb-0">Tin đăng liên quan</h2>
+                <h2 class="section-title mb-0">Tin liên quan cùng dự án / khu vực</h2>
                 <a id="related-more-link" href="../pages/nha-dat-ban.html" class="text-sm font-semibold text-[--vip-color] hover:underline">Xem thêm</a>
             </div>
             <div id="related-posts" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
@@ -1206,40 +1284,70 @@
             const currentFlow = normalizeText(currentPost.flow);
             const currentType = normalizeText(currentPost.postType);
             const currentCity = normalizeText(currentPost.city);
+            const currentWard = normalizeText(currentPost.ward);
+            const currentProjectSlug = normalizeText(currentPost.projectSlug);
+            const currentProjectName = normalizeText(currentPost.projectName);
             const currentPropertyType = normalizeText(currentPost.propertyType);
             const currentServiceType = normalizeText(currentPost.serviceType);
 
-            let related = posts
+            const candidates = posts
                 .map((post, index) => ({ post, id: createPostId(post, index) }))
                 .filter(item => item.id !== currentPostId)
                 .filter(item => normalizeText(item.post.flow) === currentFlow);
 
-            if (currentFlow === "construction") {
-                related = related
-                    .filter(item => {
-                        const sameCity = currentCity && normalizeText(item.post.city) === currentCity;
-                        const sameService = currentServiceType && normalizeText(item.post.serviceType) === currentServiceType;
-                        return sameCity || sameService;
-                    })
-                    .slice(0, 6);
-            } else {
-                related = related
-                    .filter(item => normalizeText(item.post.postType) === currentType)
-                    .filter(item => {
-                        const sameCity = currentCity && normalizeText(item.post.city) === currentCity;
-                        const sameType = currentPropertyType && normalizeText(item.post.propertyType) === currentPropertyType;
-                        return sameCity || sameType;
-                    })
-                    .slice(0, 6);
-            }
+            const grouped = {
+                sameProject: [],
+                sameArea: [],
+                sameType: [],
+                fallback: []
+            };
 
-            const finalRelated = related.length
-                ? related
-                : posts
-                    .map((post, index) => ({ post, id: createPostId(post, index) }))
-                    .filter(item => item.id !== currentPostId)
-                    .filter(item => normalizeText(item.post.flow) === currentFlow)
-                    .slice(0, 6);
+            candidates.forEach(item => {
+                const post = item.post;
+                const postProjectSlug = normalizeText(post.projectSlug);
+                const postProjectName = normalizeText(post.projectName);
+                const postCity = normalizeText(post.city);
+                const postWard = normalizeText(post.ward);
+                const postType = normalizeText(post.postType);
+                const postPropertyType = normalizeText(post.propertyType);
+                const postServiceType = normalizeText(post.serviceType);
+
+                const isSameProject =
+                    (currentProjectSlug && postProjectSlug && currentProjectSlug === postProjectSlug) ||
+                    (currentProjectName && postProjectName && currentProjectName === postProjectName);
+
+                const isSameArea =
+                    (currentCity && postCity && currentCity === postCity) ||
+                    (currentWard && postWard && currentWard === postWard);
+
+                const isSameType =
+                    currentFlow === "construction"
+                        ? (currentServiceType && postServiceType && currentServiceType === postServiceType)
+                        : (postType === currentType) ||
+                          (currentPropertyType && postPropertyType && currentPropertyType === postPropertyType);
+
+                if (isSameProject) {
+                    grouped.sameProject.push(item);
+                } else if (isSameArea) {
+                    grouped.sameArea.push(item);
+                } else if (isSameType) {
+                    grouped.sameType.push(item);
+                } else {
+                    grouped.fallback.push(item);
+                }
+            });
+
+            const finalRelated = [];
+            const usedIds = new Set();
+
+            [grouped.sameProject, grouped.sameArea, grouped.sameType, grouped.fallback].forEach(group => {
+                group.forEach(item => {
+                    if (!usedIds.has(item.id) && finalRelated.length < 6) {
+                        usedIds.add(item.id);
+                        finalRelated.push(item);
+                    }
+                });
+            });
 
             if (!finalRelated.length) {
                 relatedContainer.innerHTML = `
@@ -1268,23 +1376,35 @@
                     ? escapeHtml(post.serviceExp || "Đang cập nhật")
                     : formatArea(post.propertyArea);
 
-                const vipBadge = !isConstruction ? getVipBadgeHtml(post.vipLevel) : '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
+                const vipBadge = !isConstruction
+                    ? getVipBadgeHtml(post.vipLevel)
+                    : '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
 
                 return `
                     <a href="../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}" class="related-card">
-                        <img src="${image}" alt="${title}" onerror="this.src='${FALLBACK_IMAGE}'" />
-                        <div class="p-4">
-                            <div class="flex flex-wrap items-center gap-2 mb-2">
-                                <span class="text-[10px] uppercase font-bold bg-cyan-50 text-cyan-700 px-2 py-1 rounded">${badgeType}</span>
-                                <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">${badgeMode}</span>
-                                ${vipBadge}
+                        <div class="related-image-wrap">
+                            <img src="${image}" alt="${title}" onerror="this.src='${FALLBACK_IMAGE}'" />
+
+                            <div class="related-top-badges">
+                                <div class="left-group">
+                                    <span class="related-pill type">${badgeType}</span>
+                                    <span class="related-pill mode">${badgeMode}</span>
+                                </div>
+                                <div class="right-group related-vip-wrap">
+                                    ${vipBadge}
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="p-4">
                             <h3 class="font-bold text-[15px] leading-6 text-slate-800 line-clamp-2 min-h-[48px]">${title}</h3>
+
                             <div class="flex items-center gap-2 mt-3 text-sm flex-wrap">
                                 <span class="text-red-600 font-bold">${metaMain}</span>
                                 <span class="text-slate-300">•</span>
                                 <span class="text-slate-600 font-semibold">${metaSub}</span>
                             </div>
+
                             <p class="text-[12px] text-slate-500 mt-3">
                                 <i class="fa-solid fa-location-dot mr-1"></i> ${location}
                             </p>
