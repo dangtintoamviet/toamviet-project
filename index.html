@@ -529,7 +529,7 @@
             line-height: 1.5;
         }
 
-        /* CONSTRUCTION - giữ form hiện có */
+        /* CONSTRUCTION */
         .construction-card {
             background: #fff;
             border: 1px solid #dce8ea;
@@ -572,6 +572,12 @@
             align-items: center;
             gap: 10px;
             min-width: 0;
+            text-decoration: none;
+            flex: 1;
+        }
+
+        .construction-mini-poster:hover .construction-mini-name {
+            color: var(--brand-green);
         }
 
         .construction-mini-avatar {
@@ -588,10 +594,28 @@
             flex-shrink: 0;
         }
 
+        .construction-mini-user {
+            min-width: 0;
+        }
+
         .construction-mini-name {
             font-size: 13px;
             font-weight: 700;
             color: #334155;
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .construction-mini-role {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.35;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .construction-state {
@@ -641,17 +665,6 @@
             font-weight: 700;
             color: #1f2937;
             line-height: 1.4;
-        }
-
-        .construction-role-line {
-            margin-top: 16px;
-            font-size: 13px;
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        .construction-role-line strong {
-            color: #334155;
         }
 
         .construction-actions {
@@ -2109,7 +2122,10 @@
                             <div class="construction-topline">
                                 <a href="${profileUrl}" class="construction-mini-poster">
                                     <div class="construction-mini-avatar">${avatarText}</div>
-                                    <div class="construction-mini-name">${poster}</div>
+                                    <div class="construction-mini-user">
+                                        <div class="construction-mini-name">${poster}</div>
+                                        <div class="construction-mini-role">${roleLine}</div>
+                                    </div>
                                 </a>
                                 <span class="construction-state"><i class="fa-solid fa-bolt"></i> Đang hiển thị</span>
                             </div>
@@ -2133,10 +2149,6 @@
                                     <div class="label">Năng lực</div>
                                     <div class="value">${serviceExp}</div>
                                 </div>
-                            </div>
-
-                            <div class="construction-role-line">
-                                <strong>Vai trò:</strong> ${roleLine}
                             </div>
 
                             <div class="construction-actions">
