@@ -562,9 +562,11 @@
         function getStorageArray(key) {
             try {
                 const raw = JSON.parse(localStorage.getItem(key) || "[]");
-                return Array.isArray(raw) ? raw.map(function (id) {
-                    return String(id).trim();
-                }).filter(Boolean) : [];
+                return Array.isArray(raw)
+                    ? raw.map(function (id) {
+                        return String(id).trim();
+                    }).filter(Boolean)
+                    : [];
             } catch (error) {
                 return [];
             }
@@ -746,6 +748,7 @@
                 if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
                 if (firstImage && firstImage.url) return firstImage.url;
             }
+
             return FALLBACK_IMAGE;
         }
 
@@ -837,7 +840,6 @@
                     propertyDirection: "Đông Nam",
                     propertyBeds: "5",
                     city: "Hà Nội",
-                    district: "",
                     ward: "Phường Minh Khai",
                     addressDetail: "Khu đô thị mới",
                     description: "Căn biệt thự có vị trí đẹp, bàn giao full nội thất cao cấp. Hỗ trợ pháp lý và thủ tục nhanh gọn.",
@@ -863,7 +865,6 @@
                     propertyDirection: "Đông Nam",
                     propertyBeds: "2",
                     city: "TP.HCM",
-                    district: "",
                     ward: "Phường 22",
                     addressDetail: "Gần Landmark 81",
                     description: "Căn hộ tầng cao thoáng mát, view sông đẹp, đầy đủ nội thất cao cấp.",
@@ -889,7 +890,6 @@
                     serviceBrand: "Công ty Xây dựng An Phát",
                     serviceSpecialty: "Nhà phố, biệt thự, cải tạo",
                     city: "Hà Giang",
-                    district: "",
                     ward: "Phường Nguyễn Trãi",
                     addressDetail: "Phục vụ toàn tỉnh",
                     description: "Đội ngũ kỹ sư và thi công chuyên nghiệp, nhận hồ sơ thiết kế, thi công phần thô và hoàn thiện trọn gói.",
@@ -914,6 +914,8 @@
         }
 
         function findPostById(posts, targetId) {
+            const normalizedTargetId = String(targetId || "").trim();
+
             return posts.find((post, index) => {
                 const candidates = [
                     post.id,
@@ -924,7 +926,7 @@
                     return String(item).trim();
                 });
 
-                return candidates.includes(String(targetId).trim());
+                return candidates.includes(normalizedTargetId);
             });
         }
 
@@ -956,13 +958,14 @@
         function renderGallery(images) {
             const mainImage = document.getElementById("main-image");
             const thumbGallery = document.getElementById("thumb-gallery");
+            const finalImages = Array.isArray(images) && images.length ? images : [FALLBACK_IMAGE];
 
-            mainImage.src = images[0] || FALLBACK_IMAGE;
+            mainImage.src = finalImages[0] || FALLBACK_IMAGE;
             mainImage.onerror = function () {
                 this.src = FALLBACK_IMAGE;
             };
 
-            thumbGallery.innerHTML = images.map((img, index) => `
+            thumbGallery.innerHTML = finalImages.map((img, index) => `
                 <img
                     src="${escapeHtml(img)}"
                     alt="Ảnh ${index + 1}"
@@ -1310,15 +1313,16 @@
                 return;
             }
 
-            const post = findPostById(posts, id);
+            const normalizedId = String(id).trim();
+            const post = findPostById(posts, normalizedId);
 
             if (!post) {
                 showNotFound();
                 return;
             }
 
-            renderDetail(post, String(id).trim());
-            renderRelatedPosts(String(id).trim(), post);
+            renderDetail(post, normalizedId);
+            renderRelatedPosts(normalizedId, post);
         }
 
         window.changeMainImage = changeMainImage;
