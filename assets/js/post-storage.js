@@ -96,6 +96,55 @@
         return "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(post.id);
     }
 
+    function getFirstImageFromPost(post) {
+        if (!post) return "";
+
+        if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+            return post.thumbnail;
+        }
+
+        if (Array.isArray(post.images) && post.images.length) {
+            const firstImage = post.images[0];
+
+            if (typeof firstImage === "string" && firstImage.trim()) {
+                return firstImage;
+            }
+
+            if (firstImage && typeof firstImage === "object") {
+                if (firstImage.dataUrl && String(firstImage.dataUrl).trim()) {
+                    return firstImage.dataUrl;
+                }
+
+                if (firstImage.url && String(firstImage.url).trim()) {
+                    return firstImage.url;
+                }
+            }
+        }
+
+        return "";
+    }
+
+    function normalizeImages(images) {
+        if (!Array.isArray(images)) return [];
+
+        return images.filter(function (img) {
+            if (!img) return false;
+
+            if (typeof img === "string") {
+                return !!img.trim();
+            }
+
+            if (typeof img === "object") {
+                return !!(
+                    (img.dataUrl && String(img.dataUrl).trim()) ||
+                    (img.url && String(img.url).trim())
+                );
+            }
+
+            return false;
+        });
+    }
+
     function sanitizePost(post) {
         if (!post || typeof post !== "object") return null;
 
@@ -103,6 +152,7 @@
         const normalizedFlow = normalizeFlow(post.flow);
         const normalizedPostType = normalizePostType(post.postType, normalizedFlow);
         const normalizedStatus = normalizeStatus(post.status);
+        const safeImages = normalizeImages(post.images);
 
         const safePost = {
             ...post,
@@ -115,9 +165,14 @@
             slug: post.slug || slugify((post.title || "tin-dang") + "-" + (post.id || Date.now())),
             createdAt: post.createdAt || now,
             updatedAt: post.updatedAt || now,
-            images: Array.isArray(post.images) ? post.images : [],
-            imageCount: Array.isArray(post.images) ? post.images.length : (Number(post.imageCount) || 0)
+            images: safeImages,
+            imageCount: safeImages.length
         };
+
+        safePost.thumbnail = post.thumbnail || getFirstImageFromPost({
+            thumbnail: post.thumbnail,
+            images: safeImages
+        });
 
         safePost.contactProfileUrl = resolveContactProfileUrl(safePost.profileType, post.contactProfileUrl);
         safePost.detailUrl = resolveDetailUrl(safePost);
@@ -371,7 +426,7 @@
 
     function getPostStats(postsInput) {
         const posts = Array.isArray(postsInput)
-            ? postsInput.map(sanitizePost).filter(Boolean)
+            ? posts.map(sanitizePost).filter(Boolean)
             : getAllPosts();
 
         return {
