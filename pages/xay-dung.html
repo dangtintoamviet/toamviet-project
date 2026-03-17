@@ -51,7 +51,7 @@
 
         .filter-grid-desktop {
             display: grid;
-            grid-template-columns: 1.35fr 1fr 1fr 0.9fr;
+            grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.9fr) minmax(0, 0.75fr);
             gap: 14px;
             align-items: stretch;
             width: 100%;
@@ -88,22 +88,41 @@
             font-weight: 600;
         }
 
-        .filter-submit-btn {
+        .filter-submit-btn,
+        .filter-reset-btn {
             width: 100%;
             min-height: 54px;
             border-radius: 16px;
-            background: var(--hover-color);
-            color: white;
             font-size: 12px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.04em;
             transition: all 0.25s ease;
             padding: 0 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .filter-submit-btn {
+            background: var(--hover-color);
+            color: white;
         }
 
         .filter-submit-btn:hover {
             background: #ea7b00;
+        }
+
+        .filter-reset-btn {
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #dbe3eb;
+        }
+
+        .filter-reset-btn:hover {
+            background: #eef2f7;
+            color: #0f172a;
         }
 
         .con-card {
@@ -349,7 +368,7 @@
             border: 1px solid #99f6e4;
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1200px) {
             .filter-grid-desktop {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 12px;
@@ -368,7 +387,8 @@
 
             .filter-input,
             .filter-select,
-            .filter-submit-btn {
+            .filter-submit-btn,
+            .filter-reset-btn {
                 width: 100%;
                 min-height: 52px;
                 border-radius: 16px;
@@ -455,8 +475,14 @@
                         <option value="">Khu vực</option>
                     </select>
 
-                    <button id="applyFilterBtn" class="filter-submit-btn">
+                    <button id="applyFilterBtn" class="filter-submit-btn" type="button">
+                        <i class="fa-solid fa-magnifying-glass"></i>
                         Tìm kiếm
+                    </button>
+
+                    <button id="resetFilterBtn" class="filter-reset-btn" type="button">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        Xóa lọc
                     </button>
                 </div>
             </div>
@@ -517,6 +543,7 @@
         const serviceTypeFilter = document.getElementById("serviceTypeFilter");
         const cityFilter = document.getElementById("cityFilter");
         const applyFilterBtn = document.getElementById("applyFilterBtn");
+        const resetFilterBtn = document.getElementById("resetFilterBtn");
 
         function escapeHtml(value) {
             return String(value || "")
@@ -525,6 +552,15 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
         }
 
         function safeScrollToTop() {
@@ -561,14 +597,19 @@
         }
 
         function createPostId(post, index = 0) {
-            return (
-                post.id ||
-                post.postId ||
-                post.slug ||
-                ((post.title || "tin") + "-" + (post.city || "") + "-" + (post.ward || "") + "-" + index)
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")
-            );
+            const rawId =
+                post && (
+                    post.id ??
+                    post.postId ??
+                    post.slug ??
+                    post._id ??
+                    ((post.title || "tin") + "-" + (post.city || "") + "-" + (post.ward || "") + "-" + index)
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")
+                        .replace(/[^\w\-À-ỹ]/g, "")
+                );
+
+            return String(rawId || ("construction-" + index)).trim();
         }
 
         function normalizePhone(phone) {
@@ -616,29 +657,81 @@
 
         function getFavorites() {
             try {
-                return JSON.parse(localStorage.getItem(CONSTRUCTION_FAVORITE_KEY) || "[]");
+                const raw = JSON.parse(localStorage.getItem(CONSTRUCTION_FAVORITE_KEY) || "[]");
+                if (!Array.isArray(raw)) return [];
+                return raw.map(function (id) {
+                    return String(id).trim();
+                }).filter(Boolean);
             } catch (error) {
                 return [];
             }
         }
 
         function setFavorites(favorites) {
-            localStorage.setItem(CONSTRUCTION_FAVORITE_KEY, JSON.stringify(favorites));
+            try {
+                const normalized = Array.from(new Set(
+                    (Array.isArray(favorites) ? favorites : []).map(function (id) {
+                        return String(id).trim();
+                    }).filter(Boolean)
+                ));
+                localStorage.setItem(CONSTRUCTION_FAVORITE_KEY, JSON.stringify(normalized));
+                syncFavoriteBadge();
+            } catch (error) {
+                console.warn("Không lưu được favoriteConstructionPosts:", error);
+            }
         }
 
         function isFavorite(postId) {
-            return getFavorites().includes(postId);
+            const normalizedId = String(postId || "").trim();
+            return getFavorites().includes(normalizedId);
         }
 
         function toggleFavorite(postId) {
+            const normalizedId = String(postId || "").trim();
+            if (!normalizedId) return;
+
             const favorites = getFavorites();
-            const exists = favorites.includes(postId);
+            const exists = favorites.includes(normalizedId);
+
             const next = exists
-                ? favorites.filter(function (id) { return id !== postId; })
-                : favorites.concat(postId);
+                ? favorites.filter(function (id) { return id !== normalizedId; })
+                : favorites.concat(normalizedId);
 
             setFavorites(next);
             renderListings();
+        }
+
+        function syncFavoriteBadge() {
+            try {
+                const totalConstructionFavorites = getFavorites().length;
+
+                const possibleIds = [
+                    "favoriteCount",
+                    "favoriteBadge",
+                    "savedPostCount",
+                    "savedCount"
+                ];
+
+                possibleIds.forEach(function (id) {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        const currentText = parseInt(el.textContent || "0", 10);
+                        if (Number.isFinite(currentText) && currentText >= 0) {
+                            el.textContent = String(currentText);
+                        }
+                    }
+                });
+
+                window.dispatchEvent(new CustomEvent("constructionFavoritesUpdated", {
+                    detail: {
+                        key: CONSTRUCTION_FAVORITE_KEY,
+                        total: totalConstructionFavorites,
+                        favorites: getFavorites()
+                    }
+                }));
+            } catch (error) {
+                console.warn("Không đồng bộ được badge favorite xây dựng:", error);
+            }
         }
 
         function getConstructionPosts() {
@@ -649,11 +742,11 @@
                     posts = window.postStorage.getConstructionPosts() || [];
                 } else if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
                     posts = (window.postStorage.getAllPosts() || []).filter(function (post) {
-                        return post && post.flow === "construction";
+                        return post && normalizeText(post.flow) === "construction";
                     });
                 } else if (window.userStorage && typeof window.userStorage.getAllPosts === "function") {
                     posts = (window.userStorage.getAllPosts() || []).filter(function (post) {
-                        return post && post.flow === "construction";
+                        return post && normalizeText(post.flow) === "construction";
                     });
                 } else {
                     posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
@@ -666,10 +759,14 @@
             return posts.filter(function (post) {
                 if (!post) return false;
 
-                const flow = String(post.flow || "").toLowerCase().trim();
-                const status = String(post.status || "").toLowerCase().trim();
+                const flow = normalizeText(post.flow);
+                const postType = normalizeText(post.postType);
+                const status = normalizeText(post.status);
 
-                return flow === "construction" && (status === "approved" || status === "demo");
+                const isConstruction = flow === "construction" || postType === "xaydung";
+                const isVisible = status === "approved" || status === "demo" || status === "published";
+
+                return isConstruction && isVisible;
             });
         }
 
@@ -758,7 +855,7 @@
             const uniqueCities = Array.from(
                 new Set(
                     posts.map(function (post) {
-                        return post.city;
+                        return String(post.city || "").trim();
                     }).filter(Boolean)
                 )
             ).sort(function (a, b) {
@@ -779,9 +876,9 @@
         function applyFilters(posts) {
             let filtered = posts.slice();
 
-            const keyword = keywordFilter.value.trim().toLowerCase();
-            const serviceType = serviceTypeFilter.value;
-            const city = cityFilter.value;
+            const keyword = normalizeText(keywordFilter.value);
+            const serviceType = normalizeText(serviceTypeFilter.value);
+            const city = normalizeText(cityFilter.value);
 
             if (keyword) {
                 filtered = filtered.filter(function (post) {
@@ -793,22 +890,23 @@
                         post.serviceSpecialty,
                         post.serviceArea,
                         buildLocation(post),
-                        buildPoster(post)
-                    ].filter(Boolean).join(" ").toLowerCase();
+                        buildPoster(post),
+                        getPosterRole(post)
+                    ].filter(Boolean).join(" ");
 
-                    return text.includes(keyword);
+                    return normalizeText(text).includes(keyword);
                 });
             }
 
             if (serviceType) {
                 filtered = filtered.filter(function (post) {
-                    return (post.serviceType || "") === serviceType;
+                    return normalizeText(post.serviceType) === serviceType;
                 });
             }
 
             if (city) {
                 filtered = filtered.filter(function (post) {
-                    return (post.city || "") === city;
+                    return normalizeText(post.city) === city;
                 });
             }
 
@@ -920,7 +1018,7 @@
                             <button
                                 type="button"
                                 class="con-btn-outline ${favoriteActive ? "active" : ""}"
-                                onclick="toggleFavorite('${escapeHtml(postId).replace(/'/g, "\\'")}')"
+                                onclick="toggleFavorite(${JSON.stringify(postId)})"
                                 aria-label="Lưu dịch vụ">
                                 <i class="${favoriteActive ? "fa-solid" : "fa-regular"} fa-heart"></i>
                             </button>
@@ -966,17 +1064,40 @@
             }).join("");
         }
 
+        function resetFilters() {
+            keywordFilter.value = "";
+            serviceTypeFilter.value = "";
+            cityFilter.value = "";
+            renderListings();
+        }
+
         applyFilterBtn.addEventListener("click", renderListings);
+        resetFilterBtn.addEventListener("click", resetFilters);
 
         keywordFilter.addEventListener("keydown", function (event) {
             if (event.key === "Enter") renderListings();
+        });
+
+        keywordFilter.addEventListener("input", function () {
+            if (!keywordFilter.value.trim()) {
+                renderListings();
+            }
         });
 
         serviceTypeFilter.addEventListener("change", renderListings);
         cityFilter.addEventListener("change", renderListings);
 
         window.toggleFavorite = toggleFavorite;
-        window.addEventListener("load", renderListings);
+        window.addEventListener("storage", function (event) {
+            if (event.key === CONSTRUCTION_FAVORITE_KEY) {
+                renderListings();
+            }
+        });
+
+        window.addEventListener("load", function () {
+            renderListings();
+            syncFavoriteBadge();
+        });
     </script>
 
     <script src="../assets/js/main.js"></script>
