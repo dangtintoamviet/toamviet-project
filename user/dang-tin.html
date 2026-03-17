@@ -2322,7 +2322,9 @@
             const allPosts = getPostsFromAnySource();
 
             try {
-                syncProjectStoreFromPosts(allPosts);
+                if (typeof syncProjectStoreFromPosts === "function") {
+                    syncProjectStoreFromPosts(allPosts);
+                }
             } catch (error) {
                 console.warn("syncProjectStoreFromPosts lỗi:", error);
             }
@@ -2488,7 +2490,9 @@
 
         try {
             const currentPosts = getPostsFromAnySource();
-            syncProjectStoreFromPosts(currentPosts);
+            if (typeof syncProjectStoreFromPosts === "function") {
+                syncProjectStoreFromPosts(currentPosts);
+            }
         } catch (error) {
             console.warn("Không thể đồng bộ project store lúc khởi tạo:", error);
         }
