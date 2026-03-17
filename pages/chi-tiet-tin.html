@@ -199,58 +199,12 @@
             background: #e5e7eb;
         }
 
-        .related-top-badges {
+        .related-vip-top {
             position: absolute;
             top: 12px;
-            left: 12px;
             right: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
-            pointer-events: none;
             z-index: 2;
-        }
-
-        .related-top-badges .left-group,
-        .related-top-badges .right-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .related-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-            border: 1px solid rgba(255,255,255,0.55);
-            white-space: nowrap;
-        }
-
-        .related-pill.type {
-            background: rgba(240, 253, 250, 0.94);
-            color: #0f766e;
-        }
-
-        .related-pill.mode {
-            background: rgba(255, 247, 237, 0.96);
-            color: #ea580c;
-        }
-
-        .related-vip-wrap .vip-badge,
-        .related-vip-wrap .service-badge {
-            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-            border-color: rgba(255,255,255,0.6);
+            pointer-events: none;
         }
 
         .empty-box {
@@ -279,24 +233,28 @@
             background: linear-gradient(135deg, #dff7ff, #b8ecff);
             color: #0369a1;
             border: 1px solid #7dd3fc;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
 
         .vip-vang {
             background: linear-gradient(135deg, #fff7cc, #ffe082);
             color: #a16207;
             border: 1px solid #facc15;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
 
         .vip-bac {
             background: linear-gradient(135deg, #f1f5f9, #dbe4ee);
             color: #475569;
             border: 1px solid #cbd5e1;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
 
         .vip-dong {
             background: linear-gradient(135deg, #f7e3d8, #ebc2a8);
             color: #9a3412;
             border: 1px solid #d6a583;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
 
         .service-badge {
@@ -312,6 +270,39 @@
             background: linear-gradient(135deg, rgba(0,139,139,0.94), rgba(15,118,110,0.94));
             color: white;
             border: 1px solid rgba(0,139,139,0.2);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+        .related-meta-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .related-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        .related-pill.type {
+            background: rgba(240, 253, 250, 1);
+            color: #0f766e;
+            border: 1px solid rgba(15, 118, 110, 0.1);
+        }
+
+        .related-pill.mode {
+            background: rgba(255, 247, 237, 1);
+            color: #ea580c;
+            border: 1px solid rgba(234, 88, 12, 0.08);
         }
 
         @media (max-width: 992px) {
@@ -337,20 +328,18 @@
                 font-size: 20px;
             }
 
-            .related-top-badges {
+            .related-vip-top {
                 top: 10px;
-                left: 10px;
                 right: 10px;
-                gap: 6px;
             }
 
-            .related-pill {
+            .related-vip-top .vip-badge,
+            .related-vip-top .service-badge {
                 font-size: 9px;
                 padding: 5px 8px;
             }
 
-            .related-vip-wrap .vip-badge,
-            .related-vip-wrap .service-badge {
+            .related-pill {
                 font-size: 9px;
                 padding: 5px 8px;
             }
@@ -1384,19 +1373,17 @@
                     <a href="../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}" class="related-card">
                         <div class="related-image-wrap">
                             <img src="${image}" alt="${title}" onerror="this.src='${FALLBACK_IMAGE}'" />
-
-                            <div class="related-top-badges">
-                                <div class="left-group">
-                                    <span class="related-pill type">${badgeType}</span>
-                                    <span class="related-pill mode">${badgeMode}</span>
-                                </div>
-                                <div class="right-group related-vip-wrap">
-                                    ${vipBadge}
-                                </div>
+                            <div class="related-vip-top">
+                                ${vipBadge}
                             </div>
                         </div>
 
                         <div class="p-4">
+                            <div class="related-meta-pills">
+                                <span class="related-pill type">${badgeType}</span>
+                                <span class="related-pill mode">${badgeMode}</span>
+                            </div>
+
                             <h3 class="font-bold text-[15px] leading-6 text-slate-800 line-clamp-2 min-h-[48px]">${title}</h3>
 
                             <div class="flex items-center gap-2 mt-3 text-sm flex-wrap">
