@@ -2308,15 +2308,44 @@
 
         function savePostToStorage(postData) {
             let createdPost = null;
+            let saved = false;
+            let lastError = null;
 
             if (window.postStorage && typeof window.postStorage.createPost === "function") {
-                createdPost = window.postStorage.createPost(postData);
-            } else if (window.userStorage && typeof window.userStorage.addPost === "function") {
-                createdPost = window.userStorage.addPost(postData);
-            } else {
-                const currentPosts = getSafeAllPostsFromLocal();
-                currentPosts.unshift(postData);
-                localStorage.setItem("allPosts", JSON.stringify(currentPosts));
+                try {
+                    createdPost = window.postStorage.createPost(postData);
+                    saved = true;
+                } catch (error) {
+                    lastError = error;
+                    console.warn("postStorage.createPost lỗi, chuyển sang fallback:", error);
+                }
+            }
+
+            if (!saved && window.userStorage && typeof window.userStorage.addPost === "function") {
+                try {
+                    createdPost = window.userStorage.addPost(postData);
+                    saved = true;
+                } catch (error) {
+                    lastError = error;
+                    console.warn("userStorage.addPost lỗi, chuyển sang localStorage trực tiếp:", error);
+                }
+            }
+
+            if (!saved) {
+                try {
+                    const currentPosts = getSafeAllPostsFromLocal();
+                    currentPosts.unshift(postData);
+                    localStorage.setItem("allPosts", JSON.stringify(currentPosts));
+                    createdPost = postData;
+                    saved = true;
+                } catch (error) {
+                    lastError = error;
+                    console.error("Lưu trực tiếp vào localStorage cũng lỗi:", error);
+                }
+            }
+
+            if (!saved) {
+                throw lastError || new Error("SAVE_POST_FAILED");
             }
 
             const allPosts = getPostsFromAnySource();
