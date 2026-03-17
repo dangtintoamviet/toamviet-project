@@ -61,11 +61,11 @@
         return typeof value === "string" && value.startsWith("data:");
     }
 
-    function compactImageItem(image) {
+    function normalizeImageItem(image) {
         if (!image) return null;
 
         if (typeof image === "string") {
-            return isDataUrl(image) ? null : image;
+            return image || null;
         }
 
         if (typeof image === "object") {
@@ -76,28 +76,76 @@
                 width: image.width || 0,
                 height: image.height || 0,
                 sizeKB: image.sizeKB || 0,
-                url: image.url && !isDataUrl(image.url) ? image.url : "",
-                dataUrl: ""
+                url: image.url || "",
+                dataUrl: image.dataUrl || ""
             };
         }
 
         return null;
     }
 
+    function compactImageItem(image, keepRealImage) {
+        const normalized = normalizeImageItem(image);
+        if (!normalized) return null;
+
+        if (typeof normalized === "string") {
+            if (isDataUrl(normalized)) {
+                return keepRealImage ? normalized : null;
+            }
+            return normalized;
+        }
+
+        return {
+            id: normalized.id || "",
+            name: normalized.name || "",
+            type: normalized.type || "",
+            width: normalized.width || 0,
+            height: normalized.height || 0,
+            sizeKB: normalized.sizeKB || 0,
+            url: normalized.url || "",
+            dataUrl: keepRealImage ? (normalized.dataUrl || "") : ""
+        };
+    }
+
+    function getFirstUsableImage(post) {
+        if (!post) return "";
+
+        if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+            return post.thumbnail;
+        }
+
+        if (Array.isArray(post.images) && post.images.length) {
+            const first = post.images[0];
+
+            if (typeof first === "string" && first.trim()) return first;
+            if (first && typeof first === "object") {
+                if (first.dataUrl && String(first.dataUrl).trim()) return first.dataUrl;
+                if (first.url && String(first.url).trim()) return first.url;
+            }
+        }
+
+        return "";
+    }
+
     function compactPostForStorage(post) {
         if (!post || typeof post !== "object") return post;
 
-        const compactImages = Array.isArray(post.images)
-            ? post.images.map(compactImageItem).filter(Boolean)
-            : [];
+        const originalImages = Array.isArray(post.images) ? post.images : [];
+        const compactImages = originalImages
+            .map(function (img, index) {
+                return compactImageItem(img, index === 0);
+            })
+            .filter(Boolean);
+
+        const thumbnailToKeep = getFirstUsableImage(post);
 
         return {
             ...post,
             images: compactImages,
-            thumbnail: isDataUrl(post.thumbnail) ? "" : (post.thumbnail || ""),
+            thumbnail: thumbnailToKeep || "",
             imageCount: typeof post.imageCount === "number"
                 ? post.imageCount
-                : (Array.isArray(post.images) ? post.images.length : 0)
+                : originalImages.length
         };
     }
 
@@ -151,7 +199,7 @@
             contactProfileUrl: post.contactProfileUrl || "",
 
             detailUrl: post.detailUrl || "",
-            thumbnail: isDataUrl(post.thumbnail) ? "" : (post.thumbnail || ""),
+            thumbnail: getFirstUsableImage(post) || "",
             imageCount: typeof post.imageCount === "number"
                 ? post.imageCount
                 : (Array.isArray(post.images) ? post.images.length : 0),
