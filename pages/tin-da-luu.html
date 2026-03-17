@@ -37,9 +37,9 @@
         }
 
         .container-custom {
-            max-width: 1200px;
+            max-width: 1460px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 18px;
         }
 
         .page-shell {
@@ -49,7 +49,8 @@
 
         .page-intro,
         .tab-panel,
-        .empty-box {
+        .empty-box,
+        .sidebar-card {
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 18px;
@@ -101,6 +102,10 @@
             padding: 18px;
         }
 
+        .sidebar-card {
+            padding: 20px;
+        }
+
         .listing-card {
             background: #fff;
             border: 1px solid var(--border-color);
@@ -122,6 +127,7 @@
             background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
             position: relative;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .card-image-box img {
@@ -202,6 +208,21 @@
             box-shadow: 0 4px 14px rgba(0,0,0,0.18);
         }
 
+        .service-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: white;
+            background: linear-gradient(135deg, rgba(0,139,139,0.94), rgba(15,118,110,0.94));
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
         .broker-link {
             display: flex;
             align-items: center;
@@ -244,11 +265,104 @@
             opacity: 0.92;
         }
 
+        .subtle-view-btn {
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #dbe4ee;
+            min-height: 40px;
+            padding: 0 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        .subtle-view-btn:hover {
+            color: var(--vip-color);
+            border-color: rgba(0, 139, 139, 0.35);
+            background: #f8ffff;
+        }
+
         .empty-box {
             padding: 28px 20px;
             text-align: center;
             color: #64748b;
             border-style: dashed;
+        }
+
+        .sidebar-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--vip-color);
+            text-transform: uppercase;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 12px 12px;
+            border: 1px solid #eef2f7;
+            border-radius: 12px;
+            background: #fff;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .sidebar-item:hover {
+            border-color: rgba(0, 139, 139, 0.28);
+            background: #f8ffff;
+            transform: translateY(-1px);
+        }
+
+        .sidebar-item-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.55;
+        }
+
+        .sidebar-item-sub {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+
+        .meta-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            padding: 6px 10px;
+            border-radius: 999px;
+        }
+
+        @media (max-width: 1200px) {
+            .container-custom {
+                max-width: 1280px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .page-layout {
+                grid-template-columns: 1fr !important;
+            }
+
+            .page-sidebar {
+                display: none;
+            }
         }
 
         @media (max-width: 992px) {
@@ -272,8 +386,13 @@
             }
 
             .page-intro,
-            .tab-panel {
+            .tab-panel,
+            .sidebar-card {
                 border-radius: 16px;
+            }
+
+            .tab-btn {
+                width: 100%;
             }
         }
     </style>
@@ -286,7 +405,7 @@
         <section class="page-intro mb-6">
             <h1 class="section-title">Tin đã lưu</h1>
             <p class="text-gray-500 text-sm mt-2">
-                Quản lý các tin bất động sản bạn đã lưu để xem lại nhanh hơn.
+                Quản lý các tin bạn đã lưu để xem lại nhanh hơn.
                 Hiện có
                 <strong id="totalSavedCount">0</strong>
                 tin đã lưu trong tài khoản trình duyệt này.
@@ -299,12 +418,31 @@
                 <button type="button" class="tab-btn" id="rentalTabBtn" onclick="switchTab('rental')">
                     Tin thuê (<span id="rentalCount">0</span>)
                 </button>
+                <button type="button" class="tab-btn" id="constructionTabBtn" onclick="switchTab('construction')">
+                    Xây dựng (<span id="constructionCount">0</span>)
+                </button>
             </div>
         </section>
 
-        <section class="tab-panel">
-            <div id="savedListingContainer" class="space-y-6"></div>
-        </section>
+        <div class="page-layout grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-6 xl:gap-8">
+            <section class="space-y-6">
+                <section class="tab-panel">
+                    <div id="savedListingContainer" class="space-y-6"></div>
+                </section>
+            </section>
+
+            <aside class="page-sidebar hidden lg:block space-y-6">
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Tin tức</h3>
+                    <div id="newsSidebarList" class="sidebar-list"></div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Dự án</h3>
+                    <div id="projectSidebarList" class="sidebar-list"></div>
+                </div>
+            </aside>
+        </div>
     </main>
 
     <div id="site-footer"></div>
@@ -338,6 +476,7 @@
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
         const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
+        const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
 
         let currentTab = "sale";
 
@@ -395,12 +534,78 @@
             }
         ];
 
+        const fallbackConstructionPosts = [
+            {
+                id: "demo-build-1",
+                title: "Thi công biệt thự phố hiện đại - Chìa khóa trao tay 2026",
+                flow: "construction",
+                postType: "xaydung",
+                status: "demo",
+                serviceType: "Xây nhà trọn gói",
+                servicePrice: "5.8 - 6.5 triệu/m²",
+                serviceExp: "8 năm kinh nghiệm",
+                serviceArea: "Dĩ An, Thuận An",
+                serviceBrand: "Bình Dương Cons Co., Ltd",
+                serviceSpecialty: "Biệt thự, nhà phố",
+                city: "Bình Dương",
+                ward: "Dĩ An",
+                description: "Giải pháp thi công đồng bộ từ thiết kế đến bàn giao hoàn thiện, phù hợp khách hàng cần tiến độ rõ ràng và kiểm soát chi phí tốt.",
+                contactName: "Bình Dương Cons Co., Ltd",
+                contactPhone: "0946239289",
+                contactProfileUrl: "../pages/danh-ba-doanh-nghiep.html",
+                profileType: "doanhnghiep",
+                roleLabel: "Doanh nghiệp / Nhà thầu",
+                createdAt: new Date().toISOString(),
+                images: [FALLBACK_IMAGE]
+            }
+        ];
+
+        const fallbackNewsItems = [
+            {
+                title: "Thị trường bất động sản và xây dựng đang dần phân hóa theo khu vực",
+                subtitle: "Cập nhật xu hướng mới nhất cho người mua, người thuê và nhà thầu.",
+                url: "../pages/tin-tuc.html"
+            },
+            {
+                title: "Mẹo đọc pháp lý dự án trước khi quyết định giao dịch",
+                subtitle: "Những điểm nên kiểm tra trước khi xuống tiền hoặc ký hợp đồng.",
+                url: "../pages/tin-tuc.html"
+            },
+            {
+                title: "Chi phí xây nhà trọn gói thay đổi theo vật liệu và khu vực như thế nào",
+                subtitle: "Gợi ý cách so sánh báo giá giữa các đơn vị thi công.",
+                url: "../pages/tin-tuc.html"
+            }
+        ];
+
+        const fallbackProjectItems = [
+            {
+                title: "Khu đô thị ven sông - Giai đoạn mở bán mới",
+                subtitle: "Dự án nổi bật với vị trí đẹp và hạ tầng hoàn thiện dần.",
+                url: "../pages/du-an.html"
+            },
+            {
+                title: "Tổ hợp căn hộ trung tâm thành phố",
+                subtitle: "Phù hợp nhu cầu ở thực và đầu tư cho thuê dài hạn.",
+                url: "../pages/du-an.html"
+            },
+            {
+                title: "Khu nhà phố thương mại đang hoàn thiện pháp lý",
+                subtitle: "Thông tin dự án cần theo dõi thêm trước khi ra quyết định.",
+                url: "../pages/du-an.html"
+            }
+        ];
+
         const savedListingContainer = document.getElementById("savedListingContainer");
         const saleTabBtn = document.getElementById("saleTabBtn");
         const rentalTabBtn = document.getElementById("rentalTabBtn");
+        const constructionTabBtn = document.getElementById("constructionTabBtn");
         const saleCount = document.getElementById("saleCount");
         const rentalCount = document.getElementById("rentalCount");
+        const constructionCount = document.getElementById("constructionCount");
         const totalSavedCount = document.getElementById("totalSavedCount");
+        const newsSidebarList = document.getElementById("newsSidebarList");
+        const projectSidebarList = document.getElementById("projectSidebarList");
 
         function escapeHtml(value) {
             return String(value || "")
@@ -409,6 +614,26 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
         }
 
         function safeScrollToTop() {
@@ -450,7 +675,8 @@
 
         function getStorageArray(key) {
             try {
-                return JSON.parse(localStorage.getItem(key) || "[]");
+                const raw = JSON.parse(localStorage.getItem(key) || "[]");
+                return Array.isArray(raw) ? raw : [];
             } catch (error) {
                 return [];
             }
@@ -461,31 +687,52 @@
         }
 
         function getSaleFavorites() {
-            return getStorageArray(FAVORITE_SALE_STORAGE_KEY);
+            return getStorageArray(FAVORITE_SALE_STORAGE_KEY).map(function (id) {
+                return String(id).trim();
+            }).filter(Boolean);
         }
 
         function getRentalFavorites() {
-            return getStorageArray(FAVORITE_RENTAL_STORAGE_KEY);
+            return getStorageArray(FAVORITE_RENTAL_STORAGE_KEY).map(function (id) {
+                return String(id).trim();
+            }).filter(Boolean);
+        }
+
+        function getConstructionFavorites() {
+            return getStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY).map(function (id) {
+                return String(id).trim();
+            }).filter(Boolean);
         }
 
         function updateHeaderFavoriteCount() {
-            const total = getSaleFavorites().length + getRentalFavorites().length;
+            const saleTotal = getSaleFavorites().length;
+            const rentalTotal = getRentalFavorites().length;
+            const constructionTotal = getConstructionFavorites().length;
+            const total = saleTotal + rentalTotal + constructionTotal;
+
             const badges = document.querySelectorAll("#favorite-count-badge, #headerFavoriteCount");
             badges.forEach((badge) => {
                 badge.textContent = total;
             });
+
             totalSavedCount.textContent = total;
-            saleCount.textContent = getSaleFavorites().length;
-            rentalCount.textContent = getRentalFavorites().length;
+            saleCount.textContent = saleTotal;
+            rentalCount.textContent = rentalTotal;
+            constructionCount.textContent = constructionTotal;
         }
 
         function removeFavorite(tab, postId) {
+            const normalizedId = String(postId || "").trim();
+
             if (tab === "sale") {
-                const next = getSaleFavorites().filter(id => id !== postId);
+                const next = getSaleFavorites().filter(id => id !== normalizedId);
                 setStorageArray(FAVORITE_SALE_STORAGE_KEY, next);
-            } else {
-                const next = getRentalFavorites().filter(id => id !== postId);
+            } else if (tab === "rental") {
+                const next = getRentalFavorites().filter(id => id !== normalizedId);
                 setStorageArray(FAVORITE_RENTAL_STORAGE_KEY, next);
+            } else {
+                const next = getConstructionFavorites().filter(id => id !== normalizedId);
+                setStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY, next);
             }
 
             updateHeaderFavoriteCount();
@@ -493,14 +740,32 @@
         }
 
         function createPostId(post, index) {
-            return (
-                post.id ||
-                post.postId ||
-                post.slug ||
-                `${post.title || "tin"}-${post.city || ""}-${post.district || ""}-${index}`
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")
-            );
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
+                return String(post.id).trim();
+            }
+
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
+                return String(post.postId).trim();
+            }
+
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
+                return String(post.slug).trim();
+            }
+
+            const stableParts = [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.serviceBrand,
+                post.city,
+                post.district,
+                post.ward,
+                post.contactPhone,
+                post.createdAt,
+                index
+            ];
+
+            return stableParts.map(slugifyText).filter(Boolean).join("-") || "saved-post";
         }
 
         function parsePriceToNumber(priceText) {
@@ -533,12 +798,17 @@
         }
 
         function getCardImage(post) {
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+                return post.thumbnail;
+            }
+
             if (Array.isArray(post.images) && post.images.length) {
                 const firstImage = post.images[0];
                 if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
                 if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
                 if (firstImage && firstImage.url) return firstImage.url;
             }
+
             return FALLBACK_IMAGE;
         }
 
@@ -547,7 +817,7 @@
         }
 
         function buildPoster(post) {
-            return post.brandName || post.contactName || post.fullName || "Người đăng";
+            return post.brandName || post.contactName || post.fullName || post.serviceBrand || "Người đăng";
         }
 
         function getPosterSub(post) {
@@ -565,7 +835,11 @@
         }
 
         function getProfileUrl(post) {
-            return post.contactProfileUrl || post.profileUrl || "../pages/danh-ba-moi-gioi.html";
+            return post.contactProfileUrl || post.profileUrl || (
+                post.profileType === "doanhnghiep"
+                    ? "../pages/danh-ba-doanh-nghiep.html"
+                    : "../pages/danh-ba-moi-gioi.html"
+            );
         }
 
         function getVipLevel(post) {
@@ -617,17 +891,21 @@
         function getAllSalePosts() {
             let posts = [];
 
-            if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
-                posts = window.postStorage.getSalePosts() || [];
-            } else {
-                posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+            try {
+                if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
+                    posts = window.postStorage.getSalePosts() || [];
+                } else {
+                    posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                }
+            } catch (error) {
+                posts = [];
             }
 
             const filtered = posts.filter(post =>
                 post &&
-                post.flow === "real_estate" &&
-                post.postType === "ban" &&
-                (post.status === "approved" || post.status === "demo")
+                normalizeText(post.flow) === "real_estate" &&
+                normalizeText(post.postType) === "ban" &&
+                ["approved", "demo", "published"].includes(normalizeText(post.status))
             );
 
             return filtered.length ? filtered : fallbackSalePosts;
@@ -636,21 +914,25 @@
         function getAllRentalPosts() {
             let posts = [];
 
-            if (window.postStorage && typeof window.postStorage.getRentalPosts === "function") {
-                posts = window.postStorage.getRentalPosts() || [];
-            } else {
-                posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+            try {
+                if (window.postStorage && typeof window.postStorage.getRentalPosts === "function") {
+                    posts = window.postStorage.getRentalPosts() || [];
+                } else {
+                    posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                }
+            } catch (error) {
+                posts = [];
             }
 
             const filtered = posts.filter(post => {
                 if (!post) return false;
-                const flow = String(post.flow || "").toLowerCase().trim();
-                const postType = String(post.postType || "").toLowerCase().trim();
-                const status = String(post.status || "").toLowerCase().trim();
+                const flow = normalizeText(post.flow);
+                const postType = normalizeText(post.postType);
+                const status = normalizeText(post.status);
 
                 const isRealEstate = flow === "real_estate";
                 const isRental = postType === "thue" || postType === "cho-thue" || postType === "rent";
-                const isVisible = status === "approved" || status === "demo" || status === "pending" || status === "";
+                const isVisible = ["approved", "demo", "published", "pending", ""].includes(status);
 
                 return isRealEstate && isRental && isVisible;
             });
@@ -658,9 +940,44 @@
             return filtered.length ? filtered : fallbackRentalPosts;
         }
 
+        function getAllConstructionPosts() {
+            let posts = [];
+
+            try {
+                if (window.postStorage && typeof window.postStorage.getConstructionPosts === "function") {
+                    posts = window.postStorage.getConstructionPosts() || [];
+                } else if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    posts = window.postStorage.getAllPosts() || [];
+                } else {
+                    posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                }
+            } catch (error) {
+                posts = [];
+            }
+
+            const filtered = posts.filter(post =>
+                post &&
+                (normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung") &&
+                ["approved", "demo", "published"].includes(normalizeText(post.status))
+            );
+
+            return filtered.length ? filtered : fallbackConstructionPosts;
+        }
+
         function getSavedPostsByTab(tab) {
-            const posts = tab === "sale" ? getAllSalePosts() : getAllRentalPosts();
-            const favoriteIds = tab === "sale" ? getSaleFavorites() : getRentalFavorites();
+            let posts = [];
+            let favoriteIds = [];
+
+            if (tab === "sale") {
+                posts = getAllSalePosts();
+                favoriteIds = getSaleFavorites();
+            } else if (tab === "rental") {
+                posts = getAllRentalPosts();
+                favoriteIds = getRentalFavorites();
+            } else {
+                posts = getAllConstructionPosts();
+                favoriteIds = getConstructionFavorites();
+            }
 
             return posts.filter((post, index) => favoriteIds.includes(createPostId(post, index)));
         }
@@ -692,7 +1009,7 @@
 
             return `
                 <article class="listing-card">
-                    <div class="card-image-box shrink-0">
+                    <div class="card-image-box">
                         <a href="${detailUrl}" aria-label="${title}">
                             <img
                                 src="${imageUrl}"
@@ -787,6 +1104,7 @@
         function renderRentalCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
+            const profileUrl = getProfileUrl(post);
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Tin cho thuê bất động sản");
             const price = escapeHtml(post.propertyPrice || "Liên hệ");
@@ -811,7 +1129,7 @@
 
             return `
                 <article class="listing-card">
-                    <div class="card-image-box shrink-0">
+                    <div class="card-image-box">
                         <a href="${detailUrl}" aria-label="${title}">
                             <img
                                 src="${imageUrl}"
@@ -865,7 +1183,7 @@
                         </div>
 
                         <div class="flex justify-between items-center mt-4 pt-3 border-t gap-4 flex-wrap">
-                            <a href="../pages/danh-ba-moi-gioi.html" class="broker-link group">
+                            <a href="${profileUrl}" class="broker-link group">
                                 <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs shrink-0">
                                     ${avatarText}
                                 </div>
@@ -899,10 +1217,121 @@
             `;
         }
 
+        function renderConstructionCard(post, index) {
+            const postId = createPostId(post, index);
+            const detailUrl = getDetailUrl(post, postId);
+            const profileUrl = getProfileUrl(post);
+            const imageUrl = escapeHtml(getCardImage(post));
+            const title = escapeHtml(post.title || "Dịch vụ xây dựng");
+            const company = escapeHtml(buildPoster(post));
+            const role = escapeHtml(getPosterSub(post));
+            const price = escapeHtml(post.servicePrice || "Liên hệ");
+            const area = escapeHtml(post.serviceArea || [post.ward, post.city].filter(Boolean).join(", ") || "Đang cập nhật");
+            const specialty = escapeHtml(post.serviceSpecialty || "Đang cập nhật");
+            const exp = escapeHtml(post.serviceExp || "Đang cập nhật");
+            const avatarText = escapeHtml(getAvatarText(post));
+            const phoneRaw = post.contactPhone || post.phone || "";
+            const phoneText = escapeHtml(phoneRaw || "Liên hệ");
+            const phoneLink = normalizePhone(phoneRaw);
+            const description = escapeHtml(post.description || "Đang cập nhật mô tả dịch vụ.");
+            const imageCount = Array.isArray(post.images) ? post.images.length : 1;
+            const serviceType = escapeHtml(post.serviceType || "Dịch vụ xây dựng");
+
+            return `
+                <article class="listing-card">
+                    <div class="card-image-box">
+                        <a href="${detailUrl}" aria-label="${title}">
+                            <img
+                                src="${imageUrl}"
+                                alt="${title}"
+                                loading="lazy"
+                                decoding="async"
+                                onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'"
+                            >
+                        </a>
+
+                        <div class="absolute top-3 left-3">
+                            <span class="service-badge">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                ${serviceType}
+                            </span>
+                        </div>
+
+                        <div class="absolute bottom-3 left-3">
+                            <span class="image-count-badge">
+                                <i class="fa-regular fa-image"></i> ${imageCount}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-3">
+                                <a href="${profileUrl}" class="broker-link group min-w-0">
+                                    <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs shrink-0">
+                                        ${avatarText}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="broker-name text-sm font-bold text-gray-700 truncate transition">${company}</p>
+                                        <p class="text-[11px] text-gray-400">${role}</p>
+                                    </div>
+                                </a>
+
+                                <span class="meta-chip">
+                                    <i class="fa-solid fa-flask"></i> Demo
+                                </span>
+                            </div>
+
+                            <h3 class="card-title font-bold text-[16px] text-gray-800 leading-snug hover:text-[--vip-color] transition">
+                                <a href="${detailUrl}">${title}</a>
+                            </h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-[12px] text-slate-500">
+                                <div><strong class="text-slate-700">Đơn giá / báo giá:</strong> ${price}</div>
+                                <div><strong class="text-slate-700">Khu vực:</strong> ${area}</div>
+                                <div><strong class="text-slate-700">Chuyên môn:</strong> ${specialty}</div>
+                                <div><strong class="text-slate-700">Năng lực:</strong> ${exp}</div>
+                            </div>
+
+                            <p class="card-desc text-gray-500 text-sm mt-4 italic">${description}</p>
+                        </div>
+
+                        <div class="flex justify-between items-center mt-4 pt-3 border-t gap-4 flex-wrap">
+                            <div class="text-[12px] text-slate-500">
+                                <strong class="text-slate-700">Vai trò:</strong> ${role}
+                            </div>
+
+                            <div class="flex gap-2 flex-wrap">
+                                ${phoneLink
+                                    ? `<a href="tel:${phoneLink}" class="view-btn flex items-center gap-2">
+                                            <i class="fa-solid fa-phone"></i> ${phoneText}
+                                       </a>`
+                                    : `<button class="view-btn flex items-center gap-2 cursor-default">
+                                            <i class="fa-solid fa-phone"></i> ${phoneText}
+                                       </button>`
+                                }
+
+                                <a href="${detailUrl}" class="subtle-view-btn flex items-center gap-2">
+                                    <i class="fa-solid fa-eye"></i> Xem chi tiết
+                                </a>
+
+                                <button type="button" class="remove-btn flex items-center gap-2" onclick="removeFavorite('construction','${escapeHtml(postId).replace(/'/g, "\\'")}')">
+                                    <i class="fa-solid fa-trash-can"></i> Bỏ lưu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
         function switchTab(tab) {
             currentTab = tab;
+
             saleTabBtn.classList.toggle("active", tab === "sale");
             rentalTabBtn.classList.toggle("active", tab === "rental");
+            constructionTabBtn.classList.toggle("active", tab === "construction");
+
             renderSavedListings();
         }
 
@@ -922,14 +1351,48 @@
             }
 
             savedListingContainer.innerHTML = savedPosts
-                .map((post, index) => currentTab === "sale" ? renderSaleCard(post, index) : renderRentalCard(post, index))
+                .map((post, index) => {
+                    if (currentTab === "sale") return renderSaleCard(post, index);
+                    if (currentTab === "rental") return renderRentalCard(post, index);
+                    return renderConstructionCard(post, index);
+                })
                 .join("");
+        }
+
+        function renderSidebarList(container, items) {
+            container.innerHTML = items.map(function (item) {
+                return `
+                    <a href="${escapeHtml(item.url || '#')}" class="sidebar-item">
+                        <div class="sidebar-item-title">${escapeHtml(item.title || "Nội dung đang cập nhật")}</div>
+                        <div class="sidebar-item-sub">${escapeHtml(item.subtitle || "Thông tin chi tiết sẽ được cập nhật thêm.")}</div>
+                    </a>
+                `;
+            }).join("");
+        }
+
+        function getSidebarNewsItems() {
+            return fallbackNewsItems;
+        }
+
+        function getSidebarProjectItems() {
+            return fallbackProjectItems;
+        }
+
+        function renderSidebars() {
+            renderSidebarList(newsSidebarList, getSidebarNewsItems());
+            renderSidebarList(projectSidebarList, getSidebarProjectItems());
         }
 
         window.addEventListener("load", () => {
             updateHeaderFavoriteCount();
             renderSavedListings();
+            renderSidebars();
             setTimeout(updateHeaderFavoriteCount, 400);
+        });
+
+        window.addEventListener("storage", function () {
+            updateHeaderFavoriteCount();
+            renderSavedListings();
         });
 
         window.switchTab = switchTab;
