@@ -1,584 +1,1531 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToamViet.com.vn - Kênh thông tin bất động sản số 1 Việt Nam</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="assets/css/main.css">
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
 
     <style>
         :root {
-            --vip-color: #008B8B;
-            --hover-color: #FF8C00;
+            --vip-color: #008b8b;
+            --hover-color: #ff8c00;
+            --soft-bg: #f5f7fa;
+            --text-main: #2c2c2c;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f2f2f2;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--soft-bg);
+            color: var(--text-main);
+            margin: 0;
         }
 
         .container-custom {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 15px;
         }
 
-        /* Menu & Hover */
-        .nav-link {
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--hover-color) !important;
-        }
-
-        /* Dropdown Danh bạ */
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
-            z-index: 100;
-            border-top: 3px solid var(--vip-color);
-            padding: 10px 0;
-        }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            display: block;
-            color: #333;
-            font-size: 14px;
-        }
-
-        .dropdown-item:hover {
-            background: #f9f9f9;
-            color: var(--hover-color);
-        }
-
-        /* Icon Lưu tin */
-        .save-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .save-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background: #E03C31;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            font-weight: bold;
-        }
-
-        /* Search Banner */
-        .search-tab.active {
-            background: rgba(0,0,0,0.7);
-            color: white;
-            border-radius: 4px 4px 0 0;
-        }
-
-        /* Section Title */
         .section-title {
             font-size: 24px;
-            font-weight: 700;
-            color: #2C2C2C;
-            margin-bottom: 24px;
+            font-weight: 800;
+            color: #2c2c2c;
+            margin: 0;
+            text-transform: uppercase;
         }
 
-        /* Footer SEO */
-        .footer-link-group h4 {
-            font-weight: 700;
+        .hero-banner {
+            position: relative;
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-banner img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(2, 6, 23, 0.18) 0%, rgba(2, 6, 23, 0.46) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1040px;
+            padding: 0 16px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 9px 15px;
+            border-radius: 999px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-size: 40px;
+            line-height: 1.25;
+            color: white;
+            font-weight: 900;
+            max-width: 840px;
+            margin: 0 auto 12px;
+            text-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+        }
+
+        .hero-desc {
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.94);
+            max-width: 820px;
+            margin: 0 auto 24px;
+        }
+
+        .search-tabs {
+            display: inline-flex;
+            gap: 6px;
+            margin-bottom: 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-tab {
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 14px 14px 0 0;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: rgba(15, 23, 42, 0.35);
+            color: white;
+        }
+
+        .search-tab.active {
+            background: rgba(15, 23, 42, 0.82);
+        }
+
+        .vip-filter-wrap {
+            background: rgba(15, 23, 42, 0.58);
+            padding: 10px;
+            border-radius: 22px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .vip-filter-panel {
+            background: rgba(255,255,255,0.98);
+            border-radius: 18px;
+            padding: 12px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.7);
+        }
+
+        .vip-filter-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.95fr) minmax(0, 0.95fr) auto;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .vip-input,
+        .vip-select {
+            width: 100%;
+            min-height: 54px;
+            border: 1px solid #dbe3eb;
+            background: #fff;
+            border-radius: 14px;
+            padding: 0 15px;
             font-size: 14px;
-            margin-bottom: 15px;
-            color: #2C2C2C;
+            color: #334155;
+            outline: none;
+            transition: all 0.25s ease;
         }
 
-        .footer-link-group ul li {
-            margin-bottom: 8px;
+        .vip-input:focus,
+        .vip-select:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.08);
+        }
+
+        .vip-submit-btn {
+            min-height: 54px;
+            border: none;
+            border-radius: 14px;
+            padding: 0 24px;
+            background: linear-gradient(135deg, #008b8b, #0f766e);
+            color: white;
             font-size: 13px;
-            color: #555;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 24px rgba(0, 139, 139, 0.22);
+            white-space: nowrap;
         }
 
-        .footer-link-group ul li a:hover {
-            color: var(--hover-color);
+        .vip-submit-btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.96;
+        }
+
+        .intro-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 22px;
+        }
+
+        .intro-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+        }
+
+        .intro-card .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #94a3b8;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .intro-card .value {
+            font-size: 14px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .section-shell {
+            padding: 54px 0;
+        }
+
+        .section-shell.white {
+            background: #fff;
+            border-top: 1px solid #edf2f7;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .section-link {
+            color: var(--vip-color);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .section-link:hover {
             text-decoration: underline;
         }
 
-        /* News Section Styles */
+        .listing-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: 0.28s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .listing-card:hover {
+            border-color: rgba(0, 139, 139, 0.38);
+            box-shadow: 0 12px 30px rgba(2, 132, 199, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .listing-thumb {
+            position: relative;
+            height: 208px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
+        }
+
+        .listing-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.45s ease;
+        }
+
+        .listing-card:hover .listing-thumb img {
+            transform: scale(1.05);
+        }
+
+        .favorite-float-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.72);
+            background: rgba(255,255,255,0.95);
+            color: #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+            transition: 0.25s ease;
+        }
+
+        .favorite-float-btn.active {
+            color: #dc2626;
+            background: #fff5f5;
+            border-color: #fecaca;
+        }
+
+        .vip-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: 1px solid rgba(255,255,255,0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        .vip-badge.kim-cuong {
+            background: linear-gradient(135deg, rgba(34,211,238,0.94), rgba(37,99,235,0.94));
+            color: #fff;
+        }
+
+        .vip-badge.vang {
+            background: linear-gradient(135deg, rgba(251,191,36,0.94), rgba(245,158,11,0.94));
+            color: #fff;
+        }
+
+        .vip-badge.bac {
+            background: linear-gradient(135deg, rgba(226,232,240,0.94), rgba(148,163,184,0.94));
+            color: #1f2937;
+        }
+
+        .vip-badge.dong {
+            background: linear-gradient(135deg, rgba(251,146,60,0.94), rgba(180,83,9,0.94));
+            color: #fff;
+        }
+
+        .service-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: linear-gradient(135deg, rgba(0,139,139,0.94), rgba(15,118,110,0.94));
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.65);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        .listing-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .listing-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1.5;
+            min-height: 42px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .listing-title:hover {
+            color: var(--vip-color);
+        }
+
+        .listing-price-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .listing-price {
+            color: #dc2626;
+        }
+
+        .listing-area {
+            color: var(--vip-color);
+        }
+
+        .listing-location {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .listing-submeta {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .listing-submeta strong {
+            color: #334155;
+        }
+
+        .listing-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #eef2f7;
+            flex-wrap: wrap;
+        }
+
+        .poster-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            text-decoration: none;
+        }
+
+        .poster-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            background: #0f766e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .poster-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        .poster-role {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .listing-btn {
+            min-height: 38px;
+            padding: 0 14px;
+            border-radius: 10px;
+            background: var(--vip-color);
+            color: white;
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: 0.25s ease;
+        }
+
+        .listing-btn:hover {
+            opacity: 0.92;
+        }
+
+        .project-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: 0.28s ease;
+            text-decoration: none;
+            display: block;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+            border-color: rgba(0, 139, 139, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .project-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .project-status.soon {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .project-status.live {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .company-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 18px 14px;
+            text-align: center;
+            transition: 0.25s ease;
+            text-decoration: none;
+            display: block;
+            height: 100%;
+        }
+
+        .company-card:hover {
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+            transform: translateY(-2px);
+            border-color: rgba(0, 139, 139, 0.35);
+        }
+
+        .company-avatar {
+            width: 76px;
+            height: 76px;
+            border-radius: 999px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f766e, #008b8b);
+            color: white;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .agent-desktop-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .agent-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 18px 14px;
+            text-align: center;
+            transition: 0.25s ease;
+            text-decoration: none;
+            display: block;
+            height: 100%;
+        }
+
+        .agent-card:hover {
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+            border-color: rgba(0, 139, 139, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .agent-avatar {
+            width: 74px;
+            height: 74px;
+            border-radius: 999px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a, #334155);
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .agent-mobile-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            min-height: 102px;
+        }
+
+        .agent-mobile-card .avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #0f172a, #334155);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: repeat(2, 250px);
+            gap: 16px;
+        }
+
+        .location-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+        }
+
+        .location-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .location-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .location-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.78));
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            padding: 24px;
+            color: white;
+        }
+
         .news-card-img {
             height: 350px;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
         }
 
         .news-side-img {
-            width: 100px;
-            height: 75px;
-            border-radius: 8px;
+            width: 110px;
+            height: 78px;
+            border-radius: 10px;
             object-fit: cover;
+            flex-shrink: 0;
         }
 
-        /* NÚT GO TO TOP & CHAT */
-        #goToTop {
-            display: none;
-            position: fixed;
-            bottom: 100px;
-            right: 25px;
-            z-index: 999;
-            width: 45px;
-            height: 45px;
-            background-color: #fff;
-            color: #333;
-            border: 1px solid #ddd;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        #goToTop:hover {
-            background-color: #f8f8f8;
-            transform: translateY(-3px);
-        }
-
-        .zalo-chat-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 20px;
-            z-index: 999;
-            width: 55px;
-            height: 55px;
-            background-color: var(--vip-color);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 139, 139, 0.4);
-            transition: all 0.3s;
-        }
-
-        .zalo-chat-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .wiggle {
-            animation: wiggle-ani 2s infinite;
-        }
-
-        @keyframes wiggle-ani {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-
-        #chatForm {
-            display: none;
-            position: fixed;
-            bottom: 95px;
-            right: 20px;
-            width: 320px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            z-index: 1000;
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background: var(--vip-color);
-            color: white;
-            padding: 15px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-body {
+        .empty-box {
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 16px;
             padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
         }
 
-        .chat-body input,
-        .chat-body textarea {
+        .swiper {
             width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            box-sizing: border-box;
-            outline: none;
         }
 
-        .btn-send {
-            width: 100%;
-            background: var(--vip-color);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--vip-color) !important;
+            width: 42px !important;
+            height: 42px !important;
+            background: white;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+            border-radius: 999px;
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 13px !important;
+            font-weight: 900;
+        }
+
+        .swiper-button-disabled {
+            opacity: 0.38 !important;
+        }
+
+        .desktop-only {
+            display: block;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        @media (max-width: 1100px) {
+            .vip-filter-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .vip-filter-grid .vip-submit-wrap {
+                grid-column: span 2;
+            }
+
+            .vip-submit-btn {
+                width: 100%;
+            }
+
+            .intro-strip {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .agent-desktop-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 991px) {
+            .desktop-only {
+                display: none !important;
+            }
+
+            .mobile-only {
+                display: block !important;
+            }
+
+            .hero-banner {
+                min-height: 500px;
+            }
+
+            .hero-title {
+                font-size: 30px;
+            }
+
+            .location-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 220px 220px 220px;
+            }
+
+            .location-grid .location-main {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-shell {
+                padding: 42px 0;
+            }
+
+            .hero-banner {
+                min-height: 480px;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-desc {
+                font-size: 14px;
+            }
+
+            .vip-filter-panel {
+                padding: 10px;
+            }
+
+            .vip-filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vip-filter-grid .vip-submit-wrap {
+                grid-column: span 1;
+            }
+
+            .vip-input,
+            .vip-select,
+            .vip-submit-btn {
+                min-height: 50px;
+            }
+
+            .intro-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .location-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(3, 220px);
+            }
+
+            .location-grid .location-main {
+                grid-column: span 1;
+            }
+
+            .news-card-img {
+                height: 250px;
+            }
+
+            .news-side-img {
+                width: 92px;
+                height: 70px;
+            }
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                display: none !important;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
 
-    <header class="bg-white border-b sticky top-0 z-[1000]">
-        <div class="container-custom h-[70px] flex justify-between items-center">
-            <div class="flex items-center gap-8">
-                <a href="index.html">
-                    <img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
-                </a>
+    <section class="hero-banner">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920" alt="Banner bất động sản" />
+        <div class="hero-overlay"></div>
 
-                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="pages/du-an.html" class="nav-link">Dự án</a>
-                    <a href="pages/tin-tuc.html" class="nav-link">Tin tức</a>
-                    <a href="pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
-                    <a href="pages/xay-dung.html" class="nav-link">Xây dựng</a>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fa-solid fa-gem"></i>
+                Nền tảng bất động sản & xây dựng
+            </div>
 
-                    <div class="dropdown relative h-full flex items-center cursor-pointer">
-                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
-                        <div class="dropdown-menu">
-                            <a href="pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
+            <h1 class="hero-title">Tìm đúng bất động sản, dự án, nhà thầu và doanh nghiệp phù hợp tại ToamViet</h1>
+            <p class="hero-desc">
+                Dữ liệu nhà đất bán, cho thuê, dự án, xây dựng, doanh nghiệp và môi giới được gom về một nơi để người dùng tìm kiếm nhanh hơn, dễ hơn và đúng nhu cầu hơn.
+            </p>
+
+            <div class="search-tabs">
+                <button class="search-tab active">Bán</button>
+                <button class="search-tab">Cho thuê</button>
+                <button class="search-tab">Dự án</button>
+                <button class="search-tab">Xây dựng</button>
+            </div>
+
+            <div class="vip-filter-wrap">
+                <div class="vip-filter-panel">
+                    <div class="vip-filter-grid">
+                        <input id="heroKeyword" type="text" class="vip-input" placeholder="Tìm nhanh: Vinhomes, căn hộ, Quận 2, xây nhà trọn gói..." />
+
+                        <select id="heroCategory" class="vip-select">
+                            <option value="sale">Nhà đất bán</option>
+                            <option value="rental">Nhà đất cho thuê</option>
+                            <option value="project">Dự án</option>
+                            <option value="construction">Xây dựng</option>
+                        </select>
+
+                        <select id="heroLocation" class="vip-select">
+                            <option value="">Toàn quốc</option>
+                        </select>
+
+                        <div class="vip-submit-wrap">
+                            <button id="heroSearchBtn" class="vip-submit-btn">
+                                <i class="fa-solid fa-magnifying-glass mr-2"></i>
+                                Tìm kiếm ngay
+                            </button>
                         </div>
                     </div>
-                </nav>
-            </div>
-
-            <div class="flex items-center gap-5">
-                <div class="save-icon nav-link text-gray-600">
-                    <i class="fa-regular fa-heart"></i>
-                    <span class="save-count">0</span>
                 </div>
+            </div>
 
-                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
-                    <a href="auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="auth/dang-ky.html" class="nav-link">Đăng ký</a>
+            <div class="intro-strip">
+                <div class="intro-card">
+                    <div class="label">Nguồn dữ liệu</div>
+                    <div class="value">Nhà đất bán, cho thuê, dự án, xây dựng, doanh nghiệp, môi giới</div>
                 </div>
-
-                <a href="user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
-                    Đăng tin
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <section class="relative h-[480px] flex items-center justify-center overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920" alt="Banner bất động sản" class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/30"></div>
-
-        <div class="relative z-10 w-full max-w-[850px] px-4 text-center">
-            <div class="flex justify-center gap-1 mb-0">
-                <button class="search-tab active px-6 py-2.5 text-white font-bold uppercase text-[12px]">Bán</button>
-                <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px] hover:bg-black/40">Cho thuê</button>
-                <button class="search-tab px-6 py-2.5 text-white font-bold uppercase text-[12px] hover:bg-black/40">Dự án</button>
-            </div>
-
-            <div class="bg-black/60 p-2 rounded-lg backdrop-blur-md">
-                <div class="bg-white rounded flex items-center p-1 shadow-2xl">
-                    <input type="text" placeholder="Tìm nhanh: Vinhomes, Quận 2, Nhà phố..." class="flex-1 p-3.5 outline-none text-[15px]">
-                    <div class="hidden md:flex border-l px-5 items-center gap-2 cursor-pointer text-gray-600 font-medium whitespace-nowrap">
-                        <span>Trên toàn quốc</span>
-                        <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                    </div>
-                    <button class="bg-[#008B8B] text-white px-10 py-3.5 rounded font-bold flex items-center gap-2 hover:opacity-90 transition">
-                        <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
-                    </button>
+                <div class="intro-card">
+                    <div class="label">Ưu tiên hiển thị</div>
+                    <div class="value">Hỗ trợ phân loại VIP để làm nổi bật nội dung quan trọng</div>
+                </div>
+                <div class="intro-card">
+                    <div class="label">Theo khu vực</div>
+                    <div class="value">Tổng hợp dữ liệu theo tỉnh / thành giúp tìm theo địa điểm nhanh hơn</div>
+                </div>
+                <div class="intro-card">
+                    <div class="label">Mở rộng</div>
+                    <div class="value">Kết nối luôn với hệ danh bạ doanh nghiệp và môi giới trên hệ thống</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-12 container-custom">
-        <div class="flex justify-between items-end mb-8">
-            <h2 class="section-title mb-0">Bất động sản dành cho bạn</h2>
-            <a href="pages/nha-dat-ban.html" class="text-[#008B8B] font-semibold hover:underline text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition cursor-pointer group">
-                <div class="relative h-[180px] overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1560448204-61dc36dc98c8?w=400" alt="Căn hộ Diamond Alnata Plus" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute top-2 right-2 bg-white/90 p-2 rounded-full shadow-sm hover:text-red-500"><i class="fa-regular fa-heart"></i></div>
+    <main>
+        <!-- HÀNG 1: NHÀ ĐẤT BÁN -->
+        <section class="section-shell">
+            <div class="container-custom">
+                <div class="section-head">
+                    <h2 class="section-title">Bất động sản dành cho bạn - Nhà đất bán</h2>
+                    <a href="pages/nha-dat-ban.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-[14px] line-clamp-2 h-10 group-hover:text-[#008B8B]">Căn hộ Diamond Alnata Plus - Khu đô thị Celadon City</h3>
-                    <div class="flex items-center gap-3 text-[#008B8B] font-bold text-[16px] mt-2">
-                        <span>4.2 tỷ</span><span>85 m²</span>
+
+                <div id="saleDesktopGrid" class="desktop-only grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+                <div class="mobile-only">
+                    <div class="swiper saleSwiper">
+                        <div id="saleMobileWrapper" class="swiper-wrapper"></div>
                     </div>
-                    <p class="text-gray-500 text-[12px] mt-3"><i class="fa-solid fa-location-dot mr-1"></i> Tân Phú, TP.HCM</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="py-12 bg-white border-y">
-        <div class="container-custom relative">
-            <h2 class="section-title">Dự án bất động sản nổi bật</h2>
+        <!-- HÀNG 2: NHÀ ĐẤT CHO THUÊ -->
+        <section class="section-shell white">
+            <div class="container-custom">
+                <div class="section-head">
+                    <h2 class="section-title">Bất động sản dành cho bạn - Nhà đất cho thuê</h2>
+                    <a href="pages/nha-dat-cho-thue.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
 
-            <div class="swiper projectSwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide bg-white rounded-lg overflow-hidden border">
-                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500" alt="Dự án Bcons NewSky" class="w-full h-44 object-cover">
-                        <div class="p-4">
-                            <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold uppercase">Sắp mở bán</span>
-                            <h4 class="font-bold mt-2 text-[15px]">Bcons NewSky</h4>
-                            <p class="text-gray-500 text-[13px] mt-1">Thuận An, Bình Dương</p>
+                <div id="rentalDesktopGrid" class="desktop-only grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+                <div class="mobile-only">
+                    <div class="swiper rentalSwiper">
+                        <div id="rentalMobileWrapper" class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DỰ ÁN -->
+        <section class="section-shell">
+            <div class="container-custom relative">
+                <div class="section-head">
+                    <h2 class="section-title">Dự án bất động sản nổi bật</h2>
+                    <a href="pages/du-an.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+
+                <div class="swiper projectSwiper">
+                    <div id="projectWrapper" class="swiper-wrapper"></div>
+                    <div class="swiper-button-next project-next"></div>
+                    <div class="swiper-button-prev project-prev"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- XÂY DỰNG -->
+        <section class="section-shell white">
+            <div class="container-custom">
+                <div class="section-head">
+                    <h2 class="section-title">Dịch vụ xây dựng nổi bật</h2>
+                    <a href="pages/xay-dung.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+
+                <div class="desktop-only grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="constructionDesktopGrid"></div>
+
+                <div class="mobile-only">
+                    <div class="swiper constructionSwiper">
+                        <div id="constructionMobileWrapper" class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOANH NGHIỆP -->
+        <section class="section-shell">
+            <div class="container-custom">
+                <div class="section-head">
+                    <h2 class="section-title">Doanh nghiệp tiêu biểu</h2>
+                    <a href="pages/danh-ba-doanh-nghiep.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+
+                <div class="swiper companySwiper">
+                    <div id="companyWrapper" class="swiper-wrapper"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÔI GIỚI -->
+        <section class="section-shell white">
+            <div class="container-custom">
+                <div class="section-head">
+                    <h2 class="section-title">Môi giới tiêu biểu</h2>
+                    <a href="pages/danh-ba-moi-gioi.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+
+                <div id="agentDesktopGrid" class="desktop-only agent-desktop-grid"></div>
+
+                <div class="mobile-only">
+                    <div class="swiper agentMobileSwiper">
+                        <div id="agentMobileWrapper" class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THEO ĐỊA ĐIỂM -->
+        <section class="section-shell">
+            <div class="container-custom">
+                <div class="section-head">
+                    <h2 class="section-title">Bất động sản theo địa điểm</h2>
+                    <a href="pages/gia-nha-dat.html" class="section-link">Xem chi tiết <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+
+                <div id="locationGrid" class="location-grid"></div>
+            </div>
+        </section>
+
+        <!-- TIN TỨC -->
+        <section class="section-shell white">
+            <div class="container-custom">
+                <div class="section-head">
+                    <h2 class="section-title">Tin tức bất động sản</h2>
+                    <a href="pages/tin-tuc.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    <a href="pages/tin-tuc.html" class="lg:col-span-2 group cursor-pointer block">
+                        <div class="news-card-img">
+                            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800" alt="Tin tức bất động sản nổi bật" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                         </div>
-                    </div>
+                        <h3 class="mt-4 text-[20px] font-bold group-hover:text-[--vip-color] transition">
+                            Thị trường bất động sản năm 2026: Những phân khúc nào sẽ dẫn đầu xu hướng?
+                        </h3>
+                        <p class="text-gray-500 mt-2 text-sm leading-relaxed">
+                            Theo các chuyên gia, dòng tiền đang có xu hướng quay lại các sản phẩm phục vụ nhu cầu thực như căn hộ tầm trung, đất nền vùng ven có pháp lý sạch và nhóm tài sản khai thác được dòng tiền thật.
+                        </p>
+                    </a>
 
-                    <div class="swiper-slide bg-white rounded-lg overflow-hidden border">
-                        <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500" alt="Dự án Vinhomes Global Gate" class="w-full h-44 object-cover">
-                        <div class="p-4">
-                            <span class="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded font-bold uppercase">Đang mở bán</span>
-                            <h4 class="font-bold mt-2 text-[15px]">Vinhomes Global Gate</h4>
-                            <p class="text-gray-500 text-[13px] mt-1">Đông Anh, Hà Nội</p>
-                        </div>
-                    </div>
-                </div>
+                    <div class="space-y-6">
+                        <a href="pages/tin-tuc.html" class="flex gap-4 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1448630360428-65ff2c0257ef?w=200" alt="Lãi suất ngân hàng giảm sâu" class="news-side-img" />
+                            <div>
+                                <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[--vip-color] transition">
+                                    Lãi suất ngân hàng tiếp tục giảm sâu, cơ hội vàng cho người mua nhà?
+                                </h4>
+                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Tin tức thị trường</p>
+                            </div>
+                        </a>
 
-                <div class="swiper-button-next !text-[#008B8B] !w-10 !h-10 bg-white shadow-md rounded-full after:!text-sm"></div>
-                <div class="swiper-button-prev !text-[#008B8B] !w-10 !h-10 bg-white shadow-md rounded-full after:!text-sm"></div>
-            </div>
-        </div>
-    </section>
+                        <a href="pages/tin-tuc.html" class="flex gap-4 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1592595894519-02319c2ec51f?w=200" alt="Dự án mới miền Trung" class="news-side-img" />
+                            <div>
+                                <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[--vip-color] transition">
+                                    Vingroup công bố thêm siêu dự án mới tại khu vực miền Trung
+                                </h4>
+                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Chuyên mục dự án</p>
+                            </div>
+                        </a>
 
-    <section class="py-16 container-custom">
-        <h2 class="section-title">Bất động sản theo địa điểm</h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 h-[500px]">
-            <div class="md:col-span-2 md:row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800" alt="Bất động sản TP Hồ Chí Minh" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-8 flex flex-col justify-end text-white">
-                    <h4 class="text-2xl font-bold">TP. Hồ Chí Minh</h4>
-                    <p class="text-sm font-medium opacity-90">23.815 tin đăng</p>
-                </div>
-            </div>
-
-            <div class="relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=400" alt="Bất động sản Hà Nội" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-6 flex flex-col justify-end text-white">
-                    <h4 class="text-lg font-bold">Hà Nội</h4>
-                    <p class="text-xs opacity-90">13.308 tin đăng</p>
-                </div>
-            </div>
-
-            <div class="relative rounded-2xl overflow-hidden cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1559592481-74488ea56144?w=400" alt="Bất động sản Đà Nẵng" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-6 flex flex-col justify-end text-white">
-                    <h4 class="text-lg font-bold">Đà Nẵng</h4>
-                    <p class="text-xs opacity-90">536 tin đăng</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-16 bg-white border-y">
-        <div class="container-custom">
-            <div class="flex justify-between items-end mb-8">
-                <h2 class="section-title mb-0">Tin tức bất động sản</h2>
-                <a href="pages/tin-tuc.html" class="text-[#008B8B] font-semibold hover:underline text-[14px]">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                <div class="lg:col-span-2 group cursor-pointer">
-                    <div class="news-card-img">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800" alt="Tin tức bất động sản nổi bật" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <h3 class="mt-4 text-[20px] font-bold group-hover:text-[#008B8B]">Thị trường bất động sản năm 2026: Những phân khúc nào sẽ dẫn đầu xu hướng?</h3>
-                    <p class="text-gray-500 mt-2 text-sm leading-relaxed">Theo các chuyên gia, dòng tiền đang có xu hướng quay lại các sản phẩm phục vụ nhu cầu thực như căn hộ tầm trung và đất nền vùng ven có pháp lý sạch...</p>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="flex gap-4 cursor-pointer group">
-                        <img src="https://images.unsplash.com/photo-1448630360428-65ff2c0257ef?w=200" alt="Lãi suất ngân hàng giảm sâu" class="news-side-img">
-                        <div>
-                            <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[#008B8B]">Lãi suất ngân hàng tiếp tục giảm sâu, cơ hội vàng cho người mua nhà?</h4>
-                            <p class="text-[12px] text-gray-400 mt-1">2 giờ trước</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 cursor-pointer group">
-                        <img src="https://images.unsplash.com/photo-1592595894519-02319c2ec51f?w=200" alt="Dự án mới miền Trung" class="news-side-img">
-                        <div>
-                            <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[#008B8B]">Vingroup công bố thêm siêu dự án mới tại khu vực miền Trung</h4>
-                            <p class="text-[12px] text-gray-400 mt-1">5 giờ trước</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 cursor-pointer group">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=200" alt="Cẩm nang pháp lý mua đất nền" class="news-side-img">
-                        <div>
-                            <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[#008B8B]">Cẩm nang pháp lý: Những lưu ý khi mua đất nền dự án</h4>
-                            <p class="text-[12px] text-gray-400 mt-1">1 ngày trước</p>
-                        </div>
+                        <a href="pages/tin-tuc.html" class="flex gap-4 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=200" alt="Cẩm nang pháp lý mua đất nền" class="news-side-img" />
+                            <div>
+                                <h4 class="text-[14px] font-bold line-clamp-2 group-hover:text-[--vip-color] transition">
+                                    Cẩm nang pháp lý: Những lưu ý khi mua đất nền dự án
+                                </h4>
+                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Cẩm nang pháp lý</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <footer class="bg-white pt-16 border-t">
-        <div class="container-custom">
-            <div class="mb-12 border-b pb-12">
-                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
-                </p>
-            </div>
+    <div id="site-footer"></div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                <div class="footer-link-group">
-                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
-                        <li><a href="pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
-                        <li><a href="pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
-                        <li><a href="pages/tin-tuc.html">Báo cáo thị trường</a></li>
-                    </ul>
-                </div>
+    <button id="goToTop" onclick="safeScrollToTop()">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
-                    <ul>
-                        <li><a href="pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
-                        <li><a href="pages/nha-dat-ban.html">Bán nhà riêng</a></li>
-                        <li><a href="pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
-                        <li><a href="pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul>
-                        <li><a href="pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
-                        <li><a href="pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
-                        <li><a href="pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
-                        <li><a href="pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-link-group">
-                    <h4>DỰ ÁN NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="pages/du-an.html">Dự án Vinhomes</a></li>
-                        <li><a href="pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
-                        <li><a href="pages/du-an.html">Đất nền Bình Dương</a></li>
-                        <li><a href="pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
-                <div class="max-w-sm">
-                    <img src="DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6">
-                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
-                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
-                    <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-10 text-[13px]">
-                    <div>
-                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="#" class="hover:text-orange-500">Về chúng tôi</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="w-full lg:max-w-xs">
-                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
-                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
-                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm">
-                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                    <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
-                </div>
-            </div>
-
-            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
-                <p>© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
-            </div>
-        </div>
-    </footer>
-
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
-
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
-            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
-            <input type="text" id="cusName" placeholder="Tên của bạn..." required>
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
             <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
         </div>
     </div>
 
+    <script src="assets/js/user-storage.js"></script>
+    <script src="assets/js/post-storage.js"></script>
+    <script src="assets/js/project-service.js"></script>
+    <script src="assets/js/component-loader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <script>
-        if (document.querySelector(".projectSwiper")) {
-            new Swiper(".projectSwiper", {
-                slidesPerView: 1,
-                spaceBetween: 20,
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev"
-                },
-                breakpoints: {
-                    640: { slidesPerView: 2 },
-                    1024: { slidesPerView: 4 }
-                }
-            });
+        const FALLBACK_IMAGE = "assets/images/fallback-property.jpg";
+        const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
+        const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
+        const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
+
+        const fallbackSalePosts = [
+            {
+                id: "home-sale-1",
+                title: "Căn hộ Diamond Alnata Plus - Khu đô thị Celadon City",
+                propertyType: "Căn hộ",
+                propertyPrice: "4.2 tỷ",
+                propertyArea: "85",
+                propertyLegal: "Sổ hồng",
+                propertyDirection: "Nam",
+                propertyBeds: "2",
+                city: "TP.HCM",
+                ward: "Tân Phú",
+                description: "Căn hộ đẹp, full nội thất, phù hợp ở thực hoặc đầu tư lâu dài.",
+                contactName: "Nguyễn Thành An",
+                roleLabel: "Môi giới chuyên nghiệp",
+                contactPhone: "0912598888",
+                contactProfileUrl: "pages/danh-ba-moi-gioi.html",
+                status: "demo",
+                createdAt: new Date().toISOString(),
+                flow: "real_estate",
+                postType: "ban",
+                vipLevel: "kim-cuong",
+                images: ["https://images.unsplash.com/photo-1560448204-61dc36dc98c8?w=800"]
+            },
+            {
+                id: "home-sale-2",
+                title: "Bán nhà phố thương mại khu đô thị trung tâm mới",
+                propertyType: "Nhà phố",
+                propertyPrice: "12.8 tỷ",
+                propertyArea: "110",
+                propertyLegal: "Sổ riêng",
+                propertyDirection: "Đông Nam",
+                propertyBeds: "4",
+                city: "Bình Dương",
+                ward: "Thuận An",
+                description: "Nhà phố vị trí đẹp, phù hợp ở kết hợp kinh doanh.",
+                contactName: "Công ty BĐS Minh Phát",
+                brandName: "Công ty BĐS Minh Phát",
+                roleLabel: "Doanh nghiệp / Sàn BĐS",
+                contactPhone: "0977888666",
+                contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
+                status: "demo",
+                createdAt: new Date(Date.now() - 86400000).toISOString(),
+                flow: "real_estate",
+                postType: "ban",
+                vipLevel: "vang",
+                images: ["https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=800"]
+            },
+            {
+                id: "home-sale-3",
+                title: "Bán biệt thự compound cao cấp view hồ",
+                propertyType: "Biệt thự",
+                propertyPrice: "26 tỷ",
+                propertyArea: "260",
+                propertyLegal: "Sổ đỏ đầy đủ",
+                propertyDirection: "Tây Bắc",
+                propertyBeds: "5",
+                city: "Hà Nội",
+                ward: "Nam Từ Liêm",
+                description: "Biệt thự hoàn thiện cao cấp, khu dân cư an ninh tốt.",
+                contactName: "Lê Thu Trang",
+                roleLabel: "Môi giới chuyên nghiệp",
+                contactPhone: "0901234567",
+                contactProfileUrl: "pages/danh-ba-moi-gioi.html",
+                status: "demo",
+                createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
+                flow: "real_estate",
+                postType: "ban",
+                vipLevel: "bac",
+                images: ["https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800"]
+            },
+            {
+                id: "home-sale-4",
+                title: "Đất nền pháp lý sạch gần khu công nghiệp lớn",
+                propertyType: "Đất nền",
+                propertyPrice: "2.3 tỷ",
+                propertyArea: "100",
+                propertyLegal: "Sổ riêng",
+                propertyDirection: "Đông",
+                propertyBeds: "0",
+                city: "Đồng Nai",
+                ward: "Long Thành",
+                description: "Đất nền tiềm năng tăng giá tốt, gần trục giao thông chính.",
+                contactName: "Trần Quang Huy",
+                roleLabel: "Chuyên viên tư vấn",
+                contactPhone: "0988123456",
+                contactProfileUrl: "pages/danh-ba-moi-gioi.html",
+                status: "demo",
+                createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
+                flow: "real_estate",
+                postType: "ban",
+                vipLevel: "dong",
+                images: ["https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"]
+            }
+        ];
+
+        const fallbackRentalPosts = [
+            {
+                id: "home-rent-1",
+                title: "Cho thuê căn hộ cao cấp Vinhomes Central Park full nội thất",
+                propertyType: "Căn hộ",
+                propertyPrice: "25 triệu/tháng",
+                propertyArea: "85",
+                propertyLegal: "Hợp đồng rõ ràng",
+                propertyDirection: "Đông Nam",
+                propertyBeds: "2",
+                city: "TP.HCM",
+                ward: "Bình Thạnh",
+                description: "Căn hộ đẹp, đầy đủ nội thất, vào ở ngay.",
+                contactName: "Trần Thị Lan Anh",
+                roleLabel: "Chuyên viên cho thuê",
+                contactPhone: "0901234567",
+                contactProfileUrl: "pages/danh-ba-moi-gioi.html",
+                status: "demo",
+                createdAt: new Date().toISOString(),
+                flow: "real_estate",
+                postType: "thue",
+                vipLevel: "vang",
+                images: ["https://images.unsplash.com/photo-1494526585095-c41746248156?w=800"]
+            },
+            {
+                id: "home-rent-2",
+                title: "Cho thuê văn phòng mặt tiền trung tâm thành phố",
+                propertyType: "Văn phòng",
+                propertyPrice: "45 triệu/tháng",
+                propertyArea: "120",
+                propertyLegal: "Hợp đồng dài hạn",
+                propertyDirection: "Nam",
+                propertyBeds: "0",
+                city: "Đà Nẵng",
+                ward: "Hải Châu",
+                description: "Văn phòng đẹp, trục chính, phù hợp công ty dịch vụ.",
+                contactName: "Doanh nghiệp Sao Việt",
+                brandName: "Doanh nghiệp Sao Việt",
+                roleLabel: "Doanh nghiệp / Cho thuê",
+                contactPhone: "0933222111",
+                contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
+                status: "demo",
+                createdAt: new Date(Date.now() - 86400000).toISOString(),
+                flow: "real_estate",
+                postType: "thue",
+                vipLevel: "bac",
+                images: ["https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800"]
+            },
+            {
+                id: "home-rent-3",
+                title: "Cho thuê nhà phố nguyên căn khu dân cư cao cấp",
+                propertyType: "Nhà phố",
+                propertyPrice: "18 triệu/tháng",
+                propertyArea: "95",
+                propertyLegal: "Hợp đồng rõ ràng",
+                propertyDirection: "Tây",
+                propertyBeds: "3",
+                city: "Cần Thơ",
+                ward: "Ninh Kiều",
+                description: "Nhà mới đẹp, vị trí thuận tiện, phù hợp gia đình.",
+                contactName: "Lý Minh Quân",
+                roleLabel: "Chuyên viên cho thuê",
+                contactPhone: "0911888999",
+                contactProfileUrl: "pages/danh-ba-moi-gioi.html",
+                status: "demo",
+                createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
+                flow: "real_estate",
+                postType: "thue",
+                vipLevel: "dong",
+                images: ["https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800"]
+            },
+            {
+                id: "home-rent-4",
+                title: "Cho thuê shophouse góc 2 mặt tiền khu đô thị mới",
+                propertyType: "Shophouse",
+                propertyPrice: "35 triệu/tháng",
+                propertyArea: "105",
+                propertyLegal: "Hợp đồng thương mại",
+                propertyDirection: "Đông Bắc",
+                propertyBeds: "2",
+                city: "Hà Nội",
+                ward: "Gia Lâm",
+                description: "Shophouse đẹp, phù hợp kinh doanh thương hiệu.",
+                contactName: "Công ty BĐS Prime",
+                brandName: "Công ty BĐS Prime",
+                roleLabel: "Doanh nghiệp / Mặt bằng",
+                contactPhone: "0944444555",
+                contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
+                status: "demo",
+                createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
+                flow: "real_estate",
+                postType: "thue",
+                vipLevel: "vang",
+                images: ["https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800"]
+            }
+        ];
+
+        const fallbackConstructionPosts = [
+            {
+                id: "home-build-1",
+                title: "Thi công biệt thự phố hiện đại - Chìa khóa trao tay",
+                flow: "construction",
+                postType: "xaydung",
+                status: "demo",
+                serviceType: "Xây nhà trọn gói",
+                servicePrice: "5.8 - 6.5 triệu/m²",
+                serviceExp: "8 năm kinh nghiệm",
+                serviceArea: "Dĩ An, Thuận An",
+                serviceBrand: "Bình Dương Cons Co., Ltd",
+                serviceSpecialty: "Biệt thự, nhà phố",
+                city: "Bình Dương",
+                ward: "Dĩ An",
+                description: "Giải pháp thi công đồng bộ từ thiết kế đến bàn giao hoàn thiện.",
+                contactName: "Bình Dương Cons Co., Ltd",
+                contactPhone: "0946239289",
+                contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
+                profileType: "doanhnghiep",
+                roleLabel: "Doanh nghiệp / Nhà thầu",
+                createdAt: new Date().toISOString(),
+                images: ["https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800"]
+            },
+            {
+                id: "home-build-2",
+                title: "Tư vấn thiết kế kiến trúc và nội thất nhà phố xanh",
+                flow: "construction",
+                postType: "xaydung",
+                status: "demo",
+                serviceType: "Thiết kế kiến trúc",
+                servicePrice: "150k - 250k/m²",
+                serviceExp: "6 năm kinh nghiệm",
+                serviceArea: "TP.HCM, Bình Dương",
+                serviceBrand: "Studio Kiến Trúc Việt",
+                serviceSpecialty: "3D + hồ sơ kỹ thuật",
+                city: "TP.HCM",
+                ward: "Thủ Đức",
+                description: "Thiết kế hiện đại, tối ưu công năng, hồ sơ triển khai thực tế tốt.",
+                contactName: "Studio Kiến Trúc Việt",
+                contactPhone: "0901234567",
+                contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
+                profileType: "doanhnghiep",
+                roleLabel: "Đơn vị thiết kế",
+                createdAt: new Date(Date.now() - 86400000).toISOString(),
+                images: ["https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800"]
+            },
+            {
+                id: "home-build-3",
+                title: "Cải tạo nhà phố cũ, nâng tầng, chống thấm, sơn sửa hoàn thiện",
+                flow: "construction",
+                postType: "xaydung",
+                status: "demo",
+                serviceType: "Sửa chữa / Cải tạo",
+                servicePrice: "Liên hệ báo giá",
+                serviceExp: "10 năm thi công",
+                serviceArea: "Hà Nội, Bắc Ninh",
+                serviceBrand: "Fix Home Service",
+                serviceSpecialty: "Trọn gói cải tạo",
+                city: "Hà Nội",
+                ward: "Cầu Giấy",
+                description: "Nhận cải tạo trọn gói, xử lý nhà cũ, chống thấm, nâng cấp thẩm mỹ.",
+                contactName: "Fix Home Service",
+                contactPhone: "0988123456",
+                contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
+                profileType: "doanhnghiep",
+                roleLabel: "Đội thi công cải tạo",
+                createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
+                images: ["https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800"]
+            },
+            {
+                id: "home-build-4",
+                title: "Nội thất và hoàn thiện căn hộ cao cấp theo phong cách hiện đại",
+                flow: "construction",
+                postType: "xaydung",
+                status: "demo",
+                serviceType: "Nội thất / Hoàn thiện",
+                servicePrice: "Theo gói thiết kế",
+                serviceExp: "7 năm kinh nghiệm",
+                serviceArea: "Hà Nội, TP.HCM",
+                serviceBrand: "Urban Decor",
+                serviceSpecialty: "Nội thất chung cư",
+                city: "Hà Nội",
+                ward: "Hoàng Mai",
+                description: "Giải pháp đồng bộ từ concept đến thi công hoàn thiện nội thất.",
+                contactName: "Urban Decor",
+                contactPhone: "0911002003",
+                contactProfileUrl: "pages/danh-ba-doanh-nghiep.html",
+                profileType: "doanhnghiep",
+                roleLabel: "Đơn vị hoàn thiện",
+                createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
+                images: ["https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"]
+            }
+        ];
+
+        const fallbackProjects = [
+            {
+                id: "proj-1",
+                name: "Bcons NewSky",
+                city: "Bình Dương",
+                statusLabel: "Sắp mở bán",
+                statusType: "soon",
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
+                url: "pages/du-an.html"
+            },
+            {
+                id: "proj-2",
+                name: "Vinhomes Global Gate",
+                city: "Hà Nội",
+                statusLabel: "Đang mở bán",
+                statusType: "live",
+                image: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800",
+                url: "pages/du-an.html"
+            },
+            {
+                id: "proj-3",
+                name: "Celadon City",
+                city: "TP.HCM",
+                statusLabel: "Nổi bật",
+                statusType: "live",
+                image: "https://images.unsplash.com/photo-1460317442991-0ec209397118?w=800",
+                url: "pages/du-an.html"
+            },
+            {
+                id: "proj-4",
+                name: "The Privia",
+                city: "TP.HCM",
+                statusLabel: "Quan tâm cao",
+                statusType: "soon",
+                image: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=800",
+                url: "pages/du-an.html"
+            }
+        ];
+
+        const fallbackCompanies = [
+            { name: "Công ty BĐS Minh Phát", role: "Doanh nghiệp / Sàn BĐS", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Doanh nghiệp Sao Việt", role: "Doanh nghiệp / Cho thuê", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Studio Kiến Trúc Việt", role: "Đơn vị thiết kế", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Bình Dương Cons", role: "Nhà thầu xây dựng", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Urban Decor", role: "Nội thất / Hoàn thiện", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Công ty BĐS Prime", role: "Doanh nghiệp thương mại", url: "pages/danh-ba-doanh-nghiep.html" }
+        ];
+
+        const fallbackAgents = [
+            { name: "Nguyễn Thành An", role: "Môi giới chuyên nghiệp", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Trần Thị Lan Anh", role: "Chuyên viên cho thuê", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Lê Thu Trang", role: "Môi giới chuyên nghiệp", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Trần Quang Huy", role: "Chuyên viên tư vấn", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Lý Minh Quân", role: "Chuyên viên cho thuê", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Phạm Hữu Đức", role: "Môi giới nhà phố", url: "pages/danh-ba-moi-gioi.html" }
+        ];
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === "function") {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById("chatForm");
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
+            }
         }
 
         function sendToZalo() {
-            const name = document.getElementById("cusName").value;
-            const msg = document.getElementById("cusMsg").value;
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
             const phone = "0946239289";
 
             if (!name) {
@@ -586,12 +1533,719 @@
                 return;
             }
 
-            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
+
+        function normalizeText(value) {
+            return String(value || "").trim().toLowerCase();
+        }
+
+        function createPostId(post, index = 0) {
+            return (
+                post.id ||
+                post.postId ||
+                post.slug ||
+                `${post.title || "tin"}-${post.city || ""}-${post.ward || ""}-${index}`
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")
+            );
+        }
+
+        function getStorageArray(key) {
+            try {
+                return JSON.parse(localStorage.getItem(key) || "[]");
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function getFavoriteTotal() {
+            return getStorageArray(FAVORITE_SALE_STORAGE_KEY).length +
+                getStorageArray(FAVORITE_RENTAL_STORAGE_KEY).length +
+                getStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY).length;
+        }
+
+        function updateHeaderFavoriteCount() {
+            const total = getFavoriteTotal();
+            const badges = document.querySelectorAll("#favorite-count-badge, #headerFavoriteCount");
+            badges.forEach((badge) => {
+                badge.textContent = total;
+            });
+
+            const localBadge = document.querySelector(".save-count");
+            if (localBadge) localBadge.textContent = total;
+        }
+
+        function getCardImage(post) {
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+                return post.thumbnail;
+            }
+
+            if (Array.isArray(post.images) && post.images.length) {
+                const firstImage = post.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
+                if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
+                if (firstImage && firstImage.url) return firstImage.url;
+            }
+
+            return FALLBACK_IMAGE;
+        }
+
+        function buildPoster(post) {
+            return post.brandName || post.contactName || post.fullName || post.serviceBrand || "Người đăng";
+        }
+
+        function getPosterSub(post) {
+            return post.roleLabel || post.role || (post.profileType === "doanhnghiep" ? "Doanh nghiệp" : "Người đăng");
+        }
+
+        function getAvatarText(name) {
+            return String(name || "TV")
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(word => word.charAt(0).toUpperCase())
+                .join("") || "TV";
+        }
+
+        function buildLocation(post) {
+            return [post.ward, post.city].filter(Boolean).join(", ");
+        }
+
+        function getProfileUrl(post) {
+            return post.contactProfileUrl || post.profileUrl || "pages/danh-ba-moi-gioi.html";
+        }
+
+        function getDetailUrl(post, postId) {
+            if (post.detailUrl) return post.detailUrl;
+            return `pages/chi-tiet-tin.html?id=${encodeURIComponent(postId)}`;
+        }
+
+        function parsePriceToNumber(priceText) {
+            if (!priceText) return 0;
+            const text = String(priceText).toLowerCase().trim().replace(/,/g, ".");
+            if (
+                text.includes("thỏa thuận") ||
+                text.includes("thoả thuận") ||
+                text.includes("liên hệ") ||
+                text.includes("lien he")
+            ) {
+                return 0;
+            }
+            const numbers = text.match(/[\d.]+/g) || [];
+            const first = parseFloat(numbers[0]) || 0;
+
+            if (text.includes("tỷ")) return first * 1000000000;
+            if (text.includes("triệu")) return first * 1000000;
+            if (text.includes("nghìn") || text.includes("ngàn")) return first * 1000;
+            return first;
+        }
+
+        function calculatePricePerM2(post) {
+            if (typeof post.pricePerSquareMeter === "number" && post.pricePerSquareMeter > 0) {
+                const unit = post.pricePerSquareMeter;
+                if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + " tỷ/m²";
+                if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
+                return Math.round(unit).toLocaleString("vi-VN") + " đ/m²";
+            }
+
+            const totalPrice = parsePriceToNumber(post.propertyPrice);
+            const areaNumber = Number(post.propertyArea || 0);
+            if (!totalPrice || !areaNumber) return "Chưa rõ";
+
+            const unit = totalPrice / areaNumber;
+            if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + " tỷ/m²";
+            if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
+            return Math.round(unit).toLocaleString("vi-VN") + " đ/m²";
+        }
+
+        function getVipLevel(post) {
+            const raw = String(
+                post.vipLevel ||
+                post.vipType ||
+                post.vipPackage ||
+                post.packageType ||
+                ""
+            ).toLowerCase().trim();
+
+            if (!raw) return "";
+            if (raw.includes("kim") || raw.includes("diamond")) return "kim-cuong";
+            if (raw.includes("vang") || raw.includes("gold")) return "vang";
+            if (raw.includes("bac") || raw.includes("silver")) return "bac";
+            if (raw.includes("dong") || raw.includes("bronze")) return "dong";
+            return "";
+        }
+
+        function getVipLabel(level) {
+            const map = {
+                "kim-cuong": "VIP Kim cương",
+                "vang": "VIP Vàng",
+                "bac": "VIP Bạc",
+                "dong": "VIP Đồng"
+            };
+            return map[level] || "";
+        }
+
+        function getSalePosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
+                    const posts = window.postStorage.getSalePosts() || [];
+                    const filtered = posts.filter(post =>
+                        post &&
+                        post.flow === "real_estate" &&
+                        post.postType === "ban" &&
+                        (post.status === "approved" || post.status === "demo")
+                    );
+                    return filtered.length ? filtered : fallbackSalePosts;
+                }
+            } catch (error) {}
+            return fallbackSalePosts;
+        }
+
+        function getRentalPosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getRentalPosts === "function") {
+                    const posts = window.postStorage.getRentalPosts() || [];
+                    const filtered = posts.filter(post => {
+                        if (!post) return false;
+                        const flow = normalizeText(post.flow);
+                        const type = normalizeText(post.postType);
+                        const status = normalizeText(post.status);
+                        return flow === "real_estate" &&
+                            (type === "thue" || type === "cho-thue" || type === "rent") &&
+                            (status === "approved" || status === "demo");
+                    });
+                    return filtered.length ? filtered : fallbackRentalPosts;
+                }
+            } catch (error) {}
+            return fallbackRentalPosts;
+        }
+
+        function getConstructionPosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getConstructionPosts === "function") {
+                    const posts = window.postStorage.getConstructionPosts() || [];
+                    const filtered = posts.filter(post =>
+                        post &&
+                        normalizeText(post.flow) === "construction" &&
+                        (normalizeText(post.status) === "approved" || normalizeText(post.status) === "demo")
+                    );
+                    return filtered.length ? filtered : fallbackConstructionPosts;
+                }
+            } catch (error) {}
+            return fallbackConstructionPosts;
+        }
+
+        function getProjectCards() {
+            try {
+                if (window.projectService && typeof window.projectService.getAllProjects === "function") {
+                    const projects = window.projectService.getAllProjects() || [];
+                    if (projects.length) {
+                        return projects.slice(0, 8).map(project => ({
+                            id: project.id || project.slug || project.name,
+                            name: project.name || "Dự án nổi bật",
+                            city: project.city || "Đang cập nhật",
+                            statusLabel: (project.statusLabel || project.status || "Nổi bật"),
+                            statusType: normalizeText(project.status).includes("mo") ? "live" : "soon",
+                            image: project.thumbnail || project.image || FALLBACK_IMAGE,
+                            url: "pages/du-an.html"
+                        }));
+                    }
+                }
+            } catch (error) {}
+            return fallbackProjects;
+        }
+
+        function getCompanies() {
+            const salePosts = getSalePosts();
+            const rentalPosts = getRentalPosts();
+            const constructionPosts = getConstructionPosts();
+
+            const companies = [...salePosts, ...rentalPosts, ...constructionPosts]
+                .filter(post => normalizeText(post.profileType) === "doanhnghiep" || !!post.brandName || !!post.serviceBrand)
+                .map(post => ({
+                    name: buildPoster(post),
+                    role: getPosterSub(post),
+                    url: getProfileUrl(post)
+                }));
+
+            const unique = [];
+            const seen = new Set();
+            companies.forEach(item => {
+                const key = normalizeText(item.name);
+                if (!key || seen.has(key)) return;
+                seen.add(key);
+                unique.push(item);
+            });
+
+            return unique.length ? unique.slice(0, 12) : fallbackCompanies;
+        }
+
+        function getAgents() {
+            const salePosts = getSalePosts();
+            const rentalPosts = getRentalPosts();
+
+            const agents = [...salePosts, ...rentalPosts]
+                .filter(post => normalizeText(post.profileType) !== "doanhnghiep")
+                .map(post => ({
+                    name: buildPoster(post),
+                    role: getPosterSub(post),
+                    url: getProfileUrl(post)
+                }));
+
+            const unique = [];
+            const seen = new Set();
+            agents.forEach(item => {
+                const key = normalizeText(item.name);
+                if (!key || seen.has(key)) return;
+                seen.add(key);
+                unique.push(item);
+            });
+
+            return unique.length ? unique.slice(0, 10) : fallbackAgents;
+        }
+
+        function getLocationStats() {
+            const allPosts = [
+                ...getSalePosts(),
+                ...getRentalPosts(),
+                ...getConstructionPosts()
+            ];
+
+            const map = {};
+            allPosts.forEach(post => {
+                const city = post.city || "Khác";
+                map[city] = (map[city] || 0) + 1;
+            });
+
+            const ranked = Object.entries(map)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3)
+                .map(([city, count], index) => {
+                    const images = [
+                        "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=1200",
+                        "https://images.unsplash.com/photo-1555921015-5532091f6026?w=800",
+                        "https://images.unsplash.com/photo-1559592481-74488ea56144?w=800"
+                    ];
+                    return {
+                        city,
+                        count,
+                        image: images[index] || images[0],
+                        url: "pages/gia-nha-dat.html"
+                    };
+                });
+
+            while (ranked.length < 3) {
+                const defaults = [
+                    { city: "TP. Hồ Chí Minh", count: 23815, image: "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=1200", url: "pages/gia-nha-dat.html" },
+                    { city: "Hà Nội", count: 13308, image: "https://images.unsplash.com/photo-1555921015-5532091f6026?w=800", url: "pages/gia-nha-dat.html" },
+                    { city: "Đà Nẵng", count: 536, image: "https://images.unsplash.com/photo-1559592481-74488ea56144?w=800", url: "pages/gia-nha-dat.html" }
+                ];
+                ranked.push(defaults[ranked.length]);
+            }
+
+            return ranked.slice(0, 3);
+        }
+
+        function fillLocationFilter() {
+            const cities = Array.from(new Set([
+                ...getSalePosts().map(post => post.city),
+                ...getRentalPosts().map(post => post.city),
+                ...getConstructionPosts().map(post => post.city)
+            ].filter(Boolean))).sort((a, b) => a.localeCompare(b, "vi"));
+
+            const heroLocation = document.getElementById("heroLocation");
+            heroLocation.innerHTML =
+                '<option value="">Toàn quốc</option>' +
+                cities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("");
+        }
+
+        function handleHeroSearch() {
+            const keyword = document.getElementById("heroKeyword").value.trim();
+            const category = document.getElementById("heroCategory").value;
+            const location = document.getElementById("heroLocation").value;
+
+            let baseUrl = "pages/nha-dat-ban.html";
+            if (category === "rental") baseUrl = "pages/nha-dat-cho-thue.html";
+            if (category === "project") baseUrl = "pages/du-an.html";
+            if (category === "construction") baseUrl = "pages/xay-dung.html";
+
+            const url = new URL(baseUrl, window.location.origin);
+            if (keyword) url.searchParams.set("keyword", keyword);
+            if (location) url.searchParams.set("city", location);
+
+            window.location.href = url.pathname + url.search;
+        }
+
+        function renderSaleCard(post, index) {
+            const postId = createPostId(post, index);
+            const detailUrl = getDetailUrl(post, postId);
+            const profileUrl = getProfileUrl(post);
+            const imageUrl = escapeHtml(getCardImage(post));
+            const title = escapeHtml(post.title || "Tiêu đề bất động sản");
+            const price = escapeHtml(post.propertyPrice || "Liên hệ");
+            const area = post.propertyArea ? `${escapeHtml(post.propertyArea)} m²` : "Chưa rõ";
+            const location = escapeHtml(buildLocation(post) || "Chưa cập nhật khu vực");
+            const poster = escapeHtml(buildPoster(post));
+            const posterSub = escapeHtml(getPosterSub(post));
+            const avatarText = escapeHtml(getAvatarText(buildPoster(post)));
+            const propertyType = escapeHtml(post.propertyType || "Bất động sản");
+            const legal = escapeHtml(post.propertyLegal || "Đang cập nhật");
+            const direction = escapeHtml(post.propertyDirection || "Đang cập nhật");
+            const vipLevel = getVipLevel(post);
+            const vipLabel = escapeHtml(getVipLabel(vipLevel));
+
+            return `
+                <article class="listing-card">
+                    <div class="listing-thumb">
+                        <a href="${detailUrl}" aria-label="${title}">
+                            <img src="${imageUrl}" alt="${title}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
+                        </a>
+
+                        ${vipLevel ? `
+                            <span class="vip-badge ${vipLevel}">
+                                <i class="fa-solid fa-crown"></i> ${vipLabel}
+                            </span>
+                        ` : ""}
+
+                        <button type="button" class="favorite-float-btn" aria-label="Lưu tin">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <div class="listing-body">
+                        <a href="${detailUrl}" class="listing-title">${title}</a>
+
+                        <div class="listing-price-line">
+                            <span class="listing-price">${price}</span>
+                            <span class="listing-area">${area}</span>
+                        </div>
+
+                        <p class="listing-location"><i class="fa-solid fa-location-dot mr-1"></i> ${location}</p>
+
+                        <div class="listing-submeta">
+                            <div><strong>Loại hình:</strong> ${propertyType}</div>
+                            <div><strong>Pháp lý:</strong> ${legal}</div>
+                            <div><strong>Hướng:</strong> ${direction}</div>
+                            <div><strong>Đơn giá:</strong> ${escapeHtml(calculatePricePerM2(post))}</div>
+                        </div>
+
+                        <div class="listing-footer">
+                            <a href="${profileUrl}" class="poster-box">
+                                <div class="poster-avatar">${avatarText}</div>
+                                <div class="min-w-0">
+                                    <div class="poster-name">${poster}</div>
+                                    <div class="poster-role">${posterSub}</div>
+                                </div>
+                            </a>
+
+                            <a href="${detailUrl}" class="listing-btn">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Xem tin
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderRentalCard(post, index) {
+            return renderSaleCard(post, index);
+        }
+
+        function renderConstructionCard(post, index) {
+            const postId = createPostId(post, index);
+            const detailUrl = getDetailUrl(post, postId);
+            const profileUrl = getProfileUrl(post);
+            const imageUrl = escapeHtml(getCardImage(post));
+            const title = escapeHtml(post.title || "Dịch vụ xây dựng");
+            const price = escapeHtml(post.servicePrice || "Liên hệ");
+            const area = escapeHtml(post.serviceArea || buildLocation(post) || "Đang cập nhật");
+            const specialty = escapeHtml(post.serviceSpecialty || "Đang cập nhật");
+            const exp = escapeHtml(post.serviceExp || "Đang cập nhật");
+            const poster = escapeHtml(buildPoster(post));
+            const posterSub = escapeHtml(getPosterSub(post));
+            const avatarText = escapeHtml(getAvatarText(buildPoster(post)));
+            const serviceType = escapeHtml(post.serviceType || "Dịch vụ xây dựng");
+
+            return `
+                <article class="listing-card">
+                    <div class="listing-thumb">
+                        <a href="${detailUrl}" aria-label="${title}">
+                            <img src="${imageUrl}" alt="${title}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
+                        </a>
+
+                        <span class="service-badge">
+                            <i class="fa-solid fa-screwdriver-wrench"></i> ${serviceType}
+                        </span>
+
+                        <button type="button" class="favorite-float-btn" aria-label="Lưu dịch vụ">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <div class="listing-body">
+                        <a href="${detailUrl}" class="listing-title">${title}</a>
+
+                        <div class="listing-price-line">
+                            <span class="listing-price">${price}</span>
+                        </div>
+
+                        <p class="listing-location"><i class="fa-solid fa-location-dot mr-1"></i> ${area}</p>
+
+                        <div class="listing-submeta">
+                            <div><strong>Loại DV:</strong> ${serviceType}</div>
+                            <div><strong>Kinh nghiệm:</strong> ${exp}</div>
+                            <div><strong>Chuyên môn:</strong> ${specialty}</div>
+                            <div><strong>Đơn vị:</strong> ${escapeHtml(post.serviceBrand || "Đang cập nhật")}</div>
+                        </div>
+
+                        <div class="listing-footer">
+                            <a href="${profileUrl}" class="poster-box">
+                                <div class="poster-avatar">${avatarText}</div>
+                                <div class="min-w-0">
+                                    <div class="poster-name">${poster}</div>
+                                    <div class="poster-role">${posterSub}</div>
+                                </div>
+                            </a>
+
+                            <a href="${detailUrl}" class="listing-btn">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Xem DV
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderProjectCard(project) {
+            const statusType = project.statusType === "live" ? "live" : "soon";
+            const statusLabel = escapeHtml(project.statusLabel || "Nổi bật");
+            return `
+                <div class="swiper-slide">
+                    <a href="${project.url || "pages/du-an.html"}" class="project-card">
+                        <img src="${escapeHtml(project.image || FALLBACK_IMAGE)}" alt="${escapeHtml(project.name)}" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
+                        <div class="p-4">
+                            <span class="project-status ${statusType}">${statusLabel}</span>
+                            <h4 class="font-bold mt-3 text-[15px] text-slate-800">${escapeHtml(project.name || "Dự án nổi bật")}</h4>
+                            <p class="text-gray-500 text-[13px] mt-1">${escapeHtml(project.city || "Đang cập nhật")}</p>
+                        </div>
+                    </a>
+                </div>
+            `;
+        }
+
+        function renderCompanyCard(item) {
+            const avatar = getAvatarText(item.name);
+            return `
+                <div class="swiper-slide">
+                    <a href="${item.url}" class="company-card">
+                        <div class="company-avatar">${escapeHtml(avatar)}</div>
+                        <h4 class="font-bold text-[14px] text-slate-800 line-clamp-2 min-h-[40px]">${escapeHtml(item.name)}</h4>
+                        <p class="text-[12px] text-slate-500 mt-2">${escapeHtml(item.role || "Doanh nghiệp")}</p>
+                    </a>
+                </div>
+            `;
+        }
+
+        function renderAgentDesktopCard(item) {
+            const avatar = getAvatarText(item.name);
+            return `
+                <a href="${item.url}" class="agent-card">
+                    <div class="agent-avatar">${escapeHtml(avatar)}</div>
+                    <h4 class="font-bold text-[14px] text-slate-800 line-clamp-2 min-h-[40px]">${escapeHtml(item.name)}</h4>
+                    <p class="text-[12px] text-slate-500 mt-2">${escapeHtml(item.role || "Môi giới")}</p>
+                </a>
+            `;
+        }
+
+        function chunkArray(arr, size) {
+            const result = [];
+            for (let i = 0; i < arr.length; i += size) {
+                result.push(arr.slice(i, i + size));
+            }
+            return result;
+        }
+
+        function renderAgentMobileSlide(pair) {
+            const html = pair.map(item => {
+                const avatar = getAvatarText(item.name);
+                return `
+                    <a href="${item.url}" class="agent-mobile-card">
+                        <div class="avatar">${escapeHtml(avatar)}</div>
+                        <div class="min-w-0">
+                            <div class="font-bold text-[14px] text-slate-800 line-clamp-2">${escapeHtml(item.name)}</div>
+                            <div class="text-[12px] text-slate-500 mt-1">${escapeHtml(item.role || "Môi giới")}</div>
+                        </div>
+                    </a>
+                `;
+            }).join("");
+
+            return `<div class="swiper-slide"><div class="grid grid-cols-1 gap-4">${html}</div></div>`;
+        }
+
+        function renderLocationCard(item, isMain) {
+            return `
+                <a href="${item.url}" class="location-card ${isMain ? "location-main" : ""}">
+                    <img src="${item.image}" alt="${escapeHtml(item.city)}" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
+                    <div class="location-overlay">
+                        <h4 class="${isMain ? "text-2xl" : "text-lg"} font-bold">${escapeHtml(item.city)}</h4>
+                        <p class="${isMain ? "text-sm" : "text-xs"} opacity-90 mt-1">${Number(item.count || 0).toLocaleString("vi-VN")} tin đăng</p>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderSaleSection() {
+            const posts = getSalePosts().slice(0, 8);
+            const desktopGrid = document.getElementById("saleDesktopGrid");
+            const mobileWrapper = document.getElementById("saleMobileWrapper");
+
+            desktopGrid.innerHTML = posts.length
+                ? posts.slice(0, 4).map((post, index) => renderSaleCard(post, index)).join("")
+                : `<div class="empty-box lg:col-span-4">Chưa có dữ liệu nhà đất bán.</div>`;
+
+            mobileWrapper.innerHTML = posts.length
+                ? posts.map((post, index) => `<div class="swiper-slide">${renderSaleCard(post, index)}</div>`).join("")
+                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu nhà đất bán.</div></div>`;
+        }
+
+        function renderRentalSection() {
+            const posts = getRentalPosts().slice(0, 8);
+            const desktopGrid = document.getElementById("rentalDesktopGrid");
+            const mobileWrapper = document.getElementById("rentalMobileWrapper");
+
+            desktopGrid.innerHTML = posts.length
+                ? posts.slice(0, 4).map((post, index) => renderRentalCard(post, index)).join("")
+                : `<div class="empty-box lg:col-span-4">Chưa có dữ liệu nhà đất cho thuê.</div>`;
+
+            mobileWrapper.innerHTML = posts.length
+                ? posts.map((post, index) => `<div class="swiper-slide">${renderRentalCard(post, index)}</div>`).join("")
+                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu nhà đất cho thuê.</div></div>`;
+        }
+
+        function renderProjectSection() {
+            const projects = getProjectCards();
+            document.getElementById("projectWrapper").innerHTML = projects.length
+                ? projects.map(renderProjectCard).join("")
+                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu dự án.</div></div>`;
+        }
+
+        function renderConstructionSection() {
+            const posts = getConstructionPosts().slice(0, 8);
+            const desktopGrid = document.getElementById("constructionDesktopGrid");
+            const mobileWrapper = document.getElementById("constructionMobileWrapper");
+
+            desktopGrid.innerHTML = posts.length
+                ? posts.slice(0, 4).map((post, index) => renderConstructionCard(post, index)).join("")
+                : `<div class="empty-box lg:col-span-4">Chưa có dữ liệu xây dựng.</div>`;
+
+            mobileWrapper.innerHTML = posts.length
+                ? posts.map((post, index) => `<div class="swiper-slide">${renderConstructionCard(post, index)}</div>`).join("")
+                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu xây dựng.</div></div>`;
+        }
+
+        function renderCompanySection() {
+            const companies = getCompanies();
+            document.getElementById("companyWrapper").innerHTML = companies.length
+                ? companies.map(renderCompanyCard).join("")
+                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu doanh nghiệp.</div></div>`;
+        }
+
+        function renderAgentSection() {
+            const agents = getAgents();
+            const desktopGrid = document.getElementById("agentDesktopGrid");
+            const mobileWrapper = document.getElementById("agentMobileWrapper");
+
+            desktopGrid.innerHTML = agents.length
+                ? agents.slice(0, 5).map(renderAgentDesktopCard).join("")
+                : `<div class="empty-box col-span-5">Chưa có dữ liệu môi giới.</div>`;
+
+            const pairs = chunkArray(agents, 2);
+            mobileWrapper.innerHTML = pairs.length
+                ? pairs.map(renderAgentMobileSlide).join("")
+                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu môi giới.</div></div>`;
+        }
+
+        function renderLocationSection() {
+            const items = getLocationStats();
+            const locationGrid = document.getElementById("locationGrid");
+            locationGrid.innerHTML = items.map((item, index) => renderLocationCard(item, index === 0)).join("");
+        }
+
+        function initSwipers() {
+            new Swiper(".saleSwiper", {
+                slidesPerView: 1.12,
+                spaceBetween: 16
+            });
+
+            new Swiper(".rentalSwiper", {
+                slidesPerView: 1.12,
+                spaceBetween: 16
+            });
+
+            new Swiper(".projectSwiper", {
+                slidesPerView: 1.12,
+                spaceBetween: 18,
+                navigation: {
+                    nextEl: ".project-next",
+                    prevEl: ".project-prev"
+                },
+                breakpoints: {
+                    640: { slidesPerView: 2, spaceBetween: 18 },
+                    1024: { slidesPerView: 4, spaceBetween: 22 }
+                }
+            });
+
+            new Swiper(".constructionSwiper", {
+                slidesPerView: 1.12,
+                spaceBetween: 16
+            });
+
+            new Swiper(".companySwiper", {
+                slidesPerView: 2.2,
+                spaceBetween: 14,
+                breakpoints: {
+                    640: { slidesPerView: 3.2, spaceBetween: 16 },
+                    1024: { slidesPerView: 5.2, spaceBetween: 18 }
+                }
+            });
+
+            new Swiper(".agentMobileSwiper", {
+                slidesPerView: 1.08,
+                spaceBetween: 16
+            });
+        }
+
+        function initPage() {
+            updateHeaderFavoriteCount();
+            fillLocationFilter();
+
+            renderSaleSection();
+            renderRentalSection();
+            renderProjectSection();
+            renderConstructionSection();
+            renderCompanySection();
+            renderAgentSection();
+            renderLocationSection();
+
+            initSwipers();
+
+            const heroSearchBtn = document.getElementById("heroSearchBtn");
+            const heroKeyword = document.getElementById("heroKeyword");
+
+            heroSearchBtn.addEventListener("click", handleHeroSearch);
+            heroKeyword.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") handleHeroSearch();
+            });
+
+            setTimeout(updateHeaderFavoriteCount, 400);
+        }
+
+        window.addEventListener("load", initPage);
     </script>
+
     <script src="assets/js/main.js"></script>
 </body>
 </html>
-
