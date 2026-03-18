@@ -64,20 +64,29 @@
             flex-wrap: wrap;
         }
 
-        .section-title {
+        .section-title,
+        h2.section-title {
             margin: 0;
-            padding-left: 0;
+            padding-left: 0 !important;
             position: relative;
             font-size: 24px;
             font-weight: 700;
             color: #1f2937;
             text-transform: uppercase;
             letter-spacing: 0.01em;
+            border-left: none !important;
         }
 
-        .section-title::before {
-            content: none;
-            display: none;
+        .section-title::before,
+        .section-title::after,
+        h2.section-title::before,
+        h2.section-title::after {
+            content: none !important;
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: none !important;
+            border: none !important;
         }
 
         .section-link {
@@ -745,12 +754,6 @@
             font-weight: 900;
         }
 
-        .agent-desktop-grid {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 18px;
-        }
-
         .agent-card {
             background: #fff;
             border: 1px solid var(--border-color);
@@ -781,32 +784,6 @@
             color: white;
             font-size: 20px;
             font-weight: 900;
-        }
-
-        .agent-mobile-card {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            min-height: 102px;
-        }
-
-        .agent-mobile-card .avatar {
-            width: 54px;
-            height: 54px;
-            border-radius: 999px;
-            background: linear-gradient(135deg, #0f172a, #334155);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 900;
-            flex-shrink: 0;
         }
 
         .location-grid {
@@ -905,6 +882,26 @@
             opacity: 0.38 !important;
         }
 
+        .section-swiper {
+            position: relative;
+        }
+
+        .section-swiper .swiper-slide {
+            height: auto;
+        }
+
+        .section-swiper .company-card,
+        .section-swiper .agent-card {
+            height: 100%;
+        }
+
+        .company-next,
+        .company-prev,
+        .agent-next,
+        .agent-prev {
+            display: flex !important;
+        }
+
         .desktop-only {
             display: block;
         }
@@ -928,10 +925,6 @@
 
             .vip-submit-btn {
                 width: 100%;
-            }
-
-            .agent-desktop-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
             }
         }
 
@@ -965,7 +958,8 @@
                 padding: 40px 0;
             }
 
-            .section-title {
+            .section-title,
+            h2.section-title {
                 font-size: 20px;
             }
 
@@ -1197,7 +1191,7 @@
                     <a href="pages/du-an.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
-                <div class="swiper projectSwiper">
+                <div class="swiper projectSwiper section-swiper">
                     <div id="projectWrapper" class="swiper-wrapper"></div>
                     <div class="swiper-button-next project-next"></div>
                     <div class="swiper-button-prev project-prev"></div>
@@ -1212,7 +1206,7 @@
                     <a href="pages/xay-dung.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
-                <div class="swiper constructionSwiper">
+                <div class="swiper constructionSwiper section-swiper">
                     <div id="constructionWrapper" class="swiper-wrapper"></div>
                 </div>
             </div>
@@ -1225,8 +1219,10 @@
                     <a href="pages/danh-ba-doanh-nghiep.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
-                <div class="swiper companySwiper">
+                <div class="swiper companySwiper section-swiper">
                     <div id="companyWrapper" class="swiper-wrapper"></div>
+                    <div class="swiper-button-next company-next"></div>
+                    <div class="swiper-button-prev company-prev"></div>
                 </div>
             </div>
         </section>
@@ -1238,12 +1234,10 @@
                     <a href="pages/danh-ba-moi-gioi.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
-                <div id="agentDesktopGrid" class="desktop-only agent-desktop-grid"></div>
-
-                <div class="mobile-only">
-                    <div class="swiper agentMobileSwiper">
-                        <div id="agentMobileWrapper" class="swiper-wrapper"></div>
-                    </div>
+                <div class="swiper agentSwiper section-swiper">
+                    <div id="agentWrapper" class="swiper-wrapper"></div>
+                    <div class="swiper-button-next agent-next"></div>
+                    <div class="swiper-button-prev agent-prev"></div>
                 </div>
             </div>
         </section>
@@ -2324,40 +2318,17 @@
             `;
         }
 
-        function renderAgentDesktopCard(item) {
+        function renderAgentCard(item) {
             const avatar = getAvatarText(item.name);
             return `
-                <a href="${item.url}" class="agent-card">
-                    <div class="agent-avatar">${escapeHtml(avatar)}</div>
-                    <h4 class="font-semibold text-[14px] text-slate-800 line-clamp-2 min-h-[40px]">${escapeHtml(item.name)}</h4>
-                    <p class="text-[12px] text-slate-500 mt-2">${escapeHtml(item.role || "Môi giới")}</p>
-                </a>
-            `;
-        }
-
-        function chunkArray(arr, size) {
-            const result = [];
-            for (let i = 0; i < arr.length; i += size) {
-                result.push(arr.slice(i, i + size));
-            }
-            return result;
-        }
-
-        function renderAgentMobileSlide(pair) {
-            const html = pair.map(item => {
-                const avatar = getAvatarText(item.name);
-                return `
-                    <a href="${item.url}" class="agent-mobile-card">
-                        <div class="avatar">${escapeHtml(avatar)}</div>
-                        <div class="min-w-0">
-                            <div class="font-semibold text-[14px] text-slate-800 line-clamp-2">${escapeHtml(item.name)}</div>
-                            <div class="text-[12px] text-slate-500 mt-1">${escapeHtml(item.role || "Môi giới")}</div>
-                        </div>
+                <div class="swiper-slide">
+                    <a href="${item.url}" class="agent-card">
+                        <div class="agent-avatar">${escapeHtml(avatar)}</div>
+                        <h4 class="font-semibold text-[14px] text-slate-800 line-clamp-2 min-h-[40px]">${escapeHtml(item.name)}</h4>
+                        <p class="text-[12px] text-slate-500 mt-2">${escapeHtml(item.role || "Môi giới")}</p>
                     </a>
-                `;
-            }).join("");
-
-            return `<div class="swiper-slide"><div class="grid grid-cols-1 gap-4">${html}</div></div>`;
+                </div>
+            `;
         }
 
         function renderLocationCard(item, isMain) {
@@ -2425,16 +2396,8 @@
 
         function renderAgentSection() {
             const agents = getAgents();
-            const desktopGrid = document.getElementById("agentDesktopGrid");
-            const mobileWrapper = document.getElementById("agentMobileWrapper");
-
-            desktopGrid.innerHTML = agents.length
-                ? agents.slice(0, 5).map(renderAgentDesktopCard).join("")
-                : `<div class="empty-box col-span-5">Chưa có dữ liệu môi giới.</div>`;
-
-            const pairs = chunkArray(agents, 2);
-            mobileWrapper.innerHTML = pairs.length
-                ? pairs.map(renderAgentMobileSlide).join("")
+            document.getElementById("agentWrapper").innerHTML = agents.length
+                ? agents.map(renderAgentCard).join("")
                 : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu môi giới.</div></div>`;
         }
 
@@ -2449,7 +2412,7 @@
         let projectSwiperInstance = null;
         let constructionSwiperInstance = null;
         let companySwiperInstance = null;
-        let agentMobileSwiperInstance = null;
+        let agentSwiperInstance = null;
 
         function initSwipers() {
             if (saleSwiperInstance) saleSwiperInstance.destroy(true, true);
@@ -2457,7 +2420,7 @@
             if (projectSwiperInstance) projectSwiperInstance.destroy(true, true);
             if (constructionSwiperInstance) constructionSwiperInstance.destroy(true, true);
             if (companySwiperInstance) companySwiperInstance.destroy(true, true);
-            if (agentMobileSwiperInstance) agentMobileSwiperInstance.destroy(true, true);
+            if (agentSwiperInstance) agentSwiperInstance.destroy(true, true);
 
             saleSwiperInstance = new Swiper(".saleSwiper", {
                 slidesPerView: 1.12,
@@ -2492,17 +2455,29 @@
             });
 
             companySwiperInstance = new Swiper(".companySwiper", {
-                slidesPerView: 2.2,
+                slidesPerView: 1.2,
                 spaceBetween: 14,
+                navigation: {
+                    nextEl: ".company-next",
+                    prevEl: ".company-prev"
+                },
                 breakpoints: {
-                    640: { slidesPerView: 3.2, spaceBetween: 16 },
-                    1024: { slidesPerView: 5.2, spaceBetween: 18 }
+                    640: { slidesPerView: 2.2, spaceBetween: 16 },
+                    1024: { slidesPerView: 5, spaceBetween: 18 }
                 }
             });
 
-            agentMobileSwiperInstance = new Swiper(".agentMobileSwiper", {
-                slidesPerView: 1.08,
-                spaceBetween: 16
+            agentSwiperInstance = new Swiper(".agentSwiper", {
+                slidesPerView: 1.1,
+                spaceBetween: 14,
+                navigation: {
+                    nextEl: ".agent-next",
+                    prevEl: ".agent-prev"
+                },
+                breakpoints: {
+                    640: { slidesPerView: 2.2, spaceBetween: 16 },
+                    1024: { slidesPerView: 5, spaceBetween: 18 }
+                }
             });
         }
 
