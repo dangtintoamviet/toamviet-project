@@ -222,6 +222,44 @@
             background: linear-gradient(135deg, rgba(0,139,139,0.94), rgba(15,118,110,0.94));
         }
 
+        .vip-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: 1px solid rgba(255,255,255,0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            color: #fff;
+        }
+
+        .vip-badge.kim-cuong {
+            background: linear-gradient(135deg, rgba(34,211,238,0.92), rgba(37,99,235,0.92));
+        }
+
+        .vip-badge.vang {
+            background: linear-gradient(135deg, rgba(251,191,36,0.94), rgba(245,158,11,0.94));
+        }
+
+        .vip-badge.bac {
+            background: linear-gradient(135deg, rgba(226,232,240,0.94), rgba(148,163,184,0.94));
+            color: #1f2937;
+        }
+
+        .vip-badge.dong {
+            background: linear-gradient(135deg, rgba(251,146,60,0.94), rgba(180,83,9,0.94));
+        }
+
         .con-card-body {
             padding: 20px;
             display: flex;
@@ -505,6 +543,13 @@
                 flex: 0 0 40px;
                 border-radius: 12px;
             }
+
+            .vip-badge {
+                top: 14px;
+                right: 14px;
+                font-size: 9px;
+                padding: 6px 10px;
+            }
         }
     </style>
 </head>
@@ -538,7 +583,7 @@
 
                 <div>
                     <select id="sortFilter" class="filter-select">
-                        <option value="newest">Mới nhất</option>
+                        <option value="newest">Ưu tiên VIP + mới nhất</option>
                         <option value="service-type">Theo loại dịch vụ</option>
                         <option value="brand-asc">Đơn vị A-Z</option>
                     </select>
@@ -640,8 +685,9 @@
                 contactName: "Bình Dương Cons Co., Ltd",
                 roleLabel: "Doanh nghiệp / Nhà thầu",
                 contactPhone: "0946239289",
-                contactProfileUrl: "../pages/danh-ba-doanh-nghiep.html",
+                contactProfileUrl: "../pages/chi-tiet-doanh-nghiep.html",
                 profileType: "doanhnghiep",
+                vipLevel: "kim-cuong",
                 createdAt: new Date().toISOString(),
                 images: [FALLBACK_IMAGE]
             },
@@ -663,8 +709,9 @@
                 contactName: "Studio Kiến Trúc Việt",
                 roleLabel: "Đơn vị thiết kế",
                 contactPhone: "0901234567",
-                contactProfileUrl: "../pages/danh-ba-doanh-nghiep.html",
+                contactProfileUrl: "../pages/chi-tiet-doanh-nghiep.html",
                 profileType: "doanhnghiep",
+                vipLevel: "vang",
                 createdAt: new Date(Date.now() - 86400000).toISOString(),
                 images: [FALLBACK_IMAGE]
             },
@@ -686,8 +733,9 @@
                 contactName: "Fix Home Service",
                 roleLabel: "Đội thi công cải tạo",
                 contactPhone: "0988123456",
-                contactProfileUrl: "../pages/danh-ba-doanh-nghiep.html",
+                contactProfileUrl: "../pages/chi-tiet-doanh-nghiep.html",
                 profileType: "doanhnghiep",
+                vipLevel: "bac",
                 createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
                 images: [FALLBACK_IMAGE]
             }
@@ -872,7 +920,31 @@
         }
 
         function getPosterSub(post) {
-            return post.roleLabel || post.role || (post.profileType === "doanhnghiep" ? "Doanh nghiệp / Nhà thầu" : "Cá nhân / Kỹ sư");
+            const rawRole = post.roleLabel || post.role || "";
+            const normalizedRole = normalizeText(rawRole);
+
+            if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) {
+                return "Doanh nghiệp";
+            }
+
+            if (
+                normalizedRole.includes("moi gioi") ||
+                normalizedRole.includes("chuyen vien") ||
+                normalizedRole.includes("nha thau") ||
+                normalizedRole.includes("don vi")
+            ) {
+                return rawRole;
+            }
+
+            if (normalizedRole.includes("ca nhan") || normalizeText(post.profileType) === "canhan") {
+                return "Cá nhân";
+            }
+
+            if (normalizeText(post.profileType) === "doanhnghiep") {
+                return "Doanh nghiệp";
+            }
+
+            return rawRole || (post.profileType === "doanhnghiep" ? "Doanh nghiệp / Nhà thầu" : "Cá nhân / Kỹ sư");
         }
 
         function getAvatarText(post) {
@@ -885,12 +957,8 @@
                 .join("") || "TV";
         }
 
-        function getProfileUrl(post) {
-            return post.contactProfileUrl || post.profileUrl || (
-                post.profileType === "doanhnghiep"
-                    ? "../pages/danh-ba-doanh-nghiep.html"
-                    : "../pages/danh-ba-moi-gioi.html"
-            );
+        function getProfileUrl(post, postId) {
+            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(String(postId || "").trim())}`;
         }
 
         function getDetailUrl(post, postId) {
@@ -925,6 +993,52 @@
                 (normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung") &&
                 ["approved", "demo", "published"].includes(normalizeText(post.status))
             );
+        }
+
+        function getVipLevel(post) {
+            const raw = String(
+                post.vipLevel ||
+                post.vipType ||
+                post.vipPackage ||
+                post.packageType ||
+                ""
+            ).toLowerCase().trim();
+
+            if (!raw) return "";
+            if (raw.includes("kim") || raw.includes("diamond")) return "kim-cuong";
+            if (raw.includes("vang") || raw.includes("gold")) return "vang";
+            if (raw.includes("bac") || raw.includes("silver")) return "bac";
+            if (raw.includes("dong") || raw.includes("bronze")) return "dong";
+            return "";
+        }
+
+        function getVipLabel(level) {
+            const map = {
+                "kim-cuong": "VIP Kim cương",
+                "vang": "VIP Vàng",
+                "bac": "VIP Bạc",
+                "dong": "VIP Đồng"
+            };
+            return map[level] || "";
+        }
+
+        function getVipPriority(post) {
+            const level = getVipLevel(post);
+
+            if (level === "kim-cuong") return 5;
+            if (level === "vang") return 4;
+            if (level === "bac") return 3;
+            if (level === "dong") return 2;
+            return 1;
+        }
+
+        function comparePostsByVipThenDate(a, b) {
+            const vipDiff = getVipPriority(b) - getVipPriority(a);
+            if (vipDiff !== 0) return vipDiff;
+
+            const timeA = new Date(a.createdAt || 0).getTime();
+            const timeB = new Date(b.createdAt || 0).getTime();
+            return timeB - timeA;
         }
 
         function fillCityFilter(posts) {
@@ -975,11 +1089,19 @@
             }
 
             if (sortType === "service-type") {
-                filtered.sort((a, b) => String(a.serviceType || "").localeCompare(String(b.serviceType || ""), "vi"));
+                filtered.sort((a, b) => {
+                    const serviceDiff = String(a.serviceType || "").localeCompare(String(b.serviceType || ""), "vi");
+                    if (serviceDiff !== 0) return serviceDiff;
+                    return comparePostsByVipThenDate(a, b);
+                });
             } else if (sortType === "brand-asc") {
-                filtered.sort((a, b) => String(buildPoster(a) || "").localeCompare(String(buildPoster(b) || ""), "vi"));
+                filtered.sort((a, b) => {
+                    const brandDiff = String(buildPoster(a) || "").localeCompare(String(buildPoster(b) || ""), "vi");
+                    if (brandDiff !== 0) return brandDiff;
+                    return comparePostsByVipThenDate(a, b);
+                });
             } else {
-                filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+                filtered.sort(comparePostsByVipThenDate);
             }
 
             return filtered;
@@ -1031,10 +1153,22 @@
             return '<span class="service-chip live"><i class="fa-solid fa-bolt"></i> Đang hiển thị</span>';
         }
 
+        function getVipBadgeHtml(post) {
+            const level = getVipLevel(post);
+            const label = getVipLabel(level);
+            if (!level || !label) return "";
+            return `
+                <span class="vip-badge ${level}">
+                    <i class="fa-solid fa-crown"></i>
+                    ${escapeHtml(label)}
+                </span>
+            `;
+        }
+
         function renderCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
-            const profileUrl = getProfileUrl(post);
+            const profileUrl = getProfileUrl(post, postId);
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Dịch vụ xây dựng");
             const company = escapeHtml(buildPoster(post));
@@ -1047,6 +1181,7 @@
             const favoriteActive = isFavorite(postId);
             const phoneRaw = post.contactPhone || post.phone || "";
             const phoneLink = normalizePhone(phoneRaw);
+            const vipHtml = getVipBadgeHtml(post);
 
             return `
                 <article class="con-card">
@@ -1062,6 +1197,7 @@
                         </a>
 
                         <span class="con-badge">${escapeHtml(getServiceBadge(post))}</span>
+                        ${vipHtml}
                     </div>
 
                     <div class="con-card-body">
