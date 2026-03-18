@@ -290,12 +290,23 @@
         }
 
         .con-company-name {
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 800;
-            color: #64748b;
-            text-transform: uppercase;
-            line-height: 1.4;
-            letter-spacing: 0.03em;
+            color: #334155;
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .con-company-role {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.35;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .con-card-title {
@@ -549,6 +560,14 @@
                 right: 14px;
                 font-size: 9px;
                 padding: 6px 10px;
+            }
+
+            .con-company-name {
+                font-size: 12px;
+            }
+
+            .con-company-role {
+                font-size: 10px;
             }
         }
     </style>
@@ -1206,6 +1225,7 @@
                                 <div class="con-company-avatar">${avatarText}</div>
                                 <div class="min-w-0">
                                     <div class="con-company-name truncate">${company}</div>
+                                    <div class="con-company-role truncate">${role}</div>
                                 </div>
                             </a>
                             ${getStatusChip(post)}
@@ -1232,10 +1252,6 @@
                                 <span class="con-meta-label">Năng lực</span>
                                 <span class="con-meta-value">${exp}</span>
                             </div>
-                        </div>
-
-                        <div class="text-[12px] text-slate-500 leading-6">
-                            <strong class="text-slate-700">Vai trò:</strong> ${role}
                         </div>
 
                         <div class="con-card-footer">
