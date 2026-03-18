@@ -821,7 +821,31 @@
         }
 
         function getPosterSub(post) {
-            return post.roleLabel || post.role || (post.profileType === "doanhnghiep" ? "Doanh nghiệp" : "Người đăng");
+            const rawRole = post.roleLabel || post.role || "";
+            const normalizedRole = normalizeText(rawRole);
+
+            if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) {
+                return "Doanh nghiệp";
+            }
+
+            if (
+                normalizedRole.includes("moi gioi") ||
+                normalizedRole.includes("chuyen vien") ||
+                normalizedRole.includes("nha thau") ||
+                normalizedRole.includes("don vi")
+            ) {
+                return rawRole;
+            }
+
+            if (normalizedRole.includes("ca nhan") || normalizeText(post.profileType) === "canhan") {
+                return "Cá nhân";
+            }
+
+            if (normalizeText(post.profileType) === "doanhnghiep") {
+                return "Doanh nghiệp";
+            }
+
+            return rawRole || (post.profileType === "doanhnghiep" ? "Doanh nghiệp" : "Người đăng");
         }
 
         function getAvatarText(post) {
@@ -834,12 +858,16 @@
                 .join("") || "TV";
         }
 
-        function getProfileUrl(post) {
-            return post.contactProfileUrl || post.profileUrl || (
-                post.profileType === "doanhnghiep"
-                    ? "../pages/danh-ba-doanh-nghiep.html"
-                    : "../pages/danh-ba-moi-gioi.html"
-            );
+        function getProfileUrl(post, postId) {
+            if (normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung") {
+                return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(String(postId || "").trim())}`;
+            }
+
+            if (normalizeText(post.profileType) === "doanhnghiep") {
+                return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(String(postId || "").trim())}`;
+            }
+
+            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(String(postId || "").trim())}`;
         }
 
         function getVipLevel(post) {
@@ -985,7 +1013,7 @@
         function renderSaleCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
-            const profileUrl = getProfileUrl(post);
+            const profileUrl = getProfileUrl(post, postId);
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Tiêu đề bất động sản");
             const price = escapeHtml(post.propertyPrice || "Liên hệ");
@@ -1104,7 +1132,7 @@
         function renderRentalCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
-            const profileUrl = getProfileUrl(post);
+            const profileUrl = getProfileUrl(post, postId);
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Tin cho thuê bất động sản");
             const price = escapeHtml(post.propertyPrice || "Liên hệ");
@@ -1220,7 +1248,7 @@
         function renderConstructionCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
-            const profileUrl = getProfileUrl(post);
+            const profileUrl = getProfileUrl(post, postId);
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Dịch vụ xây dựng");
             const company = escapeHtml(buildPoster(post));
@@ -1297,9 +1325,7 @@
                         </div>
 
                         <div class="flex justify-between items-center mt-4 pt-3 border-t gap-4 flex-wrap">
-                            <div class="text-[12px] text-slate-500">
-                                <strong class="text-slate-700">Vai trò:</strong> ${role}
-                            </div>
+                            <div></div>
 
                             <div class="flex gap-2 flex-wrap">
                                 ${phoneLink
