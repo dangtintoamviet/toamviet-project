@@ -282,7 +282,7 @@
 
                 <div>
                     <select id="sortFilter" class="filter-select">
-                        <option value="newest">Mới nhất</option>
+                        <option value="newest">Ưu tiên VIP + mới nhất</option>
                         <option value="price-asc">Giá thuê tăng dần</option>
                         <option value="price-desc">Giá thuê giảm dần</option>
                         <option value="area-desc">Diện tích lớn</option>
@@ -724,6 +724,25 @@
             return map[level] || '';
         }
 
+        function getVipPriority(post) {
+            const level = getVipLevel(post);
+
+            if (level === "kim-cuong") return 5;
+            if (level === "vang") return 4;
+            if (level === "bac") return 3;
+            if (level === "dong") return 2;
+            return 1;
+        }
+
+        function comparePostsByVipThenDate(a, b) {
+            const vipDiff = getVipPriority(b) - getVipPriority(a);
+            if (vipDiff !== 0) return vipDiff;
+
+            const timeA = new Date(a.createdAt || 0).getTime();
+            const timeB = new Date(b.createdAt || 0).getTime();
+            return timeB - timeA;
+        }
+
         function fillCityFilter(posts) {
             const currentValue = cityFilter.value;
             const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))];
@@ -932,13 +951,25 @@
             }
 
             if (sort === 'price-asc') {
-                filtered.sort((a, b) => parseRentalPriceToMillion(a.propertyPrice) - parseRentalPriceToMillion(b.propertyPrice));
+                filtered.sort((a, b) => {
+                    const priceDiff = parseRentalPriceToMillion(a.propertyPrice) - parseRentalPriceToMillion(b.propertyPrice);
+                    if (priceDiff !== 0) return priceDiff;
+                    return comparePostsByVipThenDate(a, b);
+                });
             } else if (sort === 'price-desc') {
-                filtered.sort((a, b) => parseRentalPriceToMillion(b.propertyPrice) - parseRentalPriceToMillion(a.propertyPrice));
+                filtered.sort((a, b) => {
+                    const priceDiff = parseRentalPriceToMillion(b.propertyPrice) - parseRentalPriceToMillion(a.propertyPrice);
+                    if (priceDiff !== 0) return priceDiff;
+                    return comparePostsByVipThenDate(a, b);
+                });
             } else if (sort === 'area-desc') {
-                filtered.sort((a, b) => Number(b.propertyArea || 0) - Number(a.propertyArea || 0));
+                filtered.sort((a, b) => {
+                    const areaDiff = Number(b.propertyArea || 0) - Number(a.propertyArea || 0);
+                    if (areaDiff !== 0) return areaDiff;
+                    return comparePostsByVipThenDate(a, b);
+                });
             } else {
-                filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+                filtered.sort(comparePostsByVipThenDate);
             }
 
             return filtered;
