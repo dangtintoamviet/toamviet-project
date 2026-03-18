@@ -1170,8 +1170,9 @@
             return "https://zalo.me/" + normalized.replace(/^\+/, "");
         }
 
-        function getProfileDetailLink(post) {
-            return post.contactProfileUrl || "../pages/chi-tiet-doanh-nghiep.html";
+        function getProfileDetailLink(post, postId) {
+            if (post.contactProfileUrl) return post.contactProfileUrl;
+            return "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(postId);
         }
 
         function bindPhoneReveal(phone) {
@@ -1704,7 +1705,7 @@
         function renderSharedContact(post, phone, postId) {
             const poster = buildPoster(post);
             const role = getPosterSub(post);
-            const profileLink = getProfileDetailLink(post);
+            const profileLink = getProfileDetailLink(post, postId);
             const zaloLink = getZaloLink(phone);
 
             fillText("poster-name", poster);
