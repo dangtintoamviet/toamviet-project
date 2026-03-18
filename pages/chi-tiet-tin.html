@@ -13,8 +13,8 @@
 
     <style>
         :root {
-            --brand-primary: #0f766e;
-            --brand-primary-2: #008b8b;
+            --brand-primary: #0f9aa8;
+            --brand-primary-dark: #0d7f8a;
             --brand-accent: #ff8c00;
             --soft-bg: #f5f7fa;
             --card-bg: #ffffff;
@@ -22,7 +22,7 @@
             --text-sub: #64748b;
             --border-color: #e5e7eb;
             --danger: #dc2626;
-            --shadow-soft: 0 8px 28px rgba(15, 23, 42, 0.06);
+            --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.05);
             --shadow-hover: 0 14px 34px rgba(15, 23, 42, 0.1);
         }
 
@@ -45,7 +45,7 @@
         .page-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
+            border-radius: 22px;
             box-shadow: var(--shadow-soft);
         }
 
@@ -56,6 +56,7 @@
         .detail-main-image-wrap {
             position: relative;
             background: #e5e7eb;
+            padding: 18px 18px 0;
         }
 
         .detail-main-image {
@@ -64,35 +65,57 @@
             object-fit: cover;
             display: block;
             background: #e5e7eb;
+            border-radius: 20px;
         }
 
         .detail-image-counter {
             position: absolute;
-            bottom: 16px;
-            right: 16px;
-            background: rgba(15, 23, 42, 0.72);
+            bottom: 26px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.74);
             color: white;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
-            padding: 8px 12px;
+            padding: 8px 14px;
             border-radius: 999px;
             backdrop-filter: blur(4px);
         }
 
+        .detail-gallery-thumbs-wrap {
+            padding: 14px 18px 18px;
+        }
+
         .detail-gallery-thumbs {
-            padding: 16px;
-            border-top: 1px solid #f1f5f9;
-            display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            display: flex;
             gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x proximity;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+            padding-bottom: 4px;
+        }
+
+        .detail-gallery-thumbs::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .detail-gallery-thumbs::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+
+        .thumb-item {
+            flex: 0 0 calc((100% - 24px) / 3);
+            min-width: calc((100% - 24px) / 3);
+            scroll-snap-align: start;
         }
 
         .thumb-image {
             width: 100%;
-            height: 90px;
+            height: 104px;
             object-fit: cover;
             display: block;
-            border-radius: 14px;
+            border-radius: 18px;
             cursor: pointer;
             border: 2px solid transparent;
             transition: 0.2s ease;
@@ -101,15 +124,16 @@
 
         .thumb-image:hover,
         .thumb-image.active {
-            border-color: var(--brand-primary-2);
+            border-color: var(--brand-primary);
             transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 154, 168, 0.12);
         }
 
         .section-title {
             position: relative;
             font-size: 17px;
-            font-weight: 800;
-            color: #0f172a;
+            font-weight: 700;
+            color: #1e293b;
             margin-bottom: 18px;
             padding-left: 14px;
         }
@@ -130,10 +154,10 @@
         }
 
         .detail-title {
-            font-size: 29px;
-            font-weight: 800;
+            font-size: 28px;
+            font-weight: 700;
             line-height: 1.45;
-            color: #111827;
+            color: #1f2937;
             margin: 0;
         }
 
@@ -151,7 +175,7 @@
             padding: 8px 12px;
             border-radius: 999px;
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.03em;
             white-space: nowrap;
@@ -178,15 +202,15 @@
         }
 
         .meta-price {
-            font-size: 32px;
+            font-size: 31px;
             line-height: 1.2;
-            font-weight: 800;
+            font-weight: 700;
             color: var(--danger);
         }
 
         .meta-inline {
             font-size: 17px;
-            font-weight: 700;
+            font-weight: 600;
             color: #334155;
         }
 
@@ -224,7 +248,7 @@
         .spec-label {
             display: block;
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
             color: #94a3b8;
             margin-bottom: 8px;
@@ -234,7 +258,7 @@
         .spec-value {
             display: block;
             font-size: 15px;
-            font-weight: 800;
+            font-weight: 600;
             color: #1f2937;
             line-height: 1.5;
             word-break: break-word;
@@ -269,14 +293,14 @@
         .info-label {
             color: #64748b;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             flex-shrink: 0;
         }
 
         .info-value {
             color: #1f2937;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             text-align: right;
             word-break: break-word;
         }
@@ -290,8 +314,20 @@
         }
 
         .contact-highlight {
-            background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(255, 140, 0, 0.08));
-            border: 1px solid rgba(15, 118, 110, 0.12);
+            background: linear-gradient(135deg, rgba(15, 154, 168, 0.05), rgba(255, 140, 0, 0.04));
+            border: 1px solid rgba(15, 154, 168, 0.12);
+        }
+
+        .poster-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border-radius: 18px;
+            transition: 0.2s ease;
+        }
+
+        .poster-link:hover {
+            background: rgba(15, 154, 168, 0.04);
         }
 
         .poster-wrap {
@@ -299,27 +335,29 @@
             align-items: center;
             gap: 14px;
             margin-bottom: 18px;
+            padding: 6px;
+            border-radius: 18px;
         }
 
         .poster-avatar {
             width: 62px;
             height: 62px;
             border-radius: 999px;
-            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-2));
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 20px;
             flex-shrink: 0;
-            box-shadow: 0 10px 20px rgba(15, 118, 110, 0.18);
+            box-shadow: 0 10px 20px rgba(15, 154, 168, 0.18);
         }
 
         .poster-name {
             font-size: 18px;
-            font-weight: 800;
-            color: #0f172a;
+            font-weight: 700;
+            color: #1f2937;
             line-height: 1.45;
             word-break: break-word;
         }
@@ -328,35 +366,59 @@
             font-size: 13px;
             color: #64748b;
             margin-top: 4px;
-            font-weight: 600;
+            font-weight: 500;
         }
 
-        .contact-cta-box {
+        .phone-reveal-btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-height: 54px;
+            padding: 12px 18px;
+            border: 1.5px solid var(--brand-primary);
             background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 18px;
-            padding: 16px;
-            margin-bottom: 16px;
+            border-radius: 16px;
+            font-size: 15px;
+            color: var(--brand-primary-dark);
+            font-weight: 700;
+            transition: 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
         }
 
-        .contact-phone-big {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--danger);
-            line-height: 1.3;
-            word-break: break-all;
+        .phone-reveal-btn:hover {
+            background: #f0fdff;
         }
 
-        .contact-caption {
-            font-size: 13px;
-            color: #64748b;
-            margin-top: 4px;
+        .phone-reveal-left {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .phone-reveal-number {
+            color: #334155;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .phone-reveal-text {
+            color: var(--brand-primary);
+            font-size: 15px;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
         .contact-actions {
             display: flex;
             flex-direction: column;
             gap: 12px;
+            margin-top: 14px;
         }
 
         .contact-btn {
@@ -369,30 +431,30 @@
             padding: 12px 14px;
             border-radius: 14px;
             font-size: 14px;
-            font-weight: 800;
+            font-weight: 700;
             transition: 0.2s ease;
             text-decoration: none;
         }
 
-        .contact-btn-primary {
-            background: linear-gradient(135deg, var(--brand-primary-2), var(--brand-primary));
+        .contact-btn-zalo {
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
             color: white;
             border: 1px solid transparent;
-            box-shadow: 0 12px 24px rgba(15, 118, 110, 0.18);
+            box-shadow: 0 12px 24px rgba(15, 154, 168, 0.18);
         }
 
-        .contact-btn-primary:hover {
+        .contact-btn-zalo:hover {
             opacity: 0.95;
             transform: translateY(-1px);
         }
 
-        .contact-btn-outline {
+        .favorite-btn {
             background: white;
             color: #334155;
             border: 1px solid #d1d5db;
         }
 
-        .contact-btn-outline:hover {
+        .favorite-btn:hover {
             border-color: #cbd5e1;
             background: #f8fafc;
         }
@@ -425,13 +487,13 @@
         .quick-info-label {
             font-size: 14px;
             color: #64748b;
-            font-weight: 700;
+            font-weight: 600;
         }
 
         .quick-info-value {
             font-size: 14px;
             color: #0f172a;
-            font-weight: 800;
+            font-weight: 700;
             text-align: right;
             word-break: break-word;
         }
@@ -452,7 +514,7 @@
             padding: 8px 12px;
             border-radius: 999px;
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.02em;
         }
@@ -492,12 +554,12 @@
             padding: 8px 12px;
             border-radius: 999px;
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.02em;
-            background: linear-gradient(135deg, rgba(0,139,139,0.94), rgba(15,118,110,0.94));
+            background: linear-gradient(135deg, rgba(15,154,168,0.96), rgba(13,127,138,0.96));
             color: white;
-            border: 1px solid rgba(0,139,139,0.2);
+            border: 1px solid rgba(15,154,168,0.2);
             box-shadow: 0 6px 16px rgba(0,0,0,0.1);
         }
 
@@ -511,8 +573,8 @@
 
         .related-more-link {
             font-size: 14px;
-            font-weight: 800;
-            color: var(--brand-primary-2);
+            font-weight: 700;
+            color: var(--brand-primary-dark);
             text-decoration: none;
         }
 
@@ -540,7 +602,7 @@
 
         .related-card:hover {
             transform: translateY(-3px);
-            border-color: rgba(0, 139, 139, 0.3);
+            border-color: rgba(15, 154, 168, 0.3);
             box-shadow: var(--shadow-hover);
         }
 
@@ -584,7 +646,7 @@
             padding: 6px 10px;
             border-radius: 999px;
             font-size: 10px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.03em;
             white-space: nowrap;
@@ -604,7 +666,7 @@
 
         .related-title {
             font-size: 15px;
-            font-weight: 800;
+            font-weight: 700;
             line-height: 1.6;
             color: #0f172a;
             min-height: 48px;
@@ -625,13 +687,13 @@
         .related-price {
             color: var(--danger);
             font-size: 17px;
-            font-weight: 800;
+            font-weight: 700;
         }
 
         .related-sub {
             color: #475569;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
         }
 
         .related-location {
@@ -674,16 +736,12 @@
                 height: 340px;
             }
 
-            .detail-gallery-thumbs {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-            }
-
             .detail-title {
                 font-size: 24px;
             }
 
             .meta-price {
-                font-size: 28px;
+                font-size: 27px;
             }
 
             .info-grid {
@@ -696,19 +754,27 @@
                 padding: 0 12px;
             }
 
-            .detail-main-image {
-                height: 255px;
+            .detail-main-image-wrap {
+                padding: 14px 14px 0;
             }
 
-            .detail-gallery-thumbs {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 10px;
-                padding: 12px;
+            .detail-main-image {
+                height: 255px;
+                border-radius: 18px;
+            }
+
+            .detail-gallery-thumbs-wrap {
+                padding: 12px 14px 14px;
+            }
+
+            .thumb-item {
+                flex: 0 0 calc((100% - 16px) / 3);
+                min-width: calc((100% - 16px) / 3);
             }
 
             .thumb-image {
-                height: 74px;
-                border-radius: 12px;
+                height: 86px;
+                border-radius: 14px;
             }
 
             .detail-header-card,
@@ -739,10 +805,6 @@
                 padding: 12px;
             }
 
-            .contact-phone-big {
-                font-size: 22px;
-            }
-
             .related-posts-grid {
                 grid-template-columns: 1fr;
             }
@@ -765,8 +827,18 @@
             .detail-image-counter {
                 font-size: 12px;
                 padding: 7px 10px;
-                bottom: 10px;
-                right: 10px;
+                bottom: 18px;
+                right: 20px;
+            }
+
+            .phone-reveal-btn {
+                padding: 12px 14px;
+                gap: 10px;
+            }
+
+            .phone-reveal-number,
+            .phone-reveal-text {
+                font-size: 14px;
             }
         }
     </style>
@@ -777,9 +849,9 @@
 
     <main class="container-custom py-6 md:py-8">
         <div class="mb-5 text-sm text-slate-500 leading-7">
-            <a href="../index.html" class="hover:text-[color:var(--brand-primary-2)]">Trang chủ</a>
+            <a href="../index.html" class="hover:text-[color:var(--brand-primary-dark)]">Trang chủ</a>
             <span class="mx-2">/</span>
-            <a id="breadcrumb-parent-link" href="../pages/nha-dat-ban.html" class="hover:text-[color:var(--brand-primary-2)]">Nhà đất bán</a>
+            <a id="breadcrumb-parent-link" href="../pages/nha-dat-ban.html" class="hover:text-[color:var(--brand-primary-dark)]">Nhà đất bán</a>
             <span class="mx-2">/</span>
             <span id="breadcrumb-title" class="text-slate-700 font-semibold">Chi tiết tin đăng</span>
         </div>
@@ -791,7 +863,10 @@
                         <img id="main-image" src="../assets/images/fallback-property.jpg" alt="Ảnh tin đăng" class="detail-main-image" />
                         <div id="detail-image-counter" class="detail-image-counter">1 / 1</div>
                     </div>
-                    <div id="thumb-gallery" class="detail-gallery-thumbs"></div>
+
+                    <div class="detail-gallery-thumbs-wrap">
+                        <div id="thumb-gallery" class="detail-gallery-thumbs"></div>
+                    </div>
                 </div>
 
                 <div class="page-card detail-header-card">
@@ -883,31 +958,31 @@
                 <div class="sidebar-card contact-highlight">
                     <h2 class="section-title">Liên hệ người đăng</h2>
 
-                    <div class="poster-wrap">
-                        <div id="poster-avatar" class="poster-avatar">TV</div>
-                        <div class="min-w-0">
-                            <p id="poster-name" class="poster-name">Người đăng</p>
-                            <p id="poster-role" class="poster-role">Đang cập nhật</p>
+                    <a id="poster-profile-link" href="../pages/chi-tiet-doanh-nghiep.html" class="poster-link">
+                        <div class="poster-wrap">
+                            <div id="poster-avatar" class="poster-avatar">TV</div>
+                            <div class="min-w-0">
+                                <p id="poster-name" class="poster-name">Người đăng</p>
+                                <p id="poster-role" class="poster-role">Đang cập nhật</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="contact-cta-box">
-                        <div id="call-number-big" class="contact-phone-big">Liên hệ</div>
-                        <div class="contact-caption">Ưu tiên gọi trực tiếp để trao đổi nhanh hơn về tin đăng này.</div>
-                    </div>
+                    <button id="phone-reveal-button" type="button" class="phone-reveal-btn">
+                        <span class="phone-reveal-left">
+                            <i class="fa-solid fa-phone"></i>
+                            <span id="phone-reveal-number" class="phone-reveal-number">0907 357 xxx</span>
+                        </span>
+                        <span id="phone-reveal-text" class="phone-reveal-text">Bấm để hiện số</span>
+                    </button>
 
                     <div class="contact-actions">
-                        <a id="call-button" href="javascript:void(0)" class="contact-btn contact-btn-primary">
-                            <i class="fa-solid fa-phone"></i>
-                            <span id="call-button-text">Gọi ngay</span>
+                        <a id="zalo-button" href="javascript:void(0)" target="_blank" rel="noopener noreferrer" class="contact-btn contact-btn-zalo">
+                            <i class="fa-solid fa-comments"></i>
+                            <span>Chat qua Zalo</span>
                         </a>
 
-                        <a id="profile-button" href="../pages/danh-ba-moi-gioi.html" class="contact-btn contact-btn-outline">
-                            <i class="fa-solid fa-user"></i>
-                            <span id="profile-button-text">Xem hồ sơ</span>
-                        </a>
-
-                        <button id="favorite-button" type="button" class="contact-btn contact-btn-outline favorite-btn">
+                        <button id="favorite-button" type="button" class="contact-btn favorite-btn">
                             <i class="fa-regular fa-heart"></i>
                             <span>Lưu tin</span>
                         </button>
@@ -990,6 +1065,9 @@
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
         const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+        let currentPhoneRaw = "";
+        let currentPhoneMasked = "";
+        let currentPhoneRevealed = false;
 
         function escapeHtml(value) {
             return String(value || "")
@@ -1060,6 +1138,66 @@
 
         function normalizePhone(phone) {
             return String(phone || "").replace(/[^\d+]/g, "");
+        }
+
+        function formatDisplayPhone(phone) {
+            const digits = String(phone || "").replace(/[^\d]/g, "");
+            if (!digits) return "Liên hệ";
+
+            if (digits.length <= 4) return digits;
+            if (digits.length <= 7) return digits.replace(/(\d{4})(\d+)/, "$1 $2");
+            if (digits.length <= 10) return digits.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3");
+            return digits.replace(/(\d{4})(\d{3})(\d{3,})/, "$1 $2 $3");
+        }
+
+        function maskPhone(phone) {
+            const normalized = formatDisplayPhone(phone);
+            if (!normalized || normalized === "Liên hệ") return "Liên hệ";
+
+            const parts = normalized.split(" ");
+            if (parts.length >= 3) {
+                return parts[0] + " " + parts[1] + " xxx";
+            }
+
+            const digits = normalized.replace(/\s+/g, "");
+            if (digits.length <= 3) return digits;
+            return digits.slice(0, Math.min(7, digits.length)) + " xxx";
+        }
+
+        function getZaloLink(phone) {
+            const normalized = normalizePhone(phone);
+            if (!normalized) return "javascript:void(0)";
+            return "https://zalo.me/" + normalized.replace(/^\+/, "");
+        }
+
+        function getProfileDetailLink(post) {
+            return post.contactProfileUrl || "../pages/chi-tiet-doanh-nghiep.html";
+        }
+
+        function bindPhoneReveal(phone) {
+            const button = document.getElementById("phone-reveal-button");
+            const numberEl = document.getElementById("phone-reveal-number");
+            const textEl = document.getElementById("phone-reveal-text");
+
+            currentPhoneRaw = normalizePhone(phone);
+            currentPhoneMasked = maskPhone(phone);
+            currentPhoneRevealed = false;
+
+            numberEl.textContent = currentPhoneMasked;
+            textEl.textContent = currentPhoneRaw ? "Bấm để hiện số" : "Chưa có số";
+
+            button.onclick = function () {
+                if (!currentPhoneRaw) return;
+
+                if (!currentPhoneRevealed) {
+                    numberEl.textContent = formatDisplayPhone(currentPhoneRaw);
+                    textEl.textContent = "Bấm để gọi";
+                    currentPhoneRevealed = true;
+                    return;
+                }
+
+                window.location.href = "tel:" + currentPhoneRaw;
+            };
         }
 
         function getStorageArray(key) {
@@ -1509,13 +1647,15 @@
                 const safeImg = escapeHtml(img);
                 const jsImg = String(img || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                 return `
-                    <img
-                        src="${safeImg}"
-                        alt="Ảnh ${index + 1}"
-                        class="thumb-image ${index === 0 ? "active" : ""}"
-                        onclick="changeMainImage('${jsImg}', this, ${index + 1}, ${finalImages.length})"
-                        onerror="this.src='${FALLBACK_IMAGE}'"
-                    />
+                    <div class="thumb-item">
+                        <img
+                            src="${safeImg}"
+                            alt="Ảnh ${index + 1}"
+                            class="thumb-image ${index === 0 ? "active" : ""}"
+                            onclick="changeMainImage('${jsImg}', this, ${index + 1}, ${finalImages.length})"
+                            onerror="this.src='${FALLBACK_IMAGE}'"
+                        />
+                    </div>
                 `;
             }).join("");
         }
@@ -1561,6 +1701,31 @@
             document.getElementById("detail-price-per-m2").classList.add("hidden-force");
         }
 
+        function renderSharedContact(post, phone, postId) {
+            const poster = buildPoster(post);
+            const role = getPosterSub(post);
+            const profileLink = getProfileDetailLink(post);
+            const zaloLink = getZaloLink(phone);
+
+            fillText("poster-name", poster);
+            fillText("poster-role", role);
+            fillText("poster-avatar", getAvatarText(post));
+
+            const posterProfileLink = document.getElementById("poster-profile-link");
+            posterProfileLink.href = profileLink;
+
+            const zaloButton = document.getElementById("zalo-button");
+            zaloButton.href = zaloLink;
+
+            bindPhoneReveal(phone);
+
+            const favoriteButton = document.getElementById("favorite-button");
+            favoriteButton.onclick = function () {
+                toggleFavorite(postId, post);
+            };
+            updateFavoriteButton(postId, post);
+        }
+
         function renderRealEstateDetail(post, postId) {
             const title = post.title || "Tiêu đề bất động sản";
             const price = formatPrice(post.propertyPrice);
@@ -1575,9 +1740,8 @@
             const description = post.description || "Đang cập nhật mô tả chi tiết cho bất động sản này.";
             const poster = buildPoster(post);
             const role = getPosterSub(post);
-            const phone = post.contactPhone || post.phone || "Liên hệ";
+            const phone = post.contactPhone || post.phone || "";
             const email = post.contactEmail || post.email || "Đang cập nhật";
-            const phoneLink = normalizePhone(phone);
             const images = getPostImages(post);
             const isRental = ["thue", "cho-thue", "rent"].includes(normalizeText(post.postType));
             const modeText = isRental ? "Tin thuê" : "Tin bán";
@@ -1605,28 +1769,12 @@
 
             fillText("extra-poster", poster);
             fillText("extra-role", role);
-            fillText("extra-phone", phone);
+            fillText("extra-phone", formatDisplayPhone(phone) || "Liên hệ");
             fillText("extra-email", email);
             fillText("extra-date", formatDate(post.createdAt));
             fillText("extra-city", post.city || "Đang cập nhật");
             fillText("extra-ward", post.ward || "Đang cập nhật");
             fillText("extra-address", fullAddress);
-
-            fillText("poster-name", poster);
-            fillText("poster-role", role);
-            fillText("poster-avatar", getAvatarText(post));
-
-            fillText("call-number-big", phone);
-            fillText("call-button-text", "Gọi ngay");
-
-            const callButton = document.getElementById("call-button");
-            callButton.href = phoneLink ? "tel:" + phoneLink : "javascript:void(0)";
-
-            const profileButton = document.getElementById("profile-button");
-            profileButton.href = post.contactProfileUrl || (normalizeText(post.profileType) === "doanhnghiep"
-                ? "../pages/danh-ba-doanh-nghiep.html"
-                : "../pages/danh-ba-moi-gioi.html");
-            fillText("profile-button-text", normalizeText(post.profileType) === "doanhnghiep" ? "Xem doanh nghiệp" : "Xem môi giới");
 
             fillText("quick-label-1", "Mức giá");
             fillText("quick-price", price);
@@ -1649,13 +1797,7 @@
 
             showRealEstateMeta();
             renderGallery(images);
-
-            const favoriteButton = document.getElementById("favorite-button");
-            favoriteButton.classList.remove("hidden");
-            favoriteButton.onclick = function () {
-                toggleFavorite(postId, post);
-            };
-            updateFavoriteButton(postId, post);
+            renderSharedContact(post, phone, postId);
         }
 
         function renderConstructionDetail(post, postId) {
@@ -1668,9 +1810,8 @@
             const specialty = post.serviceSpecialty || "Đang cập nhật";
             const brand = post.serviceBrand || buildPoster(post);
             const role = getPosterSub(post);
-            const phone = post.contactPhone || post.phone || "Liên hệ";
+            const phone = post.contactPhone || post.phone || "";
             const email = post.contactEmail || post.email || "Đang cập nhật";
-            const phoneLink = normalizePhone(phone);
             const images = getPostImages(post);
             const description = post.description || "Đang cập nhật mô tả chi tiết dịch vụ.";
 
@@ -1696,28 +1837,12 @@
 
             fillText("extra-poster", brand);
             fillText("extra-role", role);
-            fillText("extra-phone", phone);
+            fillText("extra-phone", formatDisplayPhone(phone) || "Liên hệ");
             fillText("extra-email", email);
             fillText("extra-date", formatDate(post.createdAt));
             fillText("extra-city", post.city || "Đang cập nhật");
             fillText("extra-ward", post.ward || "Đang cập nhật");
             fillText("extra-address", fullAddress);
-
-            fillText("poster-name", brand);
-            fillText("poster-role", role);
-            fillText("poster-avatar", getAvatarText(post));
-
-            fillText("call-number-big", phone);
-            fillText("call-button-text", "Liên hệ ngay");
-
-            const callButton = document.getElementById("call-button");
-            callButton.href = phoneLink ? "tel:" + phoneLink : "javascript:void(0)";
-
-            const profileButton = document.getElementById("profile-button");
-            profileButton.href = post.contactProfileUrl || (normalizeText(post.profileType) === "doanhnghiep"
-                ? "../pages/danh-ba-doanh-nghiep.html"
-                : "../pages/danh-ba-moi-gioi.html");
-            fillText("profile-button-text", normalizeText(post.profileType) === "doanhnghiep" ? "Xem doanh nghiệp" : "Xem hồ sơ");
 
             fillText("quick-label-1", "Đơn giá");
             fillText("quick-price", price);
@@ -1740,13 +1865,7 @@
 
             hideRealEstateMeta();
             renderGallery(images);
-
-            const favoriteButton = document.getElementById("favorite-button");
-            favoriteButton.classList.remove("hidden");
-            favoriteButton.onclick = function () {
-                toggleFavorite(postId, post);
-            };
-            updateFavoriteButton(postId, post);
+            renderSharedContact(post, phone, postId);
         }
 
         function renderDetail(post, postId) {
