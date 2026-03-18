@@ -66,7 +66,7 @@
 
         .section-title {
             margin: 0;
-            padding-left: 14px;
+            padding-left: 0;
             position: relative;
             font-size: 24px;
             font-weight: 700;
@@ -76,14 +76,8 @@
         }
 
         .section-title::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 3px;
-            width: 4px;
-            height: calc(100% - 6px);
-            border-radius: 999px;
-            background: var(--brand-green);
+            content: none;
+            display: none;
         }
 
         .section-link {
@@ -139,22 +133,24 @@
         }
 
         .search-tab {
-            min-height: 40px;
-            padding: 0 16px;
+            min-height: 42px;
+            padding: 0 18px;
             border-radius: 999px;
             font-size: 12px;
             font-weight: 800;
             border: 1px solid rgba(255, 255, 255, 0.28);
-            background: rgba(15, 23, 42, 0.28);
+            background: rgba(15, 23, 42, 0.34);
             color: white;
             cursor: pointer;
             transition: all 0.25s ease;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            flex-shrink: 0;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
         }
 
         .search-tab.active {
-            background: rgba(15, 23, 42, 0.56);
+            background: rgba(15, 23, 42, 0.62);
             border-color: rgba(255, 255, 255, 0.42);
         }
 
@@ -178,6 +174,10 @@
             grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.95fr) minmax(0, 0.95fr) auto;
             gap: 12px;
             align-items: center;
+        }
+
+        .hero-filter-slider {
+            display: contents;
         }
 
         .vip-input,
@@ -918,6 +918,10 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
+            .hero-filter-slider {
+                display: contents;
+            }
+
             .hero-filter-grid .vip-submit-wrap {
                 grid-column: span 2;
             }
@@ -941,8 +945,8 @@
             }
 
             .hero-banner {
-                min-height: 300px;
-                padding: 20px 0 24px;
+                min-height: 280px;
+                padding: 28px 0 18px;
             }
 
             .location-grid {
@@ -966,44 +970,110 @@
             }
 
             .hero-banner {
-                min-height: 260px;
-                padding: 18px 0 20px;
+                min-height: 235px;
+                padding: 56px 0 14px;
+                align-items: flex-end;
+            }
+
+            .hero-content {
+                padding: 0 12px;
             }
 
             .search-tabs {
-                gap: 6px;
+                width: 100%;
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                gap: 10px;
                 margin-bottom: 12px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 0 2px 2px;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .search-tabs::-webkit-scrollbar {
+                display: none;
             }
 
             .search-tab {
-                min-height: 36px;
-                padding: 0 12px;
+                min-height: 40px;
+                padding: 0 16px;
                 font-size: 11px;
+                white-space: nowrap;
+                flex: 0 0 auto;
+                border-radius: 999px;
             }
 
             .hero-filter-shell {
-                border-radius: 22px;
-                padding: 6px;
+                border-radius: 26px;
+                padding: 7px;
+                box-shadow: 0 16px 34px rgba(15, 23, 42, 0.18);
             }
 
             .hero-filter-panel {
-                padding: 10px;
-                border-radius: 18px;
+                padding: 12px;
+                border-radius: 22px;
             }
 
             .hero-filter-grid {
-                grid-template-columns: 1fr;
+                display: block;
             }
 
-            .hero-filter-grid .vip-submit-wrap {
-                grid-column: span 1;
+            .vip-input {
+                min-height: 56px;
+                border-radius: 20px;
+                margin-bottom: 12px;
+                padding: 0 18px;
+                font-size: 14px;
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
             }
 
-            .vip-input,
-            .vip-select,
-            .vip-submit-btn {
-                min-height: 46px;
-                border-radius: 15px;
+            .hero-filter-slider {
+                display: flex;
+                gap: 12px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 2px 2px 6px;
+                scroll-snap-type: x proximity;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .hero-filter-slider::-webkit-scrollbar {
+                display: none;
+            }
+
+            .hero-filter-slider .vip-select,
+            .hero-filter-slider .vip-submit-wrap {
+                flex: 0 0 auto;
+                scroll-snap-align: start;
+            }
+
+            .hero-filter-slider .vip-select {
+                width: auto;
+                min-width: 178px;
+                min-height: 52px;
+                border-radius: 999px;
+                padding: 0 20px;
+                font-size: 14px;
+                font-weight: 600;
+                border: 1px solid #d7dee7;
+                box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+                background: #fff;
+            }
+
+            .hero-filter-slider .vip-submit-wrap {
+                min-width: 210px;
+            }
+
+            .hero-filter-slider .vip-submit-btn {
+                width: 100%;
+                min-height: 52px;
+                border-radius: 999px;
+                padding: 0 22px;
+                font-size: 13px;
+                box-shadow: 0 10px 20px rgba(15, 139, 141, 0.22);
             }
 
             .listing-thumb {
@@ -1060,22 +1130,24 @@
                     <div class="hero-filter-grid">
                         <input id="heroKeyword" type="text" class="vip-input" placeholder="Tìm nhanh: Vinhomes, căn hộ, Quận 2, xây nhà trọn gói..." />
 
-                        <select id="heroCategory" class="vip-select">
-                            <option value="sale">Nhà đất bán</option>
-                            <option value="rental">Nhà đất cho thuê</option>
-                            <option value="project">Dự án</option>
-                            <option value="construction">Xây dựng</option>
-                        </select>
+                        <div class="hero-filter-slider">
+                            <select id="heroCategory" class="vip-select">
+                                <option value="sale">Nhà đất bán</option>
+                                <option value="rental">Nhà đất cho thuê</option>
+                                <option value="project">Dự án</option>
+                                <option value="construction">Xây dựng</option>
+                            </select>
 
-                        <select id="heroLocation" class="vip-select">
-                            <option value="">Toàn quốc</option>
-                        </select>
+                            <select id="heroLocation" class="vip-select">
+                                <option value="">Toàn quốc</option>
+                            </select>
 
-                        <div class="vip-submit-wrap">
-                            <button id="heroSearchBtn" class="vip-submit-btn">
-                                <i class="fa-solid fa-magnifying-glass mr-2"></i>
-                                Tìm kiếm ngay
-                            </button>
+                            <div class="vip-submit-wrap">
+                                <button id="heroSearchBtn" class="vip-submit-btn">
+                                    <i class="fa-solid fa-magnifying-glass mr-2"></i>
+                                    Tìm kiếm ngay
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1195,7 +1267,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                    <a href="pages/tin-tuc.html" class="lg:col-span-2 group cursor-pointer block">
+                    <a href="pages/chi-tiet-tin-tuc.html" class="lg:col-span-2 group cursor-pointer block">
                         <div class="news-card-img">
                             <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1000" alt="Tin tức bất động sản nổi bật" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                         </div>
@@ -1208,7 +1280,7 @@
                     </a>
 
                     <div class="space-y-6">
-                        <a href="pages/tin-tuc.html" class="flex gap-4 cursor-pointer group">
+                        <a href="pages/chi-tiet-tin-tuc.html" class="flex gap-4 cursor-pointer group">
                             <img src="https://images.unsplash.com/photo-1448630360428-65ff2c0257ef?w=300" alt="Lãi suất ngân hàng giảm sâu" class="news-side-img" />
                             <div>
                                 <h4 class="text-[14px] font-semibold leading-6 line-clamp-2 group-hover:text-[--brand-green] transition">
@@ -1218,7 +1290,7 @@
                             </div>
                         </a>
 
-                        <a href="pages/tin-tuc.html" class="flex gap-4 cursor-pointer group">
+                        <a href="pages/chi-tiet-tin-tuc.html" class="flex gap-4 cursor-pointer group">
                             <img src="https://images.unsplash.com/photo-1592595894519-02319c2ec51f?w=300" alt="Dự án mới miền Trung" class="news-side-img" />
                             <div>
                                 <h4 class="text-[14px] font-semibold leading-6 line-clamp-2 group-hover:text-[--brand-green] transition">
@@ -1228,7 +1300,7 @@
                             </div>
                         </a>
 
-                        <a href="pages/tin-tuc.html" class="flex gap-4 cursor-pointer group">
+                        <a href="pages/chi-tiet-tin-tuc.html" class="flex gap-4 cursor-pointer group">
                             <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=300" alt="Cẩm nang pháp lý mua đất nền" class="news-side-img" />
                             <div>
                                 <h4 class="text-[14px] font-semibold leading-6 line-clamp-2 group-hover:text-[--brand-green] transition">
@@ -1289,6 +1361,7 @@
                 contactName: "Nguyễn Thành An",
                 roleLabel: "Môi giới chuyên nghiệp",
                 contactPhone: "0912598888",
+                profileType: "canhan",
                 status: "demo",
                 createdAt: new Date().toISOString(),
                 flow: "real_estate",
@@ -1308,6 +1381,7 @@
                 brandName: "Công ty BĐS Minh Phát",
                 roleLabel: "Doanh nghiệp / Sàn BĐS",
                 contactPhone: "0977888666",
+                profileType: "doanhnghiep",
                 status: "demo",
                 createdAt: new Date(Date.now() - 86400000).toISOString(),
                 flow: "real_estate",
@@ -1326,6 +1400,7 @@
                 contactName: "Lê Thu Trang",
                 roleLabel: "Môi giới chuyên nghiệp",
                 contactPhone: "0901234567",
+                profileType: "canhan",
                 status: "demo",
                 createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
                 flow: "real_estate",
@@ -1344,6 +1419,7 @@
                 contactName: "Trần Quang Huy",
                 roleLabel: "Chuyên viên tư vấn",
                 contactPhone: "0988123456",
+                profileType: "canhan",
                 status: "demo",
                 createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
                 flow: "real_estate",
@@ -1365,6 +1441,7 @@
                 contactName: "Trần Thị Lan Anh",
                 roleLabel: "Chuyên viên cho thuê",
                 contactPhone: "0901234567",
+                profileType: "canhan",
                 status: "demo",
                 createdAt: new Date().toISOString(),
                 flow: "real_estate",
@@ -1384,6 +1461,7 @@
                 brandName: "Doanh nghiệp Sao Việt",
                 roleLabel: "Doanh nghiệp / Cho thuê",
                 contactPhone: "0933222111",
+                profileType: "doanhnghiep",
                 status: "demo",
                 createdAt: new Date(Date.now() - 86400000).toISOString(),
                 flow: "real_estate",
@@ -1402,6 +1480,7 @@
                 contactName: "Lý Minh Quân",
                 roleLabel: "Chuyên viên cho thuê",
                 contactPhone: "0911888999",
+                profileType: "canhan",
                 status: "demo",
                 createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
                 flow: "real_estate",
@@ -1421,6 +1500,7 @@
                 brandName: "Công ty BĐS Prime",
                 roleLabel: "Doanh nghiệp / Mặt bằng",
                 contactPhone: "0944444555",
+                profileType: "doanhnghiep",
                 status: "demo",
                 createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
                 flow: "real_estate",
@@ -1449,7 +1529,7 @@
                 contactName: "ANP",
                 contactPhone: "0946239289",
                 profileType: "doanhnghiep",
-                roleLabel: "Cá nhân đăng tin bất động sản",
+                roleLabel: "Doanh nghiệp / Nhà thầu xây dựng",
                 createdAt: new Date().toISOString(),
                 images: ["https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800"]
             },
@@ -1471,7 +1551,7 @@
                 contactName: "ANP",
                 contactPhone: "0901234567",
                 profileType: "doanhnghiep",
-                roleLabel: "Cá nhân đăng tin bất động sản",
+                roleLabel: "Doanh nghiệp / Nhà thầu xây dựng",
                 createdAt: new Date(Date.now() - 86400000).toISOString(),
                 images: ["https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800"]
             },
@@ -1493,7 +1573,7 @@
                 contactName: "ANP",
                 contactPhone: "0911002003",
                 profileType: "doanhnghiep",
-                roleLabel: "Cá nhân đăng tin bất động sản",
+                roleLabel: "Doanh nghiệp / Nội thất",
                 createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
                 images: ["https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"]
             }
@@ -1507,7 +1587,6 @@
                 statusLabel: "Sắp mở bán",
                 statusType: "soon",
                 image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
-                url: "pages/du-an.html",
                 area: "1,98 ha",
                 mediaCount: 15
             },
@@ -1518,7 +1597,6 @@
                 statusLabel: "Đang mở bán",
                 statusType: "live",
                 image: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800",
-                url: "pages/du-an.html",
                 area: "299 ha",
                 mediaCount: 7
             },
@@ -1529,7 +1607,6 @@
                 statusLabel: "Đang mở bán",
                 statusType: "live",
                 image: "https://images.unsplash.com/photo-1460317442991-0ec209397118?w=800",
-                url: "pages/du-an.html",
                 area: "4,25 ha",
                 mediaCount: 21
             },
@@ -1540,7 +1617,6 @@
                 statusLabel: "Đang mở bán",
                 statusType: "live",
                 image: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=800",
-                url: "pages/du-an.html",
                 area: "16,24 ha",
                 price: "390 triệu/m²",
                 mediaCount: 12
@@ -1557,12 +1633,12 @@
         ];
 
         const fallbackAgents = [
-            { name: "Nguyễn Thành An", role: "Môi giới chuyên nghiệp", url: "pages/chi-tiet-doanh-nghiep.html?id=home-sale-1" },
-            { name: "Trần Thị Lan Anh", role: "Chuyên viên cho thuê", url: "pages/chi-tiet-doanh-nghiep.html?id=home-rent-1" },
-            { name: "Lê Thu Trang", role: "Môi giới chuyên nghiệp", url: "pages/chi-tiet-doanh-nghiep.html?id=home-sale-3" },
-            { name: "Trần Quang Huy", role: "Chuyên viên tư vấn", url: "pages/chi-tiet-doanh-nghiep.html?id=home-sale-4" },
-            { name: "Lý Minh Quân", role: "Chuyên viên cho thuê", url: "pages/chi-tiet-doanh-nghiep.html?id=home-rent-3" },
-            { name: "Phạm Hữu Đức", role: "Môi giới nhà phố", url: "pages/chi-tiet-doanh-nghiep.html?id=home-sale-1" }
+            { name: "Nguyễn Thành An", role: "Môi giới chuyên nghiệp", url: "pages/chi-tiet-moi-gioi.html?id=home-sale-1" },
+            { name: "Trần Thị Lan Anh", role: "Chuyên viên cho thuê", url: "pages/chi-tiet-moi-gioi.html?id=home-rent-1" },
+            { name: "Lê Thu Trang", role: "Môi giới chuyên nghiệp", url: "pages/chi-tiet-moi-gioi.html?id=home-sale-3" },
+            { name: "Trần Quang Huy", role: "Chuyên viên tư vấn", url: "pages/chi-tiet-moi-gioi.html?id=home-sale-4" },
+            { name: "Lý Minh Quân", role: "Chuyên viên cho thuê", url: "pages/chi-tiet-moi-gioi.html?id=home-rent-3" },
+            { name: "Phạm Hữu Đức", role: "Môi giới nhà phố", url: "pages/chi-tiet-moi-gioi.html?id=home-sale-1" }
         ];
 
         function escapeHtml(value) {
@@ -1736,13 +1812,37 @@
             return [post.ward, post.city].filter(Boolean).join(", ");
         }
 
+        function isBusinessProfile(post) {
+            const role = String(post.roleLabel || post.role || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim();
+
+            return normalizeText(post.profileType) === "doanhnghiep" ||
+                !!post.brandName ||
+                !!post.serviceBrand ||
+                role.includes("doanh nghiep") ||
+                role.includes("doanhnghiep");
+        }
+
         function getProfileUrl(post, postId) {
-            return "pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(String(postId || "").trim());
+            const page = isBusinessProfile(post)
+                ? "pages/chi-tiet-doanh-nghiep.html"
+                : "pages/chi-tiet-moi-gioi.html";
+
+            return page + "?id=" + encodeURIComponent(String(postId || "").trim());
         }
 
         function getDetailUrl(post, postId) {
             if (post.detailUrl) return post.detailUrl;
-            return `pages/chi-tiet-tin.html?id=${encodeURIComponent(postId)}`;
+            return "pages/chi-tiet-tin.html?id=" + encodeURIComponent(postId);
+        }
+
+        function getProjectDetailUrl(project, index = 0) {
+            if (project.detailUrl) return project.detailUrl;
+            const projectId = project.id || project.slug || slugifyText(project.name) || ("du-an-" + index);
+            return "pages/chi-tiet-du-an.html?id=" + encodeURIComponent(projectId);
         }
 
         function getVipLevel(post) {
@@ -1834,10 +1934,10 @@
                             statusLabel: (project.statusLabel || project.status || "Nổi bật"),
                             statusType: normalizeText(project.status).includes("mo") ? "live" : "soon",
                             image: project.thumbnail || project.image || FALLBACK_IMAGE,
-                            url: "pages/du-an.html",
                             area: project.projectArea || project.area || "Đang cập nhật",
                             price: project.priceRange || project.price || "",
-                            mediaCount: project.mediaCount || project.images?.length || (index + 7)
+                            mediaCount: project.mediaCount || project.images?.length || (index + 7),
+                            detailUrl: project.detailUrl || ""
                         }));
                     }
                 }
@@ -1852,11 +1952,7 @@
 
             const companies = [...salePosts, ...rentalPosts, ...constructionPosts]
                 .map((post, index) => ({ post, postId: createPostId(post, index) }))
-                .filter(item =>
-                    normalizeText(item.post.profileType) === "doanhnghiep" ||
-                    !!item.post.brandName ||
-                    !!item.post.serviceBrand
-                )
+                .filter(item => isBusinessProfile(item.post))
                 .map(item => ({
                     name: buildPoster(item.post),
                     role: getPosterSub(item.post),
@@ -1881,7 +1977,7 @@
 
             const agents = [...salePosts, ...rentalPosts]
                 .map((post, index) => ({ post, postId: createPostId(post, index) }))
-                .filter(item => normalizeText(item.post.profileType) !== "doanhnghiep")
+                .filter(item => !isBusinessProfile(item.post))
                 .map(item => ({
                     name: buildPoster(item.post),
                     role: getPosterSub(item.post),
@@ -1929,15 +2025,15 @@
                     city,
                     count,
                     image: imageMap[city] || FALLBACK_IMAGE,
-                    url: "pages/gia-nha-dat.html"
+                    url: "pages/gia-nha-dat.html?city=" + encodeURIComponent(city)
                 }));
 
             const defaults = [
-                { city: "TP. Hồ Chí Minh", count: 81008, image: "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=1200", url: "pages/gia-nha-dat.html" },
-                { city: "Hà Nội", count: 51110, image: "https://images.unsplash.com/photo-1555921015-5532091f6026?w=800", url: "pages/gia-nha-dat.html" },
-                { city: "Đà Nẵng", count: 11345, image: "https://images.unsplash.com/photo-1559592481-74488ea56144?w=800", url: "pages/gia-nha-dat.html" },
-                { city: "Bình Dương", count: 9422, image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800", url: "pages/gia-nha-dat.html" },
-                { city: "Đồng Nai", count: 4036, image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=800", url: "pages/gia-nha-dat.html" }
+                { city: "TP. Hồ Chí Minh", count: 81008, image: "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=1200", url: "pages/gia-nha-dat.html?city=TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh" },
+                { city: "Hà Nội", count: 51110, image: "https://images.unsplash.com/photo-1555921015-5532091f6026?w=800", url: "pages/gia-nha-dat.html?city=H%C3%A0%20N%E1%BB%99i" },
+                { city: "Đà Nẵng", count: 11345, image: "https://images.unsplash.com/photo-1559592481-74488ea56144?w=800", url: "pages/gia-nha-dat.html?city=%C4%90%C3%A0%20N%E1%BA%B5ng" },
+                { city: "Bình Dương", count: 9422, image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800", url: "pages/gia-nha-dat.html?city=B%C3%ACnh%20D%C6%B0%C6%A1ng" },
+                { city: "Đồng Nai", count: 4036, image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=800", url: "pages/gia-nha-dat.html?city=%C4%90%E1%BB%93ng%20Nai" }
             ];
 
             const byName = new Set(ranked.map(item => normalizeText(item.city)));
@@ -1968,13 +2064,9 @@
             const category = document.getElementById("heroCategory").value;
             const location = document.getElementById("heroLocation").value;
 
-            let baseUrl = "pages/nha-dat-ban.html";
-            if (category === "rental") baseUrl = "pages/nha-dat-cho-thue.html";
-            if (category === "project") baseUrl = "pages/du-an.html";
-            if (category === "construction") baseUrl = "pages/xay-dung.html";
-
-            const url = new URL(baseUrl, window.location.origin);
+            const url = new URL("pages/tim-kiem.html", window.location.origin);
             if (keyword) url.searchParams.set("keyword", keyword);
+            if (category) url.searchParams.set("category", category);
             if (location) url.searchParams.set("city", location);
 
             window.location.href = url.pathname + url.search;
@@ -2193,14 +2285,15 @@
             `;
         }
 
-        function renderProjectCard(project) {
+        function renderProjectCard(project, index) {
             const statusType = project.statusType === "live" ? "live" : "soon";
             const statusLabel = escapeHtml(project.statusLabel || "Nổi bật");
             const sizeLine = [project.price, project.area].filter(Boolean).join(" • ");
+            const detailUrl = getProjectDetailUrl(project, index);
 
             return `
                 <div class="swiper-slide">
-                    <a href="${project.url || "pages/du-an.html"}" class="project-card">
+                    <a href="${detailUrl}" class="project-card">
                         <div class="project-image-wrap">
                             <img src="${escapeHtml(project.image || FALLBACK_IMAGE)}" alt="${escapeHtml(project.name)}" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
                             <span class="project-image-count">
@@ -2310,7 +2403,7 @@
         function renderProjectSection() {
             const projects = getProjectCards();
             document.getElementById("projectWrapper").innerHTML = projects.length
-                ? projects.map(renderProjectCard).join("")
+                ? projects.map((project, index) => renderProjectCard(project, index)).join("")
                 : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu dự án.</div></div>`;
         }
 
