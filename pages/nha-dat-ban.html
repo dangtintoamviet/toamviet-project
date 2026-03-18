@@ -440,7 +440,6 @@
                 contactName: "Nguyễn Thành An",
                 roleLabel: "Môi giới chuyên nghiệp",
                 contactPhone: "0912598888",
-                contactProfileUrl: "../pages/danh-ba-moi-gioi.html",
                 status: "demo",
                 createdAt: new Date().toISOString(),
                 flow: "real_estate",
@@ -464,7 +463,6 @@
                 contactName: "Trần Văn Bình",
                 roleLabel: "Chuyên viên tư vấn",
                 contactPhone: "0988123456",
-                contactProfileUrl: "../pages/danh-ba-moi-gioi.html",
                 status: "demo",
                 createdAt: new Date(Date.now() - 86400000).toISOString(),
                 flow: "real_estate",
@@ -489,7 +487,7 @@
                 brandName: "Công ty BĐS Minh Phát",
                 roleLabel: "Doanh nghiệp / Sàn BĐS",
                 contactPhone: "0977888666",
-                contactProfileUrl: "../pages/danh-ba-moi-gioi.html",
+                profileType: "doanhnghiep",
                 status: "demo",
                 createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
                 flow: "real_estate",
@@ -556,15 +554,43 @@
             return String(phone || "").replace(/[^\d+]/g, "");
         }
 
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
         function createPostId(post, index) {
-            return (
-                post.id ||
-                post.postId ||
-                post.slug ||
-                `${post.title || "tin"}-${post.city || ""}-${post.district || ""}-${index}`
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")
-            );
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
+                return String(post.id).trim();
+            }
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
+                return String(post.postId).trim();
+            }
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
+                return String(post.slug).trim();
+            }
+
+            const stableParts = [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.brandName,
+                post.contactName,
+                post.city,
+                post.district,
+                post.ward,
+                post.contactPhone,
+                post.createdAt,
+                index
+            ];
+
+            return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
         }
 
         function getStorageArray(key) {
@@ -668,7 +694,34 @@
         }
 
         function getPosterSub(post) {
-            return post.roleLabel || post.role || (post.profileType === "doanhnghiep" ? "Doanh nghiệp" : "Người đăng");
+            const rawRole = post.roleLabel || post.role || "";
+            const normalizedRole = String(rawRole || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim();
+
+            if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) {
+                return "Doanh nghiệp";
+            }
+
+            if (
+                normalizedRole.includes("moi gioi") ||
+                normalizedRole.includes("chuyen vien") ||
+                normalizedRole.includes("nha thau")
+            ) {
+                return rawRole;
+            }
+
+            if (normalizedRole.includes("ca nhan") || String(post.profileType || "").toLowerCase().trim() === "canhan") {
+                return "Cá nhân";
+            }
+
+            if (String(post.profileType || "").toLowerCase().trim() === "doanhnghiep") {
+                return "Doanh nghiệp";
+            }
+
+            return rawRole || "Người đăng";
         }
 
         function getAvatarText(post) {
@@ -681,8 +734,8 @@
                 .join("") || "TV";
         }
 
-        function getProfileUrl(post) {
-            return post.contactProfileUrl || post.profileUrl || "../pages/danh-ba-moi-gioi.html";
+        function getProfileUrl(post, postId) {
+            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(String(postId || "").trim())}`;
         }
 
         function calculatePricePerM2(post) {
@@ -843,7 +896,7 @@
         function renderCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
-            const profileUrl = getProfileUrl(post);
+            const profileUrl = getProfileUrl(post, postId);
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Tiêu đề bất động sản");
             const price = escapeHtml(formatPrice(post.propertyPrice));
