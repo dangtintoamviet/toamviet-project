@@ -664,7 +664,7 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Vai trò</span>
-                            <span id="info-role" class="info-value">Đang cập nhật</span>
+                            <span id="info-role" class="info-value">Doanh nghiệp</span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Điện thoại</span>
@@ -856,22 +856,7 @@
         }
 
         function getPosterSub(post) {
-            const rawRole = post.roleLabel || post.role || "";
-            const normalizedRole = normalizeText(rawRole);
-
-            if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) {
-                return rawRole || "Doanh nghiệp";
-            }
-            if (normalizedRole.includes("nha thau")) {
-                return rawRole;
-            }
-            if (normalizeText(post.profileType) === "doanhnghiep") {
-                return rawRole || "Doanh nghiệp";
-            }
-            if (post.brandName || post.serviceBrand) {
-                return rawRole || "Doanh nghiệp";
-            }
-            return rawRole || "Doanh nghiệp";
+            return "Doanh nghiệp";
         }
 
         function getAvatarText(post) {
@@ -1040,7 +1025,7 @@
                 },
                 {
                     id: "demo-company-2",
-                    title: "CHO THUÊ SHophouse GÓC 2 MẶT TIỀN KHU ĐÔ THỊ MỚI",
+                    title: "CHO THUÊ SHOPHOUSE GÓC 2 MẶT TIỀN KHU ĐÔ THỊ MỚI",
                     propertyType: "Shophouse",
                     propertyPrice: "35 triệu/tháng",
                     propertyArea: "105",
@@ -1155,12 +1140,11 @@
 
         function buildProfileAbout(basePost, posterPosts) {
             const posterName = buildPoster(basePost);
-            const role = getPosterSub(basePost);
             const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "nhiều khu vực";
             const specialty = basePost.serviceSpecialty || basePost.specialty || basePost.propertyType || basePost.serviceType || "bất động sản và dịch vụ liên quan";
             const totalPosts = posterPosts.length;
 
-            return `${posterName} là ${role.toLowerCase()} đang hoạt động trên ToamViet.
+            return `${posterName} là doanh nghiệp đang hoạt động trên ToamViet.
 
 Khu vực hoạt động chính: ${area}.
 Lĩnh vực / chuyên môn nổi bật: ${specialty}.
@@ -1183,7 +1167,6 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
 
         function renderProfileHeader(basePost, posterPosts) {
             const posterName = buildPoster(basePost);
-            const role = getPosterSub(basePost);
             const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "Đang cập nhật khu vực";
 
             document.title = `${posterName} - ToamViet.com.vn`;
@@ -1191,8 +1174,8 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
 
             document.getElementById("profile-avatar").innerHTML = getProfileAvatarHtml(basePost);
             document.getElementById("profile-name").textContent = posterName;
-            document.getElementById("profile-role").textContent = role;
-            document.getElementById("profile-badge-type").textContent = role;
+            document.getElementById("profile-role").textContent = "Doanh nghiệp";
+            document.getElementById("profile-badge-type").textContent = "Doanh nghiệp";
             document.getElementById("profile-badge-area").textContent = area;
 
             const totalPosts = posterPosts.length;
@@ -1210,7 +1193,6 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
 
         function renderProfileInfo(basePost, posterPosts) {
             const posterName = buildPoster(basePost);
-            const role = getPosterSub(basePost);
             const phone = formatDisplayPhone(basePost.contactPhone || basePost.phone || "");
             const email = basePost.contactEmail || basePost.email || "Đang cập nhật";
             const brand = basePost.brandName || basePost.serviceBrand || posterName || "Đang cập nhật";
@@ -1221,7 +1203,7 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
             document.getElementById("profile-about").textContent = buildProfileAbout(basePost, posterPosts);
 
             document.getElementById("info-display-name").textContent = posterName;
-            document.getElementById("info-role").textContent = role;
+            document.getElementById("info-role").textContent = "Doanh nghiệp";
             document.getElementById("info-phone").textContent = phone;
             document.getElementById("info-email").textContent = email;
             document.getElementById("info-brand").textContent = brand;
