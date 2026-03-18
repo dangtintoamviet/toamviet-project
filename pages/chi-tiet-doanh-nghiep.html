@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chi tiết hồ sơ - ToamViet.com.vn</title>
+    <title>Chi tiết doanh nghiệp - ToamViet.com.vn</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
@@ -49,24 +49,27 @@
             box-shadow: var(--shadow-soft);
         }
 
-        .section-title {
+        .section-title,
+        h2.section-title {
             position: relative;
             font-size: 17px;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 18px;
-            padding-left: 14px;
+            padding-left: 0 !important;
+            border-left: none !important;
         }
 
-        .section-title::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 2px;
-            width: 4px;
-            height: 18px;
-            border-radius: 999px;
-            background: linear-gradient(180deg, var(--brand-primary), var(--brand-accent));
+        .section-title::before,
+        .section-title::after,
+        h2.section-title::before,
+        h2.section-title::after {
+            content: none !important;
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: none !important;
+            border: none !important;
         }
 
         .profile-hero {
@@ -93,6 +96,14 @@
             font-weight: 700;
             flex-shrink: 0;
             box-shadow: 0 12px 24px rgba(15, 154, 168, 0.18);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .profile-name {
@@ -595,21 +606,23 @@
         <div class="mb-5 text-sm text-slate-500 leading-7">
             <a href="../index.html" class="hover:text-[color:var(--brand-primary-dark)]">Trang chủ</a>
             <span class="mx-2">/</span>
-            <span id="breadcrumb-current" class="text-slate-700 font-semibold">Chi tiết hồ sơ</span>
+            <a href="../pages/danh-ba-doanh-nghiep.html" class="hover:text-[color:var(--brand-primary-dark)]">Danh bạ doanh nghiệp</a>
+            <span class="mx-2">/</span>
+            <span id="breadcrumb-current" class="text-slate-700 font-semibold">Chi tiết doanh nghiệp</span>
         </div>
 
         <div id="profile-wrapper" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <section class="lg:col-span-2 space-y-6">
                 <div class="page-card profile-hero">
                     <div class="profile-top">
-                        <div id="profile-avatar" class="profile-avatar">TV</div>
+                        <div id="profile-avatar" class="profile-avatar">DN</div>
 
                         <div class="min-w-0 flex-1">
-                            <h1 id="profile-name" class="profile-name">Đang tải hồ sơ...</h1>
-                            <div id="profile-role" class="profile-role">Người đăng</div>
+                            <h1 id="profile-name" class="profile-name">Đang tải doanh nghiệp...</h1>
+                            <div id="profile-role" class="profile-role">Doanh nghiệp</div>
 
                             <div class="profile-badge-row">
-                                <span id="profile-badge-type" class="pill-badge pill-brand">Hồ sơ người đăng</span>
+                                <span id="profile-badge-type" class="pill-badge pill-brand">Doanh nghiệp</span>
                                 <span id="profile-badge-area" class="pill-badge pill-area">Đang cập nhật khu vực</span>
                             </div>
                         </div>
@@ -636,9 +649,9 @@
                 </div>
 
                 <div class="page-card content-card">
-                    <h2 class="section-title">Giới thiệu</h2>
+                    <h2 class="section-title">Giới thiệu doanh nghiệp</h2>
                     <div id="profile-about" class="about-text">
-                        Đang cập nhật thông tin giới thiệu hồ sơ.
+                        Đang cập nhật thông tin giới thiệu doanh nghiệp.
                     </div>
                 </div>
 
@@ -646,7 +659,7 @@
                     <h2 class="section-title">Thông tin liên hệ</h2>
                     <div class="info-grid">
                         <div class="info-row">
-                            <span class="info-label">Tên hiển thị</span>
+                            <span class="info-label">Tên doanh nghiệp</span>
                             <span id="info-display-name" class="info-value">Đang cập nhật</span>
                         </div>
                         <div class="info-row">
@@ -682,7 +695,7 @@
 
                 <div class="page-card content-card">
                     <div class="flex items-center justify-between gap-4 mb-5">
-                        <h2 class="section-title mb-0">Tin đã đăng</h2>
+                        <h2 class="section-title mb-0">Tin doanh nghiệp đã đăng</h2>
                         <span id="post-list-count" class="text-sm font-semibold text-slate-500">0 tin</span>
                     </div>
 
@@ -720,7 +733,7 @@
         </div>
 
         <div id="not-found-box" class="empty-box hidden mt-6">
-            Không tìm thấy hồ sơ phù hợp. Có thể dữ liệu chưa có hoặc đường dẫn không đúng.
+            Không tìm thấy doanh nghiệp phù hợp. Có thể dữ liệu chưa có hoặc đường dẫn không đúng.
         </div>
     </main>
 
@@ -839,31 +852,26 @@
         }
 
         function buildPoster(post) {
-            return post.brandName || post.contactName || post.fullName || post.serviceBrand || "Người đăng";
+            return post.brandName || post.serviceBrand || post.contactName || post.fullName || "Doanh nghiệp";
         }
 
         function getPosterSub(post) {
             const rawRole = post.roleLabel || post.role || "";
             const normalizedRole = normalizeText(rawRole);
-            const profileType = normalizeText(post.profileType);
 
             if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) {
-                return "Doanh nghiệp";
+                return rawRole || "Doanh nghiệp";
             }
-            if (
-                normalizedRole.includes("moi gioi") ||
-                normalizedRole.includes("chuyen vien") ||
-                normalizedRole.includes("nha thau")
-            ) {
+            if (normalizedRole.includes("nha thau")) {
                 return rawRole;
             }
-            if (normalizedRole.includes("ca nhan") || profileType === "canhan") {
-                return "Cá nhân";
+            if (normalizeText(post.profileType) === "doanhnghiep") {
+                return rawRole || "Doanh nghiệp";
             }
-            if (profileType === "doanhnghiep") {
-                return "Doanh nghiệp";
+            if (post.brandName || post.serviceBrand) {
+                return rawRole || "Doanh nghiệp";
             }
-            return rawRole || "Người đăng";
+            return rawRole || "Doanh nghiệp";
         }
 
         function getAvatarText(post) {
@@ -873,7 +881,7 @@
                 .filter(Boolean)
                 .slice(0, 2)
                 .map(word => word.charAt(0).toUpperCase())
-                .join("") || "TV";
+                .join("") || "DN";
         }
 
         function buildLocation(post) {
@@ -897,6 +905,22 @@
                 return post.thumbnail;
             }
 
+            if (post.avatar && typeof post.avatar === "string" && post.avatar.trim()) {
+                return post.avatar;
+            }
+
+            if (post.avatarUrl && typeof post.avatarUrl === "string" && post.avatarUrl.trim()) {
+                return post.avatarUrl;
+            }
+
+            if (post.logo && typeof post.logo === "string" && post.logo.trim()) {
+                return post.logo;
+            }
+
+            if (post.logoUrl && typeof post.logoUrl === "string" && post.logoUrl.trim()) {
+                return post.logoUrl;
+            }
+
             if (Array.isArray(post.images) && post.images.length) {
                 const firstImage = post.images[0];
                 if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
@@ -905,6 +929,14 @@
             }
 
             return FALLBACK_IMAGE;
+        }
+
+        function getProfileAvatarHtml(post) {
+            const avatar = post.avatar || post.avatarUrl || post.logo || post.logoUrl || "";
+            if (typeof avatar === "string" && avatar.trim()) {
+                return `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(buildPoster(post))}" onerror="this.parentNode.textContent='${escapeHtml(getAvatarText(post))}'">`;
+            }
+            return escapeHtml(getAvatarText(post));
         }
 
         function createPostId(post, index = 0) {
@@ -939,13 +971,27 @@
             return ["approved", "published", "demo"];
         }
 
+        function isBusinessProfile(post) {
+            const role = normalizeText(post.roleLabel || post.role || "");
+            const profileType = normalizeText(post.profileType);
+
+            return profileType === "doanhnghiep" ||
+                !!post.brandName ||
+                !!post.serviceBrand ||
+                role.includes("doanh nghiep") ||
+                role.includes("doanhnghiep") ||
+                role.includes("nha thau");
+        }
+
         function getAllPostsMixed() {
             let posts = [];
 
             try {
                 if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
                     posts = window.postStorage.getAllPosts().filter(post => {
-                        return post && getAllowedPublicStatuses().includes(normalizeText(post.status || "approved"));
+                        return post &&
+                            getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
+                            isBusinessProfile(post);
                     });
                 }
             } catch (error) {
@@ -957,7 +1003,9 @@
             try {
                 const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
                 return Array.isArray(allPosts)
-                    ? allPosts.filter(post => post && getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")))
+                    ? allPosts.filter(post => post &&
+                        getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
+                        isBusinessProfile(post))
                     : [];
             } catch (error) {
                 return [];
@@ -967,19 +1015,21 @@
         function getFallbackMixedPosts() {
             return [
                 {
-                    id: "demo-sale-1",
-                    title: "NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN",
-                    propertyType: "Biệt thự",
-                    propertyPrice: "60 tỷ",
-                    propertyArea: "300",
-                    city: "Hà Nội",
-                    ward: "Phường Minh Khai",
-                    addressDetail: "Khu đô thị mới",
-                    description: "Căn biệt thự có vị trí đẹp, bàn giao full nội thất cao cấp. Hỗ trợ pháp lý và thủ tục nhanh gọn.",
-                    contactName: "Nguyễn Thành An",
-                    roleLabel: "Môi giới chuyên nghiệp",
-                    contactPhone: "0912598888",
-                    contactEmail: "demo@toamviet.vn",
+                    id: "demo-company-1",
+                    title: "BÁN NHÀ PHỐ THƯƠNG MẠI KHU ĐÔ THỊ TRUNG TÂM MỚI",
+                    propertyType: "Nhà phố",
+                    propertyPrice: "12.8 tỷ",
+                    propertyArea: "110",
+                    city: "Bình Dương",
+                    ward: "Thuận An",
+                    addressDetail: "Mặt tiền trục chính",
+                    description: "Doanh nghiệp phân phối các sản phẩm nhà phố, shophouse và căn hộ tại khu vực Bình Dương, hỗ trợ tư vấn pháp lý và thủ tục giao dịch.",
+                    contactName: "Công ty BĐS Minh Phát",
+                    brandName: "Công ty BĐS Minh Phát",
+                    roleLabel: "Doanh nghiệp / Sàn BĐS",
+                    contactPhone: "0977888666",
+                    contactEmail: "minhphat@toamviet.vn",
+                    profileType: "doanhnghiep",
                     status: "demo",
                     createdAt: new Date().toISOString(),
                     flow: "real_estate",
@@ -989,19 +1039,21 @@
                     thumbnail: FALLBACK_IMAGE
                 },
                 {
-                    id: "demo-rent-1",
-                    title: "CHO THUÊ CĂN HỘ CAO CẤP VINHOMES CENTRAL PARK FULL NỘI THẤT",
-                    propertyType: "Căn hộ",
-                    propertyPrice: "25 triệu/tháng",
-                    propertyArea: "85",
-                    city: "TP.HCM",
-                    ward: "Phường 22",
-                    addressDetail: "Gần Landmark 81",
-                    description: "Căn hộ tầng cao thoáng mát, view sông đẹp, đầy đủ nội thất cao cấp.",
-                    contactName: "Trần Thị Lan Anh",
-                    roleLabel: "Chuyên viên cho thuê",
-                    contactPhone: "0901234567",
-                    contactEmail: "rent@toamviet.vn",
+                    id: "demo-company-2",
+                    title: "CHO THUÊ SHophouse GÓC 2 MẶT TIỀN KHU ĐÔ THỊ MỚI",
+                    propertyType: "Shophouse",
+                    propertyPrice: "35 triệu/tháng",
+                    propertyArea: "105",
+                    city: "Hà Nội",
+                    ward: "Gia Lâm",
+                    addressDetail: "Khu đô thị mới Gia Lâm",
+                    description: "Doanh nghiệp chuyên cho thuê mặt bằng thương mại và shophouse, phù hợp kinh doanh và khai thác dài hạn.",
+                    contactName: "Công ty BĐS Prime",
+                    brandName: "Công ty BĐS Prime",
+                    roleLabel: "Doanh nghiệp / Mặt bằng",
+                    contactPhone: "0944444555",
+                    contactEmail: "prime@toamviet.vn",
+                    profileType: "doanhnghiep",
                     status: "demo",
                     createdAt: new Date().toISOString(),
                     flow: "real_estate",
@@ -1011,7 +1063,7 @@
                     thumbnail: FALLBACK_IMAGE
                 },
                 {
-                    id: "demo-build-1",
+                    id: "demo-company-3",
                     title: "CÔNG TY AN PHÁT NHẬN THI CÔNG NHÀ PHỐ TRỌN GÓI TẠI HÀ GIANG",
                     serviceType: "Xây nhà trọn gói",
                     servicePrice: "5.8 triệu/m²",
@@ -1028,6 +1080,7 @@
                     roleLabel: "Doanh nghiệp / Nhà thầu",
                     contactPhone: "0988123456",
                     contactEmail: "build@toamviet.vn",
+                    profileType: "doanhnghiep",
                     status: "demo",
                     createdAt: new Date().toISOString(),
                     flow: "construction",
@@ -1058,30 +1111,28 @@
             });
         }
 
-        function isSamePoster(basePost, candidatePost) {
+        function isSameBusiness(basePost, candidatePost) {
             const baseKeys = [
                 normalizeText(basePost.contactPhone),
                 normalizeText(basePost.contactEmail),
                 normalizeText(basePost.brandName),
-                normalizeText(basePost.contactName),
-                normalizeText(basePost.fullName),
-                normalizeText(basePost.serviceBrand)
+                normalizeText(basePost.serviceBrand),
+                normalizeText(basePost.contactName)
             ].filter(Boolean);
 
             const candidateKeys = [
                 normalizeText(candidatePost.contactPhone),
                 normalizeText(candidatePost.contactEmail),
                 normalizeText(candidatePost.brandName),
-                normalizeText(candidatePost.contactName),
-                normalizeText(candidatePost.fullName),
-                normalizeText(candidatePost.serviceBrand)
+                normalizeText(candidatePost.serviceBrand),
+                normalizeText(candidatePost.contactName)
             ].filter(Boolean);
 
             return baseKeys.some(key => candidateKeys.includes(key));
         }
 
-        function getPostsByPoster(basePost, posts) {
-            return posts.filter(post => isSamePoster(basePost, post));
+        function getPostsByBusiness(basePost, posts) {
+            return posts.filter(post => isBusinessProfile(post) && isSameBusiness(basePost, post));
         }
 
         function getVipBadgeHtml(level) {
@@ -1109,12 +1160,25 @@
             const specialty = basePost.serviceSpecialty || basePost.specialty || basePost.propertyType || basePost.serviceType || "bất động sản và dịch vụ liên quan";
             const totalPosts = posterPosts.length;
 
-            return `${posterName} là hồ sơ ${role.toLowerCase()} đang hoạt động trên ToamViet.
+            return `${posterName} là ${role.toLowerCase()} đang hoạt động trên ToamViet.
 
 Khu vực hoạt động chính: ${area}.
 Lĩnh vực / chuyên môn nổi bật: ${specialty}.
 
-Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ thống. Người dùng nên xem kỹ nội dung từng tin, vị trí thực tế, pháp lý hoặc năng lực thi công trước khi làm việc.`;
+Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên hệ thống. Người dùng nên xem kỹ nội dung từng tin, vị trí thực tế, pháp lý hoặc năng lực thi công trước khi làm việc.`;
+        }
+
+        function getCityCountMap(posts) {
+            const map = new Map();
+
+            posts.forEach(post => {
+                const city = String(post.city || "Khác").trim() || "Khác";
+                map.set(city, (map.get(city) || 0) + 1);
+            });
+
+            return Array.from(map.entries())
+                .map(([city, count]) => ({ city, count }))
+                .sort((a, b) => b.count - a.count || a.city.localeCompare(b.city, "vi"));
         }
 
         function renderProfileHeader(basePost, posterPosts) {
@@ -1125,7 +1189,7 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
             document.title = `${posterName} - ToamViet.com.vn`;
             document.getElementById("breadcrumb-current").textContent = posterName;
 
-            document.getElementById("profile-avatar").textContent = getAvatarText(basePost);
+            document.getElementById("profile-avatar").innerHTML = getProfileAvatarHtml(basePost);
             document.getElementById("profile-name").textContent = posterName;
             document.getElementById("profile-role").textContent = role;
             document.getElementById("profile-badge-type").textContent = role;
@@ -1149,7 +1213,7 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
             const role = getPosterSub(basePost);
             const phone = formatDisplayPhone(basePost.contactPhone || basePost.phone || "");
             const email = basePost.contactEmail || basePost.email || "Đang cập nhật";
-            const brand = basePost.brandName || basePost.serviceBrand || "Đang cập nhật";
+            const brand = basePost.brandName || basePost.serviceBrand || posterName || "Đang cập nhật";
             const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "Đang cập nhật";
             const specialty = basePost.serviceSpecialty || basePost.specialty || basePost.propertyType || basePost.serviceType || "Đang cập nhật";
             const address = buildFullAddress(basePost) || "Đang cập nhật";
@@ -1175,19 +1239,6 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
             zaloBtn.href = getZaloLink(basePost.contactPhone || basePost.phone || "");
         }
 
-        function getCityCountMap(posts) {
-            const map = new Map();
-
-            posts.forEach(post => {
-                const city = String(post.city || "Khác").trim() || "Khác";
-                map.set(city, (map.get(city) || 0) + 1);
-            });
-
-            return Array.from(map.entries())
-                .map(([city, count]) => ({ city, count }))
-                .sort((a, b) => b.count - a.count || a.city.localeCompare(b.city, "vi"));
-        }
-
         function renderCityCounts(posterPosts) {
             const cityCountList = document.getElementById("city-count-list");
             const cityMap = getCityCountMap(posterPosts);
@@ -1211,19 +1262,19 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
                     title: "Xu hướng thị trường nhà đất năm nay có gì đáng chú ý?",
                     date: "Cập nhật mới",
                     image: FALLBACK_IMAGE,
-                    link: "../pages/tin-tuc.html"
+                    link: "../pages/chi-tiet-tin-tuc.html"
                 },
                 {
-                    title: "5 lưu ý quan trọng khi chọn môi giới hoặc đơn vị thi công",
+                    title: "5 lưu ý quan trọng khi chọn doanh nghiệp hoặc nhà thầu",
                     date: "Kinh nghiệm hữu ích",
                     image: FALLBACK_IMAGE,
-                    link: "../pages/tin-tuc.html"
+                    link: "../pages/chi-tiet-tin-tuc.html"
                 },
                 {
-                    title: "Cách kiểm tra pháp lý và vị trí thực tế trước khi giao dịch",
-                    date: "Tư vấn người mua",
+                    title: "Cách kiểm tra pháp lý và năng lực đơn vị trước khi làm việc",
+                    date: "Tư vấn người dùng",
                     image: FALLBACK_IMAGE,
-                    link: "../pages/tin-tuc.html"
+                    link: "../pages/chi-tiet-tin-tuc.html"
                 }
             ];
         }
@@ -1250,7 +1301,7 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
             countText.textContent = `${posterPosts.length} tin`;
 
             if (!posterPosts.length) {
-                postList.innerHTML = `<div class="empty-box" style="grid-column:1 / -1;">Hồ sơ này chưa có tin đăng công khai.</div>`;
+                postList.innerHTML = `<div class="empty-box" style="grid-column:1 / -1;">Doanh nghiệp này chưa có tin đăng công khai.</div>`;
                 return;
             }
 
@@ -1313,7 +1364,7 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
         function showNotFound() {
             document.getElementById("profile-wrapper").classList.add("hidden");
             document.getElementById("not-found-box").classList.remove("hidden");
-            document.title = "Không tìm thấy hồ sơ - ToamViet.com.vn";
+            document.title = "Không tìm thấy doanh nghiệp - ToamViet.com.vn";
         }
 
         function initPage() {
@@ -1327,12 +1378,12 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
 
             const basePost = findPostById(posts, String(id).trim());
 
-            if (!basePost) {
+            if (!basePost || !isBusinessProfile(basePost)) {
                 showNotFound();
                 return;
             }
 
-            const posterPosts = getPostsByPoster(basePost, posts);
+            const posterPosts = getPostsByBusiness(basePost, posts);
 
             renderProfileHeader(basePost, posterPosts);
             renderProfileInfo(basePost, posterPosts);
