@@ -1,1 +1,1679 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Danh mục dự án | ToamViet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+    <style>
+        :root {
+            --vip-color: #008B8B;
+            --hover-color: #FF8C00;
+            --text-strong: #2C2C2C;
+            --soft-bg: #f8fafc;
+            --border-color: #e5e7eb;
+            --text-soft: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            background-color: var(--soft-bg);
+            color: #1e293b;
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .container-custom {
+            max-width: 1560px;
+            margin: 0 auto;
+            padding: 0 18px;
+        }
+
+        .page-shell {
+            padding-top: 0;
+            padding-bottom: 28px;
+        }
+
+        .section-card,
+        .sidebar-card,
+        .empty-box,
+        .toolbar-card,
+        .hero-card,
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+        }
+
+        .section-card,
+        .sidebar-card,
+        .toolbar-card,
+        .hero-card,
+        .stat-card {
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+        }
+
+        .breadcrumb-wrap {
+            padding: 14px 0 18px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #64748b;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--vip-color);
+        }
+
+        .hero-card {
+            padding: 22px;
+            margin-bottom: 22px;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
+        }
+
+        .hero-top {
+            display: grid;
+            grid-template-columns: 150px minmax(0, 1fr);
+            gap: 18px;
+            align-items: center;
+        }
+
+        .hero-thumb {
+            width: 150px;
+            height: 118px;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .hero-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 34px;
+            padding: 8px 13px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-badge.type {
+            color: #fff;
+            background: linear-gradient(135deg, rgba(0,139,139,0.95), rgba(15,118,110,0.92));
+        }
+
+        .hero-badge.status {
+            color: #ea580c;
+            background: rgba(255,140,0,0.12);
+            border: 1px solid rgba(255,140,0,0.22);
+        }
+
+        .hero-title {
+            margin: 0 0 10px;
+            font-size: 34px;
+            line-height: 1.2;
+            font-weight: 900;
+            color: var(--text-strong);
+        }
+
+        .hero-address {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+        .hero-desc {
+            margin-top: 16px;
+            color: #64748b;
+            line-height: 1.85;
+            font-size: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .stat-card {
+            padding: 18px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 800;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.2;
+            color: var(--text-strong);
+            margin-bottom: 6px;
+        }
+
+        .stat-hint {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #64748b;
+        }
+
+        .toolbar-card {
+            padding: 18px;
+            margin-bottom: 22px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.95fr) auto auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-select,
+        .filter-input {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #fff;
+            outline: none;
+            min-height: 46px;
+            transition: all 0.25s ease;
+            font-family: "Roboto", sans-serif;
+        }
+
+        .filter-select:focus,
+        .filter-input:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.08);
+        }
+
+        .filter-submit-btn,
+        .filter-reset-btn {
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+            font-family: "Roboto", sans-serif;
+        }
+
+        .filter-submit-btn {
+            background: var(--vip-color);
+            color: white;
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.18);
+            border: none;
+        }
+
+        .filter-submit-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .filter-reset-btn {
+            background: #fff;
+            color: #475569;
+            border: 1px solid #d1d5db;
+        }
+
+        .filter-reset-btn:hover {
+            border-color: rgba(0, 139, 139, 0.35);
+            color: var(--vip-color);
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 24px;
+        }
+
+        .section-head-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--text-strong);
+            margin: 0 0 8px;
+        }
+
+        .section-sub {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .listing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            margin-top: 18px;
+        }
+
+        .listing-card {
+            background: #fff;
+            border-radius: 22px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.10);
+            border-color: rgba(0, 139, 139, 0.35);
+        }
+
+        .listing-thumb {
+            position: relative;
+            height: 235px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .listing-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .listing-card:hover .listing-thumb img {
+            transform: scale(1.05);
+        }
+
+        .listing-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 32px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, rgba(0,139,139,0.95), rgba(15,118,110,0.92));
+            box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+            z-index: 2;
+        }
+
+        .listing-price {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            min-height: 36px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 900;
+            color: #fff;
+            background: rgba(12, 22, 32, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2;
+        }
+
+        .listing-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .listing-owner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 40px;
+        }
+
+        .listing-owner-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            background: var(--vip-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 900;
+            flex-shrink: 0;
+            box-shadow: 0 10px 20px rgba(0,139,139,0.18);
+        }
+
+        .listing-owner-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #334155;
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .listing-owner-role {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.35;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .listing-title {
+            font-size: 19px;
+            font-weight: 800;
+            line-height: 1.5;
+            color: var(--text-strong);
+            margin: 0;
+            min-height: 58px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .listing-address {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #64748b;
+        }
+
+        .listing-meta-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .listing-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: 12px;
+            font-weight: 800;
+            color: #334155;
+        }
+
+        .listing-pill strong {
+            color: var(--vip-color);
+        }
+
+        .listing-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .btn-main,
+        .btn-soft {
+            min-height: 44px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            transition: all 0.25s ease;
+        }
+
+        .btn-main {
+            flex: 1;
+            background: var(--vip-color);
+            color: #fff;
+            box-shadow: 0 10px 22px rgba(0,139,139,0.18);
+        }
+
+        .btn-main:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-soft {
+            min-width: 44px;
+            padding: 0 14px;
+            background: #fff;
+            color: #475569;
+            border: 1px solid #dbe4ee;
+        }
+
+        .btn-soft:hover {
+            color: var(--vip-color);
+            border-color: rgba(0,139,139,0.35);
+            background: #f8ffff;
+        }
+
+        .sidebar-card {
+            padding: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--text-strong);
+            margin: 0 0 14px;
+        }
+
+        .side-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .side-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding-bottom: 14px;
+            border-bottom: 1px dashed #dbe4ee;
+        }
+
+        .side-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .side-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(0,139,139,0.10);
+            color: var(--vip-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .side-item-title {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.55;
+            color: var(--text-strong);
+            margin-bottom: 4px;
+        }
+
+        .side-item-desc {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .hot-area-btn {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            border: 1px solid #eef2f7;
+            padding: 10px 12px;
+            border-radius: 10px;
+            transition: 0.2s ease;
+            background: #fff;
+            text-align: left;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .hot-area-btn:hover {
+            border-color: rgba(0, 139, 139, 0.3);
+            background: #f8ffff;
+            color: var(--hover-color);
+        }
+
+        .sidebar-news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .sidebar-news-item {
+            display: grid;
+            grid-template-columns: 92px minmax(0, 1fr);
+            gap: 12px;
+            color: inherit;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #dbe4ee;
+        }
+
+        .sidebar-news-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .sidebar-news-thumb {
+            width: 92px;
+            height: 78px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .sidebar-news-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .sidebar-news-title {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.6;
+            color: #0f172a;
+            margin: 0 0 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .sidebar-news-item:hover .sidebar-news-title {
+            color: var(--vip-color);
+        }
+
+        .sidebar-news-meta {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .pagination-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .page-btn {
+            min-width: 42px;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 12px;
+            border: 1px solid #dbe4ee;
+            background: #fff;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 800;
+            transition: all 0.25s ease;
+        }
+
+        .page-btn:hover {
+            color: var(--vip-color);
+            border-color: rgba(0, 139, 139, 0.35);
+            background: #f8ffff;
+        }
+
+        .page-btn.active {
+            background: var(--vip-color);
+            color: #fff;
+            border-color: var(--vip-color);
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.18);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .empty-box {
+            padding: 18px;
+            border-style: dashed;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .seo-block-shell {
+            margin-top: 26px;
+        }
+
+        @media (max-width: 1280px) {
+            .filter-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .filter-grid .filter-submit-wrap,
+            .filter-grid .filter-reset-wrap {
+                grid-column: span 2;
+            }
+
+            .filter-grid .filter-submit-btn,
+            .filter-grid .filter-reset-btn {
+                width: 100%;
+            }
+
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .listing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-top {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-thumb {
+                width: 100%;
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container-custom {
+                padding: 0 12px;
+            }
+
+            .page-shell {
+                padding-bottom: 22px;
+            }
+
+            .hero-card,
+            .toolbar-card,
+            .section-head-card,
+            .sidebar-card,
+            .stat-card {
+                padding: 16px;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-grid .filter-submit-wrap,
+            .filter-grid .filter-reset-wrap {
+                grid-column: span 1;
+            }
+
+            .listing-thumb {
+                height: 205px;
+            }
+
+            .listing-body {
+                padding: 16px;
+            }
+
+            .listing-title {
+                font-size: 17px;
+                min-height: auto;
+            }
+
+            .listing-actions {
+                flex-direction: column;
+            }
+
+            .btn-main,
+            .btn-soft {
+                width: 100%;
+            }
+
+            .page-btn {
+                min-width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
+
+    <main class="container-custom page-shell">
+        <div class="breadcrumb-wrap">
+            <nav class="breadcrumb">
+                <a href="../index.html">Trang chủ</a>
+                <span>/</span>
+                <a href="../pages/du-an.html">Dự án</a>
+                <span>/</span>
+                <a href="#" id="breadcrumbProjectLink">Dự án đang xem</a>
+                <span>/</span>
+                <span>Danh mục tin</span>
+            </nav>
+        </div>
+
+        <section class="hero-card">
+            <div class="hero-top">
+                <div class="hero-thumb">
+                    <img id="heroImage" src="../assets/images/fallback-property.jpg" alt="Dự án" />
+                </div>
+
+                <div>
+                    <div class="hero-badges">
+                        <span class="hero-badge type" id="heroTypeBadge">
+                            <i class="fa-solid fa-layer-group"></i>
+                            Đang cập nhật
+                        </span>
+                        <span class="hero-badge status" id="heroStatusBadge">
+                            <i class="fa-solid fa-bolt"></i>
+                            Đang cập nhật
+                        </span>
+                    </div>
+
+                    <h1 class="hero-title" id="heroTitle">Danh mục dự án</h1>
+
+                    <div class="hero-address">
+                        <i class="fa-solid fa-location-dot mt-[4px] text-[--vip-color]"></i>
+                        <span id="heroAddress">Địa chỉ dự án</span>
+                    </div>
+
+                    <div class="hero-desc" id="heroDesc">
+                        Hệ thống đang tổng hợp danh sách tin bán và cho thuê thuộc dự án này để người dùng tiện theo dõi.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Tổng số tin</div>
+                    <div class="stat-value" id="statTotal">0</div>
+                    <div class="stat-hint">Tổng số tin thuộc dự án đang hiển thị</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Tin bán</div>
+                    <div class="stat-value" id="statSale">0</div>
+                    <div class="stat-hint">Các tin thuộc nhóm mua bán</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Tin cho thuê</div>
+                    <div class="stat-value" id="statRent">0</div>
+                    <div class="stat-hint">Các tin thuộc nhóm cho thuê</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Mức giá tham khảo</div>
+                    <div class="stat-value" id="statPrice">Liên hệ</div>
+                    <div class="stat-hint">Dữ liệu dự án / thông tin tham khảo</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="toolbar-card">
+            <div class="filter-grid">
+                <div>
+                    <input
+                        id="keywordFilter"
+                        type="text"
+                        class="filter-input"
+                        placeholder="Tìm theo tiêu đề tin, địa chỉ, người đăng..."
+                    />
+                </div>
+
+                <div>
+                    <select id="postTypeFilter" class="filter-select">
+                        <option value="">Tất cả loại tin</option>
+                        <option value="sale">Tin bán</option>
+                        <option value="rent">Tin cho thuê</option>
+                    </select>
+                </div>
+
+                <div>
+                    <select id="priceFilter" class="filter-select">
+                        <option value="">Mọi mức giá</option>
+                        <option value="under-1">Dưới 1 tỷ</option>
+                        <option value="1-3">1 - 3 tỷ</option>
+                        <option value="3-5">3 - 5 tỷ</option>
+                        <option value="over-5">Trên 5 tỷ</option>
+                    </select>
+                </div>
+
+                <div>
+                    <select id="sortFilter" class="filter-select">
+                        <option value="newest">Mới nhất</option>
+                        <option value="price-asc">Giá thấp đến cao</option>
+                        <option value="price-desc">Giá cao đến thấp</option>
+                        <option value="title-asc">Tên A-Z</option>
+                    </select>
+                </div>
+
+                <div class="filter-submit-wrap">
+                    <button id="applyFilterBtn" class="filter-submit-btn" type="button">
+                        <i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm
+                    </button>
+                </div>
+
+                <div class="filter-reset-wrap">
+                    <button id="resetFilterBtn" class="filter-reset-btn" type="button">
+                        <i class="fa-solid fa-rotate-left mr-2"></i>Xóa lọc
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div id="dataNote" class="empty-box mb-6 hidden"></div>
+
+        <section class="layout-grid">
+            <div>
+                <div class="section-head-card">
+                    <h2 class="section-title">Tin thuộc dự án</h2>
+                    <div class="section-sub">
+                        Hiện có <strong id="listingCount">0</strong> tin đang hiển thị trong danh mục này
+                    </div>
+                </div>
+
+                <div id="listingContainer" class="listing-grid"></div>
+                <div id="paginationWrap" class="pagination-wrap"></div>
+            </div>
+
+            <aside class="space-y-6">
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Thông tin nhanh</h3>
+                    <div class="side-list" id="quickInfoList"></div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Khu vực nổi bật</h3>
+                    <div class="space-y-3" id="hotAreasList"></div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Tin tức</h3>
+                    <div class="sidebar-news-list" id="sidebarNewsList"></div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="seo-block-shell">
+            <div id="seoContent"></div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        const ITEMS_PER_PAGE = 6;
+
+        let allProjects = [];
+        let selectedProject = null;
+        let allProjectPosts = [];
+        let filteredPosts = [];
+        let currentPage = 1;
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function formatNumber(value) {
+            const num = Number(value || 0);
+            if (Number.isNaN(num)) return "0";
+            return new Intl.NumberFormat("vi-VN").format(num);
+        }
+
+        function getQueryParam(key) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(key) || "";
+        }
+
+        function normalizePrice(price) {
+            if (price == null || price === "") {
+                return { value: 0, text: "Liên hệ" };
+            }
+
+            if (typeof price === "number") {
+                return {
+                    value: price,
+                    text: new Intl.NumberFormat("vi-VN").format(price) + " VNĐ"
+                };
+            }
+
+            const raw = String(price).trim();
+            const parsed = Number(raw.replace(/[^\d.]/g, ""));
+            return {
+                value: Number.isNaN(parsed) ? 0 : parsed,
+                text: raw
+            };
+        }
+
+        function getAvatarText(name) {
+            return String(name || "TV")
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(word => word.charAt(0).toUpperCase())
+                .join("") || "TV";
+        }
+
+        function getProjectImage(project, index = 0) {
+            if (project.thumbnail && String(project.thumbnail).trim()) return project.thumbnail;
+            if (project.image && String(project.image).trim()) return project.image;
+            if (project.coverImage && String(project.coverImage).trim()) return project.coverImage;
+            if (project.featuredImage && String(project.featuredImage).trim()) return project.featuredImage;
+
+            if (Array.isArray(project.images) && project.images.length) {
+                const firstImage = project.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
+                if (firstImage && firstImage.url) return firstImage.url;
+                if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
+            }
+
+            return demoProjectImages[index % demoProjectImages.length] || FALLBACK_IMAGE;
+        }
+
+        function buildLocation(item) {
+            return (
+                item.address ||
+                item.location ||
+                item.fullAddress ||
+                [item.ward, item.district, item.city].filter(Boolean).join(", ") ||
+                "Đang cập nhật"
+            );
+        }
+
+        function normalizeProject(project, index = 0) {
+            const name = project.name || project.projectName || project.title || `Dự án ${index + 1}`;
+            const type = project.type || project.projectType || project.category || "Đang cập nhật";
+            const status = project.status || project.projectStatus || "Đang cập nhật";
+            const investor = project.investor || project.developer || project.owner || project.contactName || "Đang cập nhật";
+            const priceInfo = normalizePrice(project.price ?? project.priceFrom ?? project.minPrice ?? "");
+
+            return {
+                ...project,
+                id: project.id || project.projectId || project.slug || slugifyText(name) || `du-an-${index + 1}`,
+                name,
+                type,
+                status,
+                investor,
+                area: project.area || project.scale || project.landArea || project.size || "Đang cập nhật",
+                address: buildLocation(project),
+                priceText: priceInfo.text,
+                priceValue: priceInfo.value,
+                salePostsCount: Number(project.salePostsCount ?? project.saleCount ?? project.totalSalePosts ?? 0) || 0,
+                rentalPostsCount: Number(project.rentalPostsCount ?? project.rentalCount ?? project.totalRentalPosts ?? 0) || 0,
+                shortDescription: project.shortDescription || project.summary || project.description || "Dự án đang được cập nhật mô tả."
+            };
+        }
+
+        function normalizePost(post, index = 0) {
+            const rawType = normalizeText(post.flow || post.postType || post.type || "");
+            let postGroup = "sale";
+
+            if (rawType.includes("thue") || rawType.includes("rent")) {
+                postGroup = "rent";
+            } else if (rawType.includes("sale") || rawType.includes("ban") || rawType.includes("real_estate")) {
+                postGroup = "sale";
+            }
+
+            const priceInfo = normalizePrice(post.price ?? post.totalPrice ?? post.priceText ?? post.priceLabel ?? "");
+
+            return {
+                ...post,
+                id: post.id || post.postId || post.slug || `post-${index + 1}`,
+                title: post.title || post.name || "Tin dự án",
+                address: buildLocation(post),
+                city: post.city || "",
+                area: post.area || post.acreage || post.size || "Đang cập nhật",
+                priceText: priceInfo.text,
+                priceValue: priceInfo.value,
+                image: getProjectImage(post, index),
+                postGroup,
+                ownerName: post.contactName || post.fullName || post.brandName || post.userName || "Người đăng",
+                ownerRole: post.roleLabel || (normalizeText(post.profileType) === "doanhnghiep" ? "Doanh nghiệp" : "Cá nhân"),
+                createdAt: Date.parse(post.createdAt || 0) || (Date.now() - index * 1000)
+            };
+        }
+
+        function getProjectsFromProjectService() {
+            try {
+                if (window.projectService && typeof window.projectService.getAllProjects === "function") {
+                    return window.projectService.getAllProjects();
+                }
+                if (window.projectService && typeof window.projectService.getProjects === "function") {
+                    return window.projectService.getProjects();
+                }
+                if (window.ProjectService && typeof window.ProjectService.getAllProjects === "function") {
+                    return window.ProjectService.getAllProjects();
+                }
+                if (window.ProjectService && typeof window.ProjectService.getProjects === "function") {
+                    return window.ProjectService.getProjects();
+                }
+            } catch (error) {
+                console.warn("Không đọc được dữ liệu project service:", error);
+            }
+            return null;
+        }
+
+        function getProjectsFromStorage() {
+            const possibleKeys = [
+                "projects",
+                "projectList",
+                "toamviet_projects",
+                "toamvietProjects",
+                "adminProjects"
+            ];
+
+            for (const key of possibleKeys) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    if (!raw) continue;
+                    const parsed = JSON.parse(raw);
+
+                    if (Array.isArray(parsed) && parsed.length) return parsed;
+                    if (parsed && Array.isArray(parsed.items) && parsed.items.length) return parsed.items;
+                } catch (error) {}
+            }
+            return [];
+        }
+
+        function getPostsFromSources() {
+            let posts = [];
+
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    posts = window.postStorage.getAllPosts() || [];
+                } else if (window.userStorage && typeof window.userStorage.getAllPosts === "function") {
+                    posts = window.userStorage.getAllPosts() || [];
+                } else {
+                    posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                }
+            } catch (error) {
+                console.warn("Không đọc được dữ liệu bài đăng:", error);
+                posts = [];
+            }
+
+            return Array.isArray(posts) ? posts : [];
+        }
+
+        async function loadProjects() {
+            let projects = getProjectsFromProjectService();
+
+            if (projects instanceof Promise) {
+                projects = await projects;
+            }
+
+            if (!Array.isArray(projects) || !projects.length) {
+                projects = getProjectsFromStorage();
+            }
+
+            if (!Array.isArray(projects) || !projects.length) {
+                projects = fallbackProjects;
+            }
+
+            return projects.map(normalizeProject);
+        }
+
+        function matchPostToProject(post, project) {
+            const postProjectId = String(
+                post.projectId ||
+                post.project_id ||
+                post.projectSlug ||
+                post.projectName ||
+                post.project ||
+                ""
+            ).trim();
+
+            const projectId = String(project.id || "").trim();
+            const projectNameSlug = slugifyText(project.name);
+
+            if (postProjectId) {
+                if (postProjectId === projectId) return true;
+                if (slugifyText(postProjectId) === projectNameSlug) return true;
+            }
+
+            const haystack = normalizeText([
+                post.title,
+                post.description,
+                post.address,
+                post.location,
+                post.projectName,
+                post.project
+            ].filter(Boolean).join(" "));
+
+            return haystack.includes(normalizeText(project.name));
+        }
+
+        function getProjectDetailUrl(project) {
+            return `../pages/chi-tiet-du-an.html?id=${encodeURIComponent(project.id)}`;
+        }
+
+        function getOwnerProfileUrl(post) {
+            if (post.profileUrl) return post.profileUrl;
+
+            const type = normalizeText(post.profileType);
+            if (type === "canhan" || type === "moi-gioi") {
+                return `../pages/chi-tiet-moi-gioi.html?id=${encodeURIComponent(post.id)}`;
+            }
+
+            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(post.id)}`;
+        }
+
+        function getPostDetailUrl(post) {
+            if (post.detailUrl) return post.detailUrl;
+            return `../pages/chi-tiet-tin.html?id=${encodeURIComponent(post.id)}`;
+        }
+
+        function renderProjectHero(project) {
+            document.title = `${project.name} - Danh mục dự án | ToamViet.com.vn`;
+            document.getElementById("heroImage").src = getProjectImage(project, 0);
+            document.getElementById("heroImage").alt = project.name;
+            document.getElementById("heroTitle").textContent = project.name;
+            document.getElementById("heroAddress").textContent = project.address;
+            document.getElementById("heroDesc").textContent = project.shortDescription;
+            document.getElementById("heroTypeBadge").innerHTML = `<i class="fa-solid fa-layer-group"></i>${escapeHtml(project.type)}`;
+            document.getElementById("heroStatusBadge").innerHTML = `<i class="fa-solid fa-bolt"></i>${escapeHtml(project.status)}`;
+            document.getElementById("breadcrumbProjectLink").textContent = project.name;
+            document.getElementById("breadcrumbProjectLink").href = getProjectDetailUrl(project);
+        }
+
+        function renderStats(project, posts) {
+            const salePosts = posts.filter(item => item.postGroup === "sale").length;
+            const rentPosts = posts.filter(item => item.postGroup === "rent").length;
+
+            document.getElementById("statTotal").textContent = formatNumber(posts.length);
+            document.getElementById("statSale").textContent = formatNumber(salePosts);
+            document.getElementById("statRent").textContent = formatNumber(rentPosts);
+            document.getElementById("statPrice").textContent = project.priceText;
+        }
+
+        function renderQuickInfo(project) {
+            const quickInfo = [
+                { icon: "fa-solid fa-building", title: "Chủ đầu tư", desc: project.investor },
+                { icon: "fa-solid fa-location-dot", title: "Địa chỉ", desc: project.address },
+                { icon: "fa-solid fa-ruler-combined", title: "Quy mô / diện tích", desc: project.area },
+                { icon: "fa-solid fa-circle-check", title: "Trạng thái", desc: project.status }
+            ];
+
+            document.getElementById("quickInfoList").innerHTML = quickInfo.map(item => `
+                <div class="side-item">
+                    <div class="side-icon"><i class="${item.icon}"></i></div>
+                    <div>
+                        <div class="side-item-title">${escapeHtml(item.title)}</div>
+                        <div class="side-item-desc">${escapeHtml(item.desc)}</div>
+                    </div>
+                </div>
+            `).join("");
+
+            const areaMap = {};
+            allProjects.forEach(item => {
+                const key = item.city || item.address || "Khác";
+                areaMap[key] = (areaMap[key] || 0) + 1;
+            });
+
+            const hotAreas = Object.entries(areaMap)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+
+            const hotAreasList = document.getElementById("hotAreasList");
+            if (!hotAreas.length) {
+                hotAreasList.innerHTML = `<div class="empty-box">Chưa có dữ liệu khu vực.</div>`;
+            } else {
+                hotAreasList.innerHTML = hotAreas.map(([area, count]) => `
+                    <a href="../pages/du-an.html" class="hot-area-btn">
+                        <span>${escapeHtml(area)}</span>
+                        <span class="text-gray-400 text-[11px]">${count} dự án</span>
+                    </a>
+                `).join("");
+            }
+
+            document.getElementById("sidebarNewsList").innerHTML = fallbackNews.map(item => `
+                <a href="${escapeHtml(item.url)}" class="sidebar-news-item">
+                    <div class="sidebar-news-thumb">
+                        <img
+                            src="${escapeHtml(item.image)}"
+                            alt="${escapeHtml(item.title)}"
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'"
+                        />
+                    </div>
+                    <div class="min-w-0">
+                        <h5 class="sidebar-news-title">${escapeHtml(item.title)}</h5>
+                        <div class="sidebar-news-meta">${escapeHtml(item.category)}</div>
+                    </div>
+                </a>
+            `).join("");
+        }
+
+        function applyFilters(posts) {
+            const keyword = normalizeText(document.getElementById("keywordFilter").value);
+            const postType = document.getElementById("postTypeFilter").value;
+            const priceFilter = document.getElementById("priceFilter").value;
+            const sortType = document.getElementById("sortFilter").value;
+
+            let result = [...posts];
+
+            if (keyword) {
+                result = result.filter(post => {
+                    const haystack = normalizeText([
+                        post.title,
+                        post.address,
+                        post.ownerName,
+                        post.description
+                    ].filter(Boolean).join(" "));
+                    return haystack.includes(keyword);
+                });
+            }
+
+            if (postType) {
+                result = result.filter(post => post.postGroup === postType);
+            }
+
+            if (priceFilter) {
+                result = result.filter(post => {
+                    const price = Number(post.priceValue || 0);
+
+                    if (priceFilter === "under-1") return price > 0 && price < 1000000000;
+                    if (priceFilter === "1-3") return price >= 1000000000 && price <= 3000000000;
+                    if (priceFilter === "3-5") return price > 3000000000 && price <= 5000000000;
+                    if (priceFilter === "over-5") return price > 5000000000;
+
+                    return true;
+                });
+            }
+
+            if (sortType === "price-asc") {
+                result.sort((a, b) => (a.priceValue || 0) - (b.priceValue || 0));
+            } else if (sortType === "price-desc") {
+                result.sort((a, b) => (b.priceValue || 0) - (a.priceValue || 0));
+            } else if (sortType === "title-asc") {
+                result.sort((a, b) => String(a.title || "").localeCompare(String(b.title || ""), "vi"));
+            } else {
+                result.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            }
+
+            return result;
+        }
+
+        function renderListingCard(post) {
+            const badgeText = post.postGroup === "rent" ? "Cho thuê" : "Mua bán";
+            const ownerProfileUrl = getOwnerProfileUrl(post);
+            const detailUrl = getPostDetailUrl(post);
+
+            return `
+                <article class="listing-card">
+                    <div class="listing-thumb">
+                        <a href="${detailUrl}">
+                            <img
+                                src="${escapeHtml(post.image)}"
+                                alt="${escapeHtml(post.title)}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'"
+                            />
+                        </a>
+
+                        <span class="listing-badge">
+                            <i class="fa-solid fa-house"></i>
+                            ${escapeHtml(badgeText)}
+                        </span>
+
+                        <span class="listing-price">${escapeHtml(post.priceText)}</span>
+                    </div>
+
+                    <div class="listing-body">
+                        <a href="${ownerProfileUrl}" class="listing-owner">
+                            <div class="listing-owner-avatar">${escapeHtml(getAvatarText(post.ownerName))}</div>
+                            <div class="min-w-0">
+                                <div class="listing-owner-name truncate">${escapeHtml(post.ownerName)}</div>
+                                <div class="listing-owner-role truncate">${escapeHtml(post.ownerRole || "Người đăng")}</div>
+                            </div>
+                        </a>
+
+                        <a href="${detailUrl}">
+                            <h3 class="listing-title">${escapeHtml(post.title)}</h3>
+                        </a>
+
+                        <div class="listing-address">
+                            <i class="fa-solid fa-location-dot mt-[3px] text-[--vip-color]"></i>
+                            <span>${escapeHtml(post.address)}</span>
+                        </div>
+
+                        <div class="listing-meta-pills">
+                            <span class="listing-pill"><i class="fa-solid fa-ruler-combined"></i>Diện tích: <strong>${escapeHtml(post.area)}</strong></span>
+                            <span class="listing-pill"><i class="fa-solid fa-layer-group"></i>Nhóm: <strong>${escapeHtml(badgeText)}</strong></span>
+                        </div>
+
+                        <div class="listing-actions">
+                            <a href="${detailUrl}" class="btn-main">
+                                <i class="fa-solid fa-eye"></i>
+                                Xem chi tiết
+                            </a>
+                            <a href="${ownerProfileUrl}" class="btn-soft" title="Xem hồ sơ">
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function paginateItems(items) {
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            return items.slice(start, start + ITEMS_PER_PAGE);
+        }
+
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+            if (totalPages <= 1) {
+                document.getElementById("paginationWrap").innerHTML = "";
+                return;
+            }
+
+            let html = `
+                <button class="page-btn" ${currentPage === 1 ? "disabled" : ""} onclick="goToPage(${currentPage - 1})">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+            `;
+
+            for (let page = 1; page <= totalPages; page += 1) {
+                html += `
+                    <button class="page-btn ${page === currentPage ? "active" : ""}" onclick="goToPage(${page})">
+                        ${page}
+                    </button>
+                `;
+            }
+
+            html += `
+                <button class="page-btn" ${currentPage === totalPages ? "disabled" : ""} onclick="goToPage(${currentPage + 1})">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            `;
+
+            document.getElementById("paginationWrap").innerHTML = html;
+        }
+
+        function renderListings(resetPage = false) {
+            filteredPosts = applyFilters(allProjectPosts);
+
+            if (resetPage) currentPage = 1;
+
+            const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            document.getElementById("listingCount").textContent = formatNumber(filteredPosts.length);
+
+            if (!filteredPosts.length) {
+                document.getElementById("listingContainer").innerHTML = `
+                    <div class="empty-box md:col-span-2">
+                        Chưa tìm thấy tin nào phù hợp với bộ lọc hiện tại trong dự án này.
+                    </div>
+                `;
+                document.getElementById("paginationWrap").innerHTML = "";
+                return;
+            }
+
+            const pageItems = paginateItems(filteredPosts);
+            document.getElementById("listingContainer").innerHTML = pageItems.map(renderListingCard).join("");
+            renderPagination(filteredPosts.length);
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE) || 1;
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            renderListings(false);
+
+            const top = document.getElementById("listingContainer").getBoundingClientRect().top + window.scrollY - 120;
+            window.scrollTo({ top, behavior: "smooth" });
+        }
+
+        async function initPage() {
+            allProjects = await loadProjects();
+
+            const projectId = getQueryParam("projectId");
+            let project = allProjects.find(item => String(item.id) === String(projectId));
+
+            if (!project && projectId) {
+                project = allProjects.find(item => slugifyText(item.name) === slugifyText(projectId));
+            }
+
+            if (!project) {
+                project = allProjects[0] || normalizeProject(fallbackProjects[0], 0);
+                document.getElementById("dataNote").classList.remove("hidden");
+                document.getElementById("dataNote").innerHTML = `
+                    Không tìm thấy dự án đúng theo tham số trên URL.
+                    Hệ thống đang hiển thị tạm dữ liệu dự án đầu tiên để tránh trang bị trống.
+                `;
+            }
+
+            selectedProject = project;
+            renderProjectHero(project);
+
+            const rawPosts = getPostsFromSources();
+            let matchedPosts = rawPosts
+                .filter(post => post && ["approved", "published", "demo"].includes(normalizeText(post.status || "approved")))
+                .filter(post => matchPostToProject(post, project))
+                .map(normalizePost);
+
+            if (!matchedPosts.length) {
+                matchedPosts = [
+                    {
+                        id: `${project.id}-sale-1`,
+                        title: `${project.name} - căn đẹp giá tốt gần trung tâm`,
+                        address: project.address,
+                        city: project.city || "",
+                        area: "68 m²",
+                        priceText: "2.45 tỷ",
+                        priceValue: 2450000000,
+                        image: getProjectImage(project, 1),
+                        postGroup: "sale",
+                        ownerName: project.investor,
+                        ownerRole: "Doanh nghiệp / Chủ đầu tư",
+                        createdAt: Date.now(),
+                        profileType: "doanhnghiep"
+                    },
+                    {
+                        id: `${project.id}-rent-1`,
+                        title: `${project.name} - cho thuê căn hộ mới, nội thất cơ bản`,
+                        address: project.address,
+                        city: project.city || "",
+                        area: "72 m²",
+                        priceText: "14 triệu/tháng",
+                        priceValue: 14000000,
+                        image: getProjectImage(project, 2),
+                        postGroup: "rent",
+                        ownerName: project.investor,
+                        ownerRole: "Doanh nghiệp / Chủ đầu tư",
+                        createdAt: Date.now() - 86400000,
+                        profileType: "doanhnghiep"
+                    },
+                    {
+                        id: `${project.id}-sale-2`,
+                        title: `${project.name} - suất nội bộ vị trí đẹp, pháp lý rõ`,
+                        address: project.address,
+                        city: project.city || "",
+                        area: "75 m²",
+                        priceText: "3.1 tỷ",
+                        priceValue: 3100000000,
+                        image: getProjectImage(project, 3),
+                        postGroup: "sale",
+                        ownerName: project.investor,
+                        ownerRole: "Doanh nghiệp / Chủ đầu tư",
+                        createdAt: Date.now() - 2 * 86400000,
+                        profileType: "doanhnghiep"
+                    }
+                ];
+
+                document.getElementById("dataNote").classList.remove("hidden");
+                document.getElementById("dataNote").innerHTML = `
+                    Hiện tại chưa dò thấy tin thật nào gắn đúng với dự án này từ nguồn dữ liệu đang có.
+                    Trang đang hiển thị <strong>dữ liệu demo</strong> để bạn kiểm tra bố cục và flow điều hướng.
+                `;
+            }
+
+            allProjectPosts = matchedPosts;
+
+            renderStats(project, matchedPosts);
+            renderQuickInfo(project);
+            renderListings(true);
+
+            if (typeof renderSeoContent === "function") {
+                renderSeoContent("seoContent", "project");
+            }
+        }
+
+        document.getElementById("applyFilterBtn").addEventListener("click", function () {
+            renderListings(true);
+        });
+
+        document.getElementById("resetFilterBtn").addEventListener("click", function () {
+            document.getElementById("keywordFilter").value = "";
+            document.getElementById("postTypeFilter").value = "";
+            document.getElementById("priceFilter").value = "";
+            document.getElementById("sortFilter").value = "newest";
+            renderListings(true);
+        });
+
+        document.getElementById("keywordFilter").addEventListener("keydown", function (event) {
+            if (event.key === "Enter") renderListings(true);
+        });
+
+        document.getElementById("postTypeFilter").addEventListener("change", function () {
+            renderListings(true);
+        });
+
+        document.getElementById("priceFilter").addEventListener("change", function () {
+            renderListings(true);
+        });
+
+        document.getElementById("sortFilter").addEventListener("change", function () {
+            renderListings(true);
+        });
+
+        window.goToPage = goToPage;
+
+        window.addEventListener("load", function () {
+            initPage();
+        });
+    </script>
+</body>
+</html>
