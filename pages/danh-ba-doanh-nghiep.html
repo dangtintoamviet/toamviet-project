@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh bạ Doanh nghiệp & Môi giới | ToamViet.com.vn</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Danh bạ Doanh nghiệp | ToamViet.com.vn</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
 
     <style>
         :root {
-            --vip-color: #008B8B;
-            --hover-color: #FF8C00;
+            --vip-color: #008b8b;
+            --hover-color: #ff8c00;
             --soft-bg: #f4f6f8;
             --text-main: #1f2937;
             --stroke: #e5e7eb;
@@ -29,13 +31,13 @@
         }
 
         .container-custom {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 15px;
         }
 
         .page-shell {
-            padding: 34px 0 56px;
+            padding: 28px 0 56px;
         }
 
         .search-box,
@@ -50,15 +52,15 @@
 
         .search-box {
             padding: 22px;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
         }
 
         .section-kicker {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 800;
             text-transform: uppercase;
             color: var(--vip-color);
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
             margin-bottom: 14px;
         }
 
@@ -87,11 +89,12 @@
             background: var(--vip-color);
             color: white;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             padding: 0 18px;
             transition: 0.25s ease;
             border: none;
+            cursor: pointer;
         }
 
         .primary-btn:hover {
@@ -112,7 +115,7 @@
             background: #fff;
             color: #1f2937;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.25s ease;
         }
@@ -131,23 +134,23 @@
 
         .page-title {
             font-size: 20px;
-            font-weight: 600;
+            font-weight: 700;
             color: #111827;
             margin-bottom: 6px;
         }
 
         .page-subtitle {
-            font-size: 13px;
+            font-size: 14px;
             color: #6b7280;
         }
 
         .directory-card {
             background: white;
             border: 1px solid var(--stroke);
-            border-radius: 18px;
-            padding: 18px;
+            border-radius: 22px;
+            padding: 24px;
             display: flex;
-            gap: 18px;
+            gap: 22px;
             transition: 0.28s ease;
         }
 
@@ -158,13 +161,13 @@
         }
 
         .directory-logo-link {
-            width: 120px;
-            height: 120px;
-            border-radius: 16px;
+            width: 150px;
+            height: 150px;
+            border-radius: 18px;
             overflow: hidden;
             border: 1px solid #edf2f7;
             flex-shrink: 0;
-            background: #fff;
+            background: #f8fafc;
             display: block;
         }
 
@@ -174,7 +177,7 @@
             object-fit: contain;
             display: block;
             background: #f8fafc;
-            padding: 8px;
+            padding: 10px;
         }
 
         .directory-title-link {
@@ -187,10 +190,11 @@
         }
 
         .directory-title {
-            font-size: 19px;
-            font-weight: 600;
-            line-height: 1.4;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.45;
             text-transform: uppercase;
+            color: inherit;
         }
 
         .meta-line {
@@ -220,9 +224,9 @@
             align-items: center;
             gap: 6px;
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            padding: 6px 10px;
+            padding: 7px 11px;
             border-radius: 999px;
             letter-spacing: 0.04em;
             border: 1px solid transparent;
@@ -254,7 +258,7 @@
 
         .sidebar-title {
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 800;
             text-transform: uppercase;
             color: #111827;
             margin-bottom: 14px;
@@ -270,7 +274,7 @@
             display: flex;
             justify-content: space-between;
             gap: 12px;
-            padding: 10px 0;
+            padding: 12px 0;
             border-bottom: 1px dashed #e5e7eb;
             font-size: 14px;
             color: #4b5563;
@@ -280,35 +284,32 @@
             border-bottom: none;
         }
 
-        .sidebar-list li:hover {
-            color: var(--hover-color);
-        }
-
         .register-box {
             background: #111827;
             color: white;
-            border-radius: 18px;
-            padding: 22px;
+            border-radius: 22px;
+            padding: 24px;
         }
 
         .register-box p {
-            font-size: 13px;
+            font-size: 14px;
             color: #cbd5e1;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         .outline-light-btn {
             width: 100%;
             margin-top: 16px;
-            min-height: 44px;
-            border-radius: 12px;
+            min-height: 48px;
+            border-radius: 14px;
             background: white;
             color: #111827;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 800;
             text-transform: uppercase;
             border: none;
             transition: 0.25s ease;
+            cursor: pointer;
         }
 
         .outline-light-btn:hover {
@@ -340,7 +341,7 @@
             background: white;
             border-radius: 10px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             color: #374151;
             cursor: pointer;
             transition: 0.2s ease;
@@ -357,6 +358,17 @@
             border-color: var(--vip-color);
         }
 
+        @media (max-width: 1024px) {
+            .directory-card {
+                padding: 20px;
+            }
+
+            .directory-logo-link {
+                width: 130px;
+                height: 130px;
+            }
+        }
+
         @media (max-width: 768px) {
             .directory-card {
                 flex-direction: column;
@@ -370,25 +382,27 @@
             .page-title {
                 font-size: 21px;
             }
+
+            .search-box {
+                padding: 18px;
+            }
         }
     </style>
 </head>
 <body>
-
     <div id="site-header"></div>
     <div id="site-mobile-menu"></div>
 
     <main class="page-shell">
         <div class="container-custom">
-
             <div class="search-box">
-                <div class="section-kicker">Tìm kiếm doanh nghiệp / môi giới</div>
+                <div class="section-kicker">Tìm kiếm doanh nghiệp</div>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <input
                         type="text"
                         id="searchKeyword"
                         class="filter-input md:col-span-2"
-                        placeholder="Tên công ty, doanh nghiệp, môi giới..."
+                        placeholder="Tên công ty, doanh nghiệp, đơn vị..."
                     />
                     <select id="searchCity" class="filter-select">
                         <option value="">Tất cả tỉnh / thành</option>
@@ -401,8 +415,6 @@
 
             <div class="tab-row" id="tabButtons">
                 <button class="tab-btn active" data-filter="all">Tất cả</button>
-                <button class="tab-btn" data-filter="doanh-nghiep">Doanh nghiệp</button>
-                <button class="tab-btn" data-filter="moi-gioi">Môi giới</button>
                 <button class="tab-btn" data-filter="chu-dau-tu">Chủ đầu tư</button>
                 <button class="tab-btn" data-filter="san-giao-dich">Sàn giao dịch</button>
                 <button class="tab-btn" data-filter="noi-that">Dịch vụ nội thất</button>
@@ -412,7 +424,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <section class="lg:col-span-2 space-y-5">
                     <div class="list-card p-5">
-                        <h1 class="page-title">Danh bạ Doanh nghiệp & Môi giới</h1>
+                        <h1 class="page-title">Danh bạ Doanh nghiệp</h1>
                         <p class="page-subtitle">
                             Hiển thị <span id="resultCount" class="font-bold text-slate-700">0</span> kết quả phù hợp
                         </p>
@@ -436,7 +448,7 @@
                     <div class="register-box">
                         <h4 class="font-black mb-3 uppercase text-sm">Đăng ký hồ sơ hiển thị</h4>
                         <p>
-                            Bạn muốn doanh nghiệp hoặc hồ sơ môi giới của mình xuất hiện trong danh bạ ToamViet?
+                            Bạn muốn doanh nghiệp của mình xuất hiện trong danh bạ ToamViet?
                             Hãy tạo tài khoản và bổ sung đầy đủ thông tin để được duyệt hiển thị.
                         </p>
                         <a href="../user/dang-tin.html">
@@ -450,91 +462,20 @@
 
     <div id="site-footer"></div>
 
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
     <script src="../assets/js/component-loader.js"></script>
     <script src="../assets/js/main.js"></script>
 
     <script>
         const ITEMS_PER_PAGE = 6;
+        const FALLBACK_LOGO = "../assets/images/fallback-property.jpg";
+
         let currentPage = 1;
         let currentFilter = "all";
         let cityOptionsLoaded = false;
-
-        const FALLBACK_LOGO = "https://via.placeholder.com/220x220?text=LOGO";
-
-        const directoryData = [
-            {
-                id: "dn-001",
-                type: "doanh-nghiep",
-                name: "CÔNG TY CỔ PHẦN ĐẦU TƯ TỔ ẤM VIỆT",
-                logo: FALLBACK_LOGO,
-                address: "Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội",
-                city: "Hà Nội",
-                phone: "0946 239 289",
-                website: "www.toamviet.com.vn",
-                tags: ["chu-dau-tu", "san-giao-dich"],
-                description: "Doanh nghiệp hoạt động trong lĩnh vực đầu tư, môi giới, phát triển dự án và phân phối bất động sản tại nhiều khu vực trọng điểm."
-            },
-            {
-                id: "dn-002",
-                type: "doanh-nghiep",
-                name: "TẬP ĐOÀN BẤT ĐỘNG SẢN THUẬN PHÁT",
-                logo: FALLBACK_LOGO,
-                address: "Khu đô thị Sala, TP. Hồ Chí Minh",
-                city: "TP Hồ Chí Minh",
-                phone: "0901 234 567",
-                website: "thuanphatland.com.vn",
-                tags: ["noi-that"],
-                description: "Cung cấp giải pháp bất động sản kết hợp nội thất, phát triển sản phẩm nhà ở và văn phòng tại khu vực phía Nam."
-            },
-            {
-                id: "dn-003",
-                type: "doanh-nghiep",
-                name: "CÔNG TY XÂY DỰNG AN PHÁT",
-                logo: FALLBACK_LOGO,
-                address: "Dĩ An, Bình Dương",
-                city: "Bình Dương",
-                phone: "0912 345 678",
-                website: "anphatbuild.com",
-                tags: ["xay-dung"],
-                description: "Nhà thầu chuyên thi công nhà ở dân dụng, biệt thự, nhà phố và các hạng mục hoàn thiện nội ngoại thất."
-            },
-            {
-                id: "mg-001",
-                type: "moi-gioi",
-                name: "NGUYỄN VĂN HÙNG",
-                logo: "https://ui-avatars.com/api/?name=Nguyen+Van+Hung&background=008B8B&color=fff",
-                address: "Nam Từ Liêm, Hà Nội",
-                city: "Hà Nội",
-                phone: "0988 123 456",
-                website: "facebook.com/nguyenvanhung",
-                tags: ["san-giao-dich"],
-                description: "Môi giới chuyên nhà phố, chung cư cao cấp và mặt bằng kinh doanh tại Hà Nội."
-            },
-            {
-                id: "mg-002",
-                type: "moi-gioi",
-                name: "TRẦN THỊ LAN ANH",
-                logo: "https://ui-avatars.com/api/?name=Tran+Thi+Lan+Anh&background=FF8C00&color=fff",
-                address: "Thủ Đức, TP. Hồ Chí Minh",
-                city: "TP Hồ Chí Minh",
-                phone: "0903 888 999",
-                website: "zalo.me/0903888999",
-                tags: ["chu-dau-tu"],
-                description: "Môi giới chuyên phân phối căn hộ, nhà liền thổ và sản phẩm đầu tư tại TP. Hồ Chí Minh."
-            },
-            {
-                id: "mg-003",
-                type: "moi-gioi",
-                name: "PHẠM MINH QUÂN",
-                logo: "https://ui-avatars.com/api/?name=Pham+Minh+Quan&background=334155&color=fff",
-                address: "Thuận An, Bình Dương",
-                city: "Bình Dương",
-                phone: "0917 456 789",
-                website: "zalo.me/0917456789",
-                tags: ["xay-dung"],
-                description: "Môi giới kiêm tư vấn nguồn hàng đất nền, nhà phố và dự án xây dựng tại Bình Dương."
-            }
-        ];
+        let directoryData = [];
 
         function normalizeText(str) {
             return String(str || "")
@@ -546,28 +487,119 @@
                 .trim();
         }
 
-        function buildDetailLink(item) {
-            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(item.id)}&type=${encodeURIComponent(item.type)}`;
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function createPostId(post, index = 0) {
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
+                return String(post.id).trim();
+            }
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
+                return String(post.postId).trim();
+            }
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
+                return String(post.slug).trim();
+            }
+
+            const stableParts = [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.serviceBrand,
+                post.city,
+                post.ward,
+                post.contactPhone,
+                post.createdAt,
+                index
+            ];
+
+            return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
+        }
+
+        function getAllowedPublicStatuses() {
+            return ["approved", "published", "demo"];
+        }
+
+        function isBusinessProfile(post) {
+            const role = normalizeText(post.roleLabel || post.role || "");
+            const profileType = normalizeText(post.profileType);
+
+            return profileType === "doanhnghiep" ||
+                !!post.brandName ||
+                !!post.serviceBrand ||
+                role.includes("doanh nghiep") ||
+                role.includes("doanhnghiep") ||
+                role.includes("nha thau");
+        }
+
+        function buildPoster(post) {
+            return post.brandName || post.serviceBrand || post.contactName || post.fullName || "Doanh nghiệp";
+        }
+
+        function buildLocation(post) {
+            return [post.addressDetail, post.ward, post.city].filter(Boolean).join(", ")
+                || [post.ward, post.city].filter(Boolean).join(", ")
+                || post.serviceArea
+                || "Đang cập nhật địa chỉ";
+        }
+
+        function getCardImage(post) {
+            if (post.logo && typeof post.logo === "string" && post.logo.trim()) return post.logo;
+            if (post.logoUrl && typeof post.logoUrl === "string" && post.logoUrl.trim()) return post.logoUrl;
+            if (post.avatar && typeof post.avatar === "string" && post.avatar.trim()) return post.avatar;
+            if (post.avatarUrl && typeof post.avatarUrl === "string" && post.avatarUrl.trim()) return post.avatarUrl;
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) return post.thumbnail;
+
+            if (Array.isArray(post.images) && post.images.length) {
+                const firstImage = post.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
+                if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
+                if (firstImage && firstImage.url) return firstImage.url;
+            }
+
+            return FALLBACK_LOGO;
+        }
+
+        function getTagGroup(post) {
+            const text = normalizeText(
+                post.roleLabel ||
+                post.role ||
+                post.serviceSpecialty ||
+                post.specialty ||
+                post.serviceType ||
+                post.propertyType ||
+                ""
+            );
+
+            if (text.includes("chu dau tu")) return ["chu-dau-tu"];
+            if (text.includes("san") || text.includes("giao dich")) return ["san-giao-dich"];
+            if (text.includes("noi that")) return ["noi-that"];
+            if (text.includes("xay dung") || text.includes("kien truc") || text.includes("nha thau")) return ["xay-dung"];
+            return [];
+        }
+
+        function getWebsite(post) {
+            return post.website || post.siteUrl || post.facebook || post.zalo || post.contactWebsite || "";
+        }
+
+        function getEntryDetailLink(item) {
+            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(item.id)}`;
         }
 
         function tagTemplate(tag) {
             const map = {
-                "chu-dau-tu": {
-                    text: "Chủ đầu tư",
-                    cls: "tag-blue"
-                },
-                "san-giao-dich": {
-                    text: "Sàn giao dịch",
-                    cls: "tag-green"
-                },
-                "noi-that": {
-                    text: "Dịch vụ nội thất",
-                    cls: "tag-purple"
-                },
-                "xay-dung": {
-                    text: "Xây dựng & Kiến trúc",
-                    cls: "tag-orange"
-                }
+                "chu-dau-tu": { text: "Chủ đầu tư", cls: "tag-blue" },
+                "san-giao-dich": { text: "Sàn giao dịch", cls: "tag-green" },
+                "noi-that": { text: "Dịch vụ nội thất", cls: "tag-purple" },
+                "xay-dung": { text: "Xây dựng & Kiến trúc", cls: "tag-orange" }
             };
 
             const config = map[tag];
@@ -575,15 +607,8 @@
             return `<span class="tag-chip ${config.cls}">${config.text}</span>`;
         }
 
-        function typeBadge(item) {
-            if (item.type === "moi-gioi") {
-                return `<span class="tag-chip tag-green">Môi giới</span>`;
-            }
-            return `<span class="tag-chip tag-blue">Doanh nghiệp</span>`;
-        }
-
         function renderCard(item) {
-            const link = buildDetailLink(item);
+            const link = getEntryDetailLink(item);
 
             return `
                 <article class="directory-card">
@@ -614,16 +639,129 @@
                         </div>
 
                         <p class="mt-4 text-[14px] text-gray-500 leading-7">
-                            ${item.description || "Đang cập nhật mô tả đơn vị."}
+                            ${item.description || "Đang cập nhật mô tả doanh nghiệp."}
                         </p>
 
                         <div class="tag-row">
-                            ${typeBadge(item)}
+                            <span class="tag-chip tag-blue">Doanh nghiệp</span>
                             ${(item.tags || []).map(tagTemplate).join("")}
                         </div>
                     </div>
                 </article>
             `;
+        }
+
+        function getPostsFromStorage() {
+            let posts = [];
+
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    posts = window.postStorage.getAllPosts().filter(post => {
+                        return post &&
+                            getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
+                            isBusinessProfile(post);
+                    });
+                }
+            } catch (error) {
+                posts = [];
+            }
+
+            if (posts.length) return posts;
+
+            try {
+                const localPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                if (Array.isArray(localPosts)) {
+                    return localPosts.filter(post =>
+                        post &&
+                        getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
+                        isBusinessProfile(post)
+                    );
+                }
+            } catch (error) {}
+
+            return [];
+        }
+
+        function getFallbackDirectoryData() {
+            return [
+                {
+                    id: "dn-001",
+                    name: "CÔNG TY CỔ PHẦN ĐẦU TƯ TỔ ẤM VIỆT",
+                    logo: FALLBACK_LOGO,
+                    address: "Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội",
+                    city: "Hà Nội",
+                    phone: "0946 239 289",
+                    website: "www.toamviet.com.vn",
+                    tags: ["chu-dau-tu", "san-giao-dich"],
+                    description: "Doanh nghiệp hoạt động trong lĩnh vực đầu tư, môi giới, phát triển dự án và phân phối bất động sản tại nhiều khu vực trọng điểm."
+                },
+                {
+                    id: "dn-002",
+                    name: "TẬP ĐOÀN BẤT ĐỘNG SẢN THUẬN PHÁT",
+                    logo: FALLBACK_LOGO,
+                    address: "Khu đô thị Sala, TP. Hồ Chí Minh",
+                    city: "TP Hồ Chí Minh",
+                    phone: "0901 234 567",
+                    website: "thuanphatland.com.vn",
+                    tags: ["noi-that"],
+                    description: "Cung cấp giải pháp bất động sản kết hợp nội thất, phát triển sản phẩm nhà ở và văn phòng tại khu vực phía Nam."
+                },
+                {
+                    id: "dn-003",
+                    name: "CÔNG TY XÂY DỰNG AN PHÁT",
+                    logo: FALLBACK_LOGO,
+                    address: "Dĩ An, Bình Dương",
+                    city: "Bình Dương",
+                    phone: "0912 345 678",
+                    website: "anphatbuild.com",
+                    tags: ["xay-dung"],
+                    description: "Nhà thầu chuyên thi công nhà ở dân dụng, biệt thự, nhà phố và các hạng mục hoàn thiện nội ngoại thất."
+                }
+            ];
+        }
+
+        function buildDirectoryDataFromPosts(posts) {
+            const map = new Map();
+
+            posts.forEach((post, index) => {
+                const key = normalizeText(post.brandName) ||
+                    normalizeText(post.serviceBrand) ||
+                    normalizeText(post.contactPhone) ||
+                    createPostId(post, index);
+
+                if (!map.has(key)) {
+                    map.set(key, {
+                        id: createPostId(post, index),
+                        name: buildPoster(post).toUpperCase(),
+                        logo: getCardImage(post),
+                        address: buildLocation(post),
+                        city: post.city || "",
+                        phone: post.contactPhone || "",
+                        website: getWebsite(post),
+                        tags: getTagGroup(post),
+                        description: post.description || ""
+                    });
+                }
+
+                const entry = map.get(key);
+
+                if (!entry.description && post.description) entry.description = post.description;
+                if (!entry.website && getWebsite(post)) entry.website = getWebsite(post);
+                if (!entry.address || entry.address === "Đang cập nhật địa chỉ") entry.address = buildLocation(post);
+                if (!entry.city && post.city) entry.city = post.city;
+
+                const newTags = getTagGroup(post);
+                newTags.forEach(tag => {
+                    if (!entry.tags.includes(tag)) entry.tags.push(tag);
+                });
+            });
+
+            return Array.from(map.values()).map(item => {
+                if (!item.description) {
+                    item.description = "Doanh nghiệp đang hoạt động trên hệ thống ToamViet, hỗ trợ khách hàng với các thông tin liên quan đến bất động sản, đầu tư hoặc dịch vụ liên quan.";
+                }
+                return item;
+            }).sort((a, b) => a.name.localeCompare(b.name, "vi"));
         }
 
         function filterData() {
@@ -639,16 +777,11 @@
 
                 let matchFilter = true;
 
-                if (currentFilter === "doanh-nghiep") {
-                    matchFilter = item.type === "doanh-nghiep";
-                } else if (currentFilter === "moi-gioi") {
-                    matchFilter = item.type === "moi-gioi";
-                } else if (currentFilter !== "all") {
+                if (currentFilter !== "all") {
                     matchFilter = Array.isArray(item.tags) && item.tags.includes(currentFilter);
                 }
 
                 const matchCity = !city || item.city === city;
-
                 return matchKeyword && matchFilter && matchCity;
             });
         }
@@ -683,8 +816,8 @@
             if (!filtered.length) {
                 container.innerHTML = `
                     <div class="empty-box">
-                        Không tìm thấy doanh nghiệp hoặc môi giới phù hợp với bộ lọc hiện tại.
-                        Bạn thử đổi từ khóa, tỉnh/thành hoặc nhóm danh bạ để tìm lại.
+                        Không tìm thấy doanh nghiệp phù hợp với bộ lọc hiện tại.
+                        Bạn thử đổi từ khóa, tỉnh/thành hoặc nhóm lĩnh vực để tìm lại.
                     </div>
                 `;
                 document.getElementById("pagination").innerHTML = "";
@@ -762,6 +895,9 @@
         }
 
         async function initPage() {
+            const posts = getPostsFromStorage();
+            directoryData = posts.length ? buildDirectoryDataFromPosts(posts) : getFallbackDirectoryData();
+
             await loadCitiesFromAddressFile();
             initTabs();
             initSearch();
