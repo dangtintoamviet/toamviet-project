@@ -1,38 +1,37 @@
-/**
- * assets/js/seo-content.js
- * Quản lý khung SEO content: thu/bung, admin mới được chỉnh nội dung
- */
+// components/seo-content.js
 
-const SEO_CONTENT = {
-    // key: trang, value: nội dung SEO
-    "project": `Dự án bất động sản nổi bật, tư vấn đầu tư, phân phối căn hộ, nhà phố, biệt thự, nhà liền thổ tại các thành phố lớn và tỉnh lân cận.`,
-    "home": `ToamViet cung cấp thông tin nhà đất, dự án, môi giới, doanh nghiệp bất động sản uy tín toàn quốc.`,
-    "sale": `Tổng hợp các căn nhà, biệt thự, căn hộ đang rao bán tại các khu vực trọng điểm, kèm thông tin pháp lý và vị trí chi tiết.`,
-    "rent": `Tổng hợp các căn hộ, nhà phố cho thuê tại Hà Nội, TP.HCM và các tỉnh thành khác.`
-};
+// Nội dung SEO mẫu, admin mới sửa được
+const SEO_CONTENT_TEXT = `
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
+in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+`;
 
-function renderSeoContent(containerId, pageKey) {
+// Hàm render SEO content
+function renderSeoContent(containerId = "seoContent") {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const content = SEO_CONTENT[pageKey] || "";
-    if (!content) return;
-
-    // Tạo HTML khung SEO
     container.innerHTML = `
-        <div class="seo-box">
-            <button class="seo-toggle-btn" onclick="toggleSeoContent(this)">Hiển thị nội dung SEO</button>
-            <div class="seo-text hidden">
-                ${content}
+        <div class="seo-wrapper">
+            <button id="seoToggleBtn" class="seo-toggle-btn">Xem thêm nội dung SEO</button>
+            <div id="seoText" class="seo-text collapsed">
+                ${SEO_CONTENT_TEXT}
             </div>
         </div>
     `;
-}
 
-function toggleSeoContent(btn) {
-    const textDiv = btn.nextElementSibling;
-    if (!textDiv) return;
+    const toggleBtn = document.getElementById("seoToggleBtn");
+    const seoText = document.getElementById("seoText");
 
-    textDiv.classList.toggle("hidden");
-    btn.textContent = textDiv.classList.contains("hidden") ? "Hiển thị nội dung SEO" : "Thu gọn nội dung SEO";
+    toggleBtn.addEventListener("click", () => {
+        seoText.classList.toggle("collapsed");
+        if (seoText.classList.contains("collapsed")) {
+            toggleBtn.textContent = "Xem thêm nội dung SEO";
+        } else {
+            toggleBtn.textContent = "Thu gọn nội dung SEO";
+        }
+    });
 }
