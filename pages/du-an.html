@@ -9,18 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../assets/css/main.css" />
-    <link rel="stylesheet" href="../assets/css/components.css" />
-    <link rel="stylesheet" href="../assets/css/mobile.css" />
-    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
-        :root {
-            --vip-color: #008B8B;
-            --hover-color: #FF8C00;
-        }
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
 
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f2f2f2;
             color: #2C2C2C;
         }
@@ -29,6 +23,35 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
+        }
+
+        .nav-link { transition: all 0.3s; position: relative; }
+        .nav-link:hover { color: var(--hover-color) !important; }
+
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 200px;
+            border-top: 2px solid var(--vip-color);
+            z-index: 50;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+        .dropdown-item:hover {
+            background: #f9f9f9;
+            color: var(--hover-color);
         }
 
         .project-card {
@@ -54,90 +77,31 @@
             overflow: hidden;
         }
 
-        .empty-box {
-            background: white;
-            border: 1px dashed #cbd5e1;
-            border-radius: 14px;
-            padding: 18px;
-            color: #64748b;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        .metric-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 6px 10px;
-            border-radius: 999px;
-            letter-spacing: 0.04em;
-        }
-
-        .metric-chip.primary {
-            background: #f0fdfa;
-            color: #0f766e;
-            border: 1px solid #99f6e4;
-        }
-
-        .metric-chip.hot {
-            background: #fff7ed;
-            color: #c2410c;
-            border: 1px solid #fdba74;
-        }
-
-        .metric-chip.demo {
-            background: #eff6ff;
-            color: #1d4ed8;
-            border: 1px solid #93c5fd;
-        }
-
-        .project-filter-input,
-        .project-filter-select {
-            border: 1px solid #d1d5db;
-            padding: 10px 12px;
-            border-radius: 8px;
+        .project-metric {
+            display: flex;
+            gap: 12px;
             font-size: 14px;
-            background: white;
-            outline: none;
+            margin-top: 4px;
+            color: #c0392b; /* màu đỏ cam chủ đạo */
         }
 
-        .project-filter-input:focus,
-        .project-filter-select:focus {
-            border-color: var(--vip-color);
-            box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.08);
-        }
-
-        .seo-section-shell {
-            margin-top: 28px;
-        }
-
-        @media (max-width: 768px) {
-            .filter-item {
-                min-width: 120px;
-            }
-        }
+        /* Fix spacing khi dùng component header/footer chung */
+        #site-header, #site-mobile-menu { margin:0; padding:0; }
+        #site-mobile-menu:empty { display:none; }
+        .project-page-hero { margin-top:0; }
+        .project-page-main { padding-top:34px; }
+        @media (max-width:768px) { .project-page-main { padding-top:24px; } }
     </style>
 </head>
 <body>
+
     <div id="site-header"></div>
     <div id="site-mobile-menu"></div>
 
-    <div class="relative">
+    <div class="relative project-page-hero">
         <div class="swiper mySwiper w-full h-[300px] md:h-[450px]">
             <div class="swiper-wrapper" id="hero-slider-wrapper">
-                <div class="swiper-slide relative">
-                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200" alt="Dự án nổi bật" class="w-full h-full object-cover" />
-                    <div class="absolute inset-0 bg-black/30 flex items-center">
-                        <div class="container-custom w-full text-white">
-                            <span class="bg-green-600 px-2 py-1 rounded text-[10px] font-bold uppercase">Dự án nổi bật</span>
-                            <h2 class="text-3xl md:text-5xl font-bold mt-4">Khám phá các dự án đang được quan tâm</h2>
-                            <p class="mt-2 opacity-90">Tổng hợp dự án có dữ liệu mua bán và cho thuê thực tế từ hệ thống</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- Slide được render bằng JS -->
             </div>
             <div class="swiper-pagination !bottom-16"></div>
         </div>
@@ -168,7 +132,6 @@
                     <button id="resetFilterBtn" class="bg-gray-100 p-2.5 rounded-md hover:bg-gray-200 transition">
                         <i class="fa-solid fa-rotate-right text-gray-600"></i>
                     </button>
-
                     <button id="applyFilterBtn" class="bg-[--vip-color] text-white px-8 py-2 rounded-md font-bold hover:opacity-90 transition w-full lg:w-auto">
                         TÌM KIẾM
                     </button>
@@ -177,7 +140,7 @@
         </div>
     </div>
 
-    <main class="container-custom py-10">
+    <main class="container-custom py-10 project-page-main">
         <div id="data-note" class="empty-box mb-6 hidden"></div>
 
         <div class="flex flex-col lg:flex-row gap-8">
@@ -197,361 +160,49 @@
                     <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">Dự án theo tỉnh thành</h4>
                     <ul id="project-city-list" class="space-y-3 text-[13px]"></ul>
                 </div>
-
-                <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">Gợi ý hệ thống</h4>
-                    <div class="space-y-4 text-[13px] text-gray-600">
-                        <p class="leading-6">Các dự án ở đây được gom nhóm từ tin bán và tin thuê đã được duyệt trên hệ thống.</p>
-                        <p class="leading-6">Mỗi dự án có thể hiển thị số lượng tin, khu vực, loại hình, quy mô và giá trung bình từ dữ liệu thực tế.</p>
-                        <p class="leading-6">Dự án càng có nhiều tin đúng chuẩn thì SEO cụm dự án càng mạnh hơn.</p>
-                    </div>
-                </div>
             </aside>
-        </div>
-
-        <div class="seo-section-shell">
-            <div id="seoContent"></div>
         </div>
     </main>
 
     <div id="site-footer"></div>
 
-    <button id="goToTop" onclick="safeScrollToTop()">
-        <i class="fa-solid fa-chevron-up"></i>
-    </button>
-
-    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
-        <i class="fa-solid fa-comment-dots"></i>
-    </div>
-
-    <div id="chatForm">
-        <div class="chat-header">
-            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
-        </div>
-        <div class="chat-body">
-            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
-            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
-            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="../assets/js/user-storage.js"></script>
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
-    <script src="../assets/js/component-loader.js"></script>
-    <script src="../assets/js/seo-content.js"></script>
+    <script src="../assets/js/main.js"></script>
 
     <script>
-        const keywordFilter = document.getElementById("keywordFilter");
-        const cityFilter = document.getElementById("cityFilter");
-        const typeFilter = document.getElementById("typeFilter");
-        const sortFilter = document.getElementById("sortFilter");
-        const applyFilterBtn = document.getElementById("applyFilterBtn");
-        const resetFilterBtn = document.getElementById("resetFilterBtn");
+        const keywordFilter = document.getElementById('keywordFilter');
+        const cityFilter = document.getElementById('cityFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const resetFilterBtn = document.getElementById('resetFilterBtn');
 
-        const dataNote = document.getElementById("data-note");
-        const projectGrid = document.getElementById("project-grid");
-        const projectCount = document.getElementById("project-count");
-        const projectCityList = document.getElementById("project-city-list");
-        const heroSliderWrapper = document.getElementById("hero-slider-wrapper");
-
-        const fallbackProjects = [
-            {
-                id: "project_to-am-viet-riverside",
-                name: "Tổ Ấm Việt Riverside",
-                slug: "to-am-viet-riverside",
-                city: "Hà Nội",
-                ward: "Phường Cầu Giấy",
-                type: "Căn hộ",
-                developer: "Tổ Ấm Việt Development",
-                siteArea: "3.2 ha",
-                postCount: 12,
-                saleCount: 8,
-                rentalCount: 4,
-                averageSalePricePerSquareMeter: 72000000,
-                createdAt: "2026-01-01T08:00:00.000Z",
-                updatedAt: "2026-01-08T08:00:00.000Z",
-                lastPostAt: "2026-01-08T08:00:00.000Z",
-                isDemo: true
-            },
-            {
-                id: "project_hong-hac-city",
-                name: "Hồng Hạc City",
-                slug: "hong-hac-city",
-                city: "Bắc Ninh",
-                ward: "Thuận Thành",
-                type: "Khu đô thị",
-                developer: "Hồng Hạc Land",
-                siteArea: "12.5 ha",
-                postCount: 9,
-                saleCount: 7,
-                rentalCount: 2,
-                averageSalePricePerSquareMeter: 48000000,
-                createdAt: "2026-01-02T08:00:00.000Z",
-                updatedAt: "2026-01-08T08:00:00.000Z",
-                lastPostAt: "2026-01-08T08:00:00.000Z",
-                isDemo: true
-            },
-            {
-                id: "project_saigon-river-view",
-                name: "Saigon River View",
-                slug: "saigon-river-view",
-                city: "TP.HCM",
-                ward: "Phường Thủ Thiêm",
-                type: "Căn hộ",
-                developer: "Saigon Urban Holdings",
-                siteArea: "5.8 ha",
-                postCount: 15,
-                saleCount: 10,
-                rentalCount: 5,
-                averageSalePricePerSquareMeter: 95000000,
-                createdAt: "2026-01-03T08:00:00.000Z",
-                updatedAt: "2026-01-08T08:00:00.000Z",
-                lastPostAt: "2026-01-08T08:00:00.000Z",
-                isDemo: true
-            }
-        ];
+        const dataNote = document.getElementById('data-note');
+        const projectGrid = document.getElementById('project-grid');
+        const projectCount = document.getElementById('project-count');
+        const projectCityList = document.getElementById('project-city-list');
+        const heroSliderWrapper = document.getElementById('hero-slider-wrapper');
 
         let currentProjects = [];
         let heroSwiper = null;
 
-        function safeScrollToTop() {
-            if (typeof window.scrollToTop === "function") {
-                window.scrollToTop();
-            } else {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-        }
-
-        function safeToggleForm() {
-            if (typeof window.toggleForm === "function") {
-                window.toggleForm();
-            } else {
-                const chatForm = document.getElementById("chatForm");
-                if (!chatForm) return;
-                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
-            }
-        }
-
-        function initSwiper() {
-            if (heroSwiper) {
-                heroSwiper.destroy(true, true);
-                heroSwiper = null;
-            }
-
-            if (document.querySelector(".mySwiper")) {
-                heroSwiper = new Swiper(".mySwiper", {
-                    loop: true,
-                    autoplay: { delay: 5000 },
-                    pagination: { el: ".swiper-pagination", clickable: true }
-                });
-            }
-        }
-
-        function sendToZalo() {
-            const name = document.getElementById("cusName").value.trim();
-            const msg = document.getElementById("cusMsg").value.trim();
-            const phone = "0946239289";
-
-            if (!name) {
-                alert("Vui lòng cho biết tên của bạn");
-                return;
-            }
-
-            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
-            const encodedMsg = encodeURIComponent(fullMsg);
-            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
-        }
-
-        function formatPricePerSquareMeter(value) {
-            if (!Number.isFinite(value) || value <= 0) return "Chưa có dữ liệu";
-            if (value >= 1000000000) return (value / 1000000000).toFixed(2) + " tỷ/m²";
-            if (value >= 1000000) return Math.round(value / 1000000) + " triệu/m²";
-            return Math.round(value).toLocaleString("vi-VN") + " đ/m²";
-        }
-
-        function getProjectSiteArea(project) {
-            return project.siteArea || project.projectArea || project.area || "Đang cập nhật";
-        }
-
-        function getApprovedProjects() {
-            if (window.projectService && typeof window.projectService.getPublicProjects === "function") {
-                const allPosts = window.postStorage && typeof window.postStorage.getAllPosts === "function"
-                    ? window.postStorage.getAllPosts()
-                    : [];
-
-                if (typeof window.projectService.syncProjectCounts === "function") {
-                    window.projectService.syncProjectCounts(allPosts, true);
-                }
-
-                return window.projectService.getPublicProjects().map(project => ({
-                    ...project,
-                    isDemo: false
-                }));
-            }
-
-            return [];
-        }
-
-        function getProjectsData() {
-            const projects = getApprovedProjects();
-
-            if (projects.length) {
-                dataNote.classList.add("hidden");
-                dataNote.innerHTML = "";
-                return projects;
-            }
-
-            dataNote.classList.remove("hidden");
-            dataNote.innerHTML = `
-                Hiện tại chưa có dự án thật nào có tin đã duyệt để hiển thị ngoài public.
-                Tôi đang hiển thị dữ liệu mẫu để bạn dễ kiểm tra giao diện.
-                Sau khi tin đăng thuộc dự án được admin duyệt, các dự án sẽ tự động xuất hiện ở đây.
-            `;
-            return fallbackProjects;
-        }
-
-        function fillFilters(projects) {
-            const currentCity = cityFilter.value;
-            const currentType = typeFilter.value;
-
-            const uniqueCities = [...new Set(projects.map(item => item.city).filter(Boolean))];
-            const uniqueTypes = [...new Set(projects.map(item => item.type).filter(Boolean))];
-
-            cityFilter.innerHTML = '<option value="">Khu vực</option>' +
-                uniqueCities.map(city => `<option value="${city}">${city}</option>`).join("");
-
-            typeFilter.innerHTML = '<option value="">Loại hình</option>' +
-                uniqueTypes.map(type => `<option value="${type}">${type}</option>`).join("");
-
-            if (uniqueCities.includes(currentCity)) cityFilter.value = currentCity;
-            if (uniqueTypes.includes(currentType)) typeFilter.value = currentType;
-        }
-
-        function applyFilters(projects) {
-            let filtered = [...projects];
-
-            const keyword = keywordFilter.value.trim().toLowerCase();
-            const city = cityFilter.value;
-            const type = typeFilter.value;
-            const sortType = sortFilter.value;
-
-            if (keyword) {
-                filtered = filtered.filter(project =>
-                    (project.name || "").toLowerCase().includes(keyword) ||
-                    (project.city || "").toLowerCase().includes(keyword) ||
-                    (project.ward || "").toLowerCase().includes(keyword) ||
-                    (project.type || "").toLowerCase().includes(keyword) ||
-                    (project.developer || "").toLowerCase().includes(keyword)
-                );
-            }
-
-            if (city) {
-                filtered = filtered.filter(project => (project.city || "") === city);
-            }
-
-            if (type) {
-                filtered = filtered.filter(project => (project.type || "") === type);
-            }
-
-            if (sortType === "post-desc") {
-                filtered.sort((a, b) => (b.postCount || 0) - (a.postCount || 0));
-            } else if (sortType === "price-desc") {
-                filtered.sort((a, b) => (b.averageSalePricePerSquareMeter || 0) - (a.averageSalePricePerSquareMeter || 0));
-            } else if (sortType === "price-asc") {
-                filtered.sort((a, b) => (a.averageSalePricePerSquareMeter || 0) - (b.averageSalePricePerSquareMeter || 0));
-            } else {
-                filtered.sort((a, b) =>
-                    new Date(b.lastPostAt || b.updatedAt || b.createdAt || 0) -
-                    new Date(a.lastPostAt || a.updatedAt || a.createdAt || 0)
-                );
-            }
-
-            return filtered;
-        }
-
-        function renderProjectCityList(projects) {
-            const cityCounter = {};
-
-            projects.forEach(project => {
-                const city = project.city || "Khác";
-                cityCounter[city] = (cityCounter[city] || 0) + 1;
-            });
-
-            const sorted = Object.entries(cityCounter)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 8);
-
-            if (!sorted.length) {
-                projectCityList.innerHTML = `<li class="flex justify-between items-center text-[13px]"><span>Chưa có dữ liệu</span><span class="text-gray-400">(0)</span></li>`;
-                return;
-            }
-
-            projectCityList.innerHTML = sorted.map(([city, count]) => `
-                <li class="flex justify-between items-center text-[13px] hover:text-[--hover-color] cursor-pointer">
-                    <span>${city}</span>
-                    <span class="text-gray-400">(${count})</span>
-                </li>
-            `).join("");
-        }
-
-        function renderHeroProjects(projects) {
-            const featured = projects.slice(0, 3);
-
-            if (!featured.length) {
-                heroSliderWrapper.innerHTML = `
-                    <div class="swiper-slide relative">
-                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200" alt="Dự án nổi bật" class="w-full h-full object-cover" />
-                        <div class="absolute inset-0 bg-black/30 flex items-center">
-                            <div class="container-custom w-full text-white">
-                                <span class="bg-green-600 px-2 py-1 rounded text-[10px] font-bold uppercase">Dự án nổi bật</span>
-                                <h2 class="text-3xl md:text-5xl font-bold mt-4">Khám phá các dự án đang được quan tâm</h2>
-                                <p class="mt-2 opacity-90">Tổng hợp dự án có dữ liệu mua bán và cho thuê thực tế từ hệ thống</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            heroSliderWrapper.innerHTML = featured.map((project, index) => `
-                <div class="swiper-slide relative">
-                    <img src="${
-                        index === 0
-                            ? "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200"
-                            : index === 1
-                                ? "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=1200"
-                                : "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1200"
-                    }" alt="${project.name}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/30 flex items-center">
-                        <div class="container-custom w-full text-white">
-                            <span class="bg-green-600 px-2 py-1 rounded text-[10px] font-bold uppercase">
-                                ${project.isDemo ? "Dữ liệu mẫu" : "Dự án nổi bật"}
-                            </span>
-                            <a href="../pages/chi-tiet-du-an.html?slug=${project.slug}" class="block">
-                                <h2 class="text-3xl md:text-5xl font-bold mt-4 hover:text-[--hover-color] transition">${project.name}</h2>
-                            </a>
-                            <p class="mt-2 opacity-90">${[project.ward, project.city].filter(Boolean).join(", ") || "Đang cập nhật khu vực"}</p>
-                        </div>
-                    </div>
-                </div>
-            `).join("");
-        }
-
         function renderProjectCard(project) {
-            const avgPrice = formatPricePerSquareMeter(project.averageSalePricePerSquareMeter || 0);
-            const siteArea = getProjectSiteArea(project);
-            const location = [project.ward, project.city].filter(Boolean).join(", ") || "Đang cập nhật khu vực";
-            const developer = project.developer || "Đang cập nhật chủ đầu tư";
-            const type = project.type || "Đang cập nhật loại hình";
-
+            const avgPrice = project.averageSalePricePerSquareMeter ? 
+                new Intl.NumberFormat('vi-VN').format(project.averageSalePricePerSquareMeter/1000000) + ' triệu/m²' :
+                'Đang cập nhật';
+            const location = [project.ward, project.city].filter(Boolean).join(', ') || 'Đang cập nhật khu vực';
+            const developer = project.developer || 'Đang cập nhật chủ đầu tư';
+            const type = project.type || 'Đang cập nhật loại hình';
             const badge = project.isDemo
                 ? '<span class="metric-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>'
                 : ((project.postCount || 0) >= 10
                     ? '<span class="metric-chip hot"><i class="fa-solid fa-fire"></i> HOT</span>'
                     : '<span class="metric-chip primary"><i class="fa-solid fa-chart-column"></i> Đang có dữ liệu</span>');
+
+            const totalAreaText = project.totalArea ? '· Diện tích: ' + project.totalArea : '· Diện tích: Đang cập nhật';
 
             return `
                 <div class="project-card">
@@ -568,11 +219,9 @@
                             <h3 class="project-title font-bold text-[14px] uppercase hover:text-[--vip-color] cursor-pointer">${project.name}</h3>
                         </a>
 
-                        <div class="flex flex-wrap items-center gap-2 mt-2 text-[18px] font-bold text-[#E03C31]">
-                            <span>${avgPrice}</span>
-                            <span class="text-[#E03C31]">·</span>
-                            <span>${siteArea}</span>
-                        </div>
+                        <p class="text-red-600 font-bold text-lg mt-2">
+                            ${avgPrice} <span class="text-gray-400 font-normal text-sm">${totalAreaText}</span>
+                        </p>
 
                         <div class="flex items-center gap-2 mt-2 text-gray-500 text-[12px]">
                             <i class="fa-solid fa-location-dot"></i>
@@ -583,90 +232,69 @@
                             <div><strong class="text-slate-700">Loại hình:</strong> ${type}</div>
                             <div><strong class="text-slate-700">Chủ đầu tư:</strong> ${developer}</div>
                         </div>
-
-                        <div class="grid grid-cols-3 gap-2 mt-4 text-center text-[11px]">
-                            <div class="bg-slate-50 rounded-lg p-2">
-                                <div class="font-bold text-slate-800">${project.postCount || 0}</div>
-                                <div class="text-slate-500">Tổng tin</div>
-                            </div>
-                            <div class="bg-slate-50 rounded-lg p-2">
-                                <div class="font-bold text-slate-800">${project.saleCount || 0}</div>
-                                <div class="text-slate-500">Tin bán</div>
-                            </div>
-                            <div class="bg-slate-50 rounded-lg p-2">
-                                <div class="font-bold text-slate-800">${project.rentalCount || 0}</div>
-                                <div class="text-slate-500">Tin thuê</div>
-                            </div>
-                        </div>
-
-                        <div class="mt-auto pt-4 border-t flex items-center justify-between">
-                            <a href="../pages/danh-ba-doanh-nghiep.html" class="flex items-center gap-2 group">
-                                <div class="w-10 h-10 rounded-full bg-[--vip-color] overflow-hidden border border-gray-100 text-white flex items-center justify-center text-xs font-bold">
-                                    ${(developer || "TV").split(" ").filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("") || "TV"}
-                                </div>
-                                <div>
-                                    <p class="text-[12px] font-bold group-hover:text-[--hover-color]">${developer}</p>
-                                    <p class="text-[10px] text-gray-400">${project.isDemo ? "Dữ liệu mẫu" : "Dữ liệu thực từ hệ thống"}</p>
-                                </div>
-                            </a>
-                            <button class="text-gray-400 hover:text-red-500 transition">
-                                <i class="fa-regular fa-heart text-lg"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
             `;
         }
 
+        function getProjectsData() {
+            // Lấy dự án từ service, nếu không có thì dùng fallback
+            if (window.projectService && typeof window.projectService.getPublicProjects === 'function') {
+                const allPosts = window.postStorage ? window.postStorage.getAllPosts() : [];
+                projectService.syncProjectCounts(allPosts, true);
+                return projectService.getPublicProjects().map(p => ({ ...p, isDemo:false }));
+            }
+            // fallback demo
+            return [
+                { name: 'Tổ Ấm Việt Riverside', slug:'to-am-viet-riverside', city:'Hà Nội', ward:'Phường Cầu Giấy', type:'Căn hộ', developer:'Tổ Ấm Việt Development', postCount:12, saleCount:8, rentalCount:4, averageSalePricePerSquareMeter:72000000, totalArea:'3.2 ha', isDemo:true },
+                { name: 'Hồng Hạc City', slug:'hong-hac-city', city:'Bắc Ninh', ward:'Thuận Thành', type:'Khu đô thị', developer:'Hồng Hạc Land', postCount:9, saleCount:7, rentalCount:2, averageSalePricePerSquareMeter:48000000, totalArea:'1.5 ha', isDemo:true }
+            ];
+        }
+
         function renderProjects() {
             currentProjects = getProjectsData();
-            fillFilters(currentProjects);
 
-            const filteredProjects = applyFilters(currentProjects);
+            // Filter theo bộ lọc
+            let filtered = [...currentProjects];
+            const keyword = keywordFilter.value.toLowerCase();
+            const city = cityFilter.value;
+            const type = typeFilter.value;
 
-            renderHeroProjects(currentProjects);
-            initSwiper();
-            renderProjectCityList(currentProjects);
+            if (keyword) filtered = filtered.filter(p => (p.name||'').toLowerCase().includes(keyword));
+            if (city) filtered = filtered.filter(p => p.city===city);
+            if (type) filtered = filtered.filter(p => p.type===type);
 
-            projectCount.textContent = currentProjects.length;
+            projectCount.textContent = filtered.length;
 
-            if (!filteredProjects.length) {
-                projectGrid.innerHTML = `
-                    <div class="md:col-span-2 empty-box">
-                        Không tìm thấy dự án nào phù hợp với bộ lọc hiện tại. Bạn thử đổi từ khóa, khu vực hoặc loại hình.
-                    </div>
-                `;
-            } else {
-                projectGrid.innerHTML = filteredProjects.map(renderProjectCard).join("");
+            if (!filtered.length) {
+                projectGrid.innerHTML = `<div class="md:col-span-2 empty-box">Không tìm thấy dự án phù hợp.</div>`;
+                return;
             }
 
-            if (typeof renderSeoContent === "function") {
-                renderSeoContent("seoContent", "project");
-            }
+            projectGrid.innerHTML = filtered.map(renderProjectCard).join('');
         }
 
-        function resetFilters() {
-            keywordFilter.value = "";
-            cityFilter.value = "";
-            typeFilter.value = "";
-            sortFilter.value = "newest";
+        function fillFilters() {
+            const projects = currentProjects;
+            const cities = [...new Set(projects.map(p=>p.city).filter(Boolean))];
+            const types = [...new Set(projects.map(p=>p.type).filter(Boolean))];
+            cityFilter.innerHTML = '<option value="">Khu vực</option>' + cities.map(c=>`<option value="${c}">${c}</option>`).join('');
+            typeFilter.innerHTML = '<option value="">Loại hình</option>' + types.map(t=>`<option value="${t}">${t}</option>`).join('');
+        }
+
+        applyFilterBtn.addEventListener('click', renderProjects);
+        resetFilterBtn.addEventListener('click', ()=>{
+            keywordFilter.value=''; cityFilter.value=''; typeFilter.value='';
             renderProjects();
-        }
-
-        applyFilterBtn.addEventListener("click", renderProjects);
-        resetFilterBtn.addEventListener("click", resetFilters);
-
-        keywordFilter.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") renderProjects();
         });
+        keywordFilter.addEventListener('keydown', e=>{if(e.key==='Enter') renderProjects();});
+        cityFilter.addEventListener('change', renderProjects);
+        typeFilter.addEventListener('change', renderProjects);
 
-        cityFilter.addEventListener("change", renderProjects);
-        typeFilter.addEventListener("change", renderProjects);
-        sortFilter.addEventListener("change", renderProjects);
-
+        // Khởi tạo
+        currentProjects = getProjectsData();
+        fillFilters();
         renderProjects();
     </script>
-
-    <script src="../assets/js/main.js"></script>
 </body>
 </html>
