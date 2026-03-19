@@ -20,6 +20,16 @@
             --hover-color: #ff8c00;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f2f2f2;
@@ -43,22 +53,25 @@
             display: none !important;
         }
 
-        .project-page-hero {
-            margin-top: 0;
+        .project-page-shell {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
         }
 
-        .project-page-main {
-            padding-top: 34px;
+        .project-page-hero {
+            margin: 0 !important;
+            padding: 0 !important;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-swiper {
             width: 100%;
-            height: 300px;
+            height: 320px;
         }
 
         .hero-swiper .swiper-slide {
             position: relative;
-            overflow: hidden;
         }
 
         .hero-swiper .swiper-slide img {
@@ -68,23 +81,42 @@
             display: block;
         }
 
-        .project-filter-bar {
-            background: #fff;
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .project-filter-wrap {
+            background: #ffffff;
             border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
             position: relative;
-            z-index: 10;
+            z-index: 20;
+        }
+
+        .project-filter-inner {
+            padding: 14px 0;
         }
 
         .project-filter-input,
         .project-filter-select {
             border: 1px solid #d1d5db;
             padding: 10px 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
-            background: white;
+            background: #fff;
             outline: none;
-            min-height: 44px;
+            min-height: 48px;
+            width: 100%;
         }
 
         .project-filter-input:focus,
@@ -93,8 +125,12 @@
             box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.08);
         }
 
+        .project-main {
+            padding: 30px 0 0;
+        }
+
         .empty-box {
-            background: white;
+            background: #fff;
             border: 1px dashed #cbd5e1;
             border-radius: 14px;
             padding: 18px;
@@ -184,10 +220,7 @@
             font-size: 18px;
         }
 
-        .project-price-line .dot {
-            color: #e03c31;
-        }
-
+        .project-price-line .dot,
         .project-price-line .area-text {
             color: #e03c31;
         }
@@ -198,10 +231,9 @@
             padding: 10px 8px;
         }
 
-        .project-city-box,
-        .project-suggest-box {
+        .project-side-box {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid #e5e7eb;
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
@@ -213,17 +245,19 @@
 
         @media (min-width: 768px) {
             .hero-swiper {
-                height: 450px;
+                height: 470px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .project-main {
+                padding-top: 24px;
             }
         }
 
         @media (max-width: 768px) {
-            .project-page-main {
-                padding-top: 24px;
-            }
-
-            .filter-item {
-                min-width: 120px;
+            .hero-swiper {
+                height: 260px;
             }
 
             .project-card-image {
@@ -233,6 +267,14 @@
             .project-price-line {
                 font-size: 16px;
             }
+
+            .project-filter-inner {
+                padding: 12px 0;
+            }
+
+            .filter-item {
+                min-width: 120px;
+            }
         }
     </style>
 </head>
@@ -240,35 +282,37 @@
     <div id="site-header"></div>
     <div id="site-mobile-menu"></div>
 
-    <div class="relative project-page-hero">
-        <div class="swiper hero-swiper mySwiper">
-            <div class="swiper-wrapper" id="hero-slider-wrapper"></div>
-            <div class="swiper-pagination !bottom-16"></div>
-        </div>
+    <div class="project-page-shell">
+        <section class="project-page-hero">
+            <div class="swiper hero-swiper mySwiper">
+                <div class="swiper-wrapper" id="hero-slider-wrapper"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
 
-        <div class="project-filter-bar">
-            <div class="container-custom py-4">
+        <section class="project-filter-wrap">
+            <div class="container-custom project-filter-inner">
                 <div class="flex flex-wrap lg:flex-nowrap gap-3 items-center">
-                    <div class="flex-1 min-w-[200px] relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
+                    <div class="flex-1 min-w-[220px] relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-[16px] text-gray-400"></i>
                         <input
                             id="keywordFilter"
                             type="text"
                             placeholder="Tìm kiếm dự án..."
-                            class="project-filter-input w-full pl-10 pr-4 py-2"
+                            class="project-filter-input pl-12 pr-4"
                         />
                     </div>
 
                     <div class="flex gap-2 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0">
-                        <select id="cityFilter" class="filter-item project-filter-select min-w-[120px]">
+                        <select id="cityFilter" class="filter-item project-filter-select min-w-[140px]">
                             <option value="">Khu vực</option>
                         </select>
 
-                        <select id="typeFilter" class="filter-item project-filter-select min-w-[120px]">
+                        <select id="typeFilter" class="filter-item project-filter-select min-w-[140px]">
                             <option value="">Loại hình</option>
                         </select>
 
-                        <select id="sortFilter" class="filter-item project-filter-select min-w-[120px]">
+                        <select id="sortFilter" class="filter-item project-filter-select min-w-[140px]">
                             <option value="newest">Mới cập nhật</option>
                             <option value="post-desc">Nhiều tin nhất</option>
                             <option value="price-desc">Giá cao</option>
@@ -278,7 +322,7 @@
 
                     <button
                         id="resetFilterBtn"
-                        class="bg-gray-100 p-2.5 rounded-md hover:bg-gray-200 transition"
+                        class="bg-gray-100 p-3 rounded-md hover:bg-gray-200 transition"
                         type="button"
                     >
                         <i class="fa-solid fa-rotate-right text-gray-600"></i>
@@ -286,64 +330,64 @@
 
                     <button
                         id="applyFilterBtn"
-                        class="bg-[--vip-color] text-white px-8 py-2 rounded-md font-bold hover:opacity-90 transition w-full lg:w-auto"
+                        class="bg-[--vip-color] text-white px-8 py-3 rounded-md font-bold hover:opacity-90 transition w-full lg:w-auto"
                         type="button"
                     >
                         TÌM KIẾM
                     </button>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <main class="container-custom py-10 project-page-main">
-        <div id="data-note" class="empty-box mb-6 hidden"></div>
+        <main class="container-custom project-main">
+            <div id="data-note" class="empty-box mb-6 hidden"></div>
 
-        <div class="flex flex-col lg:flex-row gap-8">
-            <div class="flex-1">
-                <div class="mb-8">
-                    <h1 class="text-2xl font-bold uppercase border-l-4 border-[--vip-color] pl-3">
-                        Dự án bất động sản trên toàn quốc
-                    </h1>
-                    <p class="text-gray-500 text-sm mt-1 ml-4 italic">
-                        Hiện có <span id="project-count">0</span> dự án đang có dữ liệu mua bán & cho thuê
-                    </p>
-                </div>
-
-                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
-            </div>
-
-            <aside class="lg:w-[300px] flex flex-col gap-6">
-                <div class="project-city-box">
-                    <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">
-                        Dự án theo tỉnh thành
-                    </h4>
-                    <ul id="project-city-list" class="space-y-3 text-[13px]"></ul>
-                </div>
-
-                <div class="project-suggest-box">
-                    <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">
-                        Gợi ý hệ thống
-                    </h4>
-                    <div class="space-y-4 text-[13px] text-gray-600">
-                        <p class="leading-6">
-                            Các dự án ở đây được gom nhóm từ tin bán và tin thuê đã được duyệt trên hệ thống.
-                        </p>
-                        <p class="leading-6">
-                            Mỗi dự án có thể hiển thị số lượng tin, khu vực, loại hình, quy mô và giá trung bình từ dữ liệu thực tế.
-                        </p>
-                        <p class="leading-6">
-                            Dự án càng có nhiều tin đúng chuẩn thì SEO cụm dự án càng mạnh hơn.
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex-1">
+                    <div class="mb-8">
+                        <h1 class="text-2xl font-bold uppercase border-l-4 border-[--vip-color] pl-3">
+                            Dự án bất động sản trên toàn quốc
+                        </h1>
+                        <p class="text-gray-500 text-sm mt-1 ml-4 italic">
+                            Hiện có <span id="project-count">0</span> dự án đang có dữ liệu mua bán & cho thuê
                         </p>
                     </div>
-                </div>
-            </aside>
-        </div>
 
-        <div class="seo-section-shell">
-            <div id="seoContent"></div>
-        </div>
-    </main>
+                    <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+                </div>
+
+                <aside class="lg:w-[300px] flex flex-col gap-6">
+                    <div class="project-side-box">
+                        <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">
+                            Dự án theo tỉnh thành
+                        </h4>
+                        <ul id="project-city-list" class="space-y-3 text-[13px]"></ul>
+                    </div>
+
+                    <div class="project-side-box">
+                        <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">
+                            Gợi ý hệ thống
+                        </h4>
+                        <div class="space-y-4 text-[13px] text-gray-600">
+                            <p class="leading-6">
+                                Các dự án ở đây được gom nhóm từ tin bán và tin thuê đã được duyệt trên hệ thống.
+                            </p>
+                            <p class="leading-6">
+                                Mỗi dự án có thể hiển thị số lượng tin, khu vực, loại hình, quy mô và giá trung bình từ dữ liệu thực tế.
+                            </p>
+                            <p class="leading-6">
+                                Dự án càng có nhiều tin đúng chuẩn thì SEO cụm dự án càng mạnh hơn.
+                            </p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="seo-section-shell">
+                <div id="seoContent"></div>
+            </div>
+        </main>
+    </div>
 
     <div id="site-footer"></div>
 
@@ -615,9 +659,10 @@
 
             if (!featured.length) {
                 heroSliderWrapper.innerHTML = `
-                    <div class="swiper-slide relative">
-                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600" alt="Dự án nổi bật" />
-                        <div class="absolute inset-0 bg-black/35 flex items-center">
+                    <div class="swiper-slide">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600" alt="Dự án nổi bật">
+                        <div class="hero-overlay"></div>
+                        <div class="hero-content">
                             <div class="container-custom w-full text-white">
                                 <span class="bg-green-600 px-3 py-1 rounded text-[10px] font-bold uppercase">Dự án nổi bật</span>
                                 <h2 class="text-3xl md:text-5xl font-bold mt-4">Khám phá các dự án đang được quan tâm</h2>
@@ -630,7 +675,7 @@
             }
 
             heroSliderWrapper.innerHTML = featured.map((project, index) => `
-                <div class="swiper-slide relative">
+                <div class="swiper-slide">
                     <img
                         src="${
                             index === 0
@@ -640,8 +685,9 @@
                                     : "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1600"
                         }"
                         alt="${project.name}"
-                    />
-                    <div class="absolute inset-0 bg-black/35 flex items-center">
+                    >
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content">
                         <div class="container-custom w-full text-white">
                             <span class="bg-green-600 px-3 py-1 rounded text-[10px] font-bold uppercase">
                                 ${project.isDemo ? "Dữ liệu mẫu" : "Dự án nổi bật"}
