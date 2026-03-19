@@ -56,12 +56,6 @@
             padding-bottom: 28px;
         }
 
-        .main-title {
-            font-size: 21px;
-            font-weight: 900;
-            color: var(--text-strong);
-        }
-
         .section-title {
             font-size: 20px;
             font-weight: 800;
@@ -72,29 +66,29 @@
         .empty-box,
         .sidebar-card,
         .overview-card,
-        .toolbar-card {
+        .toolbar-card,
+        .page-intro-box {
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 16px;
         }
 
         .page-intro-box {
-            background: linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
-            border: 1px solid #e5e7eb;
-            border-radius: 18px;
             padding: 18px;
             box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
         }
 
-        /* ===== Slider ===== */
-        .banner-section {
-            margin-bottom: 24px;
+        /* ===== FULL BANNER ===== */
+        .banner-shell {
+            width: 100%;
+            padding: 0 18px;
+            margin: 0 0 24px;
         }
 
         .project-slider {
             position: relative;
             overflow: hidden;
-            border-radius: 26px;
+            border-radius: 30px;
             min-height: 560px;
             background: #d9e4e8;
             border: 1px solid rgba(0, 139, 139, 0.08);
@@ -142,18 +136,18 @@
             position: absolute;
             inset: 0;
             background:
-                linear-gradient(90deg, rgba(12, 22, 32, 0.72) 0%, rgba(12, 22, 32, 0.42) 34%, rgba(12, 22, 32, 0.18) 60%, rgba(12, 22, 32, 0.08) 100%),
-                linear-gradient(0deg, rgba(12, 22, 32, 0.20) 0%, rgba(12, 22, 32, 0.04) 100%);
+                linear-gradient(90deg, rgba(12, 22, 32, 0.72) 0%, rgba(12, 22, 32, 0.45) 34%, rgba(12, 22, 32, 0.18) 60%, rgba(12, 22, 32, 0.08) 100%),
+                linear-gradient(0deg, rgba(12, 22, 32, 0.18) 0%, rgba(12, 22, 32, 0.04) 100%);
         }
 
         .project-slide-content {
             position: absolute;
-            left: 42px;
-            right: 42px;
-            bottom: 36px;
+            left: 54px;
+            right: 54px;
+            bottom: 38px;
             z-index: 3;
-            max-width: 700px;
-            color: white;
+            max-width: 720px;
+            color: #fff;
         }
 
         .slide-status {
@@ -215,8 +209,8 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: 5;
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             border: none;
             border-radius: 14px;
             background: rgba(255, 255, 255, 0.92);
@@ -234,17 +228,17 @@
         }
 
         .project-slider-arrow.prev {
-            left: 18px;
+            left: 22px;
         }
 
         .project-slider-arrow.next {
-            right: 18px;
+            right: 22px;
         }
 
         .project-slider-dots {
             position: absolute;
-            right: 26px;
-            bottom: 22px;
+            right: 28px;
+            bottom: 24px;
             z-index: 5;
             display: flex;
             align-items: center;
@@ -255,8 +249,8 @@
         }
 
         .project-slider-dot {
-            width: 11px;
-            height: 11px;
+            width: 12px;
+            height: 12px;
             border-radius: 999px;
             border: none;
             padding: 0;
@@ -270,7 +264,7 @@
             transform: scale(1.08);
         }
 
-        /* ===== Overview ===== */
+        /* ===== OVERVIEW ===== */
         .overview-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -303,7 +297,7 @@
             color: #64748b;
         }
 
-        /* ===== Filter ===== */
+        /* ===== FILTER ===== */
         .toolbar-card {
             padding: 18px;
             margin-bottom: 24px;
@@ -403,7 +397,68 @@
             color: var(--hover-color);
         }
 
-        /* ===== Card ===== */
+        /* ===== SIDEBAR NEWS ===== */
+        .sidebar-news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .sidebar-news-item {
+            display: grid;
+            grid-template-columns: 110px minmax(0, 1fr);
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+            padding-bottom: 18px;
+            border-bottom: 1px dashed #dbe4ee;
+        }
+
+        .sidebar-news-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .sidebar-news-thumb {
+            width: 110px;
+            height: 92px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #e5e7eb;
+            flex-shrink: 0;
+        }
+
+        .sidebar-news-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .sidebar-news-title {
+            font-size: 15px;
+            font-weight: 800;
+            line-height: 1.6;
+            color: #0f172a;
+            margin: 0 0 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-news-item:hover .sidebar-news-title {
+            color: var(--vip-color);
+        }
+
+        .sidebar-news-meta {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* ===== PROJECT CARD ===== */
         .project-card {
             background: white;
             border-radius: 24px;
@@ -489,39 +544,42 @@
             flex: 1;
         }
 
-        .project-investor {
+        .project-user-link {
             display: flex;
             align-items: center;
             gap: 10px;
             min-height: 40px;
+            text-decoration: none;
         }
 
-        .project-investor-avatar {
-            width: 36px;
-            height: 36px;
+        .project-user-avatar {
+            width: 40px;
+            height: 40px;
             border-radius: 999px;
             background: var(--vip-color);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 900;
             flex-shrink: 0;
+            box-shadow: 0 10px 20px rgba(0, 139, 139, 0.18);
         }
 
-        .project-investor-name {
-            font-size: 13px;
+        .project-user-name {
+            font-size: 14px;
             font-weight: 800;
             color: #334155;
             line-height: 1.35;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            transition: color 0.2s ease;
         }
 
-        .project-investor-role {
-            font-size: 11px;
+        .project-user-role {
+            font-size: 12px;
             color: #94a3b8;
             line-height: 1.35;
             margin-top: 2px;
@@ -530,8 +588,12 @@
             text-overflow: ellipsis;
         }
 
+        .project-user-link:hover .project-user-name {
+            color: var(--vip-color);
+        }
+
         .project-card-title {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 800;
             line-height: 1.45;
             color: var(--text-strong);
@@ -541,6 +603,25 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+
+        .project-card-title-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .project-card-title-link:hover .project-card-title {
+            color: var(--vip-color);
+        }
+
+        .project-card-address {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.75;
+            margin: 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
         }
 
         .project-card-desc {
@@ -553,43 +634,6 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
-        }
-
-        .project-meta-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            background: #f8fafc;
-            border: 1px solid #eef2f7;
-            border-radius: 16px;
-            padding: 14px;
-        }
-
-        .project-meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            min-width: 0;
-        }
-
-        .project-meta-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-        }
-
-        .project-meta-value {
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--text-strong);
-            line-height: 1.45;
-            word-break: break-word;
-        }
-
-        .project-meta-value.highlight {
-            color: var(--vip-color);
         }
 
         .project-mini-pills {
@@ -635,7 +679,7 @@
 
         .project-btn-main {
             flex: 1;
-            min-height: 42px;
+            min-height: 44px;
             padding: 10px 14px;
             border-radius: 12px;
             background: var(--vip-color);
@@ -652,7 +696,7 @@
         }
 
         .project-btn-secondary {
-            min-height: 42px;
+            min-height: 44px;
             padding: 10px 14px;
             border-radius: 12px;
             background: #fff;
@@ -667,6 +711,47 @@
             color: var(--vip-color);
             border-color: rgba(0, 139, 139, 0.35);
             background: #f8ffff;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+        }
+
+        .page-btn {
+            min-width: 42px;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 12px;
+            border: 1px solid #dbe4ee;
+            background: #fff;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 800;
+            transition: all 0.25s ease;
+        }
+
+        .page-btn:hover {
+            color: var(--vip-color);
+            border-color: rgba(0, 139, 139, 0.35);
+            background: #f8ffff;
+        }
+
+        .page-btn.active {
+            background: var(--vip-color);
+            color: #fff;
+            border-color: var(--vip-color);
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.18);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
         }
 
         .seo-block-shell {
@@ -705,7 +790,7 @@
 
             .project-slider,
             .project-slider-track {
-                min-height: 430px;
+                min-height: 420px;
             }
 
             .project-slide-content {
@@ -721,14 +806,15 @@
                 padding-bottom: 18px;
             }
 
-            .container-custom {
+            .container-custom,
+            .banner-shell {
                 padding: 0 12px;
             }
 
             .project-slider,
             .project-slider-track {
-                min-height: 330px;
-                border-radius: 18px;
+                min-height: 300px;
+                border-radius: 20px;
             }
 
             .project-slide-content {
@@ -825,20 +911,6 @@
                 min-height: auto;
             }
 
-            .project-meta-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 10px;
-                padding: 12px;
-            }
-
-            .project-meta-label {
-                font-size: 9px;
-            }
-
-            .project-meta-value {
-                font-size: 13px;
-            }
-
             .project-card-footer {
                 flex-direction: column;
                 align-items: stretch;
@@ -863,6 +935,13 @@
             .project-status-badge {
                 right: 14px;
             }
+
+            .page-btn {
+                min-width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -870,28 +949,28 @@
     <div id="site-header"></div>
     <div id="site-mobile-menu"></div>
 
+    <!-- Banner full -->
+    <section class="banner-shell">
+        <div class="project-slider" id="projectSlider">
+            <div class="project-slider-track" id="projectSliderTrack"></div>
+
+            <button class="project-slider-arrow prev" id="sliderPrevBtn" type="button" aria-label="Slide trước">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="project-slider-arrow next" id="sliderNextBtn" type="button" aria-label="Slide tiếp theo">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            <div class="project-slider-dots" id="projectSliderDots"></div>
+        </div>
+    </section>
+
     <main class="container-custom page-shell">
-        <!-- Banner slider full -->
-        <section class="banner-section">
-            <div class="project-slider" id="projectSlider">
-                <div class="project-slider-track" id="projectSliderTrack"></div>
-
-                <button class="project-slider-arrow prev" id="sliderPrevBtn" type="button" aria-label="Slide trước">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <button class="project-slider-arrow next" id="sliderNextBtn" type="button" aria-label="Slide tiếp theo">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
-
-                <div class="project-slider-dots" id="projectSliderDots"></div>
-            </div>
-        </section>
-
         <section class="page-intro-box mb-6">
             <h1 class="section-title">Dự án bất động sản trên ToamViet</h1>
             <p class="text-gray-500 text-sm mt-2 leading-7 mb-0">
                 Trang này tổng hợp toàn bộ dự án đang có dữ liệu trên hệ thống. Người dùng có thể xem nhanh tên dự án,
-                chủ đầu tư, loại hình, quy mô, mức giá, số lượng tin bán và số lượng tin cho thuê trước khi đi vào chi tiết.
+                chủ đầu tư, trạng thái, địa chỉ và số lượng tin thuộc từng dự án trước khi đi vào chi tiết.
             </p>
         </section>
 
@@ -981,7 +1060,9 @@
                     </p>
                 </div>
 
-                <div id="listing-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+                <div id="listing-container" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+
+                <div id="paginationWrap" class="pagination-wrap"></div>
             </section>
 
             <aside class="hidden lg:block space-y-6">
@@ -993,12 +1074,8 @@
                 </div>
 
                 <div class="sidebar-card">
-                    <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Gợi ý hệ thống</h4>
-                    <ul class="text-sm space-y-3 text-gray-600">
-                        <li class="leading-6">Banner đầu trang đang lấy toàn bộ dự án để làm slider nổi bật thay vì chỉ giới hạn vài mẫu.</li>
-                        <li class="leading-6">Khi admin nhập đủ tên dự án, địa chỉ, trạng thái, ảnh và mức giá thì card và slider sẽ hiển thị rất đẹp và đồng đều hơn.</li>
-                        <li class="leading-6">Trang này là cửa tổng hợp. Khi người dùng bấm vào từng card thì sẽ chuyển sang <strong>chi-tiet-du-an.html</strong>.</li>
-                    </ul>
+                    <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Tin tức</h4>
+                    <div id="sidebar-news" class="sidebar-news-list"></div>
                 </div>
             </aside>
         </div>
@@ -1018,6 +1095,7 @@
 
     <script>
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+        const ITEMS_PER_PAGE = 6;
 
         const demoProjectImages = [
             "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=80",
@@ -1035,14 +1113,15 @@
                 name: "ToamViet Riverside",
                 type: "Khu đô thị",
                 status: "Đang mở bán",
-                investor: "Công ty CP Đầu tư ToamViet",
+                investor: "ToamViet Group",
                 area: "12.5 ha",
                 address: "Phường Trần Phú, Hà Giang",
                 price: "Từ 1.8 tỷ",
                 salePostsCount: 24,
                 rentalPostsCount: 8,
                 shortDescription: "Khu đô thị tích hợp nhà phố, shophouse và hạ tầng đồng bộ, phù hợp an cư lẫn đầu tư trung hạn.",
-                createdAt: "2026-03-18T10:00:00"
+                createdAt: "2026-03-18T10:00:00",
+                profileType: "doanhnghiep"
             },
             {
                 id: "du-an-2",
@@ -1056,7 +1135,8 @@
                 salePostsCount: 11,
                 rentalPostsCount: 3,
                 shortDescription: "Tổ hợp căn hộ hiện đại tối ưu nhu cầu ở thực, có tiện ích nội khu và khả năng khai thác cho thuê.",
-                createdAt: "2026-03-17T14:30:00"
+                createdAt: "2026-03-17T14:30:00",
+                profileType: "doanhnghiep"
             },
             {
                 id: "du-an-3",
@@ -1070,7 +1150,8 @@
                 salePostsCount: 19,
                 rentalPostsCount: 0,
                 shortDescription: "Khu đất nền quy hoạch bài bản, hạ tầng đang hoàn thiện, phù hợp đầu tư dài hạn theo khu vực phát triển mới.",
-                createdAt: "2026-03-16T08:20:00"
+                createdAt: "2026-03-16T08:20:00",
+                profileType: "doanhnghiep"
             },
             {
                 id: "du-an-4",
@@ -1084,7 +1165,8 @@
                 salePostsCount: 9,
                 rentalPostsCount: 2,
                 shortDescription: "Dự án nhà phố thương mại gần hồ trung tâm, có trục kinh doanh đẹp và mặt bằng quy hoạch dễ triển khai.",
-                createdAt: "2026-03-15T09:00:00"
+                createdAt: "2026-03-15T09:00:00",
+                profileType: "doanhnghiep"
             },
             {
                 id: "du-an-5",
@@ -1098,7 +1180,8 @@
                 salePostsCount: 26,
                 rentalPostsCount: 7,
                 shortDescription: "Dự án căn hộ mới trên trục giao thông lớn, thích hợp với khách hàng trẻ và nhà đầu tư cho thuê dài hạn.",
-                createdAt: "2026-03-19T09:15:00"
+                createdAt: "2026-03-19T09:15:00",
+                profileType: "doanhnghiep"
             },
             {
                 id: "du-an-6",
@@ -1112,7 +1195,44 @@
                 salePostsCount: 7,
                 rentalPostsCount: 5,
                 shortDescription: "Tổ hợp shophouse và khu thương mại ven sông, tập trung nhóm sản phẩm mặt tiền thuận lợi kinh doanh.",
-                createdAt: "2026-03-14T10:40:00"
+                createdAt: "2026-03-14T10:40:00",
+                profileType: "doanhnghiep"
+            },
+            {
+                id: "du-an-7",
+                name: "An Phát Smart City",
+                type: "Khu đô thị",
+                status: "Đang cập nhật",
+                investor: "ANP",
+                area: "9.3 ha",
+                address: "Phường Ba Đình, Hà Nội",
+                price: "Liên hệ",
+                salePostsCount: 8,
+                rentalPostsCount: 2,
+                shortDescription: "Dự án đô thị quy hoạch đồng bộ, định hướng nhóm khách hàng gia đình trẻ và nhà đầu tư trung dài hạn.",
+                createdAt: "2026-03-13T08:00:00",
+                profileType: "doanhnghiep"
+            }
+        ];
+
+        const fallbackNews = [
+            {
+                title: "Xu hướng thị trường nhà đất năm nay có gì đáng chú ý?",
+                category: "Cập nhật mới",
+                image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80",
+                url: "../pages/chi-tiet-tin-tuc.html"
+            },
+            {
+                title: "5 lưu ý quan trọng khi chọn doanh nghiệp hoặc nhà thầu",
+                category: "Kinh nghiệm hữu ích",
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+                url: "../pages/chi-tiet-tin-tuc.html"
+            },
+            {
+                title: "Cách kiểm tra pháp lý và năng lực đơn vị trước khi làm việc",
+                category: "Tư vấn người dùng",
+                image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=600&q=80",
+                url: "../pages/chi-tiet-tin-tuc.html"
             }
         ];
 
@@ -1120,6 +1240,8 @@
         const listingCount = document.getElementById("listing-count");
         const hotAreas = document.getElementById("hot-areas");
         const dataNote = document.getElementById("data-note");
+        const paginationWrap = document.getElementById("paginationWrap");
+        const sidebarNews = document.getElementById("sidebar-news");
 
         const totalProjectsEl = document.getElementById("totalProjects");
         const totalSalePostsEl = document.getElementById("totalSalePosts");
@@ -1140,8 +1262,10 @@
         const projectSlider = document.getElementById("projectSlider");
 
         let allProjects = [];
+        let filteredProjects = [];
         let currentSlideIndex = 0;
         let sliderTimer = null;
+        let currentPage = 1;
 
         function escapeHtml(value) {
             return String(value || "")
@@ -1246,7 +1370,7 @@
             const name = project.name || project.projectName || project.title || `Dự án ${index + 1}`;
             const type = project.type || project.projectType || project.category || "Đang cập nhật";
             const status = project.status || project.projectStatus || "Đang cập nhật";
-            const investor = project.investor || project.developer || project.owner || "Đang cập nhật";
+            const investor = project.investor || project.developer || project.owner || project.contactName || "Đang cập nhật";
             const area = project.area || project.scale || project.landArea || project.size || "Đang cập nhật";
             const priceInfo = normalizePrice(project.price ?? project.priceFrom ?? project.minPrice ?? "");
             const address = buildLocation(project);
@@ -1269,7 +1393,8 @@
                 rentalPostsCount: Number.isNaN(rentalPostsCount) ? 0 : rentalPostsCount,
                 shortDescription: desc,
                 image: getProjectImage(project, index),
-                sortTime: getSortTime(project, index)
+                sortTime: getSortTime(project, index),
+                profileType: project.profileType || "doanhnghiep"
             };
         }
 
@@ -1355,6 +1480,17 @@
             return `../pages/danh-muc-du-an.html?projectId=${encodeURIComponent(project.id)}`;
         }
 
+        function getProfileUrl(project) {
+            if (project.profileUrl) return project.profileUrl;
+
+            const type = normalizeText(project.profileType);
+            if (type === "canhan" || type === "moi-gioi") {
+                return `../pages/chi-tiet-moi-gioi.html?id=${encodeURIComponent(project.id)}`;
+            }
+
+            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(project.id)}`;
+        }
+
         function fillTypeFilter(projects) {
             const currentValue = typeFilter.value;
             const types = [...new Set(projects.map(item => item.type).filter(Boolean))]
@@ -1420,8 +1556,28 @@
 
         function filterByHotArea(area) {
             keywordFilter.value = area;
+            currentPage = 1;
             renderListings();
             window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function renderSidebarNews() {
+            sidebarNews.innerHTML = fallbackNews.map(item => `
+                <a href="${escapeHtml(item.url)}" class="sidebar-news-item">
+                    <div class="sidebar-news-thumb">
+                        <img
+                            src="${escapeHtml(item.image)}"
+                            alt="${escapeHtml(item.title)}"
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'"
+                        />
+                    </div>
+                    <div class="min-w-0">
+                        <h5 class="sidebar-news-title">${escapeHtml(item.title)}</h5>
+                        <div class="sidebar-news-meta">${escapeHtml(item.category)}</div>
+                    </div>
+                </a>
+            `).join("");
         }
 
         function applyFilters(projects) {
@@ -1430,10 +1586,10 @@
             const selectedStatus = normalizeText(statusFilter.value);
             const sortType = sortFilter.value;
 
-            let filtered = [...projects];
+            let result = [...projects];
 
             if (keyword) {
-                filtered = filtered.filter(project => {
+                result = result.filter(project => {
                     const rawText = [
                         project.name,
                         project.investor,
@@ -1447,47 +1603,45 @@
             }
 
             if (selectedType) {
-                filtered = filtered.filter(project => normalizeText(project.type) === selectedType);
+                result = result.filter(project => normalizeText(project.type) === selectedType);
             }
 
             if (selectedStatus) {
-                filtered = filtered.filter(project => normalizeText(project.status) === selectedStatus);
+                result = result.filter(project => normalizeText(project.status) === selectedStatus);
             }
 
             if (sortType === "name-asc") {
-                filtered.sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "vi"));
+                result.sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "vi"));
             } else if (sortType === "name-desc") {
-                filtered.sort((a, b) => String(b.name || "").localeCompare(String(a.name || ""), "vi"));
+                result.sort((a, b) => String(b.name || "").localeCompare(String(a.name || ""), "vi"));
             } else if (sortType === "price-asc") {
-                filtered.sort((a, b) => (a.priceValue || 0) - (b.priceValue || 0));
+                result.sort((a, b) => (a.priceValue || 0) - (b.priceValue || 0));
             } else if (sortType === "price-desc") {
-                filtered.sort((a, b) => (b.priceValue || 0) - (a.priceValue || 0));
+                result.sort((a, b) => (b.priceValue || 0) - (a.priceValue || 0));
             } else if (sortType === "sale-desc") {
-                filtered.sort((a, b) => (b.salePostsCount || 0) - (a.salePostsCount || 0));
+                result.sort((a, b) => (b.salePostsCount || 0) - (a.salePostsCount || 0));
             } else if (sortType === "rent-desc") {
-                filtered.sort((a, b) => (b.rentalPostsCount || 0) - (a.rentalPostsCount || 0));
+                result.sort((a, b) => (b.rentalPostsCount || 0) - (a.rentalPostsCount || 0));
             } else {
-                filtered.sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
+                result.sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
             }
 
-            return filtered;
+            return result;
         }
 
         function renderCard(project) {
             const title = escapeHtml(project.name);
             const investor = escapeHtml(project.investor);
-            const role = "Chủ đầu tư / Đơn vị phát triển";
             const type = escapeHtml(project.type);
             const status = escapeHtml(project.status);
             const address = escapeHtml(project.address);
-            const area = escapeHtml(project.area);
-            const price = escapeHtml(project.priceText);
             const saleCount = formatNumber(project.salePostsCount);
             const rentCount = formatNumber(project.rentalPostsCount);
             const desc = escapeHtml(project.shortDescription);
             const image = escapeHtml(project.image);
             const detailUrl = getProjectDetailUrl(project);
             const categoryUrl = getProjectCategoryUrl(project);
+            const profileUrl = getProfileUrl(project);
             const avatar = escapeHtml(getAvatarText(project.investor));
 
             return `
@@ -1511,38 +1665,24 @@
                     </div>
 
                     <div class="project-card-body">
-                        <div class="project-investor">
-                            <div class="project-investor-avatar">${avatar}</div>
+                        <a href="${profileUrl}" class="project-user-link">
+                            <div class="project-user-avatar">${avatar}</div>
                             <div class="min-w-0">
-                                <div class="project-investor-name truncate">${investor}</div>
-                                <div class="project-investor-role truncate">${role}</div>
+                                <div class="project-user-name truncate">${investor}</div>
+                                <div class="project-user-role truncate">Chủ đầu tư / Đơn vị phát triển</div>
                             </div>
-                        </div>
+                        </a>
 
-                        <a href="${detailUrl}" class="no-underline">
+                        <a href="${detailUrl}" class="project-card-title-link">
                             <h3 class="project-card-title">${title}</h3>
                         </a>
 
-                        <p class="project-card-desc">${desc}</p>
-
-                        <div class="project-meta-grid">
-                            <div class="project-meta-item">
-                                <span class="project-meta-label">Mức giá</span>
-                                <span class="project-meta-value highlight">${price}</span>
-                            </div>
-                            <div class="project-meta-item">
-                                <span class="project-meta-label">Quy mô / diện tích</span>
-                                <span class="project-meta-value">${escapeHtml(area)}</span>
-                            </div>
-                            <div class="project-meta-item">
-                                <span class="project-meta-label">Địa chỉ</span>
-                                <span class="project-meta-value">${address}</span>
-                            </div>
-                            <div class="project-meta-item">
-                                <span class="project-meta-label">Loại hình</span>
-                                <span class="project-meta-value">${type}</span>
-                            </div>
+                        <div class="project-card-address">
+                            <i class="fa-solid fa-location-dot mt-[3px] text-[--vip-color]"></i>
+                            <span>${address}</span>
                         </div>
+
+                        <p class="project-card-desc">${desc}</p>
 
                         <div class="project-mini-pills">
                             <span class="mini-pill"><i class="fa-solid fa-house"></i> Tin bán: <strong>${saleCount}</strong></span>
@@ -1562,6 +1702,53 @@
                     </div>
                 </article>
             `;
+        }
+
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+            if (totalPages <= 1) {
+                paginationWrap.innerHTML = "";
+                return;
+            }
+
+            let html = `
+                <button class="page-btn" ${currentPage === 1 ? "disabled" : ""} onclick="goToPage(${currentPage - 1})">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+            `;
+
+            for (let page = 1; page <= totalPages; page += 1) {
+                html += `
+                    <button class="page-btn ${page === currentPage ? "active" : ""}" onclick="goToPage(${page})">
+                        ${page}
+                    </button>
+                `;
+            }
+
+            html += `
+                <button class="page-btn" ${currentPage === totalPages ? "disabled" : ""} onclick="goToPage(${currentPage + 1})">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            `;
+
+            paginationWrap.innerHTML = html;
+        }
+
+        function paginateItems(items) {
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            return items.slice(start, start + ITEMS_PER_PAGE);
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE) || 1;
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            renderListings(false);
+
+            const listingTop = listingContainer.getBoundingClientRect().top + window.scrollY - 120;
+            window.scrollTo({ top: listingTop, behavior: "smooth" });
         }
 
         function renderSlider(projects) {
@@ -1691,30 +1878,32 @@
             startAutoSlide();
         }
 
-        function renderListings() {
-            const filteredProjects = applyFilters(allProjects);
-            listingCount.textContent = filteredProjects.length;
+        function renderListings(resetPage = false) {
+            filteredProjects = applyFilters(allProjects);
 
+            if (resetPage) {
+                currentPage = 1;
+            }
+
+            const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            listingCount.textContent = filteredProjects.length;
             renderHotAreas(filteredProjects.length ? filteredProjects : allProjects);
 
             if (!filteredProjects.length) {
                 listingContainer.innerHTML = `
-                    <div class="empty-box md:col-span-2 xl:col-span-3">
+                    <div class="empty-box md:col-span-2">
                         Không tìm thấy dự án nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, loại hình, trạng thái hoặc sắp xếp lại danh sách.
                     </div>
                 `;
+                paginationWrap.innerHTML = "";
                 return;
             }
 
-            listingContainer.innerHTML = filteredProjects.map(renderCard).join("");
-        }
-
-        function resetFilters() {
-            keywordFilter.value = "";
-            typeFilter.value = "";
-            statusFilter.value = "";
-            sortFilter.value = "newest";
-            renderListings();
+            const pageItems = paginateItems(filteredProjects);
+            listingContainer.innerHTML = pageItems.map(renderCard).join("");
+            renderPagination(filteredProjects.length);
         }
 
         async function initPage() {
@@ -1726,7 +1915,8 @@
 
             const sliderProjects = [...allProjects].sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
             renderSlider(sliderProjects);
-            renderListings();
+            renderSidebarNews();
+            renderListings(true);
 
             if (typeof renderSeoContent === "function") {
                 renderSeoContent("seoContent", "project");
@@ -1735,16 +1925,33 @@
             startAutoSlide();
         }
 
-        applyFilterBtn.addEventListener("click", renderListings);
-        resetFilterBtn.addEventListener("click", resetFilters);
-
-        keywordFilter.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") renderListings();
+        applyFilterBtn.addEventListener("click", function () {
+            renderListings(true);
         });
 
-        typeFilter.addEventListener("change", renderListings);
-        statusFilter.addEventListener("change", renderListings);
-        sortFilter.addEventListener("change", renderListings);
+        resetFilterBtn.addEventListener("click", function () {
+            keywordFilter.value = "";
+            typeFilter.value = "";
+            statusFilter.value = "";
+            sortFilter.value = "newest";
+            renderListings(true);
+        });
+
+        keywordFilter.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") renderListings(true);
+        });
+
+        typeFilter.addEventListener("change", function () {
+            renderListings(true);
+        });
+
+        statusFilter.addEventListener("change", function () {
+            renderListings(true);
+        });
+
+        sortFilter.addEventListener("change", function () {
+            renderListings(true);
+        });
 
         sliderPrevBtn.addEventListener("click", function () {
             prevSlide();
@@ -1760,6 +1967,7 @@
         projectSlider.addEventListener("mouseleave", startAutoSlide);
 
         window.filterByHotArea = filterByHotArea;
+        window.goToPage = goToPage;
 
         window.addEventListener("load", function () {
             initPage();
