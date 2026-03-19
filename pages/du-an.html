@@ -321,7 +321,7 @@
                     <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">Gợi ý hệ thống</h4>
                     <div class="space-y-4 text-[13px] text-gray-600">
                         <p class="leading-6">Các dự án ở đây được gom nhóm từ tin bán và tin thuê đã được duyệt trên hệ thống.</p>
-                        <p class="leading-6">Mỗi dự án có thể hiển thị số lượng tin, khu vực, loại hình và giá trung bình từ dữ liệu thực tế.</p>
+                        <p class="leading-6">Mỗi dự án có thể hiển thị số lượng tin, khu vực, loại hình, diện tích tổng thể và giá trung bình từ dữ liệu thực tế.</p>
                         <p class="leading-6">Dự án càng có nhiều tin đúng chuẩn thì SEO cụm dự án càng mạnh hơn.</p>
                     </div>
                 </div>
@@ -476,6 +476,7 @@
                 ward: 'Phường Cầu Giấy',
                 type: 'Căn hộ',
                 developer: 'Tổ Ấm Việt Development',
+                siteArea: '3.2 ha',
                 postCount: 12,
                 saleCount: 8,
                 rentalCount: 4,
@@ -493,6 +494,7 @@
                 ward: 'Thuận Thành',
                 type: 'Khu đô thị',
                 developer: 'Hồng Hạc Land',
+                siteArea: '12.5 ha',
                 postCount: 9,
                 saleCount: 7,
                 rentalCount: 2,
@@ -510,6 +512,7 @@
                 ward: 'Phường Thủ Thiêm',
                 type: 'Căn hộ',
                 developer: 'Saigon Urban Holdings',
+                siteArea: '5.8 ha',
                 postCount: 15,
                 saleCount: 10,
                 rentalCount: 5,
@@ -718,6 +721,7 @@
 
         function renderProjectCard(project) {
             const avgPrice = formatPricePerSquareMeter(project.averageSalePricePerSquareMeter || 0);
+            const siteArea = project.siteArea || project.projectArea || project.area || 'Đang cập nhật';
             const location = [project.ward, project.city].filter(Boolean).join(', ') || 'Đang cập nhật khu vực';
             const developer = project.developer || 'Đang cập nhật chủ đầu tư';
             const type = project.type || 'Đang cập nhật loại hình';
@@ -742,7 +746,11 @@
                             <h3 class="project-title font-bold text-[14px] uppercase hover:text-[--vip-color] cursor-pointer">${project.name}</h3>
                         </a>
 
-                        <p class="text-red-600 font-bold text-lg mt-2">${avgPrice} <span class="text-gray-400 font-normal text-sm">trung bình</span></p>
+                        <div class="flex flex-wrap items-center gap-2 mt-2 text-[18px] font-bold text-[#E03C31]">
+                            <span>${avgPrice}</span>
+                            <span class="text-[#E03C31]">·</span>
+                            <span>Diện tích: ${siteArea}</span>
+                        </div>
 
                         <div class="flex items-center gap-2 mt-2 text-gray-500 text-[12px]">
                             <i class="fa-solid fa-location-dot"></i>
