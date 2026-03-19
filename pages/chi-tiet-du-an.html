@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chi tiết dự án - ToamViet.com.vn</title>
+    <title>Dự án Bất động sản - ToamViet.com.vn</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
-        :root {
-            --vip-color: #008B8B;
-            --hover-color: #FF8C00;
-        }
+        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -27,152 +28,27 @@
             padding: 0 15px;
         }
 
-        .nav-link {
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--hover-color) !important;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
+        .project-card {
             background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
-            border-top: 2px solid var(--vip-color);
-            z-index: 50;
-        }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            display: block;
-            color: #333;
-            font-size: 14px;
-            border-bottom: 1px solid #f2f2f2;
-        }
-
-        .dropdown-item:hover {
-            background: #f9f9f9;
-            color: var(--hover-color);
-        }
-
-        .save-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .save-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background: #E03C31;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            border: 1px solid white;
-        }
-
-        .hero-card,
-        .info-card,
-        .listing-card,
-        .sidebar-card {
-            background: white;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            overflow: hidden;
-        }
-
-        .metric-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 14px;
-        }
-
-        .metric-label {
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: #94a3b8;
-            margin-bottom: 6px;
-            letter-spacing: 0.05em;
-        }
-
-        .metric-value {
-            font-size: 14px;
-            font-weight: 800;
-            color: #0f172a;
-            line-height: 1.5;
-        }
-
-        .listing-row {
-            display: flex;
-            gap: 16px;
-            background: white;
-            border-radius: 14px;
-            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
             overflow: hidden;
             transition: 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
-        .listing-row:hover {
+        .project-card:hover {
             border-color: var(--vip-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .listing-title {
+        .project-title {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-        }
-
-        .listing-desc {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .status-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 6px 10px;
-            border-radius: 999px;
-            letter-spacing: 0.04em;
-        }
-
-        .status-chip.sale {
-            background: #fff7ed;
-            color: #c2410c;
-            border: 1px solid #fdba74;
-        }
-
-        .status-chip.rental {
-            background: #eff6ff;
-            color: #1d4ed8;
-            border: 1px solid #93c5fd;
-        }
-
-        .status-chip.demo {
-            background: #eff6ff;
-            color: #1d4ed8;
-            border: 1px solid #93c5fd;
         }
 
         .empty-box {
@@ -185,333 +61,205 @@
             line-height: 1.7;
         }
 
-        .footer-link-group h4 {
-            font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: #2C2C2C;
+        .metric-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 800;
             text-transform: uppercase;
+            padding: 6px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.04em;
         }
 
-        .footer-link-group ul li {
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: #555;
+        .metric-chip.primary {
+            background: #f0fdfa;
+            color: #0f766e;
+            border: 1px solid #99f6e4;
         }
 
-        .footer-link-group ul li a:hover {
-            color: var(--hover-color);
-            text-decoration: underline;
+        .metric-chip.hot {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+        }
+
+        .metric-chip.demo {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
+        }
+
+        .project-filter-input,
+        .project-filter-select {
+            border: 1px solid #d1d5db;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+        }
+
+        .project-filter-input:focus,
+        .project-filter-select:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.08);
+        }
+
+        .project-price-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            line-height: 1.3;
+        }
+
+        .project-price-main {
+            color: #dc2626;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .project-area-total {
+            color: #dc2626;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .project-seo-wrap {
+            margin-top: 28px;
+        }
+
+        .project-list-col {
+            min-width: 0;
+        }
+
+        .project-grid-wrap {
+            min-height: 240px;
         }
 
         @media (max-width: 768px) {
-            .listing-row {
-                flex-direction: column;
+            .filter-item { min-width: 120px; }
+
+            .project-price-main {
+                font-size: 18px;
             }
 
-            .listing-thumb {
-                width: 100% !important;
-                height: 220px !important;
+            .project-area-total {
+                font-size: 16px;
             }
         }
     </style>
 </head>
 <body>
 
-    <header class="bg-white border-b sticky top-0 z-[1000]">
-        <div class="container-custom h-[70px] flex justify-between items-center">
-            <div class="flex items-center gap-8">
-                <a href="../index.html">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10" />
-                </a>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
 
-                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="../pages/du-an.html" class="nav-link text-[#008B8B]">Dự án</a>
-                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
-                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
-                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
-
-                    <div class="dropdown relative h-full flex items-center cursor-pointer">
-                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
-                        <div class="dropdown-menu">
-                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
+    <div class="relative">
+        <div class="swiper mySwiper w-full h-[300px] md:h-[450px]">
+            <div class="swiper-wrapper" id="hero-slider-wrapper">
+                <div class="swiper-slide relative">
+                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200" alt="Dự án nổi bật" class="w-full h-full object-cover" />
+                    <div class="absolute inset-0 bg-black/30 flex items-center">
+                        <div class="container-custom w-full text-white">
+                            <span class="bg-green-600 px-2 py-1 rounded text-[10px] font-bold uppercase">Dự án nổi bật</span>
+                            <h2 class="text-3xl md:text-5xl font-bold mt-4">Khám phá các dự án đang được quan tâm</h2>
+                            <p class="mt-2 opacity-90">Tổng hợp dự án có dữ liệu mua bán và cho thuê thực tế từ hệ thống</p>
                         </div>
                     </div>
-                </nav>
-            </div>
-
-            <div class="flex items-center gap-5">
-                <div class="save-icon nav-link text-gray-600">
-                    <i class="fa-regular fa-heart"></i>
-                    <span class="save-count">0</span>
                 </div>
-
-                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
-                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
-                </div>
-
-                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
-                    Đăng tin
-                </a>
             </div>
+            <div class="swiper-pagination !bottom-16"></div>
         </div>
-    </header>
 
-    <div class="lg:hidden bg-white border-t">
-        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
-            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
-            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
-            <a href="../pages/du-an.html" class="block nav-link text-[#008B8B] font-bold">Dự án</a>
-            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
-            <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
-            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
-            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
-            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
-            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
-            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
-            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
+        <div class="bg-white border-b shadow-sm relative z-10">
+            <div class="container-custom py-4">
+                <div class="flex flex-wrap lg:flex-nowrap gap-3 items-center">
+                    <div class="flex-1 min-w-[200px] relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
+                        <input id="keywordFilter" type="text" placeholder="Tìm kiếm dự án..." class="project-filter-input w-full pl-10 pr-4 py-2" />
+                    </div>
+
+                    <div class="flex gap-2 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0">
+                        <select id="cityFilter" class="filter-item project-filter-select min-w-[120px]">
+                            <option value="">Khu vực</option>
+                        </select>
+                        <select id="typeFilter" class="filter-item project-filter-select min-w-[120px]">
+                            <option value="">Loại hình</option>
+                        </select>
+                        <select id="sortFilter" class="filter-item project-filter-select min-w-[120px]">
+                            <option value="newest">Mới cập nhật</option>
+                            <option value="post-desc">Nhiều tin nhất</option>
+                            <option value="price-desc">Giá cao</option>
+                            <option value="price-asc">Giá thấp</option>
+                        </select>
+                    </div>
+
+                    <button id="resetFilterBtn" class="bg-gray-100 p-2.5 rounded-md hover:bg-gray-200 transition" type="button">
+                        <i class="fa-solid fa-rotate-right text-gray-600"></i>
+                    </button>
+                    <button id="applyFilterBtn" class="bg-[--vip-color] text-white px-8 py-2 rounded-md font-bold hover:opacity-90 transition w-full lg:w-auto" type="button">
+                        TÌM KIẾM
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="container-custom py-6">
-        <div class="text-sm text-gray-500 mb-4">
-            <a href="../index.html" class="hover:text-[--vip-color]">Trang chủ</a>
-            <span class="mx-2">/</span>
-            <a href="../pages/du-an.html" class="hover:text-[--vip-color]">Dự án</a>
-            <span class="mx-2">/</span>
-            <span id="breadcrumb-name">Chi tiết dự án</span>
-        </div>
-
+    <div class="container-custom py-10">
         <div id="data-note" class="empty-box mb-6 hidden"></div>
 
-        <section class="hero-card mb-6">
-            <div class="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-0">
-                <div class="relative min-h-[280px] lg:min-h-[420px]">
-                    <img id="project-hero-image" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200" alt="Dự án" class="w-full h-full object-cover" />
-                    <div class="absolute inset-0 bg-black/35"></div>
-                    <div class="absolute left-0 right-0 bottom-0 p-6 lg:p-8 text-white">
-                        <span id="project-badge" class="inline-flex items-center gap-2 bg-[--vip-color] px-3 py-1 rounded-full text-[11px] font-bold uppercase">
-                            <i class="fa-solid fa-building"></i> Dự án
-                        </span>
-                        <h1 id="project-name" class="text-2xl md:text-4xl font-bold mt-4">Tên dự án</h1>
-                        <p id="project-location" class="mt-3 text-sm md:text-base opacity-95">
-                            <i class="fa-solid fa-location-dot mr-2"></i>Đang cập nhật vị trí
-                        </p>
-                        <p id="project-short-desc" class="mt-3 text-sm md:text-base opacity-90 max-w-3xl">
-                            Trang chi tiết dự án tổng hợp các tin mua bán và cho thuê thuộc cùng một cụm dự án.
-                        </p>
-                    </div>
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="flex-1 project-list-col">
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold uppercase border-l-4 border-[--vip-color] pl-3">Dự án bất động sản trên toàn quốc</h1>
+                    <p class="text-gray-500 text-sm mt-1 ml-4 italic">
+                        Hiện có <span id="project-count">0</span> dự án đang có dữ liệu mua bán & cho thuê
+                    </p>
                 </div>
 
-                <div class="p-6 lg:p-8 bg-white">
-                    <h2 class="text-sm font-bold uppercase text-[--vip-color] mb-4">Thông tin tổng quan</h2>
+                <div class="project-grid-wrap">
+                    <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+                </div>
+            </div>
 
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between gap-4 border-b pb-3">
-                            <span class="text-gray-500">Loại hình</span>
-                            <span id="project-type" class="font-bold text-right">Đang cập nhật</span>
-                        </div>
-                        <div class="flex justify-between gap-4 border-b pb-3">
-                            <span class="text-gray-500">Chủ đầu tư</span>
-                            <span id="project-developer" class="font-bold text-right">Đang cập nhật</span>
-                        </div>
-                        <div class="flex justify-between gap-4 border-b pb-3">
-                            <span class="text-gray-500">Khu vực</span>
-                            <span id="project-area" class="font-bold text-right">Đang cập nhật</span>
-                        </div>
-                        <div class="flex justify-between gap-4 pb-1">
-                            <span class="text-gray-500">Giá trung bình</span>
-                            <span id="project-average-price" class="font-bold text-right text-[--vip-color]">Chưa có dữ liệu</span>
-                        </div>
-                    </div>
+            <div class="lg:w-[300px] flex flex-col gap-6">
+                <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                    <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">Dự án theo tỉnh thành</h4>
+                    <ul id="project-city-list" class="space-y-3 text-[13px]"></ul>
+                </div>
 
-                    <div class="grid grid-cols-2 gap-3 mt-6">
-                        <div class="metric-box">
-                            <div class="metric-label">Tổng số tin</div>
-                            <div id="metric-total" class="metric-value">0</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-label">Tin bán</div>
-                            <div id="metric-sale" class="metric-value">0</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-label">Tin thuê</div>
-                            <div id="metric-rental" class="metric-value">0</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-label">Giá / m²</div>
-                            <div id="metric-price" class="metric-value">Chưa rõ</div>
-                        </div>
+                <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                    <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">Gợi ý hệ thống</h4>
+                    <div class="space-y-4 text-[13px] text-gray-600">
+                        <p class="leading-6">Các dự án ở đây được gom nhóm từ tin bán và tin thuê đã được duyệt trên hệ thống.</p>
+                        <p class="leading-6">Mỗi dự án có thể hiển thị số lượng tin, khu vực, loại hình, diện tích tổng thể và giá trung bình từ dữ liệu thực tế.</p>
+                        <p class="leading-6">Dự án càng có nhiều tin đúng chuẩn thì SEO cụm dự án càng mạnh hơn.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-            <div class="space-y-6">
-                <section class="info-card p-6">
-                    <h2 class="text-lg font-bold uppercase border-l-4 border-[--vip-color] pl-3 mb-4">Giới thiệu dự án</h2>
-                    <div id="project-description" class="text-sm text-gray-600 leading-7">
-                        Dự án này đang được hệ thống tổng hợp từ các tin mua bán và cho thuê thực tế. Thông tin chi tiết sẽ được cập nhật khi có thêm dữ liệu.
-                    </div>
-                </section>
-
-                <section class="listing-card p-6">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
-                        <h2 class="text-lg font-bold uppercase border-l-4 border-[--vip-color] pl-3">Tin đăng thuộc dự án</h2>
-                        <div class="text-sm text-gray-500">
-                            Có <span id="listing-count" class="font-bold text-gray-700">0</span> tin đang hiển thị
-                        </div>
-                    </div>
-
-                    <div id="project-listings" class="space-y-4"></div>
-                </section>
-            </div>
-
-            <aside class="space-y-6">
-                <div class="sidebar-card p-5">
-                    <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">Chỉ số dự án</h4>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">Tổng số tin</span>
-                            <span id="sidebar-total" class="font-bold">0</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">Tin bán</span>
-                            <span id="sidebar-sale" class="font-bold">0</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">Tin thuê</span>
-                            <span id="sidebar-rental" class="font-bold">0</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">Giá TB / m²</span>
-                            <span id="sidebar-price" class="font-bold text-[--vip-color]">Chưa rõ</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="sidebar-card p-5">
-                    <h4 class="font-bold text-sm border-b-2 border-[--vip-color] pb-2 mb-4 uppercase">Lưu ý hệ thống</h4>
-                    <div class="space-y-3 text-sm text-gray-600">
-                        <p class="leading-6">Trang này chỉ tổng hợp các tin thuộc cùng một dự án và đã được duyệt hiển thị công khai.</p>
-                        <p class="leading-6">Giá trung bình/m² được tính từ các tin bán có dữ liệu giá và diện tích hợp lệ.</p>
-                        <p class="leading-6">Khi hệ thống có thêm tin mới, thống kê của dự án sẽ tự động cập nhật.</p>
-                    </div>
-                </div>
-            </aside>
+        <div class="project-seo-wrap">
+            <div id="seoContent"></div>
         </div>
     </div>
 
-    <footer class="bg-white pt-16 border-t mt-12">
-        <div class="container-custom">
-            <div class="mb-12 border-b pb-12">
-                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình.
-                </p>
-            </div>
+    <div id="site-footer"></div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                <div class="footer-link-group">
-                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
-                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
-                    </ul>
-                </div>
+    <button id="goToTop" onclick="safeScrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
 
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-link-group">
-                    <h4>DỰ ÁN NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
-                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
-                <div class="max-w-sm">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6" />
-                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
-                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-10 text-[13px]">
-                    <div>
-                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="w-full lg:max-w-xs">
-                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
-                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
-                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm" />
-                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
-                <p>© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
-            </div>
-        </div>
-    </footer>
-
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
-
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
@@ -520,101 +268,108 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="../assets/js/user-storage.js"></script>
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
 
     <script>
+        const keywordFilter = document.getElementById('keywordFilter');
+        const cityFilter = document.getElementById('cityFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const resetFilterBtn = document.getElementById('resetFilterBtn');
+
         const dataNote = document.getElementById('data-note');
+        const projectGrid = document.getElementById('project-grid');
+        const projectCount = document.getElementById('project-count');
+        const projectCityList = document.getElementById('project-city-list');
+        const heroSliderWrapper = document.getElementById('hero-slider-wrapper');
 
-        const breadcrumbName = document.getElementById('breadcrumb-name');
-        const projectName = document.getElementById('project-name');
-        const projectLocation = document.getElementById('project-location');
-        const projectShortDesc = document.getElementById('project-short-desc');
-        const projectHeroImage = document.getElementById('project-hero-image');
-        const projectBadge = document.getElementById('project-badge');
-
-        const projectType = document.getElementById('project-type');
-        const projectDeveloper = document.getElementById('project-developer');
-        const projectArea = document.getElementById('project-area');
-        const projectAveragePrice = document.getElementById('project-average-price');
-
-        const metricTotal = document.getElementById('metric-total');
-        const metricSale = document.getElementById('metric-sale');
-        const metricRental = document.getElementById('metric-rental');
-        const metricPrice = document.getElementById('metric-price');
-
-        const sidebarTotal = document.getElementById('sidebar-total');
-        const sidebarSale = document.getElementById('sidebar-sale');
-        const sidebarRental = document.getElementById('sidebar-rental');
-        const sidebarPrice = document.getElementById('sidebar-price');
-
-        const projectDescription = document.getElementById('project-description');
-        const listingCount = document.getElementById('listing-count');
-        const projectListings = document.getElementById('project-listings');
-
-        const fallbackProject = {
-            id: 'project_to-am-viet-riverside',
-            name: 'Tổ Ấm Việt Riverside',
-            slug: 'to-am-viet-riverside',
-            city: 'Hà Nội',
-            ward: 'Phường Cầu Giấy',
-            type: 'Căn hộ',
-            developer: 'Tổ Ấm Việt Development',
-            postCount: 12,
-            saleCount: 8,
-            rentalCount: 4,
-            averageSalePricePerSquareMeter: 72000000,
-            description: 'Tổ Ấm Việt Riverside là cụm dự án mẫu đang được hiển thị khi hệ thống chưa có đủ dữ liệu thật. Dự án mô phỏng tổ hợp căn hộ, shophouse và các sản phẩm đầu tư có thanh khoản tốt.',
-            isDemo: true
-        };
-
-        const fallbackPosts = [
+        const fallbackProjects = [
             {
-                id: 'post_demo_1',
-                title: 'Bán căn hộ 2PN view đẹp tại dự án Tổ Ấm Việt Riverside',
-                flow: 'real_estate',
-                postType: 'ban',
-                status: 'demo',
-                propertyType: 'Căn hộ',
-                propertyPrice: '5.2 tỷ',
-                propertyArea: '78',
-                pricePerSquareMeter: 66600000,
-                propertyDirection: 'Đông Nam',
-                propertyBeds: '2',
-                propertyLegal: 'Sổ hồng',
+                id: 'project_to-am-viet-riverside',
+                name: 'Tổ Ấm Việt Riverside',
+                slug: 'to-am-viet-riverside',
                 city: 'Hà Nội',
                 ward: 'Phường Cầu Giấy',
-                description: 'Căn hộ mới, nội thất cao cấp, vị trí trung tâm, phù hợp ở thực hoặc đầu tư dài hạn.',
-                contactName: 'Nguyễn Thành Đạt',
-                roleLabel: 'Môi giới chuyên nghiệp',
-                contactPhone: '0912 888 999'
+                type: 'Căn hộ',
+                developer: 'Tổ Ấm Việt Development',
+                siteArea: '126,7 ha',
+                postCount: 12,
+                saleCount: 8,
+                rentalCount: 4,
+                averageSalePricePerSquareMeter: 72000000,
+                createdAt: '2026-01-01T08:00:00.000Z',
+                updatedAt: '2026-01-08T08:00:00.000Z',
+                lastPostAt: '2026-01-08T08:00:00.000Z',
+                isDemo: true
             },
             {
-                id: 'post_demo_2',
-                title: 'Cho thuê căn hộ full nội thất tại Tổ Ấm Việt Riverside',
-                flow: 'real_estate',
-                postType: 'thue',
-                status: 'demo',
-                propertyType: 'Căn hộ',
-                propertyPrice: '22 triệu/tháng',
-                propertyArea: '75',
-                propertyDirection: 'Nam',
-                propertyBeds: '2',
-                propertyLegal: 'Hợp đồng thuê rõ ràng',
-                city: 'Hà Nội',
-                ward: 'Phường Cầu Giấy',
-                description: 'Căn hộ full nội thất, vào ở ngay, phù hợp gia đình trẻ hoặc chuyên gia làm việc tại khu vực trung tâm.',
-                contactName: 'Công ty BĐS Tổ Ấm Việt',
-                brandName: 'Công ty BĐS Tổ Ấm Việt',
-                roleLabel: 'Doanh nghiệp / Sàn BĐS',
-                contactPhone: '0946 239 289'
+                id: 'project_hong-hac-city',
+                name: 'Hồng Hạc City',
+                slug: 'hong-hac-city',
+                city: 'Bắc Ninh',
+                ward: 'Thuận Thành',
+                type: 'Khu đô thị',
+                developer: 'Hồng Hạc Land',
+                siteArea: '198 ha',
+                postCount: 9,
+                saleCount: 7,
+                rentalCount: 2,
+                averageSalePricePerSquareMeter: 48000000,
+                createdAt: '2026-01-02T08:00:00.000Z',
+                updatedAt: '2026-01-08T08:00:00.000Z',
+                lastPostAt: '2026-01-08T08:00:00.000Z',
+                isDemo: true
+            },
+            {
+                id: 'project_saigon-river-view',
+                name: 'Saigon River View',
+                slug: 'saigon-river-view',
+                city: 'TP.HCM',
+                ward: 'Phường Thủ Thiêm',
+                type: 'Căn hộ',
+                developer: 'Saigon Urban Holdings',
+                siteArea: '46,2 ha',
+                postCount: 15,
+                saleCount: 10,
+                rentalCount: 5,
+                averageSalePricePerSquareMeter: 95000000,
+                createdAt: '2026-01-03T08:00:00.000Z',
+                updatedAt: '2026-01-08T08:00:00.000Z',
+                lastPostAt: '2026-01-08T08:00:00.000Z',
+                isDemo: true
             }
         ];
 
+        let currentProjects = [];
+        let heroSwiper = null;
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === 'function') {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === 'function') {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById('chatForm');
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+
         function sendToZalo() {
-            const name = document.getElementById("cusName").value;
-            const msg = document.getElementById("cusMsg").value;
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
             const phone = "0946239289";
 
             if (!name) {
@@ -627,272 +382,318 @@
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
 
-        function getSlugFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('slug') || '';
-        }
-
         function formatPricePerSquareMeter(value) {
-            if (!Number.isFinite(value) || value <= 0) return 'Chưa có dữ liệu';
-            if (value >= 1000000000) return (value / 1000000000).toFixed(2) + ' tỷ/m²';
-            if (value >= 1000000) return Math.round(value / 1000000) + ' triệu/m²';
-            return Math.round(value).toLocaleString('vi-VN') + ' đ/m²';
+            if (!Number.isFinite(value) || value <= 0) return "Chưa có dữ liệu";
+            if (value >= 1000000000) return (value / 1000000000).toFixed(2) + " tỷ/m²";
+            if (value >= 1000000) return Math.round(value / 1000000) + " triệu/m²";
+            return Math.round(value).toLocaleString("vi-VN") + " đ/m²";
         }
 
-        function parsePriceToNumber(priceText) {
-            if (!priceText) return 0;
-            const text = String(priceText).toLowerCase().replace(/,/g, '.').trim();
-
-            if (text.includes('tỷ')) {
-                const value = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
-                return value * 1000000000;
-            }
-
-            if (text.includes('triệu')) {
-                const value = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
-                return value * 1000000;
-            }
-
-            const raw = parseFloat(text.replace(/[^\d.]/g, '')) || 0;
-            return raw;
+        function getProjectAreaText(project) {
+            return project.siteArea || project.projectArea || project.area || '';
         }
 
-        function buildLocation(post) {
-            return [post.ward, post.district, post.city].filter(Boolean).join(', ');
-        }
+        function getApprovedProjects() {
+            try {
+                if (window.projectService && typeof window.projectService.getPublicProjects === 'function') {
+                    const allPosts = window.postStorage && typeof window.postStorage.getAllPosts === 'function'
+                        ? window.postStorage.getAllPosts()
+                        : [];
 
-        function getPosterName(post) {
-            return post.brandName || post.contactName || post.fullName || 'Người đăng';
-        }
+                    if (typeof window.projectService.syncProjectCounts === 'function') {
+                        window.projectService.syncProjectCounts(allPosts, true);
+                    }
 
-        function getPosterRole(post) {
-            return post.roleLabel || post.role || (post.profileType === 'doanhnghiep' ? 'Doanh nghiệp' : 'Người đăng');
-        }
-
-        function getAvatarText(post) {
-            const source = getPosterName(post);
-            return source
-                .split(' ')
-                .filter(Boolean)
-                .slice(0, 2)
-                .map(word => word[0].toUpperCase())
-                .join('') || 'TV';
-        }
-
-        function getCardImage(post) {
-            if (Array.isArray(post.images) && post.images.length && post.images[0]?.dataUrl) {
-                return post.images[0].dataUrl;
-            }
-            return post.postType === 'thue'
-                ? 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900'
-                : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900';
-        }
-
-        function getStatusChip(post) {
-            if (post.status === 'demo') {
-                return '<span class="status-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>';
-            }
-            if (post.postType === 'thue') {
-                return '<span class="status-chip rental"><i class="fa-solid fa-key"></i> Tin thuê</span>';
-            }
-            return '<span class="status-chip sale"><i class="fa-solid fa-tag"></i> Tin bán</span>';
-        }
-
-        function getProjectData() {
-            const slug = getSlugFromUrl();
-
-            if (window.projectService && slug) {
-                const allPosts = window.postStorage ? window.postStorage.getAllPosts() : [];
-                projectService.syncProjectCounts(allPosts);
-
-                const projectDetail = projectService.getProjectDetail(slug);
-
-                if (projectDetail && projectDetail.slug) {
-                    const approvedPosts = (projectDetail.posts || []).filter(post =>
-                        post && (post.status === 'approved')
-                    );
-
-                    return {
-                        project: {
-                            ...projectDetail,
+                    const projects = window.projectService.getPublicProjects() || [];
+                    if (projects.length) {
+                        return projects.map(project => ({
+                            ...project,
                             isDemo: false
-                        },
-                        posts: approvedPosts
-                    };
+                        }));
+                    }
                 }
+            } catch (error) {}
+
+            return [];
+        }
+
+        function getProjectsData() {
+            const projects = getApprovedProjects();
+
+            if (projects.length) {
+                dataNote.classList.add('hidden');
+                dataNote.innerHTML = '';
+                return projects;
             }
 
             dataNote.classList.remove('hidden');
             dataNote.innerHTML = `
-                Dự án bạn đang xem chưa có dữ liệu thật hoặc chưa có tin đã duyệt.
-                Tôi đang hiển thị dữ liệu mẫu để bạn kiểm tra giao diện trang chi tiết dự án.
+                Hiện tại chưa có dự án thật nào có tin đã duyệt để hiển thị ngoài public.
+                Tôi đang hiển thị dữ liệu mẫu để bạn dễ kiểm tra giao diện.
+                Sau khi tin đăng thuộc dự án được admin duyệt, các dự án sẽ tự động xuất hiện ở đây.
             `;
-
-            return {
-                project: fallbackProject,
-                posts: fallbackPosts
-            };
+            return fallbackProjects;
         }
 
-        function renderProjectOverview(project, posts) {
-            const location = [project.ward, project.city].filter(Boolean).join(', ') || 'Đang cập nhật vị trí';
-            const avgPrice = formatPricePerSquareMeter(project.averageSalePricePerSquareMeter || 0);
+        function fillFilters(projects) {
+            const currentCity = cityFilter.value;
+            const currentType = typeFilter.value;
 
-            breadcrumbName.textContent = project.name || 'Chi tiết dự án';
-            projectName.textContent = project.name || 'Tên dự án';
-            projectLocation.innerHTML = `<i class="fa-solid fa-location-dot mr-2"></i>${location}`;
-            projectShortDesc.textContent = project.isDemo
-                ? 'Dữ liệu mẫu đang được hiển thị để bạn kiểm tra giao diện khi hệ thống chưa có đủ dữ liệu thật.'
-                : 'Trang này tổng hợp toàn bộ tin mua bán và cho thuê đã được duyệt thuộc cùng một dự án.';
-            projectType.textContent = project.type || 'Đang cập nhật';
-            projectDeveloper.textContent = project.developer || 'Đang cập nhật';
-            projectArea.textContent = location;
-            projectAveragePrice.textContent = avgPrice;
-            metricTotal.textContent = project.postCount || posts.length || 0;
-            metricSale.textContent = project.saleCount || posts.filter(post => post.postType === 'ban').length || 0;
-            metricRental.textContent = project.rentalCount || posts.filter(post => post.postType === 'thue').length || 0;
-            metricPrice.textContent = avgPrice;
-            sidebarTotal.textContent = metricTotal.textContent;
-            sidebarSale.textContent = metricSale.textContent;
-            sidebarRental.textContent = metricRental.textContent;
-            sidebarPrice.textContent = avgPrice;
-            projectDescription.textContent = project.description || `Dự án ${project.name || ''} hiện đang được hệ thống tổng hợp dữ liệu từ các tin đăng thực tế. Thông tin về vị trí, loại hình, số lượng tin bán và tin thuê sẽ tiếp tục được cập nhật khi có thêm nội dung mới.`;
+            const uniqueCities = [...new Set(projects.map(item => item.city).filter(Boolean))];
+            const uniqueTypes = [...new Set(projects.map(item => item.type).filter(Boolean))];
 
-            projectBadge.innerHTML = project.isDemo
-                ? '<i class="fa-solid fa-flask"></i> Dữ liệu mẫu'
-                : '<i class="fa-solid fa-building"></i> Dự án đang có dữ liệu';
+            cityFilter.innerHTML = '<option value="">Khu vực</option>' +
+                uniqueCities.map(city => `<option value="${city}">${city}</option>`).join('');
 
-            projectHeroImage.src = project.isDemo
-                ? 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200'
-                : 'https://images.unsplash.com/photo-1494526585095-c41746248156?w=1200';
-            projectHeroImage.alt = project.name || 'Dự án';
+            typeFilter.innerHTML = '<option value="">Loại hình</option>' +
+                uniqueTypes.map(type => `<option value="${type}">${type}</option>`).join('');
+
+            if (uniqueCities.includes(currentCity)) cityFilter.value = currentCity;
+            if (uniqueTypes.includes(currentType)) typeFilter.value = currentType;
         }
 
-        function renderListingCard(post) {
-            const location = buildLocation(post) || 'Đang cập nhật khu vực';
-            const poster = getPosterName(post);
-            const posterRole = getPosterRole(post);
-            const avatarText = getAvatarText(post);
-            const image = getCardImage(post);
-            const propertyType = post.propertyType || 'Bất động sản';
-            const legal = post.propertyLegal || 'Đang cập nhật';
-            const direction = post.propertyDirection || 'Đang cập nhật';
-            const beds = post.propertyBeds || '0';
-            const phone = post.contactPhone || post.phone || 'Liên hệ';
+        function applyFilters(projects) {
+            let filtered = [...projects];
 
-            let subPriceText = 'Chưa rõ';
+            const keyword = keywordFilter.value.trim().toLowerCase();
+            const city = cityFilter.value;
+            const type = typeFilter.value;
+            const sortType = sortFilter.value;
 
-            if (post.postType === 'ban') {
-                const ppm2 = typeof post.pricePerSquareMeter === 'number' && post.pricePerSquareMeter > 0
-                    ? formatPricePerSquareMeter(post.pricePerSquareMeter)
-                    : (() => {
-                        const priceNumber = parsePriceToNumber(post.propertyPrice);
-                        const areaNumber = Number(post.propertyArea || 0);
-                        if (!priceNumber || !areaNumber) return 'Chưa rõ';
-                        return formatPricePerSquareMeter(priceNumber / areaNumber);
-                    })();
-                subPriceText = ppm2;
-            } else {
-                const areaNumber = Number(post.propertyArea || 0);
-                const priceNumber = parsePriceToNumber(post.propertyPrice);
-                if (priceNumber && areaNumber) {
-                    subPriceText = Math.round(priceNumber / areaNumber).toLocaleString('vi-VN') + ' đ/m²';
-                } else {
-                    subPriceText = 'Chưa rõ';
-                }
+            if (keyword) {
+                filtered = filtered.filter(project =>
+                    (project.name || '').toLowerCase().includes(keyword) ||
+                    (project.city || '').toLowerCase().includes(keyword) ||
+                    (project.ward || '').toLowerCase().includes(keyword) ||
+                    (project.type || '').toLowerCase().includes(keyword) ||
+                    (project.developer || '').toLowerCase().includes(keyword)
+                );
             }
 
+            if (city) {
+                filtered = filtered.filter(project => (project.city || '') === city);
+            }
+
+            if (type) {
+                filtered = filtered.filter(project => (project.type || '') === type);
+            }
+
+            if (sortType === 'post-desc') {
+                filtered.sort((a, b) => (b.postCount || 0) - (a.postCount || 0));
+            } else if (sortType === 'price-desc') {
+                filtered.sort((a, b) => (b.averageSalePricePerSquareMeter || 0) - (a.averageSalePricePerSquareMeter || 0));
+            } else if (sortType === 'price-asc') {
+                filtered.sort((a, b) => (a.averageSalePricePerSquareMeter || 0) - (b.averageSalePricePerSquareMeter || 0));
+            } else {
+                filtered.sort((a, b) => new Date(b.lastPostAt || b.updatedAt || b.createdAt || 0) - new Date(a.lastPostAt || a.updatedAt || a.createdAt || 0));
+            }
+
+            return filtered;
+        }
+
+        function renderProjectCityList(projects) {
+            const cityCounter = {};
+
+            projects.forEach(project => {
+                const city = project.city || 'Khác';
+                cityCounter[city] = (cityCounter[city] || 0) + 1;
+            });
+
+            const sorted = Object.entries(cityCounter)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+
+            if (!sorted.length) {
+                projectCityList.innerHTML = `<li class="flex justify-between items-center text-[13px]"><span>Chưa có dữ liệu</span><span class="text-gray-400">(0)</span></li>`;
+                return;
+            }
+
+            projectCityList.innerHTML = sorted.map(([city, count]) => `
+                <li class="flex justify-between items-center text-[13px] hover:text-[--hover-color] cursor-pointer">
+                    <span>${city}</span>
+                    <span class="text-gray-400">(${count})</span>
+                </li>
+            `).join('');
+        }
+
+        function renderHeroProjects(projects) {
+            const featured = projects.slice(0, 3);
+
+            if (!featured.length) {
+                heroSliderWrapper.innerHTML = `
+                    <div class="swiper-slide relative">
+                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200" alt="Dự án nổi bật" class="w-full h-full object-cover" />
+                        <div class="absolute inset-0 bg-black/30 flex items-center">
+                            <div class="container-custom w-full text-white">
+                                <span class="bg-green-600 px-2 py-1 rounded text-[10px] font-bold uppercase">Dự án nổi bật</span>
+                                <h2 class="text-3xl md:text-5xl font-bold mt-4">Khám phá các dự án đang được quan tâm</h2>
+                                <p class="mt-2 opacity-90">Tổng hợp dự án có dữ liệu mua bán và cho thuê thực tế từ hệ thống</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            heroSliderWrapper.innerHTML = featured.map((project, index) => `
+                <div class="swiper-slide relative">
+                    <img src="${index === 0
+                        ? 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200'
+                        : index === 1
+                            ? 'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=1200'
+                            : 'https://images.unsplash.com/photo-1494526585095-c41746248156?w=1200'
+                    }" alt="${project.name}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/30 flex items-center">
+                        <div class="container-custom w-full text-white">
+                            <span class="bg-green-600 px-2 py-1 rounded text-[10px] font-bold uppercase">
+                                ${project.isDemo ? 'Dữ liệu mẫu' : 'Dự án nổi bật'}
+                            </span>
+                            <a href="../pages/chi-tiet-du-an.html?slug=${project.slug}" class="block">
+                                <h2 class="text-3xl md:text-5xl font-bold mt-4 hover:text-[--hover-color] transition">${project.name}</h2>
+                            </a>
+                            <p class="mt-2 opacity-90">${[project.ward, project.city].filter(Boolean).join(', ') || 'Đang cập nhật khu vực'}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function initSwiper() {
+            if (heroSwiper) {
+                heroSwiper.destroy(true, true);
+                heroSwiper = null;
+            }
+
+            if (document.querySelector(".mySwiper")) {
+                heroSwiper = new Swiper(".mySwiper", {
+                    loop: true,
+                    autoplay: { delay: 5000 },
+                    pagination: { el: ".swiper-pagination", clickable: true }
+                });
+            }
+        }
+
+        function renderProjectCard(project) {
+            const avgPrice = formatPricePerSquareMeter(project.averageSalePricePerSquareMeter || 0);
+            const totalArea = getProjectAreaText(project);
+            const location = [project.ward, project.city].filter(Boolean).join(', ') || 'Đang cập nhật khu vực';
+            const developer = project.developer || 'Đang cập nhật chủ đầu tư';
+            const type = project.type || 'Đang cập nhật loại hình';
+            const badge = project.isDemo
+                ? '<span class="metric-chip demo"><i class="fa-solid fa-flask"></i> Demo</span>'
+                : ((project.postCount || 0) >= 10
+                    ? '<span class="metric-chip hot"><i class="fa-solid fa-fire"></i> HOT</span>'
+                    : '<span class="metric-chip primary"><i class="fa-solid fa-chart-column"></i> Đang có dữ liệu</span>');
+
             return `
-                <div class="listing-row">
-                    <div class="listing-thumb w-[280px] shrink-0 relative bg-slate-100">
-                        <img src="${image}" alt="${post.title || 'Tin dự án'}" class="w-full h-full object-cover">
-                        <div class="absolute top-3 left-3">${getStatusChip(post)}</div>
+                <div class="project-card">
+                    <div class="relative h-48">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500" alt="${project.name}" class="w-full h-full object-cover">
+                        <span class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
+                            <i class="fa-solid fa-file-lines"></i> ${project.postCount || 0} tin
+                        </span>
+                        <div class="absolute top-2 right-2">${badge}</div>
                     </div>
 
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <div class="flex flex-wrap items-center gap-2 mb-2">
-                                <span class="text-[10px] uppercase font-bold bg-cyan-50 text-cyan-700 px-2 py-1 rounded">${propertyType}</span>
-                                <span class="text-[10px] uppercase font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded">${post.postType === 'thue' ? 'Cho thuê' : 'Mua bán'}</span>
+                    <div class="p-4 flex-1 flex flex-col">
+                        <a href="../pages/chi-tiet-du-an.html?slug=${project.slug}">
+                            <h3 class="project-title font-bold text-[14px] uppercase hover:text-[--vip-color] cursor-pointer">${project.name}</h3>
+                        </a>
+
+                        <div class="project-price-row">
+                            <span class="project-price-main">${avgPrice}</span>
+                            ${totalArea ? `<span class="project-area-total">· ${totalArea}</span>` : ''}
+                        </div>
+
+                        <div class="flex items-center gap-2 mt-2 text-gray-500 text-[12px]">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>${location}</span>
+                        </div>
+
+                        <div class="mt-3 text-[12px] text-slate-500 space-y-1">
+                            <div><strong class="text-slate-700">Loại hình:</strong> ${type}</div>
+                            <div><strong class="text-slate-700">Chủ đầu tư:</strong> ${developer}</div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 mt-4 text-center text-[11px]">
+                            <div class="bg-slate-50 rounded-lg p-2">
+                                <div class="font-bold text-slate-800">${project.postCount || 0}</div>
+                                <div class="text-slate-500">Tổng tin</div>
                             </div>
-
-                            <h3 class="listing-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] cursor-pointer">
-                                ${post.title || 'Tin thuộc dự án'}
-                            </h3>
-
-                            <div class="flex items-center gap-3 mt-3 text-sm flex-wrap font-medium">
-                                <span class="text-red-600 font-bold text-lg">${post.propertyPrice || 'Liên hệ'}</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-red-600 font-bold text-lg">${post.propertyArea ? post.propertyArea + ' m²' : 'Chưa rõ'}</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600">${subPriceText}</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600">${direction}</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-600 flex items-center gap-1">${beds} <i class="fa-solid fa-bed"></i></span>
+                            <div class="bg-slate-50 rounded-lg p-2">
+                                <div class="font-bold text-slate-800">${project.saleCount || 0}</div>
+                                <div class="text-slate-500">Tin bán</div>
                             </div>
-
-                            <p class="text-gray-500 text-[12px] mt-3">
-                                <i class="fa-solid fa-location-dot mr-1"></i> ${location}
-                            </p>
-
-                            <p class="listing-desc text-gray-500 text-sm mt-3 italic">
-                                ${post.description || 'Đang cập nhật mô tả chi tiết cho bất động sản này.'}
-                            </p>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-[12px] text-slate-500">
-                                <div><strong class="text-slate-700">Pháp lý:</strong> ${legal}</div>
-                                <div><strong class="text-slate-700">Loại hình:</strong> ${propertyType}</div>
+                            <div class="bg-slate-50 rounded-lg p-2">
+                                <div class="font-bold text-slate-800">${project.rentalCount || 0}</div>
+                                <div class="text-slate-500">Tin thuê</div>
                             </div>
                         </div>
 
-                        <div class="flex justify-between items-center mt-4 pt-3 border-t">
-                            <div class="flex items-center gap-3 group">
-                                <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs group-hover:opacity-80 transition">
-                                    ${avatarText}
+                        <div class="mt-auto pt-4 border-t flex items-center justify-between">
+                            <a href="../pages/danh-ba-doanh-nghiep.html" class="flex items-center gap-2 group">
+                                <div class="w-10 h-10 rounded-full bg-[--vip-color] overflow-hidden border border-gray-100 text-white flex items-center justify-center text-xs font-bold">
+                                    ${(developer || 'TV').split(' ').filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'TV'}
                                 </div>
                                 <div>
-                                    <p class="text-sm font-bold text-gray-700 group-hover:text-[--vip-color] transition">${poster}</p>
-                                    <p class="text-[11px] text-gray-400">${posterRole}</p>
+                                    <p class="text-[12px] font-bold group-hover:text-[--hover-color]">${developer}</p>
+                                    <p class="text-[10px] text-gray-400">${project.isDemo ? 'Dữ liệu mẫu' : 'Dữ liệu thực từ hệ thống'}</p>
                                 </div>
-                            </div>
-
-                            <div class="flex gap-2">
-                                <button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm">
-                                    <i class="fa-solid fa-phone"></i> ${phone}
-                                </button>
-                                <button class="border border-gray-300 w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 transition">
-                                    <i class="fa-regular fa-heart"></i>
-                                </button>
-                            </div>
+                            </a>
+                            <button class="text-gray-400 hover:text-red-500 transition" type="button">
+                                <i class="fa-regular fa-heart text-lg"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        function renderListings(posts) {
-            listingCount.textContent = posts.length;
+        function renderProjects() {
+            currentProjects = getProjectsData();
+            fillFilters(currentProjects);
 
-            if (!posts.length) {
-                projectListings.innerHTML = `
-                    <div class="empty-box">
-                        Hiện chưa có tin nào thuộc dự án này được hiển thị công khai.
+            const filteredProjects = applyFilters(currentProjects);
+
+            renderHeroProjects(currentProjects);
+            initSwiper();
+            renderProjectCityList(currentProjects);
+
+            projectCount.textContent = currentProjects.length;
+
+            if (!filteredProjects.length) {
+                projectGrid.innerHTML = `
+                    <div class="md:col-span-2 empty-box">
+                        Không tìm thấy dự án nào phù hợp với bộ lọc hiện tại. Bạn thử đổi từ khóa, khu vực hoặc loại hình.
                     </div>
                 `;
-                return;
+            } else {
+                projectGrid.innerHTML = filteredProjects.map(renderProjectCard).join('');
             }
 
-            projectListings.innerHTML = posts.map(renderListingCard).join('');
+            if (typeof renderSeoContent === 'function') {
+                renderSeoContent('seoContent', 'project');
+            }
         }
 
-        function initPage() {
-            const { project, posts } = getProjectData();
-            renderProjectOverview(project, posts);
-            renderListings(posts);
+        function resetFilters() {
+            keywordFilter.value = '';
+            cityFilter.value = '';
+            typeFilter.value = '';
+            sortFilter.value = 'newest';
+            renderProjects();
         }
 
-        initPage();
+        applyFilterBtn.addEventListener('click', renderProjects);
+        resetFilterBtn.addEventListener('click', resetFilters);
+        keywordFilter.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') renderProjects();
+        });
+        cityFilter.addEventListener('change', renderProjects);
+        typeFilter.addEventListener('change', renderProjects);
+        sortFilter.addEventListener('change', renderProjects);
+
+        renderProjects();
     </script>
     <script src="../assets/js/main.js"></script>
 </body>
