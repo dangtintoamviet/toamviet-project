@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
         :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
@@ -173,6 +174,10 @@
             box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.08);
         }
 
+        .seo-section-shell {
+            margin-top: 28px;
+        }
+
         @media (max-width: 768px) {
             .filter-item { min-width: 120px; }
         }
@@ -295,7 +300,6 @@
         <div id="data-note" class="empty-box mb-6 hidden"></div>
 
         <div class="flex flex-col lg:flex-row gap-8">
-
             <div class="flex-1">
                 <div class="mb-8">
                     <h1 class="text-2xl font-bold uppercase border-l-4 border-[--vip-color] pl-3">Dự án bất động sản trên toàn quốc</h1>
@@ -322,7 +326,10 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="seo-section-shell">
+            <div id="seoContent"></div>
         </div>
     </div>
 
@@ -392,17 +399,17 @@
                         <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
                         <ul class="text-gray-500 space-y-2">
                             <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
+                            <li><a href="../pages/bao-gia-dich-vu.html" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
+                            <li><a href="../pages/cau-hoi-thuong-gap.html" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
+                            <li><a href="../pages/sitemap.html" class="hover:text-orange-500">Sitemap</a></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
                         <ul class="text-gray-500 space-y-2">
-                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
+                            <li><a href="../pages/dieu-khoan-thoa-thuan.html" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
+                            <li><a href="../pages/chinh-sach-bao-mat.html" class="hover:text-orange-500">Chính sách bảo mật</a></li>
+                            <li><a href="../pages/giai-quyet-khieu-nai.html" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
                         </ul>
                     </div>
                 </div>
@@ -444,6 +451,7 @@
     <script src="../assets/js/user-storage.js"></script>
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
 
     <script>
         const keywordFilter = document.getElementById('keywordFilter');
@@ -798,10 +806,13 @@
                         Không tìm thấy dự án nào phù hợp với bộ lọc hiện tại. Bạn thử đổi từ khóa, khu vực hoặc loại hình.
                     </div>
                 `;
-                return;
+            } else {
+                projectGrid.innerHTML = filteredProjects.map(renderProjectCard).join('');
             }
 
-            projectGrid.innerHTML = filteredProjects.map(renderProjectCard).join('');
+            if (typeof renderSeoContent === 'function') {
+                renderSeoContent('seoContent', 'project');
+            }
         }
 
         function resetFilters() {
