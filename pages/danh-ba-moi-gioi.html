@@ -1,216 +1,1169 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh bạ Môi giới | ToamViet.com.vn</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Danh bạ môi giới | ToamViet.com.vn</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+
     <style>
-        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f4; color: #2C2C2C; }
-        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        .nav-link { transition: all 0.3s; position: relative; }
-        .nav-link:hover { color: var(--hover-color) !important; }
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 200px; border-top: 2px solid var(--vip-color); z-index: 50; }
-        .dropdown-item { padding: 10px 20px; display: block; color: #333; font-size: 14px; border-bottom: 1px solid #f2f2f2; }
-        .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
+        :root {
+            --brand-primary: #0f9aa8;
+            --brand-primary-dark: #0d7f8a;
+            --brand-accent: #ff8c00;
+            --soft-bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #64748b;
+            --border-color: #e5e7eb;
+            --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.05);
+            --shadow-hover: 0 14px 34px rgba(15, 23, 42, 0.1);
+        }
 
-        /* Profile Header */
-        .profile-header { background:white; border-radius:12px; padding:20px; display:flex; gap:20px; margin-bottom:20px; }
-        .profile-avatar { width:120px; height:120px; border-radius:12px; object-fit:cover; border:1px solid #ddd; }
-        .profile-info h1 { font-size:24px; font-weight:800; color:var(--vip-color); }
-        .profile-info p { font-size:14px; color:#555; margin-top:4px; }
-        .label { display:inline-block; padding:4px 10px; font-size:10px; font-weight:800; text-transform:uppercase; border-radius:999px; border:1px solid; margin-right:5px; margin-top:5px; }
+        * {
+            box-sizing: border-box;
+        }
 
-        /* Posts */
-        .post-card { background:white; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb; transition:0.3s; display:flex; flex-direction:column; height:100%; cursor:pointer; }
-        .post-card:hover { transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.1); border-color:var(--vip-color); }
-        .post-card img { width:100%; height:180px; object-fit:cover; }
-        .post-card-body { padding:12px; display:flex; flex-direction:column; gap:6px; flex:1; }
-        .post-card-title { font-size:16px; font-weight:700; color:#0f172a; min-height:40px; }
-        .post-card-meta { font-size:12px; color:#64748b; display:flex; justify-content:space-between; }
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--soft-bg);
+            color: var(--text-main);
+        }
 
-        /* Pagination */
-        .pagination { display:flex; justify-content:center; gap:6px; margin-top:20px; }
-        .pagination button { padding:6px 12px; border-radius:6px; border:1px solid #ccc; font-size:13px; font-weight:600; }
-        .pagination button.active { background:var(--vip-color); color:white; border:none; }
+        .container-custom {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
 
-        /* Filter */
-        .filter-bar { background:white; border-radius:12px; padding:15px; margin-bottom:20px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-        .filter-bar select, .filter-bar input { border:1px solid #ccc; border-radius:6px; padding:6px 10px; outline:none; }
-        .filter-bar button { background:var(--vip-color); color:white; border:none; padding:6px 12px; font-weight:700; border-radius:6px; }
+        .section-title,
+        h1.section-title,
+        h2.section-title {
+            position: relative;
+            font-size: 26px;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0;
+            padding-left: 0 !important;
+            border-left: none !important;
+        }
+
+        .section-title::before,
+        .section-title::after,
+        h1.section-title::before,
+        h1.section-title::after,
+        h2.section-title::before,
+        h2.section-title::after {
+            content: none !important;
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: none !important;
+            border: none !important;
+        }
+
+        .hero-box {
+            background: linear-gradient(135deg, rgba(15,154,168,0.08), rgba(255,140,0,0.08));
+            border: 1px solid #dbe7ee;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 22px;
+        }
+
+        .hero-desc {
+            margin-top: 10px;
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 900px;
+        }
+
+        .filter-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 22px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr) auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-input,
+        .filter-select {
+            width: 100%;
+            min-height: 48px;
+            border: 1px solid #dbe3eb;
+            border-radius: 14px;
+            background: #fff;
+            padding: 0 14px;
+            font-size: 14px;
+            color: #334155;
+            outline: none;
+            transition: 0.25s ease;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 4px rgba(15,154,168,0.08);
+        }
+
+        .filter-btn {
+            min-height: 48px;
+            padding: 0 18px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.96;
+        }
+
+        .toolbar-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-text {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .agent-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: 0.25s ease;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(15,154,168,0.3);
+        }
+
+        .agent-card-top {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid #eef2f7;
+        }
+
+        .agent-head {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .agent-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .agent-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .agent-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .agent-role {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .pill-type {
+            background: #ecfeff;
+            color: #0f766e;
+            border: 1px solid #bae6fd;
+        }
+
+        .pill-area {
+            background: #fff7ed;
+            color: #ea580c;
+            border: 1px solid #fed7aa;
+        }
+
+        .agent-card-body {
+            padding: 16px 20px 18px;
+        }
+
+        .agent-info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .agent-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 12px;
+            font-size: 14px;
+            line-height: 1.7;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .agent-info-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .agent-info-label {
+            color: #64748b;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .agent-info-value {
+            color: #1f2937;
+            font-weight: 600;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .agent-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .agent-detail-btn,
+        .agent-call-btn {
+            min-height: 44px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .agent-detail-btn {
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+            color: #fff;
+            border: none;
+        }
+
+        .agent-detail-btn:hover {
+            opacity: 0.96;
+            transform: translateY(-1px);
+        }
+
+        .agent-call-btn {
+            width: 44px;
+            background: #fff;
+            color: #ea580c;
+            border: 1px solid #fdba74;
+        }
+
+        .agent-call-btn:hover {
+            background: #fff7ed;
+        }
+
+        .agent-posts {
+            margin-top: 14px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .agent-post-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.2s ease;
+        }
+
+        .agent-post-item:hover {
+            border-color: rgba(15,154,168,0.28);
+            background: #f0fdff;
+        }
+
+        .agent-post-thumb {
+            width: 72px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #e5e7eb;
+        }
+
+        .agent-post-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .agent-post-meta {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 26px;
+        }
+
+        .pagination button {
+            min-width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+            padding: 0 12px;
+        }
+
+        .pagination button:hover {
+            border-color: var(--brand-primary);
+            color: var(--brand-primary-dark);
+        }
+
+        .pagination button.active {
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .empty-box {
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 1100px) {
+            .agent-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title,
+            h1.section-title,
+            h2.section-title {
+                font-size: 22px;
+            }
+
+            .hero-box {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+
+            .agent-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .agent-card-top,
+            .agent-card-body {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .agent-avatar {
+                width: 64px;
+                height: 64px;
+                font-size: 20px;
+            }
+
+            .agent-name {
+                font-size: 17px;
+            }
+        }
     </style>
 </head>
 <body>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
 
-<header class="bg-white border-b sticky top-0 z-[1000]">
-    <div class="container-custom h-[70px] flex justify-between items-center">
-        <a href="index.html"><img src="DAI TRONG SUOT (2).png" alt="Logo" class="h-10"></a>
-        <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-            <a href="nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-            <a href="nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-            <a href="du-an.html" class="nav-link">Dự án</a>
-            <a href="tin-tuc.html" class="nav-link">Tin tức</a>
-            <div class="dropdown relative">
-                <a href="#" class="nav-link flex items-center gap-1 text-[--vip-color]">Danh bạ <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
-                <div class="dropdown-menu">
-                    <a href="danh-ba-moi-gioi.html" class="dropdown-item">Danh bạ môi giới</a>
-                    <a href="danh-ba-doanh-nghiep.html" class="dropdown-item">Danh bạ doanh nghiệp</a>
-                </div>
+    <main class="container-custom py-6 md:py-8">
+        <div class="mb-5 text-sm text-slate-500 leading-7">
+            <a href="../index.html" class="hover:text-[color:var(--brand-primary-dark)]">Trang chủ</a>
+            <span class="mx-2">/</span>
+            <span class="text-slate-700 font-semibold">Danh bạ môi giới</span>
+        </div>
+
+        <section class="hero-box">
+            <h1 class="section-title">Danh bạ môi giới</h1>
+            <p class="hero-desc">
+                Danh sách các hồ sơ cá nhân đang hoạt động trên ToamViet. Người dùng có thể tìm theo tên hoặc tỉnh/thành, sau đó xem chi tiết hồ sơ và các tin đã đăng.
+            </p>
+        </section>
+
+        <section class="filter-card">
+            <div class="filter-grid">
+                <input
+                    type="text"
+                    id="search-name"
+                    class="filter-input"
+                    placeholder="Tìm theo tên môi giới..."
+                />
+
+                <select id="province-select" class="filter-select">
+                    <option value="">Tất cả tỉnh / thành</option>
+                </select>
+
+                <button class="filter-btn" onclick="applyFilter()">
+                    <i class="fa-solid fa-magnifying-glass mr-2"></i>
+                    Tìm kiếm
+                </button>
             </div>
-        </nav>
-    </div>
-</header>
+        </section>
 
-<main class="py-8 container-custom">
-    <!-- Filter -->
-    <div class="filter-bar">
-        <input type="text" id="search-name" placeholder="Tên môi giới">
-        <select id="province-select">
-            <option value="">Chọn tỉnh/thành</option>
-        </select>
-        <button onclick="applyFilter()">Tìm kiếm</button>
+        <div class="toolbar-row">
+            <div id="result-count" class="toolbar-text">Đang tải danh sách...</div>
+            <div class="toolbar-text">Vai trò hiển thị: <strong>Cá nhân</strong></div>
+        </div>
+
+        <section id="agent-grid" class="agent-grid"></section>
+        <div id="pagination" class="pagination"></div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <button id="goToTop" onclick="safeScrollToTop()">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
+
+    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
+        <i class="fa-solid fa-comment-dots"></i>
     </div>
 
-    <!-- Profile Header -->
-    <div class="profile-header">
-        <img src="" class="profile-avatar" id="profile-avatar">
-        <div class="profile-info">
-            <h1 id="profile-name">Tên môi giới</h1>
-            <p id="profile-type">Loại: Môi giới</p>
-            <p id="profile-address">Địa chỉ: Hà Nội</p>
-            <p id="profile-phone">Điện thoại: 0946 239 289</p>
-            <p id="profile-website">Website: www.toamviet.com.vn</p>
-            <div id="profile-labels" class="flex flex-wrap mt-2"></div>
-            <p id="profile-description" class="mt-3 text-gray-600 text-sm">Mô tả chi tiết...</p>
+    <div id="chatForm">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
         </div>
     </div>
 
-    <!-- User Posts -->
-    <h2 class="text-xl font-bold mb-4 text-gray-800">Các tin đăng của môi giới</h2>
-    <div id="user-posts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    <div class="pagination" id="pagination"></div>
-</main>
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
 
-<footer class="bg-white border-t mt-12 pt-12 pb-8">
-    <div class="container-custom text-sm text-gray-500 text-center">
-        © 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.
-    </div>
-</footer>
+    <script>
+        const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+        const ITEMS_PER_PAGE = 9;
 
-<script>
-    // ====== Mock profile & posts ======
-    const profile = {
-        id: "broker-1",
-        name: "Nguyễn Văn A",
-        type: "Môi giới",
-        address: "Quận 1, TP. Hồ Chí Minh",
-        phone: "0909 123 456",
-        website: "www.toamviet.com.vn",
-        labels: ["Môi giới chuyên nghiệp", "Bất động sản cao cấp"],
-        description: "Chuyên tư vấn, môi giới bất động sản tại TP.HCM và các tỉnh lân cận",
-        avatar: "https://via.placeholder.com/120x120?text=Avatar",
-        province: "TP. Hồ Chí Minh"
-    };
+        let allPosts = [];
+        let allAgents = [];
+        let filteredAgents = [];
+        let currentPage = 1;
 
-    const posts = Array.from({length:23}).map((_,i)=>({
-        id: `post-${i+1}`,
-        title: `Tin bất động sản ${i+1}`,
-        price: i%2===0?"5 tỷ":"25 triệu/tháng",
-        area: `${50+i} m²`,
-        location: i%2===0?"Hà Nội":"TP.HCM",
-        type: i%2===0?"Bán":"Thuê",
-        image: "https://via.placeholder.com/300x180",
-        province: i%2===0?"Hà Nội":"TP.HCM"
-    }));
-
-    // ====== Render profile ======
-    document.getElementById("profile-avatar").src = profile.avatar;
-    document.getElementById("profile-name").textContent = profile.name;
-    document.getElementById("profile-type").textContent = `Loại: ${profile.type}`;
-    document.getElementById("profile-address").textContent = `Địa chỉ: ${profile.address}`;
-    document.getElementById("profile-phone").textContent = `Điện thoại: ${profile.phone}`;
-    document.getElementById("profile-website").textContent = `Website: ${profile.website}`;
-    const labelsContainer = document.getElementById("profile-labels");
-    profile.labels.forEach(label=>{
-        const span = document.createElement("span");
-        span.className = "label border border-gray-300 text-gray-600";
-        span.textContent = label;
-        labelsContainer.appendChild(span);
-    });
-    document.getElementById("profile-description").textContent = profile.description;
-
-    // ====== Province dropdown ======
-    const provinces = ["Hà Nội","TP. Hồ Chí Minh","Đà Nẵng","Hải Phòng","Cần Thơ","Bình Dương","Đồng Nai","Khánh Hòa","Quảng Ninh","Thanh Hóa","Bình Thuận","Bà Rịa - Vũng Tàu","Hưng Yên","Bắc Ninh","Thừa Thiên Huế","Nghệ An","Vĩnh Phúc","Hải Dương","Nam Định","Quảng Nam","Bắc Giang","Hòa Bình","Phú Thọ","Lạng Sơn","Bắc Kạn","Bình Phước","Long An","Tiền Giang","Hà Tĩnh","Cà Mau","An Giang","Kiên Giang","Trà Vinh","Sóc Trăng"];
-    const selectProvince = document.getElementById("province-select");
-    provinces.forEach(p=>{
-        const option = document.createElement("option");
-        option.value = p;
-        option.textContent = p;
-        selectProvince.appendChild(option);
-    });
-
-    // ====== Pagination ======
-    const postsPerPage = 10;
-    let currentPage = 1;
-    let filteredPosts = [...posts];
-
-    function renderPosts(page=1){
-        const start = (page-1)*postsPerPage;
-        const end = start+postsPerPage;
-        const pagedPosts = filteredPosts.slice(start,end);
-        const container = document.getElementById("user-posts");
-        container.innerHTML = "";
-        pagedPosts.forEach(p=>{
-            const card = document.createElement("div");
-            card.className="post-card";
-            card.onclick = ()=>{ window.location.href=`chi-tiet-tin.html?id=${p.id}`; };
-            card.innerHTML=`
-                <img src="${p.image}" alt="${p.title}">
-                <div class="post-card-body">
-                    <div class="post-card-title">${p.title}</div>
-                    <div class="post-card-meta">
-                        <span>${p.price}</span>
-                        <span>${p.area}</span>
-                    </div>
-                    <div class="post-card-meta">
-                        <span>${p.location}</span>
-                        <span class="text-gray-400">${p.type}</span>
-                    </div>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-        renderPagination();
-    }
-
-    function renderPagination(){
-        const pageCount = Math.ceil(filteredPosts.length/postsPerPage);
-        const container = document.getElementById("pagination");
-        container.innerHTML="";
-        for(let i=1;i<=pageCount;i++){
-            const btn=document.createElement("button");
-            btn.textContent=i;
-            if(i===currentPage) btn.classList.add("active");
-            btn.onclick = ()=>{ currentPage=i; renderPosts(currentPage); }
-            container.appendChild(btn);
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
-    }
 
-    function applyFilter(){
-        const name = document.getElementById("search-name").value.toLowerCase();
-        const province = selectProvince.value;
-        filteredPosts = posts.filter(p=>{
-            return (p.title.toLowerCase().includes(name) || profile.name.toLowerCase().includes(name)) &&
-                   (province==="" || p.province === province);
-        });
-        currentPage = 1;
-        renderPosts(currentPage);
-    }
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
 
-    renderPosts(currentPage);
-</script>
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === "function") {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById("chatForm");
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
+            }
+        }
+
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        function createPostId(post, index = 0) {
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
+                return String(post.id).trim();
+            }
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
+                return String(post.postId).trim();
+            }
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
+                return String(post.slug).trim();
+            }
+
+            const stableParts = [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.city,
+                post.ward,
+                post.contactPhone,
+                post.createdAt,
+                index
+            ];
+
+            return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
+        }
+
+        function getAllowedPublicStatuses() {
+            return ["approved", "published", "demo"];
+        }
+
+        function isBusinessProfile(post) {
+            const role = normalizeText(post.roleLabel || post.role || "");
+            const profileType = normalizeText(post.profileType);
+
+            return profileType === "doanhnghiep" ||
+                !!post.brandName ||
+                !!post.serviceBrand ||
+                role.includes("doanh nghiep") ||
+                role.includes("doanhnghiep") ||
+                role.includes("nha thau");
+        }
+
+        function isPersonalProfile(post) {
+            return !isBusinessProfile(post);
+        }
+
+        function buildPoster(post) {
+            return post.contactName || post.fullName || "Cá nhân";
+        }
+
+        function getAvatarText(post) {
+            const source = buildPoster(post);
+            return source
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(word => word.charAt(0).toUpperCase())
+                .join("") || "CN";
+        }
+
+        function getPosterRole() {
+            return "Cá nhân";
+        }
+
+        function buildLocation(post) {
+            return [post.ward, post.city].filter(Boolean).join(", ");
+        }
+
+        function buildFullAddress(post) {
+            return [post.addressDetail, post.ward, post.city].filter(Boolean).join(", ");
+        }
+
+        function normalizePhone(phone) {
+            return String(phone || "").replace(/[^\d+]/g, "");
+        }
+
+        function formatDisplayPhone(phone) {
+            const digits = String(phone || "").replace(/[^\d]/g, "");
+            if (!digits) return "Liên hệ";
+            if (digits.length <= 4) return digits;
+            if (digits.length <= 7) return digits.replace(/(\d{4})(\d+)/, "$1 $2");
+            if (digits.length <= 10) return digits.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3");
+            return digits.replace(/(\d{4})(\d{3})(\d{3,})/, "$1 $2 $3");
+        }
+
+        function getCardImage(post) {
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+                return post.thumbnail;
+            }
+
+            if (post.avatar && typeof post.avatar === "string" && post.avatar.trim()) {
+                return post.avatar;
+            }
+
+            if (post.avatarUrl && typeof post.avatarUrl === "string" && post.avatarUrl.trim()) {
+                return post.avatarUrl;
+            }
+
+            if (Array.isArray(post.images) && post.images.length) {
+                const firstImage = post.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
+                if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
+                if (firstImage && firstImage.url) return firstImage.url;
+            }
+
+            return FALLBACK_IMAGE;
+        }
+
+        function getProfileAvatarHtml(post) {
+            const avatar = post.avatar || post.avatarUrl || "";
+            if (typeof avatar === "string" && avatar.trim()) {
+                return `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(buildPoster(post))}" onerror="this.parentNode.textContent='${escapeHtml(getAvatarText(post))}'">`;
+            }
+            return escapeHtml(getAvatarText(post));
+        }
+
+        function formatPrice(priceText) {
+            return String(priceText || "").trim() || "Liên hệ";
+        }
+
+        function formatArea(area) {
+            return area ? String(area).trim() + " m²" : "Chưa rõ";
+        }
+
+        function getPostsFromStorage() {
+            let posts = [];
+
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    posts = window.postStorage.getAllPosts().filter(post => {
+                        return post && getAllowedPublicStatuses().includes(normalizeText(post.status || "approved"));
+                    });
+                }
+            } catch (error) {
+                posts = [];
+            }
+
+            if (posts.length) return posts;
+
+            try {
+                const localPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                if (Array.isArray(localPosts)) {
+                    return localPosts.filter(post => post && getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")));
+                }
+            } catch (error) {}
+
+            return [];
+        }
+
+        function getFallbackPosts() {
+            return [
+                {
+                    id: "home-sale-1",
+                    title: "Căn hộ Diamond Alnata Plus - Khu đô thị Celadon City",
+                    propertyType: "Căn hộ",
+                    propertyPrice: "4.2 tỷ",
+                    propertyArea: "85",
+                    city: "TP.HCM",
+                    ward: "Tân Phú",
+                    addressDetail: "Khu Celadon City",
+                    contactName: "Nguyễn Thành An",
+                    roleLabel: "Môi giới chuyên nghiệp",
+                    contactPhone: "0912598888",
+                    contactEmail: "thanhan@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "ban",
+                    vipLevel: "kim-cuong",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                },
+                {
+                    id: "home-sale-3",
+                    title: "Bán biệt thự compound cao cấp view hồ",
+                    propertyType: "Biệt thự",
+                    propertyPrice: "26 tỷ",
+                    propertyArea: "260",
+                    city: "Hà Nội",
+                    ward: "Nam Từ Liêm",
+                    addressDetail: "Khu compound cao cấp",
+                    contactName: "Lê Thu Trang",
+                    roleLabel: "Môi giới chuyên nghiệp",
+                    contactPhone: "0901234567",
+                    contactEmail: "thutrang@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "ban",
+                    vipLevel: "bac",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                },
+                {
+                    id: "home-sale-4",
+                    title: "Đất nền pháp lý sạch gần khu công nghiệp lớn",
+                    propertyType: "Đất nền",
+                    propertyPrice: "2.3 tỷ",
+                    propertyArea: "100",
+                    city: "Đồng Nai",
+                    ward: "Long Thành",
+                    addressDetail: "Gần khu công nghiệp",
+                    contactName: "Trần Quang Huy",
+                    roleLabel: "Chuyên viên tư vấn",
+                    contactPhone: "0988123456",
+                    contactEmail: "quanghuy@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "ban",
+                    vipLevel: "dong",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                },
+                {
+                    id: "home-rent-1",
+                    title: "Cho thuê căn hộ cao cấp Vinhomes Central Park full nội thất",
+                    propertyType: "Căn hộ",
+                    propertyPrice: "25 triệu/tháng",
+                    propertyArea: "85",
+                    city: "TP.HCM",
+                    ward: "Bình Thạnh",
+                    addressDetail: "Gần Landmark 81",
+                    contactName: "Trần Thị Lan Anh",
+                    roleLabel: "Chuyên viên cho thuê",
+                    contactPhone: "0901234567",
+                    contactEmail: "lananh@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "thue",
+                    vipLevel: "vang",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                },
+                {
+                    id: "home-rent-3",
+                    title: "Cho thuê nhà phố nguyên căn khu dân cư cao cấp",
+                    propertyType: "Nhà phố",
+                    propertyPrice: "18 triệu/tháng",
+                    propertyArea: "95",
+                    city: "Cần Thơ",
+                    ward: "Ninh Kiều",
+                    addressDetail: "Khu dân cư cao cấp",
+                    contactName: "Lý Minh Quân",
+                    roleLabel: "Chuyên viên cho thuê",
+                    contactPhone: "0911888999",
+                    contactEmail: "minhquan@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "thue",
+                    vipLevel: "dong",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                },
+                {
+                    id: "agent-build-1",
+                    title: "Dịch vụ tư vấn xây nhà trọn gói tại Hà Nội",
+                    serviceType: "Xây nhà trọn gói",
+                    servicePrice: "Liên hệ",
+                    serviceExp: "7 năm kinh nghiệm",
+                    serviceArea: "Hà Nội",
+                    serviceSpecialty: "Nhà phố dân dụng",
+                    city: "Hà Nội",
+                    ward: "Nam Từ Liêm",
+                    addressDetail: "Làm việc linh hoạt theo dự án",
+                    contactName: "Lê Thu Trang",
+                    roleLabel: "Cá nhân",
+                    contactPhone: "0901234567",
+                    contactEmail: "thutrang@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "construction",
+                    postType: "xaydung",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                }
+            ];
+        }
+
+        function getDataSource() {
+            const posts = getPostsFromStorage();
+            return posts.length ? posts : getFallbackPosts();
+        }
+
+        function buildAgentList(posts) {
+            const personalPosts = posts.filter(isPersonalProfile);
+            const map = new Map();
+
+            personalPosts.forEach((post, index) => {
+                const key = [
+                    normalizeText(post.contactPhone),
+                    normalizeText(post.contactEmail),
+                    normalizeText(post.contactName),
+                    normalizeText(post.fullName)
+                ].find(Boolean) || createPostId(post, index);
+
+                if (!map.has(key)) {
+                    map.set(key, {
+                        id: createPostId(post, index),
+                        name: buildPoster(post),
+                        role: getPosterRole(),
+                        phone: post.contactPhone || "",
+                        email: post.contactEmail || post.email || "",
+                        city: post.city || "",
+                        ward: post.ward || "",
+                        address: buildFullAddress(post),
+                        specialty: post.serviceSpecialty || post.specialty || post.propertyType || post.serviceType || "Đang cập nhật",
+                        avatarHtml: getProfileAvatarHtml(post),
+                        posts: []
+                    });
+                }
+
+                map.get(key).posts.push(post);
+            });
+
+            return Array.from(map.values())
+                .map(agent => {
+                    const cityCounter = {};
+                    agent.posts.forEach(post => {
+                        const city = post.city || "Khác";
+                        cityCounter[city] = (cityCounter[city] || 0) + 1;
+                    });
+
+                    const sortedCities = Object.entries(cityCounter).sort((a, b) => b[1] - a[1]);
+                    const mainCity = sortedCities.length ? sortedCities[0][0] : "Đang cập nhật";
+
+                    return {
+                        ...agent,
+                        city: mainCity,
+                        totalPosts: agent.posts.length
+                    };
+                })
+                .sort((a, b) => b.totalPosts - a.totalPosts || a.name.localeCompare(b.name, "vi"));
+        }
+
+        function fillProvinceFilter(agents) {
+            const provinceSelect = document.getElementById("province-select");
+            const cities = Array.from(
+                new Set(
+                    agents.map(agent => agent.city).filter(Boolean)
+                )
+            ).sort((a, b) => a.localeCompare(b, "vi"));
+
+            provinceSelect.innerHTML =
+                '<option value="">Tất cả tỉnh / thành</option>' +
+                cities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("");
+        }
+
+        function getPostBadgeType(post) {
+            const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
+            return isConstruction ? "Xây dựng" : (post.propertyType || "Bất động sản");
+        }
+
+        function getPostMetaLine(post) {
+            const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
+
+            if (isConstruction) {
+                return `${formatPrice(post.servicePrice)} • ${post.serviceExp || "Đang cập nhật"}`;
+            }
+
+            return `${formatPrice(post.propertyPrice)} • ${formatArea(post.propertyArea)}`;
+        }
+
+        function getAgentDetailUrl(agent) {
+            return `../pages/chi-tiet-moi-gioi.html?id=${encodeURIComponent(agent.id)}`;
+        }
+
+        function getPostDetailUrl(post, index) {
+            const id = createPostId(post, index);
+            return `../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}`;
+        }
+
+        function renderAgentCard(agent) {
+            const topPosts = agent.posts.slice(0, 2);
+
+            return `
+                <article class="agent-card">
+                    <div class="agent-card-top">
+                        <div class="agent-head">
+                            <div class="agent-avatar">${agent.avatarHtml}</div>
+
+                            <div class="min-w-0 flex-1">
+                                <h3 class="agent-name">${escapeHtml(agent.name)}</h3>
+                                <div class="agent-role">${escapeHtml(agent.role)}</div>
+
+                                <div class="pill-row">
+                                    <span class="pill pill-type">
+                                        <i class="fa-solid fa-user"></i> Cá nhân
+                                    </span>
+                                    <span class="pill pill-area">
+                                        <i class="fa-solid fa-location-dot"></i> ${escapeHtml(agent.city || "Đang cập nhật")}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="agent-card-body">
+                        <div class="agent-info-list">
+                            <div class="agent-info-item">
+                                <span class="agent-info-label">Điện thoại</span>
+                                <span class="agent-info-value">${escapeHtml(formatDisplayPhone(agent.phone))}</span>
+                            </div>
+                            <div class="agent-info-item">
+                                <span class="agent-info-label">Email</span>
+                                <span class="agent-info-value">${escapeHtml(agent.email || "Đang cập nhật")}</span>
+                            </div>
+                            <div class="agent-info-item">
+                                <span class="agent-info-label">Chuyên môn</span>
+                                <span class="agent-info-value">${escapeHtml(agent.specialty || "Đang cập nhật")}</span>
+                            </div>
+                            <div class="agent-info-item">
+                                <span class="agent-info-label">Tổng số tin</span>
+                                <span class="agent-info-value">${escapeHtml(String(agent.totalPosts))}</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-actions">
+                            <a href="${getAgentDetailUrl(agent)}" class="agent-detail-btn">Xem hồ sơ</a>
+                            <a href="${agent.phone ? `tel:${normalizePhone(agent.phone)}` : 'javascript:void(0)'}" class="agent-call-btn" aria-label="Gọi ngay">
+                                <i class="fa-solid fa-phone"></i>
+                            </a>
+                        </div>
+
+                        ${
+                            topPosts.length
+                                ? `
+                                    <div class="agent-posts">
+                                        ${topPosts.map((post, index) => `
+                                            <a href="${getPostDetailUrl(post, index)}" class="agent-post-item">
+                                                <img
+                                                    src="${escapeHtml(getCardImage(post))}"
+                                                    alt="${escapeHtml(post.title || 'Tin đăng')}"
+                                                    class="agent-post-thumb"
+                                                    onerror="this.src='${FALLBACK_IMAGE}'"
+                                                />
+                                                <div class="min-w-0">
+                                                    <div class="agent-post-title">${escapeHtml(post.title || "Tin đăng")}</div>
+                                                    <div class="agent-post-meta">
+                                                        ${escapeHtml(getPostBadgeType(post))} • ${escapeHtml(getPostMetaLine(post))}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        `).join("")}
+                                    </div>
+                                `
+                                : ""
+                        }
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderAgents(page = 1) {
+            const grid = document.getElementById("agent-grid");
+            const resultCount = document.getElementById("result-count");
+
+            if (!filteredAgents.length) {
+                grid.innerHTML = `<div class="empty-box" style="grid-column:1 / -1;">Không tìm thấy môi giới phù hợp với điều kiện lọc hiện tại.</div>`;
+                document.getElementById("pagination").innerHTML = "";
+                resultCount.textContent = "0 hồ sơ";
+                return;
+            }
+
+            const total = filteredAgents.length;
+            resultCount.textContent = `${total} hồ sơ cá nhân`;
+
+            const start = (page - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const pagedAgents = filteredAgents.slice(start, end);
+
+            grid.innerHTML = pagedAgents.map(renderAgentCard).join("");
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const pageCount = Math.ceil(filteredAgents.length / ITEMS_PER_PAGE);
+            const container = document.getElementById("pagination");
+            container.innerHTML = "";
+
+            if (pageCount <= 1) return;
+
+            for (let i = 1; i <= pageCount; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                if (i === currentPage) btn.classList.add("active");
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderAgents(currentPage);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                };
+                container.appendChild(btn);
+            }
+        }
+
+        function applyFilter() {
+            const keyword = normalizeText(document.getElementById("search-name").value);
+            const province = normalizeText(document.getElementById("province-select").value);
+
+            filteredAgents = allAgents.filter(agent => {
+                const matchKeyword =
+                    !keyword ||
+                    normalizeText(agent.name).includes(keyword) ||
+                    normalizeText(agent.specialty).includes(keyword) ||
+                    agent.posts.some(post => normalizeText(post.title).includes(keyword));
+
+                const matchProvince =
+                    !province || normalizeText(agent.city) === province;
+
+                return matchKeyword && matchProvince;
+            });
+
+            currentPage = 1;
+            renderAgents(currentPage);
+        }
+
+        function initPage() {
+            allPosts = getDataSource();
+            allAgents = buildAgentList(allPosts);
+            filteredAgents = [...allAgents];
+
+            fillProvinceFilter(allAgents);
+            renderAgents(currentPage);
+
+            const searchInput = document.getElementById("search-name");
+            searchInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") applyFilter();
+            });
+
+            document.getElementById("province-select").addEventListener("change", applyFilter);
+        }
+
+        window.addEventListener("load", initPage);
+    </script>
+
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>
