@@ -20,9 +20,7 @@
             --stroke: #e5e7eb;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -36,9 +34,7 @@
             padding: 0 15px;
         }
 
-        .page-shell {
-            padding: 28px 0 56px;
-        }
+        .page-shell { padding: 28px 0 56px; }
 
         .search-box,
         .list-card,
@@ -97,9 +93,7 @@
             cursor: pointer;
         }
 
-        .primary-btn:hover {
-            opacity: 0.92;
-        }
+        .primary-btn:hover { opacity: 0.92; }
 
         .tab-row {
             display: flex;
@@ -184,9 +178,7 @@
             transition: 0.22s ease;
         }
 
-        .directory-title-link:hover {
-            color: var(--hover-color);
-        }
+        .directory-title-link:hover { color: var(--hover-color); }
 
         .directory-title {
             font-size: 18px;
@@ -265,9 +257,7 @@
             border-left: 4px solid var(--vip-color);
         }
 
-        .sidebar-card {
-            padding: 20px;
-        }
+        .sidebar-card { padding: 20px; }
 
         .sidebar-list li {
             display: flex;
@@ -279,9 +269,7 @@
             color: #4b5563;
         }
 
-        .sidebar-list li:last-child {
-            border-bottom: none;
-        }
+        .sidebar-list li:last-child { border-bottom: none; }
 
         .register-box {
             background: #111827;
@@ -358,10 +346,7 @@
         }
 
         @media (max-width: 1024px) {
-            .directory-card {
-                padding: 20px;
-            }
-
+            .directory-card { padding: 20px; }
             .directory-logo-link {
                 width: 130px;
                 height: 130px;
@@ -369,22 +354,13 @@
         }
 
         @media (max-width: 768px) {
-            .directory-card {
-                flex-direction: column;
-            }
-
+            .directory-card { flex-direction: column; }
             .directory-logo-link {
                 width: 100%;
                 height: 220px;
             }
-
-            .page-title {
-                font-size: 21px;
-            }
-
-            .search-box {
-                padding: 18px;
-            }
+            .page-title { font-size: 21px; }
+            .search-box { padding: 18px; }
         }
     </style>
 </head>
@@ -406,9 +382,7 @@
                     <select id="searchCity" class="filter-select">
                         <option value="">Tất cả tỉnh / thành</option>
                     </select>
-                    <button id="searchBtn" class="primary-btn">
-                        Tìm kiếm
-                    </button>
+                    <button id="searchBtn" class="primary-btn">Tìm kiếm</button>
                 </div>
             </div>
 
@@ -436,12 +410,7 @@
                 <aside class="space-y-6">
                     <div class="sidebar-card">
                         <div class="sidebar-title">Nhóm môi giới nổi bật</div>
-                        <ul class="sidebar-list">
-                            <li><span>Môi giới nhà ở</span> <span class="text-gray-400">(452)</span></li>
-                            <li><span>Chuyên viên cho thuê</span> <span class="text-gray-400">(310)</span></li>
-                            <li><span>Tư vấn đầu tư</span> <span class="text-gray-400">(125)</span></li>
-                            <li><span>Hỗ trợ xây dựng</span> <span class="text-gray-400">(89)</span></li>
-                        </ul>
+                        <ul class="sidebar-list" id="sidebarBrokerList"></ul>
                     </div>
 
                     <div class="register-box">
@@ -498,25 +467,13 @@
         }
 
         function createPostId(post, index = 0) {
-            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
-                return String(post.id).trim();
-            }
-            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
-                return String(post.postId).trim();
-            }
-            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
-                return String(post.slug).trim();
-            }
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) return String(post.id).trim();
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) return String(post.postId).trim();
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) return String(post.slug).trim();
 
             const stableParts = [
-                post.title,
-                post.propertyType,
-                post.serviceType,
-                post.city,
-                post.ward,
-                post.contactPhone,
-                post.createdAt,
-                index
+                post.title, post.propertyType, post.serviceType,
+                post.city, post.ward, post.contactPhone, post.createdAt, index
             ];
 
             return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
@@ -570,13 +527,8 @@
 
         function getTagGroup(post) {
             const text = normalizeText(
-                post.roleLabel ||
-                post.role ||
-                post.serviceSpecialty ||
-                post.specialty ||
-                post.serviceType ||
-                post.propertyType ||
-                ""
+                post.roleLabel || post.role || post.serviceSpecialty || post.specialty ||
+                post.serviceType || post.propertyType || ""
             );
 
             const tags = [];
@@ -604,7 +556,6 @@
                 "tu-van": { text: "Tư vấn", cls: "tag-purple" },
                 "xay-dung": { text: "Hỗ trợ xây dựng", cls: "tag-orange" }
             };
-
             const config = map[tag];
             if (!config) return "";
             return `<span class="tag-chip ${config.cls}">${config.text}</span>`;
@@ -629,12 +580,10 @@
                                 <i class="fa-solid fa-location-dot"></i>
                                 <span>${item.address || "Đang cập nhật địa chỉ"}</span>
                             </div>
-
                             <div class="meta-line">
                                 <i class="fa-solid fa-phone"></i>
                                 <span>${item.phone || "Đang cập nhật số điện thoại"}</span>
                             </div>
-
                             <div class="meta-line">
                                 <i class="fa-solid fa-globe"></i>
                                 <span>${item.website || "Đang cập nhật website"}</span>
@@ -659,11 +608,11 @@
 
             try {
                 if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
-                    posts = window.postStorage.getAllPosts().filter(post => {
-                        return post &&
-                            getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
-                            isPersonalProfile(post);
-                    });
+                    posts = window.postStorage.getAllPosts().filter(post =>
+                        post &&
+                        getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
+                        isPersonalProfile(post)
+                    );
                 }
             } catch (error) {
                 posts = [];
@@ -767,6 +716,40 @@
             }).sort((a, b) => a.name.localeCompare(b.name, "vi"));
         }
 
+        function buildSidebarStats(items) {
+            const stats = {
+                "moi-gioi": 0,
+                "cho-thue": 0,
+                "tu-van": 0,
+                "xay-dung": 0
+            };
+
+            items.forEach(item => {
+                (item.tags || []).forEach(tag => {
+                    if (stats[tag] !== undefined) stats[tag] += 1;
+                });
+            });
+
+            return [
+                { key: "moi-gioi", label: "Môi giới nhà ở", count: stats["moi-gioi"] },
+                { key: "cho-thue", label: "Chuyên viên cho thuê", count: stats["cho-thue"] },
+                { key: "tu-van", label: "Tư vấn đầu tư", count: stats["tu-van"] },
+                { key: "xay-dung", label: "Hỗ trợ xây dựng", count: stats["xay-dung"] }
+            ];
+        }
+
+        function renderSidebarStats(items) {
+            const sidebar = document.getElementById("sidebarBrokerList");
+            const stats = buildSidebarStats(items);
+
+            sidebar.innerHTML = stats.map(item => `
+                <li>
+                    <span>${item.label}</span>
+                    <span class="text-gray-400">(${item.count})</span>
+                </li>
+            `).join("");
+        }
+
         function filterData() {
             const keyword = normalizeText(document.getElementById("searchKeyword").value);
             const city = document.getElementById("searchCity").value;
@@ -779,7 +762,6 @@
                     normalizeText(item.description).includes(keyword);
 
                 let matchFilter = true;
-
                 if (currentFilter !== "all") {
                     matchFilter = Array.isArray(item.tags) && item.tags.includes(currentFilter);
                 }
@@ -815,6 +797,7 @@
 
             const filtered = filterData();
             resultCount.textContent = filtered.length;
+            renderSidebarStats(directoryData);
 
             if (!filtered.length) {
                 container.innerHTML = `
@@ -871,7 +854,9 @@
                 console.warn("Không load được vietnam-address.json, dùng fallback city list.");
             }
 
-            const fallbackCities = [...new Set(directoryData.map(item => item.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, "vi"));
+            const fallbackCities = [...new Set(directoryData.map(item => item.city).filter(Boolean))]
+                .sort((a, b) => a.localeCompare(b, "vi"));
+
             citySelect.innerHTML = `<option value="">Tất cả tỉnh / thành</option>` +
                 fallbackCities.map(city => `<option value="${city}">${city}</option>`).join("");
 
