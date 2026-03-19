@@ -6,19 +6,27 @@
   <title>Dự án bất động sản | ToamViet</title>
   <meta
     name="description"
-    content="Tổng hợp danh sách dự án bất động sản trên ToamViet. Xem thông tin chủ đầu tư, loại hình, diện tích, mức giá và số lượng tin bán - cho thuê thuộc từng dự án."
+    content="Tổng hợp danh sách dự án bất động sản trên ToamViet. Xem tên dự án, trạng thái, địa chỉ, chủ đầu tư, diện tích, giá và số lượng tin bán - cho thuê."
   />
   <meta
     name="keywords"
-    content="dự án bất động sản, danh sách dự án, chủ đầu tư, căn hộ, đất nền, nhà phố, dự án toamviet"
+    content="dự án bất động sản, danh sách dự án, chủ đầu tư, căn hộ, đất nền, nhà phố, dự án mới nhất"
   />
   <meta name="robots" content="index, follow" />
   <meta property="og:title" content="Dự án bất động sản | ToamViet" />
   <meta
     property="og:description"
-    content="Khám phá danh sách dự án bất động sản được tổng hợp trên ToamViet."
+    content="Khám phá danh sách dự án bất động sản và các dự án mới nhất trên ToamViet."
   />
   <meta property="og:type" content="website" />
+
+  <!-- Font Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
 
   <link rel="stylesheet" href="../assets/css/main.css" />
   <link rel="stylesheet" href="../assets/css/components.css" />
@@ -34,11 +42,9 @@
       --border: #e5e7eb;
       --primary: #0f62fe;
       --primary-soft: #eef4ff;
-      --success-soft: #ecfdf3;
-      --warning-soft: #fff7ed;
       --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.06);
-      --radius-lg: 20px;
-      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
       --radius-sm: 10px;
     }
 
@@ -46,11 +52,18 @@
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
+      padding: 0;
+      font-family: "Roboto", sans-serif;
       background: var(--page-bg);
       color: var(--text-main);
-      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
     }
 
     .project-page {
@@ -63,7 +76,7 @@
     }
 
     .breadcrumb {
-      padding: 14px 0 0;
+      padding: 16px 0 0;
       font-size: 14px;
       color: var(--text-sub);
     }
@@ -77,54 +90,157 @@
       color: var(--primary);
     }
 
-    .project-hero {
-      padding: 18px 0 24px;
+    /* ========= TOP SLIDER ========= */
+    .project-banner-section {
+      padding: 18px 0 28px;
     }
 
-    .project-hero__wrap {
+    .project-banner {
       position: relative;
       overflow: hidden;
-      background:
-        radial-gradient(circle at top left, rgba(15, 98, 254, 0.10), transparent 32%),
-        radial-gradient(circle at right bottom, rgba(37, 99, 235, 0.10), transparent 28%),
-        linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
-      border: 1px solid rgba(15, 98, 254, 0.08);
-      border-radius: 28px;
-      padding: 32px;
-      box-shadow: var(--shadow-soft);
+      border-radius: 30px;
+      min-height: 560px;
+      background: #dbe4f0;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
     }
 
-    .project-hero__label {
+    .project-banner__track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 560px;
+    }
+
+    .project-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.55s ease, visibility 0.55s ease;
+    }
+
+    .project-slide.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+
+    .project-slide__bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .project-slide__bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-slide__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(9, 17, 33, 0.62) 0%, rgba(9, 17, 33, 0.32) 32%, rgba(9, 17, 33, 0.15) 58%, rgba(9, 17, 33, 0.08) 100%),
+        linear-gradient(0deg, rgba(9, 17, 33, 0.30) 0%, rgba(9, 17, 33, 0.08) 45%, rgba(9, 17, 33, 0.02) 100%);
+    }
+
+    .project-slide__content {
+      position: absolute;
+      left: 64px;
+      bottom: 52px;
+      z-index: 3;
+      max-width: 760px;
+      color: #fff;
+    }
+
+    .project-slide__status {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      border-radius: 999px;
-      font-size: 13px;
+      min-height: 46px;
+      padding: 10px 18px;
+      border-radius: 14px;
+      background: #fef2f2;
+      color: #ef4444;
+      font-size: 18px;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 22px;
     }
 
-    .project-hero__title {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 42px);
-      line-height: 1.2;
+    .project-slide__title {
+      margin: 0 0 18px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.08;
       font-weight: 800;
-      max-width: 760px;
+      letter-spacing: -0.02em;
     }
 
-    .project-hero__desc {
-      margin: 14px 0 0;
-      max-width: 850px;
-      color: var(--text-sub);
-      font-size: 16px;
-      line-height: 1.7;
+    .project-slide__address {
+      margin: 0;
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 500;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.95);
     }
 
+    .project-banner__arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      width: 46px;
+      height: 46px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #1f2937;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+      transition: 0.2s ease;
+    }
+
+    .project-banner__arrow:hover {
+      transform: translateY(-50%) scale(1.04);
+    }
+
+    .project-banner__arrow.prev {
+      left: 20px;
+    }
+
+    .project-banner__arrow.next {
+      right: 20px;
+    }
+
+    .project-banner__dots {
+      position: absolute;
+      right: 42px;
+      bottom: 48px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .project-banner__dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(255, 255, 255, 0.65);
+      cursor: pointer;
+      transition: 0.2s ease;
+      padding: 0;
+    }
+
+    .project-banner__dot.active {
+      background: #ffffff;
+      transform: scale(1.05);
+    }
+
+    /* ========= STATS ========= */
     .project-overview {
-      padding: 20px 0 10px;
+      padding: 4px 0 14px;
     }
 
     .overview-grid {
@@ -137,7 +253,7 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 18px;
+      padding: 20px;
       box-shadow: var(--shadow-soft);
     }
 
@@ -148,7 +264,7 @@
     }
 
     .overview-card__value {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
       line-height: 1.2;
       margin-bottom: 6px;
@@ -157,8 +273,10 @@
     .overview-card__hint {
       font-size: 13px;
       color: var(--text-sub);
+      line-height: 1.6;
     }
 
+    /* ========= TOOLBAR ========= */
     .project-toolbar {
       padding: 18px 0 8px;
     }
@@ -182,13 +300,14 @@
 
     .toolbar-title {
       margin: 0;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
     }
 
     .toolbar-result {
       color: var(--text-sub);
       font-size: 14px;
+      margin-top: 6px;
     }
 
     .filter-grid {
@@ -212,7 +331,7 @@
 
     .field input,
     .field select {
-      height: 46px;
+      height: 48px;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 0 14px;
@@ -220,6 +339,7 @@
       outline: none;
       background: #fff;
       color: var(--text-main);
+      font-family: "Roboto", sans-serif;
       transition: 0.2s ease;
     }
 
@@ -236,13 +356,14 @@
     }
 
     .btn {
-      height: 46px;
+      height: 48px;
       border: none;
       border-radius: 12px;
       padding: 0 18px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
+      font-family: "Roboto", sans-serif;
       transition: 0.2s ease;
     }
 
@@ -253,7 +374,7 @@
 
     .btn-primary:hover {
       transform: translateY(-1px);
-      opacity: 0.95;
+      opacity: 0.96;
     }
 
     .btn-outline {
@@ -266,8 +387,9 @@
       background: #f9fafb;
     }
 
+    /* ========= PROJECT GRID ========= */
     .project-list-section {
-      padding: 20px 0 12px;
+      padding: 20px 0 16px;
     }
 
     .project-grid {
@@ -285,6 +407,12 @@
       display: flex;
       flex-direction: column;
       min-height: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.1);
     }
 
     .project-card__thumb-link {
@@ -305,7 +433,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
       transition: transform 0.35s ease;
     }
 
@@ -376,8 +503,9 @@
       font-size: 14px;
       color: var(--text-sub);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
+      line-height: 1.6;
     }
 
     .project-card__desc {
@@ -460,6 +588,7 @@
       font-size: 14px;
       font-weight: 800;
       transition: 0.2s ease;
+      font-family: "Roboto", sans-serif;
     }
 
     .card-link-primary {
@@ -510,7 +639,7 @@
     }
 
     .project-note {
-      padding: 14px 0 30px;
+      padding: 8px 0 30px;
     }
 
     .project-note__box {
@@ -528,7 +657,8 @@
     }
 
     .section-space {
-      margin-top: 26px;
+      margin-top: 22px;
+      margin-bottom: 38px;
     }
 
     @media (max-width: 1100px) {
@@ -547,6 +677,16 @@
       .overview-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+
+      .project-banner,
+      .project-banner__track {
+        min-height: 500px;
+      }
+
+      .project-slide__content {
+        left: 42px;
+        right: 42px;
+      }
     }
 
     @media (max-width: 767px) {
@@ -554,9 +694,64 @@
         width: min(100% - 24px, 1200px);
       }
 
-      .project-hero__wrap {
-        padding: 22px 18px;
+      .project-banner-section {
+        padding-top: 12px;
+      }
+
+      .project-banner,
+      .project-banner__track {
+        min-height: 420px;
         border-radius: 22px;
+      }
+
+      .project-slide__content {
+        left: 20px;
+        right: 20px;
+        bottom: 26px;
+      }
+
+      .project-slide__status {
+        min-height: 38px;
+        padding: 8px 14px;
+        font-size: 15px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+      }
+
+      .project-slide__title {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+
+      .project-slide__address {
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .project-banner__arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+        border-radius: 10px;
+      }
+
+      .project-banner__arrow.prev {
+        left: 12px;
+      }
+
+      .project-banner__arrow.next {
+        right: 12px;
+      }
+
+      .project-banner__dots {
+        right: 18px;
+        bottom: 18px;
+        gap: 8px;
+      }
+
+      .project-banner__dot {
+        width: 10px;
+        height: 10px;
       }
 
       .toolbar-box {
@@ -596,10 +791,6 @@
       .card-link-secondary {
         width: 100%;
       }
-
-      .project-hero__desc {
-        font-size: 15px;
-      }
     }
   </style>
 </head>
@@ -617,18 +808,22 @@
         </nav>
       </div>
 
-      <section class="project-hero">
+      <!-- Slider banner lấy từ dự án mới nhất -->
+      <section class="project-banner-section">
         <div class="tv-container">
-          <div class="project-hero__wrap">
-            <div class="project-hero__label">Danh mục dự án bất động sản</div>
-            <h1 class="project-hero__title">
-              Tổng hợp các dự án nổi bật đang có mặt trên ToamViet
-            </h1>
-            <p class="project-hero__desc">
-              Khám phá danh sách dự án theo loại hình, chủ đầu tư, khu vực, mức giá
-              và số lượng tin đăng bán - cho thuê. Đây là trang tổng hợp dùng để hiển thị
-              toàn bộ dự án đã được quản trị viên nhập dữ liệu vào hệ thống.
-            </p>
+          <div class="project-banner" id="projectBanner">
+            <div class="project-banner__track" id="projectBannerTrack">
+              <!-- Slide render bằng JS -->
+            </div>
+
+            <button class="project-banner__arrow prev" id="bannerPrevBtn" aria-label="Slide trước">
+              ‹
+            </button>
+            <button class="project-banner__arrow next" id="bannerNextBtn" aria-label="Slide tiếp theo">
+              ›
+            </button>
+
+            <div class="project-banner__dots" id="projectBannerDots"></div>
           </div>
         </div>
       </section>
@@ -665,7 +860,7 @@
           <div class="toolbar-box">
             <div class="toolbar-top">
               <div>
-                <h2 class="toolbar-title">Danh sách dự án</h2>
+                <h1 class="toolbar-title">Danh sách dự án</h1>
                 <div class="toolbar-result" id="resultText">
                   Đang tải dữ liệu dự án...
                 </div>
@@ -700,6 +895,7 @@
                 <label for="sortFilter">Sắp xếp</label>
                 <select id="sortFilter">
                   <option value="default">Mặc định</option>
+                  <option value="newest">Mới nhất</option>
                   <option value="name-asc">Tên A → Z</option>
                   <option value="name-desc">Tên Z → A</option>
                   <option value="price-asc">Giá thấp → cao</option>
@@ -739,15 +935,15 @@
       <section class="project-note">
         <div class="tv-container">
           <div class="project-note__box">
-            <strong>Ghi nhớ logic của trang này:</strong>
-            Card dự án lấy dữ liệu từ phần admin nhập dự án, sau đó link sang
-            <strong>chi-tiet-du-an.html</strong> để xem nội dung chi tiết. Trang này
-            chỉ là trang tổng hợp danh sách, không cần tạo thêm file mới.
+            <strong>Logic trang dự án:</strong>
+            phần banner đầu trang lấy các dự án mới nhất để làm slider nổi bật.
+            Phần bên dưới là danh sách tổng hợp toàn bộ dự án. Khi người dùng bấm vào
+            từng card thì chuyển sang <strong>chi-tiet-du-an.html</strong> để xem nội dung chi tiết.
           </div>
         </div>
       </section>
 
-      <!-- Khối SEO dùng chung -->
+      <!-- SEO content đặt gần chân trang -->
       <section class="section-space">
         <div class="tv-container">
           <div id="seo-content-root"></div>
@@ -783,8 +979,16 @@
       const applyFilterBtn = document.getElementById("applyFilterBtn");
       const resetFilterBtn = document.getElementById("resetFilterBtn");
 
+      const projectBannerTrack = document.getElementById("projectBannerTrack");
+      const projectBannerDots = document.getElementById("projectBannerDots");
+      const bannerPrevBtn = document.getElementById("bannerPrevBtn");
+      const bannerNextBtn = document.getElementById("bannerNextBtn");
+
       let allProjects = [];
       let filteredProjects = [];
+      let bannerProjects = [];
+      let currentSlideIndex = 0;
+      let bannerInterval = null;
 
       function escapeHtml(value) {
         return String(value || "")
@@ -835,7 +1039,7 @@
           project.image ||
           project.coverImage ||
           project.featuredImage ||
-          project.images?.[0] ||
+          (Array.isArray(project.images) ? project.images[0] : "") ||
           "../assets/images/fallback-property.jpg"
         );
       }
@@ -869,6 +1073,8 @@
           item.rentalPostsCount ?? item.rentalCount ?? item.totalRentalPosts ?? 0
         );
         const priceInfo = normalizePrice(item.price ?? item.priceFrom ?? item.minPrice ?? "");
+        const createdAt = item.createdAt || item.created_at || item.createdDate || item.dateCreated || "";
+        const updatedAt = item.updatedAt || item.updated_at || item.updatedDate || "";
 
         return {
           ...item,
@@ -885,8 +1091,21 @@
           rentalPosts: Number.isNaN(rentalPosts) ? 0 : rentalPosts,
           priceValue: priceInfo.value,
           priceText: priceInfo.text,
-          image: getImage(item)
+          image: getImage(item),
+          createdAt,
+          updatedAt,
+          sortTime: getSortTime({ createdAt, updatedAt, index })
         };
+      }
+
+      function getSortTime(data) {
+        const createdTime = Date.parse(data.createdAt || "");
+        const updatedTime = Date.parse(data.updatedAt || "");
+
+        if (!Number.isNaN(updatedTime)) return updatedTime;
+        if (!Number.isNaN(createdTime)) return createdTime;
+
+        return Date.now() - data.index * 1000;
       }
 
       function getProjectsFromWindowService() {
@@ -951,22 +1170,42 @@
       function getProjectsFallback() {
         return [
           {
-            id: "du-an-sample-1",
-            name: "Khu đô thị ToamViet Riverside",
+            id: "bcons-newsky",
+            name: "Bcons NewSky",
+            type: "Căn hộ chung cư",
+            status: "Sắp mở bán",
+            investor: "Bcons Group",
+            area: "2 block, 1.200 căn",
+            address: "Đường Quốc Lộ 13, Phường Lái Thiêu, Thành phố Hồ Chí Minh",
+            price: "Từ 1.9 tỷ",
+            salePostsCount: 24,
+            rentalPostsCount: 6,
+            shortDescription:
+              "Tổ hợp căn hộ mới nổi bật trên trục giao thông lớn, phù hợp an cư và đầu tư.",
+            image:
+              "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1600&q=80",
+            createdAt: "2026-03-18T10:00:00"
+          },
+          {
+            id: "toamviet-riverside",
+            name: "ToamViet Riverside",
             type: "Khu đô thị",
             status: "Đang mở bán",
             investor: "Công ty CP Đầu tư ToamViet",
             area: "12.5 ha",
             address: "Phường Trần Phú, Hà Giang",
             price: "Từ 1.8 tỷ",
-            salePostsCount: 24,
+            salePostsCount: 18,
             rentalPostsCount: 8,
             shortDescription:
-              "Dự án khu đô thị tích hợp nhà phố, shophouse và không gian thương mại hiện đại."
+              "Dự án khu đô thị tích hợp nhà phố, shophouse và không gian thương mại hiện đại.",
+            image:
+              "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=80",
+            createdAt: "2026-03-17T08:30:00"
           },
           {
-            id: "du-an-sample-2",
-            name: "Chung cư Green Valley Residence",
+            id: "green-valley-residence",
+            name: "Green Valley Residence",
             type: "Căn hộ chung cư",
             status: "Sắp mở bán",
             investor: "Green Valley Holdings",
@@ -976,11 +1215,14 @@
             salePostsCount: 11,
             rentalPostsCount: 3,
             shortDescription:
-              "Tổ hợp căn hộ hiện đại phù hợp nhu cầu an cư và đầu tư cho thuê dài hạn."
+              "Tổ hợp căn hộ hiện đại phù hợp nhu cầu an cư và đầu tư cho thuê dài hạn.",
+            image:
+              "https://images.unsplash.com/photo-1462396881884-de2c07cb95ed?auto=format&fit=crop&w=1600&q=80",
+            createdAt: "2026-03-16T15:00:00"
           },
           {
-            id: "du-an-sample-3",
-            name: "Khu dân cư Central Park",
+            id: "central-park",
+            name: "Central Park",
             type: "Đất nền",
             status: "Đang triển khai",
             investor: "Central Land Group",
@@ -990,7 +1232,27 @@
             salePostsCount: 19,
             rentalPostsCount: 0,
             shortDescription:
-              "Quỹ đất nền quy hoạch bài bản, hạ tầng đồng bộ, phù hợp nhà đầu tư trung hạn."
+              "Quỹ đất nền quy hoạch bài bản, hạ tầng đồng bộ, phù hợp nhà đầu tư trung hạn.",
+            image:
+              "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80",
+            createdAt: "2026-03-15T11:20:00"
+          },
+          {
+            id: "sun-lake-city",
+            name: "Sun Lake City",
+            type: "Nhà phố",
+            status: "Đang nhận booking",
+            investor: "Sun Holdings",
+            area: "6.8 ha",
+            address: "Bắc Giang",
+            price: "Từ 2.5 tỷ",
+            salePostsCount: 9,
+            rentalPostsCount: 2,
+            shortDescription:
+              "Dự án nhà phố thương mại gần hồ trung tâm với hạ tầng đồng bộ.",
+            image:
+              "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1600&q=80",
+            createdAt: "2026-03-14T09:00:00"
           }
         ];
       }
@@ -1020,6 +1282,7 @@
 
           fillFilterOptions(allProjects);
           updateOverview(allProjects);
+          renderBannerSlides(allProjects);
           renderProjects(filteredProjects);
           renderSeoContent();
         } catch (error) {
@@ -1029,6 +1292,7 @@
 
           fillFilterOptions(allProjects);
           updateOverview(allProjects);
+          renderBannerSlides(allProjects);
           renderProjects(filteredProjects);
           renderSeoContent();
         }
@@ -1145,6 +1409,134 @@
         resultText.textContent = `Hiển thị ${formatNumber(projects.length)} / ${formatNumber(allProjects.length)} dự án`;
       }
 
+      function renderBannerSlides(projects) {
+        const latestProjects = [...projects]
+          .sort((a, b) => b.sortTime - a.sortTime)
+          .slice(0, 6);
+
+        bannerProjects = latestProjects;
+
+        if (!bannerProjects.length) {
+          projectBannerTrack.innerHTML = `
+            <div class="project-slide active">
+              <div class="project-slide__bg">
+                <img src="../assets/images/fallback-property.jpg" alt="Dự án nổi bật" />
+              </div>
+              <div class="project-slide__overlay"></div>
+              <div class="project-slide__content">
+                <div class="project-slide__status">Đang cập nhật</div>
+                <h2 class="project-slide__title">Danh sách dự án đang được cập nhật</h2>
+                <p class="project-slide__address">Thông tin địa chỉ sẽ được bổ sung sau.</p>
+              </div>
+            </div>
+          `;
+          projectBannerDots.innerHTML = "";
+          return;
+        }
+
+        projectBannerTrack.innerHTML = bannerProjects
+          .map((project, index) => {
+            return `
+              <article class="project-slide ${index === 0 ? "active" : ""}" data-slide-index="${index}">
+                <a href="${getProjectLink(project)}" style="display:block;width:100%;height:100%;text-decoration:none;color:inherit;">
+                  <div class="project-slide__bg">
+                    <img
+                      src="${escapeHtml(project.image)}"
+                      alt="${escapeHtml(project.name)}"
+                      onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg';"
+                    />
+                  </div>
+                  <div class="project-slide__overlay"></div>
+                  <div class="project-slide__content">
+                    <div class="project-slide__status">${escapeHtml(project.status)}</div>
+                    <h2 class="project-slide__title">${escapeHtml(project.name)}</h2>
+                    <p class="project-slide__address">${escapeHtml(project.address)}</p>
+                  </div>
+                </a>
+              </article>
+            `;
+          })
+          .join("");
+
+        projectBannerDots.innerHTML = bannerProjects
+          .map((_, index) => {
+            return `
+              <button
+                class="project-banner__dot ${index === 0 ? "active" : ""}"
+                type="button"
+                data-dot-index="${index}"
+                aria-label="Chuyển tới slide ${index + 1}"
+              ></button>
+            `;
+          })
+          .join("");
+
+        currentSlideIndex = 0;
+        bindBannerDots();
+        startBannerAutoplay();
+      }
+
+      function showSlide(index) {
+        if (!bannerProjects.length) return;
+
+        const slides = projectBannerTrack.querySelectorAll(".project-slide");
+        const dots = projectBannerDots.querySelectorAll(".project-banner__dot");
+
+        if (!slides.length) return;
+
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle("active", slideIndex === index);
+        });
+
+        dots.forEach((dot, dotIndex) => {
+          dot.classList.toggle("active", dotIndex === index);
+        });
+
+        currentSlideIndex = index;
+      }
+
+      function nextSlide() {
+        showSlide(currentSlideIndex + 1);
+      }
+
+      function prevSlide() {
+        showSlide(currentSlideIndex - 1);
+      }
+
+      function bindBannerDots() {
+        const dots = projectBannerDots.querySelectorAll(".project-banner__dot");
+        dots.forEach((dot) => {
+          dot.addEventListener("click", function () {
+            const index = Number(this.dataset.dotIndex || 0);
+            showSlide(index);
+            restartBannerAutoplay();
+          });
+        });
+      }
+
+      function startBannerAutoplay() {
+        stopBannerAutoplay();
+        if (bannerProjects.length <= 1) return;
+
+        bannerInterval = setInterval(() => {
+          nextSlide();
+        }, 5000);
+      }
+
+      function stopBannerAutoplay() {
+        if (bannerInterval) {
+          clearInterval(bannerInterval);
+          bannerInterval = null;
+        }
+      }
+
+      function restartBannerAutoplay() {
+        startBannerAutoplay();
+      }
+
       function applyFilters() {
         const keyword = keywordInput.value.trim().toLowerCase();
         const selectedType = typeFilter.value.trim();
@@ -1171,6 +1563,9 @@
         });
 
         switch (selectedSort) {
+          case "newest":
+            result.sort((a, b) => b.sortTime - a.sortTime);
+            break;
           case "name-asc":
             result.sort((a, b) => a.name.localeCompare(b.name, "vi"));
             break;
@@ -1211,13 +1606,13 @@
         if (!seoRoot) return;
 
         const seoData = {
-          title: "Danh sách dự án bất động sản trên ToamViet",
+          title: "Danh sách dự án bất động sản mới nhất trên ToamViet",
           excerpt:
-            "Trang dự án trên ToamViet giúp người dùng theo dõi nhanh thông tin tổng quan của từng dự án như loại hình, chủ đầu tư, diện tích, khoảng giá và số lượng tin đang được đăng bán hoặc cho thuê.",
+            "Trang dự án trên ToamViet không chỉ hiển thị danh sách tổng hợp mà còn làm nổi bật các dự án mới nhất bằng slider banner ngay đầu trang. Người dùng có thể xem nhanh tên dự án, trạng thái và địa chỉ trước khi đi sâu vào trang chi tiết.",
           paragraphs: [
-            "Mỗi card dự án trên trang này đóng vai trò như một điểm vào trung gian giữa dữ liệu dự án do admin quản lý và nhu cầu tìm hiểu thực tế của người dùng. Thay vì để người xem phải đi tìm từng tin lẻ, trang dự án sẽ gom thông tin ở tầng cao hơn: tên dự án, trạng thái, quy mô, khu vực, chủ đầu tư và mức giá tham khảo.",
-            "Về mặt điều hướng, file du-an.html là trang danh sách tổng hợp tất cả dự án, còn file chi-tiet-du-an.html là nơi hiển thị nội dung chi tiết của từng dự án. Cách tách này giúp luồng sử dụng rõ ràng hơn: người dùng xem tổng quan ở trang danh sách, sau đó click vào đúng dự án cần quan tâm để xem chuyên sâu.",
-            "Về mặt SEO, đây cũng là cấu trúc hợp lý vì mỗi dự án có thể có một landing riêng, đồng thời vẫn có một trang danh mục tổng để gom toàn bộ nhu cầu tìm kiếm theo từ khóa rộng như dự án bất động sản, khu đô thị, căn hộ, đất nền hay nhà phố. Sau này nếu cần, phần nội dung SEO dùng chung có thể tiếp tục tái sử dụng cho nhiều trang danh mục khác trong hệ thống."
+            "Việc đặt slider các dự án mới nhất ở phần trên cùng giúp trang dự án có điểm nhấn mạnh hơn về mặt hình ảnh. So với cách chỉ hiển thị danh sách card ngay từ đầu, bố cục này tạo cảm giác chuyên nghiệp hơn, gần với các website bất động sản thực tế, nơi dự án nổi bật luôn được ưu tiên trưng bày ở vị trí đầu trang.",
+            "Sau phần slider, danh sách card dự án vẫn giữ vai trò điều hướng chính để người dùng dễ lọc theo loại hình, trạng thái và từ khóa. Đây là cách bố trí cân bằng giữa nhu cầu trình bày thương hiệu dự án và nhu cầu tra cứu dữ liệu thực tế.",
+            "Về lâu dài, khi admin nhập thêm dự án mới, chỉ cần đảm bảo dữ liệu có tên dự án, địa chỉ, trạng thái, ảnh và thời gian tạo hoặc cập nhật thì phần banner đầu trang sẽ tự động ưu tiên hiển thị các dự án mới nhất mà không cần tạo thêm file mới."
           ]
         };
 
@@ -1239,6 +1634,20 @@
           </div>
         `;
       }
+
+      bannerPrevBtn.addEventListener("click", function () {
+        prevSlide();
+        restartBannerAutoplay();
+      });
+
+      bannerNextBtn.addEventListener("click", function () {
+        nextSlide();
+        restartBannerAutoplay();
+      });
+
+      const projectBanner = document.getElementById("projectBanner");
+      projectBanner.addEventListener("mouseenter", stopBannerAutoplay);
+      projectBanner.addEventListener("mouseleave", startBannerAutoplay);
 
       applyFilterBtn.addEventListener("click", applyFilters);
       resetFilterBtn.addEventListener("click", resetFilters);
