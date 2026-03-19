@@ -51,13 +51,6 @@
             overflow: hidden;
         }
 
-        .project-desc {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
         .empty-box {
             background: white;
             border: 1px dashed #cbd5e1;
@@ -120,24 +113,31 @@
             align-items: center;
             gap: 8px;
             margin-top: 8px;
+            line-height: 1.3;
         }
 
         .project-price-main {
             color: #dc2626;
             font-weight: 700;
             font-size: 20px;
-            line-height: 1.2;
         }
 
         .project-area-total {
             color: #dc2626;
             font-weight: 700;
             font-size: 18px;
-            line-height: 1.2;
         }
 
         .project-seo-wrap {
             margin-top: 28px;
+        }
+
+        .project-list-col {
+            min-width: 0;
+        }
+
+        .project-grid-wrap {
+            min-height: 240px;
         }
 
         @media (max-width: 768px) {
@@ -213,7 +213,7 @@
         <div id="data-note" class="empty-box mb-6 hidden"></div>
 
         <div class="flex flex-col lg:flex-row gap-8">
-            <div class="flex-1">
+            <div class="flex-1 project-list-col">
                 <div class="mb-8">
                     <h1 class="text-2xl font-bold uppercase border-l-4 border-[--vip-color] pl-3">Dự án bất động sản trên toàn quốc</h1>
                     <p class="text-gray-500 text-sm mt-1 ml-4 italic">
@@ -221,7 +221,9 @@
                     </p>
                 </div>
 
-                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+                <div class="project-grid-wrap">
+                    <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+                </div>
             </div>
 
             <div class="lg:w-[300px] flex flex-col gap-6">
@@ -366,8 +368,8 @@
         }
 
         function sendToZalo() {
-            const name = document.getElementById("cusName").value;
-            const msg = document.getElementById("cusMsg").value;
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
             const phone = "0946239289";
 
             if (!name) {
@@ -392,15 +394,25 @@
         }
 
         function getApprovedProjects() {
-            if (window.projectService && typeof window.projectService.getPublicProjects === 'function') {
-                const allPosts = window.postStorage ? window.postStorage.getAllPosts() : [];
-                projectService.syncProjectCounts(allPosts, true);
+            try {
+                if (window.projectService && typeof window.projectService.getPublicProjects === 'function') {
+                    const allPosts = window.postStorage && typeof window.postStorage.getAllPosts === 'function'
+                        ? window.postStorage.getAllPosts()
+                        : [];
 
-                return projectService.getPublicProjects().map(project => ({
-                    ...project,
-                    isDemo: false
-                }));
-            }
+                    if (typeof window.projectService.syncProjectCounts === 'function') {
+                        window.projectService.syncProjectCounts(allPosts, true);
+                    }
+
+                    const projects = window.projectService.getPublicProjects() || [];
+                    if (projects.length) {
+                        return projects.map(project => ({
+                            ...project,
+                            isDemo: false
+                        }));
+                    }
+                }
+            } catch (error) {}
 
             return [];
         }
@@ -546,6 +558,21 @@
             `).join('');
         }
 
+        function initSwiper() {
+            if (heroSwiper) {
+                heroSwiper.destroy(true, true);
+                heroSwiper = null;
+            }
+
+            if (document.querySelector(".mySwiper")) {
+                heroSwiper = new Swiper(".mySwiper", {
+                    loop: true,
+                    autoplay: { delay: 5000 },
+                    pagination: { el: ".swiper-pagination", clickable: true }
+                });
+            }
+        }
+
         function renderProjectCard(project) {
             const avgPrice = formatPricePerSquareMeter(project.averageSalePricePerSquareMeter || 0);
             const totalArea = getProjectAreaText(project);
@@ -613,7 +640,7 @@
                                     <p class="text-[10px] text-gray-400">${project.isDemo ? 'Dữ liệu mẫu' : 'Dữ liệu thực từ hệ thống'}</p>
                                 </div>
                             </a>
-                            <button class="text-gray-400 hover:text-red-500 transition">
+                            <button class="text-gray-400 hover:text-red-500 transition" type="button">
                                 <i class="fa-regular fa-heart text-lg"></i>
                             </button>
                         </div>
