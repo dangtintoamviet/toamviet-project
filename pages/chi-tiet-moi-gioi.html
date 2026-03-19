@@ -1,1 +1,1370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết môi giới - ToamViet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+
+    <style>
+        :root {
+            --brand-primary: #0f9aa8;
+            --brand-primary-dark: #0d7f8a;
+            --brand-accent: #ff8c00;
+            --soft-bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #64748b;
+            --border-color: #e5e7eb;
+            --danger: #dc2626;
+            --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.05);
+            --shadow-hover: 0 14px 34px rgba(15, 23, 42, 0.10);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--soft-bg);
+            color: var(--text-main);
+        }
+
+        .container-custom {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .page-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 22px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .section-title,
+        h2.section-title {
+            position: relative;
+            font-size: 17px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 18px;
+            padding-left: 0 !important;
+            border-left: none !important;
+        }
+
+        .section-title::before,
+        .section-title::after,
+        h2.section-title::before,
+        h2.section-title::after {
+            content: none !important;
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: none !important;
+            border: none !important;
+        }
+
+        .profile-hero {
+            padding: 24px;
+        }
+
+        .profile-top {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            width: 92px;
+            height: 92px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 12px 24px rgba(15, 154, 168, 0.18);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-name {
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #1f2937;
+            margin: 0 0 6px;
+        }
+
+        .profile-role {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .profile-badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        .pill-brand {
+            background: #ecfeff;
+            color: #0f766e;
+            border: 1px solid #bae6fd;
+        }
+
+        .pill-area {
+            background: #fff7ed;
+            color: #ea580c;
+            border: 1px solid #fed7aa;
+        }
+
+        .profile-summary {
+            margin-top: 22px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .summary-chip {
+            background: linear-gradient(180deg, #ffffff, #f8fafc);
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 14px;
+        }
+
+        .summary-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            letter-spacing: 0.03em;
+        }
+
+        .summary-value {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .content-card {
+            padding: 24px;
+        }
+
+        .about-text {
+            color: #475569;
+            font-size: 15px;
+            line-height: 1.95;
+            white-space: pre-line;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px 22px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #1f2937;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .sidebar-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s ease;
+            text-decoration: none;
+        }
+
+        .contact-btn-primary {
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+            color: white;
+            border: 1px solid transparent;
+            box-shadow: 0 12px 24px rgba(15, 154, 168, 0.18);
+        }
+
+        .contact-btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .contact-btn-outline {
+            background: white;
+            color: #334155;
+            border: 1px solid #d1d5db;
+        }
+
+        .contact-btn-outline:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .sidebar-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .city-count-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .city-count-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .city-name {
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .city-count-badge {
+            min-width: 34px;
+            height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            background: #ecfeff;
+            color: var(--brand-primary-dark);
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid #bae6fd;
+        }
+
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .news-item {
+            display: flex;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+            padding-bottom: 14px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .news-thumb {
+            width: 94px;
+            height: 74px;
+            border-radius: 14px;
+            object-fit: cover;
+            display: block;
+            flex-shrink: 0;
+            background: #e5e7eb;
+        }
+
+        .news-title {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.6;
+            color: #1f2937;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-meta {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .post-list-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .post-card {
+            display: block;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.25s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .post-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(15, 154, 168, 0.30);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .post-card-image-wrap {
+            position: relative;
+            background: #e5e7eb;
+        }
+
+        .post-card-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+            background: #e5e7eb;
+        }
+
+        .post-card-body {
+            padding: 16px;
+        }
+
+        .post-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.6;
+            color: #0f172a;
+            min-height: 48px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 10px;
+            margin-top: 12px;
+        }
+
+        .post-card-price {
+            color: var(--danger);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .post-card-sub {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .post-card-location {
+            margin-top: 12px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .related-pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .related-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        .related-pill.type {
+            background: rgba(240, 253, 250, 1);
+            color: #0f766e;
+            border: 1px solid rgba(15, 118, 110, 0.1);
+        }
+
+        .related-pill.mode {
+            background: rgba(255, 247, 237, 1);
+            color: #ea580c;
+            border: 1px solid rgba(234, 88, 12, 0.08);
+        }
+
+        .service-badge,
+        .vip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .service-badge {
+            background: linear-gradient(135deg, rgba(15,154,168,0.96), rgba(13,127,138,0.96));
+            color: white;
+            border: 1px solid rgba(15,154,168,0.2);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        .vip-vang {
+            background: linear-gradient(135deg, #fff7cc, #ffe082);
+            color: #a16207;
+            border: 1px solid #facc15;
+        }
+
+        .vip-bac {
+            background: linear-gradient(135deg, #f1f5f9, #dbe4ee);
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        .vip-dong {
+            background: linear-gradient(135deg, #f7e3d8, #ebc2a8);
+            color: #9a3412;
+            border: 1px solid #d6a583;
+        }
+
+        .vip-kim-cuong {
+            background: linear-gradient(135deg, #dff7ff, #b8ecff);
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+        }
+
+        .post-top-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .empty-box {
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 1199px) {
+            .profile-summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .post-list-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .profile-name {
+                font-size: 24px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container-custom {
+                padding: 0 12px;
+            }
+
+            .profile-hero,
+            .content-card,
+            .sidebar-card {
+                padding: 16px;
+            }
+
+            .profile-top {
+                align-items: flex-start;
+            }
+
+            .profile-avatar {
+                width: 74px;
+                height: 74px;
+                font-size: 24px;
+            }
+
+            .profile-name {
+                font-size: 20px;
+            }
+
+            .profile-summary {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .summary-chip {
+                padding: 12px;
+            }
+
+            .news-thumb {
+                width: 86px;
+                height: 68px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
+
+    <main class="container-custom py-6 md:py-8">
+        <div class="mb-5 text-sm text-slate-500 leading-7">
+            <a href="../index.html" class="hover:text-[color:var(--brand-primary-dark)]">Trang chủ</a>
+            <span class="mx-2">/</span>
+            <a href="../pages/danh-ba-moi-gioi.html" class="hover:text-[color:var(--brand-primary-dark)]">Danh bạ môi giới</a>
+            <span class="mx-2">/</span>
+            <span id="breadcrumb-current" class="text-slate-700 font-semibold">Chi tiết môi giới</span>
+        </div>
+
+        <div id="profile-wrapper" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <section class="lg:col-span-2 space-y-6">
+                <div class="page-card profile-hero">
+                    <div class="profile-top">
+                        <div id="profile-avatar" class="profile-avatar">CN</div>
+
+                        <div class="min-w-0 flex-1">
+                            <h1 id="profile-name" class="profile-name">Đang tải môi giới...</h1>
+                            <div id="profile-role" class="profile-role">Cá nhân</div>
+
+                            <div class="profile-badge-row">
+                                <span id="profile-badge-type" class="pill-badge pill-brand">Cá nhân</span>
+                                <span id="profile-badge-area" class="pill-badge pill-area">Đang cập nhật khu vực</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-summary">
+                        <div class="summary-chip">
+                            <span class="summary-label">Tổng số tin</span>
+                            <span id="summary-total-posts" class="summary-value">0</span>
+                        </div>
+                        <div class="summary-chip">
+                            <span class="summary-label">Tin bán / thuê</span>
+                            <span id="summary-real-estate" class="summary-value">0</span>
+                        </div>
+                        <div class="summary-chip">
+                            <span class="summary-label">Tin xây dựng</span>
+                            <span id="summary-construction" class="summary-value">0</span>
+                        </div>
+                        <div class="summary-chip">
+                            <span class="summary-label">Khu vực chính</span>
+                            <span id="summary-main-city" class="summary-value">Đang cập nhật</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-card content-card">
+                    <h2 class="section-title">Giới thiệu cá nhân</h2>
+                    <div id="profile-about" class="about-text">
+                        Đang cập nhật thông tin giới thiệu cá nhân.
+                    </div>
+                </div>
+
+                <div class="page-card content-card">
+                    <h2 class="section-title">Thông tin liên hệ</h2>
+                    <div class="info-grid">
+                        <div class="info-row">
+                            <span class="info-label">Tên hiển thị</span>
+                            <span id="info-display-name" class="info-value">Đang cập nhật</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Vai trò</span>
+                            <span id="info-role" class="info-value">Cá nhân</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Điện thoại</span>
+                            <span id="info-phone" class="info-value">Liên hệ</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Email</span>
+                            <span id="info-email" class="info-value">Đang cập nhật</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Tên thương hiệu / đơn vị</span>
+                            <span id="info-brand" class="info-value">Không áp dụng</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Khu vực hoạt động</span>
+                            <span id="info-area" class="info-value">Đang cập nhật</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Chuyên môn</span>
+                            <span id="info-specialty" class="info-value">Đang cập nhật</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Địa chỉ</span>
+                            <span id="info-address" class="info-value">Đang cập nhật</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-card content-card">
+                    <div class="flex items-center justify-between gap-4 mb-5">
+                        <h2 class="section-title mb-0">Tin cá nhân đã đăng</h2>
+                        <span id="post-list-count" class="text-sm font-semibold text-slate-500">0 tin</span>
+                    </div>
+
+                    <div id="profile-post-list" class="post-list-grid"></div>
+                </div>
+            </section>
+
+            <aside class="space-y-6">
+                <div class="sidebar-card">
+                    <h2 class="section-title">Liên hệ nhanh</h2>
+
+                    <div class="space-y-3">
+                        <a id="sidebar-call-btn" href="javascript:void(0)" class="contact-btn contact-btn-primary">
+                            <i class="fa-solid fa-phone"></i>
+                            <span id="sidebar-call-text">Gọi ngay</span>
+                        </a>
+
+                        <a id="sidebar-zalo-btn" href="javascript:void(0)" target="_blank" rel="noopener noreferrer" class="contact-btn contact-btn-outline">
+                            <i class="fa-solid fa-comments"></i>
+                            <span>Chat qua Zalo</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h2 class="section-title">Số tin theo tỉnh / thành</h2>
+                    <div id="city-count-list" class="sidebar-list"></div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h2 class="section-title">Tin tức</h2>
+                    <div id="news-list" class="news-list"></div>
+                </div>
+            </aside>
+        </div>
+
+        <div id="not-found-box" class="empty-box hidden mt-6">
+            Không tìm thấy hồ sơ cá nhân phù hợp. Có thể dữ liệu chưa có hoặc đường dẫn không đúng.
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <button id="goToTop" onclick="safeScrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+
+    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+
+    <div id="chatForm">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+        </div>
+    </div>
+
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+
+    <script>
+        const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === "function") {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById("chatForm");
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
+            }
+        }
+
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        function getQueryParam(name) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(name);
+        }
+
+        function normalizePhone(phone) {
+            return String(phone || "").replace(/[^\d+]/g, "");
+        }
+
+        function formatDisplayPhone(phone) {
+            const digits = String(phone || "").replace(/[^\d]/g, "");
+            if (!digits) return "Liên hệ";
+            if (digits.length <= 4) return digits;
+            if (digits.length <= 7) return digits.replace(/(\d{4})(\d+)/, "$1 $2");
+            if (digits.length <= 10) return digits.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3");
+            return digits.replace(/(\d{4})(\d{3})(\d{3,})/, "$1 $2 $3");
+        }
+
+        function getZaloLink(phone) {
+            const normalized = normalizePhone(phone);
+            if (!normalized) return "javascript:void(0)";
+            return "https://zalo.me/" + normalized.replace(/^\+/, "");
+        }
+
+        function buildPoster(post) {
+            return post.contactName || post.fullName || "Cá nhân";
+        }
+
+        function getPosterSub(post) {
+            return "Cá nhân";
+        }
+
+        function getAvatarText(post) {
+            const source = buildPoster(post);
+            return source
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(word => word.charAt(0).toUpperCase())
+                .join("") || "CN";
+        }
+
+        function buildLocation(post) {
+            return [post.ward, post.city].filter(Boolean).join(", ");
+        }
+
+        function buildFullAddress(post) {
+            return [post.addressDetail, post.ward, post.city].filter(Boolean).join(", ");
+        }
+
+        function formatPrice(priceText) {
+            return String(priceText || "").trim() || "Liên hệ";
+        }
+
+        function formatArea(area) {
+            return area ? String(area).trim() + " m²" : "Chưa rõ";
+        }
+
+        function getCardImage(post) {
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+                return post.thumbnail;
+            }
+
+            if (post.avatar && typeof post.avatar === "string" && post.avatar.trim()) {
+                return post.avatar;
+            }
+
+            if (post.avatarUrl && typeof post.avatarUrl === "string" && post.avatarUrl.trim()) {
+                return post.avatarUrl;
+            }
+
+            if (Array.isArray(post.images) && post.images.length) {
+                const firstImage = post.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
+                if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
+                if (firstImage && firstImage.url) return firstImage.url;
+            }
+
+            return FALLBACK_IMAGE;
+        }
+
+        function getProfileAvatarHtml(post) {
+            const avatar = post.avatar || post.avatarUrl || "";
+            if (typeof avatar === "string" && avatar.trim()) {
+                return `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(buildPoster(post))}" onerror="this.parentNode.textContent='${escapeHtml(getAvatarText(post))}'">`;
+            }
+            return escapeHtml(getAvatarText(post));
+        }
+
+        function createPostId(post, index = 0) {
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
+                return String(post.id).trim();
+            }
+
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
+                return String(post.postId).trim();
+            }
+
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
+                return String(post.slug).trim();
+            }
+
+            const stableParts = [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.city,
+                post.ward,
+                post.contactPhone,
+                post.createdAt,
+                index
+            ];
+
+            return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
+        }
+
+        function getAllowedPublicStatuses() {
+            return ["approved", "published", "demo"];
+        }
+
+        function isBusinessProfile(post) {
+            const role = normalizeText(post.roleLabel || post.role || "");
+            const profileType = normalizeText(post.profileType);
+
+            return profileType === "doanhnghiep" ||
+                !!post.brandName ||
+                !!post.serviceBrand ||
+                role.includes("doanh nghiep") ||
+                role.includes("doanhnghiep") ||
+                role.includes("nha thau");
+        }
+
+        function isPersonalProfile(post) {
+            return !isBusinessProfile(post);
+        }
+
+        function getAllPostsMixed() {
+            let posts = [];
+
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    posts = window.postStorage.getAllPosts().filter(post => {
+                        return post &&
+                            getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
+                            isPersonalProfile(post);
+                    });
+                }
+            } catch (error) {
+                posts = [];
+            }
+
+            if (posts.length) return posts;
+
+            try {
+                const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                return Array.isArray(allPosts)
+                    ? allPosts.filter(post => post &&
+                        getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
+                        isPersonalProfile(post))
+                    : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function getFallbackMixedPosts() {
+            return [
+                {
+                    id: "demo-agent-1",
+                    title: "CĂN HỘ DIAMOND ALNATA PLUS - KHU ĐÔ THỊ CELADON CITY",
+                    propertyType: "Căn hộ",
+                    propertyPrice: "4.2 tỷ",
+                    propertyArea: "85",
+                    city: "TP.HCM",
+                    ward: "Tân Phú",
+                    addressDetail: "Khu Celadon City",
+                    description: "Cá nhân hoạt động môi giới bất động sản, hỗ trợ khách hàng tìm kiếm căn hộ, nhà phố và sản phẩm phù hợp nhu cầu thực.",
+                    contactName: "Nguyễn Thành An",
+                    roleLabel: "Môi giới chuyên nghiệp",
+                    contactPhone: "0912598888",
+                    contactEmail: "thanhan@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "ban",
+                    vipLevel: "kim-cuong",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                },
+                {
+                    id: "demo-agent-2",
+                    title: "CHO THUÊ CĂN HỘ VINHOMES CENTRAL PARK FULL NỘI THẤT",
+                    propertyType: "Căn hộ",
+                    propertyPrice: "25 triệu/tháng",
+                    propertyArea: "85",
+                    city: "TP.HCM",
+                    ward: "Bình Thạnh",
+                    addressDetail: "Gần Landmark 81",
+                    description: "Cá nhân chuyên tư vấn và hỗ trợ giao dịch thuê căn hộ tại khu vực trung tâm.",
+                    contactName: "Trần Thị Lan Anh",
+                    roleLabel: "Chuyên viên cho thuê",
+                    contactPhone: "0901234567",
+                    contactEmail: "lananh@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "real_estate",
+                    postType: "thue",
+                    vipLevel: "vang",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                },
+                {
+                    id: "demo-agent-3",
+                    title: "DỊCH VỤ TƯ VẤN XÂY NHÀ TRỌN GÓI TẠI HÀ NỘI",
+                    serviceType: "Xây nhà trọn gói",
+                    servicePrice: "Liên hệ",
+                    serviceExp: "7 năm kinh nghiệm",
+                    serviceArea: "Hà Nội",
+                    serviceSpecialty: "Nhà phố dân dụng",
+                    city: "Hà Nội",
+                    ward: "Nam Từ Liêm",
+                    addressDetail: "Làm việc linh hoạt theo dự án",
+                    description: "Cá nhân nhận tư vấn và kết nối dịch vụ xây dựng, cải tạo và hoàn thiện nhà ở.",
+                    contactName: "Lê Thu Trang",
+                    roleLabel: "Cá nhân",
+                    contactPhone: "0901234567",
+                    contactEmail: "thutrang@toamviet.vn",
+                    profileType: "canhan",
+                    status: "demo",
+                    createdAt: new Date().toISOString(),
+                    flow: "construction",
+                    postType: "xaydung",
+                    images: [FALLBACK_IMAGE],
+                    thumbnail: FALLBACK_IMAGE
+                }
+            ];
+        }
+
+        function getDataSource() {
+            const posts = getAllPostsMixed();
+            return posts.length ? posts : getFallbackMixedPosts();
+        }
+
+        function findPostById(posts, targetId) {
+            const normalizedTargetId = String(targetId || "").trim();
+
+            return posts.find((post, index) => {
+                const candidates = [
+                    post.id,
+                    post.postId,
+                    post.slug,
+                    createPostId(post, index)
+                ].filter(Boolean).map(item => String(item).trim());
+
+                return candidates.includes(normalizedTargetId);
+            });
+        }
+
+        function isSamePerson(basePost, candidatePost) {
+            const baseKeys = [
+                normalizeText(basePost.contactPhone),
+                normalizeText(basePost.contactEmail),
+                normalizeText(basePost.contactName),
+                normalizeText(basePost.fullName)
+            ].filter(Boolean);
+
+            const candidateKeys = [
+                normalizeText(candidatePost.contactPhone),
+                normalizeText(candidatePost.contactEmail),
+                normalizeText(candidatePost.contactName),
+                normalizeText(candidatePost.fullName)
+            ].filter(Boolean);
+
+            return baseKeys.some(key => candidateKeys.includes(key));
+        }
+
+        function getPostsByPerson(basePost, posts) {
+            return posts.filter(post => isPersonalProfile(post) && isSamePerson(basePost, post));
+        }
+
+        function getVipBadgeHtml(level) {
+            const vip = String(level || "thuong").toLowerCase();
+
+            if (vip === "kim-cuong") {
+                return '<span class="vip-badge vip-kim-cuong"><i class="fa-solid fa-gem"></i> Kim cương</span>';
+            }
+            if (vip === "vang") {
+                return '<span class="vip-badge vip-vang"><i class="fa-solid fa-crown"></i> Vàng</span>';
+            }
+            if (vip === "bac") {
+                return '<span class="vip-badge vip-bac"><i class="fa-solid fa-medal"></i> Bạc</span>';
+            }
+            if (vip === "dong") {
+                return '<span class="vip-badge vip-dong"><i class="fa-solid fa-medal"></i> Đồng</span>';
+            }
+            return "";
+        }
+
+        function buildProfileAbout(basePost, posterPosts) {
+            const posterName = buildPoster(basePost);
+            const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "nhiều khu vực";
+            const specialty = basePost.serviceSpecialty || basePost.specialty || basePost.propertyType || basePost.serviceType || "bất động sản và dịch vụ liên quan";
+            const totalPosts = posterPosts.length;
+
+            return `${posterName} là cá nhân đang hoạt động trên ToamViet.
+
+Khu vực hoạt động chính: ${area}.
+Lĩnh vực / chuyên môn nổi bật: ${specialty}.
+
+Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ thống. Người dùng nên xem kỹ nội dung từng tin, vị trí thực tế, pháp lý hoặc phạm vi hỗ trợ trước khi làm việc.`;
+        }
+
+        function getCityCountMap(posts) {
+            const map = new Map();
+
+            posts.forEach(post => {
+                const city = String(post.city || "Khác").trim() || "Khác";
+                map.set(city, (map.get(city) || 0) + 1);
+            });
+
+            return Array.from(map.entries())
+                .map(([city, count]) => ({ city, count }))
+                .sort((a, b) => b.count - a.count || a.city.localeCompare(b.city, "vi"));
+        }
+
+        function renderProfileHeader(basePost, posterPosts) {
+            const posterName = buildPoster(basePost);
+            const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "Đang cập nhật khu vực";
+
+            document.title = `${posterName} - ToamViet.com.vn`;
+            document.getElementById("breadcrumb-current").textContent = posterName;
+
+            document.getElementById("profile-avatar").innerHTML = getProfileAvatarHtml(basePost);
+            document.getElementById("profile-name").textContent = posterName;
+            document.getElementById("profile-role").textContent = "Cá nhân";
+            document.getElementById("profile-badge-type").textContent = "Cá nhân";
+            document.getElementById("profile-badge-area").textContent = area;
+
+            const totalPosts = posterPosts.length;
+            const realEstatePosts = posterPosts.filter(post => normalizeText(post.flow) !== "construction").length;
+            const constructionPosts = posterPosts.filter(post => normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung").length;
+
+            const cityMap = getCityCountMap(posterPosts);
+            const mainCity = cityMap.length ? cityMap[0].city : (basePost.city || "Đang cập nhật");
+
+            document.getElementById("summary-total-posts").textContent = totalPosts;
+            document.getElementById("summary-real-estate").textContent = realEstatePosts;
+            document.getElementById("summary-construction").textContent = constructionPosts;
+            document.getElementById("summary-main-city").textContent = mainCity;
+        }
+
+        function renderProfileInfo(basePost, posterPosts) {
+            const posterName = buildPoster(basePost);
+            const phone = formatDisplayPhone(basePost.contactPhone || basePost.phone || "");
+            const email = basePost.contactEmail || basePost.email || "Đang cập nhật";
+            const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "Đang cập nhật";
+            const specialty = basePost.serviceSpecialty || basePost.specialty || basePost.propertyType || basePost.serviceType || "Đang cập nhật";
+            const address = buildFullAddress(basePost) || "Đang cập nhật";
+
+            document.getElementById("profile-about").textContent = buildProfileAbout(basePost, posterPosts);
+
+            document.getElementById("info-display-name").textContent = posterName;
+            document.getElementById("info-role").textContent = "Cá nhân";
+            document.getElementById("info-phone").textContent = phone;
+            document.getElementById("info-email").textContent = email;
+            document.getElementById("info-brand").textContent = "Không áp dụng";
+            document.getElementById("info-area").textContent = area;
+            document.getElementById("info-specialty").textContent = specialty;
+            document.getElementById("info-address").textContent = address;
+
+            const callBtn = document.getElementById("sidebar-call-btn");
+            const callText = document.getElementById("sidebar-call-text");
+            const normalizedPhone = normalizePhone(basePost.contactPhone || basePost.phone || "");
+            callBtn.href = normalizedPhone ? `tel:${normalizedPhone}` : "javascript:void(0)";
+            callText.textContent = normalizedPhone ? `Gọi ${phone}` : "Gọi ngay";
+
+            const zaloBtn = document.getElementById("sidebar-zalo-btn");
+            zaloBtn.href = getZaloLink(basePost.contactPhone || basePost.phone || "");
+        }
+
+        function renderCityCounts(posterPosts) {
+            const cityCountList = document.getElementById("city-count-list");
+            const cityMap = getCityCountMap(posterPosts);
+
+            if (!cityMap.length) {
+                cityCountList.innerHTML = `<div class="empty-box">Chưa có dữ liệu tỉnh / thành.</div>`;
+                return;
+            }
+
+            cityCountList.innerHTML = cityMap.map(item => `
+                <div class="city-count-item">
+                    <span class="city-name">${escapeHtml(item.city)}</span>
+                    <span class="city-count-badge">${item.count}</span>
+                </div>
+            `).join("");
+        }
+
+        function getNewsItems() {
+            return [
+                {
+                    title: "Xu hướng thị trường nhà đất năm nay có gì đáng chú ý?",
+                    date: "Cập nhật mới",
+                    image: FALLBACK_IMAGE,
+                    link: "../pages/chi-tiet-tin-tuc.html"
+                },
+                {
+                    title: "5 lưu ý quan trọng khi chọn môi giới hoặc cộng tác viên phù hợp",
+                    date: "Kinh nghiệm hữu ích",
+                    image: FALLBACK_IMAGE,
+                    link: "../pages/chi-tiet-tin-tuc.html"
+                },
+                {
+                    title: "Cách kiểm tra pháp lý và vị trí thực tế trước khi giao dịch",
+                    date: "Tư vấn người dùng",
+                    image: FALLBACK_IMAGE,
+                    link: "../pages/chi-tiet-tin-tuc.html"
+                }
+            ];
+        }
+
+        function renderNews() {
+            const newsList = document.getElementById("news-list");
+            const items = getNewsItems();
+
+            newsList.innerHTML = items.map(item => `
+                <a href="${item.link}" class="news-item">
+                    <img src="${item.image}" alt="${escapeHtml(item.title)}" class="news-thumb" onerror="this.src='${FALLBACK_IMAGE}'" />
+                    <div class="min-w-0">
+                        <div class="news-title">${escapeHtml(item.title)}</div>
+                        <div class="news-meta">${escapeHtml(item.date)}</div>
+                    </div>
+                </a>
+            `).join("");
+        }
+
+        function renderPosterPosts(basePost, posterPosts) {
+            const postList = document.getElementById("profile-post-list");
+            const countText = document.getElementById("post-list-count");
+
+            countText.textContent = `${posterPosts.length} tin`;
+
+            if (!posterPosts.length) {
+                postList.innerHTML = `<div class="empty-box" style="grid-column:1 / -1;">Cá nhân này chưa có tin đăng công khai.</div>`;
+                return;
+            }
+
+            postList.innerHTML = posterPosts
+                .map((post, index) => {
+                    const id = createPostId(post, index);
+                    const title = escapeHtml(post.title || "Tin đăng");
+                    const image = escapeHtml(getCardImage(post));
+                    const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
+                    const badgeType = isConstruction ? "Xây dựng" : escapeHtml(post.propertyType || "Bất động sản");
+                    const badgeMode = isConstruction
+                        ? "Dịch vụ"
+                        : (["thue", "cho-thue", "rent"].includes(normalizeText(post.postType)) ? "Tin thuê" : "Tin bán");
+
+                    const metaMain = isConstruction
+                        ? escapeHtml(formatPrice(post.servicePrice))
+                        : escapeHtml(formatPrice(post.propertyPrice));
+
+                    const metaSub = isConstruction
+                        ? escapeHtml(post.serviceExp || "Đang cập nhật")
+                        : escapeHtml(formatArea(post.propertyArea));
+
+                    const location = escapeHtml(buildLocation(post) || post.serviceArea || "Chưa cập nhật khu vực");
+
+                    const vipBadge = !isConstruction
+                        ? getVipBadgeHtml(post.vipLevel)
+                        : '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
+
+                    return `
+                        <a href="../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}" class="post-card">
+                            <div class="post-card-image-wrap">
+                                <img src="${image}" alt="${title}" class="post-card-image" onerror="this.src='${FALLBACK_IMAGE}'" />
+                                <div class="post-top-badge">${vipBadge}</div>
+                            </div>
+
+                            <div class="post-card-body">
+                                <div class="related-pill-row">
+                                    <span class="related-pill type">${badgeType}</span>
+                                    <span class="related-pill mode">${badgeMode}</span>
+                                </div>
+
+                                <h3 class="post-card-title">${title}</h3>
+
+                                <div class="post-card-meta">
+                                    <span class="post-card-price">${metaMain}</span>
+                                    <span class="text-slate-300">•</span>
+                                    <span class="post-card-sub">${metaSub}</span>
+                                </div>
+
+                                <p class="post-card-location">
+                                    <i class="fa-solid fa-location-dot mr-1"></i> ${location}
+                                </p>
+                            </div>
+                        </a>
+                    `;
+                })
+                .join("");
+        }
+
+        function showNotFound() {
+            document.getElementById("profile-wrapper").classList.add("hidden");
+            document.getElementById("not-found-box").classList.remove("hidden");
+            document.title = "Không tìm thấy hồ sơ cá nhân - ToamViet.com.vn";
+        }
+
+        function initPage() {
+            const posts = getDataSource();
+            const id = getQueryParam("id");
+
+            if (!id) {
+                showNotFound();
+                return;
+            }
+
+            const basePost = findPostById(posts, String(id).trim());
+
+            if (!basePost || !isPersonalProfile(basePost)) {
+                showNotFound();
+                return;
+            }
+
+            const posterPosts = getPostsByPerson(basePost, posts);
+
+            renderProfileHeader(basePost, posterPosts);
+            renderProfileInfo(basePost, posterPosts);
+            renderCityCounts(posterPosts);
+            renderNews();
+            renderPosterPosts(basePost, posterPosts);
+        }
+
+        window.addEventListener("load", initPage);
+    </script>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
