@@ -364,13 +364,7 @@
 
                 <div>
                     <select id="typeFilter" class="filter-select">
-                        <option value="">Loại nhà đất</option>
-                        <option value="Nhà phố">Nhà phố</option>
-                        <option value="Đất nền">Đất nền</option>
-                        <option value="Căn hộ">Căn hộ</option>
-                        <option value="Biệt thự">Biệt thự</option>
-                        <option value="Văn phòng">Văn phòng</option>
-                        <option value="Shophouse">Shophouse</option>
+                        <option value="">Danh mục con</option>
                     </select>
                 </div>
 
@@ -390,7 +384,7 @@
                 </div>
 
                 <div class="filter-submit-wrap">
-                    <button id="applyFilterBtn" class="filter-submit-btn">
+                    <button id="applyFilterBtn" class="filter-submit-btn" type="button">
                         <i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm
                     </button>
                 </div>
@@ -466,38 +460,46 @@
         const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
 
-        const CATEGORY_TITLE_MAP = {
-            "ban-can-ho-chung-cu": "Bán căn hộ chung cư",
-            "ban-chung-cu-mini-can-ho-dich-vu": "Bán chung cư mini, căn hộ dịch vụ",
-            "ban-nha-rieng": "Bán nhà riêng",
-            "ban-nha-biet-thu-lien-ke": "Bán nhà biệt thự, liền kề",
-            "ban-nha-mat-pho": "Bán nhà mặt phố",
-            "ban-shophouse-nha-pho-thuong-mai": "Bán shophouse, nhà phố thương mại",
-            "ban-dat-nen-du-an": "Bán đất nền dự án",
-            "ban-dat": "Bán đất",
-            "ban-trang-trai-khu-nghi-duong": "Bán trang trại, khu nghỉ dưỡng",
-            "ban-condotel": "Bán condotel",
-            "ban-kho-nha-xuong": "Bán kho, nhà xưởng",
-            "ban-bat-dong-san-khac": "Bán loại bất động sản khác"
-        };
+        const SALE_CATEGORIES = [
+            { slug: "ban-can-ho-chung-cu", name: "Bán căn hộ chung cư", propertyType: "Căn hộ" },
+            { slug: "ban-chung-cu-mini-can-ho-dich-vu", name: "Bán chung cư mini, căn hộ dịch vụ", propertyType: "Căn hộ" },
+            { slug: "ban-nha-rieng", name: "Bán nhà riêng", propertyType: "Nhà riêng" },
+            { slug: "ban-nha-biet-thu-lien-ke", name: "Bán nhà biệt thự, liền kề", propertyType: "Biệt thự" },
+            { slug: "ban-nha-mat-pho", name: "Bán nhà mặt phố", propertyType: "Nhà mặt phố" },
+            { slug: "ban-shophouse-nha-pho-thuong-mai", name: "Bán shophouse, nhà phố thương mại", propertyType: "Shophouse" },
+            { slug: "ban-dat-nen-du-an", name: "Bán đất nền dự án", propertyType: "Đất nền" },
+            { slug: "ban-dat", name: "Bán đất", propertyType: "Đất" },
+            { slug: "ban-trang-trai-khu-nghi-duong", name: "Bán trang trại, khu nghỉ dưỡng", propertyType: "Trang trại, khu nghỉ dưỡng" },
+            { slug: "ban-condotel", name: "Bán condotel", propertyType: "Condotel" },
+            { slug: "ban-kho-nha-xuong", name: "Bán kho, nhà xưởng", propertyType: "Kho, nhà xưởng" },
+            { slug: "ban-bat-dong-san-khac", name: "Bán loại bất động sản khác", propertyType: "Bất động sản khác" }
+        ];
 
-        const CATEGORY_TYPE_MAP = {
-            "ban-can-ho-chung-cu": "Căn hộ",
-            "ban-chung-cu-mini-can-ho-dich-vu": "Căn hộ",
-            "ban-nha-rieng": "Nhà phố",
-            "ban-nha-biet-thu-lien-ke": "Biệt thự",
-            "ban-nha-mat-pho": "Nhà phố",
-            "ban-shophouse-nha-pho-thuong-mai": "Shophouse",
-            "ban-dat-nen-du-an": "Đất nền",
-            "ban-dat": "Đất nền",
-            "ban-condotel": "Căn hộ",
-            "ban-kho-nha-xuong": "Văn phòng"
+        const CATEGORY_MAP = SALE_CATEGORIES.reduce(function (acc, item) {
+            acc[item.slug] = item;
+            return acc;
+        }, {});
+
+        const LEGACY_TYPE_TO_CATEGORY = {
+            "Căn hộ": "ban-can-ho-chung-cu",
+            "Nhà phố": "ban-nha-mat-pho",
+            "Nhà riêng": "ban-nha-rieng",
+            "Biệt thự": "ban-nha-biet-thu-lien-ke",
+            "Shophouse": "ban-shophouse-nha-pho-thuong-mai",
+            "Đất nền": "ban-dat-nen-du-an",
+            "Đất": "ban-dat",
+            "Văn phòng": "ban-bat-dong-san-khac",
+            "Condotel": "ban-condotel",
+            "Kho, nhà xưởng": "ban-kho-nha-xuong",
+            "Bất động sản khác": "ban-bat-dong-san-khac"
         };
 
         const fallbackPosts = [
             {
                 id: "demo-sale-1",
                 title: "NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN",
+                categorySlug: "ban-nha-biet-thu-lien-ke",
+                categoryName: "Bán nhà biệt thự, liền kề",
                 propertyType: "Biệt thự",
                 propertyPrice: "60 tỷ",
                 propertyArea: "300",
@@ -521,6 +523,8 @@
             {
                 id: "demo-sale-2",
                 title: "BÁN CĂN HỘ CAO CẤP 2 PHÒNG NGỦ TRUNG TÂM THÀNH PHỐ, FULL NỘI THẤT",
+                categorySlug: "ban-can-ho-chung-cu",
+                categoryName: "Bán căn hộ chung cư",
                 propertyType: "Căn hộ",
                 propertyPrice: "4.2 tỷ",
                 propertyArea: "85",
@@ -544,6 +548,8 @@
             {
                 id: "demo-sale-3",
                 title: "BÁN NHÀ PHỐ THƯƠNG MẠI SHOHOUSE MẶT TIỀN KHU ĐÔ THỊ ĐANG PHÁT TRIỂN",
+                categorySlug: "ban-shophouse-nha-pho-thuong-mai",
+                categoryName: "Bán shophouse, nhà phố thương mại",
                 propertyType: "Shophouse",
                 propertyPrice: "12.8 tỷ",
                 propertyArea: "110",
@@ -638,6 +644,15 @@
                 .replace(/-+/g, "-");
         }
 
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
         function getCurrentCategory() {
             const params = new URLSearchParams(window.location.search);
             return (params.get("category") || "").trim();
@@ -645,7 +660,7 @@
 
         function getPageTitleByCategory() {
             const category = getCurrentCategory();
-            return CATEGORY_TITLE_MAP[category] || "Mua bán nhà đất tại Việt Nam";
+            return CATEGORY_MAP[category] ? CATEGORY_MAP[category].name : "Mua bán nhà đất tại Việt Nam";
         }
 
         function syncPageHeading() {
@@ -654,11 +669,18 @@
             document.title = title + " - ToamViet.com.vn";
         }
 
+        function renderCategoryFilterOptions() {
+            typeFilter.innerHTML =
+                '<option value="">Danh mục con</option>' +
+                SALE_CATEGORIES.map(function (item) {
+                    return '<option value="' + item.slug + '">' + item.name + '</option>';
+                }).join("");
+        }
+
         function syncFilterByCategory() {
             const category = getCurrentCategory();
-            const mappedType = CATEGORY_TYPE_MAP[category];
-            if (mappedType) {
-                typeFilter.value = mappedType;
+            if (category && CATEGORY_MAP[category]) {
+                typeFilter.value = category;
             }
         }
 
@@ -675,6 +697,8 @@
 
             const stableParts = [
                 post.title,
+                post.categorySlug,
+                post.categoryName,
                 post.propertyType,
                 post.serviceType,
                 post.brandName,
@@ -859,21 +883,6 @@
             return `../pages/chi-tiet-tin.html?id=${encodeURIComponent(postId)}`;
         }
 
-        function getSalePosts() {
-            if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
-                return window.postStorage.getSalePosts()
-                    .filter(post => post && (post.status === "approved" || post.status === "demo"));
-            }
-
-            const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
-            return allPosts.filter(post =>
-                post &&
-                post.flow === "real_estate" &&
-                post.postType === "ban" &&
-                (post.status === "approved" || post.status === "demo")
-            );
-        }
-
         function getVipLevel(post) {
             const raw = String(
                 post.vipLevel ||
@@ -922,6 +931,39 @@
             return timeB - timeA;
         }
 
+        function getResolvedCategory(post) {
+            if (!post) return null;
+
+            if (post.categorySlug && CATEGORY_MAP[post.categorySlug]) {
+                return CATEGORY_MAP[post.categorySlug];
+            }
+
+            const categoryName = normalizeText(post.categoryName || "");
+            const byName = SALE_CATEGORIES.find(function (item) {
+                return normalizeText(item.name) === categoryName;
+            });
+            if (byName) return byName;
+
+            const propertyType = String(post.propertyType || "").trim();
+            const legacySlug = LEGACY_TYPE_TO_CATEGORY[propertyType];
+            if (legacySlug && CATEGORY_MAP[legacySlug]) {
+                return CATEGORY_MAP[legacySlug];
+            }
+
+            return null;
+        }
+
+        function getResolvedCategorySlug(post) {
+            const resolved = getResolvedCategory(post);
+            return resolved ? resolved.slug : "";
+        }
+
+        function getResolvedCategoryName(post) {
+            const resolved = getResolvedCategory(post);
+            if (resolved) return resolved.name;
+            return post.categoryName || post.propertyType || "Bất động sản";
+        }
+
         function fillCityFilter(posts) {
             const currentValue = cityFilter.value;
             const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, "vi"));
@@ -935,11 +977,44 @@
             }
         }
 
+        function getSalePosts() {
+            let posts = [];
+
+            try {
+                if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
+                    posts = window.postStorage.getSalePosts() || [];
+                } else {
+                    const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                    posts = allPosts.filter(function (post) {
+                        return post &&
+                            post.flow === "real_estate" &&
+                            post.postType === "ban";
+                    });
+                }
+            } catch (error) {
+                posts = [];
+            }
+
+            return posts
+                .filter(function (post) {
+                    return post && (post.status === "approved" || post.status === "demo");
+                })
+                .map(function (post) {
+                    const resolved = getResolvedCategory(post);
+                    return {
+                        ...post,
+                        categorySlug: post.categorySlug || (resolved ? resolved.slug : ""),
+                        categoryName: post.categoryName || (resolved ? resolved.name : ""),
+                        propertyType: post.propertyType || (resolved ? resolved.propertyType : "")
+                    };
+                });
+        }
+
         function applyFilters(posts) {
             let filtered = [...posts];
 
             const keyword = keywordFilter.value.trim().toLowerCase();
-            const propertyType = typeFilter.value;
+            const categorySlug = typeFilter.value;
             const city = cityFilter.value;
             const sortType = sortFilter.value;
 
@@ -949,6 +1024,7 @@
                         post.title,
                         post.description,
                         post.propertyType,
+                        post.categoryName,
                         buildLocation(post),
                         post.projectName
                     ].filter(Boolean).join(" ").toLowerCase();
@@ -957,8 +1033,10 @@
                 });
             }
 
-            if (propertyType) {
-                filtered = filtered.filter(post => (post.propertyType || "") === propertyType);
+            if (categorySlug) {
+                filtered = filtered.filter(function (post) {
+                    return getResolvedCategorySlug(post) === categorySlug;
+                });
             }
 
             if (city) {
@@ -1034,6 +1112,7 @@
             const posterSub = escapeHtml(getPosterSub(post));
             const avatarText = escapeHtml(getAvatarText(post));
             const propertyType = escapeHtml(post.propertyType || "Bất động sản");
+            const categoryName = escapeHtml(getResolvedCategoryName(post));
             const legal = escapeHtml(post.propertyLegal || "Đang cập nhật");
             const direction = escapeHtml(post.propertyDirection || "Đang cập nhật");
             const beds = escapeHtml(post.propertyBeds || "0");
@@ -1103,6 +1182,7 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-[12px] text-slate-500">
                                 <div><strong class="text-slate-700">Pháp lý:</strong> ${legal}</div>
+                                <div><strong class="text-slate-700">Danh mục:</strong> ${categoryName}</div>
                                 <div><strong class="text-slate-700">Loại hình:</strong> ${propertyType}</div>
                             </div>
                         </div>
@@ -1172,9 +1252,10 @@
             if (!filteredPosts.length) {
                 listingContainer.innerHTML = `
                     <div class="empty-box">
-                        Không tìm thấy tin bán nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, loại nhà đất hoặc khu vực để tìm lại.
+                        Không tìm thấy tin bán nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, danh mục con hoặc khu vực để tìm lại.
                     </div>
                 `;
+                updateFavoriteCount();
                 return;
             }
 
@@ -1193,6 +1274,7 @@
         sortFilter.addEventListener("change", renderListings);
 
         window.addEventListener("load", () => {
+            renderCategoryFilterOptions();
             syncPageHeading();
             syncFilterByCategory();
             updateFavoriteCount();
