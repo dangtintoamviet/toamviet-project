@@ -32,7 +32,8 @@ function getPageContext() {
       basePath: ".",
       headerFile: "header-root.html",
       footerFile: "footer-root.html",
-      mobileMenuFile: "mobile-menu-root.html"
+      mobileMenuFile: "mobile-menu-root.html",
+      isHomePage: true
     };
   }
 
@@ -40,7 +41,8 @@ function getPageContext() {
     basePath: "..",
     headerFile: "header-inner.html",
     footerFile: "footer-inner.html",
-    mobileMenuFile: "mobile-menu-inner.html"
+    mobileMenuFile: "mobile-menu-inner.html",
+    isHomePage: false
   };
 }
 
@@ -67,6 +69,8 @@ function setupFixedHeaderSpacing() {
   const spacer = ensureHeaderSpacer();
   if (!spacer) return;
 
+  const context = getPageContext();
+
   siteHeader.style.position = "fixed";
   siteHeader.style.top = "0";
   siteHeader.style.left = "0";
@@ -74,6 +78,7 @@ function setupFixedHeaderSpacing() {
   siteHeader.style.zIndex = "1000";
   siteHeader.style.background = "#ffffff";
   siteHeader.style.boxShadow = "0 1px 0 rgba(0,0,0,0.04)";
+  siteHeader.style.margin = "0";
 
   if (innerHeader) {
     innerHeader.style.position = "static";
@@ -85,10 +90,16 @@ function setupFixedHeaderSpacing() {
   }
 
   const headerHeight = Math.ceil(siteHeader.offsetHeight || 0);
-  const extraGap = window.innerWidth <= 768 ? 18 : 24;
 
-  spacer.style.height = `${headerHeight + extraGap}px`;
   spacer.style.width = "100%";
+  spacer.style.margin = "0";
+  spacer.style.padding = "0";
+
+  if (context.isHomePage) {
+    spacer.style.height = `${headerHeight}px`;
+  } else {
+    spacer.style.height = `${headerHeight}px`;
+  }
 }
 
 function watchHeaderSpacing() {
