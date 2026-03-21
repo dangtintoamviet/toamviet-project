@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
-    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
         :root {
@@ -951,8 +950,6 @@
                         </div>
                     </aside>
                 </div>
-
-                <div id="seoContent" class="mt-10"></div>
             </div>
         </div>
     </main>
@@ -980,7 +977,6 @@
     </div>
 
     <script src="../assets/js/component-loader.js"></script>
-    <script src="../assets/js/seo-content.js"></script>
     <script src="../assets/js/main.js"></script>
 
     <script>
@@ -1558,7 +1554,7 @@
                 return;
             }
 
-            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
+            const fullMsg = "Chào admin Tổ ấm Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
@@ -1569,10 +1565,6 @@
             loadPosts();
             updateStats();
             applyFilters();
-
-            if (typeof renderSeoContent === "function") {
-                renderSeoContent("seoContent", "directory");
-            }
 
             if (!currentUser) {
                 showStatus("error", "Bạn chưa đăng nhập. Trang này chỉ hiển thị tin của tài khoản đã đăng nhập.");
