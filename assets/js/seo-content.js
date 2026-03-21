@@ -216,6 +216,7 @@ const SEO_CATEGORY_CONTENT = {
 
 const SEO_PAGE_DEFAULT_KEY = {
     "index.html": "home",
+    "": "home",
     "nha-dat-ban.html": "sale",
     "nha-dat-cho-thue.html": "rent",
     "du-an.html": "project",
@@ -237,7 +238,13 @@ function getSeoCategoryContent(categorySlug) {
 function getCurrentPageName() {
     const path = window.location.pathname || "";
     const parts = path.split("/");
-    return parts[parts.length - 1] || "index.html";
+    const fileName = parts[parts.length - 1] || "";
+
+    if (!fileName && (path.endsWith("/") || path === "")) {
+        return "index.html";
+    }
+
+    return fileName || "index.html";
 }
 
 function getCategoryFromUrl() {
@@ -304,7 +311,8 @@ function renderSeoContent(containerId = "seoContent", pageKey = "") {
     if (!toggleBtn || !seoText || !toggleLabel) return;
 
     requestAnimationFrame(() => {
-        const collapsedHeight = seoText.classList.contains("collapsed") ? seoText.clientHeight : 0;
+        const wasCollapsed = seoText.classList.contains("collapsed");
+        const collapsedHeight = wasCollapsed ? seoText.clientHeight : 0;
         const fullHeight = seoText.scrollHeight;
 
         if (fullHeight <= collapsedHeight + 8 || fullHeight <= 90) {
@@ -313,7 +321,7 @@ function renderSeoContent(containerId = "seoContent", pageKey = "") {
             return;
         }
 
-        toggleBtn.style.display = "flex";
+        toggleBtn.style.display = "inline-flex";
     });
 
     toggleBtn.addEventListener("click", () => {
