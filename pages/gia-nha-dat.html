@@ -393,18 +393,27 @@
 
     <div id="siteFooter"></div>
 
-    <button id="goToTop" onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))">
+    <button
+        id="goToTop"
+        onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+    >
         <i class="fa-solid fa-chevron-up"></i>
     </button>
 
-    <div class="zalo-chat-btn wiggle" onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)">
+    <div
+        class="zalo-chat-btn wiggle"
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+    >
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span
+                onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+                style="cursor:pointer; font-size: 20px;"
+            >&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
@@ -422,6 +431,26 @@
 
     <script>
         let chartInstance = null;
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === 'function') {
+                    await loadComponent('siteHeader', '../components/header-inner.html');
+                    await loadComponent('siteMobileMenu', '../components/mobile-menu-inner.html');
+                    await loadComponent('siteFooter', '../components/footer-inner.html');
+
+                    if (typeof setupFixedHeaderSpacing === 'function') {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === 'function') {
+                        watchHeaderSpacing();
+                    }
+                    return;
+                }
+            } catch (error) {
+                console.error('Không thể load component dùng chung:', error);
+            }
+        }
 
         function parseVietnamesePriceToMillion(priceText) {
             if (!priceText) return null;
@@ -641,7 +670,8 @@
             const selectedWard = wardSelect.value;
 
             const cities = uniqueSorted(allNormalizedPosts.map(item => item.city));
-            citySelect.innerHTML = '<option value="">Tất cả tỉnh/thành</option>' +
+            citySelect.innerHTML =
+                '<option value="">Tất cả tỉnh/thành</option>' +
                 cities.map(city => `<option value="${city}">${city}</option>`).join('');
             citySelect.value = cities.includes(selectedCity) ? selectedCity : '';
 
@@ -650,7 +680,8 @@
                 : allNormalizedPosts;
 
             const wards = uniqueSorted(wardSource.map(item => item.ward));
-            wardSelect.innerHTML = '<option value="">Tất cả phường/xã</option>' +
+            wardSelect.innerHTML =
+                '<option value="">Tất cả phường/xã</option>' +
                 wards.map(ward => `<option value="${ward}">${ward}</option>`).join('');
             wardSelect.value = wards.includes(selectedWard) ? selectedWard : '';
         }
@@ -803,10 +834,13 @@
             renderReport();
         });
 
-        window.addEventListener('load', function () {
+        window.addEventListener('load', async function () {
+            await initSharedComponents();
+
             if (typeof renderSeoContent === 'function') {
                 renderSeoContent('seoContent', 'price');
             }
+
             renderReport();
         });
 
