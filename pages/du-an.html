@@ -46,9 +46,10 @@
         }
 
         .container-custom {
-            max-width: 1560px;
+            width: 100%;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 18px;
+            padding: 0 16px;
         }
 
         .page-shell {
@@ -61,6 +62,7 @@
             font-weight: 800;
             color: var(--text-strong);
             text-transform: uppercase;
+            font-family: "Roboto", sans-serif;
         }
 
         .empty-box,
@@ -78,18 +80,26 @@
             box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
         }
 
-        /* ===== FULL BANNER ===== */
+        .page-intro-desc {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.9;
+            margin-top: 10px;
+        }
+
+        /* ===== BANNER ===== */
         .banner-shell {
             width: 100%;
-            padding: 0 18px;
-            margin: 0 0 24px;
+            max-width: 1280px;
+            margin: 0 auto 24px;
+            padding: 0 16px;
         }
 
         .project-slider {
             position: relative;
             overflow: hidden;
-            border-radius: 30px;
-            min-height: 560px;
+            border-radius: 28px;
+            min-height: 520px;
             background: #d9e4e8;
             border: 1px solid rgba(0, 139, 139, 0.08);
             box-shadow: 0 18px 38px rgba(15, 23, 42, 0.10);
@@ -98,7 +108,7 @@
         .project-slider-track {
             position: relative;
             width: 100%;
-            min-height: 560px;
+            min-height: 520px;
         }
 
         .project-slide {
@@ -142,9 +152,9 @@
 
         .project-slide-content {
             position: absolute;
-            left: 54px;
-            right: 54px;
-            bottom: 38px;
+            left: 42px;
+            right: 42px;
+            bottom: 34px;
             z-index: 3;
             max-width: 720px;
             color: #fff;
@@ -172,6 +182,7 @@
             font-weight: 900;
             color: #fff;
             text-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+            font-family: "Roboto", sans-serif;
         }
 
         .slide-address {
@@ -228,17 +239,17 @@
         }
 
         .project-slider-arrow.prev {
-            left: 22px;
+            left: 18px;
         }
 
         .project-slider-arrow.next {
-            right: 22px;
+            right: 18px;
         }
 
         .project-slider-dots {
             position: absolute;
-            right: 28px;
-            bottom: 24px;
+            right: 24px;
+            bottom: 20px;
             z-index: 5;
             display: flex;
             align-items: center;
@@ -289,6 +300,7 @@
             font-weight: 900;
             color: var(--text-strong);
             margin-bottom: 6px;
+            font-family: "Roboto", sans-serif;
         }
 
         .overview-hint {
@@ -446,6 +458,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             transition: color 0.2s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .sidebar-news-item:hover .sidebar-news-title {
@@ -565,6 +578,7 @@
             font-weight: 900;
             flex-shrink: 0;
             box-shadow: 0 10px 20px rgba(0, 139, 139, 0.18);
+            font-family: "Roboto", sans-serif;
         }
 
         .project-user-name {
@@ -576,6 +590,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             transition: color 0.2s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .project-user-role {
@@ -603,6 +618,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            font-family: "Roboto", sans-serif;
         }
 
         .project-card-title-link {
@@ -653,6 +669,7 @@
             font-size: 12px;
             font-weight: 800;
             color: #334155;
+            font-family: "Roboto", sans-serif;
         }
 
         .mini-pill strong {
@@ -675,6 +692,7 @@
             text-decoration: none;
             transition: all 0.25s ease;
             box-sizing: border-box;
+            font-family: "Roboto", sans-serif;
         }
 
         .project-btn-main {
@@ -734,6 +752,7 @@
             font-size: 14px;
             font-weight: 800;
             transition: all 0.25s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .page-btn:hover {
@@ -776,11 +795,6 @@
             .overview-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
-
-            .project-slider,
-            .project-slider-track {
-                min-height: 500px;
-            }
         }
 
         @media (max-width: 992px) {
@@ -790,14 +804,14 @@
 
             .project-slider,
             .project-slider-track {
-                min-height: 420px;
+                min-height: 430px;
             }
 
             .project-slide-content {
                 left: 26px;
                 right: 26px;
                 bottom: 26px;
-                max-width: 80%;
+                max-width: 82%;
             }
         }
 
@@ -949,7 +963,6 @@
     <div id="site-header"></div>
     <div id="site-mobile-menu"></div>
 
-    <!-- Banner full -->
     <section class="banner-shell">
         <div class="project-slider" id="projectSlider">
             <div class="project-slider-track" id="projectSliderTrack"></div>
@@ -967,8 +980,8 @@
 
     <main class="container-custom page-shell">
         <section class="page-intro-box mb-6">
-            <h1 class="section-title">Dự án bất động sản trên Toàn Quốc</h1>
-            <p class="text-gray-500 text-sm mt-2 leading-7 mb-0">
+            <h1 class="section-title" id="pageTitle">Dự án bất động sản trên Toàn quốc</h1>
+            <p class="page-intro-desc" id="pageIntroDesc">
                 Trang này tổng hợp toàn bộ dự án đang có dữ liệu trên hệ thống. Người dùng có thể xem nhanh tên dự án,
                 chủ đầu tư, trạng thái, địa chỉ và số lượng tin thuộc từng dự án trước khi đi vào chi tiết.
             </p>
@@ -1097,6 +1110,125 @@
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
         const ITEMS_PER_PAGE = 6;
 
+        const PROJECT_CATEGORY_CONFIG = {
+            "can-ho-chung-cu": {
+                label: "Căn hộ chung cư",
+                pageTitle: "Dự án căn hộ chung cư trên Toàn quốc",
+                intro: "Trang này tập hợp các dự án căn hộ chung cư đang có dữ liệu trên hệ thống ToamViet. Người dùng có thể tra cứu nhanh tên dự án, chủ đầu tư, trạng thái triển khai, vị trí và các nhóm tin đăng liên quan để thuận tiện so sánh trước khi xem chi tiết."
+            },
+            "cao-oc-van-phong": {
+                label: "Cao ốc văn phòng",
+                pageTitle: "Dự án cao ốc văn phòng trên Toàn quốc",
+                intro: "Danh mục này tổng hợp các dự án cao ốc văn phòng, tòa nhà thương mại và cụm văn phòng đang có dữ liệu trên hệ thống. Nội dung phù hợp cho nhu cầu theo dõi dự án khai thác thương mại, đầu tư cho thuê hoặc tìm kiếm nguồn cung văn phòng mới."
+            },
+            "trung-tam-thuong-mai": {
+                label: "Trung tâm thương mại",
+                pageTitle: "Dự án trung tâm thương mại trên Toàn quốc",
+                intro: "Trang này tổng hợp nhóm dự án trung tâm thương mại và tổ hợp bán lẻ đang được quan tâm. Người dùng có thể xem nhanh khu vực, chủ đầu tư, tình trạng triển khai và các nhóm sản phẩm liên quan nằm trong từng dự án."
+            },
+            "khu-do-thi-moi": {
+                label: "Khu đô thị mới",
+                pageTitle: "Dự án khu đô thị mới trên Toàn quốc",
+                intro: "Danh mục khu đô thị mới giúp người dùng theo dõi các dự án quy hoạch tổng thể có quy mô lớn, hạ tầng đồng bộ và nhiều phân khu sản phẩm. Đây cũng là nhóm dự án rất phù hợp để gom cụm nội dung SEO theo tên dự án và khu vực."
+            },
+            "khu-phuc-hop": {
+                label: "Khu phức hợp",
+                pageTitle: "Dự án khu phức hợp trên Toàn quốc",
+                intro: "Trang này hiển thị các dự án khu phức hợp bao gồm nhiều loại hình như căn hộ, thương mại, dịch vụ và tiện ích nội khu. Người xem có thể tra cứu nhanh nhóm dự án đa chức năng đang có dữ liệu trên hệ thống."
+            },
+            "nha-o-xa-hoi": {
+                label: "Nhà ở xã hội",
+                pageTitle: "Dự án nhà ở xã hội trên Toàn quốc",
+                intro: "Danh mục nhà ở xã hội tập trung các dự án phục vụ nhu cầu ở thực với mức tài chính phù hợp hơn cho nhiều nhóm người dùng. Đây là nơi thuận tiện để theo dõi các dự án đang mở bán, chuẩn bị triển khai hoặc đang cập nhật dữ liệu."
+            },
+            "khu-nghi-duong-sinh-thai": {
+                label: "Khu nghỉ dưỡng, Sinh thái",
+                pageTitle: "Dự án khu nghỉ dưỡng, sinh thái trên Toàn quốc",
+                intro: "Trang này tổng hợp các dự án khu nghỉ dưỡng, sinh thái và bất động sản phục vụ nghỉ dưỡng đang có dữ liệu trên ToamViet. Nội dung phù hợp để theo dõi các dự án ven biển, ven hồ hoặc khu vực du lịch có tiềm năng khai thác."
+            },
+            "khu-cong-nghiep": {
+                label: "Khu công nghiệp",
+                pageTitle: "Dự án khu công nghiệp trên Toàn quốc",
+                intro: "Danh mục khu công nghiệp giúp tổng hợp các dự án phục vụ sản xuất, kho vận và hạ tầng công nghiệp tại nhiều tỉnh thành. Đây là nhóm nội dung quan trọng để gom dữ liệu dự án theo khu vực phát triển công nghiệp."
+            },
+            "biet-thu-lien-ke": {
+                label: "Biệt thự, liền kề",
+                pageTitle: "Dự án biệt thự, liền kề trên Toàn quốc",
+                intro: "Trang này hiển thị các dự án biệt thự, liền kề đang được quan tâm trên hệ thống. Người dùng có thể lọc nhanh theo tên dự án, chủ đầu tư, trạng thái và khu vực để tiện theo dõi các nhóm sản phẩm thấp tầng."
+            },
+            "shophouse": {
+                label: "Shophouse",
+                pageTitle: "Dự án shophouse trên Toàn quốc",
+                intro: "Danh mục shophouse tổng hợp các dự án có sản phẩm nhà phố thương mại, khối đế thương mại hoặc nhóm sản phẩm phục vụ kinh doanh. Đây là cụm nội dung rất phù hợp cho cả người mua ở kết hợp đầu tư và nhóm khách hàng khai thác dòng tiền."
+            },
+            "nha-mat-pho": {
+                label: "Nhà mặt phố",
+                pageTitle: "Dự án nhà mặt phố trên Toàn quốc",
+                intro: "Trang này tổng hợp các dự án có sản phẩm nhà mặt phố, nhà phố thương mại hoặc sản phẩm bám trục đường lớn. Người dùng có thể xem nhanh các dự án nổi bật theo nhu cầu ở thực hoặc khai thác kinh doanh."
+            },
+            "du-an-khac": {
+                label: "Dự án khác",
+                pageTitle: "Các dự án bất động sản khác trên Toàn quốc",
+                intro: "Danh mục này dùng để gom nhóm các dự án chưa thuộc các loại hình chính nhưng vẫn có dữ liệu hiển thị trên hệ thống. Đây là khu vực mở để admin tiếp tục mở rộng thêm nhóm dự án mới về sau."
+            }
+        };
+
+        const inlineSeoContentMap = {
+            project: `
+                <p>Trang dự án bất động sản trên ToamViet là nơi tổng hợp các dự án đang có dữ liệu mua bán và cho thuê thực tế trên hệ thống. Người dùng có thể theo dõi nhanh thông tin về khu vực, loại hình, số lượng tin đăng, mức giá tham khảo và các dự án đang được quan tâm tại từng tỉnh thành.</p>
+                <p>Ngoài việc hỗ trợ tìm kiếm dự án theo khu vực và loại hình, trang còn đóng vai trò như một cụm nội dung SEO quan trọng giúp kết nối giữa chủ đầu tư, dự án, danh mục sản phẩm và các tin đăng chi tiết. Khi dữ liệu dự án được cập nhật đều đặn, khả năng hiển thị tự nhiên trên công cụ tìm kiếm cũng sẽ mạnh hơn theo từng cụm từ khóa liên quan.</p>
+                <p>Về lâu dài, đây cũng là nền tảng để phát triển các trang danh mục dự án theo khu vực, theo phân khúc và theo từng chủ đầu tư, giúp người dùng có thêm góc nhìn tổng quan trước khi đi sâu vào từng dự án cụ thể.</p>
+            `,
+            "project-can-ho-chung-cu": `
+                <p>Danh mục dự án căn hộ chung cư trên ToamViet giúp người dùng tra cứu nhanh các dự án chung cư đang được quan tâm trên toàn quốc. Tại đây, người xem có thể theo dõi tên dự án, vị trí, chủ đầu tư, trạng thái triển khai và nhóm tin đăng liên quan để thuận tiện so sánh giữa các dự án cùng phân khúc.</p>
+                <p>Về mặt SEO, đây là nhóm nội dung rất quan trọng vì gắn trực tiếp với nhu cầu tìm kiếm thực tế như dự án căn hộ mới, chung cư đang mở bán, dự án căn hộ theo khu vực và dự án phù hợp đầu tư cho thuê. Khi dữ liệu được cập nhật đều, trang sẽ tạo chiều sâu nội dung rất tốt cho toàn bộ hệ thống.</p>
+            `,
+            "project-cao-oc-van-phong": `
+                <p>Trang dự án cao ốc văn phòng giúp tổng hợp các tòa nhà văn phòng, tổ hợp thương mại và dự án khai thác văn phòng đang có dữ liệu trên hệ thống. Đây là khu vực phù hợp để gom cụm nội dung về nguồn cung văn phòng, khu thương mại và dự án phục vụ nhu cầu thuê, mua hoặc đầu tư khai thác.</p>
+                <p>Khi được tổ chức tốt theo từng khu vực và chủ đầu tư, danh mục này sẽ hỗ trợ SEO hiệu quả cho các nhóm từ khóa liên quan đến dự án văn phòng, tòa nhà thương mại và văn phòng cho thuê trong các khu đô thị mới.</p>
+            `,
+            "project-trung-tam-thuong-mai": `
+                <p>Danh mục trung tâm thương mại trên ToamViet là nơi tổng hợp các dự án có yếu tố bán lẻ, thương mại và dịch vụ. Người dùng có thể tra cứu nhanh các dự án đang triển khai hoặc đã hình thành để đánh giá tiềm năng khai thác kinh doanh và giá trị thương mại theo từng khu vực.</p>
+                <p>Đây cũng là nhóm nội dung hữu ích để phát triển các cụm SEO liên quan đến trung tâm thương mại, khu bán lẻ và dự án thương mại dịch vụ tại các đô thị lớn.</p>
+            `,
+            "project-khu-do-thi-moi": `
+                <p>Trang dự án khu đô thị mới giúp người dùng theo dõi các dự án quy hoạch đồng bộ về hạ tầng, tiện ích và nhiều loại hình sản phẩm trong cùng một quần thể. Đây là nhóm nội dung quan trọng vì nhu cầu tìm kiếm khu đô thị mới luôn gắn liền với nhu cầu ở thực, đầu tư và khai thác lâu dài.</p>
+                <p>Khi được xây dựng đầy đủ theo từng dự án, khu vực và chủ đầu tư, danh mục này sẽ hỗ trợ rất tốt cho SEO tổng thể của website, đặc biệt ở nhóm từ khóa dài có ý định tìm kiếm rõ ràng.</p>
+            `,
+            "project-khu-phuc-hop": `
+                <p>Danh mục khu phức hợp tập trung các dự án đa chức năng như căn hộ, thương mại, dịch vụ và tiện ích nội khu trong cùng một quy hoạch. Người xem có thể nhanh chóng nắm được mô hình dự án, vị trí, chủ đầu tư và mức độ quan tâm của từng dự án thông qua số lượng tin liên quan.</p>
+                <p>Với chiến lược SEO, đây là nhóm nội dung có giá trị vì giúp website mở rộng phạm vi từ khóa sang các dự án tích hợp nhiều công năng và phù hợp với nhiều nhóm người dùng khác nhau.</p>
+            `,
+            "project-nha-o-xa-hoi": `
+                <p>Trang dự án nhà ở xã hội là nơi tổng hợp các dự án phục vụ nhu cầu ở thực với mức tài chính hợp lý hơn cho nhiều đối tượng người dùng. Nội dung tại đây giúp người xem có cái nhìn tổng quan về các dự án đang mở bán, chuẩn bị triển khai hoặc đang cập nhật dữ liệu.</p>
+                <p>Việc xây dựng nội dung SEO riêng cho nhóm nhà ở xã hội sẽ giúp tăng khả năng tiếp cận tự nhiên đối với các truy vấn có nhu cầu rõ ràng về chỗ ở, pháp lý và mức giá phù hợp.</p>
+            `,
+            "project-khu-nghi-duong-sinh-thai": `
+                <p>Danh mục khu nghỉ dưỡng, sinh thái giúp tổng hợp các dự án phục vụ nghỉ dưỡng, đầu tư du lịch và khai thác lưu trú. Người dùng có thể theo dõi nhanh các dự án ven biển, ven hồ hoặc các quần thể sinh thái đang được quan tâm trên thị trường.</p>
+                <p>Đây là nhóm nội dung rất phù hợp để phát triển SEO theo dự án, theo điểm đến và theo phân khúc nghỉ dưỡng nhờ khả năng mở rộng thành các cụm nội dung chuyên sâu.</p>
+            `,
+            "project-khu-cong-nghiep": `
+                <p>Trang dự án khu công nghiệp tổng hợp các dự án công nghiệp, kho vận và hạ tầng phục vụ sản xuất tại nhiều tỉnh thành. Nội dung này có giá trị lớn với người dùng đang tìm hiểu quỹ đất công nghiệp, khu logistics hoặc khu vực có tiềm năng phát triển sản xuất kinh doanh.</p>
+                <p>Về lâu dài, đây là danh mục quan trọng để mở rộng nội dung SEO theo tỉnh thành, khu vực công nghiệp trọng điểm và nhóm dự án phục vụ phát triển doanh nghiệp.</p>
+            `,
+            "project-biet-thu-lien-ke": `
+                <p>Danh mục dự án biệt thự, liền kề giúp người dùng tra cứu nhanh các dự án thấp tầng đang được quan tâm trên hệ thống. Đây là nhóm sản phẩm có nhu cầu cao ở cả phân khúc ở thực lẫn đầu tư giữ tài sản nên rất phù hợp để phát triển nội dung SEO theo dự án và khu vực.</p>
+                <p>Khi có thêm dữ liệu thực tế về giá, số lượng tin đăng và chủ đầu tư, danh mục này sẽ tạo được chiều sâu nội dung tốt cho các truy vấn liên quan đến biệt thự và liền kề trên toàn quốc.</p>
+            `,
+            "project-shophouse": `
+                <p>Trang dự án shophouse tập trung các dự án có sản phẩm nhà phố thương mại, mặt tiền kinh doanh và các nhóm tài sản kết hợp ở với khai thác thương mại. Người xem có thể lọc nhanh theo dự án, khu vực và trạng thái để tìm ra dự án phù hợp với mục tiêu đầu tư hoặc kinh doanh.</p>
+                <p>Về SEO, đây là nhóm nội dung mạnh vì gắn liền với các truy vấn có ý định thương mại cao, đặc biệt ở những khu vực đang phát triển hạ tầng và dân cư.</p>
+            `,
+            "project-nha-mat-pho": `
+                <p>Danh mục dự án nhà mặt phố tổng hợp các dự án có sản phẩm bám trục đường lớn, nhà phố thương mại hoặc các quỹ sản phẩm có giá trị khai thác kinh doanh cao. Người dùng có thể tra cứu nhanh thông tin cơ bản của từng dự án trước khi đi sâu vào nhóm tin chi tiết.</p>
+                <p>Đây là nhóm nội dung phù hợp để xây dựng SEO theo hướng dự án nhà phố, sản phẩm mặt tiền và bất động sản phục vụ nhu cầu đầu tư khai thác thực tế.</p>
+            `,
+            "project-du-an-khac": `
+                <p>Danh mục dự án khác là khu vực mở để hệ thống gom nhóm các dự án chưa thuộc các phân loại chính nhưng vẫn có giá trị hiển thị và SEO. Việc có một nhóm tổng hợp riêng giúp website linh hoạt hơn khi mở rộng các loại hình dự án mới trong tương lai.</p>
+                <p>Admin có thể tiếp tục bổ sung nội dung mô tả chi tiết hơn cho từng nhóm nhỏ bên trong danh mục này để mở rộng thêm chiều sâu nội dung và liên kết nội bộ.</p>
+            `
+        };
+
         const demoProjectImages = [
             "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=80",
             "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1600&q=80",
@@ -1111,7 +1243,7 @@
             {
                 id: "du-an-1",
                 name: "ToamViet Riverside",
-                type: "Khu đô thị",
+                type: "Khu đô thị mới",
                 status: "Đang mở bán",
                 investor: "ToamViet Group",
                 area: "12.5 ha",
@@ -1156,7 +1288,7 @@
             {
                 id: "du-an-4",
                 name: "Sun Lake City",
-                type: "Nhà phố",
+                type: "Nhà mặt phố",
                 status: "Đang nhận booking",
                 investor: "Sun Holdings",
                 area: "6.8 ha",
@@ -1201,7 +1333,7 @@
             {
                 id: "du-an-7",
                 name: "An Phát Smart City",
-                type: "Khu đô thị",
+                type: "Khu phức hợp",
                 status: "Đang cập nhật",
                 investor: "ANP",
                 area: "9.3 ha",
@@ -1255,11 +1387,18 @@
         const applyFilterBtn = document.getElementById("applyFilterBtn");
         const resetFilterBtn = document.getElementById("resetFilterBtn");
 
+        const pageTitleEl = document.getElementById("pageTitle");
+        const pageIntroDescEl = document.getElementById("pageIntroDesc");
+
         const projectSliderTrack = document.getElementById("projectSliderTrack");
         const projectSliderDots = document.getElementById("projectSliderDots");
         const sliderPrevBtn = document.getElementById("sliderPrevBtn");
         const sliderNextBtn = document.getElementById("sliderNextBtn");
         const projectSlider = document.getElementById("projectSlider");
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeCategorySlug = urlParams.get("category") || "";
+        const activeCategoryConfig = PROJECT_CATEGORY_CONFIG[activeCategorySlug] || null;
 
         let allProjects = [];
         let filteredProjects = [];
@@ -1366,6 +1505,26 @@
             return Date.now() - index * 1000;
         }
 
+        function mapProjectTypeToCategorySlug(type) {
+            const normalized = normalizeText(type);
+
+            const typeMap = {
+                "can ho chung cu": "can-ho-chung-cu",
+                "cao oc van phong": "cao-oc-van-phong",
+                "trung tam thuong mai": "trung-tam-thuong-mai",
+                "khu do thi moi": "khu-do-thi-moi",
+                "khu phuc hop": "khu-phuc-hop",
+                "nha o xa hoi": "nha-o-xa-hoi",
+                "khu nghi duong sinh thai": "khu-nghi-duong-sinh-thai",
+                "khu cong nghiep": "khu-cong-nghiep",
+                "biet thu lien ke": "biet-thu-lien-ke",
+                "shophouse": "shophouse",
+                "nha mat pho": "nha-mat-pho"
+            };
+
+            return typeMap[normalized] || "du-an-khac";
+        }
+
         function normalizeProject(project, index) {
             const name = project.name || project.projectName || project.title || `Dự án ${index + 1}`;
             const type = project.type || project.projectType || project.category || "Đang cập nhật";
@@ -1394,7 +1553,8 @@
                 shortDescription: desc,
                 image: getProjectImage(project, index),
                 sortTime: getSortTime(project, index),
-                profileType: project.profileType || "doanhnghiep"
+                profileType: project.profileType || "doanhnghiep",
+                categorySlug: project.categorySlug || mapProjectTypeToCategorySlug(type)
             };
         }
 
@@ -1491,6 +1651,19 @@
             return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(project.id)}`;
         }
 
+        function updatePageByCategory() {
+            if (!activeCategoryConfig) {
+                document.title = "Dự án bất động sản | ToamViet.com.vn";
+                pageTitleEl.textContent = "Dự án bất động sản trên Toàn quốc";
+                pageIntroDescEl.textContent = "Trang này tổng hợp toàn bộ dự án đang có dữ liệu trên hệ thống. Người dùng có thể xem nhanh tên dự án, chủ đầu tư, trạng thái, địa chỉ và số lượng tin thuộc từng dự án trước khi đi vào chi tiết.";
+                return;
+            }
+
+            document.title = `${activeCategoryConfig.pageTitle} | ToamViet.com.vn`;
+            pageTitleEl.textContent = activeCategoryConfig.pageTitle;
+            pageIntroDescEl.textContent = activeCategoryConfig.intro;
+        }
+
         function fillTypeFilter(projects) {
             const currentValue = typeFilter.value;
             const types = [...new Set(projects.map(item => item.type).filter(Boolean))]
@@ -1500,7 +1673,11 @@
                 '<option value="">Loại hình dự án</option>' +
                 types.map(type => `<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`).join("");
 
-            if (types.includes(currentValue)) typeFilter.value = currentValue;
+            if (types.includes(currentValue)) {
+                typeFilter.value = currentValue;
+            } else if (activeCategoryConfig) {
+                typeFilter.value = activeCategoryConfig.label;
+            }
         }
 
         function fillStatusFilter(projects) {
@@ -1587,6 +1764,10 @@
             const sortType = sortFilter.value;
 
             let result = [...projects];
+
+            if (activeCategorySlug) {
+                result = result.filter(project => project.categorySlug === activeCategorySlug);
+            }
 
             if (keyword) {
                 result = result.filter(project => {
@@ -1878,6 +2059,65 @@
             startAutoSlide();
         }
 
+        function renderSeoFallback(html) {
+            const container = document.getElementById("seoContent");
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="seo-wrapper">
+                    <div class="seo-text collapsed" id="seoContent-text">
+                        ${html}
+                    </div>
+                    <button
+                        type="button"
+                        class="seo-toggle-btn"
+                        id="seoContent-toggle"
+                        aria-expanded="false"
+                    >
+                        <span class="seo-toggle-label">Xem thêm</span>
+                        <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+                    </button>
+                </div>
+            `;
+
+            const toggleBtn = document.getElementById("seoContent-toggle");
+            const seoText = document.getElementById("seoContent-text");
+            const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+            if (!toggleBtn || !seoText || !toggleLabel) return;
+
+            toggleBtn.addEventListener("click", () => {
+                const isCollapsed = seoText.classList.contains("collapsed");
+
+                if (isCollapsed) {
+                    seoText.classList.remove("collapsed");
+                    toggleBtn.classList.add("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "true");
+                    toggleLabel.textContent = "Thu gọn";
+                } else {
+                    seoText.classList.add("collapsed");
+                    toggleBtn.classList.remove("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "false");
+                    toggleLabel.textContent = "Xem thêm";
+                }
+            });
+        }
+
+        function renderSeoBlock() {
+            const seoKey = activeCategorySlug ? `project-${activeCategorySlug}` : "project";
+            const fallbackHtml = inlineSeoContentMap[seoKey] || inlineSeoContentMap.project;
+
+            if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
+                const externalContent = getSeoContentByKey(seoKey) || getSeoContentByKey("project") || "";
+                if (externalContent) {
+                    renderSeoContent("seoContent", seoKey);
+                    return;
+                }
+            }
+
+            renderSeoFallback(fallbackHtml);
+        }
+
         function renderListings(resetPage = false) {
             filteredProjects = applyFilters(allProjects);
 
@@ -1907,20 +2147,22 @@
         }
 
         async function initPage() {
+            updatePageByCategory();
+
             allProjects = await getProjects();
 
             fillTypeFilter(allProjects);
             fillStatusFilter(allProjects);
-            updateOverview(allProjects);
+            updateOverview(activeCategorySlug ? allProjects.filter(item => item.categorySlug === activeCategorySlug) : allProjects);
 
-            const sliderProjects = [...allProjects].sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
-            renderSlider(sliderProjects);
+            const sliderProjects = [...allProjects]
+                .filter(item => !activeCategorySlug || item.categorySlug === activeCategorySlug)
+                .sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
+
+            renderSlider(sliderProjects.length ? sliderProjects : allProjects);
             renderSidebarNews();
             renderListings(true);
-
-            if (typeof renderSeoContent === "function") {
-                renderSeoContent("seoContent", "project");
-            }
+            renderSeoBlock();
 
             startAutoSlide();
         }
@@ -1931,7 +2173,7 @@
 
         resetFilterBtn.addEventListener("click", function () {
             keywordFilter.value = "";
-            typeFilter.value = "";
+            typeFilter.value = activeCategoryConfig ? activeCategoryConfig.label : "";
             statusFilter.value = "";
             sortFilter.value = "newest";
             renderListings(true);
