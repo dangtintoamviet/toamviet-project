@@ -87,7 +87,6 @@
             margin-top: 10px;
         }
 
-        /* ===== BANNER ===== */
         .banner-shell {
             width: 100%;
             max-width: 1280px;
@@ -275,7 +274,6 @@
             transform: scale(1.08);
         }
 
-        /* ===== OVERVIEW ===== */
         .overview-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -309,7 +307,6 @@
             color: #64748b;
         }
 
-        /* ===== FILTER ===== */
         .toolbar-card {
             padding: 18px;
             margin-bottom: 24px;
@@ -409,7 +406,6 @@
             color: var(--hover-color);
         }
 
-        /* ===== SIDEBAR NEWS ===== */
         .sidebar-news-list {
             display: flex;
             flex-direction: column;
@@ -471,7 +467,6 @@
             line-height: 1.5;
         }
 
-        /* ===== PROJECT CARD ===== */
         .project-card {
             background: white;
             border-radius: 24px;
@@ -731,7 +726,6 @@
             background: #f8ffff;
         }
 
-        /* ===== PAGINATION ===== */
         .pagination-wrap {
             display: flex;
             justify-content: center;
@@ -1026,7 +1020,7 @@
 
                 <div>
                     <select id="typeFilter" class="filter-select">
-                        <option value="">Loại hình dự án</option>
+                        <option value="">Danh mục con</option>
                     </select>
                 </div>
 
@@ -1114,7 +1108,7 @@
             "can-ho-chung-cu": {
                 label: "Căn hộ chung cư",
                 pageTitle: "Dự án căn hộ chung cư trên Toàn quốc",
-                intro: "Trang này tập hợp các dự án căn hộ chung cư đang có dữ liệu trên hệ thống ToamViet. Người dùng có thể tra cứu nhanh tên dự án, chủ đầu tư, trạng thái triển khai, vị trí và các nhóm tin đăng liên quan để thuận tiện so sánh trước khi xem chi tiết."
+                intro: "Trang này tập hợp các dự án căn hộ chung cư đang có dữ liệu trên hệ thống ToamViet. Người dùng có thể tra cứu nhanh tên dự án, chủ đầu tư, trạng thái triển khai, vị trí và các nhóm tin đăng liên quan để thuận tiện so sánh giữa các dự án cùng phân khúc."
             },
             "cao-oc-van-phong": {
                 label: "Cao ốc văn phòng",
@@ -1172,6 +1166,10 @@
                 intro: "Danh mục này dùng để gom nhóm các dự án chưa thuộc các loại hình chính nhưng vẫn có dữ liệu hiển thị trên hệ thống. Đây là khu vực mở để admin tiếp tục mở rộng thêm nhóm dự án mới về sau."
             }
         };
+
+        const PROJECT_CATEGORY_OPTIONS = Object.entries(PROJECT_CATEGORY_CONFIG).map(function ([slug, cfg]) {
+            return { slug, label: cfg.label };
+        });
 
         const inlineSeoContentMap = {
             project: `
@@ -1244,6 +1242,7 @@
                 id: "du-an-1",
                 name: "ToamViet Riverside",
                 type: "Khu đô thị mới",
+                categorySlug: "khu-do-thi-moi",
                 status: "Đang mở bán",
                 investor: "ToamViet Group",
                 area: "12.5 ha",
@@ -1259,6 +1258,7 @@
                 id: "du-an-2",
                 name: "Green Valley Residence",
                 type: "Căn hộ chung cư",
+                categorySlug: "can-ho-chung-cu",
                 status: "Sắp mở bán",
                 investor: "Green Valley Holdings",
                 area: "2 block, 780 căn",
@@ -1274,6 +1274,7 @@
                 id: "du-an-3",
                 name: "Central Park Lào Cai",
                 type: "Đất nền",
+                categorySlug: "du-an-khac",
                 status: "Đang triển khai",
                 investor: "Central Land Group",
                 area: "8.2 ha",
@@ -1289,6 +1290,7 @@
                 id: "du-an-4",
                 name: "Sun Lake City",
                 type: "Nhà mặt phố",
+                categorySlug: "nha-mat-pho",
                 status: "Đang nhận booking",
                 investor: "Sun Holdings",
                 area: "6.8 ha",
@@ -1304,6 +1306,7 @@
                 id: "du-an-5",
                 name: "Bcons NewSky",
                 type: "Căn hộ chung cư",
+                categorySlug: "can-ho-chung-cu",
                 status: "Chuẩn bị ra mắt",
                 investor: "Bcons Group",
                 area: "2 block, 1.200 căn",
@@ -1319,6 +1322,7 @@
                 id: "du-an-6",
                 name: "Diamond Riverside Plaza",
                 type: "Shophouse",
+                categorySlug: "shophouse",
                 status: "Đang bán giỏ hàng đẹp",
                 investor: "Diamond Urban",
                 area: "4.1 ha",
@@ -1334,6 +1338,7 @@
                 id: "du-an-7",
                 name: "An Phát Smart City",
                 type: "Khu phức hợp",
+                categorySlug: "khu-phuc-hop",
                 status: "Đang cập nhật",
                 investor: "ANP",
                 area: "9.3 ha",
@@ -1419,6 +1424,7 @@
             return String(value || "")
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
                 .toLowerCase()
                 .replace(/\s+/g, " ")
                 .trim();
@@ -1510,6 +1516,7 @@
 
             const typeMap = {
                 "can ho chung cu": "can-ho-chung-cu",
+                "can ho": "can-ho-chung-cu",
                 "cao oc van phong": "cao-oc-van-phong",
                 "trung tam thuong mai": "trung-tam-thuong-mai",
                 "khu do thi moi": "khu-do-thi-moi",
@@ -1518,11 +1525,45 @@
                 "khu nghi duong sinh thai": "khu-nghi-duong-sinh-thai",
                 "khu cong nghiep": "khu-cong-nghiep",
                 "biet thu lien ke": "biet-thu-lien-ke",
+                "biet thu": "biet-thu-lien-ke",
+                "lien ke": "biet-thu-lien-ke",
                 "shophouse": "shophouse",
                 "nha mat pho": "nha-mat-pho"
             };
 
             return typeMap[normalized] || "du-an-khac";
+        }
+
+        function resolveProjectCategorySlug(project) {
+            const directCandidates = [
+                project.categorySlug,
+                project.projectCategory,
+                project.projectCategorySlug,
+                project.projectTypeSlug
+            ];
+
+            for (const item of directCandidates) {
+                const raw = String(item || "").trim();
+                if (raw && PROJECT_CATEGORY_CONFIG[raw]) return raw;
+            }
+
+            const categoryByLabelCandidates = [
+                project.categoryName,
+                project.projectCategoryName,
+                project.type,
+                project.projectType,
+                project.category
+            ];
+
+            for (const item of categoryByLabelCandidates) {
+                const normalized = normalizeText(item);
+                const found = PROJECT_CATEGORY_OPTIONS.find(function (opt) {
+                    return normalizeText(opt.label) === normalized;
+                });
+                if (found) return found.slug;
+            }
+
+            return mapProjectTypeToCategorySlug(project.type || project.projectType || project.category || "");
         }
 
         function normalizeProject(project, index) {
@@ -1536,6 +1577,7 @@
             const salePostsCount = Number(project.salePostsCount ?? project.saleCount ?? project.totalSalePosts ?? 0);
             const rentalPostsCount = Number(project.rentalPostsCount ?? project.rentalCount ?? project.totalRentalPosts ?? 0);
             const desc = project.shortDescription || project.description || project.summary || "Dự án đang được cập nhật mô tả chi tiết.";
+            const categorySlug = resolveProjectCategorySlug(project);
 
             return {
                 ...project,
@@ -1554,7 +1596,8 @@
                 image: getProjectImage(project, index),
                 sortTime: getSortTime(project, index),
                 profileType: project.profileType || "doanhnghiep",
-                categorySlug: project.categorySlug || mapProjectTypeToCategorySlug(type)
+                categorySlug: categorySlug,
+                categoryName: PROJECT_CATEGORY_CONFIG[categorySlug] ? PROJECT_CATEGORY_CONFIG[categorySlug].label : (project.categoryName || type)
             };
         }
 
@@ -1664,19 +1707,15 @@
             pageIntroDescEl.textContent = activeCategoryConfig.intro;
         }
 
-        function fillTypeFilter(projects) {
-            const currentValue = typeFilter.value;
-            const types = [...new Set(projects.map(item => item.type).filter(Boolean))]
-                .sort((a, b) => a.localeCompare(b, "vi"));
-
+        function fillTypeFilter() {
             typeFilter.innerHTML =
-                '<option value="">Loại hình dự án</option>' +
-                types.map(type => `<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`).join("");
+                '<option value="">Danh mục con</option>' +
+                PROJECT_CATEGORY_OPTIONS.map(function (item) {
+                    return `<option value="${escapeHtml(item.slug)}">${escapeHtml(item.label)}</option>`;
+                }).join("");
 
-            if (types.includes(currentValue)) {
-                typeFilter.value = currentValue;
-            } else if (activeCategoryConfig) {
-                typeFilter.value = activeCategoryConfig.label;
+            if (activeCategorySlug && PROJECT_CATEGORY_CONFIG[activeCategorySlug]) {
+                typeFilter.value = activeCategorySlug;
             }
         }
 
@@ -1759,7 +1798,7 @@
 
         function applyFilters(projects) {
             const keyword = normalizeText(keywordFilter.value);
-            const selectedType = normalizeText(typeFilter.value);
+            const selectedCategorySlug = String(typeFilter.value || "").trim();
             const selectedStatus = normalizeText(statusFilter.value);
             const sortType = sortFilter.value;
 
@@ -1769,6 +1808,10 @@
                 result = result.filter(project => project.categorySlug === activeCategorySlug);
             }
 
+            if (selectedCategorySlug) {
+                result = result.filter(project => project.categorySlug === selectedCategorySlug);
+            }
+
             if (keyword) {
                 result = result.filter(project => {
                     const rawText = [
@@ -1776,15 +1819,12 @@
                         project.investor,
                         project.address,
                         project.type,
+                        project.categoryName,
                         project.status,
                         project.shortDescription
                     ].filter(Boolean).join(" ");
                     return normalizeText(rawText).includes(keyword);
                 });
-            }
-
-            if (selectedType) {
-                result = result.filter(project => normalizeText(project.type) === selectedType);
             }
 
             if (selectedStatus) {
@@ -1814,6 +1854,7 @@
             const title = escapeHtml(project.name);
             const investor = escapeHtml(project.investor);
             const type = escapeHtml(project.type);
+            const categoryName = escapeHtml(project.categoryName || type);
             const status = escapeHtml(project.status);
             const address = escapeHtml(project.address);
             const saleCount = formatNumber(project.salePostsCount);
@@ -1838,7 +1879,7 @@
                             >
                         </a>
 
-                        <span class="project-type-badge">${type}</span>
+                        <span class="project-type-badge">${categoryName}</span>
                         <span class="project-status-badge">
                             <i class="fa-solid fa-bolt"></i>
                             ${status}
@@ -1866,6 +1907,7 @@
                         <p class="project-card-desc">${desc}</p>
 
                         <div class="project-mini-pills">
+                            <span class="mini-pill"><i class="fa-solid fa-layer-group"></i> ${type}</span>
                             <span class="mini-pill"><i class="fa-solid fa-house"></i> Tin bán: <strong>${saleCount}</strong></span>
                             <span class="mini-pill"><i class="fa-solid fa-key"></i> Tin thuê: <strong>${rentCount}</strong></span>
                         </div>
@@ -1974,7 +2016,7 @@
                             <div class="slide-quick-meta">
                                 <span class="slide-meta-pill">
                                     <i class="fa-solid fa-layer-group"></i>
-                                    ${escapeHtml(project.type)}
+                                    ${escapeHtml(project.categoryName || project.type)}
                                 </span>
                                 <span class="slide-meta-pill">
                                     <i class="fa-solid fa-ruler-combined"></i>
@@ -2134,7 +2176,7 @@
             if (!filteredProjects.length) {
                 listingContainer.innerHTML = `
                     <div class="empty-box md:col-span-2">
-                        Không tìm thấy dự án nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, loại hình, trạng thái hoặc sắp xếp lại danh sách.
+                        Không tìm thấy dự án nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, danh mục con, trạng thái hoặc sắp xếp lại danh sách.
                     </div>
                 `;
                 paginationWrap.innerHTML = "";
@@ -2151,13 +2193,16 @@
 
             allProjects = await getProjects();
 
-            fillTypeFilter(allProjects);
+            fillTypeFilter();
             fillStatusFilter(allProjects);
-            updateOverview(activeCategorySlug ? allProjects.filter(item => item.categorySlug === activeCategorySlug) : allProjects);
 
-            const sliderProjects = [...allProjects]
-                .filter(item => !activeCategorySlug || item.categorySlug === activeCategorySlug)
-                .sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
+            const overviewSource = activeCategorySlug
+                ? allProjects.filter(item => item.categorySlug === activeCategorySlug)
+                : allProjects;
+
+            updateOverview(overviewSource);
+
+            const sliderProjects = [...overviewSource].sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
 
             renderSlider(sliderProjects.length ? sliderProjects : allProjects);
             renderSidebarNews();
@@ -2173,7 +2218,7 @@
 
         resetFilterBtn.addEventListener("click", function () {
             keywordFilter.value = "";
-            typeFilter.value = activeCategoryConfig ? activeCategoryConfig.label : "";
+            typeFilter.value = activeCategorySlug && PROJECT_CATEGORY_CONFIG[activeCategorySlug] ? activeCategorySlug : "";
             statusFilter.value = "";
             sortFilter.value = "newest";
             renderListings(true);
