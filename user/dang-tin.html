@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
         :root {
@@ -1026,22 +1027,26 @@
                         </div>
                     </aside>
                 </div>
+
+                <div id="seoContent" class="mt-10"></div>
             </div>
         </div>
     </main>
 
     <div id="site-footer"></div>
 
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+    <button id="goToTop" onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+    <div class="zalo-chat-btn wiggle" onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)">
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
@@ -1056,6 +1061,7 @@
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
     <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
 
     <script>
         let currentFlow = "real_estate";
@@ -1093,6 +1099,88 @@
                 }
             ]
         };
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("site-header", "../components/header-inner.html");
+                    await loadComponent("site-mobile-menu", "../components/mobile-menu-inner.html");
+                    await loadComponent("site-footer", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        function renderDangTinSeoContent() {
+            const container = document.getElementById("seoContent");
+            if (!container) return;
+
+            const content = `
+                <p>Trang đăng tin là nơi người dùng tạo nội dung mới theo đúng luồng dữ liệu của hệ thống Tổ Ấm Việt. Khi chọn đúng loại nội dung như bất động sản bán, bất động sản cho thuê hoặc dịch vụ xây dựng, dữ liệu sẽ tự động được phân phối sang đúng trang đích để hiển thị và phục vụ người tìm kiếm.</p>
+                <p>Với tin bất động sản bán, các trường như giá, diện tích, vị trí và dự án sẽ giúp hệ thống chuẩn hóa dữ liệu tốt hơn để phục vụ cho trang giá nhà đất, trang dự án và các cụm nội dung SEO theo khu vực. Với tin cho thuê, dữ liệu được dùng để hiển thị tại danh mục nhà đất cho thuê theo từng nhu cầu thực tế.</p>
+                <p>Riêng luồng xây dựng hỗ trợ doanh nghiệp, nhà thầu, kỹ sư và đơn vị thiết kế đăng dịch vụ để hiển thị trên trang xây dựng. Việc nhập rõ loại hình, khu vực hoạt động, chuyên môn và thông tin liên hệ sẽ giúp nội dung có khả năng tiếp cận khách hàng tốt hơn và tăng chất lượng tổng thể cho toàn hệ sinh thái nội dung dùng chung.</p>
+            `;
+
+            container.innerHTML = `
+                <div class="seo-wrapper seo-block">
+                    <div class="seo-text collapsed" id="seoContent-text">
+                        ${content}
+                    </div>
+                    <button
+                        type="button"
+                        class="seo-toggle-btn"
+                        id="seoContent-toggle"
+                        aria-expanded="false"
+                    >
+                        <span class="seo-toggle-label">Xem thêm</span>
+                        <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+                    </button>
+                </div>
+            `;
+
+            const toggleBtn = document.getElementById("seoContent-toggle");
+            const seoText = document.getElementById("seoContent-text");
+            const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+            if (!toggleBtn || !seoText || !toggleLabel) return;
+
+            requestAnimationFrame(() => {
+                const collapsedHeight = seoText.clientHeight;
+                const fullHeight = seoText.scrollHeight;
+
+                if (fullHeight <= collapsedHeight + 8 || fullHeight <= 90) {
+                    toggleBtn.style.display = "none";
+                    seoText.classList.remove("collapsed");
+                    return;
+                }
+
+                toggleBtn.style.display = "flex";
+            });
+
+            toggleBtn.addEventListener("click", () => {
+                const isCollapsed = seoText.classList.contains("collapsed");
+
+                if (isCollapsed) {
+                    seoText.classList.remove("collapsed");
+                    toggleBtn.classList.add("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "true");
+                    toggleLabel.textContent = "Thu gọn";
+                } else {
+                    seoText.classList.add("collapsed");
+                    toggleBtn.classList.remove("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "false");
+                    toggleLabel.textContent = "Xem thêm";
+                }
+            });
+        }
 
         function safeParseLocalStorage(key) {
             try {
@@ -2526,12 +2614,17 @@
             console.warn("Không thể đồng bộ project store lúc khởi tạo:", error);
         }
 
-        fillUserInfo();
-        loadVietnamAddress();
-        renderDynamicFields();
-        setVipLevel("thuong");
-        setFlow("real_estate");
-        updatePreview();
+        window.addEventListener("load", async function () {
+            await initSharedComponents();
+
+            fillUserInfo();
+            loadVietnamAddress();
+            renderDynamicFields();
+            setVipLevel("thuong");
+            setFlow("real_estate");
+            updatePreview();
+            renderDangTinSeoContent();
+        });
     </script>
 
     <script src="../assets/js/main.js"></script>
