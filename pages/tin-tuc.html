@@ -4,56 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tin tức Thị trường Bất Động Sản Việt Nam | Tổ Ấm Việt</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/mobile.css">
+    <link rel="stylesheet" href="../assets/css/seo-content.css">
+
     <style>
-        :root { --vip-color: #008B8B; --hover-color: #FF8C00; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fff; color: #2C2C2C; }
-        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-
-        /* Menu & Header */
-        .nav-link { transition: all 0.3s; position: relative; }
-        .nav-link:hover { color: var(--hover-color) !important; }
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
-            border-top: 2px solid var(--vip-color);
-            z-index: 50;
+        :root {
+            --vip-color: #008B8B;
+            --hover-color: #FF8C00;
         }
-        .dropdown-item {
-            padding: 10px 20px;
-            display: block;
-            color: #333;
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff;
+            color: #2C2C2C;
+        }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .wiki-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .wiki-sub-title {
             font-size: 14px;
-            border-bottom: 1px solid #f2f2f2;
-        }
-        .dropdown-item:hover { background: #f9f9f9; color: var(--hover-color); }
-
-        /* Save icon */
-        .save-icon { position: relative; cursor: pointer; font-size: 20px; }
-        .save-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background: #E03C31;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            border: 1px solid white;
+            color: #777;
+            margin-bottom: 25px;
         }
 
-        /* Wiki Layout */
-        .wiki-title { font-size: 28px; font-weight: 700; color: #222; margin-bottom: 8px; }
-        .wiki-sub-title { font-size: 14px; color: #777; margin-bottom: 25px; }
-        .featured-post { position: relative; border-radius: 4px; overflow: hidden; height: 420px; margin-bottom: 40px; }
+        .featured-post {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 420px;
+            margin-bottom: 40px;
+        }
+
         .featured-overlay {
             position: absolute;
             inset: 0;
@@ -65,8 +62,15 @@
             color: white;
         }
 
-        /* Sidebar */
-        .sidebar-box { border: 1px solid #f0f0f0; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .sidebar-box {
+            border: 1px solid #f0f0f0;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+            background: #fff;
+        }
+
         .rank-number {
             width: 24px;
             height: 24px;
@@ -80,311 +84,202 @@
             font-weight: bold;
             flex-shrink: 0;
         }
-        .rank-item:nth-child(1) .rank-number { background: #FF8C00; color: white; }
+
+        .rank-item:nth-child(1) .rank-number {
+            background: #FF8C00;
+            color: white;
+        }
+
         .city-tag {
             position: relative;
-            border-radius: 6px;
+            border-radius: 10px;
             overflow: hidden;
-            height: 80px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 15px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            background-size: cover !important;
+            background-position: center !important;
+            transition: transform 0.25s ease, opacity 0.25s ease;
         }
 
-        /* Footer */
-        .footer-link-group h4 {
-            font-weight: 800;
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: #2C2C2C;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+        .city-tag:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
         }
-        .footer-link-group ul {
-            font-size: 13px;
-            color: #666;
-            padding: 0;
-            list-style: none;
+
+        .news-post-link:hover h4,
+        .news-post-link:hover h2 {
+            color: var(--vip-color);
         }
-        .footer-link-group li { margin-bottom: 8px; }
-        .footer-link-group li a:hover {
-            color: var(--hover-color);
-            text-decoration: underline;
+
+        .seo-block-shell {
+            margin-top: 40px;
+        }
+
+        @media (max-width: 991px) {
+            .featured-post {
+                height: 340px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .wiki-title {
+                font-size: 24px;
+            }
+
+            .featured-post {
+                height: 280px;
+                margin-bottom: 28px;
+            }
+
+            .featured-overlay {
+                padding: 20px;
+            }
+
+            .city-tag {
+                height: 88px;
+                font-size: 14px;
+            }
+
+            .seo-block-shell {
+                margin-top: 28px;
+            }
         }
     </style>
 </head>
 <body>
-
-    <header class="bg-white border-b sticky top-0 z-[1000]">
-        <div class="container-custom h-[70px] flex justify-between items-center">
-            <div class="flex items-center gap-8">
-                <a href="../index.html">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
-                </a>
-
-                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
-                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
-                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
-                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
-
-                    <div class="dropdown relative h-full flex items-center cursor-pointer">
-                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
-                        <div class="dropdown-menu">
-                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-
-            <div class="flex items-center gap-5">
-                <div class="save-icon nav-link text-gray-600">
-                    <i class="fa-regular fa-heart"></i>
-                    <span class="save-count">0</span>
-                </div>
-
-                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
-                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
-                </div>
-
-                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
-                    Đăng tin
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <div class="lg:hidden bg-white border-t">
-        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
-            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
-            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
-            <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
-            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
-            <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
-            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
-            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
-            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
-            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
-            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
-            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
-        </div>
-    </div>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
 
     <main class="py-8">
         <div class="container-custom">
             <h1 class="wiki-title">Tin tức Thị trường Bất Động Sản Việt Nam</h1>
             <p class="wiki-sub-title">Cập nhật tin tức mới nhất trên thị trường Bất Động Sản.</p>
 
-            <div class="featured-post group cursor-pointer">
+            <a href="../pages/chi-tiet-tin-tuc.html?category=noi-ngoai-that&slug=hanh-trinh-cham-toi-trai-tim-cua-moi-cong-trinh" class="featured-post group cursor-pointer block news-post-link">
                 <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200" alt="Tin nổi bật thị trường bất động sản" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                 <div class="featured-overlay">
                     <span class="text-xs font-bold bg-black/50 w-fit px-2 py-1 rounded mb-3">14/11/2025 17:00 • Nội - Ngoại thất</span>
-                    <h2 class="text-2xl md:text-3xl font-bold leading-tight">Hành Trình Chạm Tới "Trái Tim" Của Mọi Công Trình</h2>
+                    <h2 class="text-2xl md:text-3xl font-bold leading-tight transition">Hành Trình Chạm Tới "Trái Tim" Của Mọi Công Trình</h2>
                     <p class="mt-3 text-sm opacity-90 line-clamp-2 max-w-3xl">Ẩn mình bên trong lớp hoàn thiện kiên cố của công trình là cả một hệ thống cơ điện nước phức tạp, được kết nối thông qua các nắp thăm kỹ thuật chuyên dụng...</p>
                 </div>
-            </div>
+            </a>
 
             <div class="flex flex-col lg:flex-row gap-10">
                 <div class="lg:w-2/3">
                     <h3 class="text-xl font-bold mb-8 border-b-2 border-gray-100 pb-3">Mới nhất</h3>
+
                     <div class="space-y-10">
-                        <div class="flex flex-col md:flex-row gap-6 group">
+                        <a href="../pages/chi-tiet-tin-tuc.html?category=noi-ngoai-that&slug=he-sinh-thai-ong-nhua-stroman" class="flex flex-col md:flex-row gap-6 group news-post-link">
                             <div class="md:w-[260px] h-[160px] shrink-0 overflow-hidden rounded-lg">
                                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400" alt="Bài viết mới về nội ngoại thất" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                             </div>
                             <div>
                                 <span class="bg-gray-100 text-[10px] px-2 py-1 font-bold rounded text-gray-500 uppercase">Nội - Ngoại thất</span>
-                                <h4 class="text-lg font-bold mt-2 group-hover:text-[--vip-color] transition line-clamp-2">Hệ Sinh Thái Ống Nhựa Ströman: Kết Nối Sự Bền Vững Cho Mọi Công Trình</h4>
+                                <h4 class="text-lg font-bold mt-2 transition line-clamp-2">Hệ Sinh Thái Ống Nhựa Ströman: Kết Nối Sự Bền Vững Cho Mọi Công Trình</h4>
                                 <p class="text-[11px] text-gray-400 mt-1">13/11/2025 14:01 • Hải Âu</p>
                                 <p class="text-sm text-gray-500 mt-2 line-clamp-2">Trong bức tranh hiện đại hóa ngành xây dựng, "hệ sinh thái vật liệu" đang trở thành khái niệm then chốt định hình chất lượng...</p>
                             </div>
-                        </div>
+                        </a>
 
-                        <div class="flex flex-col md:flex-row gap-6 group">
+                        <a href="../pages/chi-tiet-tin-tuc.html?category=noi-ngoai-that&slug=oppein-mo-showroom-tai-tp-hcm" class="flex flex-col md:flex-row gap-6 group news-post-link">
                             <div class="md:w-[260px] h-[160px] shrink-0 overflow-hidden rounded-lg">
                                 <img src="https://images.unsplash.com/photo-1556912177-c54038a3da74?w=400" alt="Showroom nội thất OPPEIN tại TP.HCM" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                             </div>
                             <div>
                                 <span class="bg-gray-100 text-[10px] px-2 py-1 font-bold rounded text-gray-500 uppercase">Nội - Ngoại thất</span>
-                                <h4 class="text-lg font-bold mt-2 group-hover:text-[--vip-color] transition line-clamp-2">OPPEIN - Thương Hiệu Nội Thất Tỷ Đô Mở Showroom Tại TP.HCM</h4>
+                                <h4 class="text-lg font-bold mt-2 transition line-clamp-2">OPPEIN - Thương Hiệu Nội Thất Tỷ Đô Mở Showroom Tại TP.HCM</h4>
                                 <p class="text-[11px] text-gray-400 mt-1">31/10/2025 08:00 • Hải Âu</p>
                                 <p class="text-sm text-gray-500 mt-2 line-clamp-2">OPPEIN được biết đến như thương hiệu nội thất hàng đầu thế giới với bề dày 31 năm, hiện diện tại hơn 130 quốc gia...</p>
                             </div>
-                        </div>
+                        </a>
 
-                        <div class="flex flex-col md:flex-row gap-6 group">
+                        <a href="../pages/chi-tiet-tin-tuc.html?category=tin-thi-truong&slug=xu-huong-dong-tien-dau-tu-bat-dong-san-2026" class="flex flex-col md:flex-row gap-6 group news-post-link">
                             <div class="md:w-[260px] h-[160px] shrink-0 overflow-hidden rounded-lg">
                                 <img src="https://images.unsplash.com/photo-1460317442991-0ec209397118?w=400" alt="Phân tích xu hướng thị trường bất động sản" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                             </div>
                             <div>
                                 <span class="bg-gray-100 text-[10px] px-2 py-1 font-bold rounded text-gray-500 uppercase">Thị trường</span>
-                                <h4 class="text-lg font-bold mt-2 group-hover:text-[--vip-color] transition line-clamp-2">Xu Hướng Dòng Tiền Đầu Tư Bất Động Sản Trong Năm 2026</h4>
+                                <h4 class="text-lg font-bold mt-2 transition line-clamp-2">Xu Hướng Dòng Tiền Đầu Tư Bất Động Sản Trong Năm 2026</h4>
                                 <p class="text-[11px] text-gray-400 mt-1">28/10/2025 10:30 • Minh Quân</p>
                                 <p class="text-sm text-gray-500 mt-2 line-clamp-2">Giới đầu tư đang dần chuyển hướng sang những khu vực có hạ tầng phát triển mạnh, pháp lý rõ ràng và nhu cầu ở thực tăng cao...</p>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
                 <div class="lg:w-1/3">
-                    <div class="sidebar-box shadow-sm">
+                    <div class="sidebar-box">
                         <h4 class="font-bold text-base mb-5 border-l-4 border-[--vip-color] pl-3 uppercase">Bài viết xem nhiều nhất</h4>
                         <div class="space-y-5">
-                            <a href="#" class="rank-item flex gap-4 group">
+                            <a href="../pages/chi-tiet-tin-tuc.html?category=phong-thuy&slug=menh-tho-hop-cay-gi" class="rank-item flex gap-4 group">
                                 <span class="rank-number">1</span>
                                 <span class="text-[13px] font-semibold group-hover:text-[--vip-color] leading-snug">Mệnh Thổ Hợp Cây Gì? 12 Loại Cây Hợp Mệnh Thổ Hút Tài Lộc</span>
                             </a>
-                            <a href="#" class="rank-item flex gap-4 group border-t pt-4">
+                            <a href="../pages/chi-tiet-tin-tuc.html?category=kinh-nghiem&slug=cach-tinh-m2-xay-dung" class="rank-item flex gap-4 group border-t pt-4">
                                 <span class="rank-number">2</span>
                                 <span class="text-[13px] font-semibold group-hover:text-[--vip-color] leading-snug">Cách Tính M2 Xây Dựng Ứng Dụng Trong Xây Sửa Nhà</span>
                             </a>
-                            <a href="#" class="rank-item flex gap-4 group border-t pt-4">
+                            <a href="../pages/chi-tiet-tin-tuc.html?category=phan-tich-dau-tu&slug=5-kinh-nghiem-mua-nha-dau-tien-cho-nguoi-tre" class="rank-item flex gap-4 group border-t pt-4">
                                 <span class="rank-number">3</span>
                                 <span class="text-[13px] font-semibold group-hover:text-[--vip-color] leading-snug">5 Kinh Nghiệm Mua Nhà Đầu Tiên Cho Người Trẻ</span>
                             </a>
                         </div>
                     </div>
 
-                    <div class="sidebar-box shadow-sm">
+                    <div class="sidebar-box">
                         <h4 class="font-bold text-base mb-5 uppercase">Thị trường BĐS sôi động</h4>
-                        <div class="grid grid-cols-2 gap-3">
-                            <a href="../pages/gia-nha-dat.html" class="city-tag" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1555921015-5532091f6026?w=200'); background-size: cover;">Hà Nội</a>
-                            <a href="../pages/gia-nha-dat.html" class="city-tag" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1528127269322-539801943592?w=200'); background-size: cover;">TP. HCM</a>
+                        <div id="hotMarketCities" class="grid grid-cols-2 gap-3">
+                            <a href="../pages/gia-nha-dat.html?city=H%C3%A0%20N%E1%BB%99i" class="city-tag" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1555921015-5532091f6026?w=200');">Hà Nội</a>
+                            <a href="../pages/gia-nha-dat.html?city=Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh" class="city-tag" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1528127269322-539801943592?w=200');">TP. HCM</a>
                         </div>
                     </div>
 
-                    <div class="sidebar-box shadow-sm">
+                    <div class="sidebar-box">
                         <h4 class="font-bold text-base mb-5 uppercase">Thị trường 10 tỉnh thành</h4>
-                        <div class="space-y-3">
-                            <a href="../pages/gia-nha-dat.html" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color] border-b pb-2">
-                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5"> Bà Rịa - Vũng Tàu
+                        <div id="topProvinceList" class="space-y-3">
+                            <a href="../pages/gia-nha-dat.html?city=H%C3%A0%20N%E1%BB%99i" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color] border-b pb-2">
+                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5">
+                                Hà Nội
                             </a>
-                            <a href="../pages/gia-nha-dat.html" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color] border-b pb-2">
-                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5"> Bình Dương
+                            <a href="../pages/gia-nha-dat.html?city=Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color] border-b pb-2">
+                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5">
+                                Thành phố Hồ Chí Minh
                             </a>
-                            <a href="../pages/gia-nha-dat.html" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color]">
-                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5"> Đà Nẵng
+                            <a href="../pages/gia-nha-dat.html?city=%C4%90%C3%A0%20N%E1%BA%B5ng" class="flex items-center gap-3 text-[13px] hover:text-[--vip-color]">
+                                <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5">
+                                Đà Nẵng
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <section class="seo-block-shell">
+                <div id="seoContent"></div>
+            </section>
         </div>
     </main>
 
-    <footer class="bg-white pt-16 border-t">
-        <div class="container-custom">
-            <div class="mb-12 border-b pb-12">
-                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
-                </p>
-            </div>
+    <div id="site-footer"></div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                <div class="footer-link-group">
-                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
-                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>DỰ ÁN NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
-                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
-                    </ul>
-                </div>
-            </div>
+    <button id="goToTop" onclick="safeScrollToTop()">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
-            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
-                <div class="max-w-sm">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6">
-                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
-                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
-                    <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-10 text-[13px]">
-                    <div>
-                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="w-full lg:max-w-xs">
-                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
-                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
-                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm">
-                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                    <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
-                </div>
-            </div>
-
-            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
-                <p>© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
-            </div>
-        </div>
-    </footer>
-
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
-
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required>
@@ -393,10 +288,241 @@
         </div>
     </div>
 
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
+    <script src="../assets/js/main.js"></script>
+
     <script>
+        const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
+        const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
+        const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
+
+        const PROVINCE_IMAGES = {
+            "Hà Nội": "https://images.unsplash.com/photo-1555921015-5532091f6026?w=400",
+            "Thành phố Hồ Chí Minh": "https://images.unsplash.com/photo-1528127269322-539801943592?w=400",
+            "Đà Nẵng": "https://images.unsplash.com/photo-1559592481-74488ea56144?w=400",
+            "Hải Phòng": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400",
+            "Cần Thơ": "https://images.unsplash.com/photo-1494526585095-c41746248156?w=400",
+            "Huế": "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=400",
+            "Khánh Hòa": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400",
+            "Lâm Đồng": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400",
+            "Quảng Ninh": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=400",
+            "Đồng Nai": "https://images.unsplash.com/photo-1460317442991-0ec209397118?w=400",
+            "Bắc Ninh": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400",
+            "An Giang": "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400"
+        };
+
+        const PROVINCES_34 = [
+            "An Giang",
+            "Bắc Ninh",
+            "Cà Mau",
+            "Cao Bằng",
+            "Cần Thơ",
+            "Đà Nẵng",
+            "Đắk Lắk",
+            "Điện Biên",
+            "Đồng Nai",
+            "Đồng Tháp",
+            "Gia Lai",
+            "Hà Nội",
+            "Hà Tĩnh",
+            "Hải Phòng",
+            "Hưng Yên",
+            "Huế",
+            "Khánh Hòa",
+            "Lai Châu",
+            "Lâm Đồng",
+            "Lạng Sơn",
+            "Lào Cai",
+            "Nghệ An",
+            "Ninh Bình",
+            "Phú Thọ",
+            "Quảng Ngãi",
+            "Quảng Ninh",
+            "Quảng Trị",
+            "Sơn La",
+            "Tây Ninh",
+            "Thái Nguyên",
+            "Thanh Hóa",
+            "Thành phố Hồ Chí Minh",
+            "Tuyên Quang",
+            "Vĩnh Long"
+        ];
+
+        const PROVINCE_ALIAS_MAP = {
+            "an giang": "An Giang",
+            "kien giang": "An Giang",
+
+            "bac ninh": "Bắc Ninh",
+            "bac giang": "Bắc Ninh",
+
+            "ca mau": "Cà Mau",
+            "bac lieu": "Cà Mau",
+
+            "cao bang": "Cao Bằng",
+            "can tho": "Cần Thơ",
+            "hau giang": "Cần Thơ",
+            "soc trang": "Cần Thơ",
+
+            "da nang": "Đà Nẵng",
+            "quang nam": "Đà Nẵng",
+
+            "dak lak": "Đắk Lắk",
+            "daklak": "Đắk Lắk",
+            "phu yen": "Đắk Lắk",
+
+            "dien bien": "Điện Biên",
+
+            "dong nai": "Đồng Nai",
+            "binh phuoc": "Đồng Nai",
+
+            "dong thap": "Đồng Tháp",
+            "tien giang": "Đồng Tháp",
+
+            "gia lai": "Gia Lai",
+            "binh dinh": "Gia Lai",
+
+            "ha noi": "Hà Nội",
+            "ha tinh": "Hà Tĩnh",
+
+            "hai phong": "Hải Phòng",
+            "hai duong": "Hải Phòng",
+
+            "hung yen": "Hưng Yên",
+            "thai binh": "Hưng Yên",
+
+            "hue": "Huế",
+            "thua thien hue": "Huế",
+
+            "khanh hoa": "Khánh Hòa",
+            "ninh thuan": "Khánh Hòa",
+
+            "lai chau": "Lai Châu",
+
+            "lam dong": "Lâm Đồng",
+            "dak nong": "Lâm Đồng",
+            "daknong": "Lâm Đồng",
+            "binh thuan": "Lâm Đồng",
+
+            "lang son": "Lạng Sơn",
+
+            "lao cai": "Lào Cai",
+            "yen bai": "Lào Cai",
+
+            "nghe an": "Nghệ An",
+
+            "ninh binh": "Ninh Bình",
+            "ha nam": "Ninh Bình",
+            "nam dinh": "Ninh Bình",
+
+            "phu tho": "Phú Thọ",
+            "vinh phuc": "Phú Thọ",
+            "hoa binh": "Phú Thọ",
+
+            "quang ngai": "Quảng Ngãi",
+            "kon tum": "Quảng Ngãi",
+            "kontum": "Quảng Ngãi",
+
+            "quang ninh": "Quảng Ninh",
+
+            "quang tri": "Quảng Trị",
+            "quang binh": "Quảng Trị",
+
+            "son la": "Sơn La",
+
+            "tay ninh": "Tây Ninh",
+            "long an": "Tây Ninh",
+
+            "thai nguyen": "Thái Nguyên",
+            "bac kan": "Thái Nguyên",
+            "bac can": "Thái Nguyên",
+
+            "thanh hoa": "Thanh Hóa",
+
+            "thanh pho ho chi minh": "Thành phố Hồ Chí Minh",
+            "ho chi minh": "Thành phố Hồ Chí Minh",
+            "tp ho chi minh": "Thành phố Hồ Chí Minh",
+            "tp.ho chi minh": "Thành phố Hồ Chí Minh",
+            "tp hcm": "Thành phố Hồ Chí Minh",
+            "tp.hcm": "Thành phố Hồ Chí Minh",
+            "tphcm": "Thành phố Hồ Chí Minh",
+            "sai gon": "Thành phố Hồ Chí Minh",
+            "baria vung tau": "Thành phố Hồ Chí Minh",
+            "ba ria vung tau": "Thành phố Hồ Chí Minh",
+            "bà rịa vũng tàu": "Thành phố Hồ Chí Minh",
+            "binh duong": "Thành phố Hồ Chí Minh",
+
+            "tuyen quang": "Tuyên Quang",
+            "ha giang": "Tuyên Quang",
+
+            "vinh long": "Vĩnh Long",
+            "ben tre": "Vĩnh Long",
+            "tra vinh": "Vĩnh Long"
+        };
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/Đ/g, "D")
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, " ");
+        }
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function getStorageArray(key) {
+            try {
+                return JSON.parse(localStorage.getItem(key) || "[]");
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function updateHeaderFavoriteCount() {
+            const total =
+                getStorageArray(FAVORITE_SALE_STORAGE_KEY).length +
+                getStorageArray(FAVORITE_RENTAL_STORAGE_KEY).length +
+                getStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY).length;
+
+            document.querySelectorAll("#favorite-count-badge, #headerFavoriteCount, .save-count").forEach((badge) => {
+                badge.textContent = total;
+            });
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === "function") {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById("chatForm");
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
+            }
+        }
+
         function sendToZalo() {
-            const name = document.getElementById("cusName").value;
-            const msg = document.getElementById("cusMsg").value;
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
             const phone = "0946239289";
 
             if (!name) {
@@ -404,11 +530,143 @@
                 return;
             }
 
-            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
+
+        function getAllPublicPosts() {
+            try {
+                if (window.postStorage) {
+                    const salePosts = typeof window.postStorage.getSalePosts === "function" ? window.postStorage.getSalePosts() : [];
+                    const rentalPosts = typeof window.postStorage.getRentalPosts === "function" ? window.postStorage.getRentalPosts() : [];
+                    const constructionPosts = typeof window.postStorage.getConstructionPosts === "function" ? window.postStorage.getConstructionPosts() : [];
+
+                    const merged = [...salePosts, ...rentalPosts, ...constructionPosts].filter((post) => {
+                        if (!post) return false;
+                        const status = String(post.status || "").toLowerCase().trim();
+                        return status === "approved" || status === "demo" || status === "";
+                    });
+
+                    if (merged.length) return merged;
+                }
+            } catch (error) {}
+
+            try {
+                const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
+                return Array.isArray(allPosts) ? allPosts : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function normalizeProvinceName(rawCity) {
+            const normalized = normalizeText(rawCity);
+            if (!normalized) return "";
+
+            if (PROVINCE_ALIAS_MAP[normalized]) {
+                return PROVINCE_ALIAS_MAP[normalized];
+            }
+
+            const directMatch = PROVINCES_34.find((province) => normalizeText(province) === normalized);
+            return directMatch || "";
+        }
+
+        function buildProvinceStats() {
+            const posts = getAllPublicPosts();
+            const statsMap = {};
+
+            PROVINCES_34.forEach((province) => {
+                statsMap[province] = 0;
+            });
+
+            posts.forEach((post) => {
+                const province = normalizeProvinceName(post.city || post.province || post.locationCity || "");
+                if (province && Object.prototype.hasOwnProperty.call(statsMap, province)) {
+                    statsMap[province] += 1;
+                }
+            });
+
+            return PROVINCES_34.map((province) => ({
+                name: province,
+                count: statsMap[province] || 0
+            })).sort((a, b) => {
+                if (b.count !== a.count) return b.count - a.count;
+                return a.name.localeCompare(b.name, "vi");
+            });
+        }
+
+        function getProvinceLink(province) {
+            return `../pages/gia-nha-dat.html?city=${encodeURIComponent(province)}`;
+        }
+
+        function getProvinceImage(province) {
+            return PROVINCE_IMAGES[province] || "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400";
+        }
+
+        function getProvinceShortLabel(province) {
+            if (province === "Thành phố Hồ Chí Minh") return "TP. HCM";
+            return province;
+        }
+
+        function renderHotMarketCities() {
+            const container = document.getElementById("hotMarketCities");
+            if (!container) return;
+
+            const stats = buildProvinceStats();
+            const top2 = stats.filter(item => item.count > 0).slice(0, 2);
+
+            const fallbackTop2 = top2.length ? top2 : [
+                { name: "Hà Nội", count: 0 },
+                { name: "Thành phố Hồ Chí Minh", count: 0 }
+            ];
+
+            container.innerHTML = fallbackTop2.map((item) => `
+                <a
+                    href="${getProvinceLink(item.name)}"
+                    class="city-tag"
+                    style="background:
+                        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                        url('${getProvinceImage(item.name)}');"
+                    title="${escapeHtml(item.name)}${item.count ? ` - ${item.count} tin` : ""}"
+                >
+                    ${escapeHtml(getProvinceShortLabel(item.name))}
+                </a>
+            `).join("");
+        }
+
+        function renderTopProvinceList() {
+            const container = document.getElementById("topProvinceList");
+            if (!container) return;
+
+            const stats = buildProvinceStats();
+            const top10 = stats.slice(0, 10);
+
+            container.innerHTML = top10.map((item, index) => {
+                const hasBorder = index < top10.length - 1;
+                return `
+                    <a href="${getProvinceLink(item.name)}" class="flex items-center justify-between gap-3 text-[13px] hover:text-[--vip-color] ${hasBorder ? "border-b pb-2" : ""}">
+                        <span class="flex items-center gap-3 min-w-0">
+                            <img src="https://flagcdn.com/w20/vn.png" alt="VN flag" class="w-5 shrink-0">
+                            <span class="truncate">${escapeHtml(item.name)}</span>
+                        </span>
+                        <span class="text-gray-400 text-[11px] shrink-0">${item.count} tin</span>
+                    </a>
+                `;
+            }).join("");
+        }
+
+        window.addEventListener("load", function () {
+            updateHeaderFavoriteCount();
+            renderHotMarketCities();
+            renderTopProvinceList();
+
+            if (typeof renderSeoContent === "function") {
+                renderSeoContent("seoContent", "news");
+            }
+
+            setTimeout(updateHeaderFavoriteCount, 400);
+        });
     </script>
-    <script src="../assets/js/main.js"></script>
 </body>
 </html>
