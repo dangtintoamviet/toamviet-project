@@ -1,45 +1,166 @@
-<header class="bg-white border-b sticky top-0 z-[1000] shadow-sm">
-    <div class="container-custom h-[72px] flex justify-between items-center">
-        <div class="flex items-center gap-8">
-            <a href="./index.html" class="shrink-0">
-                <img src="./DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10" />
+<header class="site-header">
+    <div class="container-custom site-header-inner">
+        <div class="site-header-left">
+            <a href="./index.html" class="site-logo-link" aria-label="ToamViet - Trang chủ">
+                <img
+                    src="./DAI TRONG SUOT (2).png"
+                    alt="Logo ToamViet"
+                    class="site-logo"
+                    onerror="this.onerror=null;this.src='./assets/images/logos/logo.png';"
+                />
             </a>
 
-            <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                <a href="./pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                <a href="./pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                <a href="./pages/du-an.html" class="nav-link">Dự án</a>
-                <a href="./pages/tin-tuc.html" class="nav-link">Tin tức</a>
-                <a href="./pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
-                <a href="./pages/xay-dung.html" class="nav-link">Xây dựng</a>
+            <nav class="desktop-nav tv-desktop-nav" aria-label="Điều hướng chính">
+                <div class="dropdown tv-nav-dropdown">
+                    <div class="tv-nav-dropdown-trigger">
+                        <a href="./pages/nha-dat-ban.html" class="nav-link" data-nav-key="nha-dat-ban">
+                            Nhà đất bán
+                        </a>
+                        <button type="button" class="tv-nav-dropdown-toggle" aria-label="Mở danh mục Nhà đất bán">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
 
-                <div class="dropdown relative h-full flex items-center cursor-pointer">
-                    <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                    <div class="dropdown-menu tv-dropdown-menu tv-dropdown-menu-large">
+                        <a href="./pages/nha-dat-ban.html?category=ban-can-ho-chung-cu" class="dropdown-item">Bán căn hộ chung cư</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-chung-cu-mini-can-ho-dich-vu" class="dropdown-item">Bán chung cư mini, căn hộ dịch vụ</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-nha-rieng" class="dropdown-item">Bán nhà riêng</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-nha-biet-thu-lien-ke" class="dropdown-item">Bán nhà biệt thự, liền kề</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-nha-mat-pho" class="dropdown-item">Bán nhà mặt phố</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-shophouse-nha-pho-thuong-mai" class="dropdown-item">Bán shophouse, nhà phố thương mại</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-dat-nen-du-an" class="dropdown-item">Bán đất nền dự án</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-dat" class="dropdown-item">Bán đất</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-trang-trai-khu-nghi-duong" class="dropdown-item">Bán trang trại, khu nghỉ dưỡng</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-condotel" class="dropdown-item">Bán condotel</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-kho-nha-xuong" class="dropdown-item">Bán kho, nhà xưởng</a>
+                        <a href="./pages/nha-dat-ban.html?category=ban-bat-dong-san-khac" class="dropdown-item">Bán loại bất động sản khác</a>
+                    </div>
+                </div>
+
+                <div class="dropdown tv-nav-dropdown">
+                    <div class="tv-nav-dropdown-trigger">
+                        <a href="./pages/nha-dat-cho-thue.html" class="nav-link" data-nav-key="nha-dat-cho-thue">
+                            Nhà đất cho thuê
+                        </a>
+                        <button type="button" class="tv-nav-dropdown-toggle" aria-label="Mở danh mục Nhà đất cho thuê">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <div class="dropdown-menu tv-dropdown-menu tv-dropdown-menu-large">
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-can-ho-chung-cu" class="dropdown-item">Cho thuê căn hộ chung cư</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-chung-cu-mini-can-ho-dich-vu" class="dropdown-item">Cho thuê chung cư mini, căn hộ dịch vụ</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-nha-rieng" class="dropdown-item">Cho thuê nhà riêng</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-nha-biet-thu-lien-ke" class="dropdown-item">Cho thuê nhà biệt thự, liền kề</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-nha-mat-pho" class="dropdown-item">Cho thuê nhà mặt phố</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-shophouse-nha-pho-thuong-mai" class="dropdown-item">Cho thuê shophouse, nhà phố thương mại</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-nha-tro-phong-tro" class="dropdown-item">Cho thuê nhà trọ, phòng trọ</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-van-phong" class="dropdown-item">Cho thuê văn phòng</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-sang-nhuong-cua-hang-ki-ot" class="dropdown-item">Cho thuê, sang nhượng cửa hàng, ki ốt</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-kho-nha-xuong-dat" class="dropdown-item">Cho thuê kho, nhà xưởng, đất</a>
+                        <a href="./pages/nha-dat-cho-thue.html?category=cho-thue-bat-dong-san-khac" class="dropdown-item">Cho thuê loại bất động sản khác</a>
+                    </div>
+                </div>
+
+                <div class="dropdown tv-nav-dropdown">
+                    <div class="tv-nav-dropdown-trigger">
+                        <a href="./pages/du-an.html" class="nav-link" data-nav-key="du-an">
+                            Dự án
+                        </a>
+                        <button type="button" class="tv-nav-dropdown-toggle" aria-label="Mở danh mục Dự án">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <div class="dropdown-menu tv-dropdown-menu">
+                        <a href="./pages/du-an.html?category=can-ho-chung-cu" class="dropdown-item">Căn hộ chung cư</a>
+                        <a href="./pages/du-an.html?category=cao-oc-van-phong" class="dropdown-item">Cao ốc văn phòng</a>
+                        <a href="./pages/du-an.html?category=trung-tam-thuong-mai" class="dropdown-item">Trung tâm thương mại</a>
+                        <a href="./pages/du-an.html?category=khu-do-thi-moi" class="dropdown-item">Khu đô thị mới</a>
+                        <a href="./pages/du-an.html?category=khu-phuc-hop" class="dropdown-item">Khu phức hợp</a>
+                        <a href="./pages/du-an.html?category=nha-o-xa-hoi" class="dropdown-item">Nhà ở xã hội</a>
+                        <a href="./pages/du-an.html?category=khu-nghi-duong-sinh-thai" class="dropdown-item">Khu nghỉ dưỡng, Sinh thái</a>
+                        <a href="./pages/du-an.html?category=khu-cong-nghiep" class="dropdown-item">Khu công nghiệp</a>
+                        <a href="./pages/du-an.html?category=biet-thu-lien-ke" class="dropdown-item">Biệt thự, liền kề</a>
+                        <a href="./pages/du-an.html?category=shophouse" class="dropdown-item">Shophouse</a>
+                        <a href="./pages/du-an.html?category=nha-mat-pho" class="dropdown-item">Nhà mặt phố</a>
+                        <a href="./pages/du-an.html?category=du-an-khac" class="dropdown-item">Dự án khác</a>
+                    </div>
+                </div>
+
+                <div class="dropdown tv-nav-dropdown">
+                    <div class="tv-nav-dropdown-trigger">
+                        <a href="./pages/tin-tuc.html" class="nav-link" data-nav-key="tin-tuc">
+                            Tin tức
+                        </a>
+                        <button type="button" class="tv-nav-dropdown-toggle" aria-label="Mở danh mục Tin tức">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <div class="dropdown-menu tv-dropdown-menu">
+                        <a href="./pages/tin-tuc.html?category=tin-thi-truong" class="dropdown-item">Tin thị trường</a>
+                        <a href="./pages/tin-tuc.html?category=du-an-noi-bat" class="dropdown-item">Dự án nổi bật</a>
+                        <a href="./pages/tin-tuc.html?category=phan-tich-dau-tu" class="dropdown-item">Phân tích đầu tư</a>
+                        <a href="./pages/tin-tuc.html?category=phap-ly-bat-dong-san" class="dropdown-item">Pháp lý bất động sản</a>
+                    </div>
+                </div>
+
+                <a href="./pages/gia-nha-dat.html" class="nav-link" data-nav-key="gia-nha-dat">
+                    Giá nhà đất
+                </a>
+
+                <a href="./pages/xay-dung.html" class="nav-link" data-nav-key="xay-dung">
+                    Xây dựng
+                </a>
+
+                <div class="dropdown">
+                    <span class="nav-link" data-nav-key="danh-ba">
+                        Danh bạ
+                        <i class="fa-solid fa-chevron-down tv-inline-chevron"></i>
+                    </span>
+
                     <div class="dropdown-menu">
-                        <a href="./pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                        <a href="./pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
+                        <a href="./pages/danh-ba-doanh-nghiep.html" class="dropdown-item" data-nav-key="danh-ba-doanh-nghiep">
+                            Doanh nghiệp
+                        </a>
+                        <a href="./pages/danh-ba-moi-gioi.html" class="dropdown-item" data-nav-key="danh-ba-moi-gioi">
+                            Môi giới
+                        </a>
                     </div>
                 </div>
             </nav>
         </div>
 
-        <div class="flex items-center gap-4">
-            <a href="./pages/tin-da-luu.html" class="save-icon nav-link text-gray-600" title="Tin đã lưu">
+        <div class="site-header-right">
+            <a
+                href="./pages/tin-da-luu.html"
+                class="save-icon nav-link"
+                title="Tin đã lưu"
+                aria-label="Tin đã lưu"
+            >
                 <i class="fa-regular fa-heart"></i>
                 <span class="save-count" id="headerFavoriteCount">0</span>
             </a>
 
-            <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
+            <div class="header-divider"></div>
+
+            <div class="header-auth-links">
                 <a href="./auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
-                <span class="text-gray-300">|</span>
+                <span class="tv-auth-divider">|</span>
                 <a href="./auth/dang-ky.html" class="nav-link">Đăng ký</a>
             </div>
 
-            <a href="./user/dang-tin.html" class="hidden sm:inline-flex border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
+            <a href="./user/dang-tin.html" class="header-post-btn">
                 Đăng tin
             </a>
 
-            <button onclick="openMobileMenu()" class="lg:hidden w-11 h-11 rounded-lg border border-gray-200 flex items-center justify-center text-[18px] text-gray-700 hover:bg-gray-50">
+            <button
+                type="button"
+                onclick="openMobileMenu()"
+                class="header-mobile-toggle"
+                aria-label="Mở menu"
+            >
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
@@ -47,86 +168,275 @@
 </header>
 
 <style>
-    .container-custom {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 15px;
+    .tv-desktop-nav {
+        gap: 18px;
     }
 
-    .nav-link {
-        transition: all 0.25s ease;
+    .tv-nav-dropdown {
         position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
 
-    .nav-link:hover {
-        color: #FF8C00 !important;
+    .tv-nav-dropdown-trigger {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 100%;
     }
 
-    .dropdown:hover .dropdown-menu {
-        display: block;
-    }
-
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: white;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-        min-width: 210px;
-        border-top: 2px solid #008B8B;
-        border-radius: 0 0 10px 10px;
-        overflow: hidden;
-        z-index: 50;
-    }
-
-    .dropdown-item {
-        padding: 11px 16px;
-        display: block;
-        color: #333;
-        font-size: 14px;
-        border-bottom: 1px solid #f2f2f2;
-    }
-
-    .dropdown-item:hover {
-        background: #f9f9f9;
-        color: #FF8C00;
-    }
-
-    .save-icon {
-        position: relative;
-        cursor: pointer;
-        font-size: 20px;
-    }
-
-    .save-count {
-        position: absolute;
-        top: -8px;
-        right: -10px;
-        background: #E03C31;
-        color: white;
-        font-size: 10px;
-        min-width: 18px;
-        height: 18px;
-        padding: 2px 5px;
-        border-radius: 999px;
-        border: 1px solid white;
+    .tv-nav-dropdown-toggle {
+        width: 22px;
+        height: 22px;
+        border: none;
+        background: transparent;
+        color: #64748b;
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        font-size: 10px;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .tv-nav-dropdown:hover .tv-nav-dropdown-toggle {
+        color: var(--primary-color);
+    }
+
+    .tv-nav-dropdown:hover .tv-nav-dropdown-toggle i {
+        transform: rotate(180deg);
+    }
+
+    .tv-inline-chevron {
+        font-size: 10px;
+        margin-left: 4px;
+    }
+
+    .tv-dropdown-menu {
+        min-width: 260px;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .tv-dropdown-menu-large {
+        min-width: 320px;
+    }
+
+    .site-header .nav-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 40px;
+    }
+
+    .site-header .nav-link.active,
+    .site-header .dropdown-item.active {
+        color: var(--primary-color) !important;
+    }
+
+    .site-header .nav-link.active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -4px;
+        height: 2px;
+        border-radius: 999px;
+        background: var(--primary-color);
+    }
+
+    .site-header .dropdown-item.active {
+        background: #f0fdfa;
+        font-weight: 700;
+    }
+
+    .tv-auth-divider {
+        color: #d1d5db;
+    }
+
+    .header-mobile-toggle {
+        display: none;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .header-mobile-toggle:hover {
+        background: #f9fafb;
+        border-color: #d1d5db;
+        color: var(--primary-color);
+    }
+
+    .site-header .save-icon {
+        flex-shrink: 0;
+    }
+
+    .site-header .header-post-btn {
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 991px) {
+        .header-mobile-toggle {
+            display: inline-flex;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .site-header-right {
+            gap: 10px;
+        }
+
+        .site-header .save-icon {
+            width: 38px;
+            height: 38px;
+            font-size: 18px;
+        }
+
+        .site-header .save-count {
+            top: -4px;
+            right: -4px;
+        }
     }
 </style>
 
 <script>
     (function () {
-        try {
-            const saleFavorites = JSON.parse(localStorage.getItem('favoriteSalePosts') || '[]');
-            const rentalFavorites = JSON.parse(localStorage.getItem('favoriteRentalPosts') || '[]');
-            const badge = document.getElementById('headerFavoriteCount');
+        function updateFavoriteCount() {
+            try {
+                const saleFavorites = JSON.parse(localStorage.getItem("favoriteSalePosts") || "[]");
+                const rentalFavorites = JSON.parse(localStorage.getItem("favoriteRentalPosts") || "[]");
+                const constructionFavorites = JSON.parse(localStorage.getItem("favoriteConstructionPosts") || "[]");
+                const badge = document.getElementById("headerFavoriteCount");
 
-            if (badge) {
-                badge.textContent = saleFavorites.length + rentalFavorites.length;
+                if (!badge) return;
+
+                const total = saleFavorites.length + rentalFavorites.length + constructionFavorites.length;
+                badge.textContent = total;
+
+                if (total <= 0) {
+                    badge.style.display = "none";
+                } else {
+                    badge.style.display = "inline-flex";
+                }
+            } catch (error) {
+                const badge = document.getElementById("headerFavoriteCount");
+                if (badge) {
+                    badge.textContent = "0";
+                    badge.style.display = "none";
+                }
             }
-        } catch (e) {}
+        }
+
+        function getCurrentCategory() {
+            const params = new URLSearchParams(window.location.search);
+            return (params.get("category") || "").toLowerCase();
+        }
+
+        function markActiveNav() {
+            const path = window.location.pathname.toLowerCase();
+            const category = getCurrentCategory();
+
+            const rules = [
+                { key: "nha-dat-ban", match: "/pages/nha-dat-ban.html" },
+                { key: "nha-dat-cho-thue", match: "/pages/nha-dat-cho-thue.html" },
+                { key: "du-an", match: "/pages/du-an.html" },
+                { key: "tin-tuc", match: "/pages/tin-tuc.html" },
+                { key: "gia-nha-dat", match: "/pages/gia-nha-dat.html" },
+                { key: "xay-dung", match: "/pages/xay-dung.html" },
+                { key: "danh-ba-doanh-nghiep", match: "/pages/danh-ba-doanh-nghiep.html" },
+                { key: "danh-ba-moi-gioi", match: "/pages/danh-ba-moi-gioi.html" }
+            ];
+
+            let matchedKey = "";
+
+            for (const rule of rules) {
+                if (path.includes(rule.match)) {
+                    matchedKey = rule.key;
+                    break;
+                }
+            }
+
+            if (matchedKey) {
+                const parent = document.querySelector('[data-nav-key="' + matchedKey + '"]');
+                if (parent) parent.classList.add("active");
+            }
+
+            if (matchedKey === "danh-ba-doanh-nghiep" || matchedKey === "danh-ba-moi-gioi") {
+                const danhBa = document.querySelector('[data-nav-key="danh-ba"]');
+                if (danhBa) danhBa.classList.add("active");
+            }
+
+            if (category) {
+                const categoryLinks = document.querySelectorAll('.dropdown-menu a[href*="?category="]');
+                categoryLinks.forEach(function (link) {
+                    try {
+                        const url = new URL(link.href, window.location.origin);
+                        const linkCategory = (url.searchParams.get("category") || "").toLowerCase();
+                        if (linkCategory && linkCategory === category) {
+                            link.classList.add("active");
+                        }
+                    } catch (error) {}
+                });
+            }
+        }
+
+        function bindStorageSync() {
+            window.addEventListener("storage", function (event) {
+                if (
+                    event.key === "favoriteSalePosts" ||
+                    event.key === "favoriteRentalPosts" ||
+                    event.key === "favoriteConstructionPosts"
+                ) {
+                    updateFavoriteCount();
+                }
+            });
+        }
+
+        function bindDesktopDropdownToggle() {
+            const toggles = document.querySelectorAll(".tv-nav-dropdown-toggle");
+
+            toggles.forEach(function (toggle) {
+                toggle.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const dropdown = this.closest(".tv-nav-dropdown");
+                    if (!dropdown) return;
+
+                    const menu = dropdown.querySelector(".dropdown-menu");
+                    if (!menu) return;
+
+                    const isOpen = menu.style.display === "block";
+
+                    document.querySelectorAll(".tv-nav-dropdown .dropdown-menu").forEach(function (item) {
+                        item.style.display = "none";
+                    });
+
+                    if (!isOpen) {
+                        menu.style.display = "block";
+                    }
+                });
+            });
+
+            document.addEventListener("click", function () {
+                document.querySelectorAll(".tv-nav-dropdown .dropdown-menu").forEach(function (item) {
+                    item.style.display = "";
+                });
+            });
+        }
+
+        updateFavoriteCount();
+        markActiveNav();
+        bindStorageSync();
+        bindDesktopDropdownToggle();
     })();
 </script>
