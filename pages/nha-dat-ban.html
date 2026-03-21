@@ -7,10 +7,14 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
         :root {
@@ -37,14 +41,15 @@
         }
 
         .container-custom {
-            max-width: 1200px;
+            width: 100%;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 16px;
         }
 
         .page-shell {
-            padding-top: 0;
-            padding-bottom: 24px;
+            padding-top: 22px;
+            padding-bottom: 28px;
         }
 
         .sidebar-card,
@@ -145,6 +150,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             line-height: 1.45;
+            font-family: "Roboto", sans-serif;
         }
 
         .card-desc {
@@ -174,10 +180,19 @@
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             color: var(--text-main);
             text-transform: uppercase;
+            line-height: 1.35;
+        }
+
+        .page-intro-box {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
         }
 
         .hot-area-btn {
@@ -262,6 +277,10 @@
             color: var(--vip-color);
         }
 
+        .seo-section-shell {
+            margin-top: 28px;
+        }
+
         @media (max-width: 1024px) {
             .filter-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -288,8 +307,12 @@
         }
 
         @media (max-width: 768px) {
+            .container-custom {
+                padding: 0 14px;
+            }
+
             .page-shell {
-                padding-top: 0;
+                padding-top: 18px;
                 padding-bottom: 18px;
             }
 
@@ -309,6 +332,21 @@
 
             .section-title {
                 font-size: 18px;
+            }
+
+            .page-intro-box {
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            .seo-section-shell {
+                margin-top: 22px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container-custom {
+                padding: 0 12px;
             }
         }
     </style>
@@ -363,9 +401,9 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <section class="lg:col-span-3 space-y-6">
-                <div class="bg-white rounded-2xl border border-gray-200 p-5">
-                    <h1 class="section-title">Mua bán nhà đất tại Việt Nam</h1>
-                    <p class="text-gray-500 text-sm mt-1">
+                <div class="page-intro-box">
+                    <h1 id="pageHeading" class="section-title">MUA BÁN NHÀ ĐẤT TẠI VIỆT NAM</h1>
+                    <p id="pageSubheading" class="text-gray-500 text-sm mt-2 leading-6">
                         Hiện có <span id="listing-count" class="font-bold text-gray-700">0</span> tin đăng bán đang hiển thị
                     </p>
                 </div>
@@ -391,6 +429,10 @@
                 </div>
             </aside>
         </div>
+
+        <section class="seo-section-shell">
+            <div id="seoContent"></div>
+        </section>
     </main>
 
     <div id="site-footer"></div>
@@ -417,11 +459,40 @@
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
     <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
 
     <script>
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
         const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
+
+        const CATEGORY_TITLE_MAP = {
+            "ban-can-ho-chung-cu": "Bán căn hộ chung cư",
+            "ban-chung-cu-mini-can-ho-dich-vu": "Bán chung cư mini, căn hộ dịch vụ",
+            "ban-nha-rieng": "Bán nhà riêng",
+            "ban-nha-biet-thu-lien-ke": "Bán nhà biệt thự, liền kề",
+            "ban-nha-mat-pho": "Bán nhà mặt phố",
+            "ban-shophouse-nha-pho-thuong-mai": "Bán shophouse, nhà phố thương mại",
+            "ban-dat-nen-du-an": "Bán đất nền dự án",
+            "ban-dat": "Bán đất",
+            "ban-trang-trai-khu-nghi-duong": "Bán trang trại, khu nghỉ dưỡng",
+            "ban-condotel": "Bán condotel",
+            "ban-kho-nha-xuong": "Bán kho, nhà xưởng",
+            "ban-bat-dong-san-khac": "Bán loại bất động sản khác"
+        };
+
+        const CATEGORY_TYPE_MAP = {
+            "ban-can-ho-chung-cu": "Căn hộ",
+            "ban-chung-cu-mini-can-ho-dich-vu": "Căn hộ",
+            "ban-nha-rieng": "Nhà phố",
+            "ban-nha-biet-thu-lien-ke": "Biệt thự",
+            "ban-nha-mat-pho": "Nhà phố",
+            "ban-shophouse-nha-pho-thuong-mai": "Shophouse",
+            "ban-dat-nen-du-an": "Đất nền",
+            "ban-dat": "Đất nền",
+            "ban-condotel": "Căn hộ",
+            "ban-kho-nha-xuong": "Văn phòng"
+        };
 
         const fallbackPosts = [
             {
@@ -501,6 +572,8 @@
         const listingCount = document.getElementById("listing-count");
         const hotAreas = document.getElementById("hot-areas");
         const dataNote = document.getElementById("data-note");
+        const pageHeading = document.getElementById("pageHeading");
+        const pageSubheading = document.getElementById("pageSubheading");
 
         const keywordFilter = document.getElementById("keywordFilter");
         const typeFilter = document.getElementById("typeFilter");
@@ -563,6 +636,30 @@
                 .replace(/[^a-z0-9\s-]/g, "")
                 .replace(/\s+/g, "-")
                 .replace(/-+/g, "-");
+        }
+
+        function getCurrentCategory() {
+            const params = new URLSearchParams(window.location.search);
+            return (params.get("category") || "").trim();
+        }
+
+        function getPageTitleByCategory() {
+            const category = getCurrentCategory();
+            return CATEGORY_TITLE_MAP[category] || "Mua bán nhà đất tại Việt Nam";
+        }
+
+        function syncPageHeading() {
+            const title = getPageTitleByCategory();
+            pageHeading.textContent = title.toUpperCase();
+            document.title = title + " - ToamViet.com.vn";
+        }
+
+        function syncFilterByCategory() {
+            const category = getCurrentCategory();
+            const mappedType = CATEGORY_TYPE_MAP[category];
+            if (mappedType) {
+                typeFilter.value = mappedType;
+            }
         }
 
         function createPostId(post, index) {
@@ -1067,6 +1164,9 @@
             const filteredPosts = applyFilters(posts);
             listingCount.textContent = filteredPosts.length;
 
+            const pageTitle = getPageTitleByCategory();
+            pageSubheading.innerHTML = `${pageTitle} hiện có <span id="listing-count-inline" class="font-bold text-gray-700">${filteredPosts.length}</span> tin đăng đang hiển thị`;
+
             renderHotAreas(filteredPosts.length ? filteredPosts : posts);
 
             if (!filteredPosts.length) {
@@ -1093,8 +1193,15 @@
         sortFilter.addEventListener("change", renderListings);
 
         window.addEventListener("load", () => {
+            syncPageHeading();
+            syncFilterByCategory();
             updateFavoriteCount();
             renderListings();
+
+            if (typeof window.renderSeoContent === "function") {
+                window.renderSeoContent("seoContent", "sale");
+            }
+
             setTimeout(updateFavoriteCount, 400);
         });
 
