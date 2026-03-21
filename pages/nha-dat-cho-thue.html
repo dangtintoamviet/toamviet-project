@@ -354,13 +354,7 @@
 
                 <div>
                     <select id="typeFilter" class="filter-select">
-                        <option value="">Loại nhà đất thuê</option>
-                        <option value="Nhà phố">Nhà phố</option>
-                        <option value="Đất nền">Đất nền</option>
-                        <option value="Căn hộ">Căn hộ</option>
-                        <option value="Biệt thự">Biệt thự</option>
-                        <option value="Văn phòng">Văn phòng</option>
-                        <option value="Shophouse">Shophouse</option>
+                        <option value="">Danh mục con</option>
                     </select>
                 </div>
 
@@ -380,7 +374,7 @@
                 </div>
 
                 <div class="filter-submit-wrap">
-                    <button id="applyFilterBtn" class="filter-submit-btn">
+                    <button id="applyFilterBtn" class="filter-submit-btn" type="button">
                         <i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm
                     </button>
                 </div>
@@ -456,34 +450,44 @@
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
         const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
 
-        const CATEGORY_TITLE_MAP = {
-            "cho-thue-can-ho-chung-cu": "Cho thuê căn hộ chung cư",
-            "cho-thue-chung-cu-mini-can-ho-dich-vu": "Cho thuê chung cư mini, căn hộ dịch vụ",
-            "cho-thue-nha-rieng": "Cho thuê nhà riêng",
-            "cho-thue-nha-biet-thu-lien-ke": "Cho thuê nhà biệt thự, liền kề",
-            "cho-thue-nha-mat-pho": "Cho thuê nhà mặt phố",
-            "cho-thue-shophouse-nha-pho-thuong-mai": "Cho thuê shophouse, nhà phố thương mại",
-            "cho-thue-nha-tro-phong-tro": "Cho thuê nhà trọ, phòng trọ",
-            "cho-thue-van-phong": "Cho thuê văn phòng",
-            "cho-thue-sang-nhuong-cua-hang-ki-ot": "Cho thuê, sang nhượng cửa hàng, ki ốt",
-            "cho-thue-kho-nha-xuong-dat": "Cho thuê kho, nhà xưởng, đất",
-            "cho-thue-bat-dong-san-khac": "Cho thuê loại bất động sản khác"
-        };
+        const RENT_CATEGORIES = [
+            { slug: "cho-thue-can-ho-chung-cu", name: "Cho thuê căn hộ chung cư", propertyType: "Căn hộ" },
+            { slug: "cho-thue-chung-cu-mini-can-ho-dich-vu", name: "Cho thuê chung cư mini, căn hộ dịch vụ", propertyType: "Căn hộ" },
+            { slug: "cho-thue-nha-rieng", name: "Cho thuê nhà riêng", propertyType: "Nhà riêng" },
+            { slug: "cho-thue-nha-biet-thu-lien-ke", name: "Cho thuê nhà biệt thự, liền kề", propertyType: "Biệt thự" },
+            { slug: "cho-thue-nha-mat-pho", name: "Cho thuê nhà mặt phố", propertyType: "Nhà mặt phố" },
+            { slug: "cho-thue-shophouse-nha-pho-thuong-mai", name: "Cho thuê shophouse, nhà phố thương mại", propertyType: "Shophouse" },
+            { slug: "cho-thue-nha-tro-phong-tro", name: "Cho thuê nhà trọ, phòng trọ", propertyType: "Nhà trọ, phòng trọ" },
+            { slug: "cho-thue-van-phong", name: "Cho thuê văn phòng", propertyType: "Văn phòng" },
+            { slug: "cho-thue-sang-nhuong-cua-hang-ki-ot", name: "Cho thuê, sang nhượng cửa hàng, ki ốt", propertyType: "Cửa hàng, ki ốt" },
+            { slug: "cho-thue-kho-nha-xuong-dat", name: "Cho thuê kho, nhà xưởng, đất", propertyType: "Kho, nhà xưởng, đất" },
+            { slug: "cho-thue-bat-dong-san-khac", name: "Cho thuê loại bất động sản khác", propertyType: "Bất động sản khác" }
+        ];
 
-        const CATEGORY_TYPE_MAP = {
-            "cho-thue-can-ho-chung-cu": "Căn hộ",
-            "cho-thue-chung-cu-mini-can-ho-dich-vu": "Căn hộ",
-            "cho-thue-nha-rieng": "Nhà phố",
-            "cho-thue-nha-biet-thu-lien-ke": "Biệt thự",
-            "cho-thue-nha-mat-pho": "Nhà phố",
-            "cho-thue-shophouse-nha-pho-thuong-mai": "Shophouse",
-            "cho-thue-van-phong": "Văn phòng"
+        const CATEGORY_MAP = RENT_CATEGORIES.reduce(function (acc, item) {
+            acc[item.slug] = item;
+            return acc;
+        }, {});
+
+        const LEGACY_TYPE_TO_CATEGORY = {
+            "Căn hộ": "cho-thue-can-ho-chung-cu",
+            "Nhà phố": "cho-thue-nha-mat-pho",
+            "Nhà riêng": "cho-thue-nha-rieng",
+            "Biệt thự": "cho-thue-nha-biet-thu-lien-ke",
+            "Shophouse": "cho-thue-shophouse-nha-pho-thuong-mai",
+            "Văn phòng": "cho-thue-van-phong",
+            "Nhà trọ, phòng trọ": "cho-thue-nha-tro-phong-tro",
+            "Cửa hàng, ki ốt": "cho-thue-sang-nhuong-cua-hang-ki-ot",
+            "Kho, nhà xưởng, đất": "cho-thue-kho-nha-xuong-dat",
+            "Bất động sản khác": "cho-thue-bat-dong-san-khac"
         };
 
         const fallbackPosts = [
             {
                 id: "demo-rent-1",
                 title: "Cho thuê căn hộ cao cấp Vinhomes Central Park full nội thất",
+                categorySlug: "cho-thue-can-ho-chung-cu",
+                categoryName: "Cho thuê căn hộ chung cư",
                 city: "TP.HCM",
                 district: "Bình Thạnh",
                 ward: "Phường 22",
@@ -508,10 +512,12 @@
             {
                 id: "demo-rent-2",
                 title: "Cho thuê nhà nguyên căn gần trung tâm Cầu Giấy phù hợp gia đình",
+                categorySlug: "cho-thue-nha-rieng",
+                categoryName: "Cho thuê nhà riêng",
                 city: "Hà Nội",
                 district: "Cầu Giấy",
                 ward: "Dịch Vọng",
-                propertyType: "Nhà phố",
+                propertyType: "Nhà riêng",
                 propertyPrice: "18 triệu/tháng",
                 propertyArea: "120",
                 propertyBeds: "4",
@@ -532,6 +538,8 @@
             {
                 id: "demo-rent-3",
                 title: "Cho thuê văn phòng tại Thuận An, vị trí đẹp, giá tốt",
+                categorySlug: "cho-thue-van-phong",
+                categoryName: "Cho thuê văn phòng",
                 city: "Bình Dương",
                 district: "Thuận An",
                 ward: "An Phú",
@@ -578,6 +586,15 @@
                 .replace(/'/g, '&#039;');
         }
 
+        function normalizeText(value) {
+            return String(value || '')
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
         function getCurrentCategory() {
             const params = new URLSearchParams(window.location.search);
             return (params.get("category") || "").trim();
@@ -585,7 +602,7 @@
 
         function getPageTitleByCategory() {
             const category = getCurrentCategory();
-            return CATEGORY_TITLE_MAP[category] || "Cho thuê nhà đất tại Việt Nam";
+            return CATEGORY_MAP[category] ? CATEGORY_MAP[category].name : "Cho thuê nhà đất tại Việt Nam";
         }
 
         function syncPageHeading() {
@@ -594,11 +611,18 @@
             document.title = title + " - ToamViet.com.vn";
         }
 
+        function renderCategoryFilterOptions() {
+            typeFilter.innerHTML =
+                '<option value="">Danh mục con</option>' +
+                RENT_CATEGORIES.map(function (item) {
+                    return '<option value="' + item.slug + '">' + item.name + '</option>';
+                }).join('');
+        }
+
         function syncFilterByCategory() {
             const category = getCurrentCategory();
-            const mappedType = CATEGORY_TYPE_MAP[category];
-            if (mappedType) {
-                typeFilter.value = mappedType;
+            if (category && CATEGORY_MAP[category]) {
+                typeFilter.value = category;
             }
         }
 
@@ -630,6 +654,8 @@
 
             const stableParts = [
                 post.title,
+                post.categorySlug,
+                post.categoryName,
                 post.propertyType,
                 post.brandName,
                 post.contactName,
@@ -734,6 +760,39 @@
             renderListings();
         }
 
+        function getResolvedCategory(post) {
+            if (!post) return null;
+
+            if (post.categorySlug && CATEGORY_MAP[post.categorySlug]) {
+                return CATEGORY_MAP[post.categorySlug];
+            }
+
+            const categoryName = normalizeText(post.categoryName || "");
+            const byName = RENT_CATEGORIES.find(function (item) {
+                return normalizeText(item.name) === categoryName;
+            });
+            if (byName) return byName;
+
+            const propertyType = String(post.propertyType || "").trim();
+            const legacySlug = LEGACY_TYPE_TO_CATEGORY[propertyType];
+            if (legacySlug && CATEGORY_MAP[legacySlug]) {
+                return CATEGORY_MAP[legacySlug];
+            }
+
+            return null;
+        }
+
+        function getResolvedCategorySlug(post) {
+            const resolved = getResolvedCategory(post);
+            return resolved ? resolved.slug : "";
+        }
+
+        function getResolvedCategoryName(post) {
+            const resolved = getResolvedCategory(post);
+            if (resolved) return resolved.name;
+            return post.categoryName || post.propertyType || "Bất động sản";
+        }
+
         function getRentalPosts() {
             let posts = [];
 
@@ -743,27 +802,35 @@
                 posts = JSON.parse(localStorage.getItem('allPosts') || '[]');
             }
 
-            return posts.filter(post => {
-                if (!post) return false;
+            return posts
+                .filter(function (post) {
+                    if (!post) return false;
 
-                const flow = String(post.flow || '').toLowerCase().trim();
-                const postType = String(post.postType || '').toLowerCase().trim();
-                const status = String(post.status || '').toLowerCase().trim();
+                    const flow = String(post.flow || '').toLowerCase().trim();
+                    const postType = String(post.postType || '').toLowerCase().trim();
+                    const status = String(post.status || '').toLowerCase().trim();
 
-                const isRealEstate = flow === 'real_estate';
-                const isRental =
-                    postType === 'thue' ||
-                    postType === 'cho-thue' ||
-                    postType === 'rent';
+                    const isRealEstate = flow === 'real_estate';
+                    const isRental =
+                        postType === 'thue' ||
+                        postType === 'cho-thue' ||
+                        postType === 'rent';
 
-                const isVisible =
-                    status === 'approved' ||
-                    status === 'demo' ||
-                    status === 'pending' ||
-                    status === '';
+                    const isVisible =
+                        status === 'approved' ||
+                        status === 'demo';
 
-                return isRealEstate && isRental && isVisible;
-            });
+                    return isRealEstate && isRental && isVisible;
+                })
+                .map(function (post) {
+                    const resolved = getResolvedCategory(post);
+                    return {
+                        ...post,
+                        categorySlug: post.categorySlug || (resolved ? resolved.slug : ""),
+                        categoryName: post.categoryName || (resolved ? resolved.name : ""),
+                        propertyType: post.propertyType || (resolved ? resolved.propertyType : "")
+                    };
+                });
         }
 
         function parseRentalPriceToMillion(priceText) {
@@ -951,6 +1018,7 @@
             const phoneLink = normalizePhone(phone);
             const safeTitle = escapeHtml(post.title || 'Tin cho thuê bất động sản');
             const safePropertyType = escapeHtml(post.propertyType || 'Bất động sản');
+            const safeCategoryName = escapeHtml(getResolvedCategoryName(post));
             const safeDescription = escapeHtml(post.description || 'Nội dung đang được cập nhật...');
             const safeLocation = escapeHtml(location);
             const safePrice = escapeHtml(post.propertyPrice || 'Thỏa thuận');
@@ -973,7 +1041,7 @@
                 createdTime: post.createdAt ? new Date(post.createdAt).getTime() : 0,
                 priceInMillion,
                 area,
-                propertyType: post.propertyType || '',
+                categorySlug: getResolvedCategorySlug(post),
                 city,
                 title: post.title || 'Tin cho thuê bất động sản',
                 location,
@@ -1028,6 +1096,7 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-[12px] text-slate-500">
                                     <div><strong class="text-slate-700">Pháp lý:</strong> ${legal}</div>
+                                    <div><strong class="text-slate-700">Danh mục:</strong> ${safeCategoryName}</div>
                                     <div><strong class="text-slate-700">Loại hình:</strong> ${safePropertyType}</div>
                                 </div>
                             </div>
@@ -1073,7 +1142,7 @@
             let filtered = [...posts];
 
             const keyword = keywordFilter.value.trim().toLowerCase();
-            const type = typeFilter.value;
+            const categorySlug = typeFilter.value;
             const city = cityFilter.value;
             const sort = sortFilter.value;
 
@@ -1082,13 +1151,14 @@
                     (post.title || '').toLowerCase().includes(keyword) ||
                     (post.description || '').toLowerCase().includes(keyword) ||
                     (post.propertyType || '').toLowerCase().includes(keyword) ||
+                    (post.categoryName || '').toLowerCase().includes(keyword) ||
                     buildLocation(post).toLowerCase().includes(keyword) ||
                     (post.projectName || '').toLowerCase().includes(keyword)
                 );
             }
 
-            if (type) {
-                filtered = filtered.filter(post => (post.propertyType || '') === type);
+            if (categorySlug) {
+                filtered = filtered.filter(post => getResolvedCategorySlug(post) === categorySlug);
             }
 
             if (city) {
@@ -1152,6 +1222,7 @@
                         Bạn thử đổi bộ lọc hoặc đăng thêm tin cho thuê mới từ trang Đăng tin.
                     </div>
                 `;
+                updateFavoriteCount();
                 return;
             }
 
@@ -1160,6 +1231,7 @@
         }
 
         function initPage() {
+            renderCategoryFilterOptions();
             syncPageHeading();
             syncFilterByCategory();
             renderListings();
