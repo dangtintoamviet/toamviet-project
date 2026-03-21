@@ -7,36 +7,70 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
         :root {
             --vip-color: #008B8B;
             --hover-color: #FF8C00;
+            --soft-bg: #f5f7fa;
+            --text-main: #2c2c2c;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f2f2f2;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--soft-bg);
+            color: var(--text-main);
+            margin: 0;
         }
 
         .container-custom {
-            max-width: 1200px;
+            width: 100%;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 16px;
         }
 
         .page-shell {
-            padding-top: 0;
-            padding-bottom: 24px;
+            padding-top: 22px;
+            padding-bottom: 28px;
+        }
+
+        .page-intro-box {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+            text-transform: uppercase;
+            line-height: 1.35;
         }
 
         .card-container {
             background: white;
-            border-radius: 14px;
+            border-radius: 16px;
             border: 1px solid #e5e5e5;
             overflow: hidden;
             display: flex;
@@ -45,10 +79,13 @@
 
         .card-container:hover {
             border-color: var(--vip-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 28px rgba(2, 132, 199, 0.08);
+            transform: translateY(-2px);
         }
 
         .card-image-box {
+            width: 285px;
+            min-height: 100%;
             background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
             overflow: hidden;
             position: relative;
@@ -69,6 +106,8 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            line-height: 1.45;
+            font-family: "Roboto", sans-serif;
         }
 
         .card-desc {
@@ -76,6 +115,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            line-height: 1.65;
         }
 
         .filter-select,
@@ -133,7 +173,7 @@
         .empty-box {
             background: white;
             border: 1px dashed #cbd5e1;
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 18px;
             color: #64748b;
             font-size: 13px;
@@ -143,7 +183,7 @@
         .sidebar-card {
             background: white;
             padding: 20px;
-            border-radius: 14px;
+            border-radius: 16px;
             border: 1px solid #e5e7eb;
         }
 
@@ -205,6 +245,33 @@
             background: #fff5f5 !important;
         }
 
+        .broker-link:hover .broker-name {
+            color: var(--vip-color);
+        }
+
+        .hot-area-btn {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            border: 1px solid #eef2f7;
+            padding: 10px 12px;
+            border-radius: 10px;
+            transition: 0.2s ease;
+            background: #fff;
+            text-align: left;
+        }
+
+        .hot-area-btn:hover {
+            border-color: rgba(0, 139, 139, 0.3);
+            background: #f8ffff;
+            color: var(--hover-color);
+        }
+
+        .seo-section-shell {
+            margin-top: 28px;
+        }
+
         @media (max-width: 1024px) {
             .filter-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -220,18 +287,31 @@
         }
 
         @media (max-width: 768px) {
+            .container-custom {
+                padding: 0 14px;
+            }
+
             .card-container {
                 flex-direction: column;
             }
 
             .card-image-box {
-                width: 100% !important;
-                height: 220px !important;
+                width: 100%;
+                height: 220px;
             }
 
             .page-shell {
-                padding-top: 0;
+                padding-top: 18px;
                 padding-bottom: 18px;
+            }
+
+            .page-intro-box {
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            .section-title {
+                font-size: 18px;
             }
 
             .filter-panel {
@@ -247,6 +327,16 @@
             .filter-grid .filter-submit-wrap {
                 grid-column: span 1;
             }
+
+            .seo-section-shell {
+                margin-top: 22px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container-custom {
+                padding: 0 12px;
+            }
         }
     </style>
 </head>
@@ -255,7 +345,7 @@
     <div id="site-header"></div>
     <div id="site-mobile-menu"></div>
 
-    <div class="container-custom page-shell">
+    <main class="container-custom page-shell">
         <div class="filter-panel mb-6">
             <div class="filter-grid">
                 <div>
@@ -300,23 +390,23 @@
         <div id="data-note" class="empty-box mb-6 hidden"></div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div class="lg:col-span-3 space-y-6">
-                <div>
-                    <h1 class="text-xl font-bold text-[#2C2C2C] uppercase">Cho thuê nhà đất tại Việt Nam</h1>
-                    <p class="text-gray-500 text-sm mt-1">
+            <section class="lg:col-span-3 space-y-6">
+                <div class="page-intro-box">
+                    <h1 id="pageHeading" class="section-title">CHO THUÊ NHÀ ĐẤT TẠI VIỆT NAM</h1>
+                    <p id="pageSubheading" class="text-gray-500 text-sm mt-2 leading-6">
                         Hiện có <span id="listing-count" class="font-bold text-gray-700">0</span> tin đăng cho thuê đang hiển thị
                     </p>
                 </div>
 
                 <div id="listing-container" class="space-y-6"></div>
-            </div>
+            </section>
 
             <aside class="hidden lg:block lg:col-span-1 space-y-6">
                 <div class="sidebar-card">
                     <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Khu vực thuê nhiều</h4>
-                    <ul id="hot-areas" class="text-sm space-y-3 text-gray-600">
-                        <li class="flex justify-between"><span>Chưa có dữ liệu</span> <span class="text-gray-400 text-[11px]">0 tin</span></li>
-                    </ul>
+                    <div id="hot-areas" class="space-y-3 text-sm text-gray-600">
+                        <div class="text-gray-400 text-[13px]">Chưa có dữ liệu</div>
+                    </div>
                 </div>
 
                 <div class="sidebar-card">
@@ -329,7 +419,11 @@
                 </div>
             </aside>
         </div>
-    </div>
+
+        <section class="seo-section-shell">
+            <div id="seoContent"></div>
+        </section>
+    </main>
 
     <div id="site-footer"></div>
 
@@ -355,11 +449,36 @@
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
     <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
 
     <script>
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
         const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
+
+        const CATEGORY_TITLE_MAP = {
+            "cho-thue-can-ho-chung-cu": "Cho thuê căn hộ chung cư",
+            "cho-thue-chung-cu-mini-can-ho-dich-vu": "Cho thuê chung cư mini, căn hộ dịch vụ",
+            "cho-thue-nha-rieng": "Cho thuê nhà riêng",
+            "cho-thue-nha-biet-thu-lien-ke": "Cho thuê nhà biệt thự, liền kề",
+            "cho-thue-nha-mat-pho": "Cho thuê nhà mặt phố",
+            "cho-thue-shophouse-nha-pho-thuong-mai": "Cho thuê shophouse, nhà phố thương mại",
+            "cho-thue-nha-tro-phong-tro": "Cho thuê nhà trọ, phòng trọ",
+            "cho-thue-van-phong": "Cho thuê văn phòng",
+            "cho-thue-sang-nhuong-cua-hang-ki-ot": "Cho thuê, sang nhượng cửa hàng, ki ốt",
+            "cho-thue-kho-nha-xuong-dat": "Cho thuê kho, nhà xưởng, đất",
+            "cho-thue-bat-dong-san-khac": "Cho thuê loại bất động sản khác"
+        };
+
+        const CATEGORY_TYPE_MAP = {
+            "cho-thue-can-ho-chung-cu": "Căn hộ",
+            "cho-thue-chung-cu-mini-can-ho-dich-vu": "Căn hộ",
+            "cho-thue-nha-rieng": "Nhà phố",
+            "cho-thue-nha-biet-thu-lien-ke": "Biệt thự",
+            "cho-thue-nha-mat-pho": "Nhà phố",
+            "cho-thue-shophouse-nha-pho-thuong-mai": "Shophouse",
+            "cho-thue-van-phong": "Văn phòng"
+        };
 
         const fallbackPosts = [
             {
@@ -441,6 +560,8 @@
         const listingCount = document.getElementById('listing-count');
         const hotAreas = document.getElementById('hot-areas');
         const dataNote = document.getElementById('data-note');
+        const pageHeading = document.getElementById('pageHeading');
+        const pageSubheading = document.getElementById('pageSubheading');
 
         const keywordFilter = document.getElementById('keywordFilter');
         const typeFilter = document.getElementById('typeFilter');
@@ -455,6 +576,30 @@
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
+        }
+
+        function getCurrentCategory() {
+            const params = new URLSearchParams(window.location.search);
+            return (params.get("category") || "").trim();
+        }
+
+        function getPageTitleByCategory() {
+            const category = getCurrentCategory();
+            return CATEGORY_TITLE_MAP[category] || "Cho thuê nhà đất tại Việt Nam";
+        }
+
+        function syncPageHeading() {
+            const title = getPageTitleByCategory();
+            pageHeading.textContent = title.toUpperCase();
+            document.title = title + " - ToamViet.com.vn";
+        }
+
+        function syncFilterByCategory() {
+            const category = getCurrentCategory();
+            const mappedType = CATEGORY_TYPE_MAP[category];
+            if (mappedType) {
+                typeFilter.value = mappedType;
+            }
         }
 
         function normalizePhone(phone) {
@@ -745,7 +890,7 @@
 
         function fillCityFilter(posts) {
             const currentValue = cityFilter.value;
-            const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))];
+            const uniqueCities = [...new Set(posts.map(post => post.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, "vi"));
 
             cityFilter.innerHTML = '<option value="">Toàn quốc</option>' +
                 uniqueCities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join('');
@@ -770,16 +915,17 @@
 
             const sorted = Object.entries(counter).sort((a, b) => b[1] - a[1]).slice(0, 6);
 
-            hotAreas.innerHTML = sorted.length
-                ? sorted.map(([city, count]) => `
-                    <li>
-                        <button type="button" onclick="filterByHotArea('${String(city).replace(/'/g, "\\'")}')" class="w-full flex justify-between hover:text-[--hover-color] cursor-pointer text-left">
-                            <span>Thuê nhà đất ${escapeHtml(city)}</span>
-                            <span class="text-gray-400 text-[11px]">${count} tin</span>
-                        </button>
-                    </li>
-                `).join('')
-                : `<li class="flex justify-between"><span>Chưa có dữ liệu</span><span class="text-gray-400 text-[11px]">0 tin</span></li>`;
+            if (!sorted.length) {
+                hotAreas.innerHTML = '<div class="text-gray-400 text-[13px]">Chưa có dữ liệu</div>';
+                return;
+            }
+
+            hotAreas.innerHTML = sorted.map(([city, count]) => `
+                <button type="button" class="hot-area-btn" onclick="filterByHotArea('${String(city).replace(/'/g, "\\'")}')">
+                    <span>Thuê nhà đất ${escapeHtml(city)}</span>
+                    <span class="text-gray-400 text-[11px]">${count} tin</span>
+                </button>
+            `).join('');
         }
 
         function buildCardData(post, index) {
@@ -834,13 +980,12 @@
                 description: post.description || '',
                 projectName: post.projectName || '',
                 html: `
-                    <div class="card-container">
-                        <div class="card-image-box w-[280px] h-auto shrink-0 relative">
+                    <article class="card-container">
+                        <div class="card-image-box shrink-0 relative">
                             <a href="${detailUrl}" aria-label="${safeTitle}">
                                 <img
                                     src="${img}"
                                     alt="${safeTitle}"
-                                    class="w-full h-full object-cover"
                                     loading="lazy"
                                     decoding="async"
                                     onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
@@ -858,7 +1003,7 @@
 
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] cursor-pointer">
+                                <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] transition">
                                     <a href="${detailUrl}">${safeTitle}</a>
                                 </h3>
 
@@ -887,24 +1032,24 @@
                                 </div>
                             </div>
 
-                            <div class="flex justify-between items-center mt-4 pt-3 border-t">
-                                <a href="${profileUrl}" class="flex items-center gap-3 group">
+                            <div class="flex justify-between items-center mt-4 pt-3 border-t gap-4 flex-wrap">
+                                <a href="${profileUrl}" class="flex items-center gap-3 group broker-link">
                                     <div class="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center text-white font-bold text-xs group-hover:opacity-80 transition">
                                         ${avatarText}
                                     </div>
-                                    <div>
-                                        <p class="text-sm font-bold text-gray-700 group-hover:text-[--vip-color] transition">${profileName}</p>
+                                    <div class="min-w-0">
+                                        <p class="broker-name text-sm font-bold text-gray-700 truncate transition">${profileName}</p>
                                         <p class="text-[11px] text-gray-400">${profileDesc}</p>
                                     </div>
                                 </a>
 
-                                <div class="flex gap-2">
+                                <div class="flex gap-2 flex-wrap">
                                     ${
                                         phoneLink
-                                            ? `<a href="tel:${phoneLink}" class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm">
+                                            ? `<a href="tel:${phoneLink}" class="bg-[--vip-color] text-white px-4 py-2 rounded-lg font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm hover:opacity-90 transition">
                                                     <i class="fa-solid fa-phone"></i> ${escapeHtml(shortPhone)}
                                                </a>`
-                                            : `<button class="bg-[--vip-color] text-white px-4 py-2 rounded font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm cursor-default">
+                                            : `<button class="bg-[--vip-color] text-white px-4 py-2 rounded-lg font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm cursor-default">
                                                     <i class="fa-solid fa-phone"></i> ${escapeHtml(shortPhone)}
                                                </button>`
                                     }
@@ -919,7 +1064,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 `
             };
         }
@@ -992,10 +1137,13 @@
             }
 
             fillCityFilter(posts);
-            renderHotAreas(posts);
-
             const filteredPosts = applyFilters(posts);
+
             listingCount.textContent = filteredPosts.length;
+            const pageTitle = getPageTitleByCategory();
+            pageSubheading.innerHTML = `${pageTitle} hiện có <span class="font-bold text-gray-700">${filteredPosts.length}</span> tin đăng đang hiển thị`;
+
+            renderHotAreas(filteredPosts.length ? filteredPosts : posts);
 
             if (!filteredPosts.length) {
                 listingContainer.innerHTML = `
@@ -1012,8 +1160,15 @@
         }
 
         function initPage() {
+            syncPageHeading();
+            syncFilterByCategory();
             renderListings();
             updateFavoriteCount();
+
+            if (typeof window.renderSeoContent === "function") {
+                window.renderSeoContent("seoContent", "rent");
+            }
+
             setTimeout(updateFavoriteCount, 300);
         }
 
