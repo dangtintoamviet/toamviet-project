@@ -98,7 +98,8 @@ function setupFixedHeaderSpacing() {
   if (context.isHomePage) {
     spacer.style.height = `${headerHeight}px`;
   } else {
-    spacer.style.height = `${headerHeight}px`;
+    const extraGap = window.innerWidth <= 768 ? 14 : 20;
+    spacer.style.height = `${headerHeight + extraGap}px`;
   }
 }
 
