@@ -858,15 +858,7 @@
 
                                             <div>
                                                 <label class="field-label" for="projectType">Loại dự án</label>
-                                                <select id="projectType" class="select-field">
-                                                    <option value="">Chọn loại dự án</option>
-                                                    <option value="Căn hộ">Căn hộ</option>
-                                                    <option value="Nhà phố">Nhà phố</option>
-                                                    <option value="Biệt thự">Biệt thự</option>
-                                                    <option value="Đất nền">Đất nền</option>
-                                                    <option value="Khu đô thị">Khu đô thị</option>
-                                                    <option value="Tổ hợp thương mại">Tổ hợp thương mại</option>
-                                                </select>
+                                                <select id="projectType" class="select-field"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -1029,6 +1021,10 @@
                                     <div class="value" id="previewProject">Không thuộc dự án</div>
                                 </div>
                                 <div class="preview-meta-item">
+                                    <div class="label">Danh mục</div>
+                                    <div class="value" id="previewCategory">Chưa chọn</div>
+                                </div>
+                                <div class="preview-meta-item">
                                     <div class="label">VIP</div>
                                     <div class="value" id="previewVip">Thường</div>
                                 </div>
@@ -1133,6 +1129,100 @@
             ]
         };
 
+        const SALE_CATEGORIES = [
+            { slug: "ban-can-ho-chung-cu", name: "Bán căn hộ chung cư", propertyType: "Căn hộ" },
+            { slug: "ban-chung-cu-mini-can-ho-dich-vu", name: "Bán chung cư mini, căn hộ dịch vụ", propertyType: "Căn hộ" },
+            { slug: "ban-nha-rieng", name: "Bán nhà riêng", propertyType: "Nhà riêng" },
+            { slug: "ban-nha-biet-thu-lien-ke", name: "Bán nhà biệt thự, liền kề", propertyType: "Biệt thự" },
+            { slug: "ban-nha-mat-pho", name: "Bán nhà mặt phố", propertyType: "Nhà mặt phố" },
+            { slug: "ban-shophouse-nha-pho-thuong-mai", name: "Bán shophouse, nhà phố thương mại", propertyType: "Shophouse" },
+            { slug: "ban-dat-nen-du-an", name: "Bán đất nền dự án", propertyType: "Đất nền" },
+            { slug: "ban-dat", name: "Bán đất", propertyType: "Đất" },
+            { slug: "ban-trang-trai-khu-nghi-duong", name: "Bán trang trại, khu nghỉ dưỡng", propertyType: "Trang trại, khu nghỉ dưỡng" },
+            { slug: "ban-condotel", name: "Bán condotel", propertyType: "Condotel" },
+            { slug: "ban-kho-nha-xuong", name: "Bán kho, nhà xưởng", propertyType: "Kho, nhà xưởng" },
+            { slug: "ban-bat-dong-san-khac", name: "Bán loại bất động sản khác", propertyType: "Bất động sản khác" }
+        ];
+
+        const RENT_CATEGORIES = [
+            { slug: "cho-thue-can-ho-chung-cu", name: "Cho thuê căn hộ chung cư", propertyType: "Căn hộ" },
+            { slug: "cho-thue-chung-cu-mini-can-ho-dich-vu", name: "Cho thuê chung cư mini, căn hộ dịch vụ", propertyType: "Căn hộ dịch vụ" },
+            { slug: "cho-thue-nha-rieng", name: "Cho thuê nhà riêng", propertyType: "Nhà riêng" },
+            { slug: "cho-thue-nha-biet-thu-lien-ke", name: "Cho thuê nhà biệt thự, liền kề", propertyType: "Biệt thự" },
+            { slug: "cho-thue-nha-mat-pho", name: "Cho thuê nhà mặt phố", propertyType: "Nhà mặt phố" },
+            { slug: "cho-thue-shophouse-nha-pho-thuong-mai", name: "Cho thuê shophouse, nhà phố thương mại", propertyType: "Shophouse" },
+            { slug: "cho-thue-nha-tro-phong-tro", name: "Cho thuê nhà trọ, phòng trọ", propertyType: "Nhà trọ, phòng trọ" },
+            { slug: "cho-thue-van-phong", name: "Cho thuê văn phòng", propertyType: "Văn phòng" },
+            { slug: "cho-thue-sang-nhuong-cua-hang-ki-ot", name: "Cho thuê, sang nhượng cửa hàng, ki ốt", propertyType: "Cửa hàng, ki ốt" },
+            { slug: "cho-thue-kho-nha-xuong-dat", name: "Cho thuê kho, nhà xưởng, đất", propertyType: "Kho, nhà xưởng, đất" },
+            { slug: "cho-thue-bat-dong-san-khac", name: "Cho thuê loại bất động sản khác", propertyType: "Bất động sản khác" }
+        ];
+
+        const PROJECT_CATEGORIES = [
+            { slug: "can-ho-chung-cu", name: "Căn hộ chung cư" },
+            { slug: "cao-oc-van-phong", name: "Cao ốc văn phòng" },
+            { slug: "trung-tam-thuong-mai", name: "Trung tâm thương mại" },
+            { slug: "khu-do-thi-moi", name: "Khu đô thị mới" },
+            { slug: "khu-phuc-hop", name: "Khu phức hợp" },
+            { slug: "nha-o-xa-hoi", name: "Nhà ở xã hội" },
+            { slug: "khu-nghi-duong-sinh-thai", name: "Khu nghỉ dưỡng, Sinh thái" },
+            { slug: "khu-cong-nghiep", name: "Khu công nghiệp" },
+            { slug: "biet-thu-lien-ke", name: "Biệt thự, liền kề" },
+            { slug: "shophouse", name: "Shophouse" },
+            { slug: "nha-mat-pho", name: "Nhà mặt phố" },
+            { slug: "du-an-khac", name: "Dự án khác" }
+        ];
+
+        const CONSTRUCTION_CATEGORIES = [
+            { slug: "xay-nha-tron-goi", name: "Xây nhà trọn gói" },
+            { slug: "thi-cong-phan-tho", name: "Thi công phần thô" },
+            { slug: "thiet-ke-kien-truc", name: "Thiết kế kiến trúc" },
+            { slug: "sua-chua-cai-tao", name: "Sửa chữa cải tạo" },
+            { slug: "noi-that-hoan-thien", name: "Nội thất hoàn thiện" },
+            { slug: "vat-lieu-xay-dung", name: "Vật liệu xây dựng" }
+        ];
+
+        function getCurrentRealEstateCategories() {
+            return currentPostType === "thue" ? RENT_CATEGORIES : SALE_CATEGORIES;
+        }
+
+        function getCurrentCategoryMap() {
+            const list = getCurrentRealEstateCategories();
+            return list.reduce(function (acc, item) {
+                acc[item.slug] = item;
+                return acc;
+            }, {});
+        }
+
+        function getAllRealEstateCategoriesMap() {
+            return SALE_CATEGORIES.concat(RENT_CATEGORIES).reduce(function (acc, item) {
+                acc[item.slug] = item;
+                return acc;
+            }, {});
+        }
+
+        function getProjectCategoryMap() {
+            return PROJECT_CATEGORIES.reduce(function (acc, item) {
+                acc[item.slug] = item;
+                return acc;
+            }, {});
+        }
+
+        function getConstructionCategoryMap() {
+            return CONSTRUCTION_CATEGORIES.reduce(function (acc, item) {
+                acc[item.slug] = item;
+                return acc;
+            }, {});
+        }
+
+        function renderProjectTypeOptions() {
+            projectTypeField.innerHTML =
+                '<option value="">Chọn loại dự án</option>' +
+                PROJECT_CATEGORIES.map(function (item) {
+                    return '<option value="' + item.slug + '">' + item.name + '</option>';
+                }).join("");
+        }
+
         function safeParseLocalStorage(key) {
             try {
                 const raw = localStorage.getItem(key);
@@ -1194,6 +1284,7 @@
         const previewPoster = document.getElementById("previewPoster");
         const previewTitle = document.getElementById("previewTitle");
         const previewProject = document.getElementById("previewProject");
+        const previewCategory = document.getElementById("previewCategory");
         const previewImagesCount = document.getElementById("previewImagesCount");
         const previewVip = document.getElementById("previewVip");
         const previewStatus = document.getElementById("previewStatus");
@@ -1438,7 +1529,7 @@
 
             codeEl.textContent = post.id || "Không có mã";
             metaEl.textContent = [
-                post.postType || post.flow || "---",
+                post.categoryName || post.postType || post.flow || "---",
                 post.status || "pending",
                 post.createdAt ? new Date(post.createdAt).toLocaleString("vi-VN") : "---"
             ].join(" • ");
@@ -1637,13 +1728,11 @@
                 postTitle.placeholder = "VD: Công ty An Phát - Nhận thi công nhà phố trọn gói tại Hà Giang";
                 dynamicFields.innerHTML = `
                     <div>
-                        <label class="field-label" for="serviceType">Loại dịch vụ</label>
+                        <label class="field-label" for="serviceType">Danh mục xây dựng</label>
                         <select id="serviceType" class="select-field dynamic-input">
-                            <option value="Xây nhà trọn gói">Xây nhà trọn gói</option>
-                            <option value="Thi công phần thô">Thi công phần thô</option>
-                            <option value="Thiết kế kiến trúc">Thiết kế kiến trúc</option>
-                            <option value="Sửa chữa / Cải tạo">Sửa chữa / Cải tạo</option>
-                            <option value="Nội thất / Hoàn thiện">Nội thất / Hoàn thiện</option>
+                            ${CONSTRUCTION_CATEGORIES.map(function (item) {
+                                return '<option value="' + item.slug + '">' + item.name + '</option>';
+                            }).join("")}
                         </select>
                     </div>
                     <div>
@@ -1672,16 +1761,15 @@
                     ? "VD: Bán căn hộ 2PN view đẹp tại dự án Tổ Ấm Việt Riverside"
                     : "VD: Cho thuê shophouse tại dự án Tổ Ấm Việt Riverside";
 
+                const currentCategories = getCurrentRealEstateCategories();
+
                 dynamicFields.innerHTML = `
                     <div>
-                        <label class="field-label" for="propertyType">Loại bất động sản</label>
-                        <select id="propertyType" class="select-field dynamic-input">
-                            <option value="Nhà phố">Nhà phố</option>
-                            <option value="Đất nền">Đất nền</option>
-                            <option value="Căn hộ">Căn hộ</option>
-                            <option value="Biệt thự">Biệt thự</option>
-                            <option value="Văn phòng">Văn phòng</option>
-                            <option value="Shophouse">Shophouse</option>
+                        <label class="field-label" for="propertyCategory">Danh mục con</label>
+                        <select id="propertyCategory" class="select-field dynamic-input">
+                            ${currentCategories.map(function (item) {
+                                return '<option value="' + item.slug + '">' + item.name + '</option>';
+                            }).join("")}
                         </select>
                     </div>
                     <div>
@@ -1793,7 +1881,7 @@
                 return `
                     <div class="suggest-item" data-project-id="${item.id}">
                         <div class="suggest-name">${item.name}</div>
-                        <div class="suggest-meta">${item.city || "Chưa có tỉnh/thành"} • ${item.type || "Chưa phân loại"} • ${approved} đã duyệt / ${pending} chờ duyệt</div>
+                        <div class="suggest-meta">${item.city || "Chưa có tỉnh/thành"} • ${item.typeName || item.type || "Chưa phân loại"} • ${approved} đã duyệt / ${pending} chờ duyệt</div>
                     </div>
                 `;
             }).join("");
@@ -1847,6 +1935,7 @@
                     projectName: "",
                     projectSlug: "",
                     projectType: "",
+                    projectTypeName: "",
                     projectDeveloper: "",
                     isNewProject: false
                 };
@@ -1859,11 +1948,14 @@
                     projectName: selectedProject.name,
                     projectSlug: selectedProject.slug,
                     projectType: selectedProject.type || "",
+                    projectTypeName: selectedProject.typeName || "",
                     projectDeveloper: selectedProject.developer || "",
                     isNewProject: false
                 };
             }
 
+            const projectTypeSlug = projectTypeField.value;
+            const projectTypeObj = getProjectCategoryMap()[projectTypeSlug] || null;
             const name = newProjectName.value.trim();
             const slug = slugify(name);
 
@@ -1872,7 +1964,8 @@
                 projectId: slug ? "project_" + slug : "",
                 projectName: name,
                 projectSlug: slug,
-                projectType: projectTypeField.value,
+                projectType: projectTypeSlug,
+                projectTypeName: projectTypeObj ? projectTypeObj.name : "",
                 projectDeveloper: projectDeveloper.value.trim(),
                 isNewProject: !!name
             };
@@ -1906,7 +1999,8 @@
                     city: post.city || "",
                     ward: post.ward || "",
                     addressDetail: post.addressDetail || "",
-                    type: post.projectTypeName || post.propertyType || "",
+                    type: post.projectType || "",
+                    typeName: post.projectTypeName || "",
                     developer: post.projectDeveloper || "",
                     postCount: 0,
                     pendingCount: 0,
@@ -1921,7 +2015,8 @@
                 existing.city = existing.city || post.city || "";
                 existing.ward = existing.ward || post.ward || "";
                 existing.addressDetail = existing.addressDetail || post.addressDetail || "";
-                existing.type = existing.type || post.projectTypeName || post.propertyType || "";
+                existing.type = existing.type || post.projectType || "";
+                existing.typeName = existing.typeName || post.projectTypeName || "";
                 existing.developer = existing.developer || post.projectDeveloper || "";
                 existing.totalPosts = (existing.totalPosts || 0) + 1;
                 existing.lastPostAt = post.updatedAt || post.createdAt || existing.lastPostAt || new Date().toISOString();
@@ -1979,6 +2074,62 @@
             return map[level] || "Thường";
         }
 
+        function getSelectedRealEstateCategory() {
+            const categoryEl = document.getElementById("propertyCategory");
+            if (!categoryEl) return null;
+            const slug = categoryEl.value;
+            return getCurrentCategoryMap()[slug] || null;
+        }
+
+        function getSelectedConstructionCategory() {
+            const serviceTypeEl = document.getElementById("serviceType");
+            if (!serviceTypeEl) return null;
+            const slug = serviceTypeEl.value;
+            return getConstructionCategoryMap()[slug] || null;
+        }
+
+        function getLegacyPropertyCategoryByPost(post) {
+            if (!post) return null;
+
+            if (post.categorySlug && getAllRealEstateCategoriesMap()[post.categorySlug]) {
+                return getAllRealEstateCategoriesMap()[post.categorySlug];
+            }
+
+            const propertyType = normalizeText(post.propertyType || "");
+            const title = normalizeText(post.title || "");
+
+            const list = currentPostType === "thue" ? RENT_CATEGORIES : SALE_CATEGORIES;
+
+            const matched =
+                list.find(function (item) {
+                    return normalizeText(item.propertyType) === propertyType;
+                }) ||
+                list.find(function (item) {
+                    return title.includes(normalizeText(item.name));
+                });
+
+            return matched || list[0] || null;
+        }
+
+        function getLegacyConstructionCategoryByPost(post) {
+            if (!post) return null;
+
+            if (post.serviceTypeSlug && getConstructionCategoryMap()[post.serviceTypeSlug]) {
+                return getConstructionCategoryMap()[post.serviceTypeSlug];
+            }
+
+            if (post.categorySlug && getConstructionCategoryMap()[post.categorySlug]) {
+                return getConstructionCategoryMap()[post.categorySlug];
+            }
+
+            const serviceType = normalizeText(post.serviceType || "");
+            const matched = CONSTRUCTION_CATEGORIES.find(function (item) {
+                return normalizeText(item.name) === serviceType;
+            });
+
+            return matched || CONSTRUCTION_CATEGORIES[0] || null;
+        }
+
         function updatePreview() {
             const title = postTitle.value.trim();
             const city = citySelect.value;
@@ -1996,15 +2147,18 @@
             if (currentFlow === "construction") {
                 const servicePrice = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value : "Chưa nhập";
                 const serviceExp = document.getElementById("serviceExp") ? document.getElementById("serviceExp").value : "Chưa nhập";
+                const serviceCategory = getSelectedConstructionCategory();
 
                 previewFlow.textContent = "Dịch vụ xây dựng";
                 previewDescription.textContent = "Nội dung này sẽ được đẩy ra trang Xây dựng để khách hàng tìm thấy công ty xây dựng, kỹ sư hoặc nhà thầu phù hợp.";
                 previewPrice.textContent = servicePrice || "Chưa nhập";
                 previewArea.textContent = serviceExp || "Chưa nhập";
                 previewProject.textContent = "Không áp dụng";
+                previewCategory.textContent = serviceCategory ? serviceCategory.name : "Chưa chọn";
             } else {
                 const propertyPrice = document.getElementById("propertyPrice") ? document.getElementById("propertyPrice").value : "Chưa nhập";
                 const propertyArea = document.getElementById("propertyArea") ? document.getElementById("propertyArea").value : "";
+                const categoryObj = getSelectedRealEstateCategory();
 
                 previewFlow.textContent = currentPostType === "ban" ? "Bất động sản bán" : "Bất động sản cho thuê";
                 previewDescription.textContent = currentPostType === "ban"
@@ -2012,6 +2166,7 @@
                     : "Tin này sẽ hiển thị ở mục Nhà đất cho thuê và phục vụ nhu cầu tìm thuê thực tế.";
                 previewPrice.textContent = propertyPrice || "Chưa nhập";
                 previewArea.textContent = propertyArea ? propertyArea + " m²" : "Chưa nhập";
+                previewCategory.textContent = categoryObj ? categoryObj.name : "Chưa chọn";
 
                 if (isProjectEnabled()) {
                     previewProject.textContent =
@@ -2241,12 +2396,18 @@
                 const servicePrice = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value.trim() : "";
 
                 if (!serviceType || !servicePrice) {
-                    showStatus("error", "Vui lòng điền đủ loại dịch vụ và đơn giá tham khảo cho nội dung xây dựng.");
+                    showStatus("error", "Vui lòng điền đủ danh mục xây dựng và đơn giá tham khảo cho nội dung xây dựng.");
                     return false;
                 }
             } else {
+                const propertyCategory = document.getElementById("propertyCategory") ? document.getElementById("propertyCategory").value.trim() : "";
                 const propertyPrice = document.getElementById("propertyPrice") ? document.getElementById("propertyPrice").value.trim() : "";
                 const propertyArea = document.getElementById("propertyArea") ? document.getElementById("propertyArea").value.trim() : "";
+
+                if (!propertyCategory) {
+                    showStatus("error", "Vui lòng chọn danh mục con bất động sản.");
+                    return false;
+                }
 
                 if (!propertyPrice || !propertyArea) {
                     showStatus("error", "Vui lòng điền đủ giá và diện tích cho tin bất động sản.");
@@ -2329,15 +2490,20 @@
             };
 
             if (currentFlow === "construction") {
+                const serviceTypeSlug = document.getElementById("serviceType")
+                    ? document.getElementById("serviceType").value
+                    : "";
+                const serviceTypeObj = getConstructionCategoryMap()[serviceTypeSlug] || null;
                 const servicePriceRaw = document.getElementById("servicePrice")
                     ? document.getElementById("servicePrice").value
                     : "";
 
                 return {
                     ...baseData,
-                    serviceType: document.getElementById("serviceType")
-                        ? document.getElementById("serviceType").value
-                        : "",
+                    categorySlug: serviceTypeSlug,
+                    categoryName: serviceTypeObj ? serviceTypeObj.name : "",
+                    serviceType: serviceTypeObj ? serviceTypeObj.name : "",
+                    serviceTypeSlug: serviceTypeSlug,
                     servicePrice: servicePriceRaw,
                     servicePriceData: parseVietnamesePrice(servicePriceRaw, "xaydung"),
                     serviceExp: document.getElementById("serviceExp")
@@ -2365,11 +2531,17 @@
                     projectId: "",
                     projectName: "",
                     projectSlug: "",
+                    projectType: "",
                     projectTypeName: "",
                     projectDeveloper: "",
                     pricePerSquareMeter: null
                 };
             }
+
+            const propertyCategorySlug = document.getElementById("propertyCategory")
+                ? document.getElementById("propertyCategory").value
+                : "";
+            const propertyCategoryObj = getCurrentCategoryMap()[propertyCategorySlug] || null;
 
             const propertyPriceRaw = document.getElementById("propertyPrice")
                 ? document.getElementById("propertyPrice").value
@@ -2386,9 +2558,9 @@
             const postData = {
                 ...baseData,
 
-                propertyType: document.getElementById("propertyType")
-                    ? document.getElementById("propertyType").value
-                    : "",
+                categorySlug: propertyCategorySlug,
+                categoryName: propertyCategoryObj ? propertyCategoryObj.name : "",
+                propertyType: propertyCategoryObj ? propertyCategoryObj.propertyType : "",
 
                 propertyPrice: propertyPriceRaw,
                 propertyPriceData: parsedPrice,
@@ -2412,11 +2584,13 @@
                 projectId: projectData.projectId,
                 projectName: projectData.projectName,
                 projectSlug: projectData.projectSlug,
-                projectTypeName: projectData.projectType,
+                projectType: projectData.projectType,
+                projectTypeName: projectData.projectTypeName,
                 projectDeveloper: projectData.projectDeveloper,
                 isNewProject: projectData.isNewProject,
 
                 serviceType: "",
+                serviceTypeSlug: "",
                 servicePrice: "",
                 servicePriceData: null,
                 serviceExp: "",
@@ -2504,21 +2678,25 @@
                 const serviceBrandEl = document.getElementById("serviceBrand");
                 const serviceSpecialtyEl = document.getElementById("serviceSpecialty");
 
-                setSelectValueIfExists(serviceTypeEl, post.serviceType || "Xây nhà trọn gói");
+                const matchedCategory = getLegacyConstructionCategoryByPost(post);
+                setSelectValueIfExists(serviceTypeEl, matchedCategory ? matchedCategory.slug : CONSTRUCTION_CATEGORIES[0].slug);
+
                 if (servicePriceEl) servicePriceEl.value = post.servicePrice || "";
                 if (serviceExpEl) serviceExpEl.value = post.serviceExp || "";
                 if (serviceAreaEl) serviceAreaEl.value = post.serviceArea || "";
                 if (serviceBrandEl) serviceBrandEl.value = post.serviceBrand || post.brandName || "";
                 if (serviceSpecialtyEl) serviceSpecialtyEl.value = post.serviceSpecialty || "";
             } else {
-                const propertyTypeEl = document.getElementById("propertyType");
+                const propertyCategoryEl = document.getElementById("propertyCategory");
                 const propertyPriceEl = document.getElementById("propertyPrice");
                 const propertyAreaEl = document.getElementById("propertyArea");
                 const propertyLegalEl = document.getElementById("propertyLegal");
                 const propertyDirectionEl = document.getElementById("propertyDirection");
                 const propertyBedsEl = document.getElementById("propertyBeds");
 
-                setSelectValueIfExists(propertyTypeEl, post.propertyType || "Nhà phố");
+                const matchedCategory = getLegacyPropertyCategoryByPost(post);
+                setSelectValueIfExists(propertyCategoryEl, matchedCategory ? matchedCategory.slug : getCurrentRealEstateCategories()[0].slug);
+
                 if (propertyPriceEl) propertyPriceEl.value = post.propertyPrice || "";
                 if (propertyAreaEl) propertyAreaEl.value = post.propertyArea || "";
                 if (propertyLegalEl) propertyLegalEl.value = post.propertyLegal || "";
@@ -2553,6 +2731,7 @@
             document.getElementById("contactPhone").value = editingPost.contactPhone || editingPost.phone || "";
             document.getElementById("contactEmail").value = editingPost.contactEmail || editingPost.email || "";
             document.getElementById("postStatusSelect").value = editingPost.status || "pending";
+            document.getElementById("postUpdatedNote").value = editingPost.updatedNote || "";
 
             setSelectValueIfExists(citySelect, editingPost.city || "");
             updateWards(editingPost.ward || "");
@@ -2575,7 +2754,7 @@
                 } else {
                     newProjectName.value = editingPost.projectName || "";
                     projectDeveloper.value = editingPost.projectDeveloper || "";
-                    projectTypeField.value = editingPost.projectTypeName || "";
+                    projectTypeField.value = editingPost.projectType || "";
                 }
 
                 updateSelectedProjectBadge();
@@ -2752,6 +2931,7 @@
         window.addEventListener("load", async function () {
             await initSharedComponents();
             fillUserInfo();
+            renderProjectTypeOptions();
             renderDynamicFields();
             initEditingContext();
             loadVietnamAddress();
