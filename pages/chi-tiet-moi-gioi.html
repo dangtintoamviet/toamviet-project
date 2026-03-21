@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chi tiết môi giới - ToamViet.com.vn</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../assets/css/main.css" />
@@ -31,7 +35,7 @@
         }
 
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Roboto", sans-serif;
             background: var(--soft-bg);
             color: var(--text-main);
         }
@@ -619,7 +623,7 @@
 
                         <div class="min-w-0 flex-1">
                             <h1 id="profile-name" class="profile-name">Đang tải môi giới...</h1>
-                            <div id="profile-role" class="profile-role">Cá nhân</div>
+                            <div id="profile-role" class="profile-role">Cá nhân / Môi giới</div>
 
                             <div class="profile-badge-row">
                                 <span id="profile-badge-type" class="pill-badge pill-brand">Cá nhân</span>
@@ -664,7 +668,7 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Vai trò</span>
-                            <span id="info-role" class="info-value">Cá nhân</span>
+                            <span id="info-role" class="info-value">Cá nhân / Môi giới</span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Điện thoại</span>
@@ -778,6 +782,7 @@
             return String(value || "")
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
                 .toLowerCase()
                 .replace(/\s+/g, " ")
                 .trim();
@@ -787,6 +792,7 @@
             return String(value || "")
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
                 .toLowerCase()
                 .trim()
                 .replace(/[^a-z0-9\s-]/g, "")
@@ -856,7 +862,13 @@
         }
 
         function getPosterSub(post) {
-            return "Cá nhân";
+            const rawRole = String(post.roleLabel || post.role || "").trim();
+            const normalizedRole = normalizeText(rawRole);
+
+            if (normalizedRole.includes("moi gioi")) return rawRole || "Môi giới";
+            if (normalizedRole.includes("chuyen vien")) return rawRole || "Chuyên viên";
+            if (normalizedRole.includes("ca nhan")) return rawRole || "Cá nhân";
+            return rawRole || "Cá nhân / Môi giới";
         }
 
         function getAvatarText(post) {
@@ -1129,11 +1141,12 @@
 
         function buildProfileAbout(basePost, posterPosts) {
             const posterName = buildPoster(basePost);
-            const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "nhiều khu vực";
+            const area = basePost.serviceArea || buildLocation(basePost) || basePost.city || "nhiều khu vực";
             const specialty = basePost.serviceSpecialty || basePost.specialty || basePost.propertyType || basePost.serviceType || "bất động sản và dịch vụ liên quan";
             const totalPosts = posterPosts.length;
+            const role = getPosterSub(basePost);
 
-            return `${posterName} là cá nhân đang hoạt động trên ToamViet.
+            return `${posterName} là ${role.toLowerCase()} đang hoạt động trên ToamViet.
 
 Khu vực hoạt động chính: ${area}.
 Lĩnh vực / chuyên môn nổi bật: ${specialty}.
@@ -1156,15 +1169,16 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
 
         function renderProfileHeader(basePost, posterPosts) {
             const posterName = buildPoster(basePost);
-            const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "Đang cập nhật khu vực";
+            const area = basePost.serviceArea || buildLocation(basePost) || basePost.city || "Đang cập nhật khu vực";
+            const role = getPosterSub(basePost);
 
             document.title = `${posterName} - ToamViet.com.vn`;
             document.getElementById("breadcrumb-current").textContent = posterName;
 
             document.getElementById("profile-avatar").innerHTML = getProfileAvatarHtml(basePost);
             document.getElementById("profile-name").textContent = posterName;
-            document.getElementById("profile-role").textContent = "Cá nhân";
-            document.getElementById("profile-badge-type").textContent = "Cá nhân";
+            document.getElementById("profile-role").textContent = role;
+            document.getElementById("profile-badge-type").textContent = role;
             document.getElementById("profile-badge-area").textContent = area;
 
             const totalPosts = posterPosts.length;
@@ -1182,16 +1196,17 @@ Hiện hồ sơ này đang có ${totalPosts} tin đăng công khai trên hệ th
 
         function renderProfileInfo(basePost, posterPosts) {
             const posterName = buildPoster(basePost);
+            const role = getPosterSub(basePost);
             const phone = formatDisplayPhone(basePost.contactPhone || basePost.phone || "");
             const email = basePost.contactEmail || basePost.email || "Đang cập nhật";
-            const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "Đang cập nhật";
+            const area = basePost.serviceArea || buildLocation(basePost) || basePost.city || "Đang cập nhật";
             const specialty = basePost.serviceSpecialty || basePost.specialty || basePost.propertyType || basePost.serviceType || "Đang cập nhật";
             const address = buildFullAddress(basePost) || "Đang cập nhật";
 
             document.getElementById("profile-about").textContent = buildProfileAbout(basePost, posterPosts);
 
             document.getElementById("info-display-name").textContent = posterName;
-            document.getElementById("info-role").textContent = "Cá nhân";
+            document.getElementById("info-role").textContent = role;
             document.getElementById("info-phone").textContent = phone;
             document.getElementById("info-email").textContent = email;
             document.getElementById("info-brand").textContent = "Không áp dụng";
