@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chi tiết tin đăng - ToamViet.com.vn</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../assets/css/main.css" />
@@ -31,7 +35,7 @@
         }
 
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Roboto", sans-serif;
             background: var(--soft-bg);
             color: var(--text-main);
         }
@@ -844,8 +848,8 @@
     </style>
 </head>
 <body>
-    <div id="site-header"></div>
-    <div id="site-mobile-menu"></div>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
 
     <main class="container-custom py-6 md:py-8">
         <div class="mb-5 text-sm text-slate-500 leading-7">
@@ -1035,18 +1039,29 @@
         </div>
     </main>
 
-    <div id="site-footer"></div>
+    <div id="siteFooter"></div>
 
-    <button id="goToTop" onclick="safeScrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+    <button
+        id="goToTop"
+        onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+    >
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
-    <div class="zalo-chat-btn wiggle" onclick="safeToggleForm()">
+    <div
+        class="zalo-chat-btn wiggle"
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+    >
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="safeToggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span
+                onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+                style="cursor:pointer; font-size: 20px;"
+            >&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
@@ -1065,6 +1080,7 @@
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
         const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+
         let currentPhoneRaw = "";
         let currentPhoneMasked = "";
         let currentPhoneRevealed = false;
@@ -1096,24 +1112,6 @@
                 .replace(/[^a-z0-9\s-]/g, "")
                 .replace(/\s+/g, "-")
                 .replace(/-+/g, "-");
-        }
-
-        function safeScrollToTop() {
-            if (typeof window.scrollToTop === "function") {
-                window.scrollToTop();
-            } else {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-        }
-
-        function safeToggleForm() {
-            if (typeof window.toggleForm === "function") {
-                window.toggleForm();
-            } else {
-                const chatForm = document.getElementById("chatForm");
-                if (!chatForm) return;
-                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
-            }
         }
 
         function sendToZalo() {
@@ -2020,6 +2018,25 @@
             document.title = "Không tìm thấy tin đăng - ToamViet.com.vn";
         }
 
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
         function initPage() {
             updateFavoriteCount();
 
@@ -2044,7 +2061,12 @@
         }
 
         window.changeMainImage = changeMainImage;
-        window.addEventListener("load", initPage);
+        window.sendToZalo = sendToZalo;
+
+        window.addEventListener("load", async function () {
+            await initSharedComponents();
+            initPage();
+        });
     </script>
 
     <script src="../assets/js/main.js"></script>
