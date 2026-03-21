@@ -585,9 +585,10 @@
                             <option value="">Loại hình thi công</option>
                             <option value="Xây nhà trọn gói">Xây nhà trọn gói</option>
                             <option value="Thi công phần thô">Thi công phần thô</option>
-                            <option value="Sửa chữa / Cải tạo">Sửa chữa / Cải tạo</option>
                             <option value="Thiết kế kiến trúc">Thiết kế kiến trúc</option>
+                            <option value="Sửa chữa / Cải tạo">Sửa chữa / Cải tạo</option>
                             <option value="Nội thất / Hoàn thiện">Nội thất / Hoàn thiện</option>
+                            <option value="Vật liệu xây dựng">Vật liệu xây dựng</option>
                         </select>
                     </div>
 
@@ -624,8 +625,8 @@
             <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_320px] gap-6 xl:gap-8">
                 <section class="space-y-6">
                     <div class="bg-white rounded-2xl border border-gray-200 p-5">
-                        <h1 class="section-title">Dịch vụ xây dựng & sửa chữa tại Việt Nam</h1>
-                        <p class="text-gray-500 text-sm mt-1">
+                        <h1 id="pageTitle" class="section-title">Dịch vụ xây dựng & sửa chữa tại Việt Nam</h1>
+                        <p id="pageIntro" class="text-gray-500 text-sm mt-1">
                             Hiện có <span id="listing-count" class="font-bold text-gray-700">0</span> dịch vụ đang hiển thị
                         </p>
                     </div>
@@ -697,6 +698,46 @@
     <script>
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
         const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
+
+        const CONSTRUCTION_CATEGORY_MAP = {
+            "xay-nha-tron-goi": "Xây nhà trọn gói",
+            "thi-cong-phan-tho": "Thi công phần thô",
+            "thiet-ke-kien-truc": "Thiết kế kiến trúc",
+            "sua-chua-cai-tao": "Sửa chữa / Cải tạo",
+            "noi-that-hoan-thien": "Nội thất / Hoàn thiện",
+            "vat-lieu-xay-dung": "Vật liệu xây dựng"
+        };
+
+        const CATEGORY_PAGE_COPY = {
+            "xay-nha-tron-goi": {
+                title: "Dịch vụ xây nhà trọn gói",
+                intro: "Hiện có <span id=\"listing-count\" class=\"font-bold text-gray-700\">0</span> đơn vị xây nhà trọn gói đang hiển thị"
+            },
+            "thi-cong-phan-tho": {
+                title: "Dịch vụ thi công phần thô",
+                intro: "Hiện có <span id=\"listing-count\" class=\"font-bold text-gray-700\">0</span> đơn vị thi công phần thô đang hiển thị"
+            },
+            "thiet-ke-kien-truc": {
+                title: "Dịch vụ thiết kế kiến trúc",
+                intro: "Hiện có <span id=\"listing-count\" class=\"font-bold text-gray-700\">0</span> đơn vị thiết kế kiến trúc đang hiển thị"
+            },
+            "sua-chua-cai-tao": {
+                title: "Dịch vụ sửa chữa cải tạo",
+                intro: "Hiện có <span id=\"listing-count\" class=\"font-bold text-gray-700\">0</span> đơn vị sửa chữa cải tạo đang hiển thị"
+            },
+            "noi-that-hoan-thien": {
+                title: "Dịch vụ nội thất hoàn thiện",
+                intro: "Hiện có <span id=\"listing-count\" class=\"font-bold text-gray-700\">0</span> đơn vị nội thất hoàn thiện đang hiển thị"
+            },
+            "vat-lieu-xay-dung": {
+                title: "Vật liệu xây dựng",
+                intro: "Hiện có <span id=\"listing-count\" class=\"font-bold text-gray-700\">0</span> đơn vị vật liệu xây dựng đang hiển thị"
+            },
+            "default": {
+                title: "Dịch vụ xây dựng & sửa chữa tại Việt Nam",
+                intro: "Hiện có <span id=\"listing-count\" class=\"font-bold text-gray-700\">0</span> dịch vụ đang hiển thị"
+            }
+        };
 
         const fallbackPosts = [
             {
@@ -770,13 +811,38 @@
                 vipLevel: "bac",
                 createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
                 images: [FALLBACK_IMAGE]
+            },
+            {
+                id: "demo-build-4",
+                title: "Cung cấp vật liệu xây dựng hoàn thiện cho nhà phố và biệt thự",
+                flow: "construction",
+                postType: "xaydung",
+                status: "demo",
+                serviceType: "Vật liệu xây dựng",
+                servicePrice: "Liên hệ báo giá",
+                serviceExp: "Kho hàng sẵn, giao nhanh",
+                serviceArea: "Hà Nội, Hưng Yên",
+                serviceBrand: "Kho VLXD An Gia",
+                serviceSpecialty: "Gạch, đá, sơn, thiết bị hoàn thiện",
+                city: "Hà Nội",
+                ward: "Nam Từ Liêm",
+                description: "Cung cấp vật liệu xây dựng và vật tư hoàn thiện cho nhà dân dụng, biệt thự, công trình cải tạo với chính sách giá linh hoạt.",
+                contactName: "Kho VLXD An Gia",
+                roleLabel: "Doanh nghiệp cung ứng vật liệu",
+                contactPhone: "0911222333",
+                contactProfileUrl: "../pages/chi-tiet-doanh-nghiep.html",
+                profileType: "doanhnghiep",
+                vipLevel: "dong",
+                createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
+                images: [FALLBACK_IMAGE]
             }
         ];
 
         const listingContainer = document.getElementById("listing-container");
-        const listingCount = document.getElementById("listing-count");
         const hotAreas = document.getElementById("hot-areas");
         const dataNote = document.getElementById("data-note");
+        const pageTitle = document.getElementById("pageTitle");
+        const pageIntro = document.getElementById("pageIntro");
 
         const keywordFilter = document.getElementById("keywordFilter");
         const serviceTypeFilter = document.getElementById("serviceTypeFilter");
@@ -831,6 +897,29 @@
                 .replace(/[^a-z0-9\s-]/g, "")
                 .replace(/\s+/g, "-")
                 .replace(/-+/g, "-");
+        }
+
+        function getUrlCategory() {
+            const params = new URLSearchParams(window.location.search);
+            return (params.get("category") || "").trim();
+        }
+
+        function applyCategoryFromUrlToFilter() {
+            const category = getUrlCategory();
+            if (!category) return;
+
+            const mappedServiceType = CONSTRUCTION_CATEGORY_MAP[category];
+            if (!mappedServiceType) return;
+
+            serviceTypeFilter.value = mappedServiceType;
+        }
+
+        function updatePageHeadingByCategory() {
+            const category = getUrlCategory();
+            const copy = CATEGORY_PAGE_COPY[category] || CATEGORY_PAGE_COPY.default;
+
+            pageTitle.textContent = copy.title;
+            pageIntro.innerHTML = copy.intro;
         }
 
         function safeScrollToTop() {
@@ -1331,7 +1420,8 @@
             fillCityFilter(posts);
 
             const filteredPosts = applyFilters(posts);
-            listingCount.textContent = filteredPosts.length;
+            const listingCountEl = document.getElementById("listing-count");
+            if (listingCountEl) listingCountEl.textContent = filteredPosts.length;
 
             renderHotAreas(filteredPosts.length ? filteredPosts : posts);
 
@@ -1377,6 +1467,9 @@
 
         window.addEventListener("load", async function () {
             await initSharedComponents();
+
+            applyCategoryFromUrlToFilter();
+            updatePageHeadingByCategory();
 
             if (typeof renderSeoContent === "function") {
                 renderSeoContent("seoContent", "construction");
