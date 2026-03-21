@@ -1183,6 +1183,21 @@
             return found ? found.propertyType : "";
         }
 
+        function getProjectTypeNameFromSlug(slug) {
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === slug;
+            });
+            return found ? found.name : "";
+        }
+
+        function getProjectTypeSlugFromValue(value) {
+            const normalized = normalizeText(value);
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === value || normalizeText(item.name) === normalized;
+            });
+            return found ? found.slug : "";
+        }
+
         function renderProjectTypeOptions() {
             projectTypeField.innerHTML =
                 '<option value="">Chọn loại dự án</option>' +
@@ -1859,7 +1874,7 @@
                 return `
                     <div class="suggest-item" data-project-id="${item.id}">
                         <div class="suggest-name">${item.name}</div>
-                        <div class="suggest-meta">${item.city || "Chưa có tỉnh/thành"} • ${item.typeName || item.type || "Chưa phân loại"} • ${approved} đã duyệt / ${pending} chờ duyệt</div>
+                        <div class="suggest-meta">${item.city || "Chưa có tỉnh/thành"} • ${item.typeName || getProjectTypeNameFromSlug(item.type) || item.type || "Chưa phân loại"} • ${approved} đã duyệt / ${pending} chờ duyệt</div>
                     </div>
                 `;
             }).join("");
@@ -1878,7 +1893,10 @@
                         projectSearch.value = project.name;
                         newProjectName.value = "";
                         if (project.developer) projectDeveloper.value = project.developer;
-                        if (project.type) projectTypeField.value = project.type;
+
+                        const projectTypeSlug = getProjectTypeSlugFromValue(project.type);
+                        if (projectTypeSlug) projectTypeField.value = projectTypeSlug;
+
                         projectSuggestList.style.display = "none";
                         updateSelectedProjectBadge();
                         updatePreview();
@@ -1920,13 +1938,14 @@
             }
 
             if (selectedProject) {
+                const selectedTypeSlug = getProjectTypeSlugFromValue(selectedProject.type);
                 return {
                     enabled: true,
                     projectId: selectedProject.id,
                     projectName: selectedProject.name,
                     projectSlug: selectedProject.slug,
-                    projectType: selectedProject.type || "",
-                    projectTypeName: selectedProject.typeName || "",
+                    projectType: selectedTypeSlug || selectedProject.type || "",
+                    projectTypeName: selectedProject.typeName || getProjectTypeNameFromSlug(selectedTypeSlug || selectedProject.type) || "",
                     projectDeveloper: selectedProject.developer || "",
                     isNewProject: false
                 };
@@ -1956,8 +1975,11 @@
 
             oldProjects.forEach(function (project) {
                 if (!project || !project.slug) return;
+                const projectTypeSlug = getProjectTypeSlugFromValue(project.type);
                 map.set(project.slug, {
                     ...project,
+                    type: projectTypeSlug || project.type || "",
+                    typeName: project.typeName || getProjectTypeNameFromSlug(projectTypeSlug || project.type) || "",
                     postCount: 0,
                     pendingCount: 0,
                     rejectedCount: 0,
@@ -1994,7 +2016,7 @@
                 existing.ward = existing.ward || post.ward || "";
                 existing.addressDetail = existing.addressDetail || post.addressDetail || "";
                 existing.type = existing.type || post.projectType || "";
-                existing.typeName = existing.typeName || post.projectTypeName || "";
+                existing.typeName = existing.typeName || post.projectTypeName || getProjectTypeNameFromSlug(existing.type) || "";
                 existing.developer = existing.developer || post.projectDeveloper || "";
                 existing.totalPosts = (existing.totalPosts || 0) + 1;
                 existing.lastPostAt = post.createdAt || post.updatedAt || existing.lastPostAt || new Date().toISOString();
@@ -2404,8 +2426,10 @@
                     ...baseData,
                     categorySlug: serviceTypeSlug,
                     categoryName: serviceTypeObj ? serviceTypeObj.name : "",
+
                     serviceType: serviceTypeObj ? serviceTypeObj.name : "",
                     serviceTypeSlug: serviceTypeSlug,
+
                     servicePrice: servicePriceRaw,
                     servicePriceData: parseVietnamesePrice(servicePriceRaw, "xaydung"),
                     serviceExp: document.getElementById("serviceExp")
@@ -2420,6 +2444,17 @@
                     serviceSpecialty: document.getElementById("serviceSpecialty")
                         ? document.getElementById("serviceSpecialty").value
                         : "",
+
+                    propertyCategorySlug: "",
+                    propertyCategoryName: "",
+                    propertyType: "",
+                    propertyPrice: "",
+                    propertyPriceData: null,
+                    propertyArea: "",
+                    propertyAreaNumber: null,
+                    propertyLegal: "",
+                    propertyDirection: "",
+                    propertyBeds: "",
 
                     projectEnabled: false,
                     projectId: "",
@@ -2454,6 +2489,10 @@
 
                 categorySlug: propertyCategorySlug,
                 categoryName: propertyCategoryObj ? propertyCategoryObj.name : "",
+
+                propertyCategorySlug: propertyCategorySlug,
+                propertyCategoryName: propertyCategoryObj ? propertyCategoryObj.name : "",
+
                 propertyType: propertyCategoryObj ? propertyCategoryObj.propertyType : "",
 
                 propertyPrice: propertyPriceRaw,
@@ -2473,6 +2512,15 @@
                 propertyBeds: document.getElementById("propertyBeds")
                     ? document.getElementById("propertyBeds").value
                     : "",
+
+                serviceType: "",
+                serviceTypeSlug: "",
+                servicePrice: "",
+                servicePriceData: null,
+                serviceExp: "",
+                serviceArea: "",
+                serviceBrand: "",
+                serviceSpecialty: "",
 
                 projectEnabled: projectData.enabled,
                 projectId: projectData.projectId,
@@ -2601,9 +2649,12 @@
             resetProjectInputs();
 
             currentPostType = "ban";
+            currentVipLevel = "thuong";
+            currentProfile = "canhan";
+
+            setFlow("real_estate");
             setVipLevel("thuong");
             setProfile("canhan");
-            setFlow("real_estate");
 
             document.querySelectorAll(".subtab-btn").forEach(function (btn) {
                 btn.classList.toggle("active", btn.getAttribute("data-post-type") === "ban");
@@ -2611,8 +2662,8 @@
 
             renderDynamicFields();
             fillUserInfo();
-            renderCityOptions();
             renderProjectTypeOptions();
+            renderCityOptions();
             updateWards();
             updatePreview();
         }
