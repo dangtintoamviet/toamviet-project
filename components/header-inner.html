@@ -116,9 +116,25 @@
                 </a>
 
                 <!-- XÂY DỰNG -->
-                <a href="../pages/xay-dung.html" class="nav-link" data-nav-key="xay-dung">
-                    Xây dựng
-                </a>
+                <div class="dropdown tv-nav-dropdown">
+                    <div class="tv-nav-dropdown-trigger">
+                        <a href="../pages/xay-dung.html" class="nav-link" data-nav-key="xay-dung">
+                            Xây dựng
+                        </a>
+                        <button type="button" class="tv-nav-dropdown-toggle" aria-label="Mở danh mục Xây dựng">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <div class="dropdown-menu tv-dropdown-menu">
+                        <a href="../pages/xay-dung.html?category=xay-nha-tron-goi" class="dropdown-item">Xây nhà trọn gói</a>
+                        <a href="../pages/xay-dung.html?category=thi-cong-phan-tho" class="dropdown-item">Thi công phần thô</a>
+                        <a href="../pages/xay-dung.html?category=thiet-ke-kien-truc" class="dropdown-item">Thiết kế kiến trúc</a>
+                        <a href="../pages/xay-dung.html?category=sua-chua-cai-tao" class="dropdown-item">Sửa chữa cải tạo</a>
+                        <a href="../pages/xay-dung.html?category=noi-that-hoan-thien" class="dropdown-item">Nội thất hoàn thiện</a>
+                        <a href="../pages/xay-dung.html?category=vat-lieu-xay-dung" class="dropdown-item">Vật liệu xây dựng</a>
+                    </div>
+                </div>
 
                 <!-- DANH BẠ -->
                 <div class="dropdown">
@@ -321,11 +337,12 @@
             try {
                 const saleFavorites = JSON.parse(localStorage.getItem("favoriteSalePosts") || "[]");
                 const rentalFavorites = JSON.parse(localStorage.getItem("favoriteRentalPosts") || "[]");
+                const constructionFavorites = JSON.parse(localStorage.getItem("favoriteConstructionPosts") || "[]");
                 const badge = document.getElementById("headerFavoriteCount");
 
                 if (!badge) return;
 
-                const total = saleFavorites.length + rentalFavorites.length;
+                const total = saleFavorites.length + rentalFavorites.length + constructionFavorites.length;
                 badge.textContent = total;
 
                 if (total <= 0) {
@@ -399,7 +416,11 @@
 
         function bindStorageSync() {
             window.addEventListener("storage", function (event) {
-                if (event.key === "favoriteSalePosts" || event.key === "favoriteRentalPosts") {
+                if (
+                    event.key === "favoriteSalePosts" ||
+                    event.key === "favoriteRentalPosts" ||
+                    event.key === "favoriteConstructionPosts"
+                ) {
                     updateFavoriteCount();
                 }
             });
