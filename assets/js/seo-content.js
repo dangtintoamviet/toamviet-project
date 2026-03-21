@@ -49,7 +49,6 @@ const SEO_CONTENT = {
 };
 
 const SEO_CATEGORY_CONTENT = {
-    // NHA DAT BAN
     "ban-can-ho-chung-cu": `
         <p>Danh mục bán căn hộ chung cư trên ToamViet là nơi tổng hợp các tin đăng mua bán căn hộ tại nhiều tỉnh thành, khu đô thị và dự án lớn trên toàn quốc. Người dùng có thể dễ dàng theo dõi giá bán, diện tích, vị trí và các đặc điểm nổi bật của từng sản phẩm.</p>
         <p>Đây là nhóm nội dung rất phù hợp để phát triển SEO theo từ khóa mua bán căn hộ, chung cư cao cấp, căn hộ trung cấp và các nhu cầu ở thực lẫn đầu tư dài hạn.</p>
@@ -99,7 +98,6 @@ const SEO_CATEGORY_CONTENT = {
         <p>Phần nội dung SEO giúp tăng khả năng hiển thị cho các truy vấn ngách và các loại hình bất động sản đặc thù.</p>
     `,
 
-    // NHA DAT CHO THUE
     "cho-thue-can-ho-chung-cu": `
         <p>Danh mục cho thuê căn hộ chung cư là nơi tổng hợp các sản phẩm thuê ở thực, thuê ngắn hạn và thuê dài hạn tại nhiều dự án, khu đô thị và thành phố lớn. Người dùng có thể tra cứu nhanh theo khu vực, ngân sách và diện tích.</p>
         <p>Đây là nhóm nội dung SEO rất phù hợp với các từ khóa thuê căn hộ, chung cư cho thuê và thuê ở theo khu vực.</p>
@@ -145,7 +143,6 @@ const SEO_CATEGORY_CONTENT = {
         <p>Phần nội dung SEO hỗ trợ tăng độ phủ từ khóa ngách và hoàn thiện cấu trúc danh mục của toàn hệ thống.</p>
     `,
 
-    // DU AN
     "can-ho-chung-cu": `
         <p>Danh mục dự án căn hộ chung cư tổng hợp các dự án nhà ở chung cư đang được quan tâm trên thị trường. Người dùng có thể tra cứu theo khu vực, quy mô, mức độ quan tâm và dữ liệu liên quan đến từng dự án.</p>
         <p>Đây là nhóm nội dung rất quan trọng để phát triển SEO theo các từ khóa dự án căn hộ, chung cư mới và dự án nhà ở tại từng địa phương.</p>
@@ -195,7 +192,6 @@ const SEO_CATEGORY_CONTENT = {
         <p>Nội dung SEO của nhóm này hỗ trợ cho các truy vấn ngách và các loại hình dự án đặc thù trên thị trường.</p>
     `,
 
-    // TIN TUC
     "tin-thi-truong": `
         <p>Danh mục tin thị trường bất động sản cập nhật những chuyển động mới của cung cầu, giá bán, thanh khoản và tâm lý đầu tư tại nhiều khu vực. Đây là nhóm nội dung có giá trị lớn với người quan tâm xu hướng thị trường.</p>
         <p>Về SEO, đây là cụm bài viết rất phù hợp cho các từ khóa tin tức thị trường, diễn biến giá và cập nhật bất động sản mới nhất.</p>
@@ -321,7 +317,7 @@ function renderSeoContent(containerId = "seoContent", pageKey = "") {
             return;
         }
 
-        toggleBtn.style.display = "inline-flex";
+        toggleBtn.style.display = "flex";
     });
 
     toggleBtn.addEventListener("click", () => {
