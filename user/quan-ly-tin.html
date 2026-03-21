@@ -303,6 +303,7 @@
         .btn-soft {
             background: #eef2ff;
             color: #334155;
+            text-decoration: none;
         }
 
         .btn-soft:hover {
@@ -1164,13 +1165,22 @@
         function updateProjectCountsFromPosts(posts) {
             const projects = JSON.parse(localStorage.getItem("projects") || "[]");
             const nextProjects = projects.map(project => {
-                const count = posts.filter(post => post.projectSlug && project.slug === post.projectSlug).length;
+                const relatedPosts = posts.filter(post => post.projectSlug && project.slug === post.projectSlug);
+                const count = relatedPosts.length;
+
                 return {
                     ...project,
                     postCount: count,
-                    lastPostAt: posts
-                        .filter(post => post.projectSlug && project.slug === post.projectSlug)
-                        .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))[0]?.createdAt || project.lastPostAt || project.createdAt || new Date().toISOString()
+                    pendingCount: relatedPosts.filter(p => (p.status || "pending") === "pending").length,
+                    rejectedCount: relatedPosts.filter(p => p.status === "rejected").length,
+                    hiddenCount: relatedPosts.filter(p => p.status === "hidden").length,
+                    totalPosts: count,
+                    lastPostAt: relatedPosts
+                        .sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0))[0]?.updatedAt ||
+                        relatedPosts[0]?.createdAt ||
+                        project.lastPostAt ||
+                        project.createdAt ||
+                        new Date().toISOString()
                 };
             });
             localStorage.setItem("projects", JSON.stringify(nextProjects));
@@ -1201,7 +1211,7 @@
                 return sameEmail || samePhone;
             });
 
-            myPosts.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            myPosts.sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
         }
 
         function updateStats() {
@@ -1233,7 +1243,8 @@
                     post.projectName,
                     post.propertyType,
                     post.serviceType,
-                    post.description
+                    post.description,
+                    post.contactName
                 ].filter(Boolean).join(" "));
 
                 const matchKeyword = !keyword || searchable.includes(keyword);
@@ -1344,6 +1355,10 @@
                     </div>
 
                     <div class="post-actions">
+                        <a href="../user/sua-tin.html?id=${encodeURIComponent(post.id)}" class="btn-soft inline-flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square"></i>Sửa tin
+                        </a>
+
                         <button class="btn-soft btn-view" data-id="${post.id}" type="button">
                             <i class="fa-regular fa-eye mr-2"></i>Xem nhanh
                         </button>
@@ -1554,7 +1569,7 @@
                 return;
             }
 
-            const fullMsg = "Chào admin Tổ ấm Việt, tôi là " + name + ". " + msg;
+            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
