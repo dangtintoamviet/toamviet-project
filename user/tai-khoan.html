@@ -705,7 +705,7 @@
                             <div class="button-row" style="margin-top:0;">
                                 <a href="../user/dang-tin.html" class="btn-primary" style="text-decoration:none;">Đăng tin mới</a>
                                 <a href="../user/quan-ly-tin.html" class="btn-soft" style="text-decoration:none;">Quản lý tin</a>
-                                <a href="../user/tai-khoan.html" class="btn-soft" style="text-decoration:none;">Tài khoản</a>
+                                <a href="../index.html" class="btn-soft" style="text-decoration:none;">Về trang chủ</a>
                             </div>
                         </div>
                     </aside>
@@ -740,10 +740,15 @@
     <script src="../assets/js/main.js"></script>
 
     <script>
-        const currentUser =
-            JSON.parse(localStorage.getItem("currentUser")) ||
-            JSON.parse(localStorage.getItem("registeredUser")) ||
-            null;
+        function safeParseLocalStorage(key) {
+            try {
+                const raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : null;
+            } catch (error) {
+                console.warn("Lỗi parse localStorage tại key:", key, error);
+                return null;
+            }
+        }
 
         function normalizeText(str) {
             return (str || "")
@@ -760,7 +765,9 @@
                 .split(" ")
                 .filter(Boolean)
                 .slice(0, 2)
-                .map(w => w[0].toUpperCase())
+                .map(function (w) {
+                    return w[0].toUpperCase();
+                })
                 .join("") || "TV";
         }
 
@@ -768,28 +775,40 @@
             return (phone || "").replace(/[^\d]/g, "");
         }
 
+        function getCurrentUser() {
+            return safeParseLocalStorage("currentUser") || safeParseLocalStorage("registeredUser") || null;
+        }
+
         function showStatus(targetId, type, message) {
             const box = document.getElementById(targetId);
+            if (!box) return;
             box.className = "status-box " + type;
             box.textContent = message;
         }
 
         function hideStatus(targetId) {
             const box = document.getElementById(targetId);
+            if (!box) return;
             box.className = "status-box";
             box.textContent = "";
         }
 
         function getAllPosts() {
-            return JSON.parse(localStorage.getItem("allPosts") || "[]");
+            const posts = safeParseLocalStorage("allPosts");
+            return Array.isArray(posts) ? posts : [];
         }
 
         function saveAllPosts(posts) {
-            localStorage.setItem("allPosts", JSON.stringify(posts));
+            localStorage.setItem("allPosts", JSON.stringify(Array.isArray(posts) ? posts : []));
         }
 
         function getProjects() {
-            return JSON.parse(localStorage.getItem("projects") || "[]");
+            const projects = safeParseLocalStorage("projects");
+            return Array.isArray(projects) ? projects : [];
+        }
+
+        function saveProjects(projects) {
+            localStorage.setItem("projects", JSON.stringify(Array.isArray(projects) ? projects : []));
         }
 
         function saveCurrentUser(user) {
@@ -797,23 +816,118 @@
             localStorage.setItem("registeredUser", JSON.stringify(user));
         }
 
-        function getMyPosts() {
+        function getMyPosts(user) {
             const posts = getAllPosts();
 
-            if (!currentUser) return [];
+            if (!user) return [];
 
-            return posts.filter(post => {
-                if (currentUser.id && post.userId) {
-                    return post.userId === currentUser.id;
+            return posts.filter(function (post) {
+                if (user.id && post.userId) {
+                    return post.userId === user.id;
                 }
 
-                const sameEmail = currentUser.email && post.email && normalizeText(currentUser.email) === normalizeText(post.email);
-                const samePhone = currentUser.phone && post.phone && normalizeText(currentUser.phone) === normalizeText(post.phone);
-                return sameEmail || samePhone;
+                const sameEmail = user.email && post.email && normalizeText(user.email) === normalizeText(post.email);
+                const samePhone = user.phone && post.phone && normalizeText(user.phone) === normalizeText(post.phone);
+                return !!(sameEmail || samePhone);
             });
         }
 
+        function rebuildCompatibilityStores(posts) {
+            const allPosts = Array.isArray(posts) ? posts : [];
+            const propertyPosts = allPosts.filter(function (item) {
+                return item.flow === "real_estate";
+            });
+            const salePosts = propertyPosts.filter(function (item) {
+                return item.postType === "ban";
+            });
+            const rentalPosts = propertyPosts.filter(function (item) {
+                return item.postType === "thue";
+            });
+            const constructionPosts = allPosts.filter(function (item) {
+                return item.flow === "construction";
+            });
+
+            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
+            localStorage.setItem("salePosts", JSON.stringify(salePosts));
+            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
+            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+        }
+
+        function syncProjectStoreFromPosts(allPosts) {
+            const posts = Array.isArray(allPosts) ? allPosts : [];
+            const oldProjects = getProjects();
+            const map = new Map();
+
+            oldProjects.forEach(function (project) {
+                if (!project || !project.slug) return;
+                map.set(project.slug, {
+                    ...project,
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0
+                });
+            });
+
+            posts.forEach(function (post) {
+                if (!post || !post.projectSlug || !post.projectName) return;
+
+                const slug = post.projectSlug;
+                const existing = map.get(slug) || {
+                    id: post.projectId || ("project_" + slug),
+                    name: post.projectName,
+                    slug: slug,
+                    city: post.city || "",
+                    ward: post.ward || "",
+                    addressDetail: post.addressDetail || "",
+                    type: post.projectType || "",
+                    typeName: post.projectTypeName || "",
+                    developer: post.projectDeveloper || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0,
+                    createdAt: new Date().toISOString(),
+                    lastPostAt: post.createdAt || new Date().toISOString()
+                };
+
+                existing.name = existing.name || post.projectName;
+                existing.city = existing.city || post.city || "";
+                existing.ward = existing.ward || post.ward || "";
+                existing.addressDetail = existing.addressDetail || post.addressDetail || "";
+                existing.type = existing.type || post.projectType || "";
+                existing.typeName = existing.typeName || post.projectTypeName || "";
+                existing.developer = existing.developer || post.projectDeveloper || "";
+                existing.totalPosts = (existing.totalPosts || 0) + 1;
+                existing.lastPostAt = post.updatedAt || post.createdAt || existing.lastPostAt || new Date().toISOString();
+
+                const status = post.status || "pending";
+                if (status === "approved") {
+                    existing.postCount = (existing.postCount || 0) + 1;
+                } else if (status === "pending") {
+                    existing.pendingCount = (existing.pendingCount || 0) + 1;
+                } else if (status === "rejected") {
+                    existing.rejectedCount = (existing.rejectedCount || 0) + 1;
+                } else if (status === "hidden") {
+                    existing.hiddenCount = (existing.hiddenCount || 0) + 1;
+                }
+
+                map.set(slug, existing);
+            });
+
+            const nextProjects = Array.from(map.values()).sort(function (a, b) {
+                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
+            });
+
+            saveProjects(nextProjects);
+            return nextProjects;
+        }
+
         function fillHeaderProfile() {
+            const currentUser = getCurrentUser();
+
             const avatar = document.getElementById("profileAvatar");
             const name = document.getElementById("profileName");
             const role = document.getElementById("profileRole");
@@ -843,6 +957,7 @@
         }
 
         function fillProfileForm() {
+            const currentUser = getCurrentUser();
             if (!currentUser) return;
 
             document.getElementById("fullName").value = currentUser.fullName || "";
@@ -855,6 +970,8 @@
         }
 
         function updateQuickInfo() {
+            const currentUser = getCurrentUser();
+
             if (!currentUser) {
                 document.getElementById("quickDisplayName").textContent = "---";
                 document.getElementById("quickContact").textContent = "---";
@@ -872,14 +989,23 @@
         }
 
         function updateStats() {
-            const myPosts = getMyPosts();
+            const currentUser = getCurrentUser();
+            const myPosts = getMyPosts(currentUser);
             const totalPosts = myPosts.length;
-            const projectPosts = myPosts.filter(post => post.projectSlug || post.projectName).length;
-            const pendingPosts = myPosts.filter(post => (post.status || "pending") === "pending").length;
+            const projectPosts = myPosts.filter(function (post) {
+                return post.projectSlug || post.projectName;
+            }).length;
+            const pendingPosts = myPosts.filter(function (post) {
+                return (post.status || "pending") === "pending";
+            }).length;
             const projectSlugs = new Set(
                 myPosts
-                    .filter(post => post.projectSlug || post.projectName)
-                    .map(post => post.projectSlug || normalizeText(post.projectName))
+                    .filter(function (post) {
+                        return post.projectSlug || post.projectName;
+                    })
+                    .map(function (post) {
+                        return post.projectSlug || normalizeText(post.projectName);
+                    })
             );
 
             document.getElementById("statTotalPosts").textContent = totalPosts;
@@ -889,23 +1015,31 @@
         }
 
         function renderProjectList() {
-            const myPosts = getMyPosts();
+            const currentUser = getCurrentUser();
+            const myPosts = getMyPosts(currentUser);
             const projects = getProjects();
             const projectList = document.getElementById("projectList");
             const projectEmpty = document.getElementById("projectEmpty");
 
             const map = new Map();
 
-            myPosts.forEach(post => {
+            myPosts.forEach(function (post) {
                 const slug = post.projectSlug || normalizeText(post.projectName || "");
                 if (!slug) return;
 
                 if (!map.has(slug)) {
-                    const matchedProject = projects.find(p => p.slug === slug) || null;
+                    let matchedProject = null;
+                    for (let i = 0; i < projects.length; i += 1) {
+                        if (projects[i] && projects[i].slug === slug) {
+                            matchedProject = projects[i];
+                            break;
+                        }
+                    }
+
                     map.set(slug, {
-                        name: post.projectName || matchedProject?.name || "Dự án chưa rõ tên",
-                        city: post.city || matchedProject?.city || "",
-                        type: post.projectTypeName || matchedProject?.type || post.propertyType || "",
+                        name: post.projectName || (matchedProject ? matchedProject.name : "") || "Dự án chưa rõ tên",
+                        city: post.city || (matchedProject ? matchedProject.city : "") || "",
+                        type: post.projectTypeName || (matchedProject ? (matchedProject.typeName || matchedProject.type) : "") || post.propertyType || "",
                         count: 0
                     });
                 }
@@ -913,7 +1047,9 @@
                 map.get(slug).count += 1;
             });
 
-            const items = Array.from(map.values()).sort((a, b) => b.count - a.count);
+            const items = Array.from(map.values()).sort(function (a, b) {
+                return b.count - a.count;
+            });
 
             if (!items.length) {
                 projectList.innerHTML = "";
@@ -922,17 +1058,22 @@
             }
 
             projectEmpty.style.display = "none";
-            projectList.innerHTML = items.map(item => `
-                <div class="mini-item">
-                    <div class="mini-item-title">${item.name}</div>
-                    <div class="mini-item-meta">${item.city || "Chưa rõ khu vực"} • ${item.type || "Chưa phân loại"} • ${item.count} tin</div>
-                </div>
-            `).join("");
+            projectList.innerHTML = items.map(function (item) {
+                return `
+                    <div class="mini-item">
+                        <div class="mini-item-title">${item.name}</div>
+                        <div class="mini-item-meta">${item.city || "Chưa rõ khu vực"} • ${item.type || "Chưa phân loại"} • ${item.count} tin</div>
+                    </div>
+                `;
+            }).join("");
         }
 
         function renderRecentPosts() {
-            const myPosts = getMyPosts()
-                .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+            const currentUser = getCurrentUser();
+            const myPosts = getMyPosts(currentUser)
+                .sort(function (a, b) {
+                    return new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0);
+                })
                 .slice(0, 3);
 
             const recentPosts = document.getElementById("recentPosts");
@@ -945,32 +1086,47 @@
             }
 
             recentPostsEmpty.style.display = "none";
-            recentPosts.innerHTML = myPosts.map(post => `
-                <div class="mini-item">
-                    <div class="mini-item-title">${post.title || "Chưa có tiêu đề"}</div>
-                    <div class="mini-item-meta">
-                        ${(post.postType === "ban" ? "Tin bán" : post.postType === "thue" ? "Tin cho thuê" : "Xây dựng")}
-                        • ${post.city || "Chưa rõ khu vực"}
-                        • ${(post.status || "pending") === "pending" ? "Chờ duyệt" : (post.status || "pending")}
+            recentPosts.innerHTML = myPosts.map(function (post) {
+                const postTypeLabel = post.postType === "ban"
+                    ? "Tin bán"
+                    : post.postType === "thue"
+                        ? "Tin cho thuê"
+                        : "Xây dựng";
+
+                const statusLabel = (post.status || "pending") === "pending"
+                    ? "Chờ duyệt"
+                    : (post.status || "pending");
+
+                return `
+                    <div class="mini-item">
+                        <div class="mini-item-title">${post.title || "Chưa có tiêu đề"}</div>
+                        <div class="mini-item-meta">
+                            ${postTypeLabel}
+                            • ${post.city || "Chưa rõ khu vực"}
+                            • ${statusLabel}
+                        </div>
                     </div>
-                </div>
-            `).join("");
+                `;
+            }).join("");
         }
 
-        function syncPostsWithNewProfile(userData) {
+        function syncPostsWithNewProfile(oldUser, userData) {
             const posts = getAllPosts();
-            const updatedPosts = posts.map(post => {
+
+            const updatedPosts = posts.map(function (post) {
                 let isMine = false;
 
-                if (currentUser?.id && post.userId) {
-                    isMine = post.userId === currentUser.id;
+                if (oldUser && oldUser.id && post.userId) {
+                    isMine = post.userId === oldUser.id;
                 } else {
-                    const sameEmail = currentUser?.email && post.email && normalizeText(currentUser.email) === normalizeText(post.email);
-                    const samePhone = currentUser?.phone && post.phone && normalizeText(currentUser.phone) === normalizeText(post.phone);
-                    isMine = sameEmail || samePhone;
+                    const sameEmail = oldUser && oldUser.email && post.email && normalizeText(oldUser.email) === normalizeText(post.email);
+                    const samePhone = oldUser && oldUser.phone && post.phone && normalizeText(oldUser.phone) === normalizeText(post.phone);
+                    isMine = !!(sameEmail || samePhone);
                 }
 
                 if (!isMine) return post;
+
+                const nextContactName = userData.brandName || userData.fullName || post.contactName || "";
 
                 return {
                     ...post,
@@ -978,20 +1134,34 @@
                     email: userData.email || post.email || "",
                     phone: userData.phone || post.phone || "",
                     brandName: userData.brandName || "",
-                    contactName: userData.brandName || userData.fullName || post.contactName || "",
+                    contactName: nextContactName,
                     contactPhone: userData.phone || post.contactPhone || "",
+                    contactEmail: userData.email || post.contactEmail || "",
                     accountGroup: userData.accountGroup || post.accountGroup || "",
                     accountGroupLabel: userData.accountGroup === "construction" ? "Xây dựng" : "Bất động sản",
+                    role: userData.role || post.role || "",
                     roleLabel: userData.roleLabel || post.roleLabel || "",
                     updatedAt: new Date().toISOString()
                 };
             });
 
             saveAllPosts(updatedPosts);
+            rebuildCompatibilityStores(updatedPosts);
+            syncProjectStoreFromPosts(updatedPosts);
+
+            if (window.projectService && typeof window.projectService.syncProjectCounts === "function") {
+                try {
+                    window.projectService.syncProjectCounts(updatedPosts);
+                } catch (error) {
+                    console.warn("projectService.syncProjectCounts lỗi:", error);
+                }
+            }
         }
 
         document.getElementById("profileForm").addEventListener("submit", function (e) {
             e.preventDefault();
+
+            const currentUser = getCurrentUser();
 
             if (!currentUser) {
                 showStatus("profileStatus", "error", "Bạn cần đăng nhập trước khi cập nhật hồ sơ.");
@@ -1023,24 +1193,28 @@
                 return;
             }
 
+            const normalizedRole = roleLabel || currentUser.roleLabel || currentUser.role || "";
             const nextUser = {
                 ...currentUser,
-                fullName,
-                email,
-                phone,
-                brandName,
-                accountGroup,
+                fullName: fullName,
+                email: email,
+                phone: phone,
+                brandName: brandName,
+                accountGroup: accountGroup,
                 accountGroupLabel: accountGroup === "construction" ? "Xây dựng" : "Bất động sản",
-                roleLabel: roleLabel || currentUser.roleLabel || currentUser.role || "",
-                bio,
+                role: currentUser.role || "",
+                roleLabel: normalizedRole,
+                bio: bio,
                 updatedAt: new Date().toISOString()
             };
 
             saveCurrentUser(nextUser);
-            syncPostsWithNewProfile(nextUser);
+            syncPostsWithNewProfile(currentUser, nextUser);
 
             showStatus("profileStatus", "success", "Đã cập nhật thông tin tài khoản và đồng bộ lại dữ liệu liên quan.");
-            setTimeout(() => window.location.reload(), 500);
+            setTimeout(function () {
+                window.location.reload();
+            }, 400);
         });
 
         document.getElementById("resetProfileBtn").addEventListener("click", function () {
@@ -1050,6 +1224,8 @@
 
         document.getElementById("passwordForm").addEventListener("submit", function (e) {
             e.preventDefault();
+
+            const currentUser = getCurrentUser();
 
             if (!currentUser) {
                 showStatus("passwordStatus", "error", "Bạn cần đăng nhập trước khi đổi mật khẩu.");
@@ -1138,7 +1314,7 @@
             renderProjectList();
             renderRecentPosts();
 
-            if (!currentUser) {
+            if (!getCurrentUser()) {
                 showStatus("profileStatus", "error", "Bạn chưa đăng nhập. Hãy đăng nhập để quản lý tài khoản.");
             }
         }
