@@ -40,6 +40,12 @@
             margin: 0;
         }
 
+        .container-custom {
+            max-width: 1366px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
         .auth-shell {
             max-width: 1120px;
             margin: 0 auto;
@@ -200,6 +206,10 @@
             line-height: 1.6;
         }
 
+        .type-option.active .type-option-desc {
+            color: #0f766e;
+        }
+
         .input-group {
             margin-bottom: 15px;
         }
@@ -223,6 +233,7 @@
             transform: translateY(-50%);
             color: #94a3b8;
             font-size: 14px;
+            pointer-events: none;
         }
 
         .input-box .toggle-password {
@@ -281,6 +292,7 @@
         .checkbox-wrap input {
             accent-color: var(--vip-color);
             margin-top: 2px;
+            flex-shrink: 0;
         }
 
         .status-box {
@@ -333,6 +345,24 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+
+        .bottom-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 18px;
+            margin-top: 18px;
+            font-size: 13px;
+        }
+
+        .bottom-links a {
+            color: var(--vip-color);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .bottom-links a:hover {
+            text-decoration: underline;
         }
 
         @media (max-width: 991px) {
@@ -416,13 +446,13 @@
                             <div class="section-box">
                                 <div class="section-title">1. Chọn nhóm tài khoản</div>
                                 <div class="type-selector">
-                                    <div class="type-option active" id="group-real-estate" data-group="real_estate">
+                                    <div class="type-option active" id="group-real-estate" data-group="real_estate" role="button" tabindex="0">
                                         <i class="fa-solid fa-house"></i>
                                         <span class="type-option-title">Bất động sản</span>
                                         <span class="type-option-desc">Dành cho đăng tin bán, cho thuê, môi giới, doanh nghiệp BĐS.</span>
                                     </div>
 
-                                    <div class="type-option" id="group-construction" data-group="construction">
+                                    <div class="type-option" id="group-construction" data-group="construction" role="button" tabindex="0">
                                         <i class="fa-solid fa-helmet-safety"></i>
                                         <span class="type-option-title">Xây dựng</span>
                                         <span class="type-option-desc">Dành cho công ty xây dựng, kỹ sư, kiến trúc sư, nhà thầu.</span>
@@ -547,6 +577,15 @@
                             <div id="register-status" class="status-box"></div>
 
                             <button type="submit" class="btn-reg" id="register-submit">Đăng ký thành viên</button>
+
+                            <div class="bottom-links">
+                                <a href="../auth/dang-nhap.html">
+                                    <i class="fa-solid fa-arrow-left mr-1"></i> Quay lại đăng nhập
+                                </a>
+                                <a href="../auth/quen-mat-khau.html">
+                                    <i class="fa-solid fa-key mr-1"></i> Quên mật khẩu
+                                </a>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -609,6 +648,20 @@
         const registerStatus = document.getElementById("register-status");
         const registerSubmit = document.getElementById("register-submit");
 
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function sanitizePhone(phone) {
+            return String(phone || "").replace(/[^\d+]/g, "");
+        }
+
         function populateRoleOptions(groupValue) {
             roleSelect.innerHTML = '<option value="">Chọn vai trò</option>';
             const roles = groupValue === "construction" ? constructionRoles : realEstateRoles;
@@ -646,6 +699,17 @@
 
         function getAccountGroupLabel(groupValue) {
             return groupValue === "construction" ? "Xây dựng" : "Bất động sản";
+        }
+
+        function getProfileType(roleValue, groupValue) {
+            const businessRoles = ["real_estate_company", "construction_company"];
+            const brokerRoles = ["broker"];
+            const contractorRoles = ["engineer_architect"];
+
+            if (businessRoles.includes(roleValue)) return "doanhnghiep";
+            if (groupValue === "construction" && contractorRoles.includes(roleValue)) return "doanhnghiep";
+            if (brokerRoles.includes(roleValue)) return "canhan";
+            return "canhan";
         }
 
         function getRegisteredUsers() {
@@ -703,13 +767,23 @@
             setGroup("construction");
         });
 
+        [groupRealEstate, groupConstruction].forEach(function (item) {
+            item.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setGroup(item.getAttribute("data-group"));
+                }
+            });
+        });
+
         registerForm.addEventListener("submit", function (e) {
             e.preventDefault();
             hideRegisterStatus();
 
             const role = roleSelect.value;
             const fullName = document.getElementById("register-name").value.trim();
-            const phone = document.getElementById("register-phone").value.trim();
+            const rawPhone = document.getElementById("register-phone").value.trim();
+            const phone = sanitizePhone(rawPhone);
             const email = document.getElementById("register-email").value.trim().toLowerCase();
             const brandName = document.getElementById("register-brand").value.trim();
             const serviceArea = document.getElementById("register-area").value.trim();
@@ -750,12 +824,12 @@
 
             const users = getRegisteredUsers();
 
-            if (users.some(function (user) { return user.email === email; })) {
+            if (users.some(function (user) { return normalizeText(user.email) === normalizeText(email); })) {
                 showRegisterStatus("error", "Email này đã được đăng ký trước đó.");
                 return;
             }
 
-            if (users.some(function (user) { return user.phone === phone; })) {
+            if (users.some(function (user) { return sanitizePhone(user.phone) === phone; })) {
                 showRegisterStatus("error", "Số điện thoại này đã được đăng ký trước đó.");
                 return;
             }
@@ -763,21 +837,30 @@
             registerSubmit.disabled = true;
             registerSubmit.textContent = "Đang tạo tài khoản...";
 
+            const roleLabel = getRoleLabel(role);
+            const accountGroupLabel = getAccountGroupLabel(currentGroup);
+            const profileType = getProfileType(role, currentGroup);
+            const displayBrand = brandName || "";
+            const nowIso = new Date().toISOString();
+
             const newUser = {
                 id: "user_" + Date.now(),
                 accountGroup: currentGroup,
-                accountGroupLabel: getAccountGroupLabel(currentGroup),
+                accountGroupLabel: accountGroupLabel,
                 role: role,
-                roleLabel: getRoleLabel(role),
+                roleLabel: roleLabel,
+                profileType: profileType,
                 fullName: fullName,
                 phone: phone,
                 email: email,
-                brandName: brandName,
+                brandName: displayBrand,
                 serviceArea: serviceArea,
                 specialty: specialty,
+                bio: "",
                 password: password,
                 status: "active",
-                createdAt: new Date().toISOString()
+                createdAt: nowIso,
+                updatedAt: nowIso
             };
 
             users.unshift(newUser);
