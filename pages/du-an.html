@@ -445,7 +445,7 @@
 
         .sidebar-news-title {
             font-size: 15px;
-            font-weight: 800;
+            font-weight: 700;
             line-height: 1.6;
             color: #0f172a;
             margin: 0 0 8px;
@@ -1240,6 +1240,7 @@
         const fallbackProjects = [
             {
                 id: "du-an-1",
+                slug: "toamviet-riverside",
                 name: "ToamViet Riverside",
                 type: "Khu đô thị mới",
                 categorySlug: "khu-do-thi-moi",
@@ -1256,6 +1257,7 @@
             },
             {
                 id: "du-an-2",
+                slug: "green-valley-residence",
                 name: "Green Valley Residence",
                 type: "Căn hộ chung cư",
                 categorySlug: "can-ho-chung-cu",
@@ -1272,6 +1274,7 @@
             },
             {
                 id: "du-an-3",
+                slug: "central-park-lao-cai",
                 name: "Central Park Lào Cai",
                 type: "Đất nền",
                 categorySlug: "du-an-khac",
@@ -1288,6 +1291,7 @@
             },
             {
                 id: "du-an-4",
+                slug: "sun-lake-city",
                 name: "Sun Lake City",
                 type: "Nhà mặt phố",
                 categorySlug: "nha-mat-pho",
@@ -1304,6 +1308,7 @@
             },
             {
                 id: "du-an-5",
+                slug: "bcons-newsky",
                 name: "Bcons NewSky",
                 type: "Căn hộ chung cư",
                 categorySlug: "can-ho-chung-cu",
@@ -1320,6 +1325,7 @@
             },
             {
                 id: "du-an-6",
+                slug: "diamond-riverside-plaza",
                 name: "Diamond Riverside Plaza",
                 type: "Shophouse",
                 categorySlug: "shophouse",
@@ -1336,6 +1342,7 @@
             },
             {
                 id: "du-an-7",
+                slug: "an-phat-smart-city",
                 name: "An Phát Smart City",
                 type: "Khu phức hợp",
                 categorySlug: "khu-phuc-hop",
@@ -1378,12 +1385,13 @@
         const hotAreas = document.getElementById("hot-areas");
         const dataNote = document.getElementById("data-note");
         const paginationWrap = document.getElementById("paginationWrap");
-        const sidebarNews = document.getElementById("sidebar-news");
 
         const totalProjectsEl = document.getElementById("totalProjects");
         const totalSalePostsEl = document.getElementById("totalSalePosts");
         const totalRentalPostsEl = document.getElementById("totalRentalPosts");
         const totalInvestorsEl = document.getElementById("totalInvestors");
+
+        const sidebarNews = document.getElementById("sidebar-news");
 
         const keywordFilter = document.getElementById("keywordFilter");
         const typeFilter = document.getElementById("typeFilter");
@@ -1402,7 +1410,8 @@
         const projectSlider = document.getElementById("projectSlider");
 
         const urlParams = new URLSearchParams(window.location.search);
-        const activeCategorySlug = urlParams.get("category") || "";
+        const activeCategorySlug = (urlParams.get("category") || "").trim();
+        const activeProjectSlug = (urlParams.get("slug") || "").trim();
         const activeCategoryConfig = PROJECT_CATEGORY_CONFIG[activeCategorySlug] || null;
 
         let allProjects = [];
@@ -1410,6 +1419,7 @@
         let currentSlideIndex = 0;
         let sliderTimer = null;
         let currentPage = 1;
+        let currentFocusedProject = null;
 
         function escapeHtml(value) {
             return String(value || "")
@@ -1482,7 +1492,7 @@
                 project.address ||
                 project.location ||
                 project.fullAddress ||
-                [project.ward, project.district, project.city].filter(Boolean).join(", ") ||
+                [project.addressDetail, project.ward, project.district, project.city].filter(Boolean).join(", ") ||
                 "Đang cập nhật"
             );
         }
@@ -1539,7 +1549,8 @@
                 project.categorySlug,
                 project.projectCategory,
                 project.projectCategorySlug,
-                project.projectTypeSlug
+                project.projectTypeSlug,
+                project.typeSlug
             ];
 
             for (const item of directCandidates) {
@@ -1574,14 +1585,16 @@
             const area = project.area || project.scale || project.landArea || project.size || "Đang cập nhật";
             const priceInfo = normalizePrice(project.price ?? project.priceFrom ?? project.minPrice ?? "");
             const address = buildLocation(project);
-            const salePostsCount = Number(project.salePostsCount ?? project.saleCount ?? project.totalSalePosts ?? 0);
+            const salePostsCount = Number(project.salePostsCount ?? project.saleCount ?? project.totalSalePosts ?? project.postCount ?? 0);
             const rentalPostsCount = Number(project.rentalPostsCount ?? project.rentalCount ?? project.totalRentalPosts ?? 0);
             const desc = project.shortDescription || project.description || project.summary || "Dự án đang được cập nhật mô tả chi tiết.";
             const categorySlug = resolveProjectCategorySlug(project);
+            const slug = String(project.slug || project.projectSlug || slugifyText(name)).trim();
 
             return {
                 ...project,
-                id: project.id || project.projectId || project.slug || slugifyText(name) || `du-an-${index + 1}`,
+                id: project.id || project.projectId || slug || `du-an-${index + 1}`,
+                slug: slug,
                 name,
                 type,
                 status,
@@ -1695,6 +1708,15 @@
         }
 
         function updatePageByCategory() {
+            if (currentFocusedProject) {
+                document.title = `${currentFocusedProject.name} | Dự án | ToamViet.com.vn`;
+                pageTitleEl.textContent = currentFocusedProject.name;
+                pageIntroDescEl.textContent =
+                    (currentFocusedProject.shortDescription || "") +
+                    " Dữ liệu đang được mở theo đúng slug dự án từ hệ thống admin để người dùng xem nhanh thông tin public, số lượng tin bán, tin cho thuê và nhóm nội dung liên quan.";
+                return;
+            }
+
             if (!activeCategoryConfig) {
                 document.title = "Dự án bất động sản | ToamViet.com.vn";
                 pageTitleEl.textContent = "Dự án bất động sản trên Toàn quốc";
@@ -1803,6 +1825,10 @@
             const sortType = sortFilter.value;
 
             let result = [...projects];
+
+            if (currentFocusedProject) {
+                result = result.filter(project => project.slug === currentFocusedProject.slug);
+            }
 
             if (activeCategorySlug) {
                 result = result.filter(project => project.categorySlug === activeCategorySlug);
@@ -1930,7 +1956,7 @@
         function renderPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
-            if (totalPages <= 1) {
+            if (totalPages <= 1 || currentFocusedProject) {
                 paginationWrap.innerHTML = "";
                 return;
             }
@@ -1959,6 +1985,7 @@
         }
 
         function paginateItems(items) {
+            if (currentFocusedProject) return items;
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
             return items.slice(start, start + ITEMS_PER_PAGE);
         }
@@ -2146,8 +2173,17 @@
         }
 
         function renderSeoBlock() {
-            const seoKey = activeCategorySlug ? `project-${activeCategorySlug}` : "project";
-            const fallbackHtml = inlineSeoContentMap[seoKey] || inlineSeoContentMap.project;
+            let seoKey = "project";
+
+            if (currentFocusedProject) {
+                seoKey = `project-${currentFocusedProject.categorySlug || "du-an-khac"}`;
+            } else if (activeCategorySlug) {
+                seoKey = `project-${activeCategorySlug}`;
+            }
+
+            const fallbackHtml =
+                inlineSeoContentMap[seoKey] ||
+                inlineSeoContentMap.project;
 
             if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
                 const externalContent = getSeoContentByKey(seoKey) || getSeoContentByKey("project") || "";
@@ -2176,7 +2212,9 @@
             if (!filteredProjects.length) {
                 listingContainer.innerHTML = `
                     <div class="empty-box md:col-span-2">
-                        Không tìm thấy dự án nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, danh mục con, trạng thái hoặc sắp xếp lại danh sách.
+                        ${activeProjectSlug
+                            ? "Không tìm thấy dự án đúng với slug đang mở từ admin."
+                            : "Không tìm thấy dự án nào phù hợp với bộ lọc hiện tại. Bạn hãy thử đổi từ khóa, danh mục con, trạng thái hoặc sắp xếp lại danh sách."}
                     </div>
                 `;
                 paginationWrap.innerHTML = "";
@@ -2188,23 +2226,85 @@
             renderPagination(filteredProjects.length);
         }
 
+        function findProjectBySlug(projects, slug) {
+            if (!slug) return null;
+            const normalizedSlug = normalizeText(slug);
+
+            return projects.find(function (project) {
+                return normalizeText(project.slug) === normalizedSlug;
+            }) || null;
+        }
+
+        function applyFocusedProjectMode() {
+            if (!activeProjectSlug) {
+                currentFocusedProject = null;
+                return;
+            }
+
+            currentFocusedProject = findProjectBySlug(allProjects, activeProjectSlug);
+
+            if (!currentFocusedProject) {
+                dataNote.classList.remove("hidden");
+                dataNote.innerHTML = `
+                    Không tìm thấy dự án với slug <strong>${escapeHtml(activeProjectSlug)}</strong>.
+                    Bạn nên kiểm tra lại dữ liệu trong <strong>projects</strong> hoặc link public từ admin.
+                `;
+                return;
+            }
+
+            keywordFilter.value = "";
+            typeFilter.value = currentFocusedProject.categorySlug || "";
+            statusFilter.value = "";
+            sortFilter.value = "newest";
+
+            const toolbarCard = document.querySelector(".toolbar-card");
+            if (toolbarCard) {
+                const filterGrid = toolbarCard.querySelector(".filter-grid");
+                if (filterGrid) filterGrid.style.opacity = "0.96";
+            }
+        }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("site-header", "../components/header-inner.html");
+                    await loadComponent("site-mobile-menu", "../components/mobile-menu-inner.html");
+                    await loadComponent("site-footer", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
         async function initPage() {
-            updatePageByCategory();
+            await initSharedComponents();
 
             allProjects = await getProjects();
 
             fillTypeFilter();
             fillStatusFilter(allProjects);
 
-            const overviewSource = activeCategorySlug
-                ? allProjects.filter(item => item.categorySlug === activeCategorySlug)
-                : allProjects;
+            applyFocusedProjectMode();
+            updatePageByCategory();
+
+            const overviewSource = currentFocusedProject
+                ? [currentFocusedProject]
+                : (activeCategorySlug
+                    ? allProjects.filter(item => item.categorySlug === activeCategorySlug)
+                    : allProjects);
 
             updateOverview(overviewSource);
 
             const sliderProjects = [...overviewSource].sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
-
             renderSlider(sliderProjects.length ? sliderProjects : allProjects);
+
             renderSidebarNews();
             renderListings(true);
             renderSeoBlock();
@@ -2218,7 +2318,9 @@
 
         resetFilterBtn.addEventListener("click", function () {
             keywordFilter.value = "";
-            typeFilter.value = activeCategorySlug && PROJECT_CATEGORY_CONFIG[activeCategorySlug] ? activeCategorySlug : "";
+            typeFilter.value = currentFocusedProject
+                ? (currentFocusedProject.categorySlug || "")
+                : (activeCategorySlug && PROJECT_CATEGORY_CONFIG[activeCategorySlug] ? activeCategorySlug : "");
             statusFilter.value = "";
             sortFilter.value = "newest";
             renderListings(true);
