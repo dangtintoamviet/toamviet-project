@@ -1100,6 +1100,7 @@
         let locationSource = { provinces: [] };
         let editingPost = null;
         let editingPostId = "";
+        let suppressAutoPopulate = false;
 
         const MAX_IMAGES = 5;
         const MAX_IMAGE_WIDTH = 1280;
@@ -1182,13 +1183,39 @@
             { slug: "vat-lieu-xay-dung", name: "Vật liệu xây dựng" }
         ];
 
+        function safeParseLocalStorage(key, fallback = null) {
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return fallback;
+                const parsed = JSON.parse(raw);
+                return parsed === null || parsed === undefined ? fallback : parsed;
+            } catch (error) {
+                console.warn("Lỗi parse localStorage tại key:", key, error);
+                return fallback;
+            }
+        }
+
+        function getCurrentUser() {
+            return safeParseLocalStorage("currentUser", null) || safeParseLocalStorage("registeredUser", null) || null;
+        }
+
+        function isQuotaExceededError(error) {
+            if (!error) return false;
+            return (
+                error.name === "QuotaExceededError" ||
+                error.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
+                error.code === 22 ||
+                error.code === 1014 ||
+                error.message === "LOCAL_STORAGE_QUOTA_EXCEEDED"
+            );
+        }
+
         function getCurrentRealEstateCategories() {
             return currentPostType === "thue" ? RENT_CATEGORIES : SALE_CATEGORIES;
         }
 
         function getCurrentCategoryMap() {
-            const list = getCurrentRealEstateCategories();
-            return list.reduce(function (acc, item) {
+            return getCurrentRealEstateCategories().reduce(function (acc, item) {
                 acc[item.slug] = item;
                 return acc;
             }, {});
@@ -1229,41 +1256,6 @@
             });
             return found ? found.slug : "";
         }
-
-        function renderProjectTypeOptions() {
-            projectTypeField.innerHTML =
-                '<option value="">Chọn loại dự án</option>' +
-                PROJECT_CATEGORIES.map(function (item) {
-                    return '<option value="' + item.slug + '">' + item.name + '</option>';
-                }).join("");
-        }
-
-        function safeParseLocalStorage(key) {
-            try {
-                const raw = localStorage.getItem(key);
-                return raw ? JSON.parse(raw) : null;
-            } catch (error) {
-                console.warn("Lỗi parse localStorage tại key:", key, error);
-                return null;
-            }
-        }
-
-        function isQuotaExceededError(error) {
-            if (!error) return false;
-
-            return (
-                error.name === "QuotaExceededError" ||
-                error.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
-                error.code === 22 ||
-                error.code === 1014 ||
-                error.message === "LOCAL_STORAGE_QUOTA_EXCEEDED"
-            );
-        }
-
-        const currentUser =
-            safeParseLocalStorage("currentUser") ||
-            safeParseLocalStorage("registeredUser") ||
-            null;
 
         const flowRealEstate = document.getElementById("flow-real-estate");
         const flowConstruction = document.getElementById("flow-construction");
@@ -1360,10 +1352,10 @@
         }
 
         function prepareImagesForStorage(images) {
-            return (Array.isArray(images) ? images : []).map(function (img) {
+            return (Array.isArray(images) ? images : []).map(function (img, index) {
                 return {
-                    id: img.id || ("img_" + Date.now()),
-                    name: img.name || "image.jpg",
+                    id: img.id || ("img_" + Date.now() + "_" + index),
+                    name: img.name || ("image-" + (index + 1) + ".jpg"),
                     type: img.type || "image/jpeg",
                     width: img.width || 0,
                     height: img.height || 0,
@@ -1436,20 +1428,21 @@
             postStatus.textContent = "";
         }
 
+        function getStatusLabel(status) {
+            if (status === "approved") return "Đã duyệt";
+            if (status === "hidden") return "Đang ẩn";
+            if (status === "rejected") return "Từ chối";
+            return "Chờ duyệt";
+        }
+
         function getPostIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
             return (params.get("id") || "").trim();
         }
 
         function getSafeAllPostsFromLocal() {
-            try {
-                const raw = localStorage.getItem("allPosts");
-                const parsed = raw ? JSON.parse(raw) : [];
-                return Array.isArray(parsed) ? parsed : [];
-            } catch (error) {
-                console.warn("Không đọc được allPosts từ localStorage:", error);
-                return [];
-            }
+            const parsed = safeParseLocalStorage("allPosts", []);
+            return Array.isArray(parsed) ? parsed : [];
         }
 
         function getPostsFromAnySource() {
@@ -1483,6 +1476,7 @@
         }
 
         function canEditPost(post) {
+            const currentUser = getCurrentUser();
             if (!post || !currentUser) return false;
 
             if (currentUser.id && post.userId) {
@@ -1503,6 +1497,8 @@
         }
 
         function fillUserInfo() {
+            const currentUser = getCurrentUser();
+
             const userName = document.getElementById("userName");
             const userRole = document.getElementById("userRole");
             const userGroup = document.getElementById("userGroup");
@@ -1545,7 +1541,7 @@
             codeEl.textContent = post.id || "Không có mã";
             metaEl.textContent = [
                 post.categoryName || post.postType || post.flow || "---",
-                post.status || "pending",
+                getStatusLabel(post.status || "pending"),
                 post.createdAt ? new Date(post.createdAt).toLocaleString("vi-VN") : "---"
             ].join(" • ");
         }
@@ -1726,6 +1722,11 @@
             }
 
             renderDynamicFields();
+
+            if (!suppressAutoPopulate && editingPost) {
+                fillDynamicFieldsWithPost(editingPost);
+            }
+
             updatePreview();
         }
 
@@ -1735,6 +1736,11 @@
                 btn.classList.toggle("active", btn.getAttribute("data-post-type") === type);
             });
             renderDynamicFields();
+
+            if (!suppressAutoPopulate && editingPost && currentFlow === "real_estate") {
+                fillDynamicFieldsWithPost(editingPost);
+            }
+
             updatePreview();
         }
 
@@ -1863,7 +1869,8 @@
         }
 
         function getProjectsStore() {
-            return safeParseLocalStorage("projects") || [];
+            const projects = safeParseLocalStorage("projects", []);
+            return Array.isArray(projects) ? projects : [];
         }
 
         function saveProjectsStore(projects) {
@@ -2066,7 +2073,8 @@
         }
 
         function rebuildCompatibilityStores(posts) {
-            const propertyPosts = posts.filter(function (item) {
+            const safePosts = Array.isArray(posts) ? posts : [];
+            const propertyPosts = safePosts.filter(function (item) {
                 return item.flow === "real_estate";
             });
             const salePosts = propertyPosts.filter(function (item) {
@@ -2075,7 +2083,7 @@
             const rentalPosts = propertyPosts.filter(function (item) {
                 return item.postType === "thue";
             });
-            const constructionPosts = posts.filter(function (item) {
+            const constructionPosts = safePosts.filter(function (item) {
                 return item.flow === "construction";
             });
 
@@ -2157,6 +2165,7 @@
         }
 
         function updatePreview() {
+            const currentUser = getCurrentUser();
             const title = postTitle.value.trim();
             const city = citySelect.value;
             const ward = wardSelect.value;
@@ -2168,7 +2177,7 @@
             previewTitle.textContent = title || "Tiêu đề sẽ hiện ở đây sau khi bạn nhập";
             previewImagesCount.textContent = selectedImages.length + " ảnh";
             previewVip.textContent = currentFlow === "real_estate" ? getVipLabel(currentVipLevel) : "Không áp dụng";
-            previewStatus.textContent = document.getElementById("postStatusSelect").value || "pending";
+            previewStatus.textContent = getStatusLabel(document.getElementById("postStatusSelect").value || "pending");
 
             if (currentFlow === "construction") {
                 const servicePrice = document.getElementById("servicePrice") ? document.getElementById("servicePrice").value : "Chưa nhập";
@@ -2359,6 +2368,7 @@
         function validateForm() {
             hideStatus();
 
+            const currentUser = getCurrentUser();
             const title = postTitle.value.trim();
             const city = citySelect.value;
             const ward = wardSelect.value;
@@ -2461,6 +2471,7 @@
         }
 
         function buildUpdatedPostData() {
+            const currentUser = getCurrentUser();
             const nowIso = new Date().toISOString();
             const contactEmailValue = document.getElementById("contactEmail").value.trim();
             const preparedImages = prepareImagesForStorage(selectedImages);
@@ -2742,8 +2753,10 @@
         function fillFormWithPostData() {
             if (!editingPost) return;
 
+            suppressAutoPopulate = true;
+
             currentFlow = editingPost.flow === "construction" ? "construction" : "real_estate";
-            currentPostType = editingPost.postType === "thue" ? "thue" : (editingPost.postType === "xaydung" ? "xaydung" : "ban");
+            currentPostType = editingPost.postType === "thue" ? "thue" : "ban";
             currentProfile = editingPost.profileType || (editingPost.flow === "construction" ? "doanhnghiep" : "canhan");
             currentVipLevel = editingPost.vipLevel || "thuong";
 
@@ -2805,6 +2818,8 @@
                 return { ...img };
             });
             renderSelectedImages();
+
+            suppressAutoPopulate = false;
             updatePreview();
         }
 
@@ -2854,6 +2869,14 @@
             }
 
             setEditingMeta(editingPost);
+        }
+
+        function renderProjectTypeOptions() {
+            projectTypeField.innerHTML =
+                '<option value="">Chọn loại dự án</option>' +
+                PROJECT_CATEGORIES.map(function (item) {
+                    return '<option value="' + item.slug + '">' + item.name + '</option>';
+                }).join("");
         }
 
         document.getElementById("edit-post-form").addEventListener("submit", function (e) {
@@ -2909,11 +2932,13 @@
         document.getElementById("postStatusSelect").addEventListener("change", updatePreview);
 
         flowRealEstate.addEventListener("click", function () {
+            if (!editingPost) return;
             setFlow("real_estate");
-            setSubtab("ban");
+            setSubtab(currentPostType === "thue" ? "thue" : "ban");
         });
 
         flowConstruction.addEventListener("click", function () {
+            if (!editingPost) return;
             setFlow("construction");
             setProfile("doanhnghiep");
         });
@@ -2962,8 +2987,6 @@
             handleImageFiles(e.target.files);
         });
 
-        window.setProfile = setProfile;
-        window.setVipLevel = setVipLevel;
         window.sendToZalo = sendToZalo;
 
         window.addEventListener("load", async function () {
