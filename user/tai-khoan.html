@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tài khoản cá nhân | ToAmViet.com.vn</title>
+    <title>Tài khoản cá nhân | Toamviet.com.vn</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -576,7 +576,7 @@
                         <div class="panel-card">
                             <div class="panel-title">Thông tin hồ sơ cơ bản</div>
                             <div class="panel-sub">
-                                Cập nhật đúng hồ sơ thành viên để các trang đăng tin và quản lý tin hiển thị chuẩn hơn. Những thay đổi ở đây sẽ đồng bộ lại vào `currentUser` và `registeredUser`.
+                                Cập nhật đúng hồ sơ thành viên để các trang đăng tin và quản lý tin hiển thị chuẩn hơn. Những thay đổi ở đây sẽ đồng bộ lại vào <code>currentUser</code>, <code>registeredUser</code> và <code>registeredUsers</code>.
                             </div>
 
                             <div id="profileStatus" class="status-box"></div>
@@ -635,7 +635,7 @@
                         <div class="panel-card">
                             <div class="panel-title">Đổi mật khẩu demo</div>
                             <div class="panel-sub">
-                                Đây là phần đổi mật khẩu mô phỏng trong localStorage để hoàn thiện giao diện nhóm user. Sau này khi có backend thật thì chỉ cần thay logic lưu là được.
+                                Phần này đang dùng localStorage nhưng đã được viết theo hướng đồng bộ với toàn bộ user store, để sau này chuyển sang backend sẽ ít phải sửa lại cấu trúc.
                             </div>
 
                             <div id="passwordStatus" class="status-box"></div>
@@ -779,6 +779,15 @@
             return safeParseLocalStorage("currentUser") || safeParseLocalStorage("registeredUser") || null;
         }
 
+        function getRegisteredUsers() {
+            const users = safeParseLocalStorage("registeredUsers");
+            return Array.isArray(users) ? users : [];
+        }
+
+        function saveRegisteredUsers(users) {
+            localStorage.setItem("registeredUsers", JSON.stringify(Array.isArray(users) ? users : []));
+        }
+
         function showStatus(targetId, type, message) {
             const box = document.getElementById(targetId);
             if (!box) return;
@@ -814,6 +823,43 @@
         function saveCurrentUser(user) {
             localStorage.setItem("currentUser", JSON.stringify(user));
             localStorage.setItem("registeredUser", JSON.stringify(user));
+        }
+
+        function syncUserIntoRegisteredUsers(oldUser, nextUser) {
+            const users = getRegisteredUsers();
+            let found = false;
+
+            const nextUsers = users.map(function (user) {
+                let isTarget = false;
+
+                if (oldUser && oldUser.id && user.id) {
+                    isTarget = user.id === oldUser.id;
+                }
+
+                if (!isTarget && oldUser && oldUser.email && user.email) {
+                    isTarget = normalizeText(user.email) === normalizeText(oldUser.email);
+                }
+
+                if (!isTarget && oldUser && oldUser.phone && user.phone) {
+                    isTarget = sanitizePhone(user.phone) === sanitizePhone(oldUser.phone);
+                }
+
+                if (isTarget) {
+                    found = true;
+                    return {
+                        ...user,
+                        ...nextUser
+                    };
+                }
+
+                return user;
+            });
+
+            if (!found) {
+                nextUsers.unshift(nextUser);
+            }
+
+            saveRegisteredUsers(nextUsers);
         }
 
         function getMyPosts(user) {
@@ -1193,6 +1239,32 @@
                 return;
             }
 
+            const registeredUsers = getRegisteredUsers();
+
+            const emailExists = registeredUsers.some(function (user) {
+                if (currentUser.id && user.id) {
+                    if (user.id === currentUser.id) return false;
+                }
+                return normalizeText(user.email) === normalizeText(email);
+            });
+
+            if (emailExists) {
+                showStatus("profileStatus", "error", "Email này đã tồn tại ở tài khoản khác.");
+                return;
+            }
+
+            const phoneExists = registeredUsers.some(function (user) {
+                if (currentUser.id && user.id) {
+                    if (user.id === currentUser.id) return false;
+                }
+                return sanitizePhone(user.phone) === phone;
+            });
+
+            if (phoneExists) {
+                showStatus("profileStatus", "error", "Số điện thoại này đã tồn tại ở tài khoản khác.");
+                return;
+            }
+
             const normalizedRole = roleLabel || currentUser.roleLabel || currentUser.role || "";
             const nextUser = {
                 ...currentUser,
@@ -1209,6 +1281,7 @@
             };
 
             saveCurrentUser(nextUser);
+            syncUserIntoRegisteredUsers(currentUser, nextUser);
             syncPostsWithNewProfile(currentUser, nextUser);
 
             showStatus("profileStatus", "success", "Đã cập nhật thông tin tài khoản và đồng bộ lại dữ liệu liên quan.");
@@ -1267,8 +1340,9 @@
             };
 
             saveCurrentUser(nextUser);
+            syncUserIntoRegisteredUsers(currentUser, nextUser);
 
-            showStatus("passwordStatus", "success", "Đã cập nhật mật khẩu demo thành công.");
+            showStatus("passwordStatus", "success", "Đã cập nhật mật khẩu thành công.");
             document.getElementById("passwordForm").reset();
         });
 
