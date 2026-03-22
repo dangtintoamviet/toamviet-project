@@ -528,28 +528,28 @@
             background: linear-gradient(135deg, #dff7ff, #b8ecff);
             color: #0369a1;
             border: 1px solid #7dd3fc;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .vip-vang {
             background: linear-gradient(135deg, #fff7cc, #ffe082);
             color: #a16207;
             border: 1px solid #facc15;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .vip-bac {
             background: linear-gradient(135deg, #f1f5f9, #dbe4ee);
             color: #475569;
             border: 1px solid #cbd5e1;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .vip-dong {
             background: linear-gradient(135deg, #f7e3d8, #ebc2a8);
             color: #9a3412;
             border: 1px solid #d6a583;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .service-badge {
@@ -565,7 +565,7 @@
             background: linear-gradient(135deg, rgba(15,154,168,0.96), rgba(13,127,138,0.96));
             color: white;
             border: 1px solid rgba(15,154,168,0.2);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .related-section-head {
@@ -718,7 +718,8 @@
             line-height: 1.8;
         }
 
-        .hidden-force {
+        .hidden-force,
+        .hidden {
             display: none !important;
         }
 
@@ -1036,7 +1037,7 @@
         </section>
 
         <div id="not-found-box" class="empty-box hidden mt-6">
-            Không tìm thấy tin đăng phù hợp. Có thể tin này đã bị xóa, chưa được duyệt hoặc đường dẫn không đúng.
+            Không tìm thấy tin đăng phù hợp. Có thể tin này đã bị xóa, đang ẩn, chưa được duyệt hoặc đường dẫn không đúng.
         </div>
     </main>
 
@@ -1081,10 +1082,129 @@
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
         const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+        const PUBLIC_VISIBLE_STATUSES = ["approved", "published", "demo"];
 
-        let currentPhoneRaw = "";
-        let currentPhoneMasked = "";
-        let currentPhoneRevealed = false;
+        const DEMO_POSTS = [
+            {
+                id: "demo-sale-1",
+                title: "NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN",
+                propertyType: "Biệt thự",
+                propertyCategoryName: "Bán nhà biệt thự, liền kề",
+                propertyPrice: "60 tỷ",
+                propertyArea: "300",
+                propertyLegal: "Sổ đỏ đầy đủ",
+                propertyDirection: "Đông Nam",
+                propertyBeds: "5",
+                city: "Hà Nội",
+                ward: "Phường Minh Khai",
+                addressDetail: "Khu đô thị mới",
+                description: "Căn biệt thự có vị trí đẹp, bàn giao full nội thất cao cấp. Hỗ trợ pháp lý và thủ tục nhanh gọn.",
+                contactName: "Nguyễn Thành An",
+                roleLabel: "Môi giới chuyên nghiệp",
+                contactPhone: "0912598888",
+                contactEmail: "demo@toamviet.vn",
+                status: "demo",
+                createdAt: new Date().toISOString(),
+                flow: "real_estate",
+                postType: "ban",
+                vipLevel: "vang",
+                images: [FALLBACK_IMAGE],
+                thumbnail: FALLBACK_IMAGE
+            },
+            {
+                id: "demo-rent-1",
+                title: "CHO THUÊ CĂN HỘ CAO CẤP VINHOMES CENTRAL PARK FULL NỘI THẤT",
+                propertyType: "Căn hộ",
+                propertyCategoryName: "Cho thuê căn hộ chung cư",
+                propertyPrice: "25 triệu/tháng",
+                propertyArea: "85",
+                propertyLegal: "Hợp đồng rõ ràng",
+                propertyDirection: "Đông Nam",
+                propertyBeds: "2",
+                city: "TP.HCM",
+                ward: "Phường 22",
+                addressDetail: "Gần Landmark 81",
+                description: "Căn hộ tầng cao thoáng mát, view sông đẹp, đầy đủ nội thất cao cấp.",
+                contactName: "Trần Thị Lan Anh",
+                roleLabel: "Chuyên viên cho thuê",
+                contactPhone: "0901234567",
+                contactEmail: "rent@toamviet.vn",
+                status: "demo",
+                createdAt: new Date().toISOString(),
+                flow: "real_estate",
+                postType: "thue",
+                vipLevel: "bac",
+                images: [FALLBACK_IMAGE],
+                thumbnail: FALLBACK_IMAGE
+            },
+            {
+                id: "demo-build-1",
+                title: "CÔNG TY AN PHÁT NHẬN THI CÔNG NHÀ PHỐ TRỌN GÓI TẠI HÀ GIANG",
+                serviceType: "Xây nhà trọn gói",
+                categoryName: "Xây nhà trọn gói",
+                servicePrice: "5.8 triệu/m²",
+                serviceExp: "8 năm kinh nghiệm",
+                serviceArea: "Hà Giang, Tuyên Quang",
+                serviceBrand: "Công ty Xây dựng An Phát",
+                serviceSpecialty: "Nhà phố, biệt thự, cải tạo",
+                city: "Hà Giang",
+                ward: "Phường Nguyễn Trãi",
+                addressDetail: "Phục vụ toàn tỉnh",
+                description: "Đội ngũ kỹ sư và thi công chuyên nghiệp, nhận hồ sơ thiết kế, thi công phần thô và hoàn thiện trọn gói.",
+                contactName: "Công ty Xây dựng An Phát",
+                brandName: "Công ty Xây dựng An Phát",
+                roleLabel: "Doanh nghiệp / Nhà thầu",
+                contactPhone: "0988123456",
+                contactEmail: "build@toamviet.vn",
+                status: "demo",
+                createdAt: new Date().toISOString(),
+                flow: "construction",
+                postType: "xaydung",
+                images: [FALLBACK_IMAGE],
+                thumbnail: FALLBACK_IMAGE
+            }
+        ];
+
+        const state = {
+            currentPhoneRaw: "",
+            currentPhoneMasked: "",
+            currentPhoneRevealed: false,
+            currentPostId: "",
+            currentPost: null,
+            posts: []
+        };
+
+        const els = {
+            detailWrapper: document.getElementById("detail-wrapper"),
+            notFoundBox: document.getElementById("not-found-box"),
+            breadcrumbParentLink: document.getElementById("breadcrumb-parent-link"),
+            breadcrumbTitle: document.getElementById("breadcrumb-title"),
+            detailTitle: document.getElementById("detail-title"),
+            detailPrice: document.getElementById("detail-price"),
+            detailArea: document.getElementById("detail-area"),
+            detailPricePerM2: document.getElementById("detail-price-per-m2"),
+            detailLocation: document.getElementById("detail-location"),
+            detailDescription: document.getElementById("detail-description"),
+            propertyTypeBadge: document.getElementById("property-type-badge"),
+            listingModeBadge: document.getElementById("listing-mode-badge"),
+            vipBadgeWrap: document.getElementById("vip-badge-wrap"),
+            mainImage: document.getElementById("main-image"),
+            imageCounter: document.getElementById("detail-image-counter"),
+            thumbGallery: document.getElementById("thumb-gallery"),
+            relatedPosts: document.getElementById("related-posts"),
+            relatedMoreLink: document.getElementById("related-more-link"),
+            phoneRevealButton: document.getElementById("phone-reveal-button"),
+            phoneRevealNumber: document.getElementById("phone-reveal-number"),
+            phoneRevealText: document.getElementById("phone-reveal-text"),
+            posterProfileLink: document.getElementById("poster-profile-link"),
+            posterAvatar: document.getElementById("poster-avatar"),
+            posterName: document.getElementById("poster-name"),
+            posterRole: document.getElementById("poster-role"),
+            zaloButton: document.getElementById("zalo-button"),
+            favoriteButton: document.getElementById("favorite-button"),
+            metaDot1: document.getElementById("meta-dot-1"),
+            metaDot2: document.getElementById("meta-dot-2")
+        };
 
         function escapeHtml(value) {
             return String(value || "")
@@ -1125,24 +1245,44 @@
             }
         }
 
-        function sendToZalo() {
-            const name = document.getElementById("cusName").value.trim();
-            const msg = document.getElementById("cusMsg").value.trim();
-            const phone = "0946239289";
-
-            if (!name) {
-                alert("Vui lòng cho biết tên của bạn");
-                return;
-            }
-
-            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
-            const encodedMsg = encodeURIComponent(fullMsg);
-            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
         }
 
         function getQueryParam(name) {
             const url = new URL(window.location.href);
             return url.searchParams.get(name);
+        }
+
+        function createPostId(post, index) {
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
+                return String(post.id).trim();
+            }
+
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
+                return String(post.postId).trim();
+            }
+
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
+                return String(post.slug).trim();
+            }
+
+            return [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.serviceBrand,
+                post.city,
+                post.ward,
+                post.contactPhone,
+                post.createdAt,
+                index
+            ].map(slugifyText).filter(Boolean).join("-") || "tin";
+        }
+
+        function getAllowedPublicStatuses() {
+            return PUBLIC_VISIBLE_STATUSES;
         }
 
         function normalizePhone(phone) {
@@ -1152,7 +1292,6 @@
         function formatDisplayPhone(phone) {
             const digits = String(phone || "").replace(/[^\d]/g, "");
             if (!digits) return "Liên hệ";
-
             if (digits.length <= 4) return digits;
             if (digits.length <= 7) return digits.replace(/(\d{4})(\d+)/, "$1 $2");
             if (digits.length <= 10) return digits.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3");
@@ -1190,39 +1329,11 @@
             return "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(postId);
         }
 
-        function bindPhoneReveal(phone) {
-            const button = document.getElementById("phone-reveal-button");
-            const numberEl = document.getElementById("phone-reveal-number");
-            const textEl = document.getElementById("phone-reveal-text");
-
-            currentPhoneRaw = normalizePhone(phone);
-            currentPhoneMasked = maskPhone(phone);
-            currentPhoneRevealed = false;
-
-            numberEl.textContent = currentPhoneMasked;
-            textEl.textContent = currentPhoneRaw ? "Bấm để hiện số" : "Chưa có số";
-
-            button.onclick = function () {
-                if (!currentPhoneRaw) return;
-
-                if (!currentPhoneRevealed) {
-                    numberEl.textContent = formatDisplayPhone(currentPhoneRaw);
-                    textEl.textContent = "Bấm để gọi";
-                    currentPhoneRevealed = true;
-                    return;
-                }
-
-                window.location.href = "tel:" + currentPhoneRaw;
-            };
-        }
-
         function getStorageArray(key) {
             try {
                 const raw = JSON.parse(localStorage.getItem(key) || "[]");
                 return Array.isArray(raw)
-                    ? raw.map(function (id) {
-                        return String(id).trim();
-                    }).filter(Boolean)
+                    ? raw.map(function (id) { return String(id).trim(); }).filter(Boolean)
                     : [];
             } catch (error) {
                 return [];
@@ -1236,30 +1347,6 @@
                 }).filter(Boolean)
             ));
             localStorage.setItem(key, JSON.stringify(normalized));
-        }
-
-        function getSaleFavorites() {
-            return getStorageArray(FAVORITE_SALE_STORAGE_KEY);
-        }
-
-        function getRentalFavorites() {
-            return getStorageArray(FAVORITE_RENTAL_STORAGE_KEY);
-        }
-
-        function getConstructionFavorites() {
-            return getStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY);
-        }
-
-        function getTotalFavoritesCount() {
-            return getSaleFavorites().length + getRentalFavorites().length + getConstructionFavorites().length;
-        }
-
-        function updateFavoriteCount() {
-            const badges = document.querySelectorAll("#headerFavoriteCount, #favorite-count-badge");
-            const total = getTotalFavoritesCount();
-            badges.forEach((badge) => {
-                badge.textContent = total;
-            });
         }
 
         function getFavoriteKeyByPost(post) {
@@ -1283,29 +1370,40 @@
             return getStorageArray(key).includes(String(postId).trim());
         }
 
-        function toggleFavorite(postId, post) {
-            if (!post) return;
+        function getTotalFavoritesCount() {
+            return getStorageArray(FAVORITE_SALE_STORAGE_KEY).length +
+                getStorageArray(FAVORITE_RENTAL_STORAGE_KEY).length +
+                getStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY).length;
+        }
 
-            const normalizedId = String(postId || "").trim();
+        function updateFavoriteCount() {
+            const badges = document.querySelectorAll("#headerFavoriteCount, #favorite-count-badge");
+            const total = getTotalFavoritesCount();
+            badges.forEach(function (badge) {
+                badge.textContent = total;
+            });
+        }
+
+        function updateFavoriteButton(postId, post) {
+            const active = isFavorite(postId, post);
+            els.favoriteButton.classList.toggle("active", active);
+            els.favoriteButton.innerHTML = active
+                ? '<i class="fa-solid fa-heart"></i><span>Đã lưu tin</span>'
+                : '<i class="fa-regular fa-heart"></i><span>Lưu tin</span>';
+        }
+
+        function toggleFavorite(postId, post) {
             const key = getFavoriteKeyByPost(post);
-            const favorites = getStorageArray(key);
-            const exists = favorites.includes(normalizedId);
-            const next = exists ? favorites.filter(id => id !== normalizedId) : favorites.concat(normalizedId);
+            const normalizedId = String(postId || "").trim();
+            const current = getStorageArray(key);
+            const exists = current.includes(normalizedId);
+            const next = exists
+                ? current.filter(function (id) { return id !== normalizedId; })
+                : current.concat(normalizedId);
 
             setStorageArray(key, next);
             updateFavoriteCount();
             updateFavoriteButton(normalizedId, post);
-        }
-
-        function updateFavoriteButton(postId, post) {
-            const favoriteButton = document.getElementById("favorite-button");
-            if (!favoriteButton) return;
-
-            const active = isFavorite(postId, post);
-            favoriteButton.classList.toggle("active", active);
-            favoriteButton.innerHTML = active
-                ? '<i class="fa-solid fa-heart"></i><span>Đã lưu tin</span>'
-                : '<i class="fa-regular fa-heart"></i><span>Lưu tin</span>';
         }
 
         function buildPoster(post) {
@@ -1320,23 +1418,15 @@
             if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) {
                 return "Doanh nghiệp";
             }
-
-            if (
-                normalizedRole.includes("moi gioi") ||
-                normalizedRole.includes("chuyen vien") ||
-                normalizedRole.includes("nha thau")
-            ) {
+            if (normalizedRole.includes("moi gioi") || normalizedRole.includes("chuyen vien") || normalizedRole.includes("nha thau")) {
                 return rawRole;
             }
-
             if (normalizedRole.includes("ca nhan") || profileType === "canhan") {
                 return "Cá nhân";
             }
-
             if (profileType === "doanhnghiep") {
                 return "Doanh nghiệp";
             }
-
             return rawRole || "Người đăng";
         }
 
@@ -1346,13 +1436,14 @@
                 .split(" ")
                 .filter(Boolean)
                 .slice(0, 2)
-                .map(word => word.charAt(0).toUpperCase())
+                .map(function (word) {
+                    return word.charAt(0).toUpperCase();
+                })
                 .join("") || "TV";
         }
 
         function buildLocation(post) {
-            const parts = [post.ward, post.city].filter(Boolean);
-            return parts.join(", ");
+            return [post.ward, post.city].filter(Boolean).join(", ");
         }
 
         function buildFullAddress(post) {
@@ -1373,22 +1464,18 @@
             }
 
             if (text.includes("tỷ") || text.includes("ty")) {
-                const value = parseFloat((text.match(/[\d.]+/) || [0])[0]) || 0;
-                return value * 1000000000;
+                return (parseFloat((text.match(/[\d.]+/) || [0])[0]) || 0) * 1000000000;
             }
 
             if (text.includes("triệu") || text.includes("trieu")) {
-                const value = parseFloat((text.match(/[\d.]+/) || [0])[0]) || 0;
-                return value * 1000000;
+                return (parseFloat((text.match(/[\d.]+/) || [0])[0]) || 0) * 1000000;
             }
 
             if (text.includes("nghìn") || text.includes("nghin") || text.includes("ngàn")) {
-                const value = parseFloat((text.match(/[\d.]+/) || [0])[0]) || 0;
-                return value * 1000;
+                return (parseFloat((text.match(/[\d.]+/) || [0])[0]) || 0) * 1000;
             }
 
-            const raw = parseFloat(text.replace(/[^\d.]/g, "")) || 0;
-            return raw;
+            return parseFloat(text.replace(/[^\d.]/g, "")) || 0;
         }
 
         function formatPrice(priceText) {
@@ -1413,7 +1500,7 @@
             if (!totalPrice || !areaNumber) return "Chưa rõ";
 
             const unit = totalPrice / areaNumber;
-            const isRental = normalizeText(post.postType) === "thue";
+            const isRental = ["thue", "cho-thue", "rent"].includes(normalizeText(post.postType));
 
             if (isRental) {
                 if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
@@ -1446,168 +1533,94 @@
                 return [post.thumbnail || FALLBACK_IMAGE];
             }
 
-            const images = post.images.map(item => {
+            const images = post.images.map(function (item) {
                 if (typeof item === "string" && item.trim()) return item;
                 if (item && item.dataUrl) return item.dataUrl;
                 if (item && item.url) return item.url;
                 return null;
             }).filter(Boolean);
 
-            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
-                if (!images.includes(post.thumbnail)) {
-                    images.unshift(post.thumbnail);
-                }
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim() && !images.includes(post.thumbnail)) {
+                images.unshift(post.thumbnail);
             }
 
             return images.length ? images : [FALLBACK_IMAGE];
         }
 
-        function createPostId(post, index = 0) {
-            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
-                return String(post.id).trim();
-            }
-
-            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
-                return String(post.postId).trim();
-            }
-
-            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
-                return String(post.slug).trim();
-            }
-
-            const stableParts = [
-                post.title,
-                post.propertyType,
-                post.serviceType,
-                post.serviceBrand,
-                post.city,
-                post.ward,
-                post.contactPhone,
-                post.createdAt,
-                index
-            ];
-
-            return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
-        }
-
-        function getAllowedPublicStatuses() {
-            return ["approved", "published", "demo"];
-        }
-
-        function getAllPostsMixed() {
-            let posts = [];
-
+        function getPostsFromPostStorage() {
             try {
                 if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
-                    posts = window.postStorage.getAllPosts().filter(post => {
-                        return post && getAllowedPublicStatuses().includes(normalizeText(post.status || "approved"));
-                    });
+                    const posts = window.postStorage.getAllPosts();
+                    return Array.isArray(posts) ? posts : [];
                 }
             } catch (error) {
-                posts = [];
+                console.warn("postStorage.getAllPosts lỗi:", error);
             }
+            return [];
+        }
 
-            if (posts.length) return posts;
-
+        function getPostsFromUserStorage() {
             try {
-                const allPosts = safeParseJSON(localStorage.getItem("allPosts") || "[]", []);
-                return Array.isArray(allPosts)
-                    ? allPosts.filter(post => post && getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")))
-                    : [];
+                if (window.userStorage && typeof window.userStorage.getAllPosts === "function") {
+                    const posts = window.userStorage.getAllPosts();
+                    return Array.isArray(posts) ? posts : [];
+                }
             } catch (error) {
+                console.warn("userStorage.getAllPosts lỗi:", error);
+            }
+            return [];
+        }
+
+        function getPostsFromLocalStorage() {
+            try {
+                const raw = safeParseJSON(localStorage.getItem("allPosts") || "[]", []);
+                return Array.isArray(raw) ? raw : [];
+            } catch (error) {
+                console.warn("localStorage allPosts lỗi:", error);
                 return [];
             }
         }
 
-        function getFallbackMixedPosts() {
-            return [
-                {
-                    id: "demo-sale-1",
-                    title: "NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN",
-                    propertyType: "Biệt thự",
-                    propertyPrice: "60 tỷ",
-                    propertyArea: "300",
-                    propertyLegal: "Sổ đỏ đầy đủ",
-                    propertyDirection: "Đông Nam",
-                    propertyBeds: "5",
-                    city: "Hà Nội",
-                    ward: "Phường Minh Khai",
-                    addressDetail: "Khu đô thị mới",
-                    description: "Căn biệt thự có vị trí đẹp, bàn giao full nội thất cao cấp. Hỗ trợ pháp lý và thủ tục nhanh gọn.",
-                    contactName: "Nguyễn Thành An",
-                    roleLabel: "Môi giới chuyên nghiệp",
-                    contactPhone: "0912598888",
-                    contactEmail: "demo@toamviet.vn",
-                    status: "demo",
-                    createdAt: new Date().toISOString(),
-                    flow: "real_estate",
-                    postType: "ban",
-                    vipLevel: "vang",
-                    images: [FALLBACK_IMAGE],
-                    thumbnail: FALLBACK_IMAGE
-                },
-                {
-                    id: "demo-rent-1",
-                    title: "CHO THUÊ CĂN HỘ CAO CẤP VINHOMES CENTRAL PARK FULL NỘI THẤT",
-                    propertyType: "Căn hộ",
-                    propertyPrice: "25 triệu/tháng",
-                    propertyArea: "85",
-                    propertyLegal: "Hợp đồng rõ ràng",
-                    propertyDirection: "Đông Nam",
-                    propertyBeds: "2",
-                    city: "TP.HCM",
-                    ward: "Phường 22",
-                    addressDetail: "Gần Landmark 81",
-                    description: "Căn hộ tầng cao thoáng mát, view sông đẹp, đầy đủ nội thất cao cấp.",
-                    contactName: "Trần Thị Lan Anh",
-                    roleLabel: "Chuyên viên cho thuê",
-                    contactPhone: "0901234567",
-                    contactEmail: "rent@toamviet.vn",
-                    status: "demo",
-                    createdAt: new Date().toISOString(),
-                    flow: "real_estate",
-                    postType: "thue",
-                    vipLevel: "bac",
-                    images: [FALLBACK_IMAGE],
-                    thumbnail: FALLBACK_IMAGE
-                },
-                {
-                    id: "demo-build-1",
-                    title: "CÔNG TY AN PHÁT NHẬN THI CÔNG NHÀ PHỐ TRỌN GÓI TẠI HÀ GIANG",
-                    serviceType: "Xây nhà trọn gói",
-                    servicePrice: "5.8 triệu/m²",
-                    serviceExp: "8 năm kinh nghiệm",
-                    serviceArea: "Hà Giang, Tuyên Quang",
-                    serviceBrand: "Công ty Xây dựng An Phát",
-                    serviceSpecialty: "Nhà phố, biệt thự, cải tạo",
-                    city: "Hà Giang",
-                    ward: "Phường Nguyễn Trãi",
-                    addressDetail: "Phục vụ toàn tỉnh",
-                    description: "Đội ngũ kỹ sư và thi công chuyên nghiệp, nhận hồ sơ thiết kế, thi công phần thô và hoàn thiện trọn gói.",
-                    contactName: "Công ty Xây dựng An Phát",
-                    brandName: "Công ty Xây dựng An Phát",
-                    roleLabel: "Doanh nghiệp / Nhà thầu",
-                    contactPhone: "0988123456",
-                    contactEmail: "build@toamviet.vn",
-                    status: "demo",
-                    createdAt: new Date().toISOString(),
-                    flow: "construction",
-                    postType: "xaydung",
-                    images: [FALLBACK_IMAGE],
-                    thumbnail: FALLBACK_IMAGE
+        function normalizePublicPosts(posts) {
+            return (Array.isArray(posts) ? posts : []).filter(function (post) {
+                return post && getAllowedPublicStatuses().includes(normalizeText(post.status || "approved"));
+            });
+        }
+
+        function dedupePosts(posts) {
+            const map = new Map();
+
+            (Array.isArray(posts) ? posts : []).forEach(function (post, index) {
+                const key = createPostId(post, index);
+                if (!map.has(key)) {
+                    map.set(key, post);
+                } else {
+                    const oldPost = map.get(key);
+                    const oldTime = new Date(oldPost.updatedAt || oldPost.createdAt || 0).getTime();
+                    const newTime = new Date(post.updatedAt || post.createdAt || 0).getTime();
+                    if (newTime >= oldTime) {
+                        map.set(key, post);
+                    }
                 }
-            ];
+            });
+
+            return Array.from(map.values());
         }
 
         function getDataSource() {
-            const posts = getAllPostsMixed();
-            return posts.length ? posts : getFallbackMixedPosts();
+            const sources = []
+                .concat(getPostsFromPostStorage())
+                .concat(getPostsFromUserStorage())
+                .concat(getPostsFromLocalStorage());
+
+            const publicPosts = dedupePosts(normalizePublicPosts(sources));
+            return publicPosts.length ? publicPosts : DEMO_POSTS;
         }
 
         function findPostById(posts, targetId) {
             const normalizedTargetId = String(targetId || "").trim();
 
-            return posts.find((post, index) => {
+            return posts.find(function (post, index) {
                 const candidates = [
                     post.id,
                     post.postId,
@@ -1646,110 +1659,112 @@
             return "";
         }
 
-        function renderGallery(images) {
-            const mainImage = document.getElementById("main-image");
-            const thumbGallery = document.getElementById("thumb-gallery");
-            const imageCounter = document.getElementById("detail-image-counter");
-            const finalImages = Array.isArray(images) && images.length ? images : [FALLBACK_IMAGE];
-
-            mainImage.src = finalImages[0] || FALLBACK_IMAGE;
-            mainImage.onerror = function () {
+        function setGalleryMain(src, index, total) {
+            els.mainImage.src = src || FALLBACK_IMAGE;
+            els.mainImage.onerror = function () {
                 this.src = FALLBACK_IMAGE;
             };
+            els.imageCounter.textContent = index + " / " + total;
+        }
 
-            imageCounter.textContent = "1 / " + finalImages.length;
+        function renderGallery(images) {
+            const finalImages = Array.isArray(images) && images.length ? images : [FALLBACK_IMAGE];
+            setGalleryMain(finalImages[0], 1, finalImages.length);
 
-            thumbGallery.innerHTML = finalImages.map((img, index) => {
-                const safeImg = escapeHtml(img);
-                const jsImg = String(img || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            els.thumbGallery.innerHTML = finalImages.map(function (img, index) {
                 return `
                     <div class="thumb-item">
                         <img
-                            src="${safeImg}"
+                            src="${escapeHtml(img)}"
                             alt="Ảnh ${index + 1}"
                             class="thumb-image ${index === 0 ? "active" : ""}"
-                            onclick="changeMainImage('${jsImg}', this, ${index + 1}, ${finalImages.length})"
+                            data-index="${index}"
                             onerror="this.src='${FALLBACK_IMAGE}'"
                         />
                     </div>
                 `;
             }).join("");
+
+            els.thumbGallery.querySelectorAll(".thumb-image").forEach(function (imgEl) {
+                imgEl.addEventListener("click", function () {
+                    const index = Number(this.getAttribute("data-index")) || 0;
+                    setGalleryMain(finalImages[index], index + 1, finalImages.length);
+                    els.thumbGallery.querySelectorAll(".thumb-image").forEach(function (item) {
+                        item.classList.remove("active");
+                    });
+                    this.classList.add("active");
+                });
+            });
         }
 
-        function changeMainImage(src, el, index, total) {
-            const mainImage = document.getElementById("main-image");
-            const imageCounter = document.getElementById("detail-image-counter");
+        function bindPhoneReveal(phone) {
+            state.currentPhoneRaw = normalizePhone(phone);
+            state.currentPhoneMasked = maskPhone(phone);
+            state.currentPhoneRevealed = false;
 
-            mainImage.src = src || FALLBACK_IMAGE;
-            mainImage.onerror = function () {
-                this.src = FALLBACK_IMAGE;
+            els.phoneRevealNumber.textContent = state.currentPhoneMasked;
+            els.phoneRevealText.textContent = state.currentPhoneRaw ? "Bấm để hiện số" : "Chưa có số";
+
+            els.phoneRevealButton.onclick = function () {
+                if (!state.currentPhoneRaw) return;
+
+                if (!state.currentPhoneRevealed) {
+                    els.phoneRevealNumber.textContent = formatDisplayPhone(state.currentPhoneRaw);
+                    els.phoneRevealText.textContent = "Bấm để gọi";
+                    state.currentPhoneRevealed = true;
+                    return;
+                }
+
+                window.location.href = "tel:" + state.currentPhoneRaw;
             };
-
-            if (imageCounter && index && total) {
-                imageCounter.textContent = index + " / " + total;
-            }
-
-            document.querySelectorAll(".thumb-image").forEach(item => item.classList.remove("active"));
-            if (el) el.classList.add("active");
-        }
-
-        function fillText(id, value) {
-            const el = document.getElementById(id);
-            if (el) el.textContent = value;
-        }
-
-        function fillHTML(id, value) {
-            const el = document.getElementById(id);
-            if (el) el.innerHTML = value;
-        }
-
-        function showRealEstateMeta() {
-            document.getElementById("meta-dot-1").classList.remove("hidden-force");
-            document.getElementById("detail-area").classList.remove("hidden-force");
-            document.getElementById("meta-dot-2").classList.remove("hidden-force");
-            document.getElementById("detail-price-per-m2").classList.remove("hidden-force");
-        }
-
-        function hideRealEstateMeta() {
-            document.getElementById("meta-dot-1").classList.add("hidden-force");
-            document.getElementById("detail-area").classList.add("hidden-force");
-            document.getElementById("meta-dot-2").classList.add("hidden-force");
-            document.getElementById("detail-price-per-m2").classList.add("hidden-force");
         }
 
         function renderSharedContact(post, phone, postId) {
-            const poster = buildPoster(post);
-            const role = getPosterSub(post);
-            const profileLink = getProfileDetailLink(post, postId);
-            const zaloLink = getZaloLink(phone);
-
-            fillText("poster-name", poster);
-            fillText("poster-role", role);
-            fillText("poster-avatar", getAvatarText(post));
-
-            const posterProfileLink = document.getElementById("poster-profile-link");
-            posterProfileLink.href = profileLink;
-
-            const zaloButton = document.getElementById("zalo-button");
-            zaloButton.href = zaloLink;
+            els.posterName.textContent = buildPoster(post);
+            els.posterRole.textContent = getPosterSub(post);
+            els.posterAvatar.textContent = getAvatarText(post);
+            els.posterProfileLink.href = getProfileDetailLink(post, postId);
+            els.zaloButton.href = getZaloLink(phone);
 
             bindPhoneReveal(phone);
 
-            const favoriteButton = document.getElementById("favorite-button");
-            favoriteButton.onclick = function () {
+            els.favoriteButton.onclick = function () {
                 toggleFavorite(postId, post);
             };
             updateFavoriteButton(postId, post);
         }
 
+        function showRealEstateMeta() {
+            els.metaDot1.classList.remove("hidden-force");
+            els.metaDot2.classList.remove("hidden-force");
+            els.detailArea.classList.remove("hidden-force");
+            els.detailPricePerM2.classList.remove("hidden-force");
+        }
+
+        function hideRealEstateMeta() {
+            els.metaDot1.classList.add("hidden-force");
+            els.metaDot2.classList.add("hidden-force");
+            els.detailArea.classList.add("hidden-force");
+            els.detailPricePerM2.classList.add("hidden-force");
+        }
+
+        function getRealEstateTypeLabel(post) {
+            return post.propertyCategoryName || post.categoryName || post.propertyType || "Bất động sản";
+        }
+
+        function getConstructionTypeLabel(post) {
+            return post.categoryName || post.serviceType || "Dịch vụ xây dựng";
+        }
+
         function renderRealEstateDetail(post, postId) {
+            const isRental = ["thue", "cho-thue", "rent"].includes(normalizeText(post.postType));
             const title = post.title || "Tiêu đề bất động sản";
             const price = formatPrice(post.propertyPrice);
             const area = formatArea(post.propertyArea);
             const unitPrice = calculatePricePerM2(post);
             const location = buildLocation(post) || "Chưa cập nhật khu vực";
             const fullAddress = buildFullAddress(post) || "Đang cập nhật";
-            const propertyType = post.propertyType || "Bất động sản";
+            const propertyType = getRealEstateTypeLabel(post);
             const legal = post.propertyLegal || "Đang cập nhật";
             const direction = post.propertyDirection || "Đang cập nhật";
             const beds = post.propertyBeds || "0";
@@ -1759,58 +1774,53 @@
             const phone = post.contactPhone || post.phone || "";
             const email = post.contactEmail || post.email || "Đang cập nhật";
             const images = getPostImages(post);
-            const isRental = ["thue", "cho-thue", "rent"].includes(normalizeText(post.postType));
             const modeText = isRental ? "Tin thuê" : "Tin bán";
-            const vipBadge = getVipBadgeHtml(post.vipLevel);
 
             document.title = title + " - ToamViet.com.vn";
 
-            fillText("breadcrumb-title", title);
-            fillText("detail-title", title);
-            fillText("detail-price", price);
-            fillText("detail-area", area);
-            fillText("detail-price-per-m2", unitPrice);
-            fillHTML("detail-location", '<i class="fa-solid fa-location-dot mr-1"></i> ' + escapeHtml(location));
+            els.breadcrumbTitle.textContent = title;
+            els.detailTitle.textContent = title;
+            els.detailPrice.textContent = price;
+            els.detailArea.textContent = area;
+            els.detailPricePerM2.textContent = unitPrice;
+            els.detailLocation.innerHTML = '<i class="fa-solid fa-location-dot mr-1"></i> ' + escapeHtml(location);
 
-            fillText("spec-label-1", "Loại hình");
-            fillText("spec-type", propertyType);
-            fillText("spec-label-2", "Pháp lý");
-            fillText("spec-legal", legal);
-            fillText("spec-label-3", "Hướng");
-            fillText("spec-direction", direction);
-            fillText("spec-label-4", "Phòng ngủ");
-            fillText("spec-beds", beds);
+            setText("spec-label-1", "Danh mục");
+            setText("spec-type", propertyType);
+            setText("spec-label-2", "Pháp lý");
+            setText("spec-legal", legal);
+            setText("spec-label-3", "Hướng");
+            setText("spec-direction", direction);
+            setText("spec-label-4", "Phòng ngủ");
+            setText("spec-beds", beds);
 
-            fillText("detail-description", description);
+            els.detailDescription.textContent = description;
 
-            fillText("extra-poster", poster);
-            fillText("extra-role", role);
-            fillText("extra-phone", formatDisplayPhone(phone) || "Liên hệ");
-            fillText("extra-email", email);
-            fillText("extra-date", formatDate(post.createdAt));
-            fillText("extra-city", post.city || "Đang cập nhật");
-            fillText("extra-ward", post.ward || "Đang cập nhật");
-            fillText("extra-address-label", post.projectName ? "Địa chỉ / Dự án" : "Địa chỉ chi tiết");
-            fillText("extra-address", post.projectName ? (post.projectName + " • " + fullAddress) : fullAddress);
+            setText("extra-poster", poster);
+            setText("extra-role", role);
+            setText("extra-phone", formatDisplayPhone(phone) || "Liên hệ");
+            setText("extra-email", email);
+            setText("extra-date", formatDate(post.createdAt));
+            setText("extra-city", post.city || "Đang cập nhật");
+            setText("extra-ward", post.ward || "Đang cập nhật");
+            setText("extra-address-label", post.projectName ? "Địa chỉ / Dự án" : "Địa chỉ chi tiết");
+            setText("extra-address", post.projectName ? (post.projectName + " • " + fullAddress) : fullAddress);
 
-            fillText("quick-label-1", "Mức giá");
-            fillText("quick-price", price);
-            fillText("quick-label-2", "Diện tích");
-            fillText("quick-area", area);
-            fillText("quick-label-3", "Đơn giá");
-            fillText("quick-unit-price", unitPrice);
-            fillText("quick-location", location);
+            setText("quick-label-1", "Mức giá");
+            setText("quick-price", price);
+            setText("quick-label-2", "Diện tích");
+            setText("quick-area", area);
+            setText("quick-label-3", "Đơn giá");
+            setText("quick-unit-price", unitPrice);
+            setText("quick-location", location);
 
-            fillText("property-type-badge", propertyType);
-            fillText("listing-mode-badge", modeText);
-            fillHTML("vip-badge-wrap", vipBadge);
+            els.propertyTypeBadge.textContent = propertyType;
+            els.listingModeBadge.textContent = modeText;
+            els.vipBadgeWrap.innerHTML = getVipBadgeHtml(post.vipLevel);
 
-            const breadcrumbParentLink = document.getElementById("breadcrumb-parent-link");
-            breadcrumbParentLink.textContent = isRental ? "Nhà đất cho thuê" : "Nhà đất bán";
-            breadcrumbParentLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
-
-            const relatedMoreLink = document.getElementById("related-more-link");
-            relatedMoreLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
+            els.breadcrumbParentLink.textContent = isRental ? "Nhà đất cho thuê" : "Nhà đất bán";
+            els.breadcrumbParentLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
+            els.relatedMoreLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
 
             showRealEstateMeta();
             renderGallery(images);
@@ -1823,7 +1833,7 @@
             const exp = post.serviceExp || "Đang cập nhật";
             const location = buildLocation(post) || post.serviceArea || "Đang cập nhật khu vực";
             const fullAddress = buildFullAddress(post) || post.serviceArea || "Đang cập nhật";
-            const serviceType = post.serviceType || post.categoryName || "Dịch vụ xây dựng";
+            const serviceType = getConstructionTypeLabel(post);
             const specialty = post.serviceSpecialty || "Đang cập nhật";
             const brand = post.serviceBrand || buildPoster(post);
             const role = getPosterSub(post);
@@ -1834,52 +1844,49 @@
 
             document.title = title + " - ToamViet.com.vn";
 
-            fillText("breadcrumb-title", title);
-            fillText("detail-title", title);
-            fillText("detail-price", price);
-            fillText("detail-area", exp);
-            fillText("detail-price-per-m2", specialty);
-            fillHTML("detail-location", '<i class="fa-solid fa-location-dot mr-1"></i> ' + escapeHtml(location));
+            els.breadcrumbTitle.textContent = title;
+            els.detailTitle.textContent = title;
+            els.detailPrice.textContent = price;
+            els.detailArea.textContent = exp;
+            els.detailPricePerM2.textContent = specialty;
+            els.detailLocation.innerHTML = '<i class="fa-solid fa-location-dot mr-1"></i> ' + escapeHtml(location);
 
-            fillText("spec-label-1", "Dịch vụ");
-            fillText("spec-type", serviceType);
-            fillText("spec-label-2", "Kinh nghiệm");
-            fillText("spec-legal", exp);
-            fillText("spec-label-3", "Chuyên môn");
-            fillText("spec-direction", specialty);
-            fillText("spec-label-4", "Đơn vị");
-            fillText("spec-beds", brand);
+            setText("spec-label-1", "Dịch vụ");
+            setText("spec-type", serviceType);
+            setText("spec-label-2", "Kinh nghiệm");
+            setText("spec-legal", exp);
+            setText("spec-label-3", "Chuyên môn");
+            setText("spec-direction", specialty);
+            setText("spec-label-4", "Đơn vị");
+            setText("spec-beds", brand);
 
-            fillText("detail-description", description);
+            els.detailDescription.textContent = description;
 
-            fillText("extra-poster", brand);
-            fillText("extra-role", role);
-            fillText("extra-phone", formatDisplayPhone(phone) || "Liên hệ");
-            fillText("extra-email", email);
-            fillText("extra-date", formatDate(post.createdAt));
-            fillText("extra-city", post.city || "Đang cập nhật");
-            fillText("extra-ward", post.ward || "Đang cập nhật");
-            fillText("extra-address-label", "Khu vực phục vụ");
-            fillText("extra-address", fullAddress);
+            setText("extra-poster", brand);
+            setText("extra-role", role);
+            setText("extra-phone", formatDisplayPhone(phone) || "Liên hệ");
+            setText("extra-email", email);
+            setText("extra-date", formatDate(post.createdAt));
+            setText("extra-city", post.city || "Đang cập nhật");
+            setText("extra-ward", post.ward || "Đang cập nhật");
+            setText("extra-address-label", "Khu vực phục vụ");
+            setText("extra-address", fullAddress);
 
-            fillText("quick-label-1", "Đơn giá");
-            fillText("quick-price", price);
-            fillText("quick-label-2", "Kinh nghiệm");
-            fillText("quick-area", exp);
-            fillText("quick-label-3", "Chuyên môn");
-            fillText("quick-unit-price", specialty);
-            fillText("quick-location", location);
+            setText("quick-label-1", "Đơn giá");
+            setText("quick-price", price);
+            setText("quick-label-2", "Kinh nghiệm");
+            setText("quick-area", exp);
+            setText("quick-label-3", "Chuyên môn");
+            setText("quick-unit-price", specialty);
+            setText("quick-location", location);
 
-            fillText("property-type-badge", "Xây dựng");
-            fillText("listing-mode-badge", "Dịch vụ");
-            fillHTML("vip-badge-wrap", '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>');
+            els.propertyTypeBadge.textContent = "Xây dựng";
+            els.listingModeBadge.textContent = "Dịch vụ";
+            els.vipBadgeWrap.innerHTML = '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
 
-            const breadcrumbParentLink = document.getElementById("breadcrumb-parent-link");
-            breadcrumbParentLink.textContent = "Xây dựng";
-            breadcrumbParentLink.href = "../pages/xay-dung.html";
-
-            const relatedMoreLink = document.getElementById("related-more-link");
-            relatedMoreLink.href = "../pages/xay-dung.html";
+            els.breadcrumbParentLink.textContent = "Xây dựng";
+            els.breadcrumbParentLink.href = "../pages/xay-dung.html";
+            els.relatedMoreLink.href = "../pages/xay-dung.html";
 
             hideRealEstateMeta();
             renderGallery(images);
@@ -1888,7 +1895,6 @@
 
         function renderDetail(post, postId) {
             const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
-
             if (isConstruction) {
                 renderConstructionDetail(post, postId);
             } else {
@@ -1896,10 +1902,58 @@
             }
         }
 
-        function renderRelatedPosts(currentPostId, currentPost) {
-            const relatedContainer = document.getElementById("related-posts");
-            const posts = getDataSource();
+        function buildRelatedCardHtml(post, id) {
+            const title = escapeHtml(post.title || "Tin đăng");
+            const image = escapeHtml(getCardImage(post));
+            const location = escapeHtml(buildLocation(post) || post.serviceArea || "Chưa cập nhật khu vực");
+            const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
+            const badgeType = isConstruction ? "Xây dựng" : escapeHtml(getRealEstateTypeLabel(post));
+            const badgeMode = isConstruction
+                ? "Dịch vụ"
+                : (["thue", "cho-thue", "rent"].includes(normalizeText(post.postType)) ? "Tin thuê" : "Tin bán");
 
+            const metaMain = isConstruction
+                ? escapeHtml(formatPrice(post.servicePrice))
+                : escapeHtml(formatPrice(post.propertyPrice));
+
+            const metaSub = isConstruction
+                ? escapeHtml(post.serviceExp || "Đang cập nhật")
+                : escapeHtml(formatArea(post.propertyArea));
+
+            const topBadge = !isConstruction
+                ? getVipBadgeHtml(post.vipLevel)
+                : '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
+
+            return `
+                <a href="../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}" class="related-card">
+                    <div class="related-image-wrap">
+                        <img src="${image}" alt="${title}" onerror="this.src='${FALLBACK_IMAGE}'" />
+                        <div class="related-top-badge">${topBadge}</div>
+                    </div>
+
+                    <div class="related-body">
+                        <div class="related-pill-row">
+                            <span class="related-pill type">${badgeType}</span>
+                            <span class="related-pill mode">${badgeMode}</span>
+                        </div>
+
+                        <h3 class="related-title">${title}</h3>
+
+                        <div class="related-meta">
+                            <span class="related-price">${metaMain}</span>
+                            <span class="text-slate-300">•</span>
+                            <span class="related-sub">${metaSub}</span>
+                        </div>
+
+                        <p class="related-location">
+                            <i class="fa-solid fa-location-dot mr-1"></i> ${location}
+                        </p>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderRelatedPosts(currentPostId, currentPost) {
             const currentFlow = normalizeText(currentPost.flow);
             const currentType = normalizeText(currentPost.postType);
             const currentCity = normalizeText(currentPost.city);
@@ -1909,10 +1963,16 @@
             const currentPropertyType = normalizeText(currentPost.propertyType);
             const currentServiceType = normalizeText(currentPost.serviceType);
 
-            const candidates = posts
-                .map((post, index) => ({ post, id: createPostId(post, index) }))
-                .filter(item => item.id !== currentPostId)
-                .filter(item => normalizeText(item.post.flow) === currentFlow);
+            const candidates = state.posts
+                .map(function (post, index) {
+                    return { post: post, id: createPostId(post, index) };
+                })
+                .filter(function (item) {
+                    return item.id !== currentPostId;
+                })
+                .filter(function (item) {
+                    return normalizeText(item.post.flow) === currentFlow;
+                });
 
             const grouped = {
                 sameProject: [],
@@ -1921,7 +1981,7 @@
                 fallback: []
             };
 
-            candidates.forEach(item => {
+            candidates.forEach(function (item) {
                 const post = item.post;
                 const postProjectSlug = normalizeText(post.projectSlug);
                 const postProjectName = normalizeText(post.projectName);
@@ -1939,11 +1999,9 @@
                     (currentCity && postCity && currentCity === postCity) ||
                     (currentWard && postWard && currentWard === postWard);
 
-                const isSameType =
-                    currentFlow === "construction"
-                        ? (currentServiceType && postServiceType && currentServiceType === postServiceType)
-                        : (postType === currentType) ||
-                          (currentPropertyType && postPropertyType && currentPropertyType === postPropertyType);
+                const isSameType = currentFlow === "construction"
+                    ? (currentServiceType && postServiceType && currentServiceType === postServiceType)
+                    : (postType === currentType) || (currentPropertyType && postPropertyType && currentPropertyType === postPropertyType);
 
                 if (isSameProject) {
                     grouped.sameProject.push(item);
@@ -1959,8 +2017,8 @@
             const finalRelated = [];
             const usedIds = new Set();
 
-            [grouped.sameProject, grouped.sameArea, grouped.sameType, grouped.fallback].forEach(group => {
-                group.forEach(item => {
+            [grouped.sameProject, grouped.sameArea, grouped.sameType, grouped.fallback].forEach(function (group) {
+                group.forEach(function (item) {
                     if (!usedIds.has(item.id) && finalRelated.length < 6) {
                         usedIds.add(item.id);
                         finalRelated.push(item);
@@ -1969,7 +2027,7 @@
             });
 
             if (!finalRelated.length) {
-                relatedContainer.innerHTML = `
+                els.relatedPosts.innerHTML = `
                     <div class="empty-box" style="grid-column: 1 / -1;">
                         Chưa có thêm tin liên quan để hiển thị.
                     </div>
@@ -1977,63 +2035,16 @@
                 return;
             }
 
-            relatedContainer.innerHTML = finalRelated.map(({ post, id }) => {
-                const title = escapeHtml(post.title || "Tin đăng");
-                const image = escapeHtml(getCardImage(post));
-                const location = escapeHtml(buildLocation(post) || post.serviceArea || "Chưa cập nhật khu vực");
-                const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
-                const badgeType = isConstruction ? "Xây dựng" : escapeHtml(post.propertyType || "Bất động sản");
-                const badgeMode = isConstruction
-                    ? "Dịch vụ"
-                    : (["thue", "cho-thue", "rent"].includes(normalizeText(post.postType)) ? "Tin thuê" : "Tin bán");
-
-                const metaMain = isConstruction
-                    ? escapeHtml(formatPrice(post.servicePrice))
-                    : escapeHtml(formatPrice(post.propertyPrice));
-
-                const metaSub = isConstruction
-                    ? escapeHtml(post.serviceExp || "Đang cập nhật")
-                    : escapeHtml(formatArea(post.propertyArea));
-
-                const vipBadge = !isConstruction
-                    ? getVipBadgeHtml(post.vipLevel)
-                    : '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
-
-                return `
-                    <a href="../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}" class="related-card">
-                        <div class="related-image-wrap">
-                            <img src="${image}" alt="${title}" onerror="this.src='${FALLBACK_IMAGE}'" />
-                            <div class="related-top-badge">${vipBadge}</div>
-                        </div>
-
-                        <div class="related-body">
-                            <div class="related-pill-row">
-                                <span class="related-pill type">${badgeType}</span>
-                                <span class="related-pill mode">${badgeMode}</span>
-                            </div>
-
-                            <h3 class="related-title">${title}</h3>
-
-                            <div class="related-meta">
-                                <span class="related-price">${metaMain}</span>
-                                <span class="text-slate-300">•</span>
-                                <span class="related-sub">${metaSub}</span>
-                            </div>
-
-                            <p class="related-location">
-                                <i class="fa-solid fa-location-dot mr-1"></i> ${location}
-                            </p>
-                        </div>
-                    </a>
-                `;
+            els.relatedPosts.innerHTML = finalRelated.map(function (item) {
+                return buildRelatedCardHtml(item.post, item.id);
             }).join("");
         }
 
         function showNotFound() {
-            document.getElementById("detail-wrapper").classList.add("hidden");
-            document.getElementById("not-found-box").classList.remove("hidden");
-            document.getElementById("related-posts").innerHTML = "";
-            fillText("breadcrumb-title", "Không tìm thấy tin đăng");
+            els.detailWrapper.classList.add("hidden");
+            els.notFoundBox.classList.remove("hidden");
+            els.relatedPosts.innerHTML = "";
+            els.breadcrumbTitle.textContent = "Không tìm thấy tin đăng";
             document.title = "Không tìm thấy tin đăng - ToamViet.com.vn";
         }
 
@@ -2056,30 +2067,43 @@
             }
         }
 
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
         function initPage() {
             updateFavoriteCount();
 
-            const posts = getDataSource();
-            const id = getQueryParam("id");
+            state.posts = getDataSource();
+            state.currentPostId = String(getQueryParam("id") || "").trim();
 
-            if (!id) {
+            if (!state.currentPostId) {
                 showNotFound();
                 return;
             }
 
-            const normalizedId = String(id).trim();
-            const post = findPostById(posts, normalizedId);
+            state.currentPost = findPostById(state.posts, state.currentPostId);
 
-            if (!post) {
+            if (!state.currentPost) {
                 showNotFound();
                 return;
             }
 
-            renderDetail(post, normalizedId);
-            renderRelatedPosts(normalizedId, post);
+            renderDetail(state.currentPost, state.currentPostId);
+            renderRelatedPosts(state.currentPostId, state.currentPost);
         }
 
-        window.changeMainImage = changeMainImage;
         window.sendToZalo = sendToZalo;
 
         window.addEventListener("load", async function () {
