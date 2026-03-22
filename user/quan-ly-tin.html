@@ -38,6 +38,7 @@
             font-family: "Roboto", sans-serif;
             background: var(--soft-bg);
             color: #1e293b;
+            margin: 0;
         }
 
         .container-custom {
@@ -294,6 +295,7 @@
         .btn-primary {
             background: var(--vip-color);
             color: white;
+            text-decoration: none;
         }
 
         .btn-primary:hover {
@@ -628,6 +630,7 @@
             line-height: 1.8;
             font-weight: 700;
             color: #0f172a;
+            word-break: break-word;
         }
 
         .detail-gallery {
@@ -672,6 +675,10 @@
             background: #f0fdfa;
             border: 1px solid #99f6e4;
             color: #0f766e;
+        }
+
+        .hidden {
+            display: none !important;
         }
 
         @media (max-width: 1180px) {
@@ -981,9 +988,24 @@
     <script src="../assets/js/main.js"></script>
 
     <script>
+        const PROJECT_CATEGORIES = [
+            { slug: "can-ho-chung-cu", name: "Căn hộ chung cư" },
+            { slug: "cao-oc-van-phong", name: "Cao ốc văn phòng" },
+            { slug: "trung-tam-thuong-mai", name: "Trung tâm thương mại" },
+            { slug: "khu-do-thi-moi", name: "Khu đô thị mới" },
+            { slug: "khu-phuc-hop", name: "Khu phức hợp" },
+            { slug: "nha-o-xa-hoi", name: "Nhà ở xã hội" },
+            { slug: "khu-nghi-duong-sinh-thai", name: "Khu nghỉ dưỡng, Sinh thái" },
+            { slug: "khu-cong-nghiep", name: "Khu công nghiệp" },
+            { slug: "biet-thu-lien-ke", name: "Biệt thự, liền kề" },
+            { slug: "shophouse", name: "Shophouse" },
+            { slug: "nha-mat-pho", name: "Nhà mặt phố" },
+            { slug: "du-an-khac", name: "Dự án khác" }
+        ];
+
         const currentUser =
-            JSON.parse(localStorage.getItem("currentUser")) ||
-            JSON.parse(localStorage.getItem("registeredUser")) ||
+            JSON.parse(localStorage.getItem("currentUser") || "null") ||
+            JSON.parse(localStorage.getItem("registeredUser") || "null") ||
             null;
 
         const searchInput = document.getElementById("searchInput");
@@ -1143,11 +1165,27 @@
         }
 
         function getAllPosts() {
-            return JSON.parse(localStorage.getItem("allPosts") || "[]");
+            try {
+                return JSON.parse(localStorage.getItem("allPosts") || "[]");
+            } catch (error) {
+                console.warn("Không đọc được allPosts:", error);
+                return [];
+            }
         }
 
         function saveAllPosts(posts) {
             localStorage.setItem("allPosts", JSON.stringify(posts));
+        }
+
+        function getProjectTypeNameFromSlug(slug) {
+            const found = PROJECT_CATEGORIES.find(item => item.slug === slug);
+            return found ? found.name : "";
+        }
+
+        function getProjectTypeSlugFromValue(value) {
+            const normalized = normalizeText(value);
+            const found = PROJECT_CATEGORIES.find(item => item.slug === value || normalizeText(item.name) === normalized);
+            return found ? found.slug : "";
         }
 
         function rebuildCompatibilityStores(posts) {
@@ -1162,34 +1200,100 @@
             localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
         }
 
-        function updateProjectCountsFromPosts(posts) {
-            const projects = JSON.parse(localStorage.getItem("projects") || "[]");
-            const nextProjects = projects.map(project => {
-                const relatedPosts = posts.filter(post => post.projectSlug && project.slug === post.projectSlug);
-                const count = relatedPosts.length;
+        function syncProjectStoreFromPosts(posts) {
+            const oldProjects = JSON.parse(localStorage.getItem("projects") || "[]");
+            const map = new Map();
 
-                return {
+            oldProjects.forEach(project => {
+                if (!project || !project.slug) return;
+                const typeSlug = getProjectTypeSlugFromValue(project.type);
+                map.set(project.slug, {
                     ...project,
-                    postCount: count,
-                    pendingCount: relatedPosts.filter(p => (p.status || "pending") === "pending").length,
-                    rejectedCount: relatedPosts.filter(p => p.status === "rejected").length,
-                    hiddenCount: relatedPosts.filter(p => p.status === "hidden").length,
-                    totalPosts: count,
-                    lastPostAt: relatedPosts
-                        .sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0))[0]?.updatedAt ||
-                        relatedPosts[0]?.createdAt ||
-                        project.lastPostAt ||
-                        project.createdAt ||
-                        new Date().toISOString()
-                };
+                    type: typeSlug || project.type || "",
+                    typeName: project.typeName || getProjectTypeNameFromSlug(typeSlug || project.type) || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0
+                });
             });
+
+            posts.forEach(post => {
+                if (!post || !post.projectSlug || !post.projectName) return;
+
+                const slug = post.projectSlug;
+                const existing = map.get(slug) || {
+                    id: post.projectId || ("project_" + slug),
+                    name: post.projectName,
+                    slug: slug,
+                    city: post.city || "",
+                    ward: post.ward || "",
+                    addressDetail: post.addressDetail || "",
+                    type: post.projectType || "",
+                    typeName: post.projectTypeName || "",
+                    developer: post.projectDeveloper || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0,
+                    createdAt: new Date().toISOString(),
+                    lastPostAt: post.createdAt || new Date().toISOString()
+                };
+
+                existing.name = existing.name || post.projectName;
+                existing.city = existing.city || post.city || "";
+                existing.ward = existing.ward || post.ward || "";
+                existing.addressDetail = existing.addressDetail || post.addressDetail || "";
+                existing.type = existing.type || post.projectType || "";
+                existing.typeName = existing.typeName || post.projectTypeName || getProjectTypeNameFromSlug(existing.type) || "";
+                existing.developer = existing.developer || post.projectDeveloper || "";
+                existing.totalPosts = (existing.totalPosts || 0) + 1;
+                existing.lastPostAt = post.updatedAt || post.createdAt || existing.lastPostAt || new Date().toISOString();
+
+                const status = post.status || "pending";
+                if (status === "approved") {
+                    existing.postCount = (existing.postCount || 0) + 1;
+                } else if (status === "pending") {
+                    existing.pendingCount = (existing.pendingCount || 0) + 1;
+                } else if (status === "rejected") {
+                    existing.rejectedCount = (existing.rejectedCount || 0) + 1;
+                } else if (status === "hidden") {
+                    existing.hiddenCount = (existing.hiddenCount || 0) + 1;
+                }
+
+                map.set(slug, existing);
+            });
+
+            const nextProjects = Array.from(map.values()).sort((a, b) => new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0));
             localStorage.setItem("projects", JSON.stringify(nextProjects));
         }
 
         function syncStores() {
             const posts = getAllPosts();
             rebuildCompatibilityStores(posts);
-            updateProjectCountsFromPosts(posts);
+            syncProjectStoreFromPosts(posts);
+        }
+
+        function isCurrentUserPost(post) {
+            if (!currentUser || !post) return false;
+
+            if (currentUser.id && post.userId) {
+                return post.userId === currentUser.id;
+            }
+
+            const sameEmail =
+                currentUser.email &&
+                post.email &&
+                normalizeText(currentUser.email) === normalizeText(post.email);
+
+            const samePhone =
+                currentUser.phone &&
+                post.phone &&
+                normalizeText(currentUser.phone) === normalizeText(post.phone);
+
+            return sameEmail || samePhone;
         }
 
         function loadPosts() {
@@ -1200,16 +1304,7 @@
                 return;
             }
 
-            myPosts = allPosts.filter(post => {
-                if (currentUser.id && post.userId) {
-                    return post.userId === currentUser.id;
-                }
-
-                const sameEmail = currentUser.email && post.email && normalizeText(currentUser.email) === normalizeText(post.email);
-                const samePhone = currentUser.phone && post.phone && normalizeText(currentUser.phone) === normalizeText(post.phone);
-
-                return sameEmail || samePhone;
-            });
+            myPosts = allPosts.filter(isCurrentUserPost);
 
             myPosts.sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
         }
@@ -1242,6 +1337,8 @@
                     post.addressDetail,
                     post.projectName,
                     post.propertyType,
+                    post.propertyCategoryName,
+                    post.categoryName,
                     post.serviceType,
                     post.description,
                     post.contactName
@@ -1275,9 +1372,9 @@
 
         function getPriceDisplay(post) {
             if (post.flow === "construction") {
-                return post.servicePrice || post.servicePriceData?.display || "Chưa nhập";
+                return post.servicePrice || (post.servicePriceData && post.servicePriceData.display) || "Chưa nhập";
             }
-            return post.propertyPrice || post.propertyPriceData?.display || "Chưa nhập";
+            return post.propertyPrice || (post.propertyPriceData && post.propertyPriceData.display) || "Chưa nhập";
         }
 
         function getAreaDisplay(post) {
@@ -1299,6 +1396,13 @@
         function truncateText(text, max = 180) {
             if (!text) return "";
             return text.length > max ? text.slice(0, max) + "..." : text;
+        }
+
+        function getCategoryDisplay(post) {
+            if (post.flow === "construction") {
+                return post.categoryName || post.serviceType || "Xây dựng";
+            }
+            return post.propertyCategoryName || post.categoryName || post.propertyType || getPostTypeLabel(post);
         }
 
         function buildPostCard(post) {
@@ -1329,6 +1433,7 @@
                                 <span><i class="fa-regular fa-clock"></i>${formatDateTime(post.createdAt)}</span>
                                 <span><i class="fa-solid fa-location-dot"></i>${getLocationDisplay(post)}</span>
                                 <span><i class="fa-solid fa-image"></i>${images.length} ảnh</span>
+                                <span><i class="fa-solid fa-folder-tree"></i>${getCategoryDisplay(post)}</span>
                             </div>
 
                             <div class="post-desc">${truncateText(post.description || "Chưa có mô tả.", 220)}</div>
@@ -1456,6 +1561,7 @@
                 getFlowLabel(post),
                 getPostTypeLabel(post),
                 getStatusLabel(post.status || "pending"),
+                getCategoryDisplay(post),
                 getLocationDisplay(post),
                 formatDateTime(post.createdAt)
             ].filter(Boolean);
@@ -1463,8 +1569,9 @@
             detailMeta.textContent = metaParts.join(" • ");
             detailDescription.textContent = post.description || "Chưa có mô tả.";
 
+            const projectTypeText = post.projectTypeName || getProjectTypeNameFromSlug(post.projectType) || post.propertyType || "";
             const projectText = post.projectName
-                ? `${post.projectName} • ${post.projectTypeName || post.propertyType || "Chưa phân loại"}`
+                ? `${post.projectName}${projectTypeText ? " • " + projectTypeText : ""}`
                 : `Không thuộc dự án • ${getLocationDisplay(post)}`;
 
             detailProject.textContent = projectText;
@@ -1474,7 +1581,7 @@
                 detailGallery.innerHTML = `<div class="detail-note col-span-2">Tin này chưa có hình ảnh đã lưu.</div>`;
             } else {
                 detailGallery.innerHTML = images.slice(0, 6).map(img => {
-                    const src = img?.dataUrl || img?.url || "";
+                    const src = (img && (img.dataUrl || img.url)) || "";
                     return src
                         ? `<img src="${src}" alt="Ảnh tin đăng" />`
                         : `<div class="detail-note">Ảnh không hợp lệ</div>`;
@@ -1487,6 +1594,11 @@
             const index = posts.findIndex(item => item.id === postId);
             if (index === -1) {
                 showStatus("error", "Không tìm thấy tin cần cập nhật trạng thái.");
+                return;
+            }
+
+            if (!isCurrentUserPost(posts[index])) {
+                showStatus("error", "Bạn không có quyền cập nhật tin này.");
                 return;
             }
 
@@ -1508,6 +1620,17 @@
         }
 
         function deletePost(postId) {
+            const target = getAllPosts().find(item => item.id === postId);
+            if (!target) {
+                showStatus("error", "Không tìm thấy tin cần xóa.");
+                return;
+            }
+
+            if (!isCurrentUserPost(target)) {
+                showStatus("error", "Bạn không có quyền xóa tin này.");
+                return;
+            }
+
             const confirmDelete = confirm("Bạn có chắc muốn xóa tin này không? Thao tác này sẽ xóa khỏi danh sách quản lý của bạn.");
             if (!confirmDelete) return;
 
@@ -1530,6 +1653,12 @@
                 return;
             }
 
+            if (!isCurrentUserPost(post)) {
+                showStatus("error", "Bạn không có quyền nhân bản tin này.");
+                return;
+            }
+
+            const clonedImages = getSafeArray(post.images).map(img => ({ ...img }));
             const copy = {
                 ...post,
                 id: "post_" + Date.now(),
@@ -1537,7 +1666,9 @@
                 slug: slugify((post.title || "tin-dang") + "-ban-sao-" + Date.now()),
                 status: "pending",
                 createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+                updatedAt: new Date().toISOString(),
+                images: clonedImages,
+                imageCount: clonedImages.length
             };
 
             const posts = getAllPosts();
@@ -1569,7 +1700,7 @@
                 return;
             }
 
-            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
