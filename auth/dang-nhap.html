@@ -19,7 +19,14 @@
     <style>
         :root {
             --vip-color: #008b8b;
+            --vip-dark: #0f766e;
             --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --stroke: #e2e8f0;
+            --text-main: #0f172a;
+            --text-soft: #64748b;
+            --danger: #dc2626;
+            --success: #0f766e;
         }
 
         * {
@@ -28,19 +35,18 @@
 
         body {
             font-family: "Roboto", sans-serif;
-            background-color: #f4f7f7;
-            color: #2c2c2c;
+            background: var(--soft-bg);
+            color: #1e293b;
+            margin: 0;
         }
 
-        .container-custom {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
+        .auth-page {
+            padding: 32px 0 40px;
         }
 
         .auth-shell {
             max-width: 1120px;
-            margin: 40px auto;
+            margin: 0 auto;
         }
 
         .auth-container {
@@ -409,6 +415,7 @@
             font-size: 12px;
             color: #64748b;
             line-height: 1.7;
+            margin: 0 0 4px;
         }
 
         @media (max-width: 991px) {
@@ -433,7 +440,7 @@
 
         @media (max-width: 640px) {
             .auth-shell {
-                margin: 24px auto;
+                margin: 0 auto;
             }
 
             .auth-topbar {
@@ -471,7 +478,7 @@
     <div id="siteHeader"></div>
     <div id="siteMobileMenu"></div>
 
-    <main class="py-8 md:py-10">
+    <main class="auth-page">
         <div class="container-custom">
             <div class="auth-shell">
                 <div class="auth-container">
@@ -795,14 +802,6 @@
             { value: "engineer_architect", label: "Kỹ sư / Kiến trúc sư / Nhà thầu" }
         ];
 
-        const roleLabelMap = {
-            individual_poster: "Cá nhân đăng tin bất động sản",
-            broker: "Môi giới bất động sản",
-            real_estate_company: "Doanh nghiệp / Sàn bất động sản",
-            construction_company: "Công ty xây dựng",
-            engineer_architect: "Kỹ sư / Kiến trúc sư / Nhà thầu"
-        };
-
         const tabLogin = document.getElementById("tab-login");
         const tabRegister = document.getElementById("tab-register");
         const formLogin = document.getElementById("form-login");
@@ -828,63 +827,35 @@
         }
 
         function sanitizePhone(phone) {
-            return (phone || "").replace(/[^\d+]/g, "").replace(/\s+/g, "");
+            return (phone || "").replace(/[^\d+]/g, "").trim();
         }
 
-        function slugify(str) {
-            return (str || "")
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/đ/g, "d")
-                .replace(/[^a-z0-9\s-]/g, "")
-                .trim()
-                .replace(/\s+/g, "-")
-                .replace(/-+/g, "-");
+        function hideStatus(target) {
+            target.className = "status-box";
+            target.textContent = "";
         }
 
-        function showBox(box, type, message) {
-            box.className = "status-box " + type;
-            box.textContent = message;
-        }
-
-        function resetBox(box) {
-            box.className = "status-box";
-            box.textContent = "";
-        }
-
-        function getStoredRegisteredUser() {
-            try {
-                return JSON.parse(localStorage.getItem("registeredUser") || "null");
-            } catch (error) {
-                return null;
-            }
-        }
-
-        function saveRegisteredUser(user) {
-            localStorage.setItem("registeredUser", JSON.stringify(user));
-        }
-
-        function saveCurrentUser(user) {
-            localStorage.setItem("currentUser", JSON.stringify(user));
+        function showStatus(target, type, message) {
+            target.className = "status-box " + type;
+            target.textContent = message;
         }
 
         function showTab(type) {
-            resetBox(loginStatus);
-            resetBox(registerStatus);
+            hideStatus(loginStatus);
+            hideStatus(registerStatus);
 
             if (type === "login") {
                 tabLogin.classList.add("active");
                 tabRegister.classList.remove("active");
                 formLogin.classList.remove("hidden");
                 formRegister.classList.add("hidden");
-                document.title = "Đăng nhập / Đăng ký tài khoản | ToamViet.com.vn";
+                document.title = "Đăng nhập tài khoản | ToamViet.com.vn";
             } else {
                 tabRegister.classList.add("active");
                 tabLogin.classList.remove("active");
                 formRegister.classList.remove("hidden");
                 formLogin.classList.add("hidden");
-                document.title = "Đăng nhập / Đăng ký tài khoản | ToamViet.com.vn";
+                document.title = "Đăng ký tài khoản | ToamViet.com.vn";
             }
         }
 
@@ -925,13 +896,18 @@
         }
 
         function getRoleLabel(roleValue) {
-            return roleLabelMap[roleValue] || "";
+            const allRoles = realEstateRoles.concat(constructionRoles);
+            const found = allRoles.find(function (item) {
+                return item.value === roleValue;
+            });
+            return found ? found.label : "";
         }
 
         function getRedirectByRole(roleValue) {
             const flow = getRoleFlow(roleValue);
-            if (flow === "real_estate") return "../user/dang-tin.html";
-            if (flow === "construction") return "../user/dang-tin.html";
+            if (flow === "real_estate" || flow === "construction") {
+                return "../user/dang-tin.html";
+            }
             return "../index.html";
         }
 
@@ -940,41 +916,61 @@
         }
 
         function isValidPhone(phone) {
-            return /^(0|\+84)[0-9]{9,10}$/.test(sanitizePhone(phone));
+            return /^(0|\+84)[0-9]{9,10}$/.test((phone || "").replace(/\s+/g, ""));
         }
 
-        function getAccountGroupLabel(group) {
-            return group === "construction" ? "Xây dựng" : "Bất động sản";
+        function saveCurrentUser(user) {
+            localStorage.setItem("currentUser", JSON.stringify(user));
         }
 
-        function buildUserData(data) {
-            const accountGroup = data.accountGroup;
-            const role = data.role;
-            const phone = sanitizePhone(data.phone);
-            const fullName = data.fullName.trim();
-            const email = data.email.trim();
-            const brandName = (data.brandName || "").trim();
-            const serviceArea = (data.serviceArea || "").trim();
-            const specialty = (data.specialty || "").trim();
-            const nowIso = new Date().toISOString();
+        function saveRegisteredUser(user) {
+            localStorage.setItem("registeredUser", JSON.stringify(user));
+        }
+
+        function getSavedRegisteredUser() {
+            try {
+                return JSON.parse(localStorage.getItem("registeredUser") || "null");
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function createDemoUser(payload) {
+            const flow = getRoleFlow(payload.role);
+            const roleLabel = getRoleLabel(payload.role);
+            const isConstruction = flow === "construction";
 
             return {
-                id: data.id || ("user_" + slugify(email || phone || fullName || Date.now()) + "_" + Date.now()),
-                accountGroup: accountGroup,
-                accountGroupLabel: getAccountGroupLabel(accountGroup),
-                role: role,
-                roleLabel: getRoleLabel(role),
-                fullName: fullName,
-                phone: phone,
-                email: email,
-                brandName: brandName,
-                serviceArea: serviceArea,
-                specialty: specialty,
-                bio: data.bio || "",
-                password: data.password,
-                createdAt: data.createdAt || nowIso,
-                updatedAt: nowIso
+                id: payload.id || ("user_" + Date.now()),
+                accountGroup: flow || payload.accountGroup || "",
+                accountGroupLabel: isConstruction ? "Xây dựng" : "Bất động sản",
+                role: payload.role,
+                roleLabel: roleLabel,
+                fullName: payload.fullName,
+                phone: sanitizePhone(payload.phone),
+                email: payload.email,
+                brandName: payload.brandName || "",
+                serviceArea: payload.serviceArea || "",
+                specialty: payload.specialty || "",
+                bio: payload.bio || "",
+                password: payload.password,
+                createdAt: payload.createdAt || new Date().toISOString(),
+                updatedAt: new Date().toISOString()
             };
+        }
+
+        function updateFavoriteCount() {
+            const saleFav = JSON.parse(localStorage.getItem("favoriteSalePosts") || "[]");
+            const rentFav = JSON.parse(localStorage.getItem("favoriteRentalPosts") || "[]");
+            const buildFav = JSON.parse(localStorage.getItem("favoriteConstructionPosts") || "[]");
+            const total = (Array.isArray(saleFav) ? saleFav.length : 0) +
+                (Array.isArray(rentFav) ? rentFav.length : 0) +
+                (Array.isArray(buildFav) ? buildFav.length : 0);
+
+            const badges = document.querySelectorAll("#headerFavoriteCount, #favorite-count-badge");
+            badges.forEach(function (badge) {
+                badge.textContent = total;
+            });
         }
 
         tabLogin.addEventListener("click", function () {
@@ -1007,19 +1003,18 @@
 
         formLogin.addEventListener("submit", function (e) {
             e.preventDefault();
-            resetBox(loginStatus);
+            hideStatus(loginStatus);
 
             const identity = document.getElementById("login-identity").value.trim();
             const password = document.getElementById("login-password").value;
-            const remember = document.getElementById("remember-login").checked;
 
             if (!identity || !password) {
-                showBox(loginStatus, "error", "Vui lòng nhập đầy đủ email/số điện thoại và mật khẩu.");
+                showStatus(loginStatus, "error", "Vui lòng nhập đầy đủ email/số điện thoại và mật khẩu.");
                 return;
             }
 
             if (password.length < 6) {
-                showBox(loginStatus, "error", "Mật khẩu phải có ít nhất 6 ký tự.");
+                showStatus(loginStatus, "error", "Mật khẩu phải có ít nhất 6 ký tự.");
                 return;
             }
 
@@ -1027,60 +1022,35 @@
             loginSubmit.textContent = "Đang kiểm tra...";
 
             setTimeout(function () {
-                const normalizedIdentity = normalizeText(identity);
-                const savedUser = getStoredRegisteredUser();
-
                 if (identity === "admin@toamviet.com" && password === "123456") {
-                    const adminUser = {
-                        id: "admin_demo",
-                        fullName: "Quản trị viên",
-                        email: "admin@toamviet.com",
-                        phone: "",
-                        brandName: "ToamViet Admin",
-                        accountGroup: "real_estate",
-                        accountGroupLabel: "Bất động sản",
-                        role: "admin",
-                        roleLabel: "Quản trị hệ thống",
-                        password: "123456",
-                        updatedAt: new Date().toISOString()
-                    };
-
-                    saveCurrentUser(adminUser);
-
-                    if (remember) {
-                        localStorage.setItem("rememberLogin", "true");
-                    } else {
-                        localStorage.removeItem("rememberLogin");
-                    }
-
-                    showBox(loginStatus, "success", "Đăng nhập quản trị thành công. Đang chuyển hướng...");
-                    window.location.href = "../admin/admin-dashboard.html";
+                    showStatus(loginStatus, "success", "Đăng nhập quản trị thành công. Đang chuyển hướng...");
+                    setTimeout(function () {
+                        window.location.href = "../admin/admin-dashboard.html";
+                    }, 500);
                     return;
                 }
 
-                const matchedUser =
+                const savedUser = getSavedRegisteredUser();
+                const identityNormalized = normalizeText(identity);
+                const phoneNormalized = sanitizePhone(identity);
+
+                if (
                     savedUser &&
                     (
-                        normalizeText(savedUser.email) === normalizedIdentity ||
-                        normalizeText(savedUser.phone) === normalizedIdentity
+                        identityNormalized === normalizeText(savedUser.email) ||
+                        phoneNormalized === sanitizePhone(savedUser.phone)
                     ) &&
                     password === savedUser.password
-                        ? savedUser
-                        : null;
+                ) {
+                    const currentUser = createDemoUser(savedUser);
+                    const redirectUrl = getRedirectByRole(savedUser.role);
+                    const flowText = getRoleFlow(savedUser.role) === "construction"
+                        ? "luồng Xây dựng"
+                        : "luồng Bất động sản";
 
-                if (matchedUser) {
-                    saveCurrentUser(matchedUser);
+                    saveCurrentUser(currentUser);
 
-                    if (remember) {
-                        localStorage.setItem("rememberLogin", "true");
-                    } else {
-                        localStorage.removeItem("rememberLogin");
-                    }
-
-                    const redirectUrl = getRedirectByRole(matchedUser.role);
-                    const flowText = matchedUser.accountGroup === "construction" ? "luồng Xây dựng" : "luồng Bất động sản";
-
-                    showBox(loginStatus, "success", "Đăng nhập thành công. Hệ thống đã nhận diện bạn thuộc " + flowText + " và đang chuyển trang...");
+                    showStatus(loginStatus, "success", "Đăng nhập thành công. Hệ thống đã nhận diện bạn thuộc " + flowText + " và đang chuyển trang...");
 
                     setTimeout(function () {
                         window.location.href = redirectUrl;
@@ -1088,7 +1058,7 @@
                     return;
                 }
 
-                showBox(loginStatus, "error", "Sai tài khoản hoặc mật khẩu. Bạn có thể thử tài khoản demo: admin@toamviet.com / 123456");
+                showStatus(loginStatus, "error", "Sai tài khoản hoặc mật khẩu. Bạn có thể thử tài khoản demo: admin@toamviet.com / 123456");
                 loginSubmit.disabled = false;
                 loginSubmit.textContent = "Đăng nhập hệ thống";
             }, 700);
@@ -1096,7 +1066,7 @@
 
         formRegister.addEventListener("submit", function (e) {
             e.preventDefault();
-            resetBox(registerStatus);
+            hideStatus(registerStatus);
 
             const accountGroup = registerGroup.value;
             const role = registerRole.value;
@@ -1111,45 +1081,39 @@
             const agreePolicy = document.getElementById("agree-policy").checked;
 
             if (!accountGroup || !role || !fullName || !phone || !email || !password || !confirmPassword) {
-                showBox(registerStatus, "error", "Vui lòng điền đầy đủ các trường bắt buộc.");
+                showStatus(registerStatus, "error", "Vui lòng điền đầy đủ các trường bắt buộc.");
                 return;
             }
 
             if (!isValidPhone(phone)) {
-                showBox(registerStatus, "error", "Số điện thoại chưa đúng định dạng Việt Nam.");
+                showStatus(registerStatus, "error", "Số điện thoại chưa đúng định dạng Việt Nam.");
                 return;
             }
 
             if (!isValidEmail(email)) {
-                showBox(registerStatus, "error", "Email chưa đúng định dạng.");
+                showStatus(registerStatus, "error", "Email chưa đúng định dạng.");
                 return;
             }
 
             if (password.length < 6) {
-                showBox(registerStatus, "error", "Mật khẩu phải có ít nhất 6 ký tự.");
+                showStatus(registerStatus, "error", "Mật khẩu phải có ít nhất 6 ký tự.");
                 return;
             }
 
             if (password !== confirmPassword) {
-                showBox(registerStatus, "error", "Mật khẩu nhập lại chưa khớp.");
+                showStatus(registerStatus, "error", "Mật khẩu nhập lại chưa khớp.");
                 return;
             }
 
             if (!agreePolicy) {
-                showBox(registerStatus, "error", "Bạn cần đồng ý với điều khoản và chính sách trước khi tiếp tục.");
-                return;
-            }
-
-            const oldUser = getStoredRegisteredUser();
-            if (oldUser && (normalizeText(oldUser.email) === normalizeText(email) || normalizeText(oldUser.phone) === normalizeText(phone))) {
-                showBox(registerStatus, "error", "Email hoặc số điện thoại này đã được đăng ký trong bản demo hiện tại.");
+                showStatus(registerStatus, "error", "Bạn cần đồng ý với điều khoản và chính sách trước khi tiếp tục.");
                 return;
             }
 
             registerSubmit.disabled = true;
             registerSubmit.textContent = "Đang tạo tài khoản...";
 
-            const demoUser = buildUserData({
+            const demoUser = createDemoUser({
                 accountGroup: accountGroup,
                 role: role,
                 fullName: fullName,
@@ -1158,21 +1122,21 @@
                 brandName: brandName,
                 serviceArea: serviceArea,
                 specialty: specialty,
-                password: password
+                password: password,
+                createdAt: new Date().toISOString()
             });
 
             saveRegisteredUser(demoUser);
 
             const flowLabel = accountGroup === "construction" ? "Xây dựng" : "Bất động sản";
 
-            showBox(registerStatus, "success", "Tạo tài khoản thử nghiệm thành công cho luồng " + flowLabel + ". Bạn có thể chuyển sang tab đăng nhập để vào hệ thống bằng email hoặc số điện thoại vừa tạo.");
+            showStatus(registerStatus, "success", "Tạo tài khoản thử nghiệm thành công cho luồng " + flowLabel + ". Bạn có thể chuyển sang tab đăng nhập để vào hệ thống bằng email hoặc số điện thoại vừa tạo.");
 
             setTimeout(function () {
                 registerSubmit.disabled = false;
                 registerSubmit.textContent = "Tạo tài khoản thử nghiệm";
                 showTab("login");
                 document.getElementById("login-identity").value = email;
-                document.getElementById("login-password").value = "";
             }, 1000);
         });
 
@@ -1214,6 +1178,7 @@
 
         window.addEventListener("load", async function () {
             await initSharedComponents();
+            updateFavoriteCount();
             showTab("login");
         });
     </script>
