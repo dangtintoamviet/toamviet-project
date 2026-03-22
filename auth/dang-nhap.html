@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng nhập / Đăng ký tài khoản | ToamViet.com.vn</title>
+    <title>Đăng nhập / Đăng ký tài khoản | Toamviet.com.vn</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,6 +38,12 @@
             background: var(--soft-bg);
             color: #1e293b;
             margin: 0;
+        }
+
+        .container-custom {
+            max-width: 1366px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
 
         .auth-page {
@@ -911,6 +917,20 @@
             return "../index.html";
         }
 
+        function getAccountGroupLabel(groupValue) {
+            return groupValue === "construction" ? "Xây dựng" : "Bất động sản";
+        }
+
+        function getProfileType(roleValue, accountGroup) {
+            const businessRoles = ["real_estate_company", "construction_company"];
+            const brokerRoles = ["broker"];
+
+            if (businessRoles.includes(roleValue)) return "doanhnghiep";
+            if (accountGroup === "construction" && roleValue === "engineer_architect") return "doanhnghiep";
+            if (brokerRoles.includes(roleValue)) return "canhan";
+            return "canhan";
+        }
+
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
@@ -935,27 +955,42 @@
             }
         }
 
+        function getRegisteredUsers() {
+            try {
+                const users = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+                return Array.isArray(users) ? users : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveRegisteredUsers(users) {
+            localStorage.setItem("registeredUsers", JSON.stringify(users));
+        }
+
         function createDemoUser(payload) {
-            const flow = getRoleFlow(payload.role);
-            const roleLabel = getRoleLabel(payload.role);
-            const isConstruction = flow === "construction";
+            const accountGroup = payload.accountGroup || getRoleFlow(payload.role) || "";
+            const roleLabel = payload.roleLabel || getRoleLabel(payload.role);
+            const nowIso = new Date().toISOString();
 
             return {
                 id: payload.id || ("user_" + Date.now()),
-                accountGroup: flow || payload.accountGroup || "",
-                accountGroupLabel: isConstruction ? "Xây dựng" : "Bất động sản",
+                accountGroup: accountGroup,
+                accountGroupLabel: payload.accountGroupLabel || getAccountGroupLabel(accountGroup),
                 role: payload.role,
                 roleLabel: roleLabel,
-                fullName: payload.fullName,
+                profileType: payload.profileType || getProfileType(payload.role, accountGroup),
+                fullName: payload.fullName || "",
                 phone: sanitizePhone(payload.phone),
-                email: payload.email,
+                email: (payload.email || "").trim().toLowerCase(),
                 brandName: payload.brandName || "",
                 serviceArea: payload.serviceArea || "",
                 specialty: payload.specialty || "",
                 bio: payload.bio || "",
-                password: payload.password,
-                createdAt: payload.createdAt || new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+                password: payload.password || "",
+                status: payload.status || "active",
+                createdAt: payload.createdAt || nowIso,
+                updatedAt: nowIso
             };
         }
 
@@ -963,7 +998,9 @@
             const saleFav = JSON.parse(localStorage.getItem("favoriteSalePosts") || "[]");
             const rentFav = JSON.parse(localStorage.getItem("favoriteRentalPosts") || "[]");
             const buildFav = JSON.parse(localStorage.getItem("favoriteConstructionPosts") || "[]");
-            const total = (Array.isArray(saleFav) ? saleFav.length : 0) +
+
+            const total =
+                (Array.isArray(saleFav) ? saleFav.length : 0) +
                 (Array.isArray(rentFav) ? rentFav.length : 0) +
                 (Array.isArray(buildFav) ? buildFav.length : 0);
 
@@ -971,6 +1008,28 @@
             badges.forEach(function (badge) {
                 badge.textContent = total;
             });
+        }
+
+        function findUserByIdentity(identity) {
+            const emailNormalized = normalizeText(identity);
+            const phoneNormalized = sanitizePhone(identity);
+            const users = getRegisteredUsers();
+
+            const fromList = users.find(function (user) {
+                return normalizeText(user.email) === emailNormalized ||
+                    sanitizePhone(user.phone) === phoneNormalized;
+            });
+
+            if (fromList) return fromList;
+
+            const legacy = getSavedRegisteredUser();
+            if (!legacy) return null;
+
+            const matchedLegacy =
+                normalizeText(legacy.email) === emailNormalized ||
+                sanitizePhone(legacy.phone) === phoneNormalized;
+
+            return matchedLegacy ? legacy : null;
         }
 
         tabLogin.addEventListener("click", function () {
@@ -1030,25 +1089,17 @@
                     return;
                 }
 
-                const savedUser = getSavedRegisteredUser();
-                const identityNormalized = normalizeText(identity);
-                const phoneNormalized = sanitizePhone(identity);
+                const savedUser = findUserByIdentity(identity);
 
-                if (
-                    savedUser &&
-                    (
-                        identityNormalized === normalizeText(savedUser.email) ||
-                        phoneNormalized === sanitizePhone(savedUser.phone)
-                    ) &&
-                    password === savedUser.password
-                ) {
+                if (savedUser && password === savedUser.password) {
                     const currentUser = createDemoUser(savedUser);
-                    const redirectUrl = getRedirectByRole(savedUser.role);
-                    const flowText = getRoleFlow(savedUser.role) === "construction"
+                    const redirectUrl = getRedirectByRole(currentUser.role);
+                    const flowText = currentUser.accountGroup === "construction"
                         ? "luồng Xây dựng"
                         : "luồng Bất động sản";
 
                     saveCurrentUser(currentUser);
+                    saveRegisteredUser(currentUser);
 
                     showStatus(loginStatus, "success", "Đăng nhập thành công. Hệ thống đã nhận diện bạn thuộc " + flowText + " và đang chuyển trang...");
 
@@ -1071,8 +1122,9 @@
             const accountGroup = registerGroup.value;
             const role = registerRole.value;
             const fullName = document.getElementById("register-name").value.trim();
-            const phone = document.getElementById("register-phone").value.trim();
-            const email = document.getElementById("register-email").value.trim();
+            const rawPhone = document.getElementById("register-phone").value.trim();
+            const phone = sanitizePhone(rawPhone);
+            const email = document.getElementById("register-email").value.trim().toLowerCase();
             const brandName = document.getElementById("register-brand").value.trim();
             const serviceArea = document.getElementById("register-area").value.trim();
             const specialty = document.getElementById("register-specialty").value.trim();
@@ -1110,6 +1162,18 @@
                 return;
             }
 
+            const users = getRegisteredUsers();
+
+            if (users.some(function (user) { return normalizeText(user.email) === normalizeText(email); })) {
+                showStatus(registerStatus, "error", "Email này đã được đăng ký trước đó.");
+                return;
+            }
+
+            if (users.some(function (user) { return sanitizePhone(user.phone) === phone; })) {
+                showStatus(registerStatus, "error", "Số điện thoại này đã được đăng ký trước đó.");
+                return;
+            }
+
             registerSubmit.disabled = true;
             registerSubmit.textContent = "Đang tạo tài khoản...";
 
@@ -1126,7 +1190,10 @@
                 createdAt: new Date().toISOString()
             });
 
+            users.unshift(demoUser);
+            saveRegisteredUsers(users);
             saveRegisteredUser(demoUser);
+            saveCurrentUser(demoUser);
 
             const flowLabel = accountGroup === "construction" ? "Xây dựng" : "Bất động sản";
 
@@ -1137,6 +1204,7 @@
                 registerSubmit.textContent = "Tạo tài khoản thử nghiệm";
                 showTab("login");
                 document.getElementById("login-identity").value = email;
+                document.getElementById("login-password").value = "";
             }, 1000);
         });
 
