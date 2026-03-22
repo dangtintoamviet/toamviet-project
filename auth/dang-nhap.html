@@ -1,86 +1,41 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Đăng nhập / Đăng ký tài khoản | ToamViet.com.vn</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
 
     <style>
         :root {
-            --vip-color: #008B8B;
-            --hover-color: #FF8C00;
+            --vip-color: #008b8b;
+            --hover-color: #ff8c00;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Roboto", sans-serif;
             background-color: #f4f7f7;
-            color: #2C2C2C;
+            color: #2c2c2c;
         }
 
         .container-custom {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
-        }
-
-        .nav-link {
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--hover-color) !important;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
-            border-top: 2px solid var(--vip-color);
-            z-index: 50;
-        }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            display: block;
-            color: #333;
-            font-size: 14px;
-            border-bottom: 1px solid #f2f2f2;
-        }
-
-        .dropdown-item:hover {
-            background: #f9f9f9;
-            color: var(--hover-color);
-        }
-
-        .save-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .save-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background: #E03C31;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            border: 1px solid white;
         }
 
         .auth-shell {
@@ -100,7 +55,7 @@
 
         .auth-info {
             width: 42%;
-            background: linear-gradient(135deg, #008B8B, #006c6c);
+            background: linear-gradient(135deg, #008b8b, #006c6c);
             color: white;
             padding: 48px 40px;
             display: flex;
@@ -118,8 +73,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 999px;
             padding: 8px 14px;
             font-size: 11px;
@@ -140,7 +95,7 @@
         .auth-desc {
             font-size: 14px;
             line-height: 1.75;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255, 255, 255, 0.9);
             margin-bottom: 30px;
         }
 
@@ -162,7 +117,7 @@
             width: 42px;
             height: 42px;
             border-radius: 14px;
-            background: rgba(255,255,255,0.14);
+            background: rgba(255, 255, 255, 0.14);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -295,7 +250,7 @@
         .input-box input:focus,
         .input-box select:focus {
             border-color: var(--vip-color);
-            box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.10);
+            box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.1);
         }
 
         .field-note {
@@ -381,7 +336,7 @@
         .btn-main:hover {
             background: #006b6b;
             transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(0,139,139,0.18);
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.18);
         }
 
         .btn-main:disabled {
@@ -456,31 +411,6 @@
             line-height: 1.7;
         }
 
-        .footer-link-group h4 {
-            font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: #2C2C2C;
-            text-transform: uppercase;
-            letter-spacing: 0.2px;
-        }
-
-        .footer-link-group ul {
-            font-size: 13px;
-            color: #666;
-            padding: 0;
-            list-style: none;
-        }
-
-        .footer-link-group li {
-            margin-bottom: 8px;
-        }
-
-        .footer-link-group li a:hover {
-            color: var(--hover-color);
-            text-decoration: underline;
-        }
-
         @media (max-width: 991px) {
             .auth-container {
                 flex-direction: column;
@@ -538,72 +468,13 @@
     </style>
 </head>
 <body>
-
-    <header class="bg-white border-b sticky top-0 z-[1000]">
-        <div class="container-custom h-[70px] flex justify-between items-center">
-            <div class="flex items-center gap-8">
-                <a href="../index.html">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet" class="h-10">
-                </a>
-
-                <nav class="hidden lg:flex items-center gap-6 font-semibold text-[#2C2C2C] text-[14px]">
-                    <a href="../pages/nha-dat-ban.html" class="nav-link">Nhà đất bán</a>
-                    <a href="../pages/nha-dat-cho-thue.html" class="nav-link">Nhà đất cho thuê</a>
-                    <a href="../pages/du-an.html" class="nav-link">Dự án</a>
-                    <a href="../pages/tin-tuc.html" class="nav-link">Tin tức</a>
-                    <a href="../pages/gia-nha-dat.html" class="nav-link">Giá nhà đất</a>
-                    <a href="../pages/xay-dung.html" class="nav-link">Xây dựng</a>
-
-                    <div class="dropdown relative h-full flex items-center cursor-pointer">
-                        <span class="nav-link">Danh bạ <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
-                        <div class="dropdown-menu">
-                            <a href="../pages/danh-ba-doanh-nghiep.html" class="dropdown-item">Doanh nghiệp</a>
-                            <a href="../pages/danh-ba-moi-gioi.html" class="dropdown-item">Môi giới</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-
-            <div class="flex items-center gap-5">
-                <div class="save-icon nav-link text-gray-600">
-                    <i class="fa-regular fa-heart"></i>
-                    <span class="save-count">0</span>
-                </div>
-
-                <div class="hidden md:flex gap-3 text-[14px] font-medium border-l pl-5">
-                    <a href="../auth/dang-nhap.html" class="nav-link">Đăng nhập</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="../auth/dang-ky.html" class="nav-link">Đăng ký</a>
-                </div>
-
-                <a href="../user/dang-tin.html" class="border-[1.5px] border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">
-                    Đăng tin
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <div class="lg:hidden bg-white border-t">
-        <div class="container-custom py-4 space-y-3 text-[14px] font-medium text-[#2C2C2C]">
-            <a href="../pages/nha-dat-ban.html" class="block nav-link">Nhà đất bán</a>
-            <a href="../pages/nha-dat-cho-thue.html" class="block nav-link">Nhà đất cho thuê</a>
-            <a href="../pages/du-an.html" class="block nav-link">Dự án</a>
-            <a href="../pages/tin-tuc.html" class="block nav-link">Tin tức</a>
-            <a href="../pages/gia-nha-dat.html" class="block nav-link">Giá nhà đất</a>
-            <a href="../pages/xay-dung.html" class="block nav-link">Xây dựng</a>
-            <a href="../pages/danh-ba-doanh-nghiep.html" class="block nav-link">Danh bạ doanh nghiệp</a>
-            <a href="../pages/danh-ba-moi-gioi.html" class="block nav-link">Danh bạ môi giới</a>
-            <a href="../auth/dang-nhap.html" class="block nav-link">Đăng nhập</a>
-            <a href="../auth/dang-ky.html" class="block nav-link">Đăng ký</a>
-            <a href="../user/dang-tin.html" class="block text-center border border-[#008B8B] text-[#008B8B] px-4 py-2 rounded-lg font-bold hover:bg-[#008B8B] hover:text-white transition uppercase text-[13px]">Đăng tin</a>
-        </div>
-    </div>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
 
     <main class="py-8 md:py-10">
         <div class="container-custom">
             <div class="auth-shell">
                 <div class="auth-container">
-
                     <div class="auth-info hidden md:flex">
                         <div class="auth-badge">
                             <i class="fa-solid fa-shield-halved"></i>
@@ -662,7 +533,7 @@
                                         placeholder="admin@toamviet.com hoặc 09xxxxxxxx"
                                         autocomplete="username"
                                         required
-                                    >
+                                    />
                                 </div>
                             </div>
 
@@ -678,7 +549,7 @@
                                         autocomplete="current-password"
                                         required
                                         minlength="6"
-                                    >
+                                    />
                                     <button type="button" class="toggle-password" data-target="login-password" aria-label="Hiện hoặc ẩn mật khẩu">
                                         <i class="fa-regular fa-eye"></i>
                                     </button>
@@ -687,7 +558,7 @@
 
                             <div class="auth-meta">
                                 <label class="check-wrap">
-                                    <input type="checkbox" id="remember-login" name="remember">
+                                    <input type="checkbox" id="remember-login" name="remember" />
                                     <span>Duy trì đăng nhập trên thiết bị này</span>
                                 </label>
 
@@ -711,7 +582,7 @@
 
                             <div class="role-box">
                                 <div class="role-box-title">Nhóm tài khoản</div>
-                                <div class="field-group !mb-0">
+                                <div class="field-group" style="margin-bottom:0;">
                                     <div class="input-box">
                                         <i class="fa-solid fa-layer-group left-icon"></i>
                                         <select id="register-group" name="account_group" required>
@@ -746,7 +617,7 @@
                                             placeholder="Nguyễn Văn A"
                                             autocomplete="name"
                                             required
-                                        >
+                                        />
                                     </div>
                                 </div>
 
@@ -761,7 +632,7 @@
                                             placeholder="09xxxxxxxx"
                                             autocomplete="tel"
                                             required
-                                        >
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -777,7 +648,7 @@
                                         placeholder="email@cuaban.com"
                                         autocomplete="email"
                                         required
-                                    >
+                                    />
                                 </div>
                             </div>
 
@@ -791,7 +662,7 @@
                                             name="brand_name"
                                             type="text"
                                             placeholder="Tên thương hiệu hoặc công ty"
-                                        >
+                                        />
                                     </div>
                                 </div>
 
@@ -804,7 +675,7 @@
                                             name="service_area"
                                             type="text"
                                             placeholder="Ví dụ: Hà Nội, Bình Dương, TP.HCM"
-                                        >
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -818,7 +689,7 @@
                                         name="specialty"
                                         type="text"
                                         placeholder="Ví dụ: Môi giới căn hộ, Thi công trọn gói, Thiết kế kiến trúc..."
-                                    >
+                                    />
                                 </div>
                             </div>
 
@@ -835,7 +706,7 @@
                                             autocomplete="new-password"
                                             required
                                             minlength="6"
-                                        >
+                                        />
                                         <button type="button" class="toggle-password" data-target="register-password" aria-label="Hiện hoặc ẩn mật khẩu">
                                             <i class="fa-regular fa-eye"></i>
                                         </button>
@@ -855,7 +726,7 @@
                                             autocomplete="new-password"
                                             required
                                             minlength="6"
-                                        >
+                                        />
                                         <button type="button" class="toggle-password" data-target="register-confirm-password" aria-label="Hiện hoặc ẩn mật khẩu">
                                             <i class="fa-regular fa-eye"></i>
                                         </button>
@@ -865,7 +736,7 @@
 
                             <div class="auth-meta">
                                 <label class="check-wrap">
-                                    <input type="checkbox" id="agree-policy" required>
+                                    <input type="checkbox" id="agree-policy" required />
                                     <span>Tôi đồng ý với điều khoản sử dụng và chính sách bảo mật của hệ thống.</span>
                                 </label>
                             </div>
@@ -873,124 +744,44 @@
                             <button type="submit" class="btn-main" id="register-submit">Tạo tài khoản thử nghiệm</button>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-white pt-16 border-t">
-        <div class="container-custom">
-            <div class="mb-12 border-b pb-12">
-                <p class="text-[13.5px] text-gray-600 leading-[1.8]">
-                    <strong>ToamViet.com.vn</strong> là nền tảng bất động sản uy tín tại Việt Nam dành cho những người đang tìm kiếm bất động sản để ở hoặc đầu tư. Chúng tôi cung cấp dữ liệu tin rao lớn với đa dạng loại hình bất động sản giúp bạn có những lựa chọn phù hợp với nhu cầu của mình. Ở phân khúc nhà đất bán, các loại hình nổi bật gồm <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán căn hộ chung cư</a>, <a href="../pages/nha-dat-ban.html" class="text-red-500 hover:underline">bán nhà riêng</a>, biệt thự và liền kề, đất nền dự án... Ngoài ra, người dùng quan tâm đến thuê bất động sản cũng có nhiều cơ hội để tìm thấy nhà đất ưng ý với danh sách tin rao được cập nhật liên tục.
-                </p>
-            </div>
+    <div id="siteFooter"></div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                <div class="footer-link-group">
-                    <h4>CHỦ ĐỀ NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hà Nội</a></li>
-                        <li><a href="../pages/gia-nha-dat.html">Bất động sản Hồ Chí Minh</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Mua nhà chung cư</a></li>
-                        <li><a href="../pages/tin-tuc.html">Báo cáo thị trường</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN BÁN</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-ban.html">Bán căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán đất nền dự án</a></li>
-                        <li><a href="../pages/nha-dat-ban.html">Bán biệt thự, liền kề</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>BẤT ĐỘNG SẢN THUÊ</h4>
-                    <ul>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê căn hộ chung cư</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê nhà riêng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê văn phòng</a></li>
-                        <li><a href="../pages/nha-dat-cho-thue.html">Thuê phòng trọ giá rẻ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link-group">
-                    <h4>DỰ ÁN NỔI BẬT</h4>
-                    <ul>
-                        <li><a href="../pages/du-an.html">Dự án Vinhomes</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ cao cấp Quận 2</a></li>
-                        <li><a href="../pages/du-an.html">Đất nền Bình Dương</a></li>
-                        <li><a href="../pages/du-an.html">Căn hộ Studio giá rẻ</a></li>
-                    </ul>
-                </div>
-            </div>
+    <button
+        id="goToTop"
+        onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+    >
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
-            <div class="bg-gray-50 p-8 rounded-2xl flex flex-col lg:flex-row justify-between gap-10">
-                <div class="max-w-sm">
-                    <img src="../DAI TRONG SUOT (2).png" alt="Logo ToamViet footer" class="h-10 mb-6">
-                    <p class="text-[13px] font-bold text-gray-800 uppercase mb-2">BẤT ĐỘNG SẢN TỔ ẤM VIỆT</p>
-                    <p class="text-[12px] text-gray-500 mb-1"><i class="fa-solid fa-location-dot mr-2"></i> Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội</p>
-                    <p class="text-[12px] text-gray-500"><i class="fa-solid fa-phone mr-2"></i> Hotline: 0946 239 289</p>
-                    <div class="flex gap-4 mt-6">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/googleplay.png" alt="Google Play" class="h-8 cursor-pointer">
-                        <img src="https://staticfile.batdongsan.com.vn/images/icons/Appstore.png" alt="App Store" class="h-8 cursor-pointer">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-10 text-[13px]">
-                    <div>
-                        <p class="font-bold mb-4 uppercase">HƯỚNG DẪN</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="../pages/gioi-thieu.html" class="hover:text-orange-500">Về chúng tôi</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Báo giá dịch vụ</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Câu hỏi thường gặp</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Sitemap</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="font-bold mb-4 uppercase">QUY ĐỊNH</p>
-                        <ul class="text-gray-500 space-y-2">
-                            <li><a href="#" class="hover:text-orange-500">Điều khoản thỏa thuận</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Chính sách bảo mật</a></li>
-                            <li><a href="#" class="hover:text-orange-500">Giải quyết khiếu nại</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="w-full lg:max-w-xs">
-                    <p class="font-bold mb-4 uppercase text-[13px]">ĐĂNG KÝ NHẬN TIN</p>
-                    <div class="flex border rounded-lg overflow-hidden bg-white shadow-sm focus-within:ring-1 focus-within:ring-[#008B8B]">
-                        <input type="text" placeholder="Email của bạn..." class="p-3 flex-1 outline-none text-sm">
-                        <button class="bg-[#008B8B] text-white px-5 hover:opacity-90"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                    <p class="text-[11px] text-gray-400 mt-3 italic">Hãy để lại email để không bỏ lỡ những cơ hội đầu tư tốt nhất.</p>
-                </div>
-            </div>
-
-            <div class="py-10 text-center border-t mt-12 text-[12px] text-gray-400">
-                <p>© 2026 ToamViet.com.vn - Giao diện VIP Lục Lam Sẫm. Tất cả quyền được bảo lưu.</p>
-            </div>
-        </div>
-    </footer>
-
-    <button id="goToTop" onclick="scrollToTop()"><i class="fa-solid fa-chevron-up"></i></button>
-
-    <div class="zalo-chat-btn wiggle" onclick="toggleForm()">
+    <div
+        class="zalo-chat-btn wiggle"
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+    >
         <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="toggleForm()" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span
+                onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+                style="cursor:pointer; font-size: 20px;"
+            >&times;</span>
         </div>
         <div class="chat-body">
-            <input type="text" id="cusName" placeholder="Tên của bạn..." required>
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
             <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
         </div>
     </div>
+
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/main.js"></script>
 
     <script>
         const realEstateRoles = [
@@ -1004,38 +795,96 @@
             { value: "engineer_architect", label: "Kỹ sư / Kiến trúc sư / Nhà thầu" }
         ];
 
-        const tabLogin = document.getElementById('tab-login');
-        const tabRegister = document.getElementById('tab-register');
-        const formLogin = document.getElementById('form-login');
-        const formRegister = document.getElementById('form-register');
-        const loginStatus = document.getElementById('login-status');
-        const registerStatus = document.getElementById('register-status');
-        const loginSubmit = document.getElementById('login-submit');
-        const registerSubmit = document.getElementById('register-submit');
+        const roleLabelMap = {
+            individual_poster: "Cá nhân đăng tin bất động sản",
+            broker: "Môi giới bất động sản",
+            real_estate_company: "Doanh nghiệp / Sàn bất động sản",
+            construction_company: "Công ty xây dựng",
+            engineer_architect: "Kỹ sư / Kiến trúc sư / Nhà thầu"
+        };
 
-        const registerGroup = document.getElementById('register-group');
-        const registerRole = document.getElementById('register-role');
-        const businessExtra = document.getElementById('business-extra');
-        const specialtyExtra = document.getElementById('specialty-extra');
+        const tabLogin = document.getElementById("tab-login");
+        const tabRegister = document.getElementById("tab-register");
+        const formLogin = document.getElementById("form-login");
+        const formRegister = document.getElementById("form-register");
+        const loginStatus = document.getElementById("login-status");
+        const registerStatus = document.getElementById("register-status");
+        const loginSubmit = document.getElementById("login-submit");
+        const registerSubmit = document.getElementById("register-submit");
+
+        const registerGroup = document.getElementById("register-group");
+        const registerRole = document.getElementById("register-role");
+        const businessExtra = document.getElementById("business-extra");
+        const specialtyExtra = document.getElementById("specialty-extra");
+
+        function normalizeText(str) {
+            return (str || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function sanitizePhone(phone) {
+            return (phone || "").replace(/[^\d+]/g, "").replace(/\s+/g, "");
+        }
+
+        function slugify(str) {
+            return (str || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/[^a-z0-9\s-]/g, "")
+                .trim()
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function showBox(box, type, message) {
+            box.className = "status-box " + type;
+            box.textContent = message;
+        }
+
+        function resetBox(box) {
+            box.className = "status-box";
+            box.textContent = "";
+        }
+
+        function getStoredRegisteredUser() {
+            try {
+                return JSON.parse(localStorage.getItem("registeredUser") || "null");
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function saveRegisteredUser(user) {
+            localStorage.setItem("registeredUser", JSON.stringify(user));
+        }
+
+        function saveCurrentUser(user) {
+            localStorage.setItem("currentUser", JSON.stringify(user));
+        }
 
         function showTab(type) {
-            loginStatus.className = 'status-box';
-            registerStatus.className = 'status-box';
-            loginStatus.textContent = '';
-            registerStatus.textContent = '';
+            resetBox(loginStatus);
+            resetBox(registerStatus);
 
-            if (type === 'login') {
-                tabLogin.classList.add('active');
-                tabRegister.classList.remove('active');
-                formLogin.classList.remove('hidden');
-                formRegister.classList.add('hidden');
-                document.title = 'Đăng nhập tài khoản | ToamViet.com.vn';
+            if (type === "login") {
+                tabLogin.classList.add("active");
+                tabRegister.classList.remove("active");
+                formLogin.classList.remove("hidden");
+                formRegister.classList.add("hidden");
+                document.title = "Đăng nhập / Đăng ký tài khoản | ToamViet.com.vn";
             } else {
-                tabRegister.classList.add('active');
-                tabLogin.classList.remove('active');
-                formRegister.classList.remove('hidden');
-                formLogin.classList.add('hidden');
-                document.title = 'Đăng ký tài khoản | ToamViet.com.vn';
+                tabRegister.classList.add("active");
+                tabLogin.classList.remove("active");
+                formRegister.classList.remove("hidden");
+                formLogin.classList.add("hidden");
+                document.title = "Đăng nhập / Đăng ký tài khoản | ToamViet.com.vn";
             }
         }
 
@@ -1043,25 +892,25 @@
             registerRole.innerHTML = '<option value="">Chọn vai trò</option>';
 
             let options = [];
-            if (groupValue === 'real_estate') {
+            if (groupValue === "real_estate") {
                 options = realEstateRoles;
-            } else if (groupValue === 'construction') {
+            } else if (groupValue === "construction") {
                 options = constructionRoles;
             }
 
-            options.forEach(role => {
-                const option = document.createElement('option');
+            options.forEach(function (role) {
+                const option = document.createElement("option");
                 option.value = role.value;
                 option.textContent = role.label;
                 registerRole.appendChild(option);
             });
 
             if (groupValue) {
-                businessExtra.classList.remove('hidden');
-                specialtyExtra.classList.remove('hidden');
+                businessExtra.classList.remove("hidden");
+                specialtyExtra.classList.remove("hidden");
             } else {
-                businessExtra.classList.add('hidden');
-                specialtyExtra.classList.add('hidden');
+                businessExtra.classList.add("hidden");
+                specialtyExtra.classList.add("hidden");
             }
         }
 
@@ -1075,14 +924,14 @@
             return "";
         }
 
+        function getRoleLabel(roleValue) {
+            return roleLabelMap[roleValue] || "";
+        }
+
         function getRedirectByRole(roleValue) {
             const flow = getRoleFlow(roleValue);
-            if (flow === "real_estate") {
-                return "../user/dang-tin.html";
-            }
-            if (flow === "construction") {
-                return "../user/dang-tin.html";
-            }
+            if (flow === "real_estate") return "../user/dang-tin.html";
+            if (flow === "construction") return "../user/dang-tin.html";
             return "../index.html";
         }
 
@@ -1091,171 +940,239 @@
         }
 
         function isValidPhone(phone) {
-            return /^(0|\+84)[0-9]{9,10}$/.test(phone.replace(/\s+/g, ''));
+            return /^(0|\+84)[0-9]{9,10}$/.test(sanitizePhone(phone));
         }
 
-        tabLogin.addEventListener('click', () => showTab('login'));
-        tabRegister.addEventListener('click', () => showTab('register'));
+        function getAccountGroupLabel(group) {
+            return group === "construction" ? "Xây dựng" : "Bất động sản";
+        }
 
-        registerGroup.addEventListener('change', function () {
+        function buildUserData(data) {
+            const accountGroup = data.accountGroup;
+            const role = data.role;
+            const phone = sanitizePhone(data.phone);
+            const fullName = data.fullName.trim();
+            const email = data.email.trim();
+            const brandName = (data.brandName || "").trim();
+            const serviceArea = (data.serviceArea || "").trim();
+            const specialty = (data.specialty || "").trim();
+            const nowIso = new Date().toISOString();
+
+            return {
+                id: data.id || ("user_" + slugify(email || phone || fullName || Date.now()) + "_" + Date.now()),
+                accountGroup: accountGroup,
+                accountGroupLabel: getAccountGroupLabel(accountGroup),
+                role: role,
+                roleLabel: getRoleLabel(role),
+                fullName: fullName,
+                phone: phone,
+                email: email,
+                brandName: brandName,
+                serviceArea: serviceArea,
+                specialty: specialty,
+                bio: data.bio || "",
+                password: data.password,
+                createdAt: data.createdAt || nowIso,
+                updatedAt: nowIso
+            };
+        }
+
+        tabLogin.addEventListener("click", function () {
+            showTab("login");
+        });
+
+        tabRegister.addEventListener("click", function () {
+            showTab("register");
+        });
+
+        registerGroup.addEventListener("change", function () {
             populateRoleOptions(this.value);
         });
 
-        document.querySelectorAll('.toggle-password').forEach(button => {
-            button.addEventListener('click', function () {
-                const targetId = this.getAttribute('data-target');
+        document.querySelectorAll(".toggle-password").forEach(function (button) {
+            button.addEventListener("click", function () {
+                const targetId = this.getAttribute("data-target");
                 const input = document.getElementById(targetId);
-                const icon = this.querySelector('i');
+                const icon = this.querySelector("i");
 
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.className = 'fa-regular fa-eye-slash';
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.className = "fa-regular fa-eye-slash";
                 } else {
-                    input.type = 'password';
-                    icon.className = 'fa-regular fa-eye';
+                    input.type = "password";
+                    icon.className = "fa-regular fa-eye";
                 }
             });
         });
 
-        formLogin.addEventListener('submit', function (e) {
+        formLogin.addEventListener("submit", function (e) {
             e.preventDefault();
-            loginStatus.className = 'status-box';
-            loginStatus.textContent = '';
+            resetBox(loginStatus);
 
-            const identity = document.getElementById('login-identity').value.trim();
-            const password = document.getElementById('login-password').value;
+            const identity = document.getElementById("login-identity").value.trim();
+            const password = document.getElementById("login-password").value;
+            const remember = document.getElementById("remember-login").checked;
 
             if (!identity || !password) {
-                loginStatus.className = 'status-box error';
-                loginStatus.textContent = 'Vui lòng nhập đầy đủ email/số điện thoại và mật khẩu.';
+                showBox(loginStatus, "error", "Vui lòng nhập đầy đủ email/số điện thoại và mật khẩu.");
                 return;
             }
 
             if (password.length < 6) {
-                loginStatus.className = 'status-box error';
-                loginStatus.textContent = 'Mật khẩu phải có ít nhất 6 ký tự.';
+                showBox(loginStatus, "error", "Mật khẩu phải có ít nhất 6 ký tự.");
                 return;
             }
 
             loginSubmit.disabled = true;
-            loginSubmit.textContent = 'Đang kiểm tra...';
+            loginSubmit.textContent = "Đang kiểm tra...";
 
-            setTimeout(() => {
-                if (identity === 'admin@toamviet.com' && password === '123456') {
-                    loginStatus.className = 'status-box success';
-                    loginStatus.textContent = 'Đăng nhập quản trị thành công. Đang chuyển hướng...';
-                    window.location.href = '../admin/admin-dashboard.html';
+            setTimeout(function () {
+                const normalizedIdentity = normalizeText(identity);
+                const savedUser = getStoredRegisteredUser();
+
+                if (identity === "admin@toamviet.com" && password === "123456") {
+                    const adminUser = {
+                        id: "admin_demo",
+                        fullName: "Quản trị viên",
+                        email: "admin@toamviet.com",
+                        phone: "",
+                        brandName: "ToamViet Admin",
+                        accountGroup: "real_estate",
+                        accountGroupLabel: "Bất động sản",
+                        role: "admin",
+                        roleLabel: "Quản trị hệ thống",
+                        password: "123456",
+                        updatedAt: new Date().toISOString()
+                    };
+
+                    saveCurrentUser(adminUser);
+
+                    if (remember) {
+                        localStorage.setItem("rememberLogin", "true");
+                    } else {
+                        localStorage.removeItem("rememberLogin");
+                    }
+
+                    showBox(loginStatus, "success", "Đăng nhập quản trị thành công. Đang chuyển hướng...");
+                    window.location.href = "../admin/admin-dashboard.html";
                     return;
                 }
 
-                const savedUser = JSON.parse(localStorage.getItem('registeredUser'));
-
-                if (
+                const matchedUser =
                     savedUser &&
-                    (identity === savedUser.email || identity === savedUser.phone) &&
+                    (
+                        normalizeText(savedUser.email) === normalizedIdentity ||
+                        normalizeText(savedUser.phone) === normalizedIdentity
+                    ) &&
                     password === savedUser.password
-                ) {
-                    const redirectUrl = getRedirectByRole(savedUser.role);
-                    const flowText = getRoleFlow(savedUser.role) === 'construction'
-                        ? 'luồng Xây dựng'
-                        : 'luồng Bất động sản';
+                        ? savedUser
+                        : null;
 
-                    loginStatus.className = 'status-box success';
-                    loginStatus.textContent = 'Đăng nhập thành công. Hệ thống đã nhận diện bạn thuộc ' + flowText + ' và đang chuyển trang...';
+                if (matchedUser) {
+                    saveCurrentUser(matchedUser);
 
-                    setTimeout(() => {
+                    if (remember) {
+                        localStorage.setItem("rememberLogin", "true");
+                    } else {
+                        localStorage.removeItem("rememberLogin");
+                    }
+
+                    const redirectUrl = getRedirectByRole(matchedUser.role);
+                    const flowText = matchedUser.accountGroup === "construction" ? "luồng Xây dựng" : "luồng Bất động sản";
+
+                    showBox(loginStatus, "success", "Đăng nhập thành công. Hệ thống đã nhận diện bạn thuộc " + flowText + " và đang chuyển trang...");
+
+                    setTimeout(function () {
                         window.location.href = redirectUrl;
                     }, 900);
                     return;
                 }
 
-                loginStatus.className = 'status-box error';
-                loginStatus.textContent = 'Sai tài khoản hoặc mật khẩu. Bạn có thể thử tài khoản demo: admin@toamviet.com / 123456';
+                showBox(loginStatus, "error", "Sai tài khoản hoặc mật khẩu. Bạn có thể thử tài khoản demo: admin@toamviet.com / 123456");
                 loginSubmit.disabled = false;
-                loginSubmit.textContent = 'Đăng nhập hệ thống';
+                loginSubmit.textContent = "Đăng nhập hệ thống";
             }, 700);
         });
 
-        formRegister.addEventListener('submit', function (e) {
+        formRegister.addEventListener("submit", function (e) {
             e.preventDefault();
-            registerStatus.className = 'status-box';
-            registerStatus.textContent = '';
+            resetBox(registerStatus);
 
             const accountGroup = registerGroup.value;
             const role = registerRole.value;
-            const fullName = document.getElementById('register-name').value.trim();
-            const phone = document.getElementById('register-phone').value.trim();
-            const email = document.getElementById('register-email').value.trim();
-            const brandName = document.getElementById('register-brand').value.trim();
-            const serviceArea = document.getElementById('register-area').value.trim();
-            const specialty = document.getElementById('register-specialty').value.trim();
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-confirm-password').value;
-            const agreePolicy = document.getElementById('agree-policy').checked;
+            const fullName = document.getElementById("register-name").value.trim();
+            const phone = document.getElementById("register-phone").value.trim();
+            const email = document.getElementById("register-email").value.trim();
+            const brandName = document.getElementById("register-brand").value.trim();
+            const serviceArea = document.getElementById("register-area").value.trim();
+            const specialty = document.getElementById("register-specialty").value.trim();
+            const password = document.getElementById("register-password").value;
+            const confirmPassword = document.getElementById("register-confirm-password").value;
+            const agreePolicy = document.getElementById("agree-policy").checked;
 
             if (!accountGroup || !role || !fullName || !phone || !email || !password || !confirmPassword) {
-                registerStatus.className = 'status-box error';
-                registerStatus.textContent = 'Vui lòng điền đầy đủ các trường bắt buộc.';
+                showBox(registerStatus, "error", "Vui lòng điền đầy đủ các trường bắt buộc.");
                 return;
             }
 
             if (!isValidPhone(phone)) {
-                registerStatus.className = 'status-box error';
-                registerStatus.textContent = 'Số điện thoại chưa đúng định dạng Việt Nam.';
+                showBox(registerStatus, "error", "Số điện thoại chưa đúng định dạng Việt Nam.");
                 return;
             }
 
             if (!isValidEmail(email)) {
-                registerStatus.className = 'status-box error';
-                registerStatus.textContent = 'Email chưa đúng định dạng.';
+                showBox(registerStatus, "error", "Email chưa đúng định dạng.");
                 return;
             }
 
             if (password.length < 6) {
-                registerStatus.className = 'status-box error';
-                registerStatus.textContent = 'Mật khẩu phải có ít nhất 6 ký tự.';
+                showBox(registerStatus, "error", "Mật khẩu phải có ít nhất 6 ký tự.");
                 return;
             }
 
             if (password !== confirmPassword) {
-                registerStatus.className = 'status-box error';
-                registerStatus.textContent = 'Mật khẩu nhập lại chưa khớp.';
+                showBox(registerStatus, "error", "Mật khẩu nhập lại chưa khớp.");
                 return;
             }
 
             if (!agreePolicy) {
-                registerStatus.className = 'status-box error';
-                registerStatus.textContent = 'Bạn cần đồng ý với điều khoản và chính sách trước khi tiếp tục.';
+                showBox(registerStatus, "error", "Bạn cần đồng ý với điều khoản và chính sách trước khi tiếp tục.");
+                return;
+            }
+
+            const oldUser = getStoredRegisteredUser();
+            if (oldUser && (normalizeText(oldUser.email) === normalizeText(email) || normalizeText(oldUser.phone) === normalizeText(phone))) {
+                showBox(registerStatus, "error", "Email hoặc số điện thoại này đã được đăng ký trong bản demo hiện tại.");
                 return;
             }
 
             registerSubmit.disabled = true;
-            registerSubmit.textContent = 'Đang tạo tài khoản...';
+            registerSubmit.textContent = "Đang tạo tài khoản...";
 
-            const demoUser = {
-                accountGroup,
-                role,
-                fullName,
-                phone,
-                email,
-                brandName,
-                serviceArea,
-                specialty,
-                password
-            };
+            const demoUser = buildUserData({
+                accountGroup: accountGroup,
+                role: role,
+                fullName: fullName,
+                phone: phone,
+                email: email,
+                brandName: brandName,
+                serviceArea: serviceArea,
+                specialty: specialty,
+                password: password
+            });
 
-            localStorage.setItem('registeredUser', JSON.stringify(demoUser));
+            saveRegisteredUser(demoUser);
 
-            const flowLabel = accountGroup === 'construction' ? 'Xây dựng' : 'Bất động sản';
+            const flowLabel = accountGroup === "construction" ? "Xây dựng" : "Bất động sản";
 
-            registerStatus.className = 'status-box success';
-            registerStatus.textContent = 'Tạo tài khoản thử nghiệm thành công cho luồng ' + flowLabel + '. Bạn có thể chuyển sang tab đăng nhập để vào hệ thống bằng email hoặc số điện thoại vừa tạo.';
+            showBox(registerStatus, "success", "Tạo tài khoản thử nghiệm thành công cho luồng " + flowLabel + ". Bạn có thể chuyển sang tab đăng nhập để vào hệ thống bằng email hoặc số điện thoại vừa tạo.");
 
-            setTimeout(() => {
+            setTimeout(function () {
                 registerSubmit.disabled = false;
-                registerSubmit.textContent = 'Tạo tài khoản thử nghiệm';
-                showTab('login');
-                document.getElementById('login-identity').value = email;
+                registerSubmit.textContent = "Tạo tài khoản thử nghiệm";
+                showTab("login");
+                document.getElementById("login-identity").value = email;
+                document.getElementById("login-password").value = "";
             }, 1000);
         });
 
@@ -1269,11 +1186,36 @@
                 return;
             }
 
-            const fullMsg = "Chào admin Toàn Việt, tôi là " + name + ". " + msg;
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        window.sendToZalo = sendToZalo;
+
+        window.addEventListener("load", async function () {
+            await initSharedComponents();
+            showTab("login");
+        });
     </script>
-    <script src="../assets/js/main.js"></script>
 </body>
 </html>
