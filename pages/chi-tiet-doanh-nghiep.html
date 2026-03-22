@@ -38,6 +38,7 @@
             font-family: "Roboto", sans-serif;
             background: var(--soft-bg);
             color: var(--text-main);
+            margin: 0;
         }
 
         .container-custom {
@@ -793,6 +794,7 @@
             return String(value || "")
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
                 .toLowerCase()
                 .replace(/\s+/g, " ")
                 .trim();
@@ -802,11 +804,20 @@
             return String(value || "")
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
                 .toLowerCase()
                 .trim()
                 .replace(/[^a-z0-9\s-]/g, "")
                 .replace(/\s+/g, "-")
                 .replace(/-+/g, "-");
+        }
+
+        function safeParseJSON(raw, fallback) {
+            try {
+                return JSON.parse(raw);
+            } catch (error) {
+                return fallback;
+            }
         }
 
         function sendToZalo() {
@@ -858,7 +869,9 @@
                 .split(" ")
                 .filter(Boolean)
                 .slice(0, 2)
-                .map(word => word.charAt(0).toUpperCase())
+                .map(function (word) {
+                    return word.charAt(0).toUpperCase();
+                })
                 .join("") || "DN";
         }
 
@@ -909,15 +922,25 @@
             return FALLBACK_IMAGE;
         }
 
-        function getProfileAvatarHtml(post) {
+        function renderProfileAvatar(post) {
+            const avatarWrap = document.getElementById("profile-avatar");
             const avatar = post.avatar || post.avatarUrl || post.logo || post.logoUrl || "";
+
             if (typeof avatar === "string" && avatar.trim()) {
-                return `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(buildPoster(post))}" onerror="this.parentNode.textContent='${escapeHtml(getAvatarText(post))}'">`;
+                avatarWrap.innerHTML = '<img src="' + escapeHtml(avatar) + '" alt="' + escapeHtml(buildPoster(post)) + '">';
+                const img = avatarWrap.querySelector("img");
+                if (img) {
+                    img.onerror = function () {
+                        avatarWrap.textContent = getAvatarText(post);
+                    };
+                }
+                return;
             }
-            return escapeHtml(getAvatarText(post));
+
+            avatarWrap.textContent = getAvatarText(post);
         }
 
-        function createPostId(post, index = 0) {
+        function createPostId(post, index) {
             if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
                 return String(post.id).trim();
             }
@@ -961,12 +984,21 @@
                 role.includes("nha thau");
         }
 
+        function normalizeFetchedPosts(list) {
+            return (Array.isArray(list) ? list : []).map(function (post, index) {
+                return {
+                    ...post,
+                    __normalizedId: createPostId(post, index)
+                };
+            });
+        }
+
         function getAllPostsMixed() {
             let posts = [];
 
             try {
                 if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
-                    posts = window.postStorage.getAllPosts().filter(post => {
+                    posts = window.postStorage.getAllPosts().filter(function (post) {
                         return post &&
                             getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
                             isBusinessProfile(post);
@@ -976,22 +1008,25 @@
                 posts = [];
             }
 
-            if (posts.length) return posts;
+            if (posts.length) return normalizeFetchedPosts(posts);
 
             try {
-                const allPosts = JSON.parse(localStorage.getItem("allPosts") || "[]");
-                return Array.isArray(allPosts)
-                    ? allPosts.filter(post => post &&
-                        getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
-                        isBusinessProfile(post))
+                const allPosts = safeParseJSON(localStorage.getItem("allPosts") || "[]", []);
+                posts = Array.isArray(allPosts)
+                    ? allPosts.filter(function (post) {
+                        return post &&
+                            getAllowedPublicStatuses().includes(normalizeText(post.status || "approved")) &&
+                            isBusinessProfile(post);
+                    })
                     : [];
+                return normalizeFetchedPosts(posts);
             } catch (error) {
                 return [];
             }
         }
 
         function getFallbackMixedPosts() {
-            return [
+            return normalizeFetchedPosts([
                 {
                     id: "demo-company-1",
                     title: "BÁN NHÀ PHỐ THƯƠNG MẠI KHU ĐÔ THỊ TRUNG TÂM MỚI",
@@ -1066,7 +1101,7 @@
                     images: [FALLBACK_IMAGE],
                     thumbnail: FALLBACK_IMAGE
                 }
-            ];
+            ]);
         }
 
         function getDataSource() {
@@ -1077,22 +1112,32 @@
         function findPostById(posts, targetId) {
             const normalizedTargetId = String(targetId || "").trim();
 
-            return posts.find((post, index) => {
+            return (Array.isArray(posts) ? posts : []).find(function (post) {
                 const candidates = [
                     post.id,
                     post.postId,
                     post.slug,
-                    createPostId(post, index)
-                ].filter(Boolean).map(item => String(item).trim());
+                    post.__normalizedId
+                ].filter(Boolean).map(function (item) {
+                    return String(item).trim();
+                });
 
                 return candidates.includes(normalizedTargetId);
-            });
+            }) || null;
         }
 
         function isSameBusiness(basePost, candidatePost) {
+            if (!basePost || !candidatePost) return false;
+
+            if (basePost.userId && candidatePost.userId && String(basePost.userId) === String(candidatePost.userId)) {
+                return true;
+            }
+
             const baseKeys = [
                 normalizeText(basePost.contactPhone),
+                normalizeText(basePost.phone),
                 normalizeText(basePost.contactEmail),
+                normalizeText(basePost.email),
                 normalizeText(basePost.brandName),
                 normalizeText(basePost.serviceBrand),
                 normalizeText(basePost.contactName)
@@ -1100,17 +1145,25 @@
 
             const candidateKeys = [
                 normalizeText(candidatePost.contactPhone),
+                normalizeText(candidatePost.phone),
                 normalizeText(candidatePost.contactEmail),
+                normalizeText(candidatePost.email),
                 normalizeText(candidatePost.brandName),
                 normalizeText(candidatePost.serviceBrand),
                 normalizeText(candidatePost.contactName)
             ].filter(Boolean);
 
-            return baseKeys.some(key => candidateKeys.includes(key));
+            return baseKeys.some(function (key) {
+                return candidateKeys.includes(key);
+            });
         }
 
         function getPostsByBusiness(basePost, posts) {
-            return posts.filter(post => isBusinessProfile(post) && isSameBusiness(basePost, post));
+            return (Array.isArray(posts) ? posts : []).filter(function (post) {
+                return isBusinessProfile(post) && isSameBusiness(basePost, post);
+            }).sort(function (a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0);
+            });
         }
 
         function getVipBadgeHtml(level) {
@@ -1148,14 +1201,18 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
         function getCityCountMap(posts) {
             const map = new Map();
 
-            posts.forEach(post => {
+            (Array.isArray(posts) ? posts : []).forEach(function (post) {
                 const city = String(post.city || "Khác").trim() || "Khác";
                 map.set(city, (map.get(city) || 0) + 1);
             });
 
             return Array.from(map.entries())
-                .map(([city, count]) => ({ city, count }))
-                .sort((a, b) => b.count - a.count || a.city.localeCompare(b.city, "vi"));
+                .map(function (entry) {
+                    return { city: entry[0], count: entry[1] };
+                })
+                .sort(function (a, b) {
+                    return b.count - a.count || a.city.localeCompare(b.city, "vi");
+                });
         }
 
         function renderProfileHeader(basePost, posterPosts) {
@@ -1165,15 +1222,19 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
             document.title = `${posterName} - ToamViet.com.vn`;
             document.getElementById("breadcrumb-current").textContent = posterName;
 
-            document.getElementById("profile-avatar").innerHTML = getProfileAvatarHtml(basePost);
+            renderProfileAvatar(basePost);
             document.getElementById("profile-name").textContent = posterName;
             document.getElementById("profile-role").textContent = "Doanh nghiệp";
             document.getElementById("profile-badge-type").textContent = "Doanh nghiệp";
             document.getElementById("profile-badge-area").textContent = area;
 
             const totalPosts = posterPosts.length;
-            const realEstatePosts = posterPosts.filter(post => normalizeText(post.flow) !== "construction").length;
-            const constructionPosts = posterPosts.filter(post => normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung").length;
+            const realEstatePosts = posterPosts.filter(function (post) {
+                return normalizeText(post.flow) !== "construction";
+            }).length;
+            const constructionPosts = posterPosts.filter(function (post) {
+                return normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
+            }).length;
 
             const cityMap = getCityCountMap(posterPosts);
             const mainCity = cityMap.length ? cityMap[0].city : (basePost.city || "Đang cập nhật");
@@ -1186,7 +1247,8 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
 
         function renderProfileInfo(basePost, posterPosts) {
             const posterName = buildPoster(basePost);
-            const phone = formatDisplayPhone(basePost.contactPhone || basePost.phone || "");
+            const phoneRaw = basePost.contactPhone || basePost.phone || "";
+            const phone = formatDisplayPhone(phoneRaw);
             const email = basePost.contactEmail || basePost.email || "Đang cập nhật";
             const brand = basePost.brandName || basePost.serviceBrand || posterName || "Đang cập nhật";
             const area = basePost.serviceArea || basePost.operatingArea || buildLocation(basePost) || basePost.city || "Đang cập nhật";
@@ -1206,12 +1268,12 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
 
             const callBtn = document.getElementById("sidebar-call-btn");
             const callText = document.getElementById("sidebar-call-text");
-            const normalizedPhone = normalizePhone(basePost.contactPhone || basePost.phone || "");
+            const normalizedPhone = normalizePhone(phoneRaw);
             callBtn.href = normalizedPhone ? `tel:${normalizedPhone}` : "javascript:void(0)";
             callText.textContent = normalizedPhone ? `Gọi ${phone}` : "Gọi ngay";
 
             const zaloBtn = document.getElementById("sidebar-zalo-btn");
-            zaloBtn.href = getZaloLink(basePost.contactPhone || basePost.phone || "");
+            zaloBtn.href = getZaloLink(phoneRaw);
         }
 
         function renderCityCounts(posterPosts) {
@@ -1223,12 +1285,14 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
                 return;
             }
 
-            cityCountList.innerHTML = cityMap.map(item => `
-                <div class="city-count-item">
-                    <span class="city-name">${escapeHtml(item.city)}</span>
-                    <span class="city-count-badge">${item.count}</span>
-                </div>
-            `).join("");
+            cityCountList.innerHTML = cityMap.map(function (item) {
+                return `
+                    <div class="city-count-item">
+                        <span class="city-name">${escapeHtml(item.city)}</span>
+                        <span class="city-count-badge">${item.count}</span>
+                    </div>
+                `;
+            }).join("");
         }
 
         function getNewsItems() {
@@ -1258,15 +1322,17 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
             const newsList = document.getElementById("news-list");
             const items = getNewsItems();
 
-            newsList.innerHTML = items.map(item => `
-                <a href="${item.link}" class="news-item">
-                    <img src="${item.image}" alt="${escapeHtml(item.title)}" class="news-thumb" onerror="this.src='${FALLBACK_IMAGE}'" />
-                    <div class="min-w-0">
-                        <div class="news-title">${escapeHtml(item.title)}</div>
-                        <div class="news-meta">${escapeHtml(item.date)}</div>
-                    </div>
-                </a>
-            `).join("");
+            newsList.innerHTML = items.map(function (item) {
+                return `
+                    <a href="${item.link}" class="news-item">
+                        <img src="${item.image}" alt="${escapeHtml(item.title)}" class="news-thumb" onerror="this.src='${FALLBACK_IMAGE}'" />
+                        <div class="min-w-0">
+                            <div class="news-title">${escapeHtml(item.title)}</div>
+                            <div class="news-meta">${escapeHtml(item.date)}</div>
+                        </div>
+                    </a>
+                `;
+            }).join("");
         }
 
         function renderPosterPosts(basePost, posterPosts) {
@@ -1281,12 +1347,12 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
             }
 
             postList.innerHTML = posterPosts
-                .map((post, index) => {
-                    const id = createPostId(post, index);
+                .map(function (post) {
+                    const id = post.__normalizedId;
                     const title = escapeHtml(post.title || "Tin đăng");
                     const image = escapeHtml(getCardImage(post));
                     const isConstruction = normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung";
-                    const badgeType = isConstruction ? "Xây dựng" : escapeHtml(post.propertyType || "Bất động sản");
+                    const badgeType = isConstruction ? "Xây dựng" : escapeHtml(post.propertyType || post.categoryName || "Bất động sản");
                     const badgeMode = isConstruction
                         ? "Dịch vụ"
                         : (["thue", "cho-thue", "rent"].includes(normalizeText(post.postType)) ? "Tin thuê" : "Tin bán");
