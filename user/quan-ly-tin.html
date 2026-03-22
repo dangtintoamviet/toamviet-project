@@ -1003,11 +1003,6 @@
             { slug: "du-an-khac", name: "Dự án khác" }
         ];
 
-        const currentUser =
-            JSON.parse(localStorage.getItem("currentUser") || "null") ||
-            JSON.parse(localStorage.getItem("registeredUser") || "null") ||
-            null;
-
         const searchInput = document.getElementById("searchInput");
         const flowFilter = document.getElementById("flowFilter");
         const typeFilter = document.getElementById("typeFilter");
@@ -1052,12 +1047,30 @@
             }
         }
 
+        function safeParseLocalStorage(key, fallback) {
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return fallback;
+                const parsed = JSON.parse(raw);
+                return parsed === null || parsed === undefined ? fallback : parsed;
+            } catch (error) {
+                console.warn("Lỗi parse localStorage tại key:", key, error);
+                return fallback;
+            }
+        }
+
+        function getCurrentUser() {
+            return safeParseLocalStorage("currentUser", null) || safeParseLocalStorage("registeredUser", null) || null;
+        }
+
         function getInitials(name) {
             return (name || "TV")
                 .split(" ")
                 .filter(Boolean)
                 .slice(0, 2)
-                .map(w => w[0].toUpperCase())
+                .map(function (w) {
+                    return w[0].toUpperCase();
+                })
                 .join("") || "TV";
         }
 
@@ -1101,6 +1114,8 @@
         }
 
         function fillUserInfo() {
+            const currentUser = getCurrentUser();
+
             const userAvatar = document.getElementById("userAvatar");
             const userName = document.getElementById("userName");
             const userRole = document.getElementById("userRole");
@@ -1165,34 +1180,43 @@
         }
 
         function getAllPosts() {
-            try {
-                return JSON.parse(localStorage.getItem("allPosts") || "[]");
-            } catch (error) {
-                console.warn("Không đọc được allPosts:", error);
-                return [];
-            }
+            const posts = safeParseLocalStorage("allPosts", []);
+            return Array.isArray(posts) ? posts : [];
         }
 
         function saveAllPosts(posts) {
-            localStorage.setItem("allPosts", JSON.stringify(posts));
+            localStorage.setItem("allPosts", JSON.stringify(Array.isArray(posts) ? posts : []));
         }
 
         function getProjectTypeNameFromSlug(slug) {
-            const found = PROJECT_CATEGORIES.find(item => item.slug === slug);
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === slug;
+            });
             return found ? found.name : "";
         }
 
         function getProjectTypeSlugFromValue(value) {
             const normalized = normalizeText(value);
-            const found = PROJECT_CATEGORIES.find(item => item.slug === value || normalizeText(item.name) === normalized);
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === value || normalizeText(item.name) === normalized;
+            });
             return found ? found.slug : "";
         }
 
         function rebuildCompatibilityStores(posts) {
-            const propertyPosts = posts.filter(item => item.flow === "real_estate");
-            const salePosts = propertyPosts.filter(item => item.postType === "ban");
-            const rentalPosts = propertyPosts.filter(item => item.postType === "thue");
-            const constructionPosts = posts.filter(item => item.flow === "construction");
+            const safePosts = Array.isArray(posts) ? posts : [];
+            const propertyPosts = safePosts.filter(function (item) {
+                return item.flow === "real_estate";
+            });
+            const salePosts = propertyPosts.filter(function (item) {
+                return item.postType === "ban";
+            });
+            const rentalPosts = propertyPosts.filter(function (item) {
+                return item.postType === "thue";
+            });
+            const constructionPosts = safePosts.filter(function (item) {
+                return item.flow === "construction";
+            });
 
             localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
             localStorage.setItem("salePosts", JSON.stringify(salePosts));
@@ -1201,10 +1225,12 @@
         }
 
         function syncProjectStoreFromPosts(posts) {
-            const oldProjects = JSON.parse(localStorage.getItem("projects") || "[]");
+            const safePosts = Array.isArray(posts) ? posts : [];
+            const oldProjects = safeParseLocalStorage("projects", []);
+            const safeProjects = Array.isArray(oldProjects) ? oldProjects : [];
             const map = new Map();
 
-            oldProjects.forEach(project => {
+            safeProjects.forEach(function (project) {
                 if (!project || !project.slug) return;
                 const typeSlug = getProjectTypeSlugFromValue(project.type);
                 map.set(project.slug, {
@@ -1219,7 +1245,7 @@
                 });
             });
 
-            posts.forEach(post => {
+            safePosts.forEach(function (post) {
                 if (!post || !post.projectSlug || !post.projectName) return;
 
                 const slug = post.projectSlug;
@@ -1266,7 +1292,10 @@
                 map.set(slug, existing);
             });
 
-            const nextProjects = Array.from(map.values()).sort((a, b) => new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0));
+            const nextProjects = Array.from(map.values()).sort(function (a, b) {
+                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
+            });
+
             localStorage.setItem("projects", JSON.stringify(nextProjects));
         }
 
@@ -1277,6 +1306,7 @@
         }
 
         function isCurrentUserPost(post) {
+            const currentUser = getCurrentUser();
             if (!currentUser || !post) return false;
 
             if (currentUser.id && post.userId) {
@@ -1298,6 +1328,7 @@
 
         function loadPosts() {
             allPosts = getAllPosts();
+            const currentUser = getCurrentUser();
 
             if (!currentUser) {
                 myPosts = [];
@@ -1306,15 +1337,17 @@
 
             myPosts = allPosts.filter(isCurrentUserPost);
 
-            myPosts.sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+            myPosts.sort(function (a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0);
+            });
         }
 
         function updateStats() {
             const total = myPosts.length;
-            const pending = myPosts.filter(p => (p.status || "pending") === "pending").length;
-            const approved = myPosts.filter(p => p.status === "approved").length;
-            const project = myPosts.filter(p => p.projectSlug || p.projectName).length;
-            const hidden = myPosts.filter(p => p.status === "hidden").length;
+            const pending = myPosts.filter(function (p) { return (p.status || "pending") === "pending"; }).length;
+            const approved = myPosts.filter(function (p) { return p.status === "approved"; }).length;
+            const project = myPosts.filter(function (p) { return p.projectSlug || p.projectName; }).length;
+            const hidden = myPosts.filter(function (p) { return p.status === "hidden"; }).length;
 
             document.getElementById("statTotal").textContent = total;
             document.getElementById("statPending").textContent = pending;
@@ -1324,12 +1357,13 @@
         }
 
         function applyFilters() {
+            const currentUser = getCurrentUser();
             const keyword = normalizeText(searchInput.value);
             const flowValue = flowFilter.value;
             const typeValue = typeFilter.value;
             const statusValue = statusFilter.value;
 
-            filteredPosts = myPosts.filter(post => {
+            filteredPosts = myPosts.filter(function (post) {
                 const searchable = normalizeText([
                     post.title,
                     post.city,
@@ -1353,10 +1387,10 @@
             });
 
             renderPosts();
-            updateResultInfo();
+            updateResultInfo(currentUser);
         }
 
-        function updateResultInfo() {
+        function updateResultInfo(currentUser) {
             if (!currentUser) {
                 resultInfo.textContent = "Bạn cần đăng nhập để xem danh sách tin đăng của mình.";
                 return;
@@ -1367,7 +1401,7 @@
                 return;
             }
 
-            resultInfo.textContent = `Tìm thấy ${filteredPosts.length} / ${myPosts.length} tin phù hợp với bộ lọc hiện tại.`;
+            resultInfo.textContent = "Tìm thấy " + filteredPosts.length + " / " + myPosts.length + " tin phù hợp với bộ lọc hiện tại.";
         }
 
         function getPriceDisplay(post) {
@@ -1381,7 +1415,7 @@
             if (post.flow === "construction") {
                 return post.serviceExp || post.serviceArea || "Chưa nhập";
             }
-            return post.propertyArea ? `${post.propertyArea} m²` : "Chưa nhập";
+            return post.propertyArea ? post.propertyArea + " m²" : "Chưa nhập";
         }
 
         function getProjectDisplay(post) {
@@ -1393,9 +1427,10 @@
             return [post.ward, post.city].filter(Boolean).join(", ") || "Chưa rõ khu vực";
         }
 
-        function truncateText(text, max = 180) {
+        function truncateText(text, max) {
+            const limit = max || 180;
             if (!text) return "";
-            return text.length > max ? text.slice(0, max) + "..." : text;
+            return text.length > limit ? text.slice(0, limit) + "..." : text;
         }
 
         function getCategoryDisplay(post) {
@@ -1409,7 +1444,7 @@
             const status = post.status || "pending";
             const images = getSafeArray(post.images);
             const projectBadge = post.projectName
-                ? `<span class="badge badge-project"><i class="fa-solid fa-diagram-project"></i>${post.projectName}</span>`
+                ? '<span class="badge badge-project"><i class="fa-solid fa-diagram-project"></i>' + post.projectName + "</span>"
                 : "";
 
             const pricePerM2 = post.pricePerSquareMeter
@@ -1473,8 +1508,8 @@
                         </button>
 
                         ${status === "hidden"
-                            ? `<button class="btn-warning btn-show" data-id="${post.id}" type="button"><i class="fa-solid fa-eye mr-2"></i>Hiện lại</button>`
-                            : `<button class="btn-warning btn-hide" data-id="${post.id}" type="button"><i class="fa-solid fa-eye-slash mr-2"></i>Ẩn tin</button>`
+                            ? '<button class="btn-warning btn-show" data-id="' + post.id + '" type="button"><i class="fa-solid fa-eye mr-2"></i>Hiện lại</button>'
+                            : '<button class="btn-warning btn-hide" data-id="' + post.id + '" type="button"><i class="fa-solid fa-eye-slash mr-2"></i>Ẩn tin</button>'
                         }
 
                         <button class="btn-danger btn-delete" data-id="${post.id}" type="button">
@@ -1498,7 +1533,7 @@
 
             attachPostActions();
 
-            if (!selectedPostId || !filteredPosts.find(p => p.id === selectedPostId)) {
+            if (!selectedPostId || !filteredPosts.find(function (p) { return p.id === selectedPostId; })) {
                 selectedPostId = filteredPosts[0].id;
             }
 
@@ -1507,7 +1542,7 @@
         }
 
         function highlightSelectedCard() {
-            document.querySelectorAll(".post-item").forEach(card => {
+            document.querySelectorAll(".post-item").forEach(function (card) {
                 const isActive = card.getAttribute("data-post-id") === selectedPostId;
                 card.style.borderColor = isActive ? "#14b8a6" : "#e2e8f0";
                 card.style.boxShadow = isActive ? "0 10px 26px rgba(20, 184, 166, 0.14)" : "";
@@ -1515,28 +1550,36 @@
         }
 
         function attachPostActions() {
-            document.querySelectorAll(".btn-view").forEach(btn => {
-                btn.addEventListener("click", () => {
+            document.querySelectorAll(".btn-view").forEach(function (btn) {
+                btn.addEventListener("click", function () {
                     selectedPostId = btn.getAttribute("data-id");
                     renderDetailById(selectedPostId);
                     highlightSelectedCard();
                 });
             });
 
-            document.querySelectorAll(".btn-hide").forEach(btn => {
-                btn.addEventListener("click", () => togglePostVisibility(btn.getAttribute("data-id"), "hidden"));
+            document.querySelectorAll(".btn-hide").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    togglePostVisibility(btn.getAttribute("data-id"), "hidden");
+                });
             });
 
-            document.querySelectorAll(".btn-show").forEach(btn => {
-                btn.addEventListener("click", () => togglePostVisibility(btn.getAttribute("data-id"), "pending"));
+            document.querySelectorAll(".btn-show").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    togglePostVisibility(btn.getAttribute("data-id"), "pending");
+                });
             });
 
-            document.querySelectorAll(".btn-delete").forEach(btn => {
-                btn.addEventListener("click", () => deletePost(btn.getAttribute("data-id")));
+            document.querySelectorAll(".btn-delete").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    deletePost(btn.getAttribute("data-id"));
+                });
             });
 
-            document.querySelectorAll(".btn-duplicate").forEach(btn => {
-                btn.addEventListener("click", () => duplicatePost(btn.getAttribute("data-id")));
+            document.querySelectorAll(".btn-duplicate").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    duplicatePost(btn.getAttribute("data-id"));
+                });
             });
         }
 
@@ -1546,7 +1589,12 @@
         }
 
         function renderDetailById(postId) {
-            const post = filteredPosts.find(item => item.id === postId) || myPosts.find(item => item.id === postId);
+            const post = filteredPosts.find(function (item) {
+                return item.id === postId;
+            }) || myPosts.find(function (item) {
+                return item.id === postId;
+            });
+
             if (!post) {
                 clearDetailPanel();
                 return;
@@ -1571,27 +1619,30 @@
 
             const projectTypeText = post.projectTypeName || getProjectTypeNameFromSlug(post.projectType) || post.propertyType || "";
             const projectText = post.projectName
-                ? `${post.projectName}${projectTypeText ? " • " + projectTypeText : ""}`
-                : `Không thuộc dự án • ${getLocationDisplay(post)}`;
+                ? post.projectName + (projectTypeText ? " • " + projectTypeText : "")
+                : "Không thuộc dự án • " + getLocationDisplay(post);
 
             detailProject.textContent = projectText;
 
             const images = getSafeArray(post.images);
             if (!images.length) {
-                detailGallery.innerHTML = `<div class="detail-note col-span-2">Tin này chưa có hình ảnh đã lưu.</div>`;
+                detailGallery.innerHTML = '<div class="detail-note col-span-2">Tin này chưa có hình ảnh đã lưu.</div>';
             } else {
-                detailGallery.innerHTML = images.slice(0, 6).map(img => {
+                detailGallery.innerHTML = images.slice(0, 6).map(function (img) {
                     const src = (img && (img.dataUrl || img.url)) || "";
                     return src
-                        ? `<img src="${src}" alt="Ảnh tin đăng" />`
-                        : `<div class="detail-note">Ảnh không hợp lệ</div>`;
+                        ? '<img src="' + src + '" alt="Ảnh tin đăng" />'
+                        : '<div class="detail-note">Ảnh không hợp lệ</div>';
                 }).join("");
             }
         }
 
         function togglePostVisibility(postId, nextStatus) {
             const posts = getAllPosts();
-            const index = posts.findIndex(item => item.id === postId);
+            const index = posts.findIndex(function (item) {
+                return item.id === postId;
+            });
+
             if (index === -1) {
                 showStatus("error", "Không tìm thấy tin cần cập nhật trạng thái.");
                 return;
@@ -1620,7 +1671,10 @@
         }
 
         function deletePost(postId) {
-            const target = getAllPosts().find(item => item.id === postId);
+            const target = getAllPosts().find(function (item) {
+                return item.id === postId;
+            });
+
             if (!target) {
                 showStatus("error", "Không tìm thấy tin cần xóa.");
                 return;
@@ -1635,7 +1689,9 @@
             if (!confirmDelete) return;
 
             const posts = getAllPosts();
-            const nextPosts = posts.filter(item => item.id !== postId);
+            const nextPosts = posts.filter(function (item) {
+                return item.id !== postId;
+            });
 
             saveAllPosts(nextPosts);
             syncStores();
@@ -1647,7 +1703,10 @@
         }
 
         function duplicatePost(postId) {
-            const post = getAllPosts().find(item => item.id === postId);
+            const post = getAllPosts().find(function (item) {
+                return item.id === postId;
+            });
+
             if (!post) {
                 showStatus("error", "Không tìm thấy tin để nhân bản.");
                 return;
@@ -1658,7 +1717,10 @@
                 return;
             }
 
-            const clonedImages = getSafeArray(post.images).map(img => ({ ...img }));
+            const clonedImages = getSafeArray(post.images).map(function (img) {
+                return { ...img };
+            });
+
             const copy = {
                 ...post,
                 id: "post_" + Date.now(),
@@ -1706,6 +1768,8 @@
         }
 
         function initPage() {
+            const currentUser = getCurrentUser();
+
             fillUserInfo();
             syncStores();
             loadPosts();
@@ -1727,7 +1791,7 @@
         statusFilter.addEventListener("change", applyFilters);
 
         clearFilterBtn.addEventListener("click", clearFilters);
-        refreshBtn.addEventListener("click", () => {
+        refreshBtn.addEventListener("click", function () {
             initPage();
             showStatus("success", "Đã làm mới dữ liệu quản lý tin từ localStorage.");
         });
