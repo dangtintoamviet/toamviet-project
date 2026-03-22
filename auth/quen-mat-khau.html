@@ -27,6 +27,7 @@
             --text-soft: #64748b;
             --danger: #dc2626;
             --success: #0f766e;
+            --warning: #d97706;
             --info: #1d4ed8;
         }
 
@@ -38,6 +39,7 @@
             font-family: "Roboto", sans-serif;
             background: var(--soft-bg);
             color: #1e293b;
+            margin: 0;
         }
 
         .container-custom {
@@ -47,29 +49,35 @@
         }
 
         .auth-shell {
-            max-width: 1120px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
-        .auth-card {
+        .page-grid {
             display: grid;
-            grid-template-columns: 0.95fr 1.05fr;
+            grid-template-columns: 1.06fr 0.94fr;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .hero-card,
+        .form-card {
             background: #fff;
             border: 1px solid var(--stroke);
             border-radius: 28px;
-            overflow: hidden;
             box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
         }
 
-        .auth-side {
-            padding: 34px 30px;
+        .hero-card {
+            padding: 34px 32px;
             background: linear-gradient(135deg, #0f766e, #008b8b);
             color: white;
             position: relative;
             overflow: hidden;
+            min-height: 100%;
         }
 
-        .auth-side::after {
+        .hero-card::after {
             content: "";
             position: absolute;
             right: -70px;
@@ -80,12 +88,12 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
-        .side-badge {
+        .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            border: 1px solid rgba(255,255,255,0.22);
-            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.12);
             border-radius: 999px;
             padding: 8px 14px;
             font-size: 11px;
@@ -95,127 +103,136 @@
             margin-bottom: 18px;
         }
 
-        .side-title {
-            font-size: 30px;
+        .hero-title {
+            font-size: 31px;
             line-height: 1.35;
             font-weight: 900;
-            margin-bottom: 12px;
+            margin: 0 0 12px;
         }
 
-        .side-desc {
+        .hero-desc {
             font-size: 14px;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.92);
+            line-height: 1.85;
+            color: rgba(255, 255, 255, 0.92);
             margin-bottom: 26px;
         }
 
-        .side-points {
+        .hero-points {
             display: grid;
+            grid-template-columns: 1fr;
             gap: 14px;
+            margin-bottom: 24px;
         }
 
-        .side-point {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-            background: rgba(255,255,255,0.10);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 18px;
-            padding: 14px;
+        .hero-point {
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 16px;
         }
 
-        .side-point-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.14);
-            flex-shrink: 0;
-        }
-
-        .side-point-title {
-            font-size: 13px;
+        .hero-point .label {
+            font-size: 10px;
+            text-transform: uppercase;
             font-weight: 800;
-            line-height: 1.5;
-            margin-bottom: 4px;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.76);
+            margin-bottom: 7px;
         }
 
-        .side-point-desc {
-            font-size: 12px;
+        .hero-point .value {
+            font-size: 14px;
             line-height: 1.7;
-            color: rgba(255,255,255,0.85);
+            font-weight: 700;
         }
 
-        .auth-main {
-            padding: 34px 32px;
-            background: #fff;
+        .hero-note {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px dashed rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            padding: 16px;
+            font-size: 13px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.92);
         }
 
-        .auth-heading {
+        .form-card {
+            padding: 30px;
+        }
+
+        .form-topbar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .form-title {
             font-size: 30px;
             line-height: 1.3;
             font-weight: 900;
             color: #0f172a;
-            margin-bottom: 8px;
+            margin: 0 0 8px;
         }
 
-        .auth-sub {
+        .form-sub {
             font-size: 14px;
             color: #64748b;
             line-height: 1.75;
-            margin-bottom: 22px;
+            margin: 0;
         }
 
         .step-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 22px;
+            margin: 22px 0 26px;
         }
 
-        .step-card {
+        .step-item {
             border: 1px solid #e2e8f0;
             border-radius: 18px;
-            padding: 14px;
+            padding: 16px;
             background: #f8fafc;
+            transition: 0.25s ease;
+        }
+
+        .step-item.active {
+            border-color: rgba(0, 139, 139, 0.28);
+            background: #f0fdfa;
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.08);
         }
 
         .step-label {
             font-size: 10px;
             text-transform: uppercase;
             font-weight: 900;
-            color: #94a3b8;
             letter-spacing: 0.05em;
-            margin-bottom: 6px;
+            color: #64748b;
+            margin-bottom: 8px;
         }
 
-        .step-value {
-            font-size: 13px;
+        .step-title {
+            font-size: 14px;
+            line-height: 1.7;
             font-weight: 800;
             color: #0f172a;
-            line-height: 1.6;
         }
 
-        .panel-box {
+        .section-box {
+            background: #fff;
             border: 1px solid #e2e8f0;
             border-radius: 22px;
-            background: #fff;
-            padding: 20px;
+            padding: 22px;
         }
 
-        .panel-title {
-            font-size: 18px;
+        .section-title {
+            font-size: 12px;
             font-weight: 900;
-            color: #0f172a;
-            margin-bottom: 6px;
-        }
-
-        .panel-sub {
-            font-size: 13px;
-            color: #64748b;
-            line-height: 1.7;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             margin-bottom: 18px;
         }
 
@@ -223,14 +240,18 @@
             margin-bottom: 16px;
         }
 
+        .field-group:last-child {
+            margin-bottom: 0;
+        }
+
         .field-label {
             display: block;
             font-size: 12px;
             font-weight: 800;
-            color: #475569;
-            margin-bottom: 8px;
             text-transform: uppercase;
+            color: #475569;
             letter-spacing: 0.04em;
+            margin-bottom: 8px;
         }
 
         .input-box {
@@ -239,7 +260,7 @@
 
         .input-box .left-icon {
             position: absolute;
-            left: 14px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: #94a3b8;
@@ -251,26 +272,27 @@
             right: 14px;
             top: 50%;
             transform: translateY(-50%);
-            border: none;
             background: none;
+            border: none;
             color: #94a3b8;
             cursor: pointer;
+            font-size: 15px;
             padding: 0;
         }
 
-        .input-field {
+        .input-box input {
             width: 100%;
-            padding: 14px 44px 14px 42px;
             border: 1px solid #dbe3eb;
+            padding: 14px 44px 14px 44px;
             border-radius: 14px;
             outline: none;
-            transition: 0.25s ease;
-            background: #fff;
             font-size: 14px;
+            transition: 0.25s ease;
+            background: white;
             font-weight: 500;
         }
 
-        .input-field:focus {
+        .input-box input:focus {
             border-color: var(--vip-color);
             box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.10);
         }
@@ -278,39 +300,45 @@
         .field-note {
             font-size: 11px;
             color: #94a3b8;
-            margin-top: 7px;
             line-height: 1.6;
+            margin-top: 7px;
         }
 
-        .form-grid {
+        .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 14px;
         }
 
         .btn-main,
-        .btn-soft {
-            border: none;
+        .btn-soft-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             border-radius: 14px;
-            padding: 14px 18px;
             font-size: 13px;
             font-weight: 900;
-            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             transition: 0.25s ease;
+            text-decoration: none;
         }
 
         .btn-main {
             width: 100%;
+            border: none;
             background: var(--vip-color);
             color: white;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
+            min-height: 52px;
+            cursor: pointer;
+            margin-top: 4px;
         }
 
         .btn-main:hover {
             background: var(--vip-dark);
             transform: translateY(-1px);
-            box-shadow: 0 10px 22px rgba(0, 139, 139, 0.18);
+            box-shadow: 0 10px 20px rgba(0, 139, 139, 0.18);
         }
 
         .btn-main:disabled {
@@ -320,27 +348,13 @@
             box-shadow: none;
         }
 
-        .btn-soft {
-            background: #eef2ff;
-            color: #334155;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-soft:hover {
-            background: #e2e8f0;
-        }
-
         .status-box {
             display: none;
-            margin-bottom: 16px;
-            padding: 14px;
+            margin: 18px 0 0;
+            padding: 13px 14px;
             border-radius: 14px;
             font-size: 13px;
-            line-height: 1.7;
+            line-height: 1.65;
         }
 
         .status-box.error {
@@ -366,58 +380,69 @@
 
         .helper-box {
             margin-top: 18px;
+            padding: 16px;
+            border-radius: 18px;
             background: #f8fafc;
             border: 1px dashed #cbd5e1;
-            border-radius: 16px;
-            padding: 14px;
         }
 
         .helper-box-title {
             font-size: 12px;
             font-weight: 900;
-            color: #334155;
             text-transform: uppercase;
+            color: #334155;
             margin-bottom: 6px;
         }
 
         .helper-box p {
-            font-size: 12px;
-            color: #64748b;
-            line-height: 1.7;
             margin: 0;
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.75;
         }
 
-        .action-row {
+        .bottom-links {
             display: flex;
-            gap: 12px;
+            align-items: center;
+            gap: 14px;
             flex-wrap: wrap;
-            margin-top: 18px;
+            margin-top: 22px;
         }
 
-        @media (max-width: 991px) {
-            .auth-card {
-                grid-template-columns: 1fr;
-            }
+        .btn-soft-link {
+            min-height: 46px;
+            padding: 0 16px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            color: #334155;
+        }
 
-            .auth-side,
-            .auth-main {
-                padding: 24px 18px;
+        .btn-soft-link:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        @media (max-width: 1180px) {
+            .page-grid {
+                grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 768px) {
-            .step-grid,
-            .form-grid {
-                grid-template-columns: 1fr;
+            .form-card,
+            .hero-card {
+                padding: 18px;
+                border-radius: 20px;
             }
 
-            .auth-heading,
-            .side-title {
+            .form-title,
+            .hero-title {
                 font-size: 24px;
             }
 
-            .auth-card {
-                border-radius: 22px;
+            .grid-2,
+            .step-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -429,158 +454,144 @@
     <main class="py-8 md:py-10">
         <div class="container-custom">
             <div class="auth-shell">
-                <div class="auth-card">
-                    <aside class="auth-side">
-                        <div class="side-badge">
+                <div class="page-grid">
+                    <section class="hero-card">
+                        <div class="hero-badge">
                             <i class="fa-solid fa-key"></i>
-                            Khôi phục truy cập
+                            Khôi phục quyền truy cập
                         </div>
 
-                        <h1 class="side-title">Lấy lại mật khẩu để tiếp tục dùng tài khoản đã đăng ký</h1>
-                        <p class="side-desc">
-                            Trang này được viết mới để đồng bộ chặt với hệ thống tài khoản demo hiện tại. Sau khi đặt lại mật khẩu, bạn có thể quay về đăng nhập ngay mà không phải sửa tay dữ liệu localStorage.
+                        <h1 class="hero-title">Đặt lại mật khẩu theo cấu trúc dùng chung cho toàn bộ nhóm user</h1>
+
+                        <p class="hero-desc">
+                            Trang này được thiết kế để đồng bộ chặt với đăng nhập, đăng ký, tài khoản cá nhân và các luồng đăng tin. Hiện tại nó dùng localStorage để chạy demo ổn định, nhưng cấu trúc đã được tách theo hướng có thể thay sang API sau này mà không cần sửa lại giao diện.
                         </p>
 
-                        <div class="side-points">
-                            <div class="side-point">
-                                <div class="side-point-icon">
-                                    <i class="fa-solid fa-user-check"></i>
-                                </div>
-                                <div>
-                                    <div class="side-point-title">Tìm đúng tài khoản</div>
-                                    <div class="side-point-desc">Nhận diện bằng email hoặc số điện thoại từ dữ liệu đã đăng ký trước đó.</div>
-                                </div>
+                        <div class="hero-points">
+                            <div class="hero-point">
+                                <div class="label">Bước 1</div>
+                                <div class="value">Xác định tài khoản bằng email hoặc số điện thoại đã đăng ký.</div>
                             </div>
 
-                            <div class="side-point">
-                                <div class="side-point-icon">
-                                    <i class="fa-solid fa-database"></i>
-                                </div>
-                                <div>
-                                    <div class="side-point-title">Đồng bộ nhiều nơi</div>
-                                    <div class="side-point-desc">Cập nhật đồng thời registeredUsers, registeredUser và currentUser nếu cùng một người.</div>
-                                </div>
+                            <div class="hero-point">
+                                <div class="label">Bước 2</div>
+                                <div class="value">Cập nhật lại mật khẩu và đồng bộ sang các kho lưu hiện có.</div>
                             </div>
 
-                            <div class="side-point">
-                                <div class="side-point-icon">
-                                    <i class="fa-solid fa-broom"></i>
-                                </div>
-                                <div>
-                                    <div class="side-point-title">Sạch code dùng chung</div>
-                                    <div class="side-point-desc">Đã bỏ hoàn toàn header/footer cũ, chỉ dùng component chung của website.</div>
-                                </div>
+                            <div class="hero-point">
+                                <div class="label">Mục tiêu lâu dài</div>
+                                <div class="value">Sau này chỉ cần thay lớp xử lý dữ liệu, không phải sửa lại file giao diện.</div>
                             </div>
                         </div>
-                    </aside>
 
-                    <section class="auth-main">
-                        <h2 class="auth-heading">Quên mật khẩu</h2>
-                        <p class="auth-sub">
-                            Nhập email hoặc số điện thoại đã đăng ký, sau đó đặt mật khẩu mới. File này đã xử lý cả trường hợp dữ liệu cũ chỉ lưu ở <strong>registeredUser</strong> mà chưa có mảng <strong>registeredUsers</strong>.
-                        </p>
+                        <div class="hero-note">
+                            File này đã bỏ cách làm “mật khẩu demo” lộ ra ngoài giao diện. Từ góc nhìn người dùng, đây là trang quên mật khẩu bình thường. Phần xử lý dữ liệu bên trong được viết theo hướng có thể thay bằng backend thật sau này.
+                        </div>
+                    </section>
+
+                    <section class="form-card">
+                        <div class="form-topbar">
+                            <div>
+                                <h2 class="form-title">Quên mật khẩu</h2>
+                                <p class="form-sub">
+                                    Nhập email hoặc số điện thoại đã đăng ký, sau đó tạo mật khẩu mới. Hệ thống sẽ cập nhật đồng bộ vào dữ liệu người dùng hiện có.
+                                </p>
+                            </div>
+                        </div>
 
                         <div class="step-grid">
-                            <div class="step-card">
+                            <div class="step-item active">
                                 <div class="step-label">Bước 1</div>
-                                <div class="step-value">Xác định tài khoản bằng email hoặc số điện thoại</div>
+                                <div class="step-title">Xác định tài khoản bằng email hoặc số điện thoại</div>
                             </div>
-                            <div class="step-card">
+                            <div class="step-item active">
                                 <div class="step-label">Bước 2</div>
-                                <div class="step-value">Cập nhật lại mật khẩu và đồng bộ sang các kho lưu hiện có</div>
+                                <div class="step-title">Cập nhật lại mật khẩu và đồng bộ sang các kho lưu hiện có</div>
                             </div>
                         </div>
 
-                        <div class="panel-box">
-                            <div class="panel-title">Đặt lại mật khẩu demo</div>
-                            <div class="panel-sub">
-                                Cơ chế này dành cho bản frontend demo. Khi nối backend thật, chỉ cần thay phần đọc/ghi localStorage bằng API.
-                            </div>
+                        <form id="forgotPasswordForm" novalidate>
+                            <div class="section-box">
+                                <div class="section-title">Đặt lại mật khẩu</div>
 
-                            <div id="resetStatus" class="status-box"></div>
-
-                            <form id="resetForm" novalidate>
                                 <div class="field-group">
-                                    <label class="field-label" for="resetIdentity">Email hoặc số điện thoại đã đăng ký</label>
+                                    <label class="field-label" for="identityInput">Email hoặc số điện thoại đã đăng ký</label>
                                     <div class="input-box">
                                         <i class="fa-solid fa-user left-icon"></i>
                                         <input
-                                            id="resetIdentity"
+                                            id="identityInput"
                                             type="text"
-                                            class="input-field"
                                             placeholder="example@gmail.com hoặc 09xxxxxxxx"
                                             autocomplete="username"
                                             required
                                         />
                                     </div>
                                     <div class="field-note">
-                                        Hệ thống sẽ ưu tiên dò trong registeredUsers. Nếu chưa có, hệ thống sẽ tự dựng lại dữ liệu từ registeredUser cũ.
+                                        Hệ thống sẽ ưu tiên dò trong <strong>registeredUsers</strong>. Nếu chưa có, hệ thống sẽ tự dùng lại dữ liệu từ <strong>registeredUser</strong> cũ.
                                     </div>
                                 </div>
 
-                                <div class="form-grid">
+                                <div class="grid-2">
                                     <div class="field-group">
-                                        <label class="field-label" for="newPassword">Mật khẩu mới</label>
+                                        <label class="field-label" for="newPasswordInput">Mật khẩu mới</label>
                                         <div class="input-box">
                                             <i class="fa-solid fa-lock left-icon"></i>
                                             <input
-                                                id="newPassword"
+                                                id="newPasswordInput"
                                                 type="password"
-                                                class="input-field"
                                                 placeholder="Tối thiểu 6 ký tự"
                                                 autocomplete="new-password"
                                                 required
-                                                minlength="6"
                                             />
-                                            <button type="button" class="toggle-password" data-target="newPassword" aria-label="Hiện hoặc ẩn mật khẩu">
+                                            <button type="button" class="toggle-password" data-target="newPasswordInput" aria-label="Hiện hoặc ẩn mật khẩu">
                                                 <i class="fa-regular fa-eye"></i>
                                             </button>
                                         </div>
                                     </div>
 
                                     <div class="field-group">
-                                        <label class="field-label" for="confirmPassword">Nhập lại mật khẩu mới</label>
+                                        <label class="field-label" for="confirmPasswordInput">Nhập lại mật khẩu mới</label>
                                         <div class="input-box">
                                             <i class="fa-solid fa-lock left-icon"></i>
                                             <input
-                                                id="confirmPassword"
+                                                id="confirmPasswordInput"
                                                 type="password"
-                                                class="input-field"
                                                 placeholder="Nhập lại mật khẩu"
                                                 autocomplete="new-password"
                                                 required
-                                                minlength="6"
                                             />
-                                            <button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Hiện hoặc ẩn mật khẩu">
+                                            <button type="button" class="toggle-password" data-target="confirmPasswordInput" aria-label="Hiện hoặc ẩn mật khẩu">
                                                 <i class="fa-regular fa-eye"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <button id="resetSubmit" type="submit" class="btn-main">
+                                <button type="submit" class="btn-main" id="submitBtn">
                                     Cập nhật mật khẩu mới
                                 </button>
-                            </form>
 
-                            <div class="helper-box">
-                                <div class="helper-box-title">Ghi chú đồng bộ</div>
-                                <p>
-                                    Nếu tài khoản của người dùng hiện đang nằm trong <strong>currentUser</strong>, file này cũng sẽ cập nhật lại để tránh tình trạng đăng nhập được nhưng trang tài khoản vẫn giữ password cũ trong demo.
-                                </p>
-                            </div>
+                                <div id="formStatus" class="status-box"></div>
 
-                            <div class="action-row">
-                                <a href="../auth/dang-nhap.html" class="btn-soft">
-                                    <i class="fa-solid fa-arrow-left"></i>
-                                    Quay lại đăng nhập
-                                </a>
-                                <a href="../auth/dang-ky.html" class="btn-soft">
-                                    <i class="fa-solid fa-user-plus"></i>
-                                    Tạo tài khoản mới
-                                </a>
+                                <div class="helper-box">
+                                    <div class="helper-box-title">Ghi chú đồng bộ</div>
+                                    <p>
+                                        Nếu tài khoản của người dùng hiện đang nằm trong <strong>currentUser</strong>, file này cũng sẽ cập nhật lại để tránh tình trạng đăng nhập được nhưng trang tài khoản vẫn giữ password cũ trong demo.
+                                    </p>
+                                </div>
+
+                                <div class="bottom-links">
+                                    <a href="../auth/dang-nhap.html" class="btn-soft-link">
+                                        <i class="fa-solid fa-arrow-left"></i>
+                                        Quay lại đăng nhập
+                                    </a>
+                                    <a href="../auth/dang-ky.html" class="btn-soft-link">
+                                        <i class="fa-solid fa-user-plus"></i>
+                                        Tạo tài khoản mới
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </section>
                 </div>
             </div>
@@ -600,7 +611,7 @@
     <div id="chatForm">
         <div class="chat-header">
             <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
-            <span onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)" style="cursor:pointer; font-size: 20px;">&times;</span>
+            <span onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)" style="cursor:pointer; font-size:20px;">&times;</span>
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
@@ -613,337 +624,315 @@
     <script src="../assets/js/main.js"></script>
 
     <script>
-        const resetForm = document.getElementById("resetForm");
-        const resetStatus = document.getElementById("resetStatus");
-        const resetSubmit = document.getElementById("resetSubmit");
+        (function () {
+            const form = document.getElementById("forgotPasswordForm");
+            const submitBtn = document.getElementById("submitBtn");
+            const formStatus = document.getElementById("formStatus");
+            const identityInput = document.getElementById("identityInput");
+            const newPasswordInput = document.getElementById("newPasswordInput");
+            const confirmPasswordInput = document.getElementById("confirmPasswordInput");
 
-        function normalizeText(value) {
-            return String(value || "")
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/đ/g, "d")
-                .replace(/\s+/g, " ")
-                .trim();
-        }
-
-        function sanitizePhone(phone) {
-            return String(phone || "").replace(/[^\d+]/g, "");
-        }
-
-        function showStatus(type, message) {
-            resetStatus.className = "status-box " + type;
-            resetStatus.innerHTML = message;
-        }
-
-        function hideStatus() {
-            resetStatus.className = "status-box";
-            resetStatus.textContent = "";
-        }
-
-        function getRegisteredUsers() {
-            try {
-                const users = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
-                return Array.isArray(users) ? users : [];
-            } catch (error) {
-                return [];
+            function normalizeText(value) {
+                return String(value || "")
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/đ/g, "d")
+                    .replace(/\s+/g, " ")
+                    .trim();
             }
-        }
 
-        function saveRegisteredUsers(users) {
-            localStorage.setItem("registeredUsers", JSON.stringify(users));
-        }
-
-        function getLegacyUser() {
-            try {
-                return JSON.parse(localStorage.getItem("registeredUser") || "null");
-            } catch (error) {
-                return null;
+            function sanitizePhone(value) {
+                return String(value || "").replace(/[^\d]/g, "");
             }
-        }
 
-        function saveLegacyUser(user) {
-            localStorage.setItem("registeredUser", JSON.stringify(user));
-        }
-
-        function getCurrentUser() {
-            try {
-                return JSON.parse(localStorage.getItem("currentUser") || "null");
-            } catch (error) {
-                return null;
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || "").trim());
             }
-        }
 
-        function saveCurrentUser(user) {
-            localStorage.setItem("currentUser", JSON.stringify(user));
-        }
+            function safeParse(key, fallback) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : fallback;
+                } catch (error) {
+                    return fallback;
+                }
+            }
 
-        function ensureUserId(user) {
-            if (!user) return null;
-            if (user.id && String(user.id).trim()) return user;
-            return {
-                ...user,
-                id: "user_" + Date.now()
-            };
-        }
+            function setStorage(key, value) {
+                localStorage.setItem(key, JSON.stringify(value));
+            }
 
-        function getRoleLabel(roleValue) {
-            const roleMap = {
-                individual_poster: "Cá nhân",
-                broker: "Môi giới",
-                real_estate_company: "Doanh nghiệp",
-                construction_company: "Công ty xây dựng",
-                engineer_architect: "Kỹ sư / Kiến trúc sư"
-            };
-            return roleMap[roleValue] || roleValue || "";
-        }
+            function showStatus(type, message) {
+                formStatus.className = "status-box " + type;
+                formStatus.innerHTML = message;
+            }
 
-        function getAccountGroupLabel(groupValue) {
-            return groupValue === "construction" ? "Xây dựng" : "Bất động sản";
-        }
+            function hideStatus() {
+                formStatus.className = "status-box";
+                formStatus.textContent = "";
+            }
 
-        function normalizeRecoveredUser(user) {
-            if (!user) return null;
+            function getRegisteredUsersNormalized() {
+                const list = safeParse("registeredUsers", []);
+                const users = Array.isArray(list) ? list.filter(Boolean) : [];
 
-            const normalizedUser = ensureUserId(user);
+                const legacyUser = safeParse("registeredUser", null);
+                if (
+                    legacyUser &&
+                    typeof legacyUser === "object" &&
+                    !users.some(function (item) {
+                        return (
+                            normalizeText(item.email) === normalizeText(legacyUser.email) ||
+                            sanitizePhone(item.phone) === sanitizePhone(legacyUser.phone)
+                        );
+                    })
+                ) {
+                    users.unshift(legacyUser);
+                }
 
-            return {
-                ...normalizedUser,
-                accountGroup: normalizedUser.accountGroup || "real_estate",
-                accountGroupLabel:
-                    normalizedUser.accountGroupLabel ||
-                    getAccountGroupLabel(normalizedUser.accountGroup || "real_estate"),
-                roleLabel:
-                    normalizedUser.roleLabel ||
-                    getRoleLabel(normalizedUser.role),
-                fullName: normalizedUser.fullName || normalizedUser.contactName || "",
-                email: String(normalizedUser.email || "").trim().toLowerCase(),
-                phone: String(normalizedUser.phone || "").trim(),
-                brandName: normalizedUser.brandName || "",
-                serviceArea: normalizedUser.serviceArea || "",
-                specialty: normalizedUser.specialty || "",
-                status: normalizedUser.status || "active",
-                createdAt: normalizedUser.createdAt || new Date().toISOString()
-            };
-        }
-
-        function mergeLegacyIntoUsers() {
-            let users = getRegisteredUsers();
-            const legacyUser = normalizeRecoveredUser(getLegacyUser());
-
-            if (!legacyUser) {
                 return users;
             }
 
-            const existsIndex = users.findIndex(function (user) {
-                const sameId =
-                    legacyUser.id &&
-                    user.id &&
-                    String(legacyUser.id).trim() === String(user.id).trim();
-
-                const sameEmail =
-                    legacyUser.email &&
-                    user.email &&
-                    normalizeText(legacyUser.email) === normalizeText(user.email);
-
-                const samePhone =
-                    legacyUser.phone &&
-                    user.phone &&
-                    sanitizePhone(legacyUser.phone) === sanitizePhone(user.phone);
-
-                return sameId || sameEmail || samePhone;
-            });
-
-            if (existsIndex === -1) {
-                users.unshift(legacyUser);
-                saveRegisteredUsers(users);
-                saveLegacyUser(legacyUser);
-                return users;
+            function getRoleLabel(roleValue) {
+                const map = {
+                    individual_poster: "Cá nhân",
+                    broker: "Môi giới",
+                    real_estate_company: "Doanh nghiệp / Sàn bất động sản",
+                    construction_company: "Công ty xây dựng",
+                    engineer_architect: "Kỹ sư / Kiến trúc sư / Nhà thầu"
+                };
+                return map[roleValue] || roleValue || "";
             }
 
-            const mergedUser = normalizeRecoveredUser({
-                ...users[existsIndex],
-                ...legacyUser
-            });
-
-            users[existsIndex] = mergedUser;
-            saveRegisteredUsers(users);
-            saveLegacyUser(mergedUser);
-            return users;
-        }
-
-        function findUserIndexByIdentity(users, identity) {
-            const normalizedIdentity = normalizeText(identity);
-            const sanitizedIdentityPhone = sanitizePhone(identity);
-
-            return users.findIndex(function (user) {
-                const sameEmail =
-                    user &&
-                    user.email &&
-                    normalizeText(user.email) === normalizedIdentity;
-
-                const samePhone =
-                    user &&
-                    user.phone &&
-                    sanitizePhone(user.phone) === sanitizedIdentityPhone;
-
-                return sameEmail || samePhone;
-            });
-        }
-
-        function syncLegacyAndCurrentUser(updatedUser, originalIdentity) {
-            const legacyUser = getLegacyUser();
-            const currentUser = getCurrentUser();
-            const normalizedIdentity = normalizeText(originalIdentity);
-            const sanitizedIdentityPhone = sanitizePhone(originalIdentity);
-
-            function isMatched(user) {
-                if (!user) return false;
-
-                const sameId =
-                    updatedUser.id &&
-                    user.id &&
-                    String(updatedUser.id).trim() === String(user.id).trim();
-
-                const sameEmail =
-                    user.email &&
-                    normalizeText(user.email) === normalizedIdentity;
-
-                const samePhone =
-                    user.phone &&
-                    sanitizePhone(user.phone) === sanitizedIdentityPhone;
-
-                return sameId || sameEmail || samePhone;
+            function getAccountGroupLabel(groupValue) {
+                return groupValue === "construction" ? "Xây dựng" : "Bất động sản";
             }
 
-            if (isMatched(legacyUser)) {
-                saveLegacyUser({
-                    ...legacyUser,
-                    ...updatedUser
-                });
-            }
+            const authService = {
+                findUserByIdentity(identity) {
+                    const normalizedIdentity = normalizeText(identity);
+                    const phoneIdentity = sanitizePhone(identity);
+                    const users = getRegisteredUsersNormalized();
 
-            if (isMatched(currentUser)) {
-                saveCurrentUser({
-                    ...currentUser,
-                    ...updatedUser
-                });
-            }
-        }
+                    let foundIndex = -1;
+                    let foundUser = null;
 
-        document.querySelectorAll(".toggle-password").forEach(function (button) {
-            button.addEventListener("click", function () {
-                const targetId = button.getAttribute("data-target");
-                const input = document.getElementById(targetId);
-                const icon = button.querySelector("i");
+                    users.forEach(function (user, index) {
+                        if (foundUser) return;
 
-                if (!input) return;
+                        const sameEmail =
+                            user.email &&
+                            normalizeText(user.email) === normalizedIdentity;
 
-                if (input.type === "password") {
-                    input.type = "text";
-                    icon.className = "fa-regular fa-eye-slash";
-                } else {
-                    input.type = "password";
-                    icon.className = "fa-regular fa-eye";
-                }
-            });
-        });
+                        const samePhone =
+                            user.phone &&
+                            sanitizePhone(user.phone) === phoneIdentity;
 
-        resetForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            hideStatus();
+                        if (sameEmail || samePhone) {
+                            foundIndex = index;
+                            foundUser = user;
+                        }
+                    });
 
-            const identity = document.getElementById("resetIdentity").value.trim();
-            const newPassword = document.getElementById("newPassword").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
+                    return {
+                        user: foundUser,
+                        users: users,
+                        index: foundIndex
+                    };
+                },
 
-            if (!identity || !newPassword || !confirmPassword) {
-                showStatus("error", "Vui lòng nhập đầy đủ thông tin khôi phục mật khẩu.");
-                return;
-            }
+                updatePassword(identity, newPassword) {
+                    const found = this.findUserByIdentity(identity);
 
-            if (newPassword.length < 6) {
-                showStatus("error", "Mật khẩu mới phải có ít nhất 6 ký tự.");
-                return;
-            }
-
-            if (newPassword !== confirmPassword) {
-                showStatus("error", "Mật khẩu nhập lại chưa khớp.");
-                return;
-            }
-
-            let users = mergeLegacyIntoUsers();
-            const userIndex = findUserIndexByIdentity(users, identity);
-
-            if (userIndex === -1) {
-                showStatus("error", "Không tìm thấy tài khoản nào khớp với email hoặc số điện thoại bạn vừa nhập.");
-                return;
-            }
-
-            resetSubmit.disabled = true;
-            resetSubmit.textContent = "Đang cập nhật...";
-
-            const updatedUser = normalizeRecoveredUser({
-                ...users[userIndex],
-                password: newPassword,
-                updatedAt: new Date().toISOString()
-            });
-
-            users[userIndex] = updatedUser;
-            saveRegisteredUsers(users);
-            saveLegacyUser(updatedUser);
-            syncLegacyAndCurrentUser(updatedUser, identity);
-
-            showStatus(
-                "success",
-                'Đã cập nhật mật khẩu demo thành công. Bạn có thể <a href="../auth/dang-nhap.html" style="font-weight:800; text-decoration:underline;">quay lại trang đăng nhập</a> và dùng mật khẩu mới ngay bây giờ.'
-            );
-
-            resetForm.reset();
-            resetSubmit.disabled = false;
-            resetSubmit.textContent = "Cập nhật mật khẩu mới";
-        });
-
-        function sendToZalo() {
-            const name = document.getElementById("cusName").value;
-            const msg = document.getElementById("cusMsg").value;
-            const phone = "0946239289";
-
-            if (!name) {
-                alert("Vui lòng cho biết tên của bạn");
-                return;
-            }
-
-            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
-            const encodedMsg = encodeURIComponent(fullMsg);
-            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
-        }
-
-        async function initSharedComponents() {
-            try {
-                if (typeof loadComponent === "function") {
-                    await loadComponent("siteHeader", "../components/header-inner.html");
-                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
-                    await loadComponent("siteFooter", "../components/footer-inner.html");
-
-                    if (typeof setupFixedHeaderSpacing === "function") {
-                        setupFixedHeaderSpacing();
+                    if (!found.user || found.index < 0) {
+                        throw new Error("USER_NOT_FOUND");
                     }
-                    if (typeof watchHeaderSpacing === "function") {
-                        watchHeaderSpacing();
+
+                    const updatedUser = {
+                        ...found.user,
+                        roleLabel: found.user.roleLabel || getRoleLabel(found.user.role),
+                        accountGroupLabel: found.user.accountGroupLabel || getAccountGroupLabel(found.user.accountGroup),
+                        password: newPassword,
+                        updatedAt: new Date().toISOString()
+                    };
+
+                    const nextUsers = found.users.slice();
+                    nextUsers[found.index] = updatedUser;
+
+                    setStorage("registeredUsers", nextUsers);
+                    setStorage("registeredUser", updatedUser);
+
+                    const currentUser = safeParse("currentUser", null);
+                    if (currentUser) {
+                        const sameId =
+                            currentUser.id &&
+                            updatedUser.id &&
+                            String(currentUser.id) === String(updatedUser.id);
+
+                        const sameEmail =
+                            currentUser.email &&
+                            updatedUser.email &&
+                            normalizeText(currentUser.email) === normalizeText(updatedUser.email);
+
+                        const samePhone =
+                            currentUser.phone &&
+                            updatedUser.phone &&
+                            sanitizePhone(currentUser.phone) === sanitizePhone(updatedUser.phone);
+
+                        if (sameId || sameEmail || samePhone) {
+                            setStorage("currentUser", {
+                                ...currentUser,
+                                ...updatedUser
+                            });
+                        }
+                    }
+
+                    return updatedUser;
+                }
+            };
+
+            function validateForm(identity, newPassword, confirmPassword) {
+                if (!identity) {
+                    showStatus("error", "Vui lòng nhập email hoặc số điện thoại đã đăng ký.");
+                    return false;
+                }
+
+                const identityLooksLikeEmail = identity.includes("@");
+                if (identityLooksLikeEmail && !isValidEmail(identity)) {
+                    showStatus("error", "Email chưa đúng định dạng.");
+                    return false;
+                }
+
+                if (!identityLooksLikeEmail) {
+                    const phone = sanitizePhone(identity);
+                    if (!phone || phone.length < 9 || phone.length > 11) {
+                        showStatus("error", "Số điện thoại chưa hợp lệ.");
+                        return false;
                     }
                 }
-            } catch (error) {
-                console.error("Không thể load component dùng chung:", error);
+
+                if (!newPassword || newPassword.length < 6) {
+                    showStatus("error", "Mật khẩu mới phải có ít nhất 6 ký tự.");
+                    return false;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    showStatus("error", "Mật khẩu nhập lại chưa khớp.");
+                    return false;
+                }
+
+                return true;
             }
-        }
 
-        window.sendToZalo = sendToZalo;
+            document.querySelectorAll(".toggle-password").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const targetId = this.getAttribute("data-target");
+                    const input = document.getElementById(targetId);
+                    const icon = this.querySelector("i");
 
-        window.addEventListener("load", async function () {
-            await initSharedComponents();
-            mergeLegacyIntoUsers();
-        });
+                    if (!input) return;
+
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.className = "fa-regular fa-eye-slash";
+                    } else {
+                        input.type = "password";
+                        icon.className = "fa-regular fa-eye";
+                    }
+                });
+            });
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                hideStatus();
+
+                const identity = identityInput.value.trim();
+                const newPassword = newPasswordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (!validateForm(identity, newPassword, confirmPassword)) {
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Đang cập nhật...";
+
+                try {
+                    const found = authService.findUserByIdentity(identity);
+
+                    if (!found.user) {
+                        showStatus(
+                            "error",
+                            "Không tìm thấy tài khoản phù hợp với email hoặc số điện thoại này. Bạn hãy kiểm tra lại hoặc tạo tài khoản mới."
+                        );
+                        return;
+                    }
+
+                    authService.updatePassword(identity, newPassword);
+
+                    showStatus(
+                        "success",
+                        "Đã cập nhật mật khẩu thành công. Dữ liệu đã được đồng bộ sang <strong>registeredUsers</strong>, <strong>registeredUser</strong> và <strong>currentUser</strong> nếu tài khoản đang đăng nhập."
+                    );
+
+                    form.reset();
+
+                    setTimeout(function () {
+                        window.location.href = "../auth/dang-nhap.html";
+                    }, 1200);
+                } catch (error) {
+                    if (error && error.message === "USER_NOT_FOUND") {
+                        showStatus("error", "Không tìm thấy tài khoản để cập nhật.");
+                    } else {
+                        showStatus("error", "Có lỗi xảy ra khi cập nhật mật khẩu. Vui lòng thử lại.");
+                    }
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Cập nhật mật khẩu mới";
+                }
+            });
+
+            function sendToZalo() {
+                const name = document.getElementById("cusName").value;
+                const msg = document.getElementById("cusMsg").value;
+                const phone = "0946239289";
+
+                if (!name) {
+                    alert("Vui lòng cho biết tên của bạn");
+                    return;
+                }
+
+                const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+                const encodedMsg = encodeURIComponent(fullMsg);
+                window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+            }
+
+            async function initSharedComponents() {
+                try {
+                    if (typeof loadComponent === "function") {
+                        await loadComponent("siteHeader", "../components/header-inner.html");
+                        await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                        await loadComponent("siteFooter", "../components/footer-inner.html");
+
+                        if (typeof setupFixedHeaderSpacing === "function") {
+                            setupFixedHeaderSpacing();
+                        }
+                        if (typeof watchHeaderSpacing === "function") {
+                            watchHeaderSpacing();
+                        }
+                    }
+                } catch (error) {
+                    console.error("Không thể load component dùng chung:", error);
+                }
+            }
+
+            window.sendToZalo = sendToZalo;
+
+            window.addEventListener("load", async function () {
+                await initSharedComponents();
+            });
+        })();
     </script>
 </body>
 </html>
