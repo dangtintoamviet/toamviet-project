@@ -1,1 +1,1545 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý dự án | Toamviet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/admin-dashboard.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --stroke: #e2e8f0;
+            --text-main: #0f172a;
+            --text-soft: #64748b;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #0f766e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Roboto", "Segoe UI", sans-serif;
+            background: var(--soft-bg);
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .container-custom {
+            max-width: 1366px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .admin-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .page-shell {
+            padding-bottom: 28px;
+        }
+
+        .page-hero {
+            margin-bottom: 24px;
+        }
+
+        .hero-card,
+        .sidebar-card,
+        .toolbar-card,
+        .stats-card,
+        .list-card,
+        .project-card,
+        .detail-card {
+            background: white;
+            border: 1px solid var(--stroke);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .hero-card {
+            padding: 28px;
+            background: linear-gradient(135deg, #0f766e, #008b8b);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-size: 30px;
+            line-height: 1.35;
+            font-weight: 900;
+            margin-bottom: 12px;
+            max-width: 850px;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.92);
+            max-width: 940px;
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hero-point {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 14px;
+        }
+
+        .hero-point .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 6px;
+        }
+
+        .hero-point .value {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 260px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar-card {
+            padding: 22px;
+            position: sticky;
+            top: 92px;
+        }
+
+        .admin-sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            transition: 0.25s ease;
+            color: #475569;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            text-decoration: none;
+        }
+
+        .admin-sidebar-item:hover,
+        .admin-sidebar-item.active {
+            background: var(--vip-color);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 139, 139, 0.16);
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .stats-card {
+            padding: 18px;
+        }
+
+        .stats-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .stats-value {
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .stats-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .toolbar-card,
+        .list-card,
+        .detail-card {
+            padding: 22px;
+        }
+
+        .toolbar-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .toolbar-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .toolbar-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.7;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .toolbar-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(170px, 1fr)) 140px;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .input-field,
+        .select-field {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--stroke);
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            transition: 0.25s ease;
+            min-height: 48px;
+        }
+
+        .input-field:focus,
+        .select-field:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0,139,139,0.08);
+        }
+
+        .btn-primary,
+        .btn-soft,
+        .btn-dark,
+        .btn-success,
+        .btn-danger,
+        .btn-warning {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--vip-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--vip-dark);
+        }
+
+        .btn-soft {
+            background: #eef2ff;
+            color: #334155;
+        }
+
+        .btn-soft:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1e293b;
+        }
+
+        .btn-success {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .btn-success:hover {
+            background: #d1fae5;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        .btn-warning {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .btn-warning:hover {
+            background: #ffedd5;
+        }
+
+        .status-box {
+            display: none;
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .status-box.info {
+            display: block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .list-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .list-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .list-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .project-count-pill {
+            background: #ecfeff;
+            color: #0f766e;
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .project-card {
+            padding: 18px;
+            transition: 0.25s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .project-card.active {
+            border-color: #14b8a6;
+            box-shadow: 0 12px 28px rgba(20, 184, 166, 0.12);
+        }
+
+        .project-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .project-title {
+            font-size: 19px;
+            font-weight: 900;
+            line-height: 1.5;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .project-meta-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-type {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .badge-city {
+            background: #ecfeff;
+            color: #0f766e;
+        }
+
+        .badge-active {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .badge-hidden {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .project-desc {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+
+        .project-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .mini-stat {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 14px;
+        }
+
+        .mini-stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            letter-spacing: 0.04em;
+        }
+
+        .mini-stat-value {
+            font-size: 15px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .project-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .detail-card {
+            position: sticky;
+            top: 92px;
+            height: fit-content;
+        }
+
+        .detail-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .detail-sub {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .detail-box-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .detail-box-value {
+            font-size: 14px;
+            line-height: 1.8;
+            font-weight: 700;
+            color: #0f172a;
+            word-break: break-word;
+        }
+
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detail-list-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 13px;
+        }
+
+        .detail-list-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-list-label {
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .detail-list-value {
+            color: #0f172a;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+            font-style: italic;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            background: #fff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 1280px) {
+            .toolbar-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-card {
+                position: static;
+            }
+
+            .project-stats-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-card {
+                position: static;
+            }
+
+            .hero-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid,
+            .toolbar-grid,
+            .project-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-card,
+            .sidebar-card,
+            .toolbar-card,
+            .list-card,
+            .detail-card,
+            .stats-card,
+            .project-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .toolbar-head,
+            .list-head,
+            .project-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .toolbar-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .project-actions .btn-soft,
+            .project-actions .btn-warning,
+            .project-actions .btn-primary {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
+
+    <main class="py-8 md:py-10">
+        <div class="container-custom page-shell">
+            <div class="admin-shell">
+                <section class="page-hero">
+                    <div class="hero-card">
+                        <div class="hero-badge">
+                            <i class="fa-solid fa-diagram-project"></i>
+                            Trung tâm quản lý dự án
+                        </div>
+
+                        <h1 class="hero-title">Theo dõi toàn bộ nhóm dự án để đồng bộ dữ liệu tin đăng, trạng thái và số lượng bài liên quan</h1>
+
+                        <p class="hero-desc">
+                            Trang này dùng để kiểm tra toàn bộ dự án đã phát sinh từ luồng đăng tin. Khi đồng bộ lại, hệ thống sẽ gom số lượng tin theo dự án, phân loại theo trạng thái approved / pending / rejected / hidden và phục vụ cho các trang public như trang dự án, giá nhà đất và danh sách tin theo nhóm.
+                        </p>
+
+                        <div class="hero-points">
+                            <div class="hero-point">
+                                <div class="label">Nguồn dữ liệu</div>
+                                <div class="value">allPosts → projects</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Dùng chung</div>
+                                <div class="value">Header, footer, sidebar admin, stores phụ</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Mục tiêu</div>
+                                <div class="value">Giữ số liệu dự án sạch để đồng bộ public và SEO</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="layout-grid">
+                    <aside class="sidebar-card">
+                        <nav>
+                            <a href="admin-dashboard.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-chart-line text-lg"></i> Tổng quan
+                            </a>
+                            <a href="quan-ly-thanh-vien.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-user-shield text-lg"></i> Duyệt thành viên
+                            </a>
+                            <a href="kiem-duyet-tin.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-file-circle-check text-lg"></i> Kiểm duyệt tin đăng
+                            </a>
+                            <a href="quan-ly-du-an.html" class="admin-sidebar-item active">
+                                <i class="fa-solid fa-diagram-project text-lg"></i> Quản lý dự án
+                            </a>
+                            <a href="cai-dat-he-thong.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-gear text-lg"></i> Cài đặt hệ thống
+                            </a>
+                        </nav>
+                    </aside>
+
+                    <section class="main-content">
+                        <div class="stats-grid">
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng dự án</div>
+                                <div class="stats-value" id="statTotalProjects">0</div>
+                                <div class="stats-note">Tất cả dự án đang lưu trong projects.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Đang hoạt động</div>
+                                <div class="stats-value" id="statActiveProjects">0</div>
+                                <div class="stats-note">Dự án có ít nhất 1 tin chưa bị ẩn hoàn toàn.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Có tin chờ duyệt</div>
+                                <div class="stats-value" id="statPendingProjects">0</div>
+                                <div class="stats-note">Cần theo dõi vì còn tin pending.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Đã ẩn</div>
+                                <div class="stats-value" id="statHiddenProjects">0</div>
+                                <div class="stats-note">Dự án đang bị ẩn khỏi danh sách admin.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng số bài</div>
+                                <div class="stats-value" id="statTotalPosts">0</div>
+                                <div class="stats-note">Tổng bài đã gom vào các dự án.</div>
+                            </div>
+                        </div>
+
+                        <section class="toolbar-card">
+                            <div class="toolbar-head">
+                                <div>
+                                    <div class="toolbar-title">Danh sách dự án</div>
+                                    <div class="toolbar-sub">
+                                        Lọc theo tên, khu vực, loại dự án và trạng thái để kiểm tra nhanh dữ liệu trước khi đồng bộ các trang public.
+                                    </div>
+                                </div>
+
+                                <div class="toolbar-actions">
+                                    <button id="syncProjectsBtn" class="btn-primary" type="button">
+                                        <i class="fa-solid fa-rotate mr-2"></i>Đồng bộ từ bài đăng
+                                    </button>
+                                    <button id="refreshBtn" class="btn-soft" type="button">
+                                        <i class="fa-solid fa-rotate-right mr-2"></i>Làm mới
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="globalStatus" class="status-box"></div>
+
+                            <div class="toolbar-grid">
+                                <div>
+                                    <label class="field-label" for="searchInput">Tìm theo tên dự án / khu vực / chủ đầu tư</label>
+                                    <input id="searchInput" type="text" class="input-field" placeholder="Nhập từ khóa cần tìm..." />
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="cityFilter">Tỉnh / Thành phố</label>
+                                    <select id="cityFilter" class="select-field">
+                                        <option value="all">Tất cả tỉnh/thành</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="typeFilter">Loại dự án</label>
+                                    <select id="typeFilter" class="select-field">
+                                        <option value="all">Tất cả loại</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="statusFilter">Trạng thái dự án</label>
+                                    <select id="statusFilter" class="select-field">
+                                        <option value="all">Tất cả trạng thái</option>
+                                        <option value="active">Đang hoạt động</option>
+                                        <option value="has_pending">Có tin chờ duyệt</option>
+                                        <option value="hidden">Đã ẩn</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label">&nbsp;</label>
+                                    <button id="clearFilterBtn" class="btn-dark w-full" type="button">Xóa lọc</button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="content-grid mt-6">
+                            <section class="list-card">
+                                <div class="list-head">
+                                    <div>
+                                        <div class="list-title">Dự án trong hệ thống</div>
+                                        <div class="list-sub" id="resultInfo">Đang tải dữ liệu dự án...</div>
+                                    </div>
+                                    <div class="project-count-pill" id="projectCountBadge">0 dự án</div>
+                                </div>
+
+                                <div id="projectList" class="project-list"></div>
+
+                                <div id="emptyState" class="empty-box hidden">
+                                    Hiện không có dự án nào phù hợp với bộ lọc hiện tại.
+                                </div>
+                            </section>
+
+                            <aside class="detail-card">
+                                <div class="detail-title">Chi tiết nhanh dự án</div>
+                                <div class="detail-sub">Chọn một dự án để xem nhanh thống kê, khu vực, chủ đầu tư và liên kết public.</div>
+
+                                <div id="detailDefault">
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Trạng thái xem nhanh</div>
+                                        <div class="detail-box-value">Chưa chọn dự án nào để xem chi tiết.</div>
+                                    </div>
+                                </div>
+
+                                <div id="detailContent" class="hidden">
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Tên dự án</div>
+                                        <div class="detail-box-value" id="detailProjectName">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Thông tin chính</div>
+                                        <div class="detail-box-value" id="detailProjectMeta">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Chủ đầu tư / Đơn vị phát triển</div>
+                                        <div class="detail-box-value" id="detailProjectDeveloper">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Liên kết public</div>
+                                        <div class="detail-box-value">
+                                            <a id="detailPublicLink" href="#" target="_blank" class="text-[--vip-color] font-extrabold hover:underline">
+                                                Mở trang public của dự án
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Thống kê theo trạng thái</div>
+                                        <div class="detail-list">
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Tổng bài</span>
+                                                <span class="detail-list-value" id="detailTotalPosts">0</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Đã duyệt</span>
+                                                <span class="detail-list-value" id="detailApprovedPosts">0</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Chờ duyệt</span>
+                                                <span class="detail-list-value" id="detailPendingPosts">0</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Từ chối</span>
+                                                <span class="detail-list-value" id="detailRejectedPosts">0</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Đang ẩn</span>
+                                                <span class="detail-list-value" id="detailHiddenPosts">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <button id="goToTop" onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
+
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        const PROJECT_CATEGORIES = [
+            { slug: "can-ho-chung-cu", name: "Căn hộ chung cư" },
+            { slug: "cao-oc-van-phong", name: "Cao ốc văn phòng" },
+            { slug: "trung-tam-thuong-mai", name: "Trung tâm thương mại" },
+            { slug: "khu-do-thi-moi", name: "Khu đô thị mới" },
+            { slug: "khu-phuc-hop", name: "Khu phức hợp" },
+            { slug: "nha-o-xa-hoi", name: "Nhà ở xã hội" },
+            { slug: "khu-nghi-duong-sinh-thai", name: "Khu nghỉ dưỡng, Sinh thái" },
+            { slug: "khu-cong-nghiep", name: "Khu công nghiệp" },
+            { slug: "biet-thu-lien-ke", name: "Biệt thự, liền kề" },
+            { slug: "shophouse", name: "Shophouse" },
+            { slug: "nha-mat-pho", name: "Nhà mặt phố" },
+            { slug: "du-an-khac", name: "Dự án khác" }
+        ];
+
+        const searchInput = document.getElementById("searchInput");
+        const cityFilter = document.getElementById("cityFilter");
+        const typeFilter = document.getElementById("typeFilter");
+        const statusFilter = document.getElementById("statusFilter");
+        const clearFilterBtn = document.getElementById("clearFilterBtn");
+        const refreshBtn = document.getElementById("refreshBtn");
+        const syncProjectsBtn = document.getElementById("syncProjectsBtn");
+
+        const projectList = document.getElementById("projectList");
+        const emptyState = document.getElementById("emptyState");
+        const resultInfo = document.getElementById("resultInfo");
+        const globalStatus = document.getElementById("globalStatus");
+        const projectCountBadge = document.getElementById("projectCountBadge");
+
+        const detailDefault = document.getElementById("detailDefault");
+        const detailContent = document.getElementById("detailContent");
+
+        let allProjects = [];
+        let filteredProjects = [];
+        let selectedProjectSlug = "";
+
+        document.addEventListener("DOMContentLoaded", initPage);
+
+        function safeParseJSON(raw, fallback) {
+            try {
+                return JSON.parse(raw);
+            } catch (error) {
+                return fallback;
+            }
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function showStatus(type, message) {
+            globalStatus.className = "status-box " + type;
+            globalStatus.textContent = message;
+        }
+
+        function hideStatus() {
+            globalStatus.className = "status-box";
+            globalStatus.textContent = "";
+        }
+
+        function formatDateTime(iso) {
+            if (!iso) return "---";
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return "---";
+            return d.toLocaleString("vi-VN");
+        }
+
+        function getProjectTypeNameFromSlug(slug) {
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === slug;
+            });
+            return found ? found.name : "";
+        }
+
+        function getProjectTypeSlugFromValue(value) {
+            const normalized = normalizeText(value);
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === value || normalizeText(item.name) === normalized;
+            });
+            return found ? found.slug : "";
+        }
+
+        function getAllPosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    const posts = window.postStorage.getAllPosts();
+                    return Array.isArray(posts) ? posts : [];
+                }
+            } catch (error) {
+                console.warn("postStorage.getAllPosts lỗi:", error);
+            }
+
+            return safeParseJSON(localStorage.getItem("allPosts") || "[]", []);
+        }
+
+        function getProjectsStore() {
+            return safeParseJSON(localStorage.getItem("projects") || "[]", []);
+        }
+
+        function saveProjectsStore(projects) {
+            localStorage.setItem("projects", JSON.stringify(Array.isArray(projects) ? projects : []));
+        }
+
+        function syncProjectStoreFromPosts(posts) {
+            const oldProjects = getProjectsStore();
+            const map = new Map();
+
+            oldProjects.forEach(function (project) {
+                if (!project || !project.slug) return;
+                const typeSlug = getProjectTypeSlugFromValue(project.type);
+                map.set(project.slug, {
+                    ...project,
+                    type: typeSlug || project.type || "",
+                    typeName: project.typeName || getProjectTypeNameFromSlug(typeSlug || project.type) || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0,
+                    adminStatus: project.adminStatus || "active"
+                });
+            });
+
+            posts.forEach(function (post) {
+                if (!post || !post.projectSlug || !post.projectName) return;
+
+                const slug = post.projectSlug;
+                const existing = map.get(slug) || {
+                    id: post.projectId || ("project_" + slug),
+                    name: post.projectName,
+                    slug: slug,
+                    city: post.city || "",
+                    ward: post.ward || "",
+                    addressDetail: post.addressDetail || "",
+                    type: post.projectType || "",
+                    typeName: post.projectTypeName || "",
+                    developer: post.projectDeveloper || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0,
+                    createdAt: new Date().toISOString(),
+                    lastPostAt: post.createdAt || new Date().toISOString(),
+                    adminStatus: "active"
+                };
+
+                existing.name = existing.name || post.projectName;
+                existing.city = existing.city || post.city || "";
+                existing.ward = existing.ward || post.ward || "";
+                existing.addressDetail = existing.addressDetail || post.addressDetail || "";
+                existing.type = existing.type || post.projectType || "";
+                existing.typeName = existing.typeName || post.projectTypeName || getProjectTypeNameFromSlug(existing.type) || "";
+                existing.developer = existing.developer || post.projectDeveloper || "";
+                existing.totalPosts = (existing.totalPosts || 0) + 1;
+                existing.lastPostAt = post.updatedAt || post.createdAt || existing.lastPostAt || new Date().toISOString();
+                existing.adminStatus = existing.adminStatus || "active";
+
+                const status = post.status || "pending";
+                if (status === "approved") {
+                    existing.postCount = (existing.postCount || 0) + 1;
+                } else if (status === "pending") {
+                    existing.pendingCount = (existing.pendingCount || 0) + 1;
+                } else if (status === "rejected") {
+                    existing.rejectedCount = (existing.rejectedCount || 0) + 1;
+                } else if (status === "hidden") {
+                    existing.hiddenCount = (existing.hiddenCount || 0) + 1;
+                }
+
+                map.set(slug, existing);
+            });
+
+            const nextProjects = Array.from(map.values()).sort(function (a, b) {
+                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
+            });
+
+            saveProjectsStore(nextProjects);
+            return nextProjects;
+        }
+
+        function loadProjects() {
+            allProjects = getProjectsStore().slice().sort(function (a, b) {
+                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
+            });
+        }
+
+        function hydrateTypeName(project) {
+            const typeSlug = getProjectTypeSlugFromValue(project.type);
+            return project.typeName || getProjectTypeNameFromSlug(typeSlug || project.type) || project.type || "Chưa phân loại";
+        }
+
+        function populateFilterOptions() {
+            const cities = Array.from(new Set(
+                allProjects.map(function (item) { return item.city || ""; }).filter(Boolean)
+            )).sort();
+
+            const types = Array.from(new Set(
+                allProjects.map(function (item) {
+                    return hydrateTypeName(item);
+                }).filter(Boolean)
+            )).sort();
+
+            cityFilter.innerHTML = '<option value="all">Tất cả tỉnh/thành</option>' +
+                cities.map(function (city) {
+                    return '<option value="' + city + '">' + city + '</option>';
+                }).join("");
+
+            typeFilter.innerHTML = '<option value="all">Tất cả loại</option>' +
+                types.map(function (type) {
+                    return '<option value="' + type + '">' + type + '</option>';
+                }).join("");
+        }
+
+        function updateStats() {
+            const totalProjects = allProjects.length;
+            const activeProjects = allProjects.filter(function (p) {
+                return (p.adminStatus || "active") !== "hidden";
+            }).length;
+            const pendingProjects = allProjects.filter(function (p) {
+                return Number(p.pendingCount || 0) > 0;
+            }).length;
+            const hiddenProjects = allProjects.filter(function (p) {
+                return (p.adminStatus || "active") === "hidden";
+            }).length;
+            const totalPosts = allProjects.reduce(function (sum, p) {
+                return sum + Number(p.totalPosts || 0);
+            }, 0);
+
+            document.getElementById("statTotalProjects").textContent = totalProjects;
+            document.getElementById("statActiveProjects").textContent = activeProjects;
+            document.getElementById("statPendingProjects").textContent = pendingProjects;
+            document.getElementById("statHiddenProjects").textContent = hiddenProjects;
+            document.getElementById("statTotalPosts").textContent = totalPosts;
+        }
+
+        function getProjectStatusLabel(project) {
+            if ((project.adminStatus || "active") === "hidden") return "Đã ẩn";
+            if (Number(project.pendingCount || 0) > 0) return "Có tin chờ duyệt";
+            return "Đang hoạt động";
+        }
+
+        function getProjectStatusBadgeClass(project) {
+            if ((project.adminStatus || "active") === "hidden") return "badge-hidden";
+            return "badge-active";
+        }
+
+        function buildProjectPublicLink(project) {
+            const slug = project.slug || "";
+            if (!slug) return "../pages/du-an.html";
+            return "../pages/du-an.html?slug=" + encodeURIComponent(slug);
+        }
+
+        function applyFilters() {
+            const keyword = normalizeText(searchInput.value);
+            const cityValue = cityFilter.value;
+            const typeValue = typeFilter.value;
+            const statusValue = statusFilter.value;
+
+            filteredProjects = allProjects.filter(function (project) {
+                const searchable = normalizeText([
+                    project.name,
+                    project.city,
+                    project.ward,
+                    project.addressDetail,
+                    project.developer,
+                    hydrateTypeName(project),
+                    project.slug
+                ].filter(Boolean).join(" "));
+
+                const matchKeyword = !keyword || searchable.includes(keyword);
+                const matchCity = cityValue === "all" || project.city === cityValue;
+                const matchType = typeValue === "all" || hydrateTypeName(project) === typeValue;
+
+                let matchStatus = true;
+                if (statusValue === "active") {
+                    matchStatus = (project.adminStatus || "active") !== "hidden";
+                } else if (statusValue === "has_pending") {
+                    matchStatus = Number(project.pendingCount || 0) > 0;
+                } else if (statusValue === "hidden") {
+                    matchStatus = (project.adminStatus || "active") === "hidden";
+                }
+
+                return matchKeyword && matchCity && matchType && matchStatus;
+            });
+
+            renderProjects();
+            updateResultInfo();
+        }
+
+        function updateResultInfo() {
+            if (!allProjects.length) {
+                resultInfo.textContent = "Hệ thống hiện chưa có dự án nào.";
+                projectCountBadge.textContent = "0 dự án";
+                return;
+            }
+
+            resultInfo.textContent = "Đang hiển thị " + filteredProjects.length + " / " + allProjects.length + " dự án theo bộ lọc hiện tại.";
+            projectCountBadge.textContent = filteredProjects.length + " dự án";
+        }
+
+        function buildProjectCard(project) {
+            const statusLabel = getProjectStatusLabel(project);
+            const typeName = hydrateTypeName(project);
+            const isActive = selectedProjectSlug === project.slug;
+
+            return `
+                <article class="project-card ${isActive ? "active" : ""}" data-project-slug="${project.slug}">
+                    <div class="project-top">
+                        <div>
+                            <div class="project-title">${project.name || "Chưa có tên dự án"}</div>
+                            <div class="project-meta-line">
+                                <span class="badge badge-type"><i class="fa-solid fa-tag"></i>${typeName}</span>
+                                <span class="badge badge-city"><i class="fa-solid fa-location-dot"></i>${project.city || "Chưa có tỉnh/thành"}</span>
+                                <span class="badge ${getProjectStatusBadgeClass(project)}"><i class="fa-solid fa-circle-info"></i>${statusLabel}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-desc">
+                        ${project.developer ? ("Chủ đầu tư / Đơn vị phát triển: " + project.developer + ". ") : ""}
+                        ${[project.addressDetail, project.ward, project.city].filter(Boolean).join(", ") || "Chưa có mô tả vị trí chi tiết."}
+                    </div>
+
+                    <div class="project-stats-grid">
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Tổng bài</div>
+                            <div class="mini-stat-value">${project.totalPosts || 0}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Đã duyệt</div>
+                            <div class="mini-stat-value">${project.postCount || 0}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Chờ duyệt</div>
+                            <div class="mini-stat-value">${project.pendingCount || 0}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Từ chối</div>
+                            <div class="mini-stat-value">${project.rejectedCount || 0}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Đang ẩn</div>
+                            <div class="mini-stat-value">${project.hiddenCount || 0}</div>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="${buildProjectPublicLink(project)}" target="_blank" class="btn-soft">
+                            <i class="fa-solid fa-up-right-from-square mr-2"></i>Mở public
+                        </a>
+
+                        ${(project.adminStatus || "active") === "hidden"
+                            ? `<button type="button" class="btn-primary" onclick="toggleProjectAdminStatus('${project.slug}', 'active')">
+                                    <i class="fa-solid fa-eye mr-2"></i>Hiện lại
+                               </button>`
+                            : `<button type="button" class="btn-warning" onclick="toggleProjectAdminStatus('${project.slug}', 'hidden')">
+                                    <i class="fa-solid fa-eye-slash mr-2"></i>Ẩn dự án
+                               </button>`
+                        }
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderProjects() {
+            if (!filteredProjects.length) {
+                projectList.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                clearDetailPanel();
+                return;
+            }
+
+            emptyState.classList.add("hidden");
+            projectList.innerHTML = filteredProjects.map(buildProjectCard).join("");
+
+            document.querySelectorAll(".project-card").forEach(function (card) {
+                card.addEventListener("click", function (event) {
+                    const clickedButton = event.target.closest("button, a");
+                    if (clickedButton) return;
+
+                    selectedProjectSlug = card.getAttribute("data-project-slug") || "";
+                    renderDetailBySlug(selectedProjectSlug);
+                    highlightSelectedCard();
+                });
+            });
+
+            if (!selectedProjectSlug || !filteredProjects.find(function (item) { return item.slug === selectedProjectSlug; })) {
+                selectedProjectSlug = filteredProjects[0].slug || "";
+            }
+
+            renderDetailBySlug(selectedProjectSlug);
+            highlightSelectedCard();
+        }
+
+        function highlightSelectedCard() {
+            document.querySelectorAll(".project-card").forEach(function (card) {
+                const isActive = card.getAttribute("data-project-slug") === selectedProjectSlug;
+                card.classList.toggle("active", isActive);
+            });
+        }
+
+        function clearDetailPanel() {
+            detailDefault.classList.remove("hidden");
+            detailContent.classList.add("hidden");
+        }
+
+        function renderDetailBySlug(slug) {
+            const project = filteredProjects.find(function (item) {
+                return item.slug === slug;
+            }) || allProjects.find(function (item) {
+                return item.slug === slug;
+            });
+
+            if (!project) {
+                clearDetailPanel();
+                return;
+            }
+
+            detailDefault.classList.add("hidden");
+            detailContent.classList.remove("hidden");
+
+            document.getElementById("detailProjectName").textContent = project.name || "---";
+            document.getElementById("detailProjectMeta").textContent = [
+                hydrateTypeName(project),
+                [project.ward, project.city].filter(Boolean).join(", "),
+                getProjectStatusLabel(project),
+                formatDateTime(project.lastPostAt)
+            ].filter(Boolean).join(" • ");
+
+            document.getElementById("detailProjectDeveloper").textContent = project.developer || "Chưa cập nhật";
+            document.getElementById("detailPublicLink").href = buildProjectPublicLink(project);
+
+            document.getElementById("detailTotalPosts").textContent = project.totalPosts || 0;
+            document.getElementById("detailApprovedPosts").textContent = project.postCount || 0;
+            document.getElementById("detailPendingPosts").textContent = project.pendingCount || 0;
+            document.getElementById("detailRejectedPosts").textContent = project.rejectedCount || 0;
+            document.getElementById("detailHiddenPosts").textContent = project.hiddenCount || 0;
+        }
+
+        function updateProjectInStore(projectSlug, patchData) {
+            const projects = getProjectsStore();
+            const index = projects.findIndex(function (item) {
+                return item.slug === projectSlug;
+            });
+
+            if (index === -1) {
+                throw new Error("PROJECT_NOT_FOUND");
+            }
+
+            projects[index] = {
+                ...projects[index],
+                ...patchData
+            };
+
+            saveProjectsStore(projects);
+        }
+
+        function toggleProjectAdminStatus(projectSlug, nextStatus) {
+            const message = nextStatus === "hidden"
+                ? "Bạn có chắc muốn ẩn dự án này khỏi giao diện quản lý?"
+                : "Bạn có chắc muốn hiện lại dự án này?";
+
+            if (!confirm(message)) return;
+
+            try {
+                updateProjectInStore(projectSlug, {
+                    adminStatus: nextStatus,
+                    updatedAt: new Date().toISOString()
+                });
+
+                loadProjects();
+                populateFilterOptions();
+                updateStats();
+                applyFilters();
+
+                showStatus(
+                    "success",
+                    nextStatus === "hidden"
+                        ? "Đã ẩn dự án khỏi danh sách quản lý."
+                        : "Đã hiện lại dự án trong giao diện quản lý."
+                );
+            } catch (error) {
+                console.error("Không thể cập nhật trạng thái admin của dự án:", error);
+                showStatus("error", "Không thể cập nhật trạng thái dự án.");
+            }
+        }
+
+        function syncProjectsFromPosts() {
+            try {
+                const posts = getAllPosts();
+                const synced = syncProjectStoreFromPosts(posts);
+
+                loadProjects();
+                populateFilterOptions();
+                updateStats();
+                applyFilters();
+
+                showStatus("success", "Đã đồng bộ lại " + synced.length + " dự án từ dữ liệu bài đăng.");
+            } catch (error) {
+                console.error("Lỗi đồng bộ dự án:", error);
+                showStatus("error", "Không thể đồng bộ project store từ allPosts.");
+            }
+        }
+
+        function clearFilters() {
+            searchInput.value = "";
+            cityFilter.value = "all";
+            typeFilter.value = "all";
+            statusFilter.value = "all";
+            applyFilters();
+        }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        async function initPage() {
+            await initSharedComponents();
+
+            try {
+                loadProjects();
+
+                if (!allProjects.length) {
+                    syncProjectStoreFromPosts(getAllPosts());
+                    loadProjects();
+                }
+
+                populateFilterOptions();
+                updateStats();
+                applyFilters();
+
+                if (!allProjects.length) {
+                    showStatus("info", "Hiện chưa có dự án nào trong localStorage. Khi có tin gắn dự án, hệ thống sẽ tự gom nhóm.");
+                } else {
+                    hideStatus();
+                }
+            } catch (error) {
+                console.error("Lỗi khởi tạo trang quản lý dự án:", error);
+                showStatus("error", "Không thể tải dữ liệu quản lý dự án.");
+            }
+        }
+
+        searchInput.addEventListener("input", applyFilters);
+        cityFilter.addEventListener("change", applyFilters);
+        typeFilter.addEventListener("change", applyFilters);
+        statusFilter.addEventListener("change", applyFilters);
+
+        clearFilterBtn.addEventListener("click", clearFilters);
+        refreshBtn.addEventListener("click", function () {
+            initPage();
+            showStatus("success", "Đã làm mới dữ liệu quản lý dự án.");
+        });
+        syncProjectsBtn.addEventListener("click", syncProjectsFromPosts);
+
+        window.toggleProjectAdminStatus = toggleProjectAdminStatus;
+    </script>
+</body>
+</html>
