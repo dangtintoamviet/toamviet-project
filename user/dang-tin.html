@@ -684,8 +684,8 @@
     </style>
 </head>
 <body>
-    <div id="site-header"></div>
-    <div id="site-mobile-menu"></div>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
 
     <main class="py-8 md:py-10">
         <div class="container-custom page-shell">
@@ -1029,7 +1029,7 @@
         </div>
     </main>
 
-    <div id="site-footer"></div>
+    <div id="siteFooter"></div>
 
     <button id="goToTop" onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))">
         <i class="fa-solid fa-chevron-up"></i>
@@ -1175,14 +1175,6 @@
             }, {});
         }
 
-        function getPropertyTypeFromCategorySlug(slug) {
-            const all = SALE_CATEGORIES.concat(RENT_CATEGORIES);
-            const found = all.find(function (item) {
-                return item.slug === slug;
-            });
-            return found ? found.propertyType : "";
-        }
-
         function getProjectTypeNameFromSlug(slug) {
             const found = PROJECT_CATEGORIES.find(function (item) {
                 return item.slug === slug;
@@ -1209,9 +1201,9 @@
         async function initSharedComponents() {
             try {
                 if (typeof loadComponent === "function") {
-                    await loadComponent("site-header", "../components/header-inner.html");
-                    await loadComponent("site-mobile-menu", "../components/mobile-menu-inner.html");
-                    await loadComponent("site-footer", "../components/footer-inner.html");
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
 
                     if (typeof setupFixedHeaderSpacing === "function") {
                         setupFixedHeaderSpacing();
@@ -1310,10 +1302,9 @@
             );
         }
 
-        const currentUser =
-            safeParseLocalStorage("currentUser") ||
-            safeParseLocalStorage("registeredUser") ||
-            null;
+        function getCurrentUser() {
+            return safeParseLocalStorage("currentUser") || safeParseLocalStorage("registeredUser") || null;
+        }
 
         const flowRealEstate = document.getElementById("flow-real-estate");
         const flowConstruction = document.getElementById("flow-construction");
@@ -1486,6 +1477,8 @@
         }
 
         function fillUserInfo() {
+            const currentUser = getCurrentUser();
+
             const userName = document.getElementById("userName");
             const userRole = document.getElementById("userRole");
             const userGroup = document.getElementById("userGroup");
@@ -2043,6 +2036,27 @@
             return nextProjects;
         }
 
+        function rebuildCompatibilityStores(posts) {
+            const allPosts = Array.isArray(posts) ? posts : [];
+            const propertyPosts = allPosts.filter(function (item) {
+                return item.flow === "real_estate";
+            });
+            const salePosts = propertyPosts.filter(function (item) {
+                return item.postType === "ban";
+            });
+            const rentalPosts = propertyPosts.filter(function (item) {
+                return item.postType === "thue";
+            });
+            const constructionPosts = allPosts.filter(function (item) {
+                return item.flow === "construction";
+            });
+
+            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
+            localStorage.setItem("salePosts", JSON.stringify(salePosts));
+            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
+            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+        }
+
         function getVipLabel(level) {
             const map = {
                 "thuong": "Thường",
@@ -2069,6 +2083,7 @@
         }
 
         function updatePreview() {
+            const currentUser = getCurrentUser();
             const title = postTitle.value.trim();
             const city = citySelect.value;
             const ward = wardSelect.value;
@@ -2264,6 +2279,7 @@
         function validateForm() {
             hideStatus();
 
+            const currentUser = getCurrentUser();
             const title = postTitle.value.trim();
             const city = citySelect.value;
             const ward = wardSelect.value;
@@ -2356,6 +2372,7 @@
         }
 
         function buildPostData() {
+            const currentUser = getCurrentUser();
             const baseId = "post_" + Date.now();
             const nowIso = new Date().toISOString();
             const contactEmailValue = document.getElementById("contactEmail").value.trim();
@@ -2617,6 +2634,7 @@
             }
 
             const allPosts = getPostsFromAnySource();
+            rebuildCompatibilityStores(allPosts);
 
             try {
                 if (typeof syncProjectStoreFromPosts === "function") {
@@ -2788,14 +2806,14 @@
         }
 
         window.sendToZalo = sendToZalo;
-
         try {
             const currentPosts = getPostsFromAnySource();
+            rebuildCompatibilityStores(currentPosts);
             if (typeof syncProjectStoreFromPosts === "function") {
                 syncProjectStoreFromPosts(currentPosts);
             }
         } catch (error) {
-            console.warn("Không thể đồng bộ project store lúc khởi tạo:", error);
+            console.warn("Không thể đồng bộ store lúc khởi tạo:", error);
         }
 
         window.addEventListener("load", async function () {
