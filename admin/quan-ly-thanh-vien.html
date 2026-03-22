@@ -1,1 +1,1494 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý thành viên | ToamViet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/admin-dashboard.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --stroke: #e2e8f0;
+            --text-main: #0f172a;
+            --text-soft: #64748b;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #0f766e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Roboto", "Segoe UI", sans-serif;
+            background: var(--soft-bg);
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .container-custom {
+            max-width: 1366px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .admin-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .page-shell {
+            padding-bottom: 28px;
+        }
+
+        .page-hero {
+            margin-bottom: 24px;
+        }
+
+        .hero-card,
+        .sidebar-card,
+        .toolbar-card,
+        .stats-card,
+        .list-card,
+        .member-card,
+        .detail-card {
+            background: white;
+            border: 1px solid var(--stroke);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .hero-card {
+            padding: 28px;
+            background: linear-gradient(135deg, #0f766e, #008b8b);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-size: 30px;
+            line-height: 1.35;
+            font-weight: 900;
+            margin-bottom: 12px;
+            max-width: 850px;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.92);
+            max-width: 940px;
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hero-point {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 14px;
+        }
+
+        .hero-point .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 6px;
+        }
+
+        .hero-point .value {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 260px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar-card {
+            padding: 22px;
+            position: sticky;
+            top: 92px;
+        }
+
+        .admin-sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            transition: 0.25s ease;
+            color: #475569;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            text-decoration: none;
+        }
+
+        .admin-sidebar-item:hover,
+        .admin-sidebar-item.active {
+            background: var(--vip-color);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 139, 139, 0.16);
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .stats-card {
+            padding: 18px;
+        }
+
+        .stats-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .stats-value {
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .stats-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .toolbar-card,
+        .list-card,
+        .detail-card {
+            padding: 22px;
+        }
+
+        .toolbar-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .toolbar-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .toolbar-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.7;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .toolbar-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(170px, 1fr)) 140px;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .input-field,
+        .select-field {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--stroke);
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            transition: 0.25s ease;
+            min-height: 48px;
+        }
+
+        .input-field:focus,
+        .select-field:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0,139,139,0.08);
+        }
+
+        .btn-primary,
+        .btn-soft,
+        .btn-dark,
+        .btn-success,
+        .btn-danger,
+        .btn-warning {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--vip-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--vip-dark);
+        }
+
+        .btn-soft {
+            background: #eef2ff;
+            color: #334155;
+        }
+
+        .btn-soft:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1e293b;
+        }
+
+        .btn-success {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .btn-success:hover {
+            background: #d1fae5;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        .btn-warning {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .btn-warning:hover {
+            background: #ffedd5;
+        }
+
+        .status-box {
+            display: none;
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .status-box.info {
+            display: block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .list-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .list-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .list-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .member-count-pill {
+            background: #ecfeff;
+            color: #0f766e;
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .member-card {
+            padding: 18px;
+            transition: 0.25s ease;
+            cursor: pointer;
+        }
+
+        .member-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .member-card.active {
+            border-color: #14b8a6;
+            box-shadow: 0 12px 28px rgba(20, 184, 166, 0.12);
+        }
+
+        .member-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .member-profile {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .member-avatar {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .member-name {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .member-sub {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .member-meta-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-group {
+            background: #ecfeff;
+            color: #0f766e;
+        }
+
+        .badge-role {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .badge-approved {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .badge-pending {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .badge-blocked {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .member-grid-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 14px;
+        }
+
+        .member-grid-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            letter-spacing: 0.04em;
+        }
+
+        .member-grid-value {
+            font-size: 14px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .member-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .detail-card {
+            position: sticky;
+            top: 92px;
+            height: fit-content;
+        }
+
+        .detail-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .detail-sub {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .detail-box-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .detail-box-value {
+            font-size: 14px;
+            line-height: 1.8;
+            font-weight: 700;
+            color: #0f172a;
+            word-break: break-word;
+        }
+
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detail-list-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 13px;
+        }
+
+        .detail-list-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-list-label {
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .detail-list-value {
+            color: #0f172a;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+            font-style: italic;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            background: #fff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 1280px) {
+            .toolbar-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-card {
+                position: static;
+            }
+
+            .member-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-card {
+                position: static;
+            }
+
+            .hero-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid,
+            .toolbar-grid,
+            .member-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-card,
+            .sidebar-card,
+            .toolbar-card,
+            .list-card,
+            .detail-card,
+            .stats-card,
+            .member-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .toolbar-head,
+            .list-head,
+            .member-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .toolbar-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .member-profile {
+                align-items: flex-start;
+            }
+
+            .member-actions .btn-soft,
+            .member-actions .btn-success,
+            .member-actions .btn-warning,
+            .member-actions .btn-danger {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
+
+    <main class="py-8 md:py-10">
+        <div class="container-custom page-shell">
+            <div class="admin-shell">
+                <section class="page-hero">
+                    <div class="hero-card">
+                        <div class="hero-badge">
+                            <i class="fa-solid fa-user-shield"></i>
+                            Trung tâm quản lý thành viên
+                        </div>
+
+                        <h1 class="hero-title">Theo dõi tài khoản người dùng để kiểm soát duyệt, khóa tạm và nhóm tài khoản dùng chung trên toàn hệ thống</h1>
+
+                        <p class="hero-desc">
+                            Trang này giúp admin rà nhanh toàn bộ thành viên đã đăng ký trong local demo, lọc theo nhóm bất động sản hoặc xây dựng, kiểm tra vai trò, email, số điện thoại và cập nhật trạng thái duyệt để đồng bộ với luồng đăng tin, quản lý tin và các module dùng chung khác.
+                        </p>
+
+                        <div class="hero-points">
+                            <div class="hero-point">
+                                <div class="label">Nguồn dữ liệu</div>
+                                <div class="value">registeredUsers / users / currentUser</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Mục tiêu</div>
+                                <div class="value">Duyệt, khóa tạm, phân nhóm tài khoản rõ ràng</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Đồng bộ</div>
+                                <div class="value">Dùng chung cùng dashboard, tin đăng và dự án</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="layout-grid">
+                    <aside class="sidebar-card">
+                        <nav>
+                            <a href="admin-dashboard.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-chart-line text-lg"></i> Tổng quan
+                            </a>
+                            <a href="quan-ly-thanh-vien.html" class="admin-sidebar-item active">
+                                <i class="fa-solid fa-user-shield text-lg"></i> Duyệt thành viên
+                            </a>
+                            <a href="kiem-duyet-tin.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-file-circle-check text-lg"></i> Kiểm duyệt tin đăng
+                            </a>
+                            <a href="quan-ly-du-an.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-diagram-project text-lg"></i> Quản lý dự án
+                            </a>
+                            <a href="cai-dat-he-thong.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-gear text-lg"></i> Cài đặt hệ thống
+                            </a>
+                        </nav>
+                    </aside>
+
+                    <section class="main-content">
+                        <div class="stats-grid">
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng thành viên</div>
+                                <div class="stats-value" id="statTotalMembers">0</div>
+                                <div class="stats-note">Tất cả tài khoản hiện có trong local demo.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Đã duyệt</div>
+                                <div class="stats-value" id="statApprovedMembers">0</div>
+                                <div class="stats-note">Tài khoản có thể hoạt động bình thường.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Chờ duyệt</div>
+                                <div class="stats-value" id="statPendingMembers">0</div>
+                                <div class="stats-note">Cần admin kiểm tra thêm.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Đang khóa</div>
+                                <div class="stats-value" id="statBlockedMembers">0</div>
+                                <div class="stats-note">Đã khóa tạm khỏi luồng sử dụng.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Doanh nghiệp</div>
+                                <div class="stats-value" id="statBusinessMembers">0</div>
+                                <div class="stats-note">Tài khoản có thiên hướng doanh nghiệp / nhà thầu.</div>
+                            </div>
+                        </div>
+
+                        <section class="toolbar-card">
+                            <div class="toolbar-head">
+                                <div>
+                                    <div class="toolbar-title">Danh sách thành viên</div>
+                                    <div class="toolbar-sub">
+                                        Tìm theo tên, email, điện thoại hoặc thương hiệu. Bạn cũng có thể lọc nhanh theo nhóm tài khoản, vai trò và trạng thái xử lý.
+                                    </div>
+                                </div>
+
+                                <div class="toolbar-actions">
+                                    <button id="refreshBtn" class="btn-soft" type="button">
+                                        <i class="fa-solid fa-rotate-right mr-2"></i>Làm mới
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="globalStatus" class="status-box"></div>
+
+                            <div class="toolbar-grid">
+                                <div>
+                                    <label class="field-label" for="searchInput">Tìm theo tên / email / điện thoại / thương hiệu</label>
+                                    <input id="searchInput" type="text" class="input-field" placeholder="Nhập từ khóa cần tìm..." />
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="groupFilter">Nhóm tài khoản</label>
+                                    <select id="groupFilter" class="select-field">
+                                        <option value="all">Tất cả nhóm</option>
+                                        <option value="real_estate">Bất động sản</option>
+                                        <option value="construction">Xây dựng</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="roleFilter">Vai trò</label>
+                                    <select id="roleFilter" class="select-field">
+                                        <option value="all">Tất cả vai trò</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="statusFilter">Trạng thái</label>
+                                    <select id="statusFilter" class="select-field">
+                                        <option value="all">Tất cả trạng thái</option>
+                                        <option value="approved">Đã duyệt</option>
+                                        <option value="pending">Chờ duyệt</option>
+                                        <option value="blocked">Đang khóa</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label">&nbsp;</label>
+                                    <button id="clearFilterBtn" class="btn-dark w-full" type="button">Xóa lọc</button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="content-grid mt-6">
+                            <section class="list-card">
+                                <div class="list-head">
+                                    <div>
+                                        <div class="list-title">Tài khoản trong hệ thống</div>
+                                        <div class="list-sub" id="resultInfo">Đang tải dữ liệu thành viên...</div>
+                                    </div>
+                                    <div class="member-count-pill" id="memberCountBadge">0 thành viên</div>
+                                </div>
+
+                                <div id="memberList" class="member-list"></div>
+
+                                <div id="emptyState" class="empty-box hidden">
+                                    Hiện không có thành viên nào phù hợp với bộ lọc hiện tại.
+                                </div>
+                            </section>
+
+                            <aside class="detail-card">
+                                <div class="detail-title">Chi tiết nhanh thành viên</div>
+                                <div class="detail-sub">Chọn một thành viên để xem nhanh thông tin hồ sơ, vai trò, trạng thái và dữ liệu liên hệ.</div>
+
+                                <div id="detailDefault">
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Trạng thái xem nhanh</div>
+                                        <div class="detail-box-value">Chưa chọn thành viên nào để xem chi tiết.</div>
+                                    </div>
+                                </div>
+
+                                <div id="detailContent" class="hidden">
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Thành viên</div>
+                                        <div class="detail-box-value" id="detailMemberName">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Thông tin chính</div>
+                                        <div class="detail-box-value" id="detailMemberMeta">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Thương hiệu / Công ty</div>
+                                        <div class="detail-box-value" id="detailMemberBrand">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Liên hệ</div>
+                                        <div class="detail-list">
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Email</span>
+                                                <span class="detail-list-value" id="detailMemberEmail">---</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Điện thoại</span>
+                                                <span class="detail-list-value" id="detailMemberPhone">---</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Mã tài khoản</span>
+                                                <span class="detail-list-value" id="detailMemberId">---</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Ngày tạo</span>
+                                                <span class="detail-list-value" id="detailMemberCreatedAt">---</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <button id="goToTop" onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
+
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const groupFilter = document.getElementById("groupFilter");
+        const roleFilter = document.getElementById("roleFilter");
+        const statusFilter = document.getElementById("statusFilter");
+        const clearFilterBtn = document.getElementById("clearFilterBtn");
+        const refreshBtn = document.getElementById("refreshBtn");
+
+        const memberList = document.getElementById("memberList");
+        const emptyState = document.getElementById("emptyState");
+        const resultInfo = document.getElementById("resultInfo");
+        const globalStatus = document.getElementById("globalStatus");
+        const memberCountBadge = document.getElementById("memberCountBadge");
+
+        const detailDefault = document.getElementById("detailDefault");
+        const detailContent = document.getElementById("detailContent");
+
+        let allMembers = [];
+        let filteredMembers = [];
+        let selectedMemberId = "";
+
+        document.addEventListener("DOMContentLoaded", initPage);
+
+        function safeParseJSON(raw, fallback) {
+            try {
+                return JSON.parse(raw);
+            } catch (error) {
+                return fallback;
+            }
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function formatDateTime(iso) {
+            if (!iso) return "---";
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return "---";
+            return d.toLocaleString("vi-VN");
+        }
+
+        function getInitials(name) {
+            return String(name || "TV")
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(function (word) {
+                    return word.charAt(0).toUpperCase();
+                })
+                .join("") || "TV";
+        }
+
+        function showStatus(type, message) {
+            globalStatus.className = "status-box " + type;
+            globalStatus.textContent = message;
+        }
+
+        function hideStatus() {
+            globalStatus.className = "status-box";
+            globalStatus.textContent = "";
+        }
+
+        function getRawMemberSources() {
+            const registeredUsers = safeParseJSON(localStorage.getItem("registeredUsers") || "[]", []);
+            const users = safeParseJSON(localStorage.getItem("users") || "[]", []);
+            const currentUser = safeParseJSON(localStorage.getItem("currentUser") || "null", null);
+
+            let fromStorageTool = [];
+            try {
+                if (window.userStorage && typeof window.userStorage.getAllUsers === "function") {
+                    const usersFromTool = window.userStorage.getAllUsers();
+                    if (Array.isArray(usersFromTool)) {
+                        fromStorageTool = usersFromTool;
+                    }
+                }
+            } catch (error) {
+                console.warn("userStorage.getAllUsers lỗi:", error);
+            }
+
+            return []
+                .concat(Array.isArray(fromStorageTool) ? fromStorageTool : [])
+                .concat(Array.isArray(registeredUsers) ? registeredUsers : [])
+                .concat(Array.isArray(users) ? users : [])
+                .concat(currentUser ? [currentUser] : []);
+        }
+
+        function normalizeMember(member, index) {
+            const fullName = member.fullName || member.name || member.contactName || "Tài khoản thành viên";
+            const accountGroup = member.accountGroup || member.group || "real_estate";
+            const accountGroupLabel = member.accountGroupLabel ||
+                (accountGroup === "construction" ? "Xây dựng" : "Bất động sản");
+
+            const role = member.role || member.profileType || "member";
+            const roleLabel = member.roleLabel ||
+                (role === "doanhnghiep" ? "Doanh nghiệp / Nhà thầu" :
+                 role === "canhan" ? "Cá nhân / Môi giới" :
+                 role === "construction" ? "Nhà thầu xây dựng" :
+                 "Thành viên");
+
+            const normalizedStatus = member.adminStatus || member.status || member.memberStatus || "approved";
+
+            return {
+                id: String(member.id || member.userId || ("user_" + index + "_" + Date.now())),
+                fullName: fullName,
+                email: member.email || "",
+                phone: member.phone || "",
+                brandName: member.brandName || member.companyName || "",
+                accountGroup: accountGroup,
+                accountGroupLabel: accountGroupLabel,
+                role: role,
+                roleLabel: roleLabel,
+                createdAt: member.createdAt || member.registeredAt || member.updatedAt || "",
+                adminStatus: normalizedStatus,
+                raw: member
+            };
+        }
+
+        function dedupeMembers(list) {
+            const map = new Map();
+
+            list.forEach(function (item, index) {
+                const normalized = normalizeMember(item, index);
+                const key =
+                    normalized.id ||
+                    normalized.email ||
+                    normalized.phone ||
+                    (normalizeText(normalized.fullName) + "_" + normalizeText(normalized.phone));
+
+                if (!map.has(key)) {
+                    map.set(key, normalized);
+                    return;
+                }
+
+                const existing = map.get(key);
+                map.set(key, {
+                    ...existing,
+                    ...normalized,
+                    raw: { ...existing.raw, ...normalized.raw }
+                });
+            });
+
+            return Array.from(map.values());
+        }
+
+        function loadMembers() {
+            const rawMembers = getRawMemberSources();
+            allMembers = dedupeMembers(rawMembers).sort(function (a, b) {
+                return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+            });
+        }
+
+        function saveMembersToLocalStorage() {
+            const merged = allMembers.map(function (member) {
+                return {
+                    ...(member.raw || {}),
+                    id: member.id,
+                    fullName: member.fullName,
+                    email: member.email,
+                    phone: member.phone,
+                    brandName: member.brandName,
+                    accountGroup: member.accountGroup,
+                    accountGroupLabel: member.accountGroupLabel,
+                    role: member.role,
+                    roleLabel: member.roleLabel,
+                    createdAt: member.createdAt,
+                    adminStatus: member.adminStatus
+                };
+            });
+
+            localStorage.setItem("registeredUsers", JSON.stringify(merged));
+
+            const currentUser = safeParseJSON(localStorage.getItem("currentUser") || "null", null);
+            if (currentUser) {
+                const match = merged.find(function (item) {
+                    return (currentUser.id && item.id === currentUser.id) ||
+                           (currentUser.email && item.email && normalizeText(currentUser.email) === normalizeText(item.email));
+                });
+
+                if (match) {
+                    localStorage.setItem("currentUser", JSON.stringify({
+                        ...currentUser,
+                        ...match
+                    }));
+                }
+            }
+        }
+
+        function updateStats() {
+            const total = allMembers.length;
+            const approved = allMembers.filter(function (m) { return m.adminStatus === "approved"; }).length;
+            const pending = allMembers.filter(function (m) { return m.adminStatus === "pending"; }).length;
+            const blocked = allMembers.filter(function (m) { return m.adminStatus === "blocked"; }).length;
+            const business = allMembers.filter(function (m) {
+                return m.role === "doanhnghiep" || m.accountGroup === "construction" || !!m.brandName;
+            }).length;
+
+            document.getElementById("statTotalMembers").textContent = total;
+            document.getElementById("statApprovedMembers").textContent = approved;
+            document.getElementById("statPendingMembers").textContent = pending;
+            document.getElementById("statBlockedMembers").textContent = blocked;
+            document.getElementById("statBusinessMembers").textContent = business;
+        }
+
+        function populateRoleOptions() {
+            const roles = Array.from(new Set(
+                allMembers.map(function (m) {
+                    return m.roleLabel || "";
+                }).filter(Boolean)
+            )).sort();
+
+            roleFilter.innerHTML = '<option value="all">Tất cả vai trò</option>' +
+                roles.map(function (role) {
+                    return '<option value="' + role + '">' + role + '</option>';
+                }).join("");
+        }
+
+        function getStatusLabel(status) {
+            if (status === "approved") return "Đã duyệt";
+            if (status === "blocked") return "Đang khóa";
+            return "Chờ duyệt";
+        }
+
+        function getStatusBadgeClass(status) {
+            if (status === "approved") return "badge-approved";
+            if (status === "blocked") return "badge-blocked";
+            return "badge-pending";
+        }
+
+        function applyFilters() {
+            const keyword = normalizeText(searchInput.value);
+            const groupValue = groupFilter.value;
+            const roleValue = roleFilter.value;
+            const statusValue = statusFilter.value;
+
+            filteredMembers = allMembers.filter(function (member) {
+                const searchable = normalizeText([
+                    member.fullName,
+                    member.email,
+                    member.phone,
+                    member.brandName,
+                    member.roleLabel,
+                    member.accountGroupLabel
+                ].filter(Boolean).join(" "));
+
+                const matchKeyword = !keyword || searchable.includes(keyword);
+                const matchGroup = groupValue === "all" || member.accountGroup === groupValue;
+                const matchRole = roleValue === "all" || member.roleLabel === roleValue;
+                const matchStatus = statusValue === "all" || member.adminStatus === statusValue;
+
+                return matchKeyword && matchGroup && matchRole && matchStatus;
+            });
+
+            renderMembers();
+            updateResultInfo();
+        }
+
+        function updateResultInfo() {
+            if (!allMembers.length) {
+                resultInfo.textContent = "Hệ thống hiện chưa có thành viên nào.";
+                memberCountBadge.textContent = "0 thành viên";
+                return;
+            }
+
+            resultInfo.textContent = "Đang hiển thị " + filteredMembers.length + " / " + allMembers.length + " thành viên theo bộ lọc hiện tại.";
+            memberCountBadge.textContent = filteredMembers.length + " thành viên";
+        }
+
+        function buildMemberCard(member) {
+            const isActive = selectedMemberId === member.id;
+
+            return `
+                <article class="member-card ${isActive ? "active" : ""}" data-member-id="${member.id}">
+                    <div class="member-top">
+                        <div class="member-profile">
+                            <div class="member-avatar">${getInitials(member.fullName || member.brandName)}</div>
+                            <div>
+                                <div class="member-name">${member.fullName || "Tài khoản thành viên"}</div>
+                                <div class="member-sub">${member.brandName || "Chưa có thương hiệu / công ty"}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="member-meta-line">
+                        <span class="badge badge-group"><i class="fa-solid fa-layer-group"></i>${member.accountGroupLabel}</span>
+                        <span class="badge badge-role"><i class="fa-solid fa-user-tag"></i>${member.roleLabel}</span>
+                        <span class="badge ${getStatusBadgeClass(member.adminStatus)}"><i class="fa-solid fa-circle-info"></i>${getStatusLabel(member.adminStatus)}</span>
+                    </div>
+
+                    <div class="member-grid">
+                        <div class="member-grid-item">
+                            <div class="member-grid-label">Email</div>
+                            <div class="member-grid-value">${member.email || "---"}</div>
+                        </div>
+                        <div class="member-grid-item">
+                            <div class="member-grid-label">Điện thoại</div>
+                            <div class="member-grid-value">${member.phone || "---"}</div>
+                        </div>
+                        <div class="member-grid-item">
+                            <div class="member-grid-label">Ngày tạo</div>
+                            <div class="member-grid-value">${formatDateTime(member.createdAt)}</div>
+                        </div>
+                        <div class="member-grid-item">
+                            <div class="member-grid-label">Mã tài khoản</div>
+                            <div class="member-grid-value">${member.id || "---"}</div>
+                        </div>
+                    </div>
+
+                    <div class="member-actions">
+                        ${member.adminStatus === "pending"
+                            ? `<button type="button" class="btn-success" onclick="updateMemberStatus('${member.id}', 'approved')">
+                                    <i class="fa-solid fa-check mr-2"></i>Duyệt tài khoản
+                               </button>`
+                            : ""
+                        }
+
+                        ${member.adminStatus === "blocked"
+                            ? `<button type="button" class="btn-primary" onclick="updateMemberStatus('${member.id}', 'approved')">
+                                    <i class="fa-solid fa-unlock mr-2"></i>Mở lại
+                               </button>`
+                            : `<button type="button" class="btn-warning" onclick="updateMemberStatus('${member.id}', 'blocked')">
+                                    <i class="fa-solid fa-lock mr-2"></i>Khóa tạm
+                               </button>`
+                        }
+
+                        ${member.adminStatus !== "pending"
+                            ? `<button type="button" class="btn-soft" onclick="updateMemberStatus('${member.id}', 'pending')">
+                                    <i class="fa-regular fa-clock mr-2"></i>Chuyển chờ duyệt
+                               </button>`
+                            : ""
+                        }
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderMembers() {
+            if (!filteredMembers.length) {
+                memberList.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                clearDetailPanel();
+                return;
+            }
+
+            emptyState.classList.add("hidden");
+            memberList.innerHTML = filteredMembers.map(buildMemberCard).join("");
+
+            document.querySelectorAll(".member-card").forEach(function (card) {
+                card.addEventListener("click", function (event) {
+                    const clickedButton = event.target.closest("button");
+                    if (clickedButton) return;
+
+                    selectedMemberId = card.getAttribute("data-member-id") || "";
+                    renderDetailById(selectedMemberId);
+                    highlightSelectedCard();
+                });
+            });
+
+            if (!selectedMemberId || !filteredMembers.find(function (item) { return item.id === selectedMemberId; })) {
+                selectedMemberId = filteredMembers[0].id || "";
+            }
+
+            renderDetailById(selectedMemberId);
+            highlightSelectedCard();
+        }
+
+        function highlightSelectedCard() {
+            document.querySelectorAll(".member-card").forEach(function (card) {
+                const isActive = card.getAttribute("data-member-id") === selectedMemberId;
+                card.classList.toggle("active", isActive);
+            });
+        }
+
+        function clearDetailPanel() {
+            detailDefault.classList.remove("hidden");
+            detailContent.classList.add("hidden");
+        }
+
+        function renderDetailById(memberId) {
+            const member = filteredMembers.find(function (item) {
+                return item.id === memberId;
+            }) || allMembers.find(function (item) {
+                return item.id === memberId;
+            });
+
+            if (!member) {
+                clearDetailPanel();
+                return;
+            }
+
+            detailDefault.classList.add("hidden");
+            detailContent.classList.remove("hidden");
+
+            document.getElementById("detailMemberName").textContent = member.fullName || "---";
+            document.getElementById("detailMemberMeta").textContent = [
+                member.accountGroupLabel,
+                member.roleLabel,
+                getStatusLabel(member.adminStatus)
+            ].filter(Boolean).join(" • ");
+
+            document.getElementById("detailMemberBrand").textContent = member.brandName || "Chưa cập nhật";
+            document.getElementById("detailMemberEmail").textContent = member.email || "---";
+            document.getElementById("detailMemberPhone").textContent = member.phone || "---";
+            document.getElementById("detailMemberId").textContent = member.id || "---";
+            document.getElementById("detailMemberCreatedAt").textContent = formatDateTime(member.createdAt);
+        }
+
+        function updateMemberStatus(memberId, nextStatus) {
+            const member = allMembers.find(function (item) {
+                return item.id === memberId;
+            });
+
+            if (!member) {
+                showStatus("error", "Không tìm thấy thành viên cần cập nhật.");
+                return;
+            }
+
+            const messageMap = {
+                approved: "Bạn có chắc muốn duyệt / mở lại tài khoản này?",
+                pending: "Bạn có chắc muốn chuyển tài khoản này về trạng thái chờ duyệt?",
+                blocked: "Bạn có chắc muốn khóa tạm tài khoản này?"
+            };
+
+            if (!confirm(messageMap[nextStatus] || "Xác nhận cập nhật trạng thái?")) return;
+
+            member.adminStatus = nextStatus;
+            member.raw = {
+                ...(member.raw || {}),
+                adminStatus: nextStatus,
+                status: nextStatus,
+                updatedAt: new Date().toISOString()
+            };
+
+            saveMembersToLocalStorage();
+            updateStats();
+            applyFilters();
+
+            const statusText = nextStatus === "approved"
+                ? "đã duyệt / hoạt động"
+                : nextStatus === "blocked"
+                    ? "đã khóa tạm"
+                    : "đã chuyển về chờ duyệt";
+
+            showStatus("success", "Đã cập nhật trạng thái thành viên sang " + statusText + ".");
+        }
+
+        function clearFilters() {
+            searchInput.value = "";
+            groupFilter.value = "all";
+            roleFilter.value = "all";
+            statusFilter.value = "all";
+            applyFilters();
+        }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        async function initPage() {
+            await initSharedComponents();
+
+            try {
+                loadMembers();
+                populateRoleOptions();
+                updateStats();
+                applyFilters();
+
+                if (!allMembers.length) {
+                    showStatus("info", "Hiện chưa có thành viên nào trong local demo.");
+                } else {
+                    hideStatus();
+                }
+            } catch (error) {
+                console.error("Lỗi khởi tạo trang quản lý thành viên:", error);
+                showStatus("error", "Không thể tải dữ liệu thành viên.");
+            }
+        }
+
+        searchInput.addEventListener("input", applyFilters);
+        groupFilter.addEventListener("change", applyFilters);
+        roleFilter.addEventListener("change", applyFilters);
+        statusFilter.addEventListener("change", applyFilters);
+
+        clearFilterBtn.addEventListener("click", clearFilters);
+        refreshBtn.addEventListener("click", function () {
+            initPage();
+            showStatus("success", "Đã làm mới dữ liệu thành viên.");
+        });
+
+        window.updateMemberStatus = updateMemberStatus;
+    </script>
+</body>
+</html>
