@@ -13,17 +13,31 @@
     <style>
         :root {
             --vip-color: #008b8b;
+            --vip-dark: #0f766e;
             --hover-color: #ff8c00;
+            --soft-bg: #f8fafb;
+            --stroke: #e2e8f0;
+            --text-main: #1e293b;
+            --text-soft: #64748b;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #0f766e;
+            --info: #2563eb;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             font-family: "Segoe UI", sans-serif;
-            background-color: #f8fafb;
-            color: #2c2c2c;
+            background-color: var(--soft-bg);
+            color: var(--text-main);
+            margin: 0;
         }
 
         .container-custom {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 15px;
         }
@@ -33,54 +47,428 @@
             align-items: center;
             gap: 12px;
             padding: 12px 15px;
-            border-radius: 10px;
-            transition: 0.3s;
-            color: #4b5563;
-            font-weight: 600;
+            border-radius: 12px;
+            transition: 0.25s ease;
+            color: #475569;
+            font-weight: 700;
             font-size: 14px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            text-decoration: none;
         }
 
         .admin-sidebar-item:hover,
         .admin-sidebar-item.active {
             background: var(--vip-color);
             color: white;
-            box-shadow: 0 4px 12px rgba(0, 139, 139, 0.2);
+            box-shadow: 0 10px 24px rgba(0, 139, 139, 0.18);
         }
 
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 10px;
+        .hero-card,
+        .sidebar-card,
+        .panel-card,
+        .stat-card,
+        .post-card {
+            background: white;
+            border: 1px solid var(--stroke);
+            border-radius: 22px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .hero-card {
+            padding: 26px;
+            background: linear-gradient(135deg, #0f766e, #008b8b);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-size: 29px;
+            line-height: 1.35;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.92);
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hero-point {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 14px;
+        }
+
+        .hero-point .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.78);
+            margin-bottom: 6px;
+        }
+
+        .hero-point .value {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .sidebar-card {
+            padding: 22px;
+        }
+
+        .panel-card {
+            padding: 24px;
+        }
+
+        .section-title {
+            font-size: 19px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .section-sub {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .toolbar-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr auto;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .input-field,
+        .select-field {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--stroke);
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            transition: 0.25s ease;
+        }
+
+        .input-field:focus,
+        .select-field:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.08);
+        }
+
+        .btn-primary,
+        .btn-soft,
+        .btn-dark,
+        .btn-success,
+        .btn-danger,
+        .btn-warning {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--vip-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--vip-dark);
+        }
+
+        .btn-soft {
+            background: #eef2ff;
+            color: #334155;
+        }
+
+        .btn-soft:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1e293b;
+        }
+
+        .btn-success {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .btn-success:hover {
+            background: #d1fae5;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        .btn-warning {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .btn-warning:hover {
+            background: #ffedd5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            padding: 18px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .stat-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .status-box {
+            display: none;
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .status-box.info {
+            display: block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .post-card {
+            padding: 18px;
+            transition: 0.25s ease;
+        }
+
+        .post-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .post-layout {
+            display: flex;
+            gap: 16px;
+        }
+
+        .post-thumb {
+            width: 170px;
+            height: 130px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            flex-shrink: 0;
+        }
+
+        .post-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .badge-pending {
             background: #fff7ed;
             color: #c2410c;
-            border: 1px solid #ffedd5;
         }
 
-        .type-badge {
-            background: #f0fdfa;
+        .badge-approved {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .badge-rejected {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .badge-hidden {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .badge-sale {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .badge-rent {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .badge-construction {
+            background: #f5f3ff;
+            color: #6d28d9;
+        }
+
+        .badge-project {
+            background: #ecfeff;
             color: #0f766e;
-            border: 1px solid #99f6e4;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
+        }
+
+        .post-title {
+            font-size: 20px;
+            font-weight: 900;
+            line-height: 1.5;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .post-desc {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.75;
+            margin-bottom: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
         }
 
         .info-tag {
-            background: #f1f5f9;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 11px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 8px 11px;
+            border-radius: 10px;
+            font-size: 12px;
             color: #475569;
             font-weight: 700;
             display: inline-flex;
@@ -88,8 +476,46 @@
             gap: 6px;
         }
 
-        .card-enter {
-            transition: 0.3s ease;
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .meta-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .meta-box-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+            letter-spacing: 0.04em;
+        }
+
+        .post-actions {
+            width: 190px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-left: 1px solid #e2e8f0;
+            padding-left: 16px;
+            justify-content: center;
+        }
+
+        .post-actions a,
+        .post-actions button {
+            width: 100%;
         }
 
         .empty-box {
@@ -100,42 +526,62 @@
             border: 1px dashed #cbd5e1;
             border-radius: 18px;
             background: #fff;
+            margin-top: 18px;
         }
 
-        .news-thumb {
-            width: 140px;
-            height: 110px;
-            border-radius: 12px;
-            object-fit: cover;
-            border: 1px solid #e2e8f0;
-            flex-shrink: 0;
-            background: #f8fafc;
-        }
+        @media (max-width: 1180px) {
+            .toolbar-grid {
+                grid-template-columns: 1fr 1fr;
+            }
 
-        .meta-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-        }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
 
-        .post-desc {
-            color: #64748b;
-            font-size: 13px;
-            line-height: 1.7;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            .hero-points {
+                grid-template-columns: 1fr;
+            }
+
+            .post-layout {
+                flex-direction: column;
+            }
+
+            .post-thumb {
+                width: 100%;
+                height: 220px;
+            }
+
+            .post-actions {
+                width: 100%;
+                border-left: none;
+                padding-left: 0;
+                padding-top: 10px;
+                border-top: 1px solid #e2e8f0;
+            }
         }
 
         @media (max-width: 768px) {
-            .news-thumb {
-                width: 100%;
-                height: 180px;
-            }
-
+            .stats-grid,
+            .toolbar-grid,
             .meta-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-card,
+            .sidebar-card,
+            .panel-card,
+            .stat-card,
+            .post-card {
+                padding: 18px;
+                border-radius: 18px;
+            }
+
+            .post-thumb {
+                height: 180px;
             }
         }
     </style>
@@ -164,45 +610,156 @@
 
     <main class="py-10">
         <div class="container-custom">
-            <div class="flex flex-col lg:flex-row gap-8">
-
-                <aside class="lg:w-1/4">
-                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+            <div class="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-8">
+                <aside>
+                    <div class="sidebar-card">
                         <nav>
                             <a href="admin-dashboard.html" class="admin-sidebar-item">
                                 <i class="fa-solid fa-chart-line text-lg"></i> Tổng quan
                             </a>
-                            <a href="#" class="admin-sidebar-item">
+                            <a href="quan-ly-thanh-vien.html" class="admin-sidebar-item">
                                 <i class="fa-solid fa-user-shield text-lg"></i> Duyệt thành viên
                             </a>
                             <a href="kiem-duyet-tin.html" class="admin-sidebar-item active">
                                 <i class="fa-solid fa-file-circle-check text-lg"></i> Kiểm duyệt tin đăng
                             </a>
-                            <a href="#" class="admin-sidebar-item">
-                                <i class="fa-solid fa-newspaper text-lg"></i> Quản lý tin tức
+                            <a href="quan-ly-du-an.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-diagram-project text-lg"></i> Quản lý dự án
+                            </a>
+                            <a href="cai-dat-he-thong.html" class="admin-sidebar-item">
+                                <i class="fa-solid fa-gear text-lg"></i> Cài đặt hệ thống
                             </a>
                         </nav>
                     </div>
                 </aside>
 
-                <div class="lg:w-3/4">
-                    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
-                            <div>
-                                <h2 class="font-bold text-xl text-slate-800">Danh sách tin chờ phê duyệt</h2>
-                                <p class="text-xs text-gray-400 mt-1">
-                                    Chỉ các tin được duyệt mới nên xuất hiện công khai ở trang bán, thuê, dự án và giá nhà đất.
-                                </p>
+                <section>
+                    <div class="hero-card">
+                        <div class="hero-badge">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Trung tâm kiểm duyệt tin
+                        </div>
+                        <h1 class="hero-title">Kiểm tra đúng dữ liệu trước khi cho hiển thị công khai ngoài website</h1>
+                        <p class="hero-desc">
+                            Trang này dùng để duyệt toàn bộ tin chờ xử lý từ luồng bất động sản bán, cho thuê và xây dựng. 
+                            Khi duyệt, hệ thống sẽ cập nhật lại allPosts, các store phụ và nhóm dự án để dữ liệu ngoài public chạy đồng bộ.
+                        </p>
+
+                        <div class="hero-points">
+                            <div class="hero-point">
+                                <div class="label">Luồng 1</div>
+                                <div class="value">Bất động sản bán / cho thuê</div>
                             </div>
-                            <span class="bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-xs font-bold" id="pending-count">
-                                0 Tin mới
-                            </span>
+                            <div class="hero-point">
+                                <div class="label">Luồng 2</div>
+                                <div class="value">Dịch vụ xây dựng / nhà thầu</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Đồng bộ</div>
+                                <div class="value">propertyPosts, salePosts, rentalPosts, constructionPosts, projects</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Tổng tin hệ thống</div>
+                            <div class="stat-value" id="statTotal">0</div>
+                            <div class="stat-note">Tất cả tin đang lưu trong allPosts.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Tin chờ duyệt</div>
+                            <div class="stat-value" id="statPending">0</div>
+                            <div class="stat-note">Nhóm tin cần admin xử lý ngay.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Đã duyệt</div>
+                            <div class="stat-value" id="statApproved">0</div>
+                            <div class="stat-note">Có thể hiển thị ngoài public.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Từ chối</div>
+                            <div class="stat-value" id="statRejected">0</div>
+                            <div class="stat-note">Tin chưa đạt yêu cầu hoặc cần sửa.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Đang ẩn</div>
+                            <div class="stat-value" id="statHidden">0</div>
+                            <div class="stat-note">Tin đã tạm dừng hiển thị.</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-card mt-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <div class="section-title">Danh sách kiểm duyệt tin đăng</div>
+                                <div class="section-sub">
+                                    Kiểm tra nhanh theo luồng, trạng thái, khu vực, dự án và dữ liệu giá trước khi duyệt.
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2 flex-wrap">
+                                <button id="refreshBtn" class="btn-soft" type="button">
+                                    <i class="fa-solid fa-rotate-right mr-2"></i>Làm mới
+                                </button>
+                                <button id="approveAllVisibleBtn" class="btn-primary" type="button">
+                                    <i class="fa-solid fa-circle-check mr-2"></i>Duyệt tất cả đang lọc
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="space-y-4" id="news-list-container"></div>
-                    </div>
-                </div>
+                        <div id="globalStatus" class="status-box"></div>
 
+                        <div class="toolbar-grid">
+                            <div>
+                                <label class="field-label" for="searchInput">Tìm theo tiêu đề / khu vực / dự án / người đăng</label>
+                                <input id="searchInput" type="text" class="input-field" placeholder="Nhập từ khóa cần tìm..." />
+                            </div>
+
+                            <div>
+                                <label class="field-label" for="flowFilter">Luồng nội dung</label>
+                                <select id="flowFilter" class="select-field">
+                                    <option value="all">Tất cả luồng</option>
+                                    <option value="real_estate">Bất động sản</option>
+                                    <option value="construction">Xây dựng</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="field-label" for="typeFilter">Loại tin</label>
+                                <select id="typeFilter" class="select-field">
+                                    <option value="all">Tất cả loại</option>
+                                    <option value="ban">Bất động sản bán</option>
+                                    <option value="thue">Bất động sản cho thuê</option>
+                                    <option value="xaydung">Xây dựng</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="field-label" for="statusFilter">Trạng thái</label>
+                                <select id="statusFilter" class="select-field">
+                                    <option value="pending">Chờ duyệt</option>
+                                    <option value="all">Tất cả trạng thái</option>
+                                    <option value="approved">Đã duyệt</option>
+                                    <option value="rejected">Từ chối</option>
+                                    <option value="hidden">Đang ẩn</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-end">
+                                <button id="clearFilterBtn" class="btn-dark w-full" type="button">Xóa lọc</button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-4 mt-5 flex-wrap">
+                            <div class="text-sm text-slate-500" id="resultInfo">Đang tải dữ liệu tin đăng...</div>
+                            <div class="text-xs font-bold px-4 py-2 rounded-full bg-orange-100 text-orange-600" id="pendingCountBadge">0 Tin mới</div>
+                        </div>
+
+                        <div id="postList" class="post-list"></div>
+                        <div id="emptyState" class="empty-box" style="display:none;">Hiện không có tin nào phù hợp với bộ lọc hiện tại.</div>
+                    </div>
+                </section>
             </div>
         </div>
     </main>
@@ -219,68 +776,332 @@
     <script src="../assets/js/project-service.js"></script>
 
     <script>
+        const FALLBACK_PROPERTY_IMAGE = "../assets/images/fallback-property.jpg";
+
+        const searchInput = document.getElementById("searchInput");
+        const flowFilter = document.getElementById("flowFilter");
+        const typeFilter = document.getElementById("typeFilter");
+        const statusFilter = document.getElementById("statusFilter");
+        const clearFilterBtn = document.getElementById("clearFilterBtn");
+        const refreshBtn = document.getElementById("refreshBtn");
+        const approveAllVisibleBtn = document.getElementById("approveAllVisibleBtn");
+
+        const postList = document.getElementById("postList");
+        const emptyState = document.getElementById("emptyState");
+        const resultInfo = document.getElementById("resultInfo");
+        const globalStatus = document.getElementById("globalStatus");
+        const pendingCountBadge = document.getElementById("pendingCountBadge");
+
+        let allPosts = [];
+        let filteredPosts = [];
+
         document.addEventListener("DOMContentLoaded", initPage);
 
-        function initPage() {
-            if (!window.postStorage) {
-                document.getElementById("news-list-container").innerHTML = `
-                    <div class="empty-box">Chưa tải được postStorage. Hãy kiểm tra lại đường dẫn file JS dùng chung.</div>
-                `;
-                return;
+        function safeParseJSON(raw, fallback) {
+            try {
+                return JSON.parse(raw);
+            } catch (error) {
+                return fallback;
             }
-            renderPendingNews();
         }
 
-        function safeText(value, fallback = "Chưa cập nhật") {
-            return value ? value : fallback;
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
         }
 
-        function getPendingPosts() {
-            return postStorage
-                .getAllPosts()
-                .filter(post => post && (post.status || "pending") === "pending")
-                .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
         }
 
-        function getPostDisplayType(post) {
+        function showStatus(type, message) {
+            globalStatus.className = "status-box " + type;
+            globalStatus.textContent = message;
+        }
+
+        function hideStatus() {
+            globalStatus.className = "status-box";
+            globalStatus.textContent = "";
+        }
+
+        function formatDateTime(iso) {
+            if (!iso) return "---";
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return "---";
+            return d.toLocaleString("vi-VN");
+        }
+
+        function getPostId(post, index = 0) {
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
+                return String(post.id).trim();
+            }
+
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
+                return String(post.postId).trim();
+            }
+
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
+                return String(post.slug).trim();
+            }
+
+            return [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.city,
+                post.ward,
+                post.createdAt,
+                index
+            ].map(slugifyText).filter(Boolean).join("-") || ("post-" + index);
+        }
+
+        function getAllPosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    const posts = window.postStorage.getAllPosts();
+                    return Array.isArray(posts) ? posts : [];
+                }
+            } catch (error) {
+                console.warn("postStorage.getAllPosts lỗi:", error);
+            }
+
+            return safeParseJSON(localStorage.getItem("allPosts") || "[]", []);
+        }
+
+        function saveAllPosts(posts) {
+            localStorage.setItem("allPosts", JSON.stringify(Array.isArray(posts) ? posts : []));
+        }
+
+        function getProjectTypeNameFromSlug(slug) {
+            const PROJECT_CATEGORIES = [
+                { slug: "can-ho-chung-cu", name: "Căn hộ chung cư" },
+                { slug: "cao-oc-van-phong", name: "Cao ốc văn phòng" },
+                { slug: "trung-tam-thuong-mai", name: "Trung tâm thương mại" },
+                { slug: "khu-do-thi-moi", name: "Khu đô thị mới" },
+                { slug: "khu-phuc-hop", name: "Khu phức hợp" },
+                { slug: "nha-o-xa-hoi", name: "Nhà ở xã hội" },
+                { slug: "khu-nghi-duong-sinh-thai", name: "Khu nghỉ dưỡng, Sinh thái" },
+                { slug: "khu-cong-nghiep", name: "Khu công nghiệp" },
+                { slug: "biet-thu-lien-ke", name: "Biệt thự, liền kề" },
+                { slug: "shophouse", name: "Shophouse" },
+                { slug: "nha-mat-pho", name: "Nhà mặt phố" },
+                { slug: "du-an-khac", name: "Dự án khác" }
+            ];
+
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === slug;
+            });
+
+            return found ? found.name : "";
+        }
+
+        function getProjectTypeSlugFromValue(value) {
+            const PROJECT_CATEGORIES = [
+                { slug: "can-ho-chung-cu", name: "Căn hộ chung cư" },
+                { slug: "cao-oc-van-phong", name: "Cao ốc văn phòng" },
+                { slug: "trung-tam-thuong-mai", name: "Trung tâm thương mại" },
+                { slug: "khu-do-thi-moi", name: "Khu đô thị mới" },
+                { slug: "khu-phuc-hop", name: "Khu phức hợp" },
+                { slug: "nha-o-xa-hoi", name: "Nhà ở xã hội" },
+                { slug: "khu-nghi-duong-sinh-thai", name: "Khu nghỉ dưỡng, Sinh thái" },
+                { slug: "khu-cong-nghiep", name: "Khu công nghiệp" },
+                { slug: "biet-thu-lien-ke", name: "Biệt thự, liền kề" },
+                { slug: "shophouse", name: "Shophouse" },
+                { slug: "nha-mat-pho", name: "Nhà mặt phố" },
+                { slug: "du-an-khac", name: "Dự án khác" }
+            ];
+
+            const normalized = normalizeText(value);
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === value || normalizeText(item.name) === normalized;
+            });
+
+            return found ? found.slug : "";
+        }
+
+        function rebuildCompatibilityStores(posts) {
+            const propertyPosts = posts.filter(function (item) {
+                return item.flow === "real_estate";
+            });
+            const salePosts = propertyPosts.filter(function (item) {
+                return item.postType === "ban";
+            });
+            const rentalPosts = propertyPosts.filter(function (item) {
+                return item.postType === "thue";
+            });
+            const constructionPosts = posts.filter(function (item) {
+                return item.flow === "construction";
+            });
+
+            localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
+            localStorage.setItem("salePosts", JSON.stringify(salePosts));
+            localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
+            localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+        }
+
+        function syncProjectStoreFromPosts(posts) {
+            const oldProjects = safeParseJSON(localStorage.getItem("projects") || "[]", []);
+            const map = new Map();
+
+            oldProjects.forEach(function (project) {
+                if (!project || !project.slug) return;
+
+                const typeSlug = getProjectTypeSlugFromValue(project.type);
+                map.set(project.slug, {
+                    ...project,
+                    type: typeSlug || project.type || "",
+                    typeName: project.typeName || getProjectTypeNameFromSlug(typeSlug || project.type) || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0
+                });
+            });
+
+            posts.forEach(function (post) {
+                if (!post || !post.projectSlug || !post.projectName) return;
+
+                const slug = post.projectSlug;
+                const existing = map.get(slug) || {
+                    id: post.projectId || ("project_" + slug),
+                    name: post.projectName,
+                    slug: slug,
+                    city: post.city || "",
+                    ward: post.ward || "",
+                    addressDetail: post.addressDetail || "",
+                    type: post.projectType || "",
+                    typeName: post.projectTypeName || "",
+                    developer: post.projectDeveloper || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0,
+                    createdAt: new Date().toISOString(),
+                    lastPostAt: post.createdAt || new Date().toISOString()
+                };
+
+                existing.name = existing.name || post.projectName;
+                existing.city = existing.city || post.city || "";
+                existing.ward = existing.ward || post.ward || "";
+                existing.addressDetail = existing.addressDetail || post.addressDetail || "";
+                existing.type = existing.type || post.projectType || "";
+                existing.typeName = existing.typeName || post.projectTypeName || getProjectTypeNameFromSlug(existing.type) || "";
+                existing.developer = existing.developer || post.projectDeveloper || "";
+                existing.totalPosts = (existing.totalPosts || 0) + 1;
+                existing.lastPostAt = post.updatedAt || post.createdAt || existing.lastPostAt || new Date().toISOString();
+
+                const status = post.status || "pending";
+                if (status === "approved") {
+                    existing.postCount = (existing.postCount || 0) + 1;
+                } else if (status === "pending") {
+                    existing.pendingCount = (existing.pendingCount || 0) + 1;
+                } else if (status === "rejected") {
+                    existing.rejectedCount = (existing.rejectedCount || 0) + 1;
+                } else if (status === "hidden") {
+                    existing.hiddenCount = (existing.hiddenCount || 0) + 1;
+                }
+
+                map.set(slug, existing);
+            });
+
+            const nextProjects = Array.from(map.values()).sort(function (a, b) {
+                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
+            });
+
+            localStorage.setItem("projects", JSON.stringify(nextProjects));
+        }
+
+        function syncAllDerivedStores() {
+            const refreshedPosts = getAllPosts();
+            rebuildCompatibilityStores(refreshedPosts);
+            syncProjectStoreFromPosts(refreshedPosts);
+
+            if (window.projectService && typeof window.projectService.syncProjectCounts === "function") {
+                try {
+                    window.projectService.syncProjectCounts(refreshedPosts);
+                } catch (error) {
+                    console.warn("projectService.syncProjectCounts lỗi:", error);
+                }
+            }
+        }
+
+        function getStatusLabel(status) {
+            if (status === "approved") return "Đã duyệt";
+            if (status === "rejected") return "Từ chối";
+            if (status === "hidden") return "Đang ẩn";
+            return "Chờ duyệt";
+        }
+
+        function getStatusBadgeClass(status) {
+            if (status === "approved") return "badge-approved";
+            if (status === "rejected") return "badge-rejected";
+            if (status === "hidden") return "badge-hidden";
+            return "badge-pending";
+        }
+
+        function getFlowLabel(post) {
             if (post.flow === "construction") return "Xây dựng";
+            return "Bất động sản";
+        }
+
+        function getPostTypeLabel(post) {
             if (post.postType === "ban") return "Tin bán";
             if (post.postType === "thue") return "Tin thuê";
-            return "Tin đăng";
+            return "Xây dựng";
+        }
+
+        function getPostTypeBadgeClass(post) {
+            if (post.postType === "ban") return "badge-sale";
+            if (post.postType === "thue") return "badge-rent";
+            return "badge-construction";
         }
 
         function getPostThumb(post) {
-            if (Array.isArray(post.images) && post.images.length && post.images[0]?.dataUrl) {
-                return post.images[0].dataUrl;
+            if (post.thumbnail && typeof post.thumbnail === "string" && post.thumbnail.trim()) {
+                return post.thumbnail;
             }
 
-            if (post.flow === "construction") {
-                return "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop";
+            if (Array.isArray(post.images) && post.images.length) {
+                const first = post.images[0];
+                if (typeof first === "string" && first.trim()) return first;
+                if (first && first.dataUrl) return first.dataUrl;
+                if (first && first.url) return first.url;
             }
 
-            if (post.postType === "thue") {
-                return "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop";
-            }
-
-            return "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop";
+            return FALLBACK_PROPERTY_IMAGE;
         }
 
         function getPostPriceText(post) {
             if (post.flow === "construction") {
-                return post.servicePrice || post.servicePriceData?.display || "Chưa có giá";
+                return post.servicePrice || (post.servicePriceData && post.servicePriceData.display) || "Chưa có giá";
             }
-            return post.propertyPrice || post.propertyPriceData?.display || "Chưa có giá";
+            return post.propertyPrice || (post.propertyPriceData && post.propertyPriceData.display) || "Chưa có giá";
         }
 
         function getPostAreaText(post) {
             if (post.flow === "construction") {
-                return post.serviceExp || "Chưa có";
+                return post.serviceExp || post.serviceArea || "Chưa có";
             }
-            return post.propertyArea ? `${post.propertyArea} m²` : "Chưa có";
+            return post.propertyArea ? (post.propertyArea + " m²") : "Chưa có";
         }
 
         function getPostLocationText(post) {
-            return [post.ward, post.district, post.city].filter(Boolean).join(", ") || "Chưa có vị trí";
+            return [post.ward, post.city].filter(Boolean).join(", ") || "Chưa có vị trí";
         }
 
         function getPostMetaText(post) {
@@ -290,160 +1111,356 @@
             return post.propertyLegal || post.propertyType || "Chưa cập nhật";
         }
 
-        function getDetailLink(post) {
-            if (post.slug) {
-                return `../pages/chi-tiet-tin.html?slug=${post.slug}`;
-            }
-            if (post.id) {
-                return `../pages/chi-tiet-tin.html?id=${post.id}`;
-            }
-            return "#";
+        function getPosterText(post) {
+            return post.contactName || post.fullName || post.brandName || post.serviceBrand || "Chưa rõ";
         }
 
-        function renderPendingNews() {
-            const container = document.getElementById("news-list-container");
-            const newsData = getPendingPosts();
+        function getDetailLink(post, index) {
+            const id = getPostId(post, index);
+            return "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(id);
+        }
 
-            document.getElementById("pending-count").innerText = `${newsData.length} Tin mới`;
+        function updateStats() {
+            const total = allPosts.length;
+            const pending = allPosts.filter(function (p) { return (p.status || "pending") === "pending"; }).length;
+            const approved = allPosts.filter(function (p) { return p.status === "approved"; }).length;
+            const rejected = allPosts.filter(function (p) { return p.status === "rejected"; }).length;
+            const hidden = allPosts.filter(function (p) { return p.status === "hidden"; }).length;
 
-            if (!newsData.length) {
-                container.innerHTML = `<div class="empty-box">Hiện không có tin nào cần duyệt.</div>`;
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statPending").textContent = pending;
+            document.getElementById("statApproved").textContent = approved;
+            document.getElementById("statRejected").textContent = rejected;
+            document.getElementById("statHidden").textContent = hidden;
+        }
+
+        function loadPosts() {
+            allPosts = getAllPosts().slice().sort(function (a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0);
+            });
+        }
+
+        function applyFilters() {
+            const keyword = normalizeText(searchInput.value);
+            const flowValue = flowFilter.value;
+            const typeValue = typeFilter.value;
+            const statusValue = statusFilter.value;
+
+            filteredPosts = allPosts.filter(function (post) {
+                const searchable = normalizeText([
+                    post.title,
+                    post.description,
+                    post.city,
+                    post.ward,
+                    post.addressDetail,
+                    post.projectName,
+                    post.propertyType,
+                    post.propertyCategoryName,
+                    post.categoryName,
+                    post.serviceType,
+                    post.serviceSpecialty,
+                    post.contactName,
+                    post.fullName,
+                    post.brandName,
+                    post.phone,
+                    post.contactPhone
+                ].filter(Boolean).join(" "));
+
+                const matchKeyword = !keyword || searchable.includes(keyword);
+                const matchFlow = flowValue === "all" || post.flow === flowValue;
+                const matchType = typeValue === "all" || post.postType === typeValue;
+                const matchStatus = statusValue === "all" || (post.status || "pending") === statusValue;
+
+                return matchKeyword && matchFlow && matchType && matchStatus;
+            });
+
+            renderPosts();
+            updateResultInfo();
+        }
+
+        function updateResultInfo() {
+            const pendingCount = allPosts.filter(function (p) {
+                return (p.status || "pending") === "pending";
+            }).length;
+
+            pendingCountBadge.textContent = pendingCount + " Tin mới";
+
+            if (!allPosts.length) {
+                resultInfo.textContent = "Hệ thống hiện chưa có tin đăng nào.";
                 return;
             }
 
-            container.innerHTML = newsData.map(news => {
-                const projectText = news.projectName
-                    ? `<span class="info-tag"><i class="fa-solid fa-building"></i> ${news.projectName}</span>`
-                    : "";
+            resultInfo.textContent = "Đang hiển thị " + filteredPosts.length + " / " + allPosts.length + " tin theo bộ lọc hiện tại.";
+        }
 
-                const mediaText = Array.isArray(news.images) && news.images.length
-                    ? `<span class="text-blue-600 text-sm"><i class="fa-solid fa-image"></i> ${news.images.length} ảnh đính kèm</span>`
-                    : `<span class="text-gray-400 text-sm"><i class="fa-solid fa-image"></i> Không có ảnh</span>`;
+        function buildPostCard(post, index) {
+            const id = getPostId(post, index);
+            const status = post.status || "pending";
+            const projectBadge = post.projectName
+                ? '<span class="badge badge-project"><i class="fa-solid fa-building"></i>' + post.projectName + '</span>'
+                : '';
 
-                const detailLink = getDetailLink(news);
+            const imageCount = Array.isArray(post.images) ? post.images.length : 0;
+            const detailLink = getDetailLink(post, index);
+            const imageSrc = getPostThumb(post);
 
-                return `
-                    <div class="border rounded-xl p-5 hover:border-[--vip-color] transition shadow-sm bg-white card-enter" id="news-${news.id}">
-                        <div class="flex flex-col md:flex-row gap-4">
-                            <img class="news-thumb" src="${getPostThumb(news)}" alt="${safeText(news.title, "Tin đăng")}" />
+            return `
+                <article class="post-card" id="post-${id}">
+                    <div class="post-layout">
+                        <img
+                            class="post-thumb"
+                            src="${imageSrc}"
+                            alt="${post.title || "Tin đăng"}"
+                            onerror="this.src='${FALLBACK_PROPERTY_IMAGE}'"
+                        />
 
-                            <div class="flex-1">
-                                <div class="flex flex-wrap items-center gap-2 mb-3">
-                                    <span class="status-badge badge-pending">
-                                        <i class="fa-solid fa-clock"></i> Chờ duyệt
-                                    </span>
-                                    <span class="type-badge">${getPostDisplayType(news)}</span>
-                                    ${projectText}
-                                </div>
-
-                                <h3 class="font-bold text-slate-800 text-lg mb-2">${safeText(news.title, "Chưa có tiêu đề")}</h3>
-
-                                <p class="post-desc mb-4">${safeText(news.description, "Chưa có mô tả chi tiết.")}</p>
-
-                                <div class="flex flex-wrap gap-2 mb-4">
-                                    <span class="info-tag"><i class="fa-solid fa-tag"></i> ${getPostPriceText(news)}</span>
-                                    <span class="info-tag"><i class="fa-solid fa-expand"></i> ${getPostAreaText(news)}</span>
-                                    <span class="info-tag"><i class="fa-solid fa-location-dot"></i> ${getPostLocationText(news)}</span>
-                                    <span class="info-tag"><i class="fa-solid fa-phone"></i> ${safeText(news.contactPhone || news.phone, "Chưa có SĐT")}</span>
-                                </div>
-
-                                <div class="meta-grid mb-4">
-                                    <div class="bg-slate-50 p-3 rounded-lg text-sm text-slate-600">
-                                        <div class="font-bold text-slate-800 mb-1">Người đăng</div>
-                                        <div>${safeText(news.contactName || news.fullName || news.brandName, "Chưa rõ")}</div>
-                                    </div>
-
-                                    <div class="bg-slate-50 p-3 rounded-lg text-sm text-slate-600">
-                                        <div class="font-bold text-slate-800 mb-1">Pháp lý / Loại hình</div>
-                                        <div>${getPostMetaText(news)}</div>
-                                    </div>
-                                </div>
-
-                                <div class="bg-slate-50 p-3 rounded-lg flex flex-wrap items-center gap-4">
-                                    <span class="text-xs font-bold text-gray-500">Tài nguyên:</span>
-                                    ${mediaText}
-                                    <span class="text-slate-500 text-sm"><i class="fa-regular fa-calendar"></i> ${new Date(news.createdAt || Date.now()).toLocaleString("vi-VN")}</span>
-                                    <a href="${detailLink}" target="_blank" class="text-[--vip-color] text-sm font-bold hover:underline">
-                                        <i class="fa-solid fa-up-right-from-square"></i> Xem thử trang chi tiết
-                                    </a>
-                                </div>
+                        <div class="post-main">
+                            <div class="badge-row">
+                                <span class="badge ${getStatusBadgeClass(status)}">
+                                    <i class="fa-solid fa-circle-info"></i>${getStatusLabel(status)}
+                                </span>
+                                <span class="badge ${getPostTypeBadgeClass(post)}">
+                                    <i class="fa-solid fa-tag"></i>${getPostTypeLabel(post)}
+                                </span>
+                                <span class="badge badge-sale" style="background:#ecfeff;color:#0f766e;">
+                                    <i class="fa-solid fa-layer-group"></i>${getFlowLabel(post)}
+                                </span>
+                                ${projectBadge}
                             </div>
 
-                            <div class="flex md:flex-col justify-end gap-2 border-t md:border-t-0 pt-4 md:pt-0 md:pl-6 md:border-l border-gray-100">
-                                <button onclick="handleNews('${news.id}', 'approve')" class="px-6 py-2 bg-green-500 text-white rounded-lg font-bold text-xs uppercase hover:bg-green-600 transition">
-                                    Duyệt đăng
-                                </button>
-                                <button onclick="handleNews('${news.id}', 'reject')" class="px-6 py-2 bg-red-50 text-red-600 rounded-lg font-bold text-xs uppercase hover:bg-red-100 transition">
-                                    Từ chối
-                                </button>
+                            <div class="post-title">${post.title || "Chưa có tiêu đề"}</div>
+                            <div class="post-desc">${post.description || "Chưa có mô tả chi tiết."}</div>
+
+                            <div class="meta-tags">
+                                <span class="info-tag"><i class="fa-solid fa-tag"></i>${getPostPriceText(post)}</span>
+                                <span class="info-tag"><i class="fa-solid fa-expand"></i>${getPostAreaText(post)}</span>
+                                <span class="info-tag"><i class="fa-solid fa-location-dot"></i>${getPostLocationText(post)}</span>
+                                <span class="info-tag"><i class="fa-solid fa-image"></i>${imageCount} ảnh</span>
+                                <span class="info-tag"><i class="fa-solid fa-phone"></i>${post.contactPhone || post.phone || "Chưa có SĐT"}</span>
+                            </div>
+
+                            <div class="meta-grid">
+                                <div class="meta-box">
+                                    <div class="meta-box-title">Người đăng</div>
+                                    <div>${getPosterText(post)}</div>
+                                </div>
+
+                                <div class="meta-box">
+                                    <div class="meta-box-title">Pháp lý / Loại hình</div>
+                                    <div>${getPostMetaText(post)}</div>
+                                </div>
+
+                                <div class="meta-box">
+                                    <div class="meta-box-title">Ngày tạo</div>
+                                    <div>${formatDateTime(post.createdAt)}</div>
+                                </div>
+
+                                <div class="meta-box">
+                                    <div class="meta-box-title">Cập nhật gần nhất</div>
+                                    <div>${formatDateTime(post.updatedAt || post.createdAt)}</div>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="post-actions">
+                            <a href="${detailLink}" target="_blank" class="btn-soft inline-flex items-center justify-center gap-2" style="text-decoration:none;">
+                                <i class="fa-solid fa-up-right-from-square"></i>Xem chi tiết
+                            </a>
+
+                            ${status !== "approved"
+                                ? `<button class="btn-success" type="button" onclick="handlePostAction('${id}', 'approve')">
+                                        <i class="fa-solid fa-circle-check mr-2"></i>Duyệt đăng
+                                   </button>`
+                                : `<button class="btn-warning" type="button" onclick="handlePostAction('${id}', 'hide')">
+                                        <i class="fa-solid fa-eye-slash mr-2"></i>Ẩn tin
+                                   </button>`
+                            }
+
+                            ${status !== "rejected"
+                                ? `<button class="btn-danger" type="button" onclick="handlePostAction('${id}', 'reject')">
+                                        <i class="fa-solid fa-xmark mr-2"></i>Từ chối
+                                   </button>`
+                                : `<button class="btn-soft" type="button" onclick="handlePostAction('${id}', 'pending')">
+                                        <i class="fa-solid fa-rotate-left mr-2"></i>Trả về chờ duyệt
+                                   </button>`
+                            }
+
+                            ${status === "hidden"
+                                ? `<button class="btn-primary" type="button" onclick="handlePostAction('${id}', 'approve')">
+                                        <i class="fa-solid fa-eye mr-2"></i>Hiện lại
+                                   </button>`
+                                : ""
+                            }
+                        </div>
                     </div>
-                `;
+                </article>
+            `;
+        }
+
+        function renderPosts() {
+            if (!filteredPosts.length) {
+                postList.innerHTML = "";
+                emptyState.style.display = "block";
+                return;
+            }
+
+            emptyState.style.display = "none";
+            postList.innerHTML = filteredPosts.map(function (post, index) {
+                return buildPostCard(post, index);
             }).join("");
         }
 
-        function syncAllDerivedStores() {
-            const refreshedPosts = postStorage.getAllPosts();
+        function findPostIndexById(posts, targetId) {
+            return posts.findIndex(function (post, index) {
+                return getPostId(post, index) === String(targetId);
+            });
+        }
 
-            if (window.userStorage && typeof window.userStorage.syncDerivedPostStores === "function") {
-                userStorage.syncDerivedPostStores(refreshedPosts);
-            } else {
-                const propertyPosts = refreshedPosts.filter(item => item.flow === "real_estate");
-                const salePosts = propertyPosts.filter(item => item.postType === "ban");
-                const rentalPosts = propertyPosts.filter(item => item.postType === "thue");
-                const constructionPosts = refreshedPosts.filter(item => item.flow === "construction");
+        function updatePostStatusById(targetId, nextStatus) {
+            const posts = getAllPosts();
+            const index = findPostIndexById(posts, targetId);
 
-                localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
-                localStorage.setItem("salePosts", JSON.stringify(salePosts));
-                localStorage.setItem("rentalPosts", JSON.stringify(rentalPosts));
-                localStorage.setItem("constructionPosts", JSON.stringify(constructionPosts));
+            if (index === -1) {
+                throw new Error("POST_NOT_FOUND");
             }
 
-            if (window.projectService && typeof window.projectService.syncProjectCounts === "function") {
-                projectService.syncProjectCounts(refreshedPosts, true);
+            const nowIso = new Date().toISOString();
+            const nextData = {
+                ...posts[index],
+                status: nextStatus,
+                updatedAt: nowIso
+            };
+
+            if (nextStatus === "approved") {
+                nextData.approvedAt = nowIso;
+            }
+
+            if (nextStatus === "rejected") {
+                nextData.rejectedAt = nowIso;
+            }
+
+            posts[index] = nextData;
+            saveAllPosts(posts);
+            syncAllDerivedStores();
+        }
+
+        function getActionConfirmMessage(action) {
+            if (action === "approve") return "Bạn có chắc chắn muốn duyệt và cho tin này hiển thị công khai?";
+            if (action === "reject") return "Bạn có chắc chắn muốn từ chối tin này?";
+            if (action === "hide") return "Bạn có chắc chắn muốn ẩn tin này khỏi public?";
+            if (action === "pending") return "Bạn có chắc muốn trả tin này về trạng thái chờ duyệt?";
+            return "Xác nhận thao tác?";
+        }
+
+        function getActionSuccessMessage(action) {
+            if (action === "approve") return "Đã duyệt tin thành công và đồng bộ lại dữ liệu liên quan.";
+            if (action === "reject") return "Đã chuyển tin sang trạng thái từ chối.";
+            if (action === "hide") return "Đã ẩn tin và cập nhật lại các store phụ.";
+            if (action === "pending") return "Đã trả tin về trạng thái chờ duyệt.";
+            return "Đã xử lý xong.";
+        }
+
+        function animateRemoveCard(id) {
+            const element = document.getElementById("post-" + id);
+            if (!element) return;
+
+            element.style.transform = "scale(0.98)";
+            element.style.opacity = "0";
+        }
+
+        function handlePostAction(id, action) {
+            const message = getActionConfirmMessage(action);
+            if (!confirm(message)) return;
+
+            let nextStatus = "pending";
+            if (action === "approve") nextStatus = "approved";
+            if (action === "reject") nextStatus = "rejected";
+            if (action === "hide") nextStatus = "hidden";
+            if (action === "pending") nextStatus = "pending";
+
+            try {
+                animateRemoveCard(id);
+                updatePostStatusById(id, nextStatus);
+
+                setTimeout(function () {
+                    loadPosts();
+                    updateStats();
+                    applyFilters();
+                    showStatus("success", getActionSuccessMessage(action));
+                }, 220);
+            } catch (error) {
+                console.error("Không thể cập nhật trạng thái tin:", error);
+                showStatus("error", "Không thể cập nhật trạng thái tin. Vui lòng kiểm tra lại dữ liệu localStorage.");
             }
         }
 
-        function handleNews(id, action) {
-            const post = postStorage.getPostById(id);
-            if (!post) {
-                alert("Không tìm thấy tin đăng.");
+        function approveAllVisible() {
+            const visiblePending = filteredPosts.filter(function (post) {
+                return (post.status || "pending") === "pending";
+            });
+
+            if (!visiblePending.length) {
+                showStatus("info", "Không có tin chờ duyệt nào trong danh sách đang lọc.");
                 return;
             }
 
-            const message = action === "approve"
-                ? "Bạn có chắc chắn muốn duyệt và cho tin này hiển thị công khai?"
-                : "Bạn có chắc chắn muốn từ chối tin này?";
+            const confirmBulk = confirm("Bạn có chắc muốn duyệt tất cả " + visiblePending.length + " tin đang lọc?");
+            if (!confirmBulk) return;
 
-            if (!confirm(message)) return;
-
-            if (action === "approve") {
-                postStorage.updatePost(id, {
-                    status: "approved",
-                    approvedAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
+            try {
+                visiblePending.forEach(function (post, index) {
+                    const id = getPostId(post, index);
+                    updatePostStatusById(id, "approved");
                 });
-            } else {
-                postStorage.updatePost(id, {
-                    status: "rejected",
-                    rejectedAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                });
+
+                loadPosts();
+                updateStats();
+                applyFilters();
+                showStatus("success", "Đã duyệt hàng loạt " + visiblePending.length + " tin và đồng bộ lại dữ liệu.");
+            } catch (error) {
+                console.error("Lỗi duyệt hàng loạt:", error);
+                showStatus("error", "Không thể duyệt hàng loạt. Vui lòng kiểm tra lại dữ liệu.");
             }
-
-            syncAllDerivedStores();
-
-            const element = document.getElementById(`news-${id}`);
-            if (element) {
-                element.style.transform = "scale(0.96)";
-                element.style.opacity = "0";
-            }
-
-            setTimeout(() => {
-                renderPendingNews();
-            }, 250);
         }
+
+        function clearFilters() {
+            searchInput.value = "";
+            flowFilter.value = "all";
+            typeFilter.value = "all";
+            statusFilter.value = "pending";
+            applyFilters();
+        }
+
+        function initPage() {
+            try {
+                loadPosts();
+                updateStats();
+                applyFilters();
+
+                if (!allPosts.length) {
+                    showStatus("info", "Hiện localStorage chưa có tin đăng nào để kiểm duyệt.");
+                } else {
+                    hideStatus();
+                }
+            } catch (error) {
+                console.error("Lỗi khởi tạo trang kiểm duyệt:", error);
+                showStatus("error", "Không thể tải dữ liệu kiểm duyệt. Hãy kiểm tra lại postStorage hoặc allPosts.");
+            }
+        }
+
+        searchInput.addEventListener("input", applyFilters);
+        flowFilter.addEventListener("change", applyFilters);
+        typeFilter.addEventListener("change", applyFilters);
+        statusFilter.addEventListener("change", applyFilters);
+
+        clearFilterBtn.addEventListener("click", clearFilters);
+        refreshBtn.addEventListener("click", function () {
+            initPage();
+            showStatus("success", "Đã làm mới dữ liệu kiểm duyệt từ localStorage.");
+        });
+        approveAllVisibleBtn.addEventListener("click", approveAllVisible);
+
+        window.handlePostAction = handlePostAction;
     </script>
 </body>
 </html>
