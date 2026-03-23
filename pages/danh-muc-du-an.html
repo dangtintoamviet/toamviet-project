@@ -1213,7 +1213,17 @@
                 ownerName: post.contactName || post.fullName || post.brandName || post.userName || "Người đăng",
                 ownerRole: post.roleLabel || (normalizeText(post.profileType) === "doanhnghiep" ? "Doanh nghiệp" : "Cá nhân"),
                 createdAt: Date.parse(post.createdAt || 0) || (Date.now() - index * 1000),
-                description: post.description || ""
+                description: post.description || "",
+                profileType: post.profileType || "",
+                profileId: post.profileId || "",
+                contactProfileId: post.contactProfileId || "",
+                ownerProfileId: post.ownerProfileId || "",
+                ownerId: post.ownerId || "",
+                userId: post.userId || "",
+                accountId: post.accountId || "",
+                contactId: post.contactId || "",
+                posterId: post.posterId || "",
+                profileUrl: post.profileUrl || ""
             };
         }
 
@@ -1333,20 +1343,85 @@
             return `../pages/chi-tiet-du-an.html?slug=${encodeURIComponent(project.slug || project.id)}`;
         }
 
+        function getProfileIdFromPost(post) {
+            const candidates = [
+                post.contactProfileId,
+                post.profileId,
+                post.ownerProfileId,
+                post.ownerId,
+                post.userId,
+                post.accountId,
+                post.contactId,
+                post.posterId,
+                post.createdBy,
+                post.authorId,
+                post.id
+            ];
+
+            for (const item of candidates) {
+                if (item !== undefined && item !== null && String(item).trim()) {
+                    return String(item).trim();
+                }
+            }
+
+            return String(post.id || "").trim();
+        }
+
+        function getResolvedProfileType(post) {
+            const rawProfileType = normalizeText(post.profileType);
+            const rawRole = normalizeText(post.roleLabel || post.ownerRole || post.role || "");
+            const brandName = String(post.brandName || "").trim();
+
+            if (rawProfileType === "canhan" || rawProfileType === "moi-gioi") return "canhan";
+            if (rawProfileType === "doanhnghiep") return "doanhnghiep";
+
+            if (rawRole.includes("moi gioi") || rawRole.includes("ca nhan") || rawRole.includes("chuyen vien")) {
+                return "canhan";
+            }
+
+            if (
+                rawRole.includes("doanh nghiep") ||
+                rawRole.includes("chu dau tu") ||
+                rawRole.includes("nha thau") ||
+                brandName
+            ) {
+                return "doanhnghiep";
+            }
+
+            return "canhan";
+        }
+
         function getOwnerProfileUrl(post) {
             if (post.profileUrl) return post.profileUrl;
 
-            const type = normalizeText(post.profileType);
-            if (type === "canhan" || type === "moi-gioi") {
-                return `../pages/chi-tiet-moi-gioi.html?id=${encodeURIComponent(post.id)}`;
+            const profileId = getProfileIdFromPost(post);
+            const profileType = getResolvedProfileType(post);
+
+            if (profileType === "canhan") {
+                return `../pages/chi-tiet-moi-gioi.html?id=${encodeURIComponent(profileId)}`;
             }
 
-            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(post.id)}`;
+            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(profileId)}`;
         }
 
         function getPostDetailUrl(post) {
             if (post.detailUrl) return post.detailUrl;
-            return `../pages/chi-tiet-tin.html?id=${encodeURIComponent(post.id)}`;
+
+            let url = `../pages/chi-tiet-tin.html?id=${encodeURIComponent(post.id)}`;
+
+            if (post.slug) {
+                url += `&slug=${encodeURIComponent(post.slug)}`;
+            }
+
+            if (selectedProject && selectedProject.id) {
+                url += `&projectId=${encodeURIComponent(selectedProject.id)}`;
+            }
+
+            if (selectedProject && selectedProject.slug) {
+                url += `&projectSlug=${encodeURIComponent(selectedProject.slug)}`;
+            }
+
+            return url;
         }
 
         function renderProjectHero(project) {
@@ -1685,7 +1760,11 @@
                         ownerRole: "Doanh nghiệp / Chủ đầu tư",
                         createdAt: Date.now(),
                         profileType: "doanhnghiep",
-                        description: project.shortDescription || ""
+                        ownerProfileId: project.id,
+                        description: project.shortDescription || "",
+                        projectId: project.id,
+                        projectSlug: project.slug,
+                        slug: `${project.slug}-sale-1`
                     },
                     {
                         id: `${project.id}-rent-1`,
@@ -1701,7 +1780,11 @@
                         ownerRole: "Doanh nghiệp / Chủ đầu tư",
                         createdAt: Date.now() - 86400000,
                         profileType: "doanhnghiep",
-                        description: project.shortDescription || ""
+                        ownerProfileId: project.id,
+                        description: project.shortDescription || "",
+                        projectId: project.id,
+                        projectSlug: project.slug,
+                        slug: `${project.slug}-rent-1`
                     },
                     {
                         id: `${project.id}-sale-2`,
@@ -1717,7 +1800,11 @@
                         ownerRole: "Doanh nghiệp / Chủ đầu tư",
                         createdAt: Date.now() - 2 * 86400000,
                         profileType: "doanhnghiep",
-                        description: project.shortDescription || ""
+                        ownerProfileId: project.id,
+                        description: project.shortDescription || "",
+                        projectId: project.id,
+                        projectSlug: project.slug,
+                        slug: `${project.slug}-sale-2`
                     }
                 ];
 
