@@ -35,7 +35,8 @@
 .site-header-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
+    flex-shrink: 0;
 }
 
 .site-logo-link {
@@ -73,6 +74,8 @@
     width: 1px;
     height: 24px;
     background: #e5e7eb;
+    margin: 0 2px;
+    flex-shrink: 0;
 }
 
 .header-auth-links {
@@ -81,6 +84,12 @@
     gap: 10px;
     font-size: 14px;
     font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.header-auth-links a {
+    white-space: nowrap;
 }
 
 .header-post-btn {
@@ -97,6 +106,8 @@
     font-weight: 700;
     text-transform: uppercase;
     transition: background-color 0.25s ease, color 0.25s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .header-post-btn:hover {
