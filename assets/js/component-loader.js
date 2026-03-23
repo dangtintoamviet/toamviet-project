@@ -46,6 +46,39 @@ function getPageContext() {
   };
 }
 
+function ensureFavicon(basePath) {
+  const faviconHref = `${basePath}/assets/images/icons/favicon.png`;
+
+  let favicon = document.querySelector('link[rel="icon"]');
+  if (!favicon) {
+    favicon = document.createElement("link");
+    favicon.setAttribute("rel", "icon");
+    favicon.setAttribute("type", "image/png");
+    document.head.appendChild(favicon);
+  }
+
+  favicon.setAttribute("href", faviconHref);
+
+  let shortcutIcon = document.querySelector('link[rel="shortcut icon"]');
+  if (!shortcutIcon) {
+    shortcutIcon = document.createElement("link");
+    shortcutIcon.setAttribute("rel", "shortcut icon");
+    shortcutIcon.setAttribute("type", "image/png");
+    document.head.appendChild(shortcutIcon);
+  }
+
+  shortcutIcon.setAttribute("href", faviconHref);
+
+  let appleTouchIcon = document.querySelector('link[rel="apple-touch-icon"]');
+  if (!appleTouchIcon) {
+    appleTouchIcon = document.createElement("link");
+    appleTouchIcon.setAttribute("rel", "apple-touch-icon");
+    document.head.appendChild(appleTouchIcon);
+  }
+
+  appleTouchIcon.setAttribute("href", faviconHref);
+}
+
 function ensureHeaderSpacer() {
   const siteHeader = document.getElementById("site-header");
   if (!siteHeader) return null;
@@ -120,6 +153,8 @@ function watchHeaderSpacing() {
 document.addEventListener("DOMContentLoaded", async function () {
   const context = getPageContext();
   const tasks = [];
+
+  ensureFavicon(context.basePath);
 
   if (document.getElementById("site-header")) {
     tasks.push(
