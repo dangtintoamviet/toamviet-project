@@ -1093,7 +1093,7 @@
         const DEMO_POSTS = [
             {
                 id: "demo-sale-1",
-                slug: "biet-thu-vinhomes-dan-phuong-view-ho",
+                slug: "biet-thu-view-ho-khu-do-thi-moi",
                 title: "Ngoại giao gửi bán căn biệt thự view hồ đẹp tại khu đô thị mới",
                 propertyType: "Biệt thự",
                 propertyCategoryName: "Bán nhà biệt thự, liền kề",
@@ -1110,6 +1110,8 @@
                 projectName: "ToamViet Riverside",
                 description: "Căn biệt thự có vị trí đẹp, bàn giao full nội thất cao cấp. Hỗ trợ pháp lý và thủ tục nhanh gọn.",
                 contactName: "Nguyễn Thành An",
+                profileType: "canhan",
+                contactProfileId: "user-demo-1",
                 roleLabel: "Môi giới chuyên nghiệp",
                 contactPhone: "0912598888",
                 contactEmail: "demo@toamviet.vn",
@@ -1140,6 +1142,8 @@
                 projectName: "Green Valley Residence",
                 description: "Căn hộ tầng cao thoáng mát, view đẹp, đầy đủ nội thất cao cấp.",
                 contactName: "Trần Thị Lan Anh",
+                profileType: "canhan",
+                contactProfileId: "user-demo-2",
                 roleLabel: "Chuyên viên cho thuê",
                 contactPhone: "0901234567",
                 contactEmail: "rent@toamviet.vn",
@@ -1168,6 +1172,8 @@
                 description: "Đội ngũ kỹ sư và thi công chuyên nghiệp, nhận hồ sơ thiết kế, thi công phần thô và hoàn thiện trọn gói.",
                 contactName: "Công ty Xây dựng An Phát",
                 brandName: "Công ty Xây dựng An Phát",
+                profileType: "doanhnghiep",
+                contactProfileId: "business-demo-1",
                 roleLabel: "Doanh nghiệp / Nhà thầu",
                 contactPhone: "0988123456",
                 contactEmail: "build@toamviet.vn",
@@ -1336,15 +1342,67 @@
             return "https://zalo.me/" + normalized.replace(/^\+/, "");
         }
 
-        function getProfileDetailLink(post, postId) {
-            if (post.contactProfileUrl) return post.contactProfileUrl;
+        function getProfileIdFromPost(post, fallbackId) {
+            const candidates = [
+                post.contactProfileId,
+                post.profileId,
+                post.ownerProfileId,
+                post.ownerId,
+                post.userId,
+                post.accountId,
+                post.contactUserId,
+                post.contactId,
+                post.posterId,
+                post.createdBy,
+                post.authorId
+            ];
 
-            const profileType = normalizeText(post.profileType);
-            if (profileType === "canhan" || profileType === "moi-gioi") {
-                return "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(postId);
+            for (const candidate of candidates) {
+                if (candidate !== undefined && candidate !== null && String(candidate).trim()) {
+                    return String(candidate).trim();
+                }
             }
 
-            return "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(postId);
+            return String(fallbackId || "").trim();
+        }
+
+        function getResolvedProfileType(post) {
+            const rawProfileType = normalizeText(post.profileType);
+            const rawRole = normalizeText(post.roleLabel || post.role || "");
+            const brandName = String(post.brandName || post.serviceBrand || "").trim();
+
+            if (rawProfileType === "canhan" || rawProfileType === "moi-gioi") return "canhan";
+            if (rawProfileType === "doanhnghiep") return "doanhnghiep";
+
+            if (rawRole.includes("moi gioi") || rawRole.includes("ca nhan") || rawRole.includes("chuyen vien")) {
+                return "canhan";
+            }
+
+            if (
+                rawRole.includes("doanh nghiep") ||
+                rawRole.includes("nha thau") ||
+                rawRole.includes("chu dau tu") ||
+                brandName
+            ) {
+                return "doanhnghiep";
+            }
+
+            return "canhan";
+        }
+
+        function getProfileDetailLink(post, fallbackId) {
+            if (post.contactProfileUrl) return post.contactProfileUrl;
+            if (post.profileUrl) return post.profileUrl;
+            if (post.ownerProfileUrl) return post.ownerProfileUrl;
+
+            const profileId = getProfileIdFromPost(post, fallbackId);
+            const profileType = getResolvedProfileType(post);
+
+            if (profileType === "canhan") {
+                return "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(profileId);
+            }
+
+            return "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(profileId);
         }
 
         function getStorageArray(key) {
@@ -1748,7 +1806,7 @@
 
                     return candidates.includes(id);
                 });
-                if (foundById) return { post: foundById, resolvedId: id };
+                if (foundById) return { post: foundById, resolvedId: createPostId(foundById, posts.indexOf(foundById)) };
             }
 
             if (slug) {
