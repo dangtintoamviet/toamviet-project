@@ -49,12 +49,6 @@
             text-decoration: none;
         }
 
-        .container-custom {
-            max-width: 1560px;
-            margin: 0 auto;
-            padding: 0 18px;
-        }
-
         .page-shell {
             padding-top: 0;
             padding-bottom: 32px;
@@ -103,7 +97,7 @@
 
         .project-hero {
             display: grid;
-            grid-template-columns: minmax(0, 1.2fr) 430px;
+            grid-template-columns: minmax(0, 1fr) 380px;
             gap: 22px;
             margin-bottom: 24px;
         }
@@ -446,7 +440,7 @@
 
         .detail-layout {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 360px;
+            grid-template-columns: minmax(0, 1fr) 320px;
             gap: 24px;
         }
 
@@ -884,10 +878,6 @@
         }
 
         @media (max-width: 768px) {
-            .container-custom {
-                padding: 0 12px;
-            }
-
             .page-shell {
                 padding-bottom: 22px;
             }
@@ -981,8 +971,8 @@
     </style>
 </head>
 <body>
-    <div id="site-header"></div>
-    <div id="site-mobile-menu"></div>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
 
     <main class="container-custom page-shell">
         <div class="breadcrumb-wrap">
@@ -995,213 +985,207 @@
             </nav>
         </div>
 
-        <div id="notFoundBox" class="empty-box hidden" style="margin-bottom:24px;">
-            Không tìm thấy dự án phù hợp. Có thể đường dẫn không đúng hoặc dữ liệu dự án chưa được đồng bộ.
-        </div>
+        <section class="project-hero">
+            <div class="project-hero-main">
+                <div class="hero-media">
+                    <img id="heroMainImage" src="../assets/images/fallback-property.jpg" alt="Dự án" />
+                </div>
+                <div class="hero-overlay"></div>
 
-        <div id="detailWrapper">
-            <section class="project-hero">
-                <div class="project-hero-main">
-                    <div class="hero-media">
-                        <img id="heroMainImage" src="../assets/images/fallback-property.jpg" alt="Dự án" />
-                    </div>
-                    <div class="hero-overlay"></div>
-
-                    <div class="hero-content">
-                        <div class="hero-badges">
-                            <span class="hero-badge type" id="heroTypeBadge">
-                                <i class="fa-solid fa-layer-group"></i>
-                                Đang cập nhật
-                            </span>
-                            <span class="hero-badge status" id="heroStatusBadge">
-                                <i class="fa-solid fa-circle-check"></i>
-                                Đang cập nhật
-                            </span>
-                        </div>
-
-                        <h1 class="hero-title" id="heroTitle">Tên dự án</h1>
-
-                        <div class="hero-address">
-                            <i class="fa-solid fa-location-dot mt-[4px]"></i>
-                            <span id="heroAddress">Địa chỉ dự án</span>
-                        </div>
-
-                        <div class="hero-quick-pills">
-                            <span class="hero-pill">
-                                <i class="fa-solid fa-ruler-combined"></i>
-                                <span id="heroArea">Đang cập nhật</span>
-                            </span>
-                            <span class="hero-pill">
-                                <i class="fa-solid fa-tag"></i>
-                                <span id="heroPrice">Liên hệ</span>
-                            </span>
-                            <span class="hero-pill">
-                                <i class="fa-solid fa-building"></i>
-                                <span id="heroInvestor">Đang cập nhật</span>
-                            </span>
-                        </div>
+                <div class="hero-content">
+                    <div class="hero-badges">
+                        <span class="hero-badge type" id="heroTypeBadge">
+                            <i class="fa-solid fa-layer-group"></i>
+                            Đang cập nhật
+                        </span>
+                        <span class="hero-badge status" id="heroStatusBadge">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Đang cập nhật
+                        </span>
                     </div>
 
-                    <div class="hero-gallery-strip" id="heroGalleryStrip"></div>
+                    <h1 class="hero-title" id="heroTitle">Tên dự án</h1>
+
+                    <div class="hero-address">
+                        <i class="fa-solid fa-location-dot mt-[4px]"></i>
+                        <span id="heroAddress">Địa chỉ dự án</span>
+                    </div>
+
+                    <div class="hero-quick-pills">
+                        <span class="hero-pill">
+                            <i class="fa-solid fa-ruler-combined"></i>
+                            <span id="heroArea">Đang cập nhật</span>
+                        </span>
+                        <span class="hero-pill">
+                            <i class="fa-solid fa-tag"></i>
+                            <span id="heroPrice">Liên hệ</span>
+                        </span>
+                        <span class="hero-pill">
+                            <i class="fa-solid fa-building"></i>
+                            <span id="heroInvestor">Đang cập nhật</span>
+                        </span>
+                    </div>
                 </div>
 
-                <aside class="project-hero-side">
-                    <div class="contact-card">
-                        <a href="#" class="user-link" id="ownerProfileLink">
-                            <div class="user-avatar" id="ownerAvatar">TV</div>
-                            <div class="min-w-0">
-                                <div class="user-name truncate" id="ownerName">Chủ đầu tư</div>
-                                <div class="user-role truncate" id="ownerRole">Chủ đầu tư / Đơn vị phát triển</div>
-                            </div>
+                <div class="hero-gallery-strip" id="heroGalleryStrip"></div>
+            </div>
+
+            <aside class="project-hero-side">
+                <div class="contact-card">
+                    <a href="#" class="user-link" id="ownerProfileLink">
+                        <div class="user-avatar" id="ownerAvatar">TV</div>
+                        <div class="min-w-0">
+                            <div class="user-name truncate" id="ownerName">Chủ đầu tư</div>
+                            <div class="user-role truncate" id="ownerRole">Chủ đầu tư / Đơn vị phát triển</div>
+                        </div>
+                    </a>
+
+                    <div class="side-chip-row">
+                        <span class="side-chip" id="ownerTypeChip">
+                            <i class="fa-solid fa-building"></i>
+                            Doanh nghiệp
+                        </span>
+                        <span class="side-chip" id="ownerLocationChip">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Đang cập nhật
+                        </span>
+                    </div>
+
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <div class="contact-label">Mức giá</div>
+                            <div class="contact-value" id="contactPrice">Liên hệ</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Quy mô / diện tích</div>
+                            <div class="contact-value" id="contactArea">Đang cập nhật</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Tin bán / thuê</div>
+                            <div class="contact-value" id="contactPosts">0 / 0</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Trạng thái</div>
+                            <div class="contact-value" id="contactStatus">Đang cập nhật</div>
+                        </div>
+                    </div>
+
+                    <div class="contact-actions">
+                        <a href="#" class="btn-main" id="goToCategoryBtn">
+                            <i class="fa-solid fa-list"></i>
+                            Xem danh mục tin
                         </a>
-
-                        <div class="side-chip-row">
-                            <span class="side-chip" id="ownerTypeChip">
-                                <i class="fa-solid fa-building"></i>
-                                Doanh nghiệp
-                            </span>
-                            <span class="side-chip" id="ownerLocationChip">
-                                <i class="fa-solid fa-location-dot"></i>
-                                Đang cập nhật
-                            </span>
-                        </div>
-
-                        <div class="contact-grid">
-                            <div class="contact-item">
-                                <div class="contact-label">Mức giá</div>
-                                <div class="contact-value" id="contactPrice">Liên hệ</div>
-                            </div>
-                            <div class="contact-item">
-                                <div class="contact-label">Quy mô / diện tích</div>
-                                <div class="contact-value" id="contactArea">Đang cập nhật</div>
-                            </div>
-                            <div class="contact-item">
-                                <div class="contact-label">Tin bán / thuê</div>
-                                <div class="contact-value" id="contactPosts">0 / 0</div>
-                            </div>
-                            <div class="contact-item">
-                                <div class="contact-label">Trạng thái</div>
-                                <div class="contact-value" id="contactStatus">Đang cập nhật</div>
-                            </div>
-                        </div>
-
-                        <div class="contact-actions">
-                            <a href="#" class="btn-main" id="goToCategoryBtn">
-                                <i class="fa-solid fa-list"></i>
-                                Xem danh mục tin
-                            </a>
-                            <a href="../pages/du-an.html" class="btn-soft">
-                                <i class="fa-solid fa-arrow-left"></i>
-                                Quay lại
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="contact-card">
-                        <div class="side-title">Điểm nổi bật</div>
-                        <div class="side-list" id="highlightList"></div>
-                    </div>
-                </aside>
-            </section>
-
-            <section class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Tổng số tin</div>
-                    <div class="stat-value" id="statTotalPosts">0</div>
-                    <div class="stat-hint">Tổng tin thuộc dự án này trên hệ thống</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-label">Tin bán</div>
-                    <div class="stat-value" id="statSalePosts">0</div>
-                    <div class="stat-hint">Nguồn tin bán đang được gắn theo dự án</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-label">Tin cho thuê</div>
-                    <div class="stat-value" id="statRentalPosts">0</div>
-                    <div class="stat-hint">Nguồn tin cho thuê đang hiển thị ngoài public</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-label">Loại hình</div>
-                    <div class="stat-value" id="statType">--</div>
-                    <div class="stat-hint">Phân khúc chính của dự án đang xem</div>
-                </div>
-            </section>
-
-            <section class="detail-layout">
-                <div class="content-stack">
-                    <div class="section-card">
-                        <div class="section-head">
-                            <div>
-                                <h2 class="section-title">Tổng quan dự án</h2>
-                                <div class="section-sub">Các thông tin cốt lõi để người dùng đánh giá nhanh</div>
-                            </div>
-                        </div>
-
-                        <div class="info-grid" id="overviewInfoGrid"></div>
-                    </div>
-
-                    <div class="section-card">
-                        <div class="section-head">
-                            <div>
-                                <h2 class="section-title">Giới thiệu chi tiết</h2>
-                                <div class="section-sub">Nội dung mô tả sâu hơn về dự án, định hướng và giá trị sử dụng</div>
-                            </div>
-                        </div>
-
-                        <div class="project-desc" id="projectDescription"></div>
-                    </div>
-
-                    <div class="section-card">
-                        <div class="section-head">
-                            <div>
-                                <h2 class="section-title">Tiện ích & điểm nhấn</h2>
-                                <div class="section-sub">Các lợi thế giúp dự án dễ thuyết phục người mua và nhà đầu tư hơn</div>
-                            </div>
-                        </div>
-
-                        <div class="amenities-grid" id="amenitiesGrid"></div>
-                    </div>
-
-                    <div class="section-card">
-                        <div class="section-head">
-                            <div>
-                                <h2 class="section-title">Dự án liên quan</h2>
-                                <div class="section-sub">Một số dự án khác cùng nhóm để người dùng so sánh nhanh</div>
-                            </div>
-                        </div>
-
-                        <div class="related-grid" id="relatedProjectsGrid"></div>
+                        <a href="../pages/du-an.html" class="btn-soft">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Quay lại
+                        </a>
                     </div>
                 </div>
 
-                <aside class="side-stack">
-                    <div class="side-card">
-                        <h3 class="side-title">Thông tin nhanh</h3>
-                        <div class="side-list" id="quickInfoList"></div>
+                <div class="contact-card">
+                    <div class="side-title">Điểm nổi bật</div>
+                    <div class="side-list" id="highlightList"></div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Tổng số tin</div>
+                <div class="stat-value" id="statTotalPosts">0</div>
+                <div class="stat-hint">Tổng tin thuộc dự án này trên hệ thống</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Tin bán</div>
+                <div class="stat-value" id="statSalePosts">0</div>
+                <div class="stat-hint">Nguồn tin bán đang được gắn theo dự án</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Tin cho thuê</div>
+                <div class="stat-value" id="statRentalPosts">0</div>
+                <div class="stat-hint">Nguồn tin cho thuê đang hiển thị ngoài public</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Loại hình</div>
+                <div class="stat-value" id="statType">--</div>
+                <div class="stat-hint">Phân khúc chính của dự án đang xem</div>
+            </div>
+        </section>
+
+        <section class="detail-layout">
+            <div class="content-stack">
+                <div class="section-card">
+                    <div class="section-head">
+                        <div>
+                            <h2 class="section-title">Tổng quan dự án</h2>
+                            <div class="section-sub">Các thông tin cốt lõi để người dùng đánh giá nhanh</div>
+                        </div>
                     </div>
 
-                    <div class="side-card">
-                        <h3 class="side-title">Khu vực nổi bật</h3>
-                        <div class="space-y-3" id="hotAreasList"></div>
+                    <div class="info-grid" id="overviewInfoGrid"></div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-head">
+                        <div>
+                            <h2 class="section-title">Giới thiệu chi tiết</h2>
+                            <div class="section-sub">Nội dung mô tả sâu hơn về dự án, định hướng và giá trị sử dụng</div>
+                        </div>
                     </div>
 
-                    <div class="side-card">
-                        <h3 class="side-title">Tin tức</h3>
-                        <div class="sidebar-news-list" id="sidebarNewsList"></div>
-                    </div>
-                </aside>
-            </section>
+                    <div class="project-desc" id="projectDescription"></div>
+                </div>
 
-            <section class="seo-block-shell">
-                <div id="seoContent"></div>
-            </section>
-        </div>
+                <div class="section-card">
+                    <div class="section-head">
+                        <div>
+                            <h2 class="section-title">Tiện ích & điểm nhấn</h2>
+                            <div class="section-sub">Các lợi thế giúp dự án dễ thuyết phục người mua và nhà đầu tư hơn</div>
+                        </div>
+                    </div>
+
+                    <div class="amenities-grid" id="amenitiesGrid"></div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-head">
+                        <div>
+                            <h2 class="section-title">Dự án liên quan</h2>
+                            <div class="section-sub">Một số dự án khác cùng nhóm để người dùng so sánh nhanh</div>
+                        </div>
+                    </div>
+
+                    <div class="related-grid" id="relatedProjectsGrid"></div>
+                </div>
+            </div>
+
+            <aside class="side-stack">
+                <div class="side-card">
+                    <h3 class="side-title">Thông tin nhanh</h3>
+                    <div class="side-list" id="quickInfoList"></div>
+                </div>
+
+                <div class="side-card">
+                    <h3 class="side-title">Khu vực nổi bật</h3>
+                    <div class="space-y-3" id="hotAreasList"></div>
+                </div>
+
+                <div class="side-card">
+                    <h3 class="side-title">Tin tức</h3>
+                    <div class="sidebar-news-list" id="sidebarNewsList"></div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="seo-block-shell">
+            <div id="seoContent"></div>
+        </section>
     </main>
 
-    <div id="site-footer"></div>
+    <div id="siteFooter"></div>
 
     <button
         id="goToTop"
@@ -1232,7 +1216,6 @@
         const fallbackProjects = [
             {
                 id: "du-an-1",
-                slug: "toamviet-riverside",
                 name: "ToamViet Riverside",
                 type: "Khu đô thị",
                 status: "Đang mở bán",
@@ -1250,7 +1233,6 @@
             },
             {
                 id: "du-an-2",
-                slug: "green-valley-residence",
                 name: "Green Valley Residence",
                 type: "Căn hộ chung cư",
                 status: "Sắp mở bán",
@@ -1268,7 +1250,6 @@
             },
             {
                 id: "du-an-3",
-                slug: "central-park-lao-cai",
                 name: "Central Park Lào Cai",
                 type: "Đất nền",
                 status: "Đang triển khai",
@@ -1286,7 +1267,6 @@
             },
             {
                 id: "du-an-5",
-                slug: "bcons-newsky",
                 name: "Bcons NewSky",
                 type: "Căn hộ chung cư",
                 status: "Chuẩn bị ra mắt",
@@ -1404,7 +1384,7 @@
                 project.address ||
                 project.location ||
                 project.fullAddress ||
-                [project.addressDetail, project.ward, project.district, project.city].filter(Boolean).join(", ") ||
+                [project.ward, project.district, project.city].filter(Boolean).join(", ") ||
                 "Đang cập nhật"
             );
         }
@@ -1462,30 +1442,33 @@
             return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(project.id)}`;
         }
 
-        function getProjectCategoryUrl(project) {
-            if (project.categoryUrl) return project.categoryUrl;
-            if (project.slug) return `../pages/du-an.html?slug=${encodeURIComponent(project.slug)}`;
-            return `../pages/danh-muc-du-an.html?projectId=${encodeURIComponent(project.id)}`;
-        }
-
         function normalizeProject(project, index = 0) {
             const name = project.name || project.projectName || project.title || `Dự án ${index + 1}`;
-            const slug = String(project.slug || project.projectSlug || slugifyText(name)).trim();
-            const type = project.type || project.projectType || project.category || "Đang cập nhật";
+            const type = project.type || project.projectType || project.category || project.typeName || "Đang cập nhật";
             const status = project.status || project.projectStatus || "Đang cập nhật";
             const investor = project.investor || project.developer || project.owner || project.contactName || "Đang cập nhật";
             const area = project.area || project.scale || project.landArea || project.size || "Đang cập nhật";
             const priceInfo = normalizePrice(project.price ?? project.priceFrom ?? project.minPrice ?? "");
             const address = buildLocation(project);
-            const salePostsCount = Number(project.salePostsCount ?? project.saleCount ?? project.totalSalePosts ?? project.postCount ?? 0);
-            const rentalPostsCount = Number(project.rentalPostsCount ?? project.rentalCount ?? project.totalRentalPosts ?? 0);
+            const salePostsCount = Number(
+                project.salePostsCount ??
+                project.saleCount ??
+                project.postCount ??
+                project.totalSalePosts ??
+                0
+            );
+            const rentalPostsCount = Number(
+                project.rentalPostsCount ??
+                project.rentalCount ??
+                project.totalRentalPosts ??
+                0
+            );
             const description = project.description || project.fullDescription || project.content || project.summary || project.shortDescription || "Dự án đang được cập nhật mô tả chi tiết.";
             const shortDescription = project.shortDescription || project.summary || description;
 
             return {
                 ...project,
-                id: project.id || project.projectId || slug || `du-an-${index + 1}`,
-                slug,
+                id: project.id || project.projectId || project.slug || slugifyText(name) || `du-an-${index + 1}`,
                 name,
                 type,
                 status,
@@ -1568,39 +1551,12 @@
             return projects.map(normalizeProject);
         }
 
-        function findProject(projects, id, slug) {
-            const normalizedId = String(id || "").trim();
-            const normalizedSlug = normalizeText(slug || "");
-
-            if (normalizedId) {
-                const byId = projects.find(item => String(item.id) === normalizedId);
-                if (byId) return byId;
-            }
-
-            if (normalizedSlug) {
-                const bySlug = projects.find(item => normalizeText(item.slug) === normalizedSlug);
-                if (bySlug) return bySlug;
-            }
-
-            if (normalizedId) {
-                const bySlugLikeId = projects.find(item => normalizeText(item.slug) === normalizeText(normalizedId));
-                if (bySlugLikeId) return bySlugLikeId;
-            }
-
-            return null;
-        }
-
         function renderHero(project, allProjects) {
             const projectIndex = allProjects.findIndex(item => item.id === project.id);
             currentGalleryImages = getProjectGallery(project, Math.max(projectIndex, 0));
 
-            const heroMainImage = document.getElementById("heroMainImage");
-            heroMainImage.src = currentGalleryImages[0] || FALLBACK_IMAGE;
-            heroMainImage.alt = project.name;
-            heroMainImage.onerror = function () {
-                this.src = FALLBACK_IMAGE;
-            };
-
+            document.getElementById("heroMainImage").src = currentGalleryImages[0] || FALLBACK_IMAGE;
+            document.getElementById("heroMainImage").alt = project.name;
             document.getElementById("heroTitle").textContent = project.name;
             document.getElementById("heroAddress").textContent = project.address;
             document.getElementById("heroArea").textContent = project.area;
@@ -1626,7 +1582,7 @@
             strip.querySelectorAll(".hero-thumb").forEach((btn) => {
                 btn.addEventListener("click", function () {
                     const index = Number(this.dataset.galleryIndex || 0);
-                    heroMainImage.src = currentGalleryImages[index] || FALLBACK_IMAGE;
+                    document.getElementById("heroMainImage").src = currentGalleryImages[index] || FALLBACK_IMAGE;
                     strip.querySelectorAll(".hero-thumb").forEach(item => item.classList.remove("active"));
                     this.classList.add("active");
                 });
@@ -1638,14 +1594,14 @@
             document.getElementById("ownerProfileLink").href = profileUrl;
             document.getElementById("ownerAvatar").textContent = getAvatarText(project.investor);
             document.getElementById("ownerName").textContent = project.investor;
-            document.getElementById("ownerRole").textContent = normalizeText(project.profileType) === "canhan" ? "Cá nhân / Môi giới" : "Chủ đầu tư / Đơn vị phát triển";
+            document.getElementById("ownerRole").textContent = "Chủ đầu tư / Đơn vị phát triển";
             document.getElementById("ownerTypeChip").innerHTML = `<i class="fa-solid fa-building"></i>${normalizeText(project.profileType) === "canhan" ? "Cá nhân / Môi giới" : "Doanh nghiệp"}`;
             document.getElementById("ownerLocationChip").innerHTML = `<i class="fa-solid fa-location-dot"></i>${escapeHtml(project.city || project.address || "Đang cập nhật")}`;
             document.getElementById("contactPrice").textContent = project.priceText;
             document.getElementById("contactArea").textContent = project.area;
             document.getElementById("contactPosts").textContent = `${formatNumber(project.salePostsCount)} / ${formatNumber(project.rentalPostsCount)}`;
             document.getElementById("contactStatus").textContent = project.status;
-            document.getElementById("goToCategoryBtn").href = getProjectCategoryUrl(project);
+            document.getElementById("goToCategoryBtn").href = `../pages/danh-muc-du-an.html?projectId=${encodeURIComponent(project.id)}`;
 
             const highlights = [
                 {
@@ -1880,13 +1836,13 @@
 
         function renderSeoFallback() {
             const container = document.getElementById("seoContent");
-            if (!container || !currentProject) return;
+            if (!container) return;
 
             container.innerHTML = `
                 <div class="seo-wrapper">
                     <div class="seo-text collapsed" id="seoContent-text">
-                        <p>${escapeHtml(currentProject.name)} là một trong những dự án đang có dữ liệu hiển thị trên hệ thống ToamViet. Tại trang chi tiết này, người dùng có thể xem nhanh thông tin về vị trí, loại hình, quy mô, mức giá tham khảo, chủ đầu tư và số lượng tin đăng đang được gắn theo dự án.</p>
-                        <p>Trang chi tiết dự án đóng vai trò rất quan trọng trong việc gom nhóm nội dung theo từng dự án để tạo liên kết nội bộ tốt hơn giữa danh mục dự án, tin bán, tin cho thuê và hồ sơ đơn vị phát triển. Khi dữ liệu được cập nhật đều, đây sẽ là một landing page SEO rất mạnh cho từng dự án cụ thể.</p>
+                        <p>Chi tiết dự án trên ToamViet giúp người dùng theo dõi rõ hơn thông tin cốt lõi của từng dự án như vị trí, quy mô, chủ đầu tư, trạng thái triển khai và nhóm tin đăng liên quan. Đây là lớp nội dung quan trọng để kết nối giữa trang danh sách dự án, danh mục tin theo dự án và các trang chi tiết tin đăng.</p>
+                        <p>Khi mỗi dự án có một trang riêng với cấu trúc thông tin đầy đủ, website sẽ dễ xây dựng cụm nội dung SEO theo tên dự án, khu vực và loại hình sản phẩm. Điều này giúp tăng khả năng hiển thị tự nhiên cho các truy vấn dài và cũng tạo trải nghiệm rõ ràng hơn cho người dùng đang tìm hiểu dự án thật.</p>
                     </div>
                     <button
                         type="button"
@@ -1923,19 +1879,23 @@
             });
         }
 
-        function showNotFound() {
-            document.getElementById("detailWrapper").classList.add("hidden");
-            document.getElementById("notFoundBox").classList.remove("hidden");
-            document.title = "Không tìm thấy dự án | ToamViet.com.vn";
-            document.getElementById("breadcrumbProjectName").textContent = "Không tìm thấy dự án";
+        function renderSeoBlock() {
+            if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
+                const hasSeo = getSeoContentByKey("project-detail") || getSeoContentByKey("project");
+                if (hasSeo) {
+                    renderSeoContent("seoContent", getSeoContentByKey("project-detail") ? "project-detail" : "project");
+                    return;
+                }
+            }
+            renderSeoFallback();
         }
 
         async function initSharedComponents() {
             try {
                 if (typeof loadComponent === "function") {
-                    await loadComponent("site-header", "../components/header-inner.html");
-                    await loadComponent("site-mobile-menu", "../components/mobile-menu-inner.html");
-                    await loadComponent("site-footer", "../components/footer-inner.html");
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
 
                     if (typeof setupFixedHeaderSpacing === "function") {
                         setupFixedHeaderSpacing();
@@ -1954,13 +1914,15 @@
 
             const projects = await getProjects();
             const projectId = getQueryParam("id");
-            const projectSlug = getQueryParam("slug");
 
-            const selectedProject = findProject(projects, projectId, projectSlug);
+            let selectedProject = projects.find(item => String(item.id) === String(projectId));
+
+            if (!selectedProject && projectId) {
+                selectedProject = projects.find(item => slugifyText(item.name) === slugifyText(projectId));
+            }
 
             if (!selectedProject) {
-                showNotFound();
-                return;
+                selectedProject = projects[0] || normalizeProject(fallbackProjects[0], 0);
             }
 
             currentProject = selectedProject;
@@ -1972,18 +1934,7 @@
             renderOverview(selectedProject);
             renderRelatedProjects(selectedProject, projects);
             renderSidebar(selectedProject, projects);
-
-            if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
-                const seoKey = "project";
-                const externalContent = getSeoContentByKey(seoKey) || "";
-                if (externalContent) {
-                    renderSeoContent("seoContent", seoKey);
-                } else {
-                    renderSeoFallback();
-                }
-            } else {
-                renderSeoFallback();
-            }
+            renderSeoBlock();
         }
 
         window.addEventListener("load", function () {
