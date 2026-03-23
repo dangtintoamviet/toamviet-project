@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chi tiết tin đăng - ToamViet.com.vn</title>
+    <title>Chi tiết tin đăng | ToamViet.com.vn</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -41,10 +41,9 @@
             margin: 0;
         }
 
-        .container-custom {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 15px;
+        .page-shell {
+            padding-top: 0;
+            padding-bottom: 28px;
         }
 
         .page-card {
@@ -141,6 +140,7 @@
             color: #1e293b;
             margin-bottom: 18px;
             padding-left: 14px;
+            text-transform: none;
         }
 
         .section-title::before {
@@ -164,6 +164,7 @@
             line-height: 1.45;
             color: #1f2937;
             margin: 0;
+            text-transform: none;
         }
 
         .badge-row {
@@ -181,9 +182,9 @@
             border-radius: 999px;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.03em;
             white-space: nowrap;
+            text-transform: none;
         }
 
         .pill-type {
@@ -254,10 +255,10 @@
             display: block;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             color: #94a3b8;
             margin-bottom: 8px;
             letter-spacing: 0.03em;
+            text-transform: none;
         }
 
         .spec-value {
@@ -365,6 +366,8 @@
             color: #1f2937;
             line-height: 1.45;
             word-break: break-word;
+            margin: 0;
+            text-transform: none;
         }
 
         .poster-role {
@@ -520,8 +523,8 @@
             border-radius: 999px;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.02em;
+            text-transform: none;
         }
 
         .vip-kim-cuong {
@@ -560,12 +563,12 @@
             border-radius: 999px;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.02em;
             background: linear-gradient(135deg, rgba(15,154,168,0.96), rgba(13,127,138,0.96));
             color: white;
             border: 1px solid rgba(15,154,168,0.2);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            text-transform: none;
         }
 
         .related-section-head {
@@ -652,9 +655,9 @@
             border-radius: 999px;
             font-size: 10px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.03em;
             white-space: nowrap;
+            text-transform: none;
         }
 
         .related-pill.type {
@@ -679,6 +682,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-transform: none;
         }
 
         .related-meta {
@@ -756,8 +760,8 @@
         }
 
         @media (max-width: 640px) {
-            .container-custom {
-                padding: 0 12px;
+            .page-shell {
+                padding-bottom: 22px;
             }
 
             .detail-main-image-wrap {
@@ -853,12 +857,14 @@
     <div id="siteHeader"></div>
     <div id="siteMobileMenu"></div>
 
-    <main class="container-custom py-6 md:py-8">
+    <main class="container-custom page-shell">
         <div class="mb-5 text-sm text-slate-500 leading-7">
             <a href="../index.html" class="hover:text-[color:var(--brand-primary-dark)]">Trang chủ</a>
             <span class="mx-2">/</span>
             <a id="breadcrumb-parent-link" href="../pages/nha-dat-ban.html" class="hover:text-[color:var(--brand-primary-dark)]">Nhà đất bán</a>
             <span class="mx-2">/</span>
+            <a id="breadcrumb-project-link" href="../pages/du-an.html" class="hover:text-[color:var(--brand-primary-dark)] hidden">Dự án</a>
+            <span id="breadcrumb-project-sep" class="mx-2 hidden">/</span>
             <span id="breadcrumb-title" class="text-slate-700 font-semibold">Chi tiết tin đăng</span>
         </div>
 
@@ -1068,7 +1074,7 @@
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
-            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+            <button class="btn-send" onclick="sendToZalo()">Bắt đầu chat trên Zalo</button>
         </div>
     </div>
 
@@ -1087,7 +1093,8 @@
         const DEMO_POSTS = [
             {
                 id: "demo-sale-1",
-                title: "NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA 3 MẶT TIỀN",
+                slug: "biet-thu-vinhomes-dan-phuong-view-ho",
+                title: "Ngoại giao gửi bán căn biệt thự view hồ đẹp tại khu đô thị mới",
                 propertyType: "Biệt thự",
                 propertyCategoryName: "Bán nhà biệt thự, liền kề",
                 propertyPrice: "60 tỷ",
@@ -1098,6 +1105,9 @@
                 city: "Hà Nội",
                 ward: "Phường Minh Khai",
                 addressDetail: "Khu đô thị mới",
+                projectId: "du-an-1",
+                projectSlug: "toamviet-riverside",
+                projectName: "ToamViet Riverside",
                 description: "Căn biệt thự có vị trí đẹp, bàn giao full nội thất cao cấp. Hỗ trợ pháp lý và thủ tục nhanh gọn.",
                 contactName: "Nguyễn Thành An",
                 roleLabel: "Môi giới chuyên nghiệp",
@@ -1113,7 +1123,8 @@
             },
             {
                 id: "demo-rent-1",
-                title: "CHO THUÊ CĂN HỘ CAO CẤP VINHOMES CENTRAL PARK FULL NỘI THẤT",
+                slug: "cho-thue-can-ho-full-noi-that",
+                title: "Cho thuê căn hộ cao cấp full nội thất, vị trí thuận tiện",
                 propertyType: "Căn hộ",
                 propertyCategoryName: "Cho thuê căn hộ chung cư",
                 propertyPrice: "25 triệu/tháng",
@@ -1123,8 +1134,11 @@
                 propertyBeds: "2",
                 city: "TP.HCM",
                 ward: "Phường 22",
-                addressDetail: "Gần Landmark 81",
-                description: "Căn hộ tầng cao thoáng mát, view sông đẹp, đầy đủ nội thất cao cấp.",
+                addressDetail: "Gần khu trung tâm",
+                projectId: "du-an-2",
+                projectSlug: "green-valley-residence",
+                projectName: "Green Valley Residence",
+                description: "Căn hộ tầng cao thoáng mát, view đẹp, đầy đủ nội thất cao cấp.",
                 contactName: "Trần Thị Lan Anh",
                 roleLabel: "Chuyên viên cho thuê",
                 contactPhone: "0901234567",
@@ -1139,7 +1153,8 @@
             },
             {
                 id: "demo-build-1",
-                title: "CÔNG TY AN PHÁT NHẬN THI CÔNG NHÀ PHỐ TRỌN GÓI TẠI HÀ GIANG",
+                slug: "thi-cong-nha-pho-tron-goi-ha-giang",
+                title: "Nhận thi công nhà phố trọn gói tại Hà Giang",
                 serviceType: "Xây nhà trọn gói",
                 categoryName: "Xây nhà trọn gói",
                 servicePrice: "5.8 triệu/m²",
@@ -1171,13 +1186,16 @@
             currentPhoneRevealed: false,
             currentPostId: "",
             currentPost: null,
-            posts: []
+            posts: [],
+            currentProject: null
         };
 
         const els = {
             detailWrapper: document.getElementById("detail-wrapper"),
             notFoundBox: document.getElementById("not-found-box"),
             breadcrumbParentLink: document.getElementById("breadcrumb-parent-link"),
+            breadcrumbProjectLink: document.getElementById("breadcrumb-project-link"),
+            breadcrumbProjectSep: document.getElementById("breadcrumb-project-sep"),
             breadcrumbTitle: document.getElementById("breadcrumb-title"),
             detailTitle: document.getElementById("detail-title"),
             detailPrice: document.getElementById("detail-price"),
@@ -1453,7 +1471,7 @@
         function parsePriceToNumber(priceText) {
             if (!priceText) return 0;
 
-            const text = String(priceText).toLowerCase().trim().replace(/,/g, ".");
+            const text = String(priceText || "").toLowerCase().trim().replace(/,/g, ".");
             if (
                 text.includes("thỏa thuận") ||
                 text.includes("thoả thuận") ||
@@ -1617,21 +1635,144 @@
             return publicPosts.length ? publicPosts : DEMO_POSTS;
         }
 
-        function findPostById(posts, targetId) {
-            const normalizedTargetId = String(targetId || "").trim();
+        function getProjectsFromProjectService() {
+            try {
+                if (window.projectService && typeof window.projectService.getAllProjects === "function") {
+                    return window.projectService.getAllProjects();
+                }
+                if (window.projectService && typeof window.projectService.getProjects === "function") {
+                    return window.projectService.getProjects();
+                }
+                if (window.ProjectService && typeof window.ProjectService.getAllProjects === "function") {
+                    return window.ProjectService.getAllProjects();
+                }
+                if (window.ProjectService && typeof window.ProjectService.getProjects === "function") {
+                    return window.ProjectService.getProjects();
+                }
+            } catch (error) {
+                console.warn("Không đọc được dữ liệu project service:", error);
+            }
+            return null;
+        }
 
-            return posts.find(function (post, index) {
-                const candidates = [
-                    post.id,
-                    post.postId,
-                    post.slug,
-                    createPostId(post, index)
-                ].filter(Boolean).map(function (item) {
-                    return String(item).trim();
+        function getProjectsFromStorage() {
+            const possibleKeys = [
+                "projects",
+                "projectList",
+                "toamviet_projects",
+                "toamvietProjects",
+                "adminProjects"
+            ];
+
+            for (const key of possibleKeys) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    if (!raw) continue;
+                    const parsed = JSON.parse(raw);
+
+                    if (Array.isArray(parsed) && parsed.length) return parsed;
+                    if (parsed && Array.isArray(parsed.items) && parsed.items.length) return parsed.items;
+                } catch (error) {}
+            }
+            return [];
+        }
+
+        async function getProjects() {
+            let projects = getProjectsFromProjectService();
+
+            if (projects instanceof Promise) {
+                projects = await projects;
+            }
+
+            if (!Array.isArray(projects) || !projects.length) {
+                projects = getProjectsFromStorage();
+            }
+
+            return Array.isArray(projects) ? projects : [];
+        }
+
+        function normalizeProject(project, index) {
+            const name = project.name || project.projectName || project.title || `Dự án ${index + 1}`;
+            const slug = String(project.slug || project.projectSlug || slugifyText(name)).trim();
+            return {
+                ...project,
+                id: String(project.id || project.projectId || slug || `du-an-${index + 1}`).trim(),
+                slug: slug,
+                name: name
+            };
+        }
+
+        function findProjectByPost(post, projects) {
+            const list = (Array.isArray(projects) ? projects : []).map(normalizeProject);
+            const projectId = String(post.projectId || "").trim();
+            const projectSlug = String(post.projectSlug || "").trim();
+            const projectName = String(post.projectName || "").trim();
+
+            let found = null;
+
+            if (projectId) {
+                found = list.find(function (item) {
+                    return String(item.id || "").trim() === projectId;
+                });
+            }
+
+            if (!found && projectSlug) {
+                found = list.find(function (item) {
+                    return normalizeText(item.slug) === normalizeText(projectSlug);
+                });
+            }
+
+            if (!found && projectName) {
+                found = list.find(function (item) {
+                    return normalizeText(item.name) === normalizeText(projectName);
+                });
+            }
+
+            return found || null;
+        }
+
+        function findPost(posts, params) {
+            const id = String(params.id || "").trim();
+            const slug = String(params.slug || "").trim();
+
+            if (id) {
+                const foundById = posts.find(function (post, index) {
+                    const candidates = [
+                        post.id,
+                        post.postId,
+                        post.slug,
+                        createPostId(post, index)
+                    ].filter(Boolean).map(function (item) {
+                        return String(item).trim();
+                    });
+
+                    return candidates.includes(id);
+                });
+                if (foundById) return { post: foundById, resolvedId: id };
+            }
+
+            if (slug) {
+                const foundBySlug = posts.find(function (post, index) {
+                    const candidates = [
+                        post.slug,
+                        slugifyText(post.title),
+                        createPostId(post, index)
+                    ].filter(Boolean).map(function (item) {
+                        return normalizeText(item);
+                    });
+
+                    return candidates.includes(normalizeText(slug));
                 });
 
-                return candidates.includes(normalizedTargetId);
-            });
+                if (foundBySlug) {
+                    return {
+                        post: foundBySlug,
+                        resolvedId: createPostId(foundBySlug, posts.indexOf(foundBySlug))
+                    };
+                }
+            }
+
+            return { post: null, resolvedId: "" };
         }
 
         function formatDate(dateString) {
@@ -1756,18 +1897,42 @@
             return post.categoryName || post.serviceType || "Dịch vụ xây dựng";
         }
 
+        function updateProjectBreadcrumb(project) {
+            if (project && (project.id || project.slug || project.name)) {
+                els.breadcrumbProjectLink.classList.remove("hidden");
+                els.breadcrumbProjectSep.classList.remove("hidden");
+                els.breadcrumbProjectLink.textContent = project.name || "Dự án";
+                els.breadcrumbProjectLink.href = "../pages/chi-tiet-du-an.html?slug=" + encodeURIComponent(project.slug || project.id);
+            } else {
+                els.breadcrumbProjectLink.classList.add("hidden");
+                els.breadcrumbProjectSep.classList.add("hidden");
+            }
+        }
+
+        function updateBackLinksForProject(project) {
+            if (project && (project.id || project.slug)) {
+                els.breadcrumbParentLink.textContent = "Danh mục dự án";
+                els.breadcrumbParentLink.href = "../pages/danh-muc-du-an.html?projectId=" + encodeURIComponent(project.id || "");
+                els.relatedMoreLink.href = "../pages/danh-muc-du-an.html?projectId=" + encodeURIComponent(project.id || "");
+            }
+        }
+
         function renderRealEstateDetail(post, postId) {
             const isRental = ["thue", "cho-thue", "rent"].includes(normalizeText(post.postType));
             const title = post.title || "Tiêu đề bất động sản";
-            const price = formatPrice(post.propertyPrice);
-            const area = formatArea(post.propertyArea);
-            const unitPrice = calculatePricePerM2(post);
+            const price = formatPrice(post.propertyPrice || post.price || post.priceText);
+            const area = formatArea(post.propertyArea || post.area);
+            const unitPrice = calculatePricePerM2({
+                ...post,
+                propertyPrice: post.propertyPrice || post.price || post.priceText,
+                propertyArea: post.propertyArea || post.area
+            });
             const location = buildLocation(post) || "Chưa cập nhật khu vực";
             const fullAddress = buildFullAddress(post) || "Đang cập nhật";
             const propertyType = getRealEstateTypeLabel(post);
-            const legal = post.propertyLegal || "Đang cập nhật";
-            const direction = post.propertyDirection || "Đang cập nhật";
-            const beds = post.propertyBeds || "0";
+            const legal = post.propertyLegal || post.legal || "Đang cập nhật";
+            const direction = post.propertyDirection || post.direction || "Đang cập nhật";
+            const beds = post.propertyBeds || post.beds || post.bedrooms || "0";
             const description = post.description || "Đang cập nhật mô tả chi tiết cho bất động sản này.";
             const poster = buildPoster(post);
             const role = getPosterSub(post);
@@ -1776,7 +1941,7 @@
             const images = getPostImages(post);
             const modeText = isRental ? "Tin thuê" : "Tin bán";
 
-            document.title = title + " - ToamViet.com.vn";
+            document.title = title + " | ToamViet.com.vn";
 
             els.breadcrumbTitle.textContent = title;
             els.detailTitle.textContent = title;
@@ -1818,9 +1983,11 @@
             els.listingModeBadge.textContent = modeText;
             els.vipBadgeWrap.innerHTML = getVipBadgeHtml(post.vipLevel);
 
-            els.breadcrumbParentLink.textContent = isRental ? "Nhà đất cho thuê" : "Nhà đất bán";
-            els.breadcrumbParentLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
-            els.relatedMoreLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
+            if (!state.currentProject) {
+                els.breadcrumbParentLink.textContent = isRental ? "Nhà đất cho thuê" : "Nhà đất bán";
+                els.breadcrumbParentLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
+                els.relatedMoreLink.href = isRental ? "../pages/nha-dat-cho-thue.html" : "../pages/nha-dat-ban.html";
+            }
 
             showRealEstateMeta();
             renderGallery(images);
@@ -1829,7 +1996,7 @@
 
         function renderConstructionDetail(post, postId) {
             const title = post.title || "Dịch vụ xây dựng";
-            const price = formatPrice(post.servicePrice);
+            const price = formatPrice(post.servicePrice || post.price || post.priceText);
             const exp = post.serviceExp || "Đang cập nhật";
             const location = buildLocation(post) || post.serviceArea || "Đang cập nhật khu vực";
             const fullAddress = buildFullAddress(post) || post.serviceArea || "Đang cập nhật";
@@ -1842,7 +2009,7 @@
             const images = getPostImages(post);
             const description = post.description || "Đang cập nhật mô tả chi tiết dịch vụ.";
 
-            document.title = title + " - ToamViet.com.vn";
+            document.title = title + " | ToamViet.com.vn";
 
             els.breadcrumbTitle.textContent = title;
             els.detailTitle.textContent = title;
@@ -1884,9 +2051,11 @@
             els.listingModeBadge.textContent = "Dịch vụ";
             els.vipBadgeWrap.innerHTML = '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
 
-            els.breadcrumbParentLink.textContent = "Xây dựng";
-            els.breadcrumbParentLink.href = "../pages/xay-dung.html";
-            els.relatedMoreLink.href = "../pages/xay-dung.html";
+            if (!state.currentProject) {
+                els.breadcrumbParentLink.textContent = "Xây dựng";
+                els.breadcrumbParentLink.href = "../pages/xay-dung.html";
+                els.relatedMoreLink.href = "../pages/xay-dung.html";
+            }
 
             hideRealEstateMeta();
             renderGallery(images);
@@ -1913,19 +2082,30 @@
                 : (["thue", "cho-thue", "rent"].includes(normalizeText(post.postType)) ? "Tin thuê" : "Tin bán");
 
             const metaMain = isConstruction
-                ? escapeHtml(formatPrice(post.servicePrice))
-                : escapeHtml(formatPrice(post.propertyPrice));
+                ? escapeHtml(formatPrice(post.servicePrice || post.price || post.priceText))
+                : escapeHtml(formatPrice(post.propertyPrice || post.price || post.priceText));
 
             const metaSub = isConstruction
                 ? escapeHtml(post.serviceExp || "Đang cập nhật")
-                : escapeHtml(formatArea(post.propertyArea));
+                : escapeHtml(formatArea(post.propertyArea || post.area));
 
             const topBadge = !isConstruction
                 ? getVipBadgeHtml(post.vipLevel)
                 : '<span class="service-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Xây dựng</span>';
 
+            let detailUrl = "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(id);
+            if (post.slug) {
+                detailUrl += "&slug=" + encodeURIComponent(post.slug);
+            }
+            if (post.projectId) {
+                detailUrl += "&projectId=" + encodeURIComponent(post.projectId);
+            }
+            if (post.projectSlug) {
+                detailUrl += "&projectSlug=" + encodeURIComponent(post.projectSlug);
+            }
+
             return `
-                <a href="../pages/chi-tiet-tin.html?id=${encodeURIComponent(id)}" class="related-card">
+                <a href="${detailUrl}" class="related-card">
                     <div class="related-image-wrap">
                         <img src="${image}" alt="${title}" onerror="this.src='${FALLBACK_IMAGE}'" />
                         <div class="related-top-badge">${topBadge}</div>
@@ -2045,7 +2225,7 @@
             els.notFoundBox.classList.remove("hidden");
             els.relatedPosts.innerHTML = "";
             els.breadcrumbTitle.textContent = "Không tìm thấy tin đăng";
-            document.title = "Không tìm thấy tin đăng - ToamViet.com.vn";
+            document.title = "Không tìm thấy tin đăng | ToamViet.com.vn";
         }
 
         async function initSharedComponents() {
@@ -2082,23 +2262,44 @@
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
 
-        function initPage() {
+        async function initPage() {
             updateFavoriteCount();
 
             state.posts = getDataSource();
-            state.currentPostId = String(getQueryParam("id") || "").trim();
 
-            if (!state.currentPostId) {
-                showNotFound();
-                return;
-            }
+            const params = {
+                id: getQueryParam("id"),
+                slug: getQueryParam("slug"),
+                projectId: getQueryParam("projectId"),
+                projectSlug: getQueryParam("projectSlug")
+            };
 
-            state.currentPost = findPostById(state.posts, state.currentPostId);
+            const found = findPost(state.posts, params);
+            state.currentPost = found.post;
+            state.currentPostId = found.resolvedId || String(params.id || "").trim();
 
             if (!state.currentPost) {
                 showNotFound();
                 return;
             }
+
+            const projects = await getProjects();
+            state.currentProject = findProjectByPost(state.currentPost, projects);
+
+            if (!state.currentProject && (params.projectId || params.projectSlug)) {
+                const normalizedProjects = (projects || []).map(normalizeProject);
+                state.currentProject =
+                    normalizedProjects.find(function (item) {
+                        return params.projectId && String(item.id) === String(params.projectId);
+                    }) ||
+                    normalizedProjects.find(function (item) {
+                        return params.projectSlug && normalizeText(item.slug) === normalizeText(params.projectSlug);
+                    }) ||
+                    null;
+            }
+
+            updateProjectBreadcrumb(state.currentProject);
+            updateBackLinksForProject(state.currentProject);
 
             renderDetail(state.currentPost, state.currentPostId);
             renderRelatedPosts(state.currentPostId, state.currentPost);
@@ -2108,7 +2309,7 @@
 
         window.addEventListener("load", async function () {
             await initSharedComponents();
-            initPage();
+            await initPage();
         });
     </script>
 
