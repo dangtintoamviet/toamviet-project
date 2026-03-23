@@ -21,9 +21,9 @@
 
     <style>
         :root {
-            --vip-color: #008B8B;
-            --hover-color: #FF8C00;
-            --text-strong: #2C2C2C;
+            --vip-color: #008b8b;
+            --hover-color: #ff8c00;
+            --text-strong: #2c2c2c;
             --soft-bg: #f8fafc;
             --border-color: #e5e7eb;
             --text-soft: #64748b;
@@ -48,15 +48,7 @@
             text-decoration: none;
         }
 
-        .container-custom {
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
-
         .page-shell {
-            padding-top: 0;
             padding-bottom: 28px;
         }
 
@@ -144,6 +136,7 @@
             font-size: 12px;
             font-weight: 800;
             letter-spacing: 0.02em;
+            text-transform: none;
         }
 
         .hero-badge.type {
@@ -163,6 +156,7 @@
             line-height: 1.2;
             font-weight: 900;
             color: var(--text-strong);
+            text-transform: none;
         }
 
         .hero-address {
@@ -452,6 +446,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-transform: none;
         }
 
         .listing-address {
@@ -480,6 +475,7 @@
             font-size: 12px;
             font-weight: 800;
             color: #334155;
+            text-transform: none;
         }
 
         .listing-pill strong {
@@ -760,10 +756,6 @@
         }
 
         @media (max-width: 768px) {
-            .container-custom {
-                padding: 0 12px;
-            }
-
             .page-shell {
                 padding-bottom: 22px;
             }
@@ -1015,6 +1007,7 @@
         const fallbackProjects = [
             {
                 id: "du-an-1",
+                slug: "toamviet-riverside",
                 name: "ToamViet Riverside",
                 type: "Khu đô thị",
                 status: "Đang mở bán",
@@ -1029,6 +1022,7 @@
             },
             {
                 id: "du-an-2",
+                slug: "green-valley-residence",
                 name: "Green Valley Residence",
                 type: "Căn hộ chung cư",
                 status: "Sắp mở bán",
@@ -1162,13 +1156,14 @@
                 item.address ||
                 item.location ||
                 item.fullAddress ||
-                [item.ward, item.district, item.city].filter(Boolean).join(", ") ||
+                [item.addressDetail, item.ward, item.district, item.city].filter(Boolean).join(", ") ||
                 "Đang cập nhật"
             );
         }
 
         function normalizeProject(project, index = 0) {
             const name = project.name || project.projectName || project.title || `Dự án ${index + 1}`;
+            const slug = String(project.slug || project.projectSlug || slugifyText(name)).trim();
             const type = project.type || project.projectType || project.category || "Đang cập nhật";
             const status = project.status || project.projectStatus || "Đang cập nhật";
             const investor = project.investor || project.developer || project.owner || project.contactName || "Đang cập nhật";
@@ -1176,7 +1171,8 @@
 
             return {
                 ...project,
-                id: project.id || project.projectId || project.slug || slugifyText(name) || `du-an-${index + 1}`,
+                id: project.id || project.projectId || slug || `du-an-${index + 1}`,
+                slug,
                 name,
                 type,
                 status,
@@ -1216,7 +1212,8 @@
                 postGroup,
                 ownerName: post.contactName || post.fullName || post.brandName || post.userName || "Người đăng",
                 ownerRole: post.roleLabel || (normalizeText(post.profileType) === "doanhnghiep" ? "Doanh nghiệp" : "Cá nhân"),
-                createdAt: Date.parse(post.createdAt || 0) || (Date.now() - index * 1000)
+                createdAt: Date.parse(post.createdAt || 0) || (Date.now() - index * 1000),
+                description: post.description || ""
             };
         }
 
@@ -1310,10 +1307,12 @@
             ).trim();
 
             const projectId = String(project.id || "").trim();
+            const projectSlug = String(project.slug || "").trim();
             const projectNameSlug = slugifyText(project.name);
 
             if (postProjectId) {
                 if (postProjectId === projectId) return true;
+                if (postProjectId === projectSlug) return true;
                 if (slugifyText(postProjectId) === projectNameSlug) return true;
             }
 
@@ -1323,14 +1322,15 @@
                 post.address,
                 post.location,
                 post.projectName,
-                post.project
+                post.project,
+                post.projectSlug
             ].filter(Boolean).join(" "));
 
             return haystack.includes(normalizeText(project.name));
         }
 
         function getProjectDetailUrl(project) {
-            return `../pages/chi-tiet-du-an.html?id=${encodeURIComponent(project.id)}`;
+            return `../pages/chi-tiet-du-an.html?slug=${encodeURIComponent(project.slug || project.id)}`;
         }
 
         function getOwnerProfileUrl(post) {
@@ -1350,7 +1350,7 @@
         }
 
         function renderProjectHero(project) {
-            document.title = `${project.name} - Danh mục dự án | ToamViet.com.vn`;
+            document.title = `${project.name} | Danh mục dự án | ToamViet.com.vn`;
             document.getElementById("heroImage").src = getProjectImage(project, 0);
             document.getElementById("heroImage").alt = project.name;
             document.getElementById("heroTitle").textContent = project.name;
@@ -1639,7 +1639,13 @@
             allProjects = await loadProjects();
 
             const projectId = getQueryParam("projectId");
+            const projectSlug = getQueryParam("slug");
+
             let project = allProjects.find(item => String(item.id) === String(projectId));
+
+            if (!project && projectSlug) {
+                project = allProjects.find(item => normalizeText(item.slug) === normalizeText(projectSlug));
+            }
 
             if (!project && projectId) {
                 project = allProjects.find(item => slugifyText(item.name) === slugifyText(projectId));
@@ -1678,7 +1684,8 @@
                         ownerName: project.investor,
                         ownerRole: "Doanh nghiệp / Chủ đầu tư",
                         createdAt: Date.now(),
-                        profileType: "doanhnghiep"
+                        profileType: "doanhnghiep",
+                        description: project.shortDescription || ""
                     },
                     {
                         id: `${project.id}-rent-1`,
@@ -1693,7 +1700,8 @@
                         ownerName: project.investor,
                         ownerRole: "Doanh nghiệp / Chủ đầu tư",
                         createdAt: Date.now() - 86400000,
-                        profileType: "doanhnghiep"
+                        profileType: "doanhnghiep",
+                        description: project.shortDescription || ""
                     },
                     {
                         id: `${project.id}-sale-2`,
@@ -1708,7 +1716,8 @@
                         ownerName: project.investor,
                         ownerRole: "Doanh nghiệp / Chủ đầu tư",
                         createdAt: Date.now() - 2 * 86400000,
-                        profileType: "doanhnghiep"
+                        profileType: "doanhnghiep",
+                        description: project.shortDescription || ""
                     }
                 ];
 
