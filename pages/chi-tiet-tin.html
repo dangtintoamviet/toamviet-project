@@ -306,6 +306,11 @@
             background: rgba(15, 154, 168, 0.04);
         }
 
+        .poster-link.disabled {
+            pointer-events: none;
+            cursor: default;
+        }
+
         .poster-wrap {
             display: flex;
             align-items: center;
@@ -899,7 +904,7 @@
                 <div class="sidebar-card contact-highlight">
                     <h2 class="section-title">Liên hệ người đăng</h2>
 
-                    <a id="poster-profile-link" href="../pages/chi-tiet-doanh-nghiep.html" class="poster-link">
+                    <a id="poster-profile-link" href="javascript:void(0)" class="poster-link">
                         <div class="poster-wrap">
                             <div id="poster-avatar" class="poster-avatar">TV</div>
                             <div class="min-w-0">
@@ -1274,10 +1279,31 @@
         function getResolvedProfileType(post) {
             const rawProfileType = normalizeText(post.profileType || post.accountType || post.userType || "");
             const rawRole = normalizeText(post.roleLabel || post.role || "");
-            const brandName = String(post.brandName || post.serviceBrand || post.companyName || "").trim();
+            const hasCompanyId = !!String(post.companyId || post.businessId || post.enterpriseId || "").trim();
+            const hasCompanyName = !!String(post.companyName || "").trim();
 
-            if (rawProfileType === "canhan" || rawProfileType === "moi-gioi" || rawProfileType === "moigioi") return "canhan";
-            if (rawProfileType === "doanhnghiep" || rawProfileType === "business" || rawProfileType === "company") return "doanhnghiep";
+            if (
+                rawProfileType === "doanhnghiep" ||
+                rawProfileType === "business" ||
+                rawProfileType === "company"
+            ) {
+                return "doanhnghiep";
+            }
+
+            if (
+                rawProfileType === "canhan" ||
+                rawProfileType === "moi-gioi" ||
+                rawProfileType === "moigioi"
+            ) {
+                return "canhan";
+            }
+
+            if (
+                rawRole.includes("doanh nghiep") ||
+                rawRole.includes("chu dau tu")
+            ) {
+                return "doanhnghiep";
+            }
 
             if (
                 rawRole.includes("moi gioi") ||
@@ -1287,37 +1313,51 @@
                 return "canhan";
             }
 
-            if (
-                rawRole.includes("doanh nghiep") ||
-                rawRole.includes("nha thau") ||
-                rawRole.includes("chu dau tu") ||
-                brandName
-            ) {
+            if (hasCompanyId || hasCompanyName) {
                 return "doanhnghiep";
             }
 
             return "canhan";
         }
 
-        function getProfileIdFromPost(post, fallbackId) {
-            const candidates = [
+        function getProfileIdFromPost(post) {
+            const profileType = getResolvedProfileType(post);
+
+            const personalCandidates = [
                 post.contactProfileId,
                 post.profileId,
                 post.ownerProfileId,
-                post.ownerId,
                 post.userId,
                 post.accountId,
                 post.contactUserId,
                 post.contactId,
                 post.posterId,
-                post.createdBy,
                 post.authorId,
-                post.user_id,
-                post.owner_id,
                 post.profile_id,
                 post.contact_profile_id,
-                post.created_by
+                post.user_id,
+                post.account_id
             ];
+
+            const businessCandidates = [
+                post.companyId,
+                post.businessId,
+                post.enterpriseId,
+                post.contactProfileId,
+                post.profileId,
+                post.ownerProfileId,
+                post.ownerId,
+                post.accountId,
+                post.contactId,
+                post.posterId,
+                post.profile_id,
+                post.contact_profile_id,
+                post.company_id,
+                post.business_id,
+                post.enterprise_id
+            ];
+
+            const candidates = profileType === "doanhnghiep" ? businessCandidates : personalCandidates;
 
             for (const candidate of candidates) {
                 if (candidate !== undefined && candidate !== null && String(candidate).trim()) {
@@ -1325,16 +1365,20 @@
                 }
             }
 
-            return String(fallbackId || "").trim();
+            return "";
         }
 
-        function getProfileDetailLink(post, fallbackId) {
+        function getProfileDetailLink(post) {
             if (post.contactProfileUrl) return post.contactProfileUrl;
             if (post.profileUrl) return post.profileUrl;
             if (post.ownerProfileUrl) return post.ownerProfileUrl;
 
             const profileType = getResolvedProfileType(post);
-            const representativeId = getProfileIdFromPost(post, fallbackId);
+            const representativeId = getProfileIdFromPost(post);
+
+            if (!representativeId) {
+                return "javascript:void(0)";
+            }
 
             if (profileType === "canhan") {
                 return "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(representativeId);
@@ -1421,13 +1465,19 @@
         }
 
         function buildPoster(post) {
-            return post.brandName || post.contactName || post.fullName || post.serviceBrand || "Người đăng";
+            const profileType = getResolvedProfileType(post);
+
+            if (profileType === "doanhnghiep") {
+                return post.companyName || post.brandName || post.serviceBrand || post.contactName || post.fullName || "Doanh nghiệp";
+            }
+
+            return post.contactName || post.fullName || post.brandName || post.serviceBrand || "Người đăng";
         }
 
         function getPosterSub(post) {
             const rawRole = post.roleLabel || post.role || "";
             const normalizedRole = normalizeText(rawRole);
-            const profileType = normalizeText(post.profileType);
+            const profileType = getResolvedProfileType(post);
 
             if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) {
                 return "Doanh nghiệp";
@@ -1435,13 +1485,13 @@
             if (normalizedRole.includes("moi gioi") || normalizedRole.includes("chuyen vien") || normalizedRole.includes("nha thau")) {
                 return rawRole;
             }
-            if (normalizedRole.includes("ca nhan") || profileType === "canhan") {
+            if (normalizedRole.includes("ca nhan")) {
                 return "Cá nhân";
             }
             if (profileType === "doanhnghiep") {
                 return "Doanh nghiệp";
             }
-            return rawRole || "Người đăng";
+            return rawRole || "Cá nhân";
         }
 
         function getAvatarText(post) {
@@ -1847,16 +1897,27 @@
 
         function renderSharedContact(post, phone, postId) {
             const profileType = getResolvedProfileType(post);
-            const profileId = getProfileIdFromPost(post, postId);
-            const profileUrl = getProfileDetailLink(post, postId);
+            const profileId = getProfileIdFromPost(post);
+            const profileUrl = getProfileDetailLink(post);
 
             els.posterName.textContent = buildPoster(post);
             els.posterRole.textContent = getPosterSub(post);
             els.posterAvatar.textContent = getAvatarText(post);
             els.posterProfileLink.href = profileUrl;
             els.posterProfileLink.setAttribute("data-profile-type", profileType);
-            els.posterProfileLink.setAttribute("data-profile-id", profileId);
+            els.posterProfileLink.setAttribute("data-profile-id", profileId || "");
             els.zaloButton.href = getZaloLink(phone);
+
+            if (!profileId || profileUrl === "javascript:void(0)") {
+                els.posterProfileLink.href = "javascript:void(0)";
+                els.posterProfileLink.classList.add("disabled");
+                els.posterProfileLink.style.cursor = "default";
+                els.posterProfileLink.title = "Chưa có hồ sơ người đăng để mở";
+            } else {
+                els.posterProfileLink.classList.remove("disabled");
+                els.posterProfileLink.style.cursor = "";
+                els.posterProfileLink.title = "";
+            }
 
             bindPhoneReveal(phone);
 
