@@ -1106,6 +1106,7 @@
                 description: "Đội ngũ kỹ sư và thi công chuyên nghiệp, nhận hồ sơ thiết kế, thi công phần thô và hoàn thiện trọn gói.",
                 contactName: "Công ty Xây dựng An Phát",
                 brandName: "Công ty Xây dựng An Phát",
+                companyName: "Công ty Xây dựng An Phát",
                 profileType: "doanhnghiep",
                 contactProfileId: "business-demo-1",
                 roleLabel: "Doanh nghiệp / Nhà thầu",
@@ -1195,14 +1196,6 @@
                 .replace(/-+/g, "-");
         }
 
-        function safeParseJSON(raw, fallback) {
-            try {
-                return JSON.parse(raw);
-            } catch (error) {
-                return fallback;
-            }
-        }
-
         function setText(id, value) {
             const el = document.getElementById(id);
             if (el) el.textContent = value;
@@ -1276,10 +1269,20 @@
             return "https://zalo.me/" + normalized.replace(/^\+/, "");
         }
 
+        function isDirectoryProfileUrl(url) {
+            const raw = String(url || "").trim().toLowerCase();
+            if (!raw) return false;
+
+            return (
+                raw.includes("danh-ba-moi-gioi.html") ||
+                raw.includes("danh-ba-doanh-nghiep.html")
+            );
+        }
+
         function getResolvedProfileType(post) {
             const rawProfileType = normalizeText(post.profileType || post.accountType || post.userType || "");
             const rawRole = normalizeText(post.roleLabel || post.role || "");
-            const hasCompanyId = !!String(post.companyId || post.businessId || post.enterpriseId || "").trim();
+            const hasCompanyId = !!String(post.companyId || post.businessId || post.enterpriseId || post.company_id || post.business_id || post.enterprise_id || "").trim();
             const hasCompanyName = !!String(post.companyName || "").trim();
 
             if (
@@ -1293,7 +1296,8 @@
             if (
                 rawProfileType === "canhan" ||
                 rawProfileType === "moi-gioi" ||
-                rawProfileType === "moigioi"
+                rawProfileType === "moigioi" ||
+                rawProfileType === "personal"
             ) {
                 return "canhan";
             }
@@ -1343,6 +1347,9 @@
                 post.companyId,
                 post.businessId,
                 post.enterpriseId,
+                post.company_id,
+                post.business_id,
+                post.enterprise_id,
                 post.contactProfileId,
                 post.profileId,
                 post.ownerProfileId,
@@ -1351,10 +1358,7 @@
                 post.contactId,
                 post.posterId,
                 post.profile_id,
-                post.contact_profile_id,
-                post.company_id,
-                post.business_id,
-                post.enterprise_id
+                post.contact_profile_id
             ];
 
             const candidates = profileType === "doanhnghiep" ? businessCandidates : personalCandidates;
@@ -1369,9 +1373,24 @@
         }
 
         function getProfileDetailLink(post) {
-            if (post.contactProfileUrl) return post.contactProfileUrl;
-            if (post.profileUrl) return post.profileUrl;
-            if (post.ownerProfileUrl) return post.ownerProfileUrl;
+            const safeContactProfileUrl =
+                post.contactProfileUrl && !isDirectoryProfileUrl(post.contactProfileUrl)
+                    ? String(post.contactProfileUrl).trim()
+                    : "";
+
+            const safeProfileUrl =
+                post.profileUrl && !isDirectoryProfileUrl(post.profileUrl)
+                    ? String(post.profileUrl).trim()
+                    : "";
+
+            const safeOwnerProfileUrl =
+                post.ownerProfileUrl && !isDirectoryProfileUrl(post.ownerProfileUrl)
+                    ? String(post.ownerProfileUrl).trim()
+                    : "";
+
+            if (safeContactProfileUrl) return safeContactProfileUrl;
+            if (safeProfileUrl) return safeProfileUrl;
+            if (safeOwnerProfileUrl) return safeOwnerProfileUrl;
 
             const profileType = getResolvedProfileType(post);
             const representativeId = getProfileIdFromPost(post);
@@ -1631,16 +1650,6 @@
             return [];
         }
 
-        function getPostsFromLocalStorage() {
-            try {
-                const raw = safeParseJSON(localStorage.getItem("allPosts") || "[]", []);
-                return Array.isArray(raw) ? raw : [];
-            } catch (error) {
-                console.warn("localStorage allPosts lỗi:", error);
-                return [];
-            }
-        }
-
         function normalizePublicPosts(posts) {
             return (Array.isArray(posts) ? posts : []).filter(function (post) {
                 return post && getAllowedPublicStatuses().includes(normalizeText(post.status || "approved"));
@@ -1670,8 +1679,7 @@
         function getDataSource() {
             const sources = []
                 .concat(getPostsFromPostStorage())
-                .concat(getPostsFromUserStorage())
-                .concat(getPostsFromLocalStorage());
+                .concat(getPostsFromUserStorage());
 
             const publicPosts = dedupePosts(normalizePublicPosts(sources));
             return publicPosts.length ? publicPosts : DEMO_POSTS;
@@ -1790,7 +1798,12 @@
 
                     return candidates.includes(id);
                 });
-                if (foundById) return { post: foundById, resolvedId: createPostId(foundById, posts.indexOf(foundById)) };
+                if (foundById) {
+                    return {
+                        post: foundById,
+                        resolvedId: createPostId(foundById, posts.indexOf(foundById))
+                    };
+                }
             }
 
             if (slug) {
