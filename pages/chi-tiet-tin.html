@@ -109,14 +109,14 @@
         }
 
         .thumb-item {
-            flex: 0 0 calc((100% - 24px) / 3);
-            min-width: calc((100% - 24px) / 3);
+            flex: 0 0 calc((100% - 36px) / 4);
+            min-width: calc((100% - 36px) / 4);
             scroll-snap-align: start;
         }
 
         .thumb-image {
             width: 100%;
-            height: 104px;
+            height: 108px;
             object-fit: cover;
             display: block;
             border-radius: 18px;
@@ -279,36 +279,6 @@
             line-height: 1.95;
             color: #475569;
             white-space: pre-line;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px 22px;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            gap: 14px;
-            padding-bottom: 12px;
-            border-bottom: 1px dashed #e2e8f0;
-        }
-
-        .info-label {
-            color: #64748b;
-            font-size: 14px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .info-value {
-            color: #1f2937;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: right;
-            word-break: break-word;
         }
 
         .sidebar-card {
@@ -753,10 +723,6 @@
             .meta-price {
                 font-size: 27px;
             }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         @media (max-width: 640px) {
@@ -778,8 +744,8 @@
             }
 
             .thumb-item {
-                flex: 0 0 calc((100% - 16px) / 3);
-                min-width: calc((100% - 16px) / 3);
+                flex: 0 0 calc((100% - 24px) / 3);
+                min-width: calc((100% - 24px) / 3);
             }
 
             .thumb-image {
@@ -925,44 +891,6 @@
                 <div class="page-card content-card">
                     <h2 class="section-title">Mô tả chi tiết</h2>
                     <div id="detail-description" class="detail-description">Đang cập nhật mô tả chi tiết.</div>
-                </div>
-
-                <div class="page-card content-card">
-                    <h2 class="section-title">Thông tin thêm</h2>
-                    <div id="extra-info-grid" class="info-grid">
-                        <div class="info-row">
-                            <span class="info-label">Người đăng</span>
-                            <span id="extra-poster" class="info-value">Đang cập nhật</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Vai trò</span>
-                            <span id="extra-role" class="info-value">Người đăng</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Điện thoại</span>
-                            <span id="extra-phone" class="info-value">Liên hệ</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Email</span>
-                            <span id="extra-email" class="info-value">Đang cập nhật</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Ngày đăng</span>
-                            <span id="extra-date" class="info-value">Đang cập nhật</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Tỉnh / Thành phố</span>
-                            <span id="extra-city" class="info-value">Đang cập nhật</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Phường / Xã</span>
-                            <span id="extra-ward" class="info-value">Đang cập nhật</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label" id="extra-address-label">Địa chỉ chi tiết</span>
-                            <span id="extra-address" class="info-value">Đang cập nhật</span>
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -1313,10 +1241,6 @@
             return String(phone || "").replace(/[^\d+]/g, "");
         }
 
-        function normalizePhoneDigits(phone) {
-            return String(phone || "").replace(/\D/g, "");
-        }
-
         function formatDisplayPhone(phone) {
             const digits = String(phone || "").replace(/[^\d]/g, "");
             if (!digits) return "Liên hệ";
@@ -1346,35 +1270,6 @@
             return "https://zalo.me/" + normalized.replace(/^\+/, "");
         }
 
-        function getProfileIdFromPost(post, fallbackId) {
-            const candidates = [
-                post.contactProfileId,
-                post.profileId,
-                post.ownerProfileId,
-                post.ownerId,
-                post.userId,
-                post.accountId,
-                post.contactUserId,
-                post.contactId,
-                post.posterId,
-                post.createdBy,
-                post.authorId,
-                post.user_id,
-                post.owner_id,
-                post.profile_id,
-                post.contact_profile_id,
-                post.created_by
-            ];
-
-            for (const candidate of candidates) {
-                if (candidate !== undefined && candidate !== null && String(candidate).trim()) {
-                    return String(candidate).trim();
-                }
-            }
-
-            return String(fallbackId || "").trim();
-        }
-
         function getResolvedProfileType(post) {
             const rawProfileType = normalizeText(post.profileType || post.accountType || post.userType || "");
             const rawRole = normalizeText(post.roleLabel || post.role || "");
@@ -1401,6 +1296,21 @@
             }
 
             return "canhan";
+        }
+
+        function getProfileDetailLink(post, fallbackId) {
+            if (post.contactProfileUrl) return post.contactProfileUrl;
+            if (post.profileUrl) return post.profileUrl;
+            if (post.ownerProfileUrl) return post.ownerProfileUrl;
+
+            const representativePostId = String(fallbackId || "").trim();
+            const profileType = getResolvedProfileType(post);
+
+            if (profileType === "canhan") {
+                return "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(representativePostId);
+            }
+
+            return "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(representativePostId);
         }
 
         function getStorageArray(key) {
@@ -1916,340 +1826,15 @@
             };
         }
 
-        function getAllStorageObjects(keys) {
-            const result = [];
-
-            (Array.isArray(keys) ? keys : []).forEach(function (key) {
-                try {
-                    const raw = localStorage.getItem(key);
-                    if (!raw) return;
-
-                    const parsed = JSON.parse(raw);
-
-                    if (Array.isArray(parsed)) {
-                        parsed.forEach(function (item) {
-                            if (item && typeof item === "object") result.push(item);
-                        });
-                        return;
-                    }
-
-                    if (parsed && typeof parsed === "object") {
-                        if (Array.isArray(parsed.items)) {
-                            parsed.items.forEach(function (item) {
-                                if (item && typeof item === "object") result.push(item);
-                            });
-                            return;
-                        }
-
-                        if (Array.isArray(parsed.data)) {
-                            parsed.data.forEach(function (item) {
-                                if (item && typeof item === "object") result.push(item);
-                            });
-                            return;
-                        }
-                    }
-                } catch (error) {}
-            });
-
-            return result;
-        }
-
-        function getAllPersonalProfiles() {
-            const storageKeys = [
-                "users",
-                "userList",
-                "allUsers",
-                "members",
-                "brokers",
-                "brokerList",
-                "agents",
-                "agentList",
-                "contacts",
-                "staffUsers",
-                "toamviet_users",
-                "toamvietUsers",
-                "registeredUsers"
-            ];
-
-            let result = getAllStorageObjects(storageKeys);
-
-            try {
-                if (window.userStorage) {
-                    const possibleMethods = [
-                        "getUsers",
-                        "getAllUsers",
-                        "getAllMembers",
-                        "getBrokers",
-                        "getAllBrokers"
-                    ];
-
-                    possibleMethods.forEach(function (methodName) {
-                        try {
-                            if (typeof window.userStorage[methodName] === "function") {
-                                const data = window.userStorage[methodName]();
-                                if (Array.isArray(data)) {
-                                    data.forEach(function (item) {
-                                        if (item && typeof item === "object") result.push(item);
-                                    });
-                                }
-                            }
-                        } catch (error) {}
-                    });
-                }
-            } catch (error) {}
-
-            return result;
-        }
-
-        function getAllBusinessProfiles() {
-            const storageKeys = [
-                "businesses",
-                "businessList",
-                "companies",
-                "companyList",
-                "enterpriseList",
-                "enterprises",
-                "contractors",
-                "contractorList",
-                "developers",
-                "developerList",
-                "toamviet_businesses",
-                "toamvietBusinesses"
-            ];
-
-            return getAllStorageObjects(storageKeys);
-        }
-
-        function getObjectCandidateIds(item) {
-            return [
-                item && item.id,
-                item && item.userId,
-                item && item.accountId,
-                item && item.profileId,
-                item && item.ownerId,
-                item && item.businessId,
-                item && item.companyId,
-                item && item.memberId,
-                item && item.contactId,
-                item && item.slug
-            ].filter(function (value) {
-                return value !== undefined && value !== null && String(value).trim();
-            }).map(function (value) {
-                return String(value).trim();
-            });
-        }
-
-        function getObjectCandidateNames(item) {
-            return [
-                item && item.fullName,
-                item && item.name,
-                item && item.contactName,
-                item && item.userName,
-                item && item.displayName,
-                item && item.brandName,
-                item && item.companyName,
-                item && item.businessName,
-                item && item.enterpriseName,
-                item && item.serviceBrand
-            ].filter(function (value) {
-                return value !== undefined && value !== null && String(value).trim();
-            }).map(function (value) {
-                return normalizeText(value);
-            });
-        }
-
-        function getObjectCandidateEmails(item) {
-            return [
-                item && item.email,
-                item && item.contactEmail,
-                item && item.businessEmail,
-                item && item.companyEmail
-            ].filter(function (value) {
-                return value !== undefined && value !== null && String(value).trim();
-            }).map(function (value) {
-                return normalizeText(value);
-            });
-        }
-
-        function getObjectCandidatePhones(item) {
-            return [
-                item && item.phone,
-                item && item.contactPhone,
-                item && item.mobile,
-                item && item.phoneNumber,
-                item && item.hotline,
-                item && item.businessPhone
-            ].filter(function (value) {
-                return value !== undefined && value !== null && String(value).trim();
-            }).map(function (value) {
-                return normalizePhoneDigits(value);
-            }).filter(Boolean);
-        }
-
-        function findMatchingProfileInList(post, profileList) {
-            const postIdCandidates = [
-                post.contactProfileId,
-                post.profileId,
-                post.ownerProfileId,
-                post.ownerId,
-                post.userId,
-                post.accountId,
-                post.contactUserId,
-                post.contactId,
-                post.posterId,
-                post.createdBy,
-                post.authorId,
-                post.user_id,
-                post.owner_id,
-                post.profile_id,
-                post.contact_profile_id,
-                post.created_by
-            ].filter(function (value) {
-                return value !== undefined && value !== null && String(value).trim();
-            }).map(function (value) {
-                return String(value).trim();
-            });
-
-            const postNameCandidates = [
-                post.contactName,
-                post.fullName,
-                post.userName,
-                post.brandName,
-                post.companyName,
-                post.businessName,
-                post.serviceBrand
-            ].filter(function (value) {
-                return value !== undefined && value !== null && String(value).trim();
-            }).map(function (value) {
-                return normalizeText(value);
-            });
-
-            const postEmailCandidates = [
-                post.contactEmail,
-                post.email
-            ].filter(function (value) {
-                return value !== undefined && value !== null && String(value).trim();
-            }).map(function (value) {
-                return normalizeText(value);
-            });
-
-            const postPhoneCandidates = [
-                post.contactPhone,
-                post.phone
-            ].filter(function (value) {
-                return value !== undefined && value !== null && String(value).trim();
-            }).map(function (value) {
-                return normalizePhoneDigits(value);
-            }).filter(Boolean);
-
-            let found = null;
-
-            if (postIdCandidates.length) {
-                found = profileList.find(function (item) {
-                    const ids = getObjectCandidateIds(item);
-                    return ids.some(function (id) {
-                        return postIdCandidates.includes(id);
-                    });
-                });
-                if (found) return found;
-            }
-
-            if (postPhoneCandidates.length) {
-                found = profileList.find(function (item) {
-                    const phones = getObjectCandidatePhones(item);
-                    return phones.some(function (phone) {
-                        return postPhoneCandidates.includes(phone);
-                    });
-                });
-                if (found) return found;
-            }
-
-            if (postEmailCandidates.length) {
-                found = profileList.find(function (item) {
-                    const emails = getObjectCandidateEmails(item);
-                    return emails.some(function (email) {
-                        return postEmailCandidates.includes(email);
-                    });
-                });
-                if (found) return found;
-            }
-
-            if (postNameCandidates.length) {
-                found = profileList.find(function (item) {
-                    const names = getObjectCandidateNames(item);
-                    return names.some(function (name) {
-                        return postNameCandidates.includes(name);
-                    });
-                });
-                if (found) return found;
-            }
-
-            return null;
-        }
-
-        function getMatchedProfile(post, fallbackId) {
-            const resolvedType = getResolvedProfileType(post);
-
-            if (resolvedType === "doanhnghiep") {
-                const businessProfiles = getAllBusinessProfiles();
-                const matchedBusiness = findMatchingProfileInList(post, businessProfiles);
-                if (matchedBusiness) {
-                    return {
-                        type: "doanhnghiep",
-                        id: getObjectCandidateIds(matchedBusiness)[0] || getProfileIdFromPost(post, fallbackId),
-                        raw: matchedBusiness
-                    };
-                }
-
-                return {
-                    type: "doanhnghiep",
-                    id: getProfileIdFromPost(post, fallbackId),
-                    raw: null
-                };
-            }
-
-            const personalProfiles = getAllPersonalProfiles();
-            const matchedPersonal = findMatchingProfileInList(post, personalProfiles);
-
-            if (matchedPersonal) {
-                return {
-                    type: "canhan",
-                    id: getObjectCandidateIds(matchedPersonal)[0] || getProfileIdFromPost(post, fallbackId),
-                    raw: matchedPersonal
-                };
-            }
-
-            return {
-                type: "canhan",
-                id: getProfileIdFromPost(post, fallbackId),
-                raw: null
-            };
-        }
-
-        function getProfileDetailLink(post, fallbackId) {
-            if (post.contactProfileUrl) return post.contactProfileUrl;
-            if (post.profileUrl) return post.profileUrl;
-            if (post.ownerProfileUrl) return post.ownerProfileUrl;
-
-            const matchedProfile = getMatchedProfile(post, fallbackId);
-
-            if (matchedProfile.type === "canhan") {
-                return "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(matchedProfile.id);
-            }
-
-            return "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(matchedProfile.id);
-        }
-
         function renderSharedContact(post, phone, postId) {
-            const matchedProfile = getMatchedProfile(post, postId);
             const profileUrl = getProfileDetailLink(post, postId);
 
             els.posterName.textContent = buildPoster(post);
             els.posterRole.textContent = getPosterSub(post);
             els.posterAvatar.textContent = getAvatarText(post);
             els.posterProfileLink.href = profileUrl;
-            els.posterProfileLink.setAttribute("data-profile-type", matchedProfile.type);
-            els.posterProfileLink.setAttribute("data-profile-id", matchedProfile.id || "");
+            els.posterProfileLink.setAttribute("data-profile-type", getResolvedProfileType(post));
+            els.posterProfileLink.setAttribute("data-post-id", String(postId || ""));
             els.zaloButton.href = getZaloLink(phone);
 
             bindPhoneReveal(phone);
@@ -2313,16 +1898,12 @@
                 propertyArea: post.propertyArea || post.area
             });
             const location = buildLocation(post) || "Chưa cập nhật khu vực";
-            const fullAddress = buildFullAddress(post) || "Đang cập nhật";
             const propertyType = getRealEstateTypeLabel(post);
             const legal = post.propertyLegal || post.legal || "Đang cập nhật";
             const direction = post.propertyDirection || post.direction || "Đang cập nhật";
             const beds = post.propertyBeds || post.beds || post.bedrooms || "0";
             const description = post.description || "Đang cập nhật mô tả chi tiết cho bất động sản này.";
-            const poster = buildPoster(post);
-            const role = getPosterSub(post);
             const phone = post.contactPhone || post.phone || "";
-            const email = post.contactEmail || post.email || "Đang cập nhật";
             const images = getPostImages(post);
             const modeText = isRental ? "Tin thuê" : "Tin bán";
 
@@ -2345,16 +1926,6 @@
             setText("spec-beds", beds);
 
             els.detailDescription.textContent = description;
-
-            setText("extra-poster", poster);
-            setText("extra-role", role);
-            setText("extra-phone", formatDisplayPhone(phone) || "Liên hệ");
-            setText("extra-email", email);
-            setText("extra-date", formatDate(post.createdAt));
-            setText("extra-city", post.city || "Đang cập nhật");
-            setText("extra-ward", post.ward || "Đang cập nhật");
-            setText("extra-address-label", post.projectName ? "Địa chỉ / Dự án" : "Địa chỉ chi tiết");
-            setText("extra-address", post.projectName ? (post.projectName + " • " + fullAddress) : fullAddress);
 
             setText("quick-label-1", "Mức giá");
             setText("quick-price", price);
@@ -2384,13 +1955,10 @@
             const price = formatPrice(post.servicePrice || post.price || post.priceText);
             const exp = post.serviceExp || "Đang cập nhật";
             const location = buildLocation(post) || post.serviceArea || "Đang cập nhật khu vực";
-            const fullAddress = buildFullAddress(post) || post.serviceArea || "Đang cập nhật";
             const serviceType = getConstructionTypeLabel(post);
             const specialty = post.serviceSpecialty || "Đang cập nhật";
             const brand = post.serviceBrand || buildPoster(post);
-            const role = getPosterSub(post);
             const phone = post.contactPhone || post.phone || "";
-            const email = post.contactEmail || post.email || "Đang cập nhật";
             const images = getPostImages(post);
             const description = post.description || "Đang cập nhật mô tả chi tiết dịch vụ.";
 
@@ -2413,16 +1981,6 @@
             setText("spec-beds", brand);
 
             els.detailDescription.textContent = description;
-
-            setText("extra-poster", brand);
-            setText("extra-role", role);
-            setText("extra-phone", formatDisplayPhone(phone) || "Liên hệ");
-            setText("extra-email", email);
-            setText("extra-date", formatDate(post.createdAt));
-            setText("extra-city", post.city || "Đang cập nhật");
-            setText("extra-ward", post.ward || "Đang cập nhật");
-            setText("extra-address-label", "Khu vực phục vụ");
-            setText("extra-address", fullAddress);
 
             setText("quick-label-1", "Đơn giá");
             setText("quick-price", price);
