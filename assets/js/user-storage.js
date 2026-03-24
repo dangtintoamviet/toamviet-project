@@ -61,6 +61,26 @@
         return typeof value === "string" && value.startsWith("data:");
     }
 
+    function normalizeText(value) {
+        return String(value || "").trim().toLowerCase();
+    }
+
+    function sanitizeContactProfileUrl(url) {
+        const raw = String(url || "").trim();
+        if (!raw) return "";
+
+        const normalized = normalizeText(raw);
+
+        if (
+            normalized.includes("danh-ba-moi-gioi.html") ||
+            normalized.includes("danh-ba-doanh-nghiep.html")
+        ) {
+            return "";
+        }
+
+        return raw;
+    }
+
     function normalizeImageItem(image) {
         if (!image) return null;
 
@@ -141,6 +161,7 @@
 
         return {
             ...post,
+            contactProfileUrl: sanitizeContactProfileUrl(post.contactProfileUrl),
             images: compactImages,
             thumbnail: thumbnailToKeep || "",
             imageCount: typeof post.imageCount === "number"
@@ -156,14 +177,40 @@
             id: post.id || "",
             postId: post.postId || "",
             slug: post.slug || "",
+
             userId: post.userId || "",
+            accountId: post.accountId || "",
+            contactUserId: post.contactUserId || "",
+            contactId: post.contactId || "",
+            posterId: post.posterId || "",
+            authorId: post.authorId || "",
+            ownerId: post.ownerId || "",
+            ownerProfileId: post.ownerProfileId || "",
+            profileId: post.profileId || "",
+            contactProfileId: post.contactProfileId || "",
+            companyId: post.companyId || "",
+            businessId: post.businessId || "",
+            enterpriseId: post.enterpriseId || "",
+
+            user_id: post.user_id || "",
+            account_id: post.account_id || "",
+            owner_id: post.owner_id || "",
+            profile_id: post.profile_id || "",
+            contact_profile_id: post.contact_profile_id || "",
+            company_id: post.company_id || "",
+            business_id: post.business_id || "",
+            enterprise_id: post.enterprise_id || "",
 
             title: post.title || "",
             flow: post.flow || "",
             postType: post.postType || "",
             status: post.status || "",
             profileType: post.profileType || "",
+            accountType: post.accountType || "",
+            userType: post.userType || "",
             vipLevel: post.vipLevel || "",
+            roleLabel: post.roleLabel || "",
+            role: post.role || "",
 
             city: post.city || "",
             district: post.district || "",
@@ -171,6 +218,7 @@
             addressDetail: post.addressDetail || "",
 
             propertyType: post.propertyType || "",
+            propertyCategoryName: post.propertyCategoryName || "",
             propertyPrice: post.propertyPrice || "",
             propertyArea: post.propertyArea || "",
             propertyLegal: post.propertyLegal || "",
@@ -178,6 +226,7 @@
             propertyBeds: post.propertyBeds || "",
 
             serviceType: post.serviceType || "",
+            categoryName: post.categoryName || "",
             servicePrice: post.servicePrice || "",
             serviceExp: post.serviceExp || "",
             serviceArea: post.serviceArea || "",
@@ -192,11 +241,12 @@
             projectDeveloper: post.projectDeveloper || "",
 
             brandName: post.brandName || "",
+            companyName: post.companyName || "",
             fullName: post.fullName || "",
             contactName: post.contactName || "",
             contactPhone: post.contactPhone || "",
             contactEmail: post.contactEmail || "",
-            contactProfileUrl: post.contactProfileUrl || "",
+            contactProfileUrl: sanitizeContactProfileUrl(post.contactProfileUrl),
 
             detailUrl: post.detailUrl || "",
             thumbnail: getFirstUsableImage(post) || "",
@@ -238,7 +288,10 @@
     }
 
     function getAllPosts() {
-        return getItem(STORAGE_KEYS.allPosts, []);
+        const posts = getItem(STORAGE_KEYS.allPosts, []);
+        return Array.isArray(posts)
+            ? posts.map(compactPostForStorage)
+            : [];
     }
 
     function getProjects() {
@@ -255,18 +308,23 @@
     }
 
     function syncDerivedPostStores(sourcePosts) {
-        const posts = Array.isArray(sourcePosts) ? sourcePosts : getAllPosts();
+        const posts = Array.isArray(sourcePosts) ? sourcePosts.map(compactPostForStorage) : getAllPosts();
 
         const propertyPosts = posts
-            .filter((post) => post && post.flow === "real_estate")
+            .filter(function (post) { return post && post.flow === "real_estate"; })
             .map(createLightweightPost)
             .filter(Boolean);
 
-        const salePosts = propertyPosts.filter((post) => post && post.postType === "ban");
-        const rentalPosts = propertyPosts.filter((post) => post && post.postType === "thue");
+        const salePosts = propertyPosts.filter(function (post) {
+            return post && post.postType === "ban";
+        });
+
+        const rentalPosts = propertyPosts.filter(function (post) {
+            return post && post.postType === "thue";
+        });
 
         const constructionPosts = posts
-            .filter((post) => post && post.flow === "construction")
+            .filter(function (post) { return post && post.flow === "construction"; })
             .map(createLightweightPost)
             .filter(Boolean);
 
@@ -288,10 +346,10 @@
         }
 
         return {
-            propertyPosts,
-            salePosts,
-            rentalPosts,
-            constructionPosts
+            propertyPosts: propertyPosts,
+            salePosts: salePosts,
+            rentalPosts: rentalPosts,
+            constructionPosts: constructionPosts
         };
     }
 
@@ -300,14 +358,14 @@
             throw new Error("saveAllPosts: posts phải là mảng");
         }
 
-        let finalPosts = posts;
+        let finalPosts = posts.map(compactPostForStorage);
 
         try {
             setItem(STORAGE_KEYS.allPosts, finalPosts);
         } catch (error) {
             if (isQuotaExceededError(error) || error.message === "LOCAL_STORAGE_QUOTA_EXCEEDED") {
                 console.warn("allPosts quá nặng, chuyển sang compact để vẫn lưu được.");
-                finalPosts = posts.map(compactPostForStorage);
+                finalPosts = finalPosts.map(compactPostForStorage);
                 setItem(STORAGE_KEYS.allPosts, finalPosts);
             } else {
                 throw error;
@@ -325,13 +383,13 @@
 
         const nowIso = new Date().toISOString();
 
-        const normalizedPost = {
+        const normalizedPost = compactPostForStorage({
             ...newPost,
             id: newPost.id || ("post_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8)),
             status: newPost.status || "pending",
             createdAt: newPost.createdAt || nowIso,
             updatedAt: nowIso
-        };
+        });
 
         const posts = getAllPosts();
         posts.unshift(normalizedPost);
@@ -345,17 +403,19 @@
         }
 
         const posts = getAllPosts();
-        const index = posts.findIndex((post) => post && String(post.id) === String(postId));
+        const index = posts.findIndex(function (post) {
+            return post && String(post.id) === String(postId);
+        });
 
         if (index === -1) {
             return null;
         }
 
-        posts[index] = {
+        posts[index] = compactPostForStorage({
             ...posts[index],
             ...updatedData,
             updatedAt: new Date().toISOString()
-        };
+        });
 
         saveAllPosts(posts);
         return posts[index];
@@ -367,15 +427,20 @@
         }
 
         const posts = getAllPosts();
-        const nextPosts = posts.filter((post) => post && String(post.id) !== String(postId));
-        saveAllPosts(nextPosts);
+        const nextPosts = posts.filter(function (post) {
+            return post && String(post.id) !== String(postId);
+        });
 
+        saveAllPosts(nextPosts);
         return true;
     }
 
     function getPostById(postId) {
         if (!postId) return null;
-        return getAllPosts().find((post) => post && String(post.id) === String(postId)) || null;
+
+        return getAllPosts().find(function (post) {
+            return post && String(post.id) === String(postId);
+        }) || null;
     }
 
     function getMyPosts(user) {
@@ -384,7 +449,7 @@
 
         if (!currentUser) return [];
 
-        return posts.filter((post) => {
+        return posts.filter(function (post) {
             if (!post) return false;
 
             if (currentUser.id && post.userId) {
@@ -393,13 +458,13 @@
 
             const sameEmail =
                 currentUser.email &&
-                post.email &&
-                String(currentUser.email).trim().toLowerCase() === String(post.email).trim().toLowerCase();
+                (post.contactEmail || post.email) &&
+                String(currentUser.email).trim().toLowerCase() === String(post.contactEmail || post.email).trim().toLowerCase();
 
             const samePhone =
                 currentUser.phone &&
-                post.phone &&
-                String(currentUser.phone).replace(/\D/g, "") === String(post.phone).replace(/\D/g, "");
+                (post.contactPhone || post.phone) &&
+                String(currentUser.phone).replace(/\D/g, "") === String(post.contactPhone || post.phone).replace(/\D/g, "");
 
             return sameEmail || samePhone;
         });
@@ -431,33 +496,33 @@
     }
 
     window.userStorage = {
-        STORAGE_KEYS,
-        getItem,
-        setItem,
-        removeItem,
+        STORAGE_KEYS: STORAGE_KEYS,
+        getItem: getItem,
+        setItem: setItem,
+        removeItem: removeItem,
 
-        getCurrentUser,
-        saveCurrentUser,
-        clearCurrentUser,
+        getCurrentUser: getCurrentUser,
+        saveCurrentUser: saveCurrentUser,
+        clearCurrentUser: clearCurrentUser,
 
-        getAllPosts,
-        saveAllPosts,
-        getProjects,
-        saveProjects,
+        getAllPosts: getAllPosts,
+        saveAllPosts: saveAllPosts,
+        getProjects: getProjects,
+        saveProjects: saveProjects,
 
-        syncDerivedPostStores,
+        syncDerivedPostStores: syncDerivedPostStores,
 
-        addPost,
-        updatePost,
-        deletePost,
-        getPostById,
-        getMyPosts,
+        addPost: addPost,
+        updatePost: updatePost,
+        deletePost: deletePost,
+        getPostById: getPostById,
+        getMyPosts: getMyPosts,
 
-        clearAllPostStores,
-        getStorageSummary,
+        clearAllPostStores: clearAllPostStores,
+        getStorageSummary: getStorageSummary,
 
-        isQuotaExceededError,
-        compactPostForStorage,
-        createLightweightPost
+        isQuotaExceededError: isQuotaExceededError,
+        compactPostForStorage: compactPostForStorage,
+        createLightweightPost: createLightweightPost
     };
 })();
