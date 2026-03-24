@@ -63,6 +63,7 @@
             margin-bottom: 18px;
             padding-left: 0 !important;
             border-left: none !important;
+            text-transform: none !important;
         }
 
         .section-title::before,
@@ -117,6 +118,7 @@
             line-height: 1.4;
             color: #1f2937;
             margin: 0 0 6px;
+            text-transform: none;
         }
 
         .profile-role {
@@ -124,6 +126,7 @@
             color: #64748b;
             font-weight: 600;
             margin-bottom: 10px;
+            text-transform: none;
         }
 
         .profile-badge-row {
@@ -140,9 +143,9 @@
             border-radius: 999px;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.03em;
             white-space: nowrap;
+            text-transform: none;
         }
 
         .pill-brand {
@@ -175,10 +178,10 @@
             display: block;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             color: #94a3b8;
             margin-bottom: 8px;
             letter-spacing: 0.03em;
+            text-transform: none;
         }
 
         .summary-value {
@@ -188,6 +191,7 @@
             color: #1f2937;
             line-height: 1.5;
             word-break: break-word;
+            text-transform: none;
         }
 
         .content-card {
@@ -221,6 +225,7 @@
             font-size: 14px;
             font-weight: 600;
             flex-shrink: 0;
+            text-transform: none;
         }
 
         .info-value {
@@ -229,6 +234,7 @@
             font-weight: 600;
             text-align: right;
             word-break: break-word;
+            text-transform: none;
         }
 
         .sidebar-card {
@@ -252,6 +258,7 @@
             font-weight: 700;
             transition: 0.2s ease;
             text-decoration: none;
+            text-transform: none;
         }
 
         .contact-btn-primary {
@@ -302,6 +309,7 @@
             font-size: 14px;
             font-weight: 600;
             line-height: 1.6;
+            text-transform: none;
         }
 
         .city-count-badge {
@@ -360,12 +368,14 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-transform: none;
         }
 
         .news-meta {
             font-size: 12px;
             color: #64748b;
             line-height: 1.6;
+            text-transform: none;
         }
 
         .post-list-grid {
@@ -419,6 +429,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-transform: none;
         }
 
         .post-card-meta {
@@ -433,12 +444,14 @@
             color: var(--danger);
             font-size: 17px;
             font-weight: 700;
+            text-transform: none;
         }
 
         .post-card-sub {
             color: #475569;
             font-size: 14px;
             font-weight: 600;
+            text-transform: none;
         }
 
         .post-card-location {
@@ -446,6 +459,7 @@
             color: #64748b;
             font-size: 13px;
             line-height: 1.7;
+            text-transform: none;
         }
 
         .related-pill-row {
@@ -463,9 +477,9 @@
             border-radius: 999px;
             font-size: 10px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.03em;
             white-space: nowrap;
+            text-transform: none;
         }
 
         .related-pill.type {
@@ -489,8 +503,8 @@
             border-radius: 999px;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.02em;
+            text-transform: none;
         }
 
         .service-badge {
@@ -624,7 +638,7 @@
 
                         <div class="min-w-0 flex-1">
                             <h1 id="profile-name" class="profile-name">Đang tải môi giới...</h1>
-                            <div id="profile-role" class="profile-role">Cá nhân / Môi giới</div>
+                            <div id="profile-role" class="profile-role">Cá nhân / môi giới</div>
 
                             <div class="profile-badge-row">
                                 <span id="profile-badge-type" class="pill-badge pill-brand">Cá nhân</span>
@@ -669,7 +683,7 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Vai trò</span>
-                            <span id="info-role" class="info-value">Cá nhân / Môi giới</span>
+                            <span id="info-role" class="info-value">Cá nhân / môi giới</span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Điện thoại</span>
@@ -769,7 +783,7 @@
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
-            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+            <button class="btn-send" onclick="sendToZalo()">Bắt đầu chat trên Zalo</button>
         </div>
     </div>
 
@@ -888,7 +902,7 @@
             if (normalizedRole.includes("moi gioi")) return rawRole || "Môi giới";
             if (normalizedRole.includes("chuyen vien")) return rawRole || "Chuyên viên";
             if (normalizedRole.includes("ca nhan")) return rawRole || "Cá nhân";
-            return rawRole || "Cá nhân / Môi giới";
+            return rawRole || "Cá nhân / môi giới";
         }
 
         function getAvatarText(post) {
@@ -1052,7 +1066,7 @@
             return normalizeFetchedPosts([
                 {
                     id: "demo-agent-1",
-                    title: "CĂN HỘ DIAMOND ALNATA PLUS - KHU ĐÔ THỊ CELADON CITY",
+                    title: "Căn hộ Diamond Alnata Plus - khu đô thị Celadon City",
                     propertyType: "Căn hộ",
                     propertyPrice: "4.2 tỷ",
                     propertyArea: "85",
@@ -1075,7 +1089,7 @@
                 },
                 {
                     id: "demo-agent-2",
-                    title: "CHO THUÊ CĂN HỘ VINHOMES CENTRAL PARK FULL NỘI THẤT",
+                    title: "Cho thuê căn hộ Vinhomes Central Park full nội thất",
                     propertyType: "Căn hộ",
                     propertyPrice: "25 triệu/tháng",
                     propertyArea: "85",
@@ -1098,7 +1112,7 @@
                 },
                 {
                     id: "demo-agent-3",
-                    title: "DỊCH VỤ TƯ VẤN XÂY NHÀ TRỌN GÓI TẠI HÀ NỘI",
+                    title: "Dịch vụ tư vấn xây nhà trọn gói tại Hà Nội",
                     serviceType: "Xây nhà trọn gói",
                     servicePrice: "Liên hệ",
                     serviceExp: "7 năm kinh nghiệm",
