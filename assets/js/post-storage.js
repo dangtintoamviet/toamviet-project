@@ -38,6 +38,7 @@
         if (raw === "hidden") return "hidden";
         if (raw === "demo") return "demo";
         if (raw === "pending") return "pending";
+        if (raw === "published") return "approved";
 
         return "pending";
     }
@@ -80,19 +81,28 @@
 
     function normalizeProfileType(profileType) {
         const raw = normalizeText(profileType);
-        if (raw === "doanhnghiep") return "doanhnghiep";
+
+        if (raw === "doanhnghiep" || raw === "business" || raw === "company") {
+            return "doanhnghiep";
+        }
+
+        if (raw === "moi-gioi" || raw === "moigioi" || raw === "canhan" || raw === "personal") {
+            return "canhan";
+        }
+
         return "canhan";
     }
 
     function resolveContactProfileUrl(profileType, existingUrl) {
-        if (existingUrl) return existingUrl;
-        return normalizeProfileType(profileType) === "doanhnghiep"
-            ? "../pages/danh-ba-doanh-nghiep.html"
-            : "../pages/danh-ba-moi-gioi.html";
+        if (existingUrl && String(existingUrl).trim()) {
+            return String(existingUrl).trim();
+        }
+
+        return "";
     }
 
     function resolveDetailUrl(post) {
-        if (post.detailUrl) return post.detailUrl;
+        if (post.detailUrl && String(post.detailUrl).trim()) return post.detailUrl;
         return "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(post.id);
     }
 
@@ -159,7 +169,7 @@
             id: post.id || "post_" + Date.now(),
             flow: normalizedFlow,
             postType: normalizedPostType,
-            profileType: normalizeProfileType(post.profileType),
+            profileType: normalizeProfileType(post.profileType || post.accountType || post.userType),
             vipLevel: normalizedFlow === "real_estate" ? normalizeVipLevel(post.vipLevel) : "thuong",
             status: normalizedStatus,
             slug: post.slug || slugify((post.title || "tin-dang") + "-" + (post.id || Date.now())),
@@ -198,10 +208,18 @@
         if (typeof window.userStorage.syncDerivedPostStores === "function") {
             window.userStorage.syncDerivedPostStores(safePosts);
         } else {
-            const propertyPosts = safePosts.filter((post) => post && post.flow === "real_estate");
-            const salePosts = propertyPosts.filter((post) => post && post.postType === "ban");
-            const rentalPosts = propertyPosts.filter((post) => post && post.postType === "thue");
-            const constructionPosts = safePosts.filter((post) => post && post.flow === "construction");
+            const propertyPosts = safePosts.filter(function (post) {
+                return post && post.flow === "real_estate";
+            });
+            const salePosts = propertyPosts.filter(function (post) {
+                return post && post.postType === "ban";
+            });
+            const rentalPosts = propertyPosts.filter(function (post) {
+                return post && post.postType === "thue";
+            });
+            const constructionPosts = safePosts.filter(function (post) {
+                return post && post.flow === "construction";
+            });
 
             localStorage.setItem("propertyPosts", JSON.stringify(propertyPosts));
             localStorage.setItem("salePosts", JSON.stringify(salePosts));
@@ -237,35 +255,37 @@
     function filterPostsByStatus(posts, status) {
         if (!status) return posts;
         const normalized = normalizeStatus(status);
-        return posts.filter((post) => post && normalizeStatus(post.status) === normalized);
+        return posts.filter(function (post) {
+            return post && normalizeStatus(post.status) === normalized;
+        });
     }
 
     function getPostsByFlow(flow, status) {
         const normalizedFlow = normalizeFlow(flow);
-        const posts = getAllPosts().filter(
-            (post) => post && post.flow === normalizedFlow
-        );
+        const posts = getAllPosts().filter(function (post) {
+            return post && post.flow === normalizedFlow;
+        });
         return filterPostsByStatus(posts, status);
     }
 
     function getSalePosts(status) {
-        const posts = getAllPosts().filter(
-            (post) => post && post.flow === "real_estate" && post.postType === "ban"
-        );
+        const posts = getAllPosts().filter(function (post) {
+            return post && post.flow === "real_estate" && post.postType === "ban";
+        });
         return filterPostsByStatus(posts, status);
     }
 
     function getRentalPosts(status) {
-        const posts = getAllPosts().filter(
-            (post) => post && post.flow === "real_estate" && post.postType === "thue"
-        );
+        const posts = getAllPosts().filter(function (post) {
+            return post && post.flow === "real_estate" && post.postType === "thue";
+        });
         return filterPostsByStatus(posts, status);
     }
 
     function getConstructionPosts(status) {
-        const posts = getAllPosts().filter(
-            (post) => post && post.flow === "construction"
-        );
+        const posts = getAllPosts().filter(function (post) {
+            return post && post.flow === "construction";
+        });
         return filterPostsByStatus(posts, status);
     }
 
@@ -278,14 +298,16 @@
     }
 
     function getPendingPosts() {
-        return getAllPosts().filter((post) => normalizeStatus(post.status) === "pending");
+        return getAllPosts().filter(function (post) {
+            return normalizeStatus(post.status) === "pending";
+        });
     }
 
     function getPostsByProjectSlug(projectSlug, status) {
         if (!projectSlug) return [];
-        const posts = getAllPosts().filter(
-            (post) => post && post.projectSlug === projectSlug
-        );
+        const posts = getAllPosts().filter(function (post) {
+            return post && post.projectSlug === projectSlug;
+        });
         return filterPostsByStatus(posts, status);
     }
 
@@ -303,7 +325,9 @@
 
     function getPostBySlug(slug) {
         if (!slug) return null;
-        return getAllPosts().find((post) => post && post.slug === slug) || null;
+        return getAllPosts().find(function (post) {
+            return post && post.slug === slug;
+        }) || null;
     }
 
     function createPost(postData) {
@@ -426,24 +450,24 @@
 
     function getPostStats(postsInput) {
         const posts = Array.isArray(postsInput)
-            ? posts.map(sanitizePost).filter(Boolean)
+            ? postsInput.map(sanitizePost).filter(Boolean)
             : getAllPosts();
 
         return {
             total: posts.length,
-            pending: posts.filter((p) => normalizeStatus(p.status) === "pending").length,
-            approved: posts.filter((p) => normalizeStatus(p.status) === "approved").length,
-            rejected: posts.filter((p) => normalizeStatus(p.status) === "rejected").length,
-            hidden: posts.filter((p) => normalizeStatus(p.status) === "hidden").length,
-            demo: posts.filter((p) => normalizeStatus(p.status) === "demo").length,
-            sale: posts.filter((p) => p.flow === "real_estate" && p.postType === "ban").length,
-            rental: posts.filter((p) => p.flow === "real_estate" && p.postType === "thue").length,
-            construction: posts.filter((p) => p.flow === "construction").length,
-            withProject: posts.filter((p) => p.projectSlug || p.projectName).length,
-            vipKimCuong: posts.filter((p) => p.vipLevel === "kim-cuong").length,
-            vipVang: posts.filter((p) => p.vipLevel === "vang").length,
-            vipBac: posts.filter((p) => p.vipLevel === "bac").length,
-            vipDong: posts.filter((p) => p.vipLevel === "dong").length
+            pending: posts.filter(function (p) { return normalizeStatus(p.status) === "pending"; }).length,
+            approved: posts.filter(function (p) { return normalizeStatus(p.status) === "approved"; }).length,
+            rejected: posts.filter(function (p) { return normalizeStatus(p.status) === "rejected"; }).length,
+            hidden: posts.filter(function (p) { return normalizeStatus(p.status) === "hidden"; }).length,
+            demo: posts.filter(function (p) { return normalizeStatus(p.status) === "demo"; }).length,
+            sale: posts.filter(function (p) { return p.flow === "real_estate" && p.postType === "ban"; }).length,
+            rental: posts.filter(function (p) { return p.flow === "real_estate" && p.postType === "thue"; }).length,
+            construction: posts.filter(function (p) { return p.flow === "construction"; }).length,
+            withProject: posts.filter(function (p) { return p.projectSlug || p.projectName; }).length,
+            vipKimCuong: posts.filter(function (p) { return p.vipLevel === "kim-cuong"; }).length,
+            vipVang: posts.filter(function (p) { return p.vipLevel === "vang"; }).length,
+            vipBac: posts.filter(function (p) { return p.vipLevel === "bac"; }).length,
+            vipDong: posts.filter(function (p) { return p.vipLevel === "dong"; }).length
         };
     }
 
@@ -451,42 +475,44 @@
         const salePosts = getPostsByProjectSlug(
             projectSlug,
             approvedOnly ? "approved" : ""
-        ).filter(
-            (post) =>
-                post &&
+        ).filter(function (post) {
+            return post &&
                 post.flow === "real_estate" &&
                 post.postType === "ban" &&
                 typeof post.pricePerSquareMeter === "number" &&
-                post.pricePerSquareMeter > 0
-        );
+                post.pricePerSquareMeter > 0;
+        });
 
         if (!salePosts.length) return null;
 
-        const total = salePosts.reduce((sum, post) => sum + post.pricePerSquareMeter, 0);
+        const total = salePosts.reduce(function (sum, post) {
+            return sum + post.pricePerSquareMeter;
+        }, 0);
+
         return Math.round(total / salePosts.length);
     }
 
     window.postStorage = {
-        getAllPosts,
-        saveAllPosts,
-        syncDerivedStores,
-        getPostsByFlow,
-        getSalePosts,
-        getRentalPosts,
-        getConstructionPosts,
-        getApprovedSalePosts,
-        getApprovedRentalPosts,
-        getPendingPosts,
-        getPostsByProjectSlug,
-        getPostsByUser,
-        getPostById,
-        getPostBySlug,
-        createPost,
-        updatePost,
-        deletePost,
-        duplicatePost,
-        togglePostStatus,
-        getPostStats,
-        getAverageSalePriceByProject
+        getAllPosts: getAllPosts,
+        saveAllPosts: saveAllPosts,
+        syncDerivedStores: syncDerivedStores,
+        getPostsByFlow: getPostsByFlow,
+        getSalePosts: getSalePosts,
+        getRentalPosts: getRentalPosts,
+        getConstructionPosts: getConstructionPosts,
+        getApprovedSalePosts: getApprovedSalePosts,
+        getApprovedRentalPosts: getApprovedRentalPosts,
+        getPendingPosts: getPendingPosts,
+        getPostsByProjectSlug: getPostsByProjectSlug,
+        getPostsByUser: getPostsByUser,
+        getPostById: getPostById,
+        getPostBySlug: getPostBySlug,
+        createPost: createPost,
+        updatePost: updatePost,
+        deletePost: deletePost,
+        duplicatePost: duplicatePost,
+        togglePostStatus: togglePostStatus,
+        getPostStats: getPostStats,
+        getAverageSalePriceByProject: getAverageSalePriceByProject
     };
 })();
