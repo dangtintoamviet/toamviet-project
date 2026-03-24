@@ -1299,13 +1299,42 @@
             return "canhan";
         }
 
+        function getProfileIdFromPost(post, fallbackId) {
+            const candidates = [
+                post.contactProfileId,
+                post.profileId,
+                post.ownerProfileId,
+                post.ownerId,
+                post.userId,
+                post.accountId,
+                post.contactUserId,
+                post.contactId,
+                post.posterId,
+                post.createdBy,
+                post.authorId,
+                post.user_id,
+                post.owner_id,
+                post.profile_id,
+                post.contact_profile_id,
+                post.created_by
+            ];
+
+            for (const candidate of candidates) {
+                if (candidate !== undefined && candidate !== null && String(candidate).trim()) {
+                    return String(candidate).trim();
+                }
+            }
+
+            return String(fallbackId || "").trim();
+        }
+
         function getProfileDetailLink(post, fallbackId) {
             if (post.contactProfileUrl) return post.contactProfileUrl;
             if (post.profileUrl) return post.profileUrl;
             if (post.ownerProfileUrl) return post.ownerProfileUrl;
 
             const profileType = getResolvedProfileType(post);
-            const representativeId = String(fallbackId || "").trim();
+            const representativeId = getProfileIdFromPost(post, fallbackId);
 
             if (profileType === "canhan") {
                 return "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(representativeId);
@@ -1817,13 +1846,16 @@
         }
 
         function renderSharedContact(post, phone, postId) {
+            const profileType = getResolvedProfileType(post);
+            const profileId = getProfileIdFromPost(post, postId);
             const profileUrl = getProfileDetailLink(post, postId);
 
             els.posterName.textContent = buildPoster(post);
             els.posterRole.textContent = getPosterSub(post);
             els.posterAvatar.textContent = getAvatarText(post);
             els.posterProfileLink.href = profileUrl;
-            els.posterProfileLink.setAttribute("data-profile-type", getResolvedProfileType(post));
+            els.posterProfileLink.setAttribute("data-profile-type", profileType);
+            els.posterProfileLink.setAttribute("data-profile-id", profileId);
             els.zaloButton.href = getZaloLink(phone);
 
             bindPhoneReveal(phone);
