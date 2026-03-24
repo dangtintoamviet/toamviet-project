@@ -116,7 +116,7 @@
 
         .thumb-image {
             width: 100%;
-            height: 108px;
+            height: 104px;
             object-fit: cover;
             display: block;
             border-radius: 18px;
@@ -345,6 +345,7 @@
             color: #64748b;
             margin-top: 4px;
             font-weight: 500;
+            text-transform: none;
         }
 
         .phone-reveal-btn {
@@ -1303,14 +1304,14 @@
             if (post.profileUrl) return post.profileUrl;
             if (post.ownerProfileUrl) return post.ownerProfileUrl;
 
-            const representativePostId = String(fallbackId || "").trim();
             const profileType = getResolvedProfileType(post);
+            const representativeId = String(fallbackId || "").trim();
 
             if (profileType === "canhan") {
-                return "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(representativePostId);
+                return "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(representativeId);
             }
 
-            return "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(representativePostId);
+            return "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(representativeId);
         }
 
         function getStorageArray(key) {
@@ -1428,10 +1429,6 @@
 
         function buildLocation(post) {
             return [post.ward, post.city].filter(Boolean).join(", ");
-        }
-
-        function buildFullAddress(post) {
-            return [post.addressDetail, post.ward, post.city].filter(Boolean).join(", ");
         }
 
         function parsePriceToNumber(priceText) {
@@ -1741,13 +1738,6 @@
             return { post: null, resolvedId: "" };
         }
 
-        function formatDate(dateString) {
-            if (!dateString) return "Đang cập nhật";
-            const date = new Date(dateString);
-            if (Number.isNaN(date.getTime())) return "Đang cập nhật";
-            return date.toLocaleDateString("vi-VN");
-        }
-
         function getVipBadgeHtml(level) {
             const vip = String(level || "thuong").toLowerCase();
 
@@ -1834,7 +1824,6 @@
             els.posterAvatar.textContent = getAvatarText(post);
             els.posterProfileLink.href = profileUrl;
             els.posterProfileLink.setAttribute("data-profile-type", getResolvedProfileType(post));
-            els.posterProfileLink.setAttribute("data-post-id", String(postId || ""));
             els.zaloButton.href = getZaloLink(phone);
 
             bindPhoneReveal(phone);
