@@ -63,6 +63,7 @@
             margin-bottom: 18px;
             padding-left: 0 !important;
             border-left: none !important;
+            text-transform: none !important;
         }
 
         .section-title::before,
@@ -117,6 +118,7 @@
             line-height: 1.4;
             color: #1f2937;
             margin: 0 0 6px;
+            text-transform: none;
         }
 
         .profile-role {
@@ -124,6 +126,7 @@
             color: #64748b;
             font-weight: 600;
             margin-bottom: 10px;
+            text-transform: none;
         }
 
         .profile-badge-row {
@@ -140,9 +143,9 @@
             border-radius: 999px;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.03em;
             white-space: nowrap;
+            text-transform: none;
         }
 
         .pill-brand {
@@ -175,10 +178,10 @@
             display: block;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             color: #94a3b8;
             margin-bottom: 8px;
             letter-spacing: 0.03em;
+            text-transform: none;
         }
 
         .summary-value {
@@ -188,6 +191,7 @@
             color: #1f2937;
             line-height: 1.5;
             word-break: break-word;
+            text-transform: none;
         }
 
         .content-card {
@@ -221,6 +225,7 @@
             font-size: 14px;
             font-weight: 600;
             flex-shrink: 0;
+            text-transform: none;
         }
 
         .info-value {
@@ -229,6 +234,7 @@
             font-weight: 600;
             text-align: right;
             word-break: break-word;
+            text-transform: none;
         }
 
         .sidebar-card {
@@ -252,6 +258,7 @@
             font-weight: 700;
             transition: 0.2s ease;
             text-decoration: none;
+            text-transform: none;
         }
 
         .contact-btn-primary {
@@ -302,6 +309,7 @@
             font-size: 14px;
             font-weight: 600;
             line-height: 1.6;
+            text-transform: none;
         }
 
         .city-count-badge {
@@ -360,12 +368,14 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-transform: none;
         }
 
         .news-meta {
             font-size: 12px;
             color: #64748b;
             line-height: 1.6;
+            text-transform: none;
         }
 
         .post-list-grid {
@@ -419,6 +429,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-transform: none;
         }
 
         .post-card-meta {
@@ -433,12 +444,14 @@
             color: var(--danger);
             font-size: 17px;
             font-weight: 700;
+            text-transform: none;
         }
 
         .post-card-sub {
             color: #475569;
             font-size: 14px;
             font-weight: 600;
+            text-transform: none;
         }
 
         .post-card-location {
@@ -446,6 +459,7 @@
             color: #64748b;
             font-size: 13px;
             line-height: 1.7;
+            text-transform: none;
         }
 
         .related-pill-row {
@@ -463,9 +477,9 @@
             border-radius: 999px;
             font-size: 10px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.03em;
             white-space: nowrap;
+            text-transform: none;
         }
 
         .related-pill.type {
@@ -489,8 +503,8 @@
             border-radius: 999px;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.02em;
+            text-transform: none;
         }
 
         .service-badge {
@@ -769,7 +783,7 @@
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
-            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+            <button class="btn-send" onclick="sendToZalo()">Bắt đầu chat trên Zalo</button>
         </div>
     </div>
 
@@ -817,6 +831,24 @@
                 return JSON.parse(raw);
             } catch (error) {
                 return fallback;
+            }
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function safeToggleForm() {
+            if (typeof window.toggleForm === "function") {
+                window.toggleForm();
+            } else {
+                const chatForm = document.getElementById("chatForm");
+                if (!chatForm) return;
+                chatForm.style.display = chatForm.style.display === "block" ? "none" : "block";
             }
         }
 
@@ -1029,7 +1061,7 @@
             return normalizeFetchedPosts([
                 {
                     id: "demo-company-1",
-                    title: "BÁN NHÀ PHỐ THƯƠNG MẠI KHU ĐÔ THỊ TRUNG TÂM MỚI",
+                    title: "Bán nhà phố thương mại khu đô thị trung tâm mới",
                     propertyType: "Nhà phố",
                     propertyPrice: "12.8 tỷ",
                     propertyArea: "110",
@@ -1039,7 +1071,7 @@
                     description: "Doanh nghiệp phân phối các sản phẩm nhà phố, shophouse và căn hộ tại khu vực Bình Dương, hỗ trợ tư vấn pháp lý và thủ tục giao dịch.",
                     contactName: "Công ty BĐS Minh Phát",
                     brandName: "Công ty BĐS Minh Phát",
-                    roleLabel: "Doanh nghiệp / Sàn BĐS",
+                    roleLabel: "Doanh nghiệp / sàn BĐS",
                     contactPhone: "0977888666",
                     contactEmail: "minhphat@toamviet.vn",
                     profileType: "doanhnghiep",
@@ -1053,7 +1085,7 @@
                 },
                 {
                     id: "demo-company-2",
-                    title: "CHO THUÊ SHOPHOUSE GÓC 2 MẶT TIỀN KHU ĐÔ THỊ MỚI",
+                    title: "Cho thuê shophouse góc 2 mặt tiền khu đô thị mới",
                     propertyType: "Shophouse",
                     propertyPrice: "35 triệu/tháng",
                     propertyArea: "105",
@@ -1063,7 +1095,7 @@
                     description: "Doanh nghiệp chuyên cho thuê mặt bằng thương mại và shophouse, phù hợp kinh doanh và khai thác dài hạn.",
                     contactName: "Công ty BĐS Prime",
                     brandName: "Công ty BĐS Prime",
-                    roleLabel: "Doanh nghiệp / Mặt bằng",
+                    roleLabel: "Doanh nghiệp / mặt bằng",
                     contactPhone: "0944444555",
                     contactEmail: "prime@toamviet.vn",
                     profileType: "doanhnghiep",
@@ -1077,7 +1109,7 @@
                 },
                 {
                     id: "demo-company-3",
-                    title: "CÔNG TY AN PHÁT NHẬN THI CÔNG NHÀ PHỐ TRỌN GÓI TẠI HÀ GIANG",
+                    title: "Công ty An Phát nhận thi công nhà phố trọn gói tại Hà Giang",
                     serviceType: "Xây nhà trọn gói",
                     servicePrice: "5.8 triệu/m²",
                     serviceExp: "8 năm kinh nghiệm",
@@ -1090,7 +1122,7 @@
                     description: "Đội ngũ kỹ sư và thi công chuyên nghiệp, nhận hồ sơ thiết kế, thi công phần thô và hoàn thiện trọn gói.",
                     contactName: "Công ty Xây dựng An Phát",
                     brandName: "Công ty Xây dựng An Phát",
-                    roleLabel: "Doanh nghiệp / Nhà thầu",
+                    roleLabel: "Doanh nghiệp / nhà thầu",
                     contactPhone: "0988123456",
                     contactEmail: "build@toamviet.vn",
                     profileType: "doanhnghiep",
@@ -1452,6 +1484,8 @@ Hiện doanh nghiệp này đang có ${totalPosts} tin đăng công khai trên h
             renderPosterPosts(basePost, posterPosts);
         }
 
+        window.safeScrollToTop = safeScrollToTop;
+        window.safeToggleForm = safeToggleForm;
         window.sendToZalo = sendToZalo;
 
         window.addEventListener("load", async function () {
