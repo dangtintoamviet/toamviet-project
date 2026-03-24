@@ -27,6 +27,7 @@
             --soft-bg: #f8fafc;
             --border-color: #e5e7eb;
             --text-soft: #64748b;
+            --danger: #dc2626;
         }
 
         * {
@@ -157,6 +158,26 @@
             font-weight: 900;
             color: var(--text-strong);
             text-transform: none;
+        }
+
+        .hero-meta-line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .hero-price {
+            color: var(--danger);
+            font-weight: 900;
+        }
+
+        .hero-area {
+            color: #475569;
+            font-weight: 800;
         }
 
         .hero-address {
@@ -772,6 +793,10 @@
                 font-size: 24px;
             }
 
+            .hero-meta-line {
+                font-size: 14px;
+            }
+
             .stats-grid {
                 grid-template-columns: 1fr;
             }
@@ -852,6 +877,12 @@
                     </div>
 
                     <h1 class="hero-title" id="heroTitle">Danh mục dự án</h1>
+
+                    <div class="hero-meta-line">
+                        <span class="hero-price" id="heroPrice">Liên hệ</span>
+                        <span class="text-slate-300">•</span>
+                        <span class="hero-area" id="heroArea">Đang cập nhật</span>
+                    </div>
 
                     <div class="hero-address">
                         <i class="fa-solid fa-location-dot mt-[4px] text-[--vip-color]"></i>
@@ -1183,7 +1214,7 @@
                 priceValue: priceInfo.value,
                 salePostsCount: Number(project.salePostsCount ?? project.saleCount ?? project.totalSalePosts ?? 0) || 0,
                 rentalPostsCount: Number(project.rentalPostsCount ?? project.rentalCount ?? project.totalRentalPosts ?? 0) || 0,
-                shortDescription: project.shortDescription || project.summary || project.description || "Dự án đang được cập nhật mô tả."
+                shortDescription: project.shortDescription || project.summary || project.description || "Dự án đang được cập nhật dữ liệu chi tiết."
             };
         }
 
@@ -1197,15 +1228,16 @@
                 postGroup = "sale";
             }
 
-            const priceInfo = normalizePrice(post.price ?? post.totalPrice ?? post.priceText ?? post.priceLabel ?? "");
+            const priceInfo = normalizePrice(post.price ?? post.totalPrice ?? post.propertyPrice ?? post.priceText ?? post.priceLabel ?? "");
 
             return {
                 ...post,
                 id: post.id || post.postId || post.slug || `post-${index + 1}`,
+                slug: post.slug || "",
                 title: post.title || post.name || "Tin dự án",
                 address: buildLocation(post),
                 city: post.city || "",
-                area: post.area || post.acreage || post.size || "Đang cập nhật",
+                area: post.area || post.propertyArea || post.acreage || post.size || "Đang cập nhật",
                 priceText: priceInfo.text,
                 priceValue: priceInfo.value,
                 image: getProjectImage(post, index),
@@ -1223,7 +1255,11 @@
                 accountId: post.accountId || "",
                 contactId: post.contactId || "",
                 posterId: post.posterId || "",
-                profileUrl: post.profileUrl || ""
+                projectId: post.projectId || post.project_id || "",
+                projectSlug: post.projectSlug || "",
+                projectName: post.projectName || "",
+                profileUrl: post.profileUrl || "",
+                detailUrl: post.detailUrl || ""
             };
         }
 
@@ -1277,8 +1313,6 @@
                     posts = window.postStorage.getAllPosts() || [];
                 } else if (window.userStorage && typeof window.userStorage.getAllPosts === "function") {
                     posts = window.userStorage.getAllPosts() || [];
-                } else {
-                    posts = JSON.parse(localStorage.getItem("allPosts") || "[]");
                 }
             } catch (error) {
                 console.warn("Không đọc được dữ liệu bài đăng:", error);
@@ -1307,36 +1341,34 @@
         }
 
         function matchPostToProject(post, project) {
-            const postProjectId = String(
-                post.projectId ||
-                post.project_id ||
-                post.projectSlug ||
-                post.projectName ||
-                post.project ||
-                ""
-            ).trim();
+            const postProjectId = String(post.projectId || post.project_id || "").trim();
+            const postProjectSlug = String(post.projectSlug || "").trim();
+            const postProjectName = String(post.projectName || post.project || "").trim();
 
             const projectId = String(project.id || "").trim();
             const projectSlug = String(project.slug || "").trim();
-            const projectNameSlug = slugifyText(project.name);
+            const projectName = String(project.name || "").trim();
 
-            if (postProjectId) {
-                if (postProjectId === projectId) return true;
-                if (postProjectId === projectSlug) return true;
-                if (slugifyText(postProjectId) === projectNameSlug) return true;
+            if (postProjectId && projectId && postProjectId === projectId) return true;
+            if (postProjectSlug && projectSlug && normalizeText(postProjectSlug) === normalizeText(projectSlug)) return true;
+            if (postProjectName && projectName && normalizeText(postProjectName) === normalizeText(projectName)) return true;
+
+            if (!postProjectId && !postProjectSlug && !postProjectName) {
+                const haystack = normalizeText([
+                    post.title,
+                    post.description,
+                    post.projectName,
+                    post.project,
+                    post.projectSlug
+                ].filter(Boolean).join(" "));
+
+                const projectNameNormalized = normalizeText(project.name);
+                if (projectNameNormalized && haystack.includes(projectNameNormalized)) {
+                    return true;
+                }
             }
 
-            const haystack = normalizeText([
-                post.title,
-                post.description,
-                post.address,
-                post.location,
-                post.projectName,
-                post.project,
-                post.projectSlug
-            ].filter(Boolean).join(" "));
-
-            return haystack.includes(normalizeText(project.name));
+            return false;
         }
 
         function getProjectDetailUrl(project) {
@@ -1431,6 +1463,8 @@
             document.getElementById("heroTitle").textContent = project.name;
             document.getElementById("heroAddress").textContent = project.address;
             document.getElementById("heroDesc").textContent = project.shortDescription;
+            document.getElementById("heroPrice").textContent = project.priceText || "Liên hệ";
+            document.getElementById("heroArea").textContent = project.area || "Đang cập nhật";
             document.getElementById("heroTypeBadge").innerHTML = `<i class="fa-solid fa-layer-group"></i>${escapeHtml(project.type)}`;
             document.getElementById("heroStatusBadge").innerHTML = `<i class="fa-solid fa-bolt"></i>${escapeHtml(project.status)}`;
             document.getElementById("breadcrumbProjectLink").textContent = project.name;
@@ -1444,7 +1478,7 @@
             document.getElementById("statTotal").textContent = formatNumber(posts.length);
             document.getElementById("statSale").textContent = formatNumber(salePosts);
             document.getElementById("statRent").textContent = formatNumber(rentPosts);
-            document.getElementById("statPrice").textContent = project.priceText;
+            document.getElementById("statPrice").textContent = project.priceText || "Liên hệ";
         }
 
         function renderQuickInfo(project) {
@@ -1531,6 +1565,8 @@
 
             if (priceFilter) {
                 result = result.filter(post => {
+                    if (post.postGroup !== "sale") return true;
+
                     const price = Number(post.priceValue || 0);
 
                     if (priceFilter === "under-1") return price > 0 && price < 1000000000;
@@ -1716,14 +1752,18 @@
             const projectId = getQueryParam("projectId");
             const projectSlug = getQueryParam("slug");
 
-            let project = allProjects.find(item => String(item.id) === String(projectId));
+            let project = null;
+
+            if (projectId) {
+                project = allProjects.find(item => String(item.id) === String(projectId)) || null;
+            }
 
             if (!project && projectSlug) {
-                project = allProjects.find(item => normalizeText(item.slug) === normalizeText(projectSlug));
+                project = allProjects.find(item => normalizeText(item.slug) === normalizeText(projectSlug)) || null;
             }
 
             if (!project && projectId) {
-                project = allProjects.find(item => slugifyText(item.name) === slugifyText(projectId));
+                project = allProjects.find(item => normalizeText(item.slug) === normalizeText(projectId)) || null;
             }
 
             if (!project) {
@@ -1739,6 +1779,7 @@
             renderProjectHero(project);
 
             const rawPosts = getPostsFromSources();
+
             let matchedPosts = rawPosts
                 .filter(post => post && ["approved", "published", "demo"].includes(normalizeText(post.status || "approved")))
                 .filter(post => matchPostToProject(post, project))
@@ -1764,6 +1805,7 @@
                         description: project.shortDescription || "",
                         projectId: project.id,
                         projectSlug: project.slug,
+                        projectName: project.name,
                         slug: `${project.slug}-sale-1`
                     },
                     {
@@ -1784,6 +1826,7 @@
                         description: project.shortDescription || "",
                         projectId: project.id,
                         projectSlug: project.slug,
+                        projectName: project.name,
                         slug: `${project.slug}-rent-1`
                     },
                     {
@@ -1804,6 +1847,7 @@
                         description: project.shortDescription || "",
                         projectId: project.id,
                         projectSlug: project.slug,
+                        projectName: project.name,
                         slug: `${project.slug}-sale-2`
                     }
                 ];
