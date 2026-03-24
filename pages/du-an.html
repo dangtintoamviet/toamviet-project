@@ -61,7 +61,7 @@
             font-size: 20px;
             font-weight: 800;
             color: var(--text-strong);
-            text-transform: uppercase;
+            text-transform: none;
             font-family: "Roboto", sans-serif;
         }
 
@@ -505,23 +505,6 @@
             transform: scale(1.06);
         }
 
-        .project-type-badge {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            color: white;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 7px 12px;
-            border-radius: 999px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
-            z-index: 2;
-            max-width: calc(100% - 32px);
-            background: linear-gradient(135deg, rgba(0,139,139,0.94), rgba(15,118,110,0.94));
-        }
-
         .project-status-badge {
             position: absolute;
             top: 16px;
@@ -625,6 +608,28 @@
             color: var(--vip-color);
         }
 
+        .project-card-meta-line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 12px;
+            margin-top: -4px;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        .project-card-price {
+            color: #dc2626;
+            font-weight: 800;
+        }
+
+        .project-card-area {
+            color: #475569;
+            font-weight: 700;
+        }
+
         .project-card-address {
             font-size: 14px;
             color: #64748b;
@@ -633,18 +638,6 @@
             display: flex;
             align-items: flex-start;
             gap: 8px;
-        }
-
-        .project-card-desc {
-            font-size: 13px;
-            color: #64748b;
-            line-height: 1.75;
-            margin: 0;
-            min-height: 66px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         .project-mini-pills {
@@ -919,6 +912,11 @@
                 min-height: auto;
             }
 
+            .project-card-meta-line {
+                font-size: 13px;
+                gap: 6px 10px;
+            }
+
             .project-card-footer {
                 flex-direction: column;
                 align-items: stretch;
@@ -929,19 +927,11 @@
                 width: 100%;
             }
 
-            .project-status-badge,
-            .project-type-badge {
+            .project-status-badge {
                 top: 14px;
+                right: 14px;
                 font-size: 9px;
                 padding: 6px 10px;
-            }
-
-            .project-type-badge {
-                left: 14px;
-            }
-
-            .project-status-badge {
-                right: 14px;
             }
 
             .page-btn {
@@ -1343,16 +1333,16 @@
             {
                 id: "du-an-7",
                 slug: "an-phat-smart-city",
-                name: "An Phát Smart City",
-                type: "Khu phức hợp",
-                categorySlug: "khu-phuc-hop",
+                name: "Khu đô thị A",
+                type: "Khu đô thị",
+                categorySlug: "du-an-khac",
                 status: "Đang cập nhật",
-                investor: "ANP",
-                area: "9.3 ha",
-                address: "Phường Ba Đình, Hà Nội",
-                price: "Liên hệ",
-                salePostsCount: 8,
-                rentalPostsCount: 2,
+                investor: "VinGroup",
+                area: "16,24 ha",
+                address: "Đường A, Phường Ba Đình, Thanh Hóa",
+                price: "390 triệu/m²",
+                salePostsCount: 1,
+                rentalPostsCount: 0,
                 shortDescription: "Dự án đô thị quy hoạch đồng bộ, định hướng nhóm khách hàng gia đình trẻ và nhà đầu tư trung dài hạn.",
                 createdAt: "2026-03-13T08:00:00",
                 profileType: "doanhnghiep"
@@ -1587,7 +1577,7 @@
             const address = buildLocation(project);
             const salePostsCount = Number(project.salePostsCount ?? project.saleCount ?? project.totalSalePosts ?? project.postCount ?? 0);
             const rentalPostsCount = Number(project.rentalPostsCount ?? project.rentalCount ?? project.totalRentalPosts ?? 0);
-            const desc = project.shortDescription || project.description || project.summary || "Dự án đang được cập nhật mô tả chi tiết.";
+            const desc = project.shortDescription || project.description || project.summary || "";
             const categorySlug = resolveProjectCategorySlug(project);
             const slug = String(project.slug || project.projectSlug || slugifyText(name)).trim();
 
@@ -1880,17 +1870,17 @@
             const title = escapeHtml(project.name);
             const investor = escapeHtml(project.investor);
             const type = escapeHtml(project.type);
-            const categoryName = escapeHtml(project.categoryName || type);
             const status = escapeHtml(project.status);
             const address = escapeHtml(project.address);
             const saleCount = formatNumber(project.salePostsCount);
             const rentCount = formatNumber(project.rentalPostsCount);
-            const desc = escapeHtml(project.shortDescription);
             const image = escapeHtml(project.image);
             const detailUrl = getProjectDetailUrl(project);
             const categoryUrl = getProjectCategoryUrl(project);
             const profileUrl = getProfileUrl(project);
             const avatar = escapeHtml(getAvatarText(project.investor));
+            const priceText = escapeHtml(project.priceText || "Liên hệ");
+            const areaText = escapeHtml(project.area || "Đang cập nhật");
 
             return `
                 <article class="project-card">
@@ -1905,7 +1895,6 @@
                             >
                         </a>
 
-                        <span class="project-type-badge">${categoryName}</span>
                         <span class="project-status-badge">
                             <i class="fa-solid fa-bolt"></i>
                             ${status}
@@ -1925,12 +1914,16 @@
                             <h3 class="project-card-title">${title}</h3>
                         </a>
 
+                        <div class="project-card-meta-line">
+                            <span class="project-card-price">${priceText}</span>
+                            <span class="text-slate-300">•</span>
+                            <span class="project-card-area">${areaText}</span>
+                        </div>
+
                         <div class="project-card-address">
                             <i class="fa-solid fa-location-dot mt-[3px] text-[--vip-color]"></i>
                             <span>${address}</span>
                         </div>
-
-                        <p class="project-card-desc">${desc}</p>
 
                         <div class="project-mini-pills">
                             <span class="mini-pill"><i class="fa-solid fa-layer-group"></i> ${type}</span>
