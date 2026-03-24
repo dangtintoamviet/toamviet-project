@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Giá Nhà Đất | Tổ Ấm Việt</title>
+    <title>Giá nhà đất | Tổ Ấm Việt</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,14 +20,14 @@
 
     <style>
         :root {
-            --vip-color: #008B8B;
+            --vip-color: #008b8b;
             --text-dark: #1e293b;
             --text-muted: #64748b;
-            --hover-color: #FF8C00;
+            --hover-color: #ff8c00;
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: "Roboto", sans-serif;
             background-color: #f4f7fa;
             color: var(--text-dark);
             line-height: 1.5;
@@ -57,11 +57,27 @@
             font-size: 11px;
         }
 
+        .page-breadcrumb {
+            margin-bottom: 18px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .page-breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-breadcrumb a:hover {
+            color: var(--vip-color);
+        }
+
         .hero-price {
             position: relative;
             overflow: hidden;
             border-radius: 24px;
-            background: linear-gradient(135deg, #0f766e 0%, #008B8B 55%, #0f172a 100%);
+            background: linear-gradient(135deg, #0f766e 0%, #008b8b 55%, #0f172a 100%);
             color: white;
             padding: 28px;
             margin-bottom: 24px;
@@ -121,6 +137,7 @@
             line-height: 1.3;
             margin-bottom: 10px;
             color: white;
+            text-transform: none;
         }
 
         .hero-desc {
@@ -280,20 +297,26 @@
 
     <main class="price-page-shell">
         <div class="container-custom">
+            <div class="page-breadcrumb">
+                <a href="../index.html">Trang chủ</a>
+                <span class="mx-2">/</span>
+                <span class="text-slate-700 font-semibold">Giá nhà đất</span>
+            </div>
+
             <section class="hero-price">
                 <div class="hero-grid">
                     <div>
                         <div class="hero-badge">
                             <i class="fa-solid fa-chart-line"></i>
-                            Dữ liệu tổng hợp từ tin đăng bán đã duyệt
+                            Dữ liệu tổng hợp từ tin bán đã duyệt
                         </div>
 
                         <h1 id="page-title" class="hero-title">
-                            Báo cáo Giá Nhà Đất Toàn hệ thống
+                            Báo cáo giá nhà đất toàn hệ thống
                         </h1>
 
                         <p class="hero-desc">
-                            Theo dõi mặt bằng giá bất động sản từ dữ liệu tin bán thực tế trên hệ thống. Bộ lọc bên dưới cho phép xem nhanh theo tỉnh thành và phường xã để đối chiếu xu hướng rõ hơn.
+                            Theo dõi mặt bằng giá bất động sản từ dữ liệu tin bán thực tế trên hệ thống. Bộ lọc bên dưới giúp xem nhanh theo tỉnh thành và phường xã để đối chiếu xu hướng rõ hơn.
                         </p>
                     </div>
 
@@ -331,7 +354,7 @@
                     </div>
 
                     <div class="flex items-end">
-                        <button id="btn-reset-filter" class="w-full bg-[#008B8B] text-white px-5 py-3 rounded-xl text-[13px] font-bold uppercase tracking-wide hover:opacity-90 transition">
+                        <button id="btn-reset-filter" class="w-full bg-[#008B8B] text-white px-5 py-3 rounded-xl text-[13px] font-bold tracking-wide hover:opacity-90 transition">
                             <i class="fa-solid fa-rotate-right mr-2"></i>Đặt lại bộ lọc
                         </button>
                     </div>
@@ -417,8 +440,8 @@
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
-            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
-            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn khu vực nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">Bắt đầu chat trên Zalo</button>
         </div>
     </div>
 
@@ -432,47 +455,52 @@
     <script>
         let chartInstance = null;
 
+        const pageState = {
+            sourcePosts: [],
+            normalizedPosts: [],
+            isFallback: false
+        };
+
         async function initSharedComponents() {
             try {
-                if (typeof loadComponent === 'function') {
-                    await loadComponent('siteHeader', '../components/header-inner.html');
-                    await loadComponent('siteMobileMenu', '../components/mobile-menu-inner.html');
-                    await loadComponent('siteFooter', '../components/footer-inner.html');
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
 
-                    if (typeof setupFixedHeaderSpacing === 'function') {
+                    if (typeof setupFixedHeaderSpacing === "function") {
                         setupFixedHeaderSpacing();
                     }
-                    if (typeof watchHeaderSpacing === 'function') {
+                    if (typeof watchHeaderSpacing === "function") {
                         watchHeaderSpacing();
                     }
-                    return;
                 }
             } catch (error) {
-                console.error('Không thể load component dùng chung:', error);
+                console.error("Không thể load component dùng chung:", error);
             }
         }
 
         function parseVietnamesePriceToMillion(priceText) {
             if (!priceText) return null;
 
-            const raw = String(priceText).toLowerCase().trim().replace(/,/g, '.');
-            const cleaned = raw.replace(/\s+/g, ' ').trim();
+            const raw = String(priceText).toLowerCase().trim().replace(/,/g, ".");
+            const cleaned = raw.replace(/\s+/g, " ").trim();
             const nums = cleaned.match(/\d+(\.\d+)?/g);
 
             if (!nums || !nums.length) return null;
 
-            if (cleaned.includes('tỷ')) {
+            if (cleaned.includes("tỷ")) {
                 if (nums.length >= 2) {
                     return parseFloat(nums[0]) * 1000 + parseFloat(nums[1]);
                 }
                 return parseFloat(nums[0]) * 1000;
             }
 
-            if (cleaned.includes('triệu')) {
+            if (cleaned.includes("triệu")) {
                 return parseFloat(nums[0]);
             }
 
-            const numericOnly = cleaned.replace(/[^\d.]/g, '');
+            const numericOnly = cleaned.replace(/[^\d.]/g, "");
             if (!numericOnly) return null;
 
             const value = parseFloat(numericOnly);
@@ -483,13 +511,13 @@
         }
 
         function sanitizeAreaValue(value) {
-            if (value === undefined || value === null) return '';
+            if (value === undefined || value === null) return "";
             const text = String(value).trim();
-            if (!text) return '';
-            if (/^chọn/i.test(text)) return '';
-            if (/^select/i.test(text)) return '';
-            if (/^undefined$/i.test(text)) return '';
-            if (/^null$/i.test(text)) return '';
+            if (!text) return "";
+            if (/^chọn/i.test(text)) return "";
+            if (/^select/i.test(text)) return "";
+            if (/^undefined$/i.test(text)) return "";
+            if (/^null$/i.test(text)) return "";
             return text;
         }
 
@@ -499,7 +527,7 @@
                 sanitizeAreaValue(post.province) ||
                 sanitizeAreaValue(post.provinceName) ||
                 sanitizeAreaValue(post.state) ||
-                'Khác'
+                "Khác"
             );
         }
 
@@ -515,16 +543,17 @@
                 sanitizeAreaValue(post.areaLevel2) ||
                 sanitizeAreaValue(post.district) ||
                 sanitizeAreaValue(post.districtName) ||
-                'Khu vực khác'
+                "Khu vực khác"
             );
         }
 
         function extractPropertyType(post) {
             return (
                 sanitizeAreaValue(post.propertyType) ||
+                sanitizeAreaValue(post.propertyCategoryName) ||
                 sanitizeAreaValue(post.categoryName) ||
                 sanitizeAreaValue(post.realEstateType) ||
-                'Bất động sản'
+                "Bất động sản"
             );
         }
 
@@ -543,32 +572,23 @@
         }
 
         function getPropertyPosts() {
-            if (window.postStorage && typeof window.postStorage.getSalePosts === 'function') {
-                const approvedPosts = window.postStorage.getSalePosts().filter(post => post && post.status === 'approved');
+            if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
+                const approvedPosts = window.postStorage.getSalePosts("approved").filter(function (post) {
+                    return post && post.status === "approved";
+                });
+
                 if (approvedPosts.length > 0) {
                     return { posts: approvedPosts, fallback: false };
                 }
-            }
-
-            const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
-            const approvedPosts = allPosts.filter(post =>
-                post &&
-                post.flow === 'real_estate' &&
-                post.postType === 'ban' &&
-                post.status === 'approved'
-            );
-
-            if (approvedPosts.length > 0) {
-                return { posts: approvedPosts, fallback: false };
             }
 
             return { posts: getFallbackData(), fallback: true };
         }
 
         function normalizePostsForPrice(posts) {
-            return posts.map(post => {
-                const priceInMillion = parseVietnamesePriceToMillion(post.propertyPrice);
-                const area = parseFloat(post.propertyArea);
+            return (Array.isArray(posts) ? posts : []).map(function (post) {
+                const priceInMillion = parseVietnamesePriceToMillion(post.propertyPrice || post.price || post.priceText);
+                const area = parseFloat(post.propertyArea || post.area);
 
                 if (!priceInMillion || !area || area <= 0) return null;
 
@@ -576,17 +596,17 @@
                 const ward = extractWard(post);
                 const propertyType = extractPropertyType(post);
                 const unitPrice = priceInMillion / area;
-                const groupKey = `${ward} - ${propertyType}`;
+                const groupKey = ward + " - " + propertyType;
 
                 return {
-                    title: post.title || '',
-                    city,
-                    ward,
-                    propertyType,
-                    area,
-                    priceInMillion,
-                    unitPrice,
-                    groupKey
+                    title: post.title || "",
+                    city: city,
+                    ward: ward,
+                    propertyType: propertyType,
+                    area: area,
+                    priceInMillion: priceInMillion,
+                    unitPrice: unitPrice,
+                    groupKey: groupKey
                 };
             }).filter(Boolean);
         }
@@ -594,7 +614,7 @@
         function buildStats(data) {
             const stats = {};
 
-            data.forEach(item => {
+            data.forEach(function (item) {
                 if (!stats[item.groupKey]) {
                     stats[item.groupKey] = {
                         count: 0,
@@ -617,8 +637,8 @@
         }
 
         function renderChart(labels, dataPoints) {
-            const canvas = document.getElementById('priceChart');
-            const ctx = canvas.getContext('2d');
+            const canvas = document.getElementById("priceChart");
+            const ctx = canvas.getContext("2d");
             const isMobile = window.innerWidth < 768;
 
             if (chartInstance) {
@@ -626,12 +646,12 @@
             }
 
             chartInstance = new Chart(ctx, {
-                type: 'bar',
+                type: "bar",
                 data: {
-                    labels,
+                    labels: labels,
                     datasets: [{
                         data: dataPoints,
-                        backgroundColor: 'rgba(0, 139, 139, 0.82)',
+                        backgroundColor: "rgba(0, 139, 139, 0.82)",
                         borderRadius: 6,
                         barThickness: isMobile ? 12 : 28
                     }]
@@ -642,16 +662,16 @@
                     plugins: {
                         legend: { display: false }
                     },
-                    indexAxis: isMobile ? 'y' : 'x',
+                    indexAxis: isMobile ? "y" : "x",
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: '#f1f5f9' },
-                            ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } }
+                            grid: { color: "#f1f5f9" },
+                            ticks: { color: "#64748b", font: { weight: "bold", size: 10 } }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#1e293b', font: { weight: 'bold', size: 10 } }
+                            ticks: { color: "#1e293b", font: { weight: "bold", size: 10 } }
                         }
                     }
                 }
@@ -659,38 +679,54 @@
         }
 
         function uniqueSorted(values) {
-            return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'vi'));
+            return [...new Set(values.filter(Boolean))].sort(function (a, b) {
+                return a.localeCompare(b, "vi");
+            });
         }
 
         function populateFilters(allNormalizedPosts) {
-            const citySelect = document.getElementById('filter-city');
-            const wardSelect = document.getElementById('filter-ward');
+            const citySelect = document.getElementById("filter-city");
+            const wardSelect = document.getElementById("filter-ward");
 
             const selectedCity = citySelect.value;
             const selectedWard = wardSelect.value;
 
-            const cities = uniqueSorted(allNormalizedPosts.map(item => item.city));
+            const cities = uniqueSorted(allNormalizedPosts.map(function (item) {
+                return item.city;
+            }));
+
             citySelect.innerHTML =
                 '<option value="">Tất cả tỉnh/thành</option>' +
-                cities.map(city => `<option value="${city}">${city}</option>`).join('');
-            citySelect.value = cities.includes(selectedCity) ? selectedCity : '';
+                cities.map(function (city) {
+                    return '<option value="' + city + '">' + city + "</option>";
+                }).join("");
+
+            citySelect.value = cities.includes(selectedCity) ? selectedCity : "";
 
             const wardSource = citySelect.value
-                ? allNormalizedPosts.filter(item => item.city === citySelect.value)
+                ? allNormalizedPosts.filter(function (item) {
+                    return item.city === citySelect.value;
+                })
                 : allNormalizedPosts;
 
-            const wards = uniqueSorted(wardSource.map(item => item.ward));
+            const wards = uniqueSorted(wardSource.map(function (item) {
+                return item.ward;
+            }));
+
             wardSelect.innerHTML =
                 '<option value="">Tất cả phường/xã</option>' +
-                wards.map(ward => `<option value="${ward}">${ward}</option>`).join('');
-            wardSelect.value = wards.includes(selectedWard) ? selectedWard : '';
+                wards.map(function (ward) {
+                    return '<option value="' + ward + '">' + ward + "</option>";
+                }).join("");
+
+            wardSelect.value = wards.includes(selectedWard) ? selectedWard : "";
         }
 
         function getFilteredNormalizedPosts(allNormalizedPosts) {
-            const city = document.getElementById('filter-city').value;
-            const ward = document.getElementById('filter-ward').value;
+            const city = document.getElementById("filter-city").value;
+            const ward = document.getElementById("filter-ward").value;
 
-            return allNormalizedPosts.filter(item => {
+            return allNormalizedPosts.filter(function (item) {
                 const cityOk = city ? item.city === city : true;
                 const wardOk = ward ? item.ward === ward : true;
                 return cityOk && wardOk;
@@ -698,28 +734,28 @@
         }
 
         function updateTitle(city, ward) {
-            const pageTitle = document.getElementById('page-title');
-            const parts = ['Báo cáo Giá Nhà Đất'];
+            const pageTitle = document.getElementById("page-title");
+            const parts = ["Báo cáo giá nhà đất"];
 
             if (ward) {
                 parts.push(ward);
             } else if (city) {
                 parts.push(city);
             } else {
-                parts.push('Toàn hệ thống');
+                parts.push("toàn hệ thống");
             }
 
-            pageTitle.textContent = parts.join(' ');
+            pageTitle.textContent = parts.join(" ");
         }
 
         function renderEmptyState() {
-            document.getElementById('avg-land-price').innerText = '0';
-            document.getElementById('hero-avg-price').innerText = '0';
-            document.getElementById('hero-total-ads').innerText = '0';
-            document.getElementById('top-project').innerText = 'Chưa có dữ liệu';
-            document.getElementById('hero-top-area').innerText = 'Chưa có dữ liệu';
+            document.getElementById("avg-land-price").innerText = "0";
+            document.getElementById("hero-avg-price").innerText = "0";
+            document.getElementById("hero-total-ads").innerText = "0";
+            document.getElementById("top-project").innerText = "Chưa có dữ liệu";
+            document.getElementById("hero-top-area").innerText = "Chưa có dữ liệu";
 
-            document.getElementById('price-table-body').innerHTML = `
+            document.getElementById("price-table-body").innerHTML = `
                 <tr>
                     <td colspan="5" class="px-6 py-8 text-center text-slate-400">
                         Không có dữ liệu phù hợp với bộ lọc hiện tại.
@@ -727,36 +763,34 @@
                 </tr>
             `;
 
-            renderChart(['Chưa có dữ liệu'], [0]);
+            renderChart(["Chưa có dữ liệu"], [0]);
         }
 
         function renderReport() {
-            document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN');
+            document.getElementById("current-date").innerText = new Date().toLocaleDateString("vi-VN");
 
-            const source = getPropertyPosts();
-            const allNormalized = normalizePostsForPrice(source.posts);
-
+            const allNormalized = pageState.normalizedPosts;
             populateFilters(allNormalized);
 
-            const city = document.getElementById('filter-city').value;
-            const ward = document.getElementById('filter-ward').value;
+            const city = document.getElementById("filter-city").value;
+            const ward = document.getElementById("filter-ward").value;
 
             updateTitle(city, ward);
 
             const normalized = getFilteredNormalizedPosts(allNormalized);
             const stats = buildStats(normalized);
-            const tableBody = document.getElementById('price-table-body');
-            const emptyNote = document.getElementById('empty-note');
+            const tableBody = document.getElementById("price-table-body");
+            const emptyNote = document.getElementById("empty-note");
 
-            if (source.fallback) {
-                emptyNote.classList.remove('hidden');
+            if (pageState.isFallback) {
+                emptyNote.classList.remove("hidden");
                 emptyNote.innerHTML = `
                     <strong>Chưa có đủ dữ liệu tin bán thật đã duyệt.</strong><br>
-                    Hệ thống đang tạm dùng dữ liệu mẫu để giữ giao diện hoạt động. Khi bạn đăng tin bán và được admin duyệt, bảng giá này sẽ tự động lấy dữ liệu mới từ hệ thống.
+                    Hệ thống đang tạm dùng dữ liệu mẫu để giữ giao diện hoạt động. Khi có thêm tin bán được duyệt, bảng giá này sẽ tự động cập nhật theo dữ liệu mới.
                 `;
             } else {
-                emptyNote.classList.add('hidden');
-                emptyNote.innerHTML = '';
+                emptyNote.classList.add("hidden");
+                emptyNote.innerHTML = "";
             }
 
             if (normalized.length === 0) {
@@ -765,7 +799,7 @@
             }
 
             const sortedKeys = Object.keys(stats)
-                .sort((a, b) => {
+                .sort(function (a, b) {
                     const countDiff = stats[b].count - stats[a].count;
                     if (countDiff !== 0) return countDiff;
 
@@ -778,12 +812,13 @@
             let totalAvgSum = 0;
             const labels = [];
             const dataPoints = [];
-            tableBody.innerHTML = '';
+            tableBody.innerHTML = "";
 
-            sortedKeys.forEach(key => {
+            sortedKeys.forEach(function (key) {
                 const row = stats[key];
                 const avg = row.total / row.count;
                 totalAvgSum += avg;
+
                 labels.push(key);
                 dataPoints.push(Number(avg.toFixed(1)));
 
@@ -798,53 +833,61 @@
                 `;
             });
 
-            const finalAvg = sortedKeys.length ? (totalAvgSum / sortedKeys.length).toFixed(1) : '0';
-            const topArea = sortedKeys[0] || 'Đang cập nhật';
+            const finalAvg = sortedKeys.length ? (totalAvgSum / sortedKeys.length).toFixed(1) : "0";
+            const topArea = sortedKeys.length ? sortedKeys[0] : "Đang cập nhật";
 
-            document.getElementById('avg-land-price').innerText = finalAvg;
-            document.getElementById('hero-avg-price').innerText = finalAvg;
-            document.getElementById('hero-total-ads').innerText = normalized.length;
-            document.getElementById('top-project').innerText = topArea;
-            document.getElementById('hero-top-area').innerText = topArea;
+            document.getElementById("avg-land-price").innerText = finalAvg;
+            document.getElementById("hero-avg-price").innerText = finalAvg;
+            document.getElementById("hero-total-ads").innerText = normalized.length;
+            document.getElementById("top-project").innerText = topArea;
+            document.getElementById("hero-top-area").innerText = topArea;
 
             renderChart(labels, dataPoints);
         }
 
+        function initData() {
+            const source = getPropertyPosts();
+            pageState.sourcePosts = source.posts;
+            pageState.normalizedPosts = normalizePostsForPrice(source.posts);
+            pageState.isFallback = source.fallback;
+        }
+
         function sendToZalo() {
-            const name = document.getElementById('cusName').value.trim();
-            const msg = document.getElementById('cusMsg').value.trim();
-            const phone = '0946239289';
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
+            const phone = "0946239289";
 
             if (!name) {
-                alert('Vui lòng cho biết tên của bạn');
+                alert("Vui lòng cho biết tên của bạn");
                 return;
             }
 
-            const fullMsg = `Chào admin Tổ Ấm Việt, tôi là ${name}. ${msg}`;
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
-            window.open(`https://zalo.me/${phone}?text=${encodedMsg}`, '_blank');
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
 
-        document.getElementById('filter-city').addEventListener('change', renderReport);
-        document.getElementById('filter-ward').addEventListener('change', renderReport);
+        document.getElementById("filter-city").addEventListener("change", renderReport);
+        document.getElementById("filter-ward").addEventListener("change", renderReport);
 
-        document.getElementById('btn-reset-filter').addEventListener('click', function () {
-            document.getElementById('filter-city').value = '';
-            document.getElementById('filter-ward').value = '';
+        document.getElementById("btn-reset-filter").addEventListener("click", function () {
+            document.getElementById("filter-city").value = "";
+            document.getElementById("filter-ward").value = "";
             renderReport();
         });
 
-        window.addEventListener('load', async function () {
+        window.addEventListener("load", async function () {
             await initSharedComponents();
 
-            if (typeof renderSeoContent === 'function') {
-                renderSeoContent('seoContent', 'price');
+            if (typeof renderSeoContent === "function") {
+                renderSeoContent("seoContent", "price");
             }
 
+            initData();
             renderReport();
         });
 
-        window.addEventListener('resize', function () {
+        window.addEventListener("resize", function () {
             clearTimeout(window.__priceChartResizeTimer);
             window.__priceChartResizeTimer = setTimeout(renderReport, 250);
         });
