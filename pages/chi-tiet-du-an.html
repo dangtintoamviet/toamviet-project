@@ -176,6 +176,7 @@
             font-weight: 900;
             color: #fff;
             text-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            text-transform: none;
         }
 
         .hero-address {
@@ -461,6 +462,7 @@
             line-height: 1.2;
             color: var(--text-strong);
             margin-bottom: 6px;
+            text-transform: none;
         }
 
         .stat-hint {
@@ -497,6 +499,7 @@
             font-weight: 900;
             line-height: 1.3;
             color: var(--text-strong);
+            text-transform: none;
         }
 
         .section-sub {
@@ -677,6 +680,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-transform: none;
         }
 
         .related-address {
@@ -789,6 +793,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-transform: none;
         }
 
         .sidebar-news-item:hover .sidebar-news-title {
@@ -1528,7 +1533,7 @@
             document.getElementById("contactArea").textContent = project.area;
             document.getElementById("contactPosts").textContent = `${formatNumber(project.salePostsCount)} / ${formatNumber(project.rentalPostsCount)}`;
             document.getElementById("contactStatus").textContent = project.status;
-            document.getElementById("goToCategoryBtn").href = `../pages/danh-muc-du-an.html?projectId=${encodeURIComponent(project.id)}`;
+            document.getElementById("goToCategoryBtn").href = `../pages/danh-muc-du-an.html?projectId=${encodeURIComponent(project.id)}&slug=${encodeURIComponent(project.slug || project.id)}`;
 
             const highlights = [
                 {
@@ -1884,9 +1889,13 @@
 
             if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
                 const keyBySlug = `project-${selectedProject.slug || ""}`;
-                const externalContent = getSeoContentByKey(keyBySlug) || getSeoContentByKey("project");
-                if (externalContent) {
-                    renderSeoContent("seoContent", externalContent ? (getSeoContentByKey(keyBySlug) ? keyBySlug : "project") : "project");
+                const hasKeyBySlug = !!getSeoContentByKey(keyBySlug);
+                const hasProjectKey = !!getSeoContentByKey("project");
+
+                if (hasKeyBySlug) {
+                    renderSeoContent("seoContent", keyBySlug);
+                } else if (hasProjectKey) {
+                    renderSeoContent("seoContent", "project");
                 } else {
                     renderSeoFallback();
                 }
