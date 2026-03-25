@@ -1,1 +1,2304 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tìm kiếm | ToamViet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --text-main: #1f2937;
+            --text-soft: #64748b;
+            --stroke: #e5e7eb;
+            --danger: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Roboto", sans-serif;
+            background: var(--soft-bg);
+            color: var(--text-main);
+        }
+
+        .search-page-shell {
+            padding-top: 20px;
+            padding-bottom: 34px;
+        }
+
+        .search-hero,
+        .search-filter-card,
+        .search-summary-card,
+        .search-results-card,
+        .search-side-card,
+        .empty-box {
+            background: #fff;
+            border: 1px solid var(--stroke);
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .search-hero {
+            position: relative;
+            overflow: hidden;
+            padding: 28px;
+            margin-bottom: 22px;
+            background:
+                radial-gradient(circle at top right, rgba(255,255,255,0.10), transparent 24%),
+                linear-gradient(135deg, #0f766e 0%, #008b8b 52%, #0f172a 100%);
+            color: #fff;
+        }
+
+        .search-hero::after {
+            content: "";
+            position: absolute;
+            right: -80px;
+            bottom: -80px;
+            width: 220px;
+            height: 220px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 38px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            margin: 0 0 10px;
+            font-size: clamp(26px, 3vw, 34px);
+            line-height: 1.25;
+            font-weight: 800;
+            color: #fff;
+            text-transform: none;
+        }
+
+        .hero-desc {
+            margin: 0;
+            max-width: 860px;
+            font-size: 14px;
+            line-height: 1.85;
+            color: rgba(255,255,255,0.92);
+        }
+
+        .search-filter-card {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-kicker {
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--vip-color);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--vip-color);
+            padding-left: 12px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.95fr) minmax(0, 0.95fr) auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-input,
+        .filter-select {
+            width: 100%;
+            min-height: 50px;
+            border: 1px solid #dbe3eb;
+            border-radius: 16px;
+            background: #fff;
+            padding: 0 16px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.25s ease;
+            color: #334155;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.08);
+        }
+
+        .filter-btn,
+        .reset-btn {
+            min-height: 50px;
+            padding: 0 18px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn {
+            background: linear-gradient(135deg, var(--vip-color), var(--vip-dark));
+            color: #fff;
+            box-shadow: 0 12px 24px rgba(0, 139, 139, 0.15);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.97;
+        }
+
+        .reset-btn {
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #dbe4ee;
+        }
+
+        .reset-btn:hover {
+            color: var(--vip-color);
+            border-color: rgba(0,139,139,0.3);
+            background: #f8ffff;
+        }
+
+        .tab-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .tab-btn {
+            min-height: 42px;
+            padding: 0 16px;
+            border-radius: 999px;
+            border: 1px solid #dbe4ee;
+            background: #fff;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: rgba(0,139,139,0.3);
+            color: var(--vip-color);
+        }
+
+        .tab-btn.active {
+            background: var(--vip-color);
+            color: #fff;
+            border-color: var(--vip-color);
+            box-shadow: 0 10px 20px rgba(0, 139, 139, 0.16);
+        }
+
+        .search-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .search-summary-card {
+            padding: 18px 20px;
+            margin-bottom: 18px;
+        }
+
+        .summary-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.35;
+            color: #0f172a;
+            text-transform: none;
+        }
+
+        .summary-sub {
+            margin-top: 8px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #64748b;
+        }
+
+        .summary-highlight {
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .search-results-card {
+            padding: 18px;
+        }
+
+        .result-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .result-card {
+            background: #fff;
+            border: 1px solid #e8edf3;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+            transition: 0.28s ease;
+        }
+
+        .result-card:hover {
+            border-color: rgba(0,139,139,0.22);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .property-card {
+            display: grid;
+            grid-template-columns: 290px minmax(0, 1fr);
+            min-height: 100%;
+        }
+
+        .property-thumb {
+            position: relative;
+            background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
+            min-height: 100%;
+            overflow: hidden;
+        }
+
+        .property-thumb img {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .vip-badge,
+        .service-badge,
+        .image-count-badge {
+            position: absolute;
+            left: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: 1px solid rgba(255,255,255,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        .vip-badge {
+            top: 12px;
+            color: #fff;
+        }
+
+        .vip-badge.kim-cuong {
+            background: linear-gradient(135deg, rgba(56,189,248,0.96), rgba(37,99,235,0.96));
+        }
+
+        .vip-badge.vang {
+            background: linear-gradient(135deg, rgba(251,191,36,0.96), rgba(245,158,11,0.96));
+        }
+
+        .vip-badge.bac {
+            background: linear-gradient(135deg, rgba(226,232,240,0.96), rgba(148,163,184,0.96));
+            color: #1f2937;
+        }
+
+        .vip-badge.dong {
+            background: linear-gradient(135deg, rgba(251,146,60,0.96), rgba(180,83,9,0.96));
+        }
+
+        .service-badge {
+            top: 12px;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(0,139,139,0.96), rgba(15,118,110,0.96));
+        }
+
+        .image-count-badge {
+            left: 12px;
+            bottom: 12px;
+            color: #fff;
+            background: rgba(15,23,42,0.45);
+            font-size: 11px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .property-body {
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .card-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .card-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 32px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .card-chip.primary {
+            background: #ecfeff;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .card-chip.secondary {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            color: #ea580c;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 17px;
+            line-height: 1.5;
+            font-weight: 800;
+            color: #0f172a;
+            text-transform: none;
+        }
+
+        .card-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .card-title a:hover {
+            color: var(--vip-color);
+        }
+
+        .price-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .price-main {
+            color: var(--danger);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .price-sub {
+            color: var(--vip-color);
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .price-note {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .card-location {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.8;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 14px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .meta-grid strong {
+            color: #334155;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding-top: 14px;
+            border-top: 1px solid #edf2f7;
+            flex-wrap: wrap;
+        }
+
+        .poster-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .poster-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--vip-color), var(--vip-dark));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .poster-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #334155;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .poster-role {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .detail-btn,
+        .call-btn,
+        .favorite-btn {
+            min-height: 40px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .detail-btn {
+            padding: 0 14px;
+            background: #fff;
+            color: #475569;
+            border: 1px solid #dbe4ee;
+        }
+
+        .detail-btn:hover {
+            color: var(--vip-color);
+            border-color: rgba(0,139,139,0.28);
+            background: #f8ffff;
+        }
+
+        .call-btn {
+            width: 40px;
+            border: 1px solid #fed7aa;
+            color: #ea580c;
+            background: #fff7ed;
+        }
+
+        .favorite-btn {
+            width: 40px;
+            border: 1px solid #dbe4ee;
+            color: #64748b;
+            background: #fff;
+        }
+
+        .favorite-btn.active {
+            color: #dc2626;
+            border-color: #fecaca;
+            background: #fff5f5;
+        }
+
+        .project-card,
+        .news-card {
+            display: grid;
+            grid-template-columns: 270px minmax(0, 1fr);
+            align-items: stretch;
+        }
+
+        .project-thumb,
+        .news-thumb {
+            position: relative;
+            background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
+            overflow: hidden;
+        }
+
+        .project-thumb img,
+        .news-thumb img {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .project-body,
+        .news-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .project-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            width: fit-content;
+        }
+
+        .project-status.live {
+            background: #ecfdf5;
+            color: #16a34a;
+        }
+
+        .project-status.soon {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        .project-meta-grid,
+        .news-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 14px;
+        }
+
+        .project-meta-item,
+        .news-meta-item {
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 14px;
+            padding: 12px;
+        }
+
+        .project-meta-item .label,
+        .news-meta-item .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .project-meta-item .value,
+        .news-meta-item .value {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.55;
+        }
+
+        .search-side-card {
+            padding: 20px;
+            position: sticky;
+            top: 92px;
+        }
+
+        .side-title {
+            margin: 0 0 14px;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.35;
+            color: #0f172a;
+            text-transform: none;
+        }
+
+        .side-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .side-item {
+            display: block;
+            padding: 14px;
+            border-radius: 16px;
+            border: 1px solid #edf2f7;
+            background: #fff;
+            text-decoration: none;
+            transition: 0.25s ease;
+        }
+
+        .side-item:hover {
+            border-color: rgba(0,139,139,0.28);
+            background: #f8ffff;
+            transform: translateY(-1px);
+        }
+
+        .side-item-title {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.55;
+            color: #0f172a;
+        }
+
+        .side-item-sub {
+            font-size: 12px;
+            line-height: 1.65;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .empty-box {
+            padding: 22px;
+            border-style: dashed;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .seo-block-shell {
+            margin-top: 22px;
+        }
+
+        @media (max-width: 1100px) {
+            .search-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .search-side-card {
+                position: static;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .filter-grid .wide-col {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .property-card,
+            .project-card,
+            .news-card {
+                grid-template-columns: 1fr;
+            }
+
+            .property-thumb img,
+            .project-thumb img,
+            .news-thumb img {
+                min-height: 230px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .search-page-shell {
+                padding-top: 16px;
+                padding-bottom: 24px;
+            }
+
+            .search-hero,
+            .search-filter-card,
+            .search-summary-card,
+            .search-results-card,
+            .search-side-card {
+                border-radius: 20px;
+            }
+
+            .search-hero,
+            .search-filter-card,
+            .search-side-card,
+            .search-summary-card,
+            .search-results-card {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-grid .wide-col {
+                grid-column: span 1;
+            }
+
+            .tab-row {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 4px;
+                scrollbar-width: none;
+            }
+
+            .tab-row::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab-btn {
+                white-space: nowrap;
+                flex: 0 0 auto;
+            }
+
+            .meta-grid,
+            .project-meta-grid,
+            .news-meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
+
+    <main class="search-page-shell">
+        <div class="container-custom">
+            <section class="search-hero">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Trung tâm tìm kiếm toàn site
+                </div>
+
+                <h1 id="heroTitle" class="hero-title">Kết quả tìm kiếm trên ToamViet</h1>
+
+                <p id="heroDesc" class="hero-desc">
+                    Tìm nhanh nhà đất bán, nhà đất cho thuê, dự án, xây dựng và tin tức theo từ khóa, khu vực và nhóm nội dung.
+                </p>
+            </section>
+
+            <section class="search-filter-card">
+                <div class="section-kicker">Bộ lọc tìm kiếm</div>
+
+                <div class="filter-grid">
+                    <input
+                        id="searchKeyword"
+                        type="text"
+                        class="filter-input wide-col"
+                        placeholder="Nhập từ khóa: căn hộ, Vinhomes, Quận 2, xây nhà trọn gói..."
+                    />
+
+                    <select id="searchCategory" class="filter-select">
+                        <option value="all">Tất cả nội dung</option>
+                        <option value="sale">Nhà đất bán</option>
+                        <option value="rental">Nhà đất cho thuê</option>
+                        <option value="project">Dự án</option>
+                        <option value="construction">Xây dựng</option>
+                        <option value="news">Tin tức</option>
+                    </select>
+
+                    <select id="searchCity" class="filter-select">
+                        <option value="">Toàn quốc</option>
+                    </select>
+
+                    <div class="flex gap-2">
+                        <button id="searchBtn" class="filter-btn flex-1">
+                            <i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm
+                        </button>
+                        <button id="resetBtn" class="reset-btn">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tab-row" id="tabRow">
+                    <button class="tab-btn active" data-tab="all">Tất cả</button>
+                    <button class="tab-btn" data-tab="sale">Nhà đất bán</button>
+                    <button class="tab-btn" data-tab="rental">Nhà đất cho thuê</button>
+                    <button class="tab-btn" data-tab="project">Dự án</button>
+                    <button class="tab-btn" data-tab="construction">Xây dựng</button>
+                    <button class="tab-btn" data-tab="news">Tin tức</button>
+                </div>
+            </section>
+
+            <div class="search-layout">
+                <section>
+                    <div class="search-summary-card">
+                        <h2 class="summary-title">Kết quả tìm kiếm</h2>
+                        <div id="summarySub" class="summary-sub">
+                            Đang tải dữ liệu tìm kiếm...
+                        </div>
+                    </div>
+
+                    <div class="search-results-card">
+                        <div id="resultList" class="result-list"></div>
+                    </div>
+
+                    <section class="seo-block-shell">
+                        <div id="seoContent"></div>
+                    </section>
+                </section>
+
+                <aside class="search-side-card">
+                    <h3 class="side-title">Lối tắt nhanh</h3>
+                    <div class="side-list" id="quickLinkList"></div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <button
+        id="goToTop"
+        onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+    >
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
+
+    <div
+        class="zalo-chat-btn wiggle"
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+    >
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+
+    <div id="chatForm">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span
+                onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+                style="cursor:pointer; font-size: 20px;"
+            >&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần hỗ trợ tìm nội dung nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">Bắt đầu chat trên Zalo</button>
+        </div>
+    </div>
+
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+        const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
+        const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
+        const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
+
+        const fallbackSalePosts = [
+            {
+                id: "home-sale-1",
+                title: "Căn hộ Diamond Alnata Plus - Khu đô thị Celadon City",
+                propertyType: "Căn hộ",
+                propertyPrice: "4.2 tỷ",
+                propertyArea: "85",
+                city: "TP.HCM",
+                ward: "Tân Phú",
+                contactName: "Nguyễn Thành An",
+                roleLabel: "Môi giới chuyên nghiệp",
+                contactPhone: "0912598888",
+                profileType: "canhan",
+                status: "demo",
+                createdAt: new Date().toISOString(),
+                flow: "real_estate",
+                postType: "ban",
+                vipLevel: "kim-cuong",
+                images: ["https://images.unsplash.com/photo-1560448204-61dc36dc98c8?w=800"]
+            },
+            {
+                id: "home-sale-2",
+                title: "Bán nhà phố thương mại khu đô thị trung tâm mới",
+                propertyType: "Nhà phố",
+                propertyPrice: "12.8 tỷ",
+                propertyArea: "110",
+                city: "Bình Dương",
+                ward: "Thuận An",
+                contactName: "Công ty BĐS Minh Phát",
+                brandName: "Công ty BĐS Minh Phát",
+                roleLabel: "Doanh nghiệp / Sàn BĐS",
+                contactPhone: "0977888666",
+                profileType: "doanhnghiep",
+                status: "demo",
+                createdAt: new Date(Date.now() - 86400000).toISOString(),
+                flow: "real_estate",
+                postType: "ban",
+                vipLevel: "vang",
+                images: ["https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=800"]
+            }
+        ];
+
+        const fallbackRentalPosts = [
+            {
+                id: "home-rent-1",
+                title: "Cho thuê căn hộ cao cấp Vinhomes Central Park full nội thất",
+                propertyType: "Căn hộ",
+                propertyPrice: "25 triệu/tháng",
+                propertyArea: "85",
+                city: "TP.HCM",
+                ward: "Bình Thạnh",
+                contactName: "Trần Thị Lan Anh",
+                roleLabel: "Chuyên viên cho thuê",
+                contactPhone: "0901234567",
+                profileType: "canhan",
+                status: "demo",
+                createdAt: new Date().toISOString(),
+                flow: "real_estate",
+                postType: "thue",
+                vipLevel: "vang",
+                images: ["https://images.unsplash.com/photo-1494526585095-c41746248156?w=800"]
+            },
+            {
+                id: "home-rent-2",
+                title: "Cho thuê văn phòng mặt tiền trung tâm thành phố",
+                propertyType: "Văn phòng",
+                propertyPrice: "45 triệu/tháng",
+                propertyArea: "120",
+                city: "Đà Nẵng",
+                ward: "Hải Châu",
+                contactName: "Doanh nghiệp Sao Việt",
+                brandName: "Doanh nghiệp Sao Việt",
+                roleLabel: "Doanh nghiệp / Cho thuê",
+                contactPhone: "0933222111",
+                profileType: "doanhnghiep",
+                status: "demo",
+                createdAt: new Date(Date.now() - 86400000).toISOString(),
+                flow: "real_estate",
+                postType: "thue",
+                vipLevel: "bac",
+                images: ["https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800"]
+            }
+        ];
+
+        const fallbackConstructionPosts = [
+            {
+                id: "home-build-1",
+                title: "Xây nhà trọn gói tại Hà Tĩnh",
+                flow: "construction",
+                postType: "xaydung",
+                status: "demo",
+                serviceType: "Xây nhà trọn gói",
+                servicePrice: "8.5 triệu",
+                serviceExp: "10 năm",
+                serviceArea: "Hà Nội",
+                serviceBrand: "ANP",
+                serviceSpecialty: "Nhà phố",
+                city: "Hà Nội",
+                ward: "",
+                description: "Đơn vị thi công và xây dựng trọn gói theo nhu cầu khách hàng.",
+                contactName: "ANP",
+                contactPhone: "0946239289",
+                profileType: "doanhnghiep",
+                roleLabel: "Doanh nghiệp / Nhà thầu xây dựng",
+                createdAt: new Date().toISOString(),
+                images: ["https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800"]
+            },
+            {
+                id: "home-build-2",
+                title: "Thi công phần thô tại Hà Tĩnh",
+                flow: "construction",
+                postType: "xaydung",
+                status: "demo",
+                serviceType: "Thi công phần thô",
+                servicePrice: "3.5 triệu",
+                serviceExp: "10 năm",
+                serviceArea: "Hà Tĩnh",
+                serviceBrand: "ANP",
+                serviceSpecialty: "Nhà phố",
+                city: "Hà Tĩnh",
+                ward: "",
+                description: "Thi công phần thô đồng bộ, kiểm soát tiến độ tốt.",
+                contactName: "ANP",
+                contactPhone: "0901234567",
+                profileType: "doanhnghiep",
+                roleLabel: "Doanh nghiệp / Nhà thầu xây dựng",
+                createdAt: new Date(Date.now() - 86400000).toISOString(),
+                images: ["https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800"]
+            }
+        ];
+
+        const fallbackProjects = [
+            {
+                id: "proj-1",
+                slug: "bcons-newsky",
+                name: "Bcons NewSky",
+                city: "Thuận An, Bình Dương",
+                ward: "",
+                statusLabel: "Sắp mở bán",
+                statusType: "soon",
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
+                area: "1,98 ha",
+                mediaCount: 15,
+                typeName: "Căn hộ chung cư",
+                developer: "Bcons"
+            },
+            {
+                id: "proj-2",
+                slug: "vinhomes-global-gate",
+                name: "Vinhomes Global Gate",
+                city: "Đông Anh, Hà Nội",
+                ward: "",
+                statusLabel: "Đang mở bán",
+                statusType: "live",
+                image: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800",
+                area: "299 ha",
+                mediaCount: 7,
+                typeName: "Khu đô thị mới",
+                developer: "Vinhomes"
+            }
+        ];
+
+        const fallbackNews = [
+            {
+                id: "news-1",
+                slug: "xu-huong-thi-truong-bat-dong-san-2026",
+                title: "Xu hướng thị trường bất động sản năm 2026 có gì đáng chú ý?",
+                category: "Tin tức thị trường",
+                topic: "Tin tức thị trường",
+                summary: "Thị trường bất động sản đang bước vào giai đoạn chọn lọc rõ hơn giữa nhu cầu ở thực, đầu tư dòng tiền và khu vực có lực đẩy hạ tầng mạnh.",
+                image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80",
+                author: "Ban biên tập ToamViet",
+                createdAt: "2026-03-22T09:30:00"
+            },
+            {
+                id: "news-2",
+                slug: "5-luu-y-khi-chon-doanh-nghiep-hoac-nha-thau",
+                title: "5 lưu ý quan trọng khi chọn doanh nghiệp hoặc nhà thầu",
+                category: "Kinh nghiệm hữu ích",
+                topic: "Kinh nghiệm hữu ích",
+                summary: "Trước khi làm việc với doanh nghiệp hoặc nhà thầu, người dùng nên đánh giá kỹ năng lực, pháp lý, hợp đồng và tiến độ thực tế.",
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
+                author: "ToamViet Team",
+                createdAt: "2026-03-20T15:20:00"
+            }
+        ];
+
+        const state = {
+            allResults: [],
+            currentTab: "all",
+            currentKeyword: "",
+            currentCategory: "all",
+            currentCity: ""
+        };
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function getQueryParam(key) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(key) || "";
+        }
+
+        function updateUrlQuery() {
+            const url = new URL(window.location.href);
+
+            if (state.currentKeyword) url.searchParams.set("keyword", state.currentKeyword);
+            else url.searchParams.delete("keyword");
+
+            if (state.currentCategory && state.currentCategory !== "all") url.searchParams.set("category", state.currentCategory);
+            else url.searchParams.delete("category");
+
+            if (state.currentCity) url.searchParams.set("city", state.currentCity);
+            else url.searchParams.delete("city");
+
+            window.history.replaceState({}, "", url.pathname + url.search);
+        }
+
+        function getStorageArray(key) {
+            try {
+                const raw = JSON.parse(localStorage.getItem(key) || "[]");
+                return Array.isArray(raw) ? raw : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function setStorageArray(key, value) {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+
+        function createPostId(post, index = 0) {
+            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) return String(post.id).trim();
+            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) return String(post.postId).trim();
+            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) return String(post.slug).trim();
+
+            const stableParts = [
+                post.title,
+                post.propertyType,
+                post.serviceType,
+                post.serviceBrand,
+                post.city,
+                post.ward,
+                post.contactPhone,
+                post.createdAt,
+                index
+            ];
+
+            return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
+        }
+
+        function getCardImage(item) {
+            if (item.image && typeof item.image === "string" && item.image.trim()) return item.image;
+            if (item.thumbnail && typeof item.thumbnail === "string" && item.thumbnail.trim()) return item.thumbnail;
+            if (item.avatar && typeof item.avatar === "string" && item.avatar.trim()) return item.avatar;
+
+            if (Array.isArray(item.images) && item.images.length) {
+                const firstImage = item.images[0];
+                if (typeof firstImage === "string" && firstImage.trim()) return firstImage;
+                if (firstImage && firstImage.dataUrl) return firstImage.dataUrl;
+                if (firstImage && firstImage.url) return firstImage.url;
+            }
+
+            return FALLBACK_IMAGE;
+        }
+
+        function buildPoster(post) {
+            return post.brandName || post.contactName || post.fullName || post.serviceBrand || "Người đăng";
+        }
+
+        function getPosterSub(post) {
+            const rawRole = post.roleLabel || post.role || "";
+            const normalizedRole = normalizeText(rawRole);
+
+            if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) return "Doanh nghiệp";
+            if (normalizedRole.includes("moi gioi") || normalizedRole.includes("chuyen vien") || normalizedRole.includes("nha thau")) return rawRole;
+            if (normalizedRole.includes("ca nhan") || normalizeText(post.profileType) === "canhan") return "Cá nhân";
+            if (normalizeText(post.profileType) === "doanhnghiep") return "Doanh nghiệp";
+
+            return rawRole || "Người đăng";
+        }
+
+        function getAvatarText(name) {
+            return String(name || "TV")
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(word => word.charAt(0).toUpperCase())
+                .join("") || "TV";
+        }
+
+        function buildLocation(post) {
+            return [post.addressDetail, post.ward, post.city].filter(Boolean).join(", ")
+                || [post.ward, post.city].filter(Boolean).join(", ")
+                || post.serviceArea
+                || post.city
+                || "Đang cập nhật khu vực";
+        }
+
+        function isBusinessProfile(post) {
+            const role = normalizeText(post.roleLabel || post.role || "");
+            return normalizeText(post.profileType) === "doanhnghiep" ||
+                !!post.brandName ||
+                !!post.serviceBrand ||
+                role.includes("doanh nghiep") ||
+                role.includes("doanhnghiep") ||
+                role.includes("nha thau");
+        }
+
+        function getProfileUrl(post, postId) {
+            return isBusinessProfile(post)
+                ? "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(String(postId || "").trim())
+                : "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(String(postId || "").trim());
+        }
+
+        function getDetailUrl(post, postId) {
+            if (post.detailUrl) return post.detailUrl;
+            return "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(postId);
+        }
+
+        function getProjectDetailUrl(project, index = 0) {
+            if (project.detailUrl) return project.detailUrl;
+            const projectId = project.id || project.slug || slugifyText(project.name) || ("du-an-" + index);
+            const projectSlug = project.slug || slugifyText(project.name || "");
+            return "../pages/chi-tiet-du-an.html?slug=" + encodeURIComponent(projectSlug || projectId);
+        }
+
+        function getNewsDetailUrl(news, index = 0) {
+            if (news.detailUrl) return news.detailUrl;
+            return "../pages/chi-tiet-tin-tuc.html?slug=" + encodeURIComponent(news.slug || news.id || ("news-" + index));
+        }
+
+        function getVipLevel(post) {
+            const raw = String(
+                post.vipLevel ||
+                post.vipType ||
+                post.vipPackage ||
+                post.packageType ||
+                ""
+            ).toLowerCase().trim();
+
+            if (!raw) return "";
+            if (raw.includes("kim") || raw.includes("diamond")) return "kim-cuong";
+            if (raw.includes("vang") || raw.includes("gold")) return "vang";
+            if (raw.includes("bac") || raw.includes("silver")) return "bac";
+            if (raw.includes("dong") || raw.includes("bronze")) return "dong";
+            return "";
+        }
+
+        function getVipLabel(level) {
+            const map = {
+                "kim-cuong": "VIP Kim cương",
+                "vang": "VIP Vàng",
+                "bac": "VIP Bạc",
+                "dong": "VIP Đồng"
+            };
+            return map[level] || "";
+        }
+
+        function parsePriceToNumber(priceText) {
+            if (!priceText) return 0;
+
+            const text = String(priceText).toLowerCase().trim().replace(/,/g, ".");
+            const numbers = text.match(/[\d.]+/g) || [];
+            const first = parseFloat(numbers[0]) || 0;
+
+            if (text.includes("tỷ")) return first * 1000000000;
+            if (text.includes("triệu")) return first * 1000000;
+            if (text.includes("nghìn") || text.includes("ngàn")) return first * 1000;
+
+            return first;
+        }
+
+        function calculatePricePerM2(post) {
+            const totalPrice = parsePriceToNumber(post.propertyPrice);
+            const areaNumber = Number(post.propertyArea || 0);
+
+            if (!totalPrice || !areaNumber) return "Chưa rõ";
+
+            const unit = totalPrice / areaNumber;
+            if (unit >= 1000000000) return (unit / 1000000000).toFixed(2) + " tỷ/m²";
+            if (unit >= 1000000) return Math.round(unit / 1000000) + " triệu/m²";
+            if (unit >= 1000) return Math.round(unit / 1000) + " nghìn/m²";
+            return Math.round(unit).toLocaleString("vi-VN") + " đ/m²";
+        }
+
+        function formatDate(value) {
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return "Đang cập nhật";
+            return date.toLocaleDateString("vi-VN");
+        }
+
+        function getSalePosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getSalePosts === "function") {
+                    const posts = window.postStorage.getSalePosts() || [];
+                    const filtered = posts.filter(post =>
+                        post &&
+                        normalizeText(post.flow) === "real_estate" &&
+                        normalizeText(post.postType) === "ban" &&
+                        ["approved", "demo", "published"].includes(normalizeText(post.status))
+                    );
+                    return filtered.length ? filtered : fallbackSalePosts;
+                }
+            } catch (error) {}
+            return fallbackSalePosts;
+        }
+
+        function getRentalPosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getRentalPosts === "function") {
+                    const posts = window.postStorage.getRentalPosts() || [];
+                    const filtered = posts.filter(post => {
+                        if (!post) return false;
+                        const flow = normalizeText(post.flow);
+                        const type = normalizeText(post.postType);
+                        const status = normalizeText(post.status);
+
+                        return flow === "real_estate" &&
+                            (type === "thue" || type === "cho-thue" || type === "rent") &&
+                            ["approved", "demo", "published", "pending", ""].includes(status);
+                    });
+                    return filtered.length ? filtered : fallbackRentalPosts;
+                }
+            } catch (error) {}
+            return fallbackRentalPosts;
+        }
+
+        async function getProjects() {
+            try {
+                if (window.projectService && typeof window.projectService.getAllProjects === "function") {
+                    const projects = await window.projectService.getAllProjects();
+                    if (Array.isArray(projects) && projects.length) return projects;
+                }
+            } catch (error) {}
+
+            try {
+                const raw = JSON.parse(localStorage.getItem("projects") || "[]");
+                if (Array.isArray(raw) && raw.length) return raw;
+            } catch (error) {}
+
+            return fallbackProjects;
+        }
+
+        function getConstructionPosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getConstructionPosts === "function") {
+                    const posts = window.postStorage.getConstructionPosts() || [];
+                    const filtered = posts.filter(post =>
+                        post &&
+                        (normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung") &&
+                        ["approved", "demo", "published"].includes(normalizeText(post.status))
+                    );
+                    return filtered.length ? filtered : fallbackConstructionPosts;
+                }
+            } catch (error) {}
+            return fallbackConstructionPosts;
+        }
+
+        async function getNewsPosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getNewsPosts === "function") {
+                    const posts = await window.postStorage.getNewsPosts();
+                    if (Array.isArray(posts) && posts.length) return posts;
+                }
+            } catch (error) {}
+
+            const possibleKeys = ["newsPosts", "news", "toamviet_news", "toamvietNews"];
+            for (const key of possibleKeys) {
+                try {
+                    const raw = JSON.parse(localStorage.getItem(key) || "[]");
+                    if (Array.isArray(raw) && raw.length) return raw;
+                    if (raw && Array.isArray(raw.items) && raw.items.length) return raw.items;
+                } catch (error) {}
+            }
+
+            return fallbackNews;
+        }
+
+        function normalizeProject(project, index = 0) {
+            const name = project.name || project.projectName || project.title || ("Dự án " + (index + 1));
+            const slug = String(project.slug || project.projectSlug || slugifyText(name)).trim();
+
+            return {
+                ...project,
+                id: String(project.id || project.projectId || slug || ("du-an-" + (index + 1))).trim(),
+                slug,
+                name,
+                city: project.city || [project.ward, project.city].filter(Boolean).join(", ") || "Đang cập nhật",
+                image: project.thumbnail || project.image || FALLBACK_IMAGE,
+                statusLabel: project.statusLabel || project.status || "Nổi bật",
+                statusType: normalizeText(project.status || "").includes("mo") || normalizeText(project.statusLabel || "").includes("dang") ? "live" : "soon",
+                area: project.projectArea || project.area || "Đang cập nhật",
+                mediaCount: project.mediaCount || (Array.isArray(project.images) ? project.images.length : 0),
+                typeName: project.typeName || project.projectTypeName || project.type || "Dự án",
+                developer: project.developer || project.projectDeveloper || "Đang cập nhật"
+            };
+        }
+
+        function normalizeNews(news, index = 0) {
+            const title = news.title || news.name || ("Bài viết " + (index + 1));
+            return {
+                ...news,
+                id: news.id || news.slug || ("news-" + (index + 1)),
+                slug: news.slug || slugifyText(title),
+                title,
+                image: news.image || news.thumbnail || news.coverImage || FALLBACK_IMAGE,
+                category: news.category || news.topic || "Tin tức",
+                topic: news.topic || news.category || "Tin tức",
+                summary: news.summary || news.shortDescription || "Nội dung tóm tắt đang được cập nhật.",
+                author: news.author || news.contactName || "ToamViet",
+                createdAt: news.createdAt || new Date().toISOString()
+            };
+        }
+
+        function getFavoriteKeyByType(type) {
+            if (type === "sale") return FAVORITE_SALE_STORAGE_KEY;
+            if (type === "rental") return FAVORITE_RENTAL_STORAGE_KEY;
+            return FAVORITE_CONSTRUCTION_STORAGE_KEY;
+        }
+
+        function isFavorite(postId, type) {
+            return getStorageArray(getFavoriteKeyByType(type)).includes(postId);
+        }
+
+        function toggleFavorite(postId, type) {
+            const key = getFavoriteKeyByType(type);
+            const current = getStorageArray(key);
+            const exists = current.includes(postId);
+            const next = exists ? current.filter(id => id !== postId) : [...current, postId];
+            setStorageArray(key, next);
+            syncFavoriteButtons(postId, type, !exists);
+        }
+
+        function syncFavoriteButtons(postId, type, active) {
+            document.querySelectorAll(`[data-fav-id="${CSS.escape(postId)}"][data-fav-type="${type}"]`).forEach(btn => {
+                btn.classList.toggle("active", active);
+                const icon = btn.querySelector("i");
+                if (icon) {
+                    icon.className = active ? "fa-solid fa-heart" : "fa-regular fa-heart";
+                }
+            });
+        }
+
+        function createFavoriteButton(postId, type, className = "favorite-btn") {
+            const active = isFavorite(postId, type);
+            return `
+                <button
+                    type="button"
+                    class="${className} ${active ? "active" : ""}"
+                    data-favorite-btn="true"
+                    data-fav-id="${escapeHtml(postId)}"
+                    data-fav-type="${escapeHtml(type)}"
+                    aria-label="Lưu tin"
+                >
+                    <i class="${active ? "fa-solid fa-heart" : "fa-regular fa-heart"}"></i>
+                </button>
+            `;
+        }
+
+        function attachFavoriteEvents() {
+            document.querySelectorAll("[data-favorite-btn='true']").forEach(btn => {
+                btn.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const postId = this.dataset.favId;
+                    const type = this.dataset.favType;
+                    if (!postId || !type) return;
+
+                    toggleFavorite(postId, type);
+                });
+            });
+        }
+
+        function buildSearchText(item) {
+            return normalizeText([
+                item.title,
+                item.name,
+                item.category,
+                item.topic,
+                item.summary,
+                item.description,
+                item.propertyType,
+                item.propertyCategoryName,
+                item.serviceType,
+                item.serviceSpecialty,
+                item.serviceBrand,
+                item.city,
+                item.ward,
+                item.addressDetail,
+                item.projectName,
+                item.developer,
+                item.contactName,
+                item.brandName,
+                item.roleLabel
+            ].filter(Boolean).join(" "));
+        }
+
+        function normalizePropertyResult(post, index, type) {
+            const postId = createPostId(post, index);
+            const vipLevel = getVipLevel(post);
+            return {
+                type,
+                id: postId,
+                title: post.title || "Tin đăng bất động sản",
+                image: getCardImage(post),
+                location: buildLocation(post),
+                poster: buildPoster(post),
+                posterSub: getPosterSub(post),
+                profileUrl: getProfileUrl(post, postId),
+                detailUrl: getDetailUrl(post, postId),
+                phone: post.contactPhone || "",
+                price: post.propertyPrice || "Liên hệ",
+                area: post.propertyArea ? String(post.propertyArea).trim() + " m²" : "Chưa rõ",
+                unitPrice: calculatePricePerM2(post),
+                chip1: post.propertyCategoryName || post.propertyType || "Bất động sản",
+                chip2: type === "sale" ? "Nhà đất bán" : "Nhà đất cho thuê",
+                description: post.description || "Đang cập nhật mô tả chi tiết.",
+                legal: post.propertyLegal || "Đang cập nhật",
+                direction: post.propertyDirection || "Đang cập nhật",
+                beds: post.propertyBeds || "0",
+                imageCount: Array.isArray(post.images) ? post.images.length : 1,
+                vipLevel,
+                vipLabel: getVipLabel(vipLevel),
+                raw: post
+            };
+        }
+
+        function normalizeConstructionResult(post, index) {
+            const postId = createPostId(post, index);
+            return {
+                type: "construction",
+                id: postId,
+                title: post.title || "Dịch vụ xây dựng",
+                image: getCardImage(post),
+                location: buildLocation(post),
+                poster: buildPoster(post),
+                posterSub: getPosterSub(post),
+                profileUrl: getProfileUrl(post, postId),
+                detailUrl: getDetailUrl(post, postId),
+                phone: post.contactPhone || "",
+                serviceType: post.serviceType || "Xây dựng",
+                servicePrice: post.servicePrice || "Liên hệ",
+                serviceArea: post.serviceArea || post.city || "Đang cập nhật",
+                serviceSpecialty: post.serviceSpecialty || "Đang cập nhật",
+                serviceExp: post.serviceExp || "Đang cập nhật",
+                description: post.description || "Đang cập nhật mô tả dịch vụ.",
+                imageCount: Array.isArray(post.images) ? post.images.length : 1,
+                raw: post
+            };
+        }
+
+        function normalizeProjectResult(project, index) {
+            const p = normalizeProject(project, index);
+            return {
+                type: "project",
+                id: p.id,
+                title: p.name,
+                image: p.image,
+                detailUrl: getProjectDetailUrl(p, index),
+                location: p.city || "Đang cập nhật",
+                statusLabel: p.statusLabel,
+                statusType: p.statusType,
+                area: p.area,
+                mediaCount: p.mediaCount || 0,
+                typeName: p.typeName || "Dự án",
+                developer: p.developer || "Đang cập nhật",
+                description: p.description || p.summary || "Đang cập nhật thông tin dự án.",
+                raw: p
+            };
+        }
+
+        function normalizeNewsResult(news, index) {
+            const item = normalizeNews(news, index);
+            return {
+                type: "news",
+                id: item.id,
+                title: item.title,
+                image: item.image,
+                detailUrl: getNewsDetailUrl(item, index),
+                category: item.category,
+                topic: item.topic,
+                summary: item.summary,
+                author: item.author,
+                createdAt: item.createdAt,
+                raw: item
+            };
+        }
+
+        function renderPropertyCard(item) {
+            const avatarText = escapeHtml(getAvatarText(item.poster));
+            const phoneLink = String(item.phone || "").replace(/[^\d+]/g, "");
+            return `
+                <article class="result-card property-card">
+                    <div class="property-thumb">
+                        <a href="${item.detailUrl}" aria-label="${escapeHtml(item.title)}">
+                            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'">
+                        </a>
+
+                        ${item.vipLevel ? `
+                            <span class="vip-badge ${escapeHtml(item.vipLevel)}">
+                                <i class="fa-solid fa-crown"></i> ${escapeHtml(item.vipLabel)}
+                            </span>
+                        ` : ""}
+
+                        <span class="image-count-badge">
+                            <i class="fa-regular fa-image"></i> ${item.imageCount}
+                        </span>
+                    </div>
+
+                    <div class="property-body">
+                        <div>
+                            <div class="card-chip-row">
+                                <span class="card-chip primary">${escapeHtml(item.chip1)}</span>
+                                <span class="card-chip secondary">${escapeHtml(item.chip2)}</span>
+                            </div>
+
+                            <h3 class="card-title mt-3">
+                                <a href="${item.detailUrl}">${escapeHtml(item.title)}</a>
+                            </h3>
+
+                            <div class="price-line mt-3">
+                                <span class="price-main">${escapeHtml(item.price)}</span>
+                                <span class="price-sub">${escapeHtml(item.area)}</span>
+                                <span class="price-note">${escapeHtml(item.unitPrice)}</span>
+                            </div>
+
+                            <p class="card-location mt-3">
+                                <i class="fa-solid fa-location-dot mr-1"></i>
+                                ${escapeHtml(item.location)}
+                            </p>
+
+                            <p class="card-desc mt-3">${escapeHtml(item.description)}</p>
+
+                            <div class="meta-grid mt-4">
+                                <div><strong>Pháp lý:</strong> ${escapeHtml(item.legal)}</div>
+                                <div><strong>Hướng:</strong> ${escapeHtml(item.direction)}</div>
+                                <div><strong>Phòng ngủ:</strong> ${escapeHtml(item.beds)}</div>
+                                <div><strong>Nhóm:</strong> ${escapeHtml(item.chip2)}</div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <a href="${item.profileUrl}" class="poster-box">
+                                <span class="poster-avatar">${avatarText}</span>
+                                <span class="min-w-0">
+                                    <span class="poster-name block">${escapeHtml(item.poster)}</span>
+                                    <span class="poster-role block">${escapeHtml(item.posterSub)}</span>
+                                </span>
+                            </a>
+
+                            <div class="card-actions">
+                                ${phoneLink ? `
+                                    <a href="tel:${escapeHtml(phoneLink)}" class="call-btn" aria-label="Gọi ngay">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </a>
+                                ` : ""}
+
+                                <a href="${item.detailUrl}" class="detail-btn">
+                                    <i class="fa-solid fa-eye"></i> Xem tin
+                                </a>
+
+                                ${createFavoriteButton(item.id, item.type === "sale" ? "sale" : "rental")}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderConstructionCard(item) {
+            const avatarText = escapeHtml(getAvatarText(item.poster));
+            const phoneLink = String(item.phone || "").replace(/[^\d+]/g, "");
+            return `
+                <article class="result-card property-card">
+                    <div class="property-thumb">
+                        <a href="${item.detailUrl}" aria-label="${escapeHtml(item.title)}">
+                            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'">
+                        </a>
+
+                        <span class="service-badge">
+                            <i class="fa-solid fa-screwdriver-wrench"></i> ${escapeHtml(item.serviceType)}
+                        </span>
+
+                        <span class="image-count-badge">
+                            <i class="fa-regular fa-image"></i> ${item.imageCount}
+                        </span>
+                    </div>
+
+                    <div class="property-body">
+                        <div>
+                            <div class="card-chip-row">
+                                <span class="card-chip primary">Xây dựng</span>
+                                <span class="card-chip secondary">${escapeHtml(item.serviceType)}</span>
+                            </div>
+
+                            <h3 class="card-title mt-3">
+                                <a href="${item.detailUrl}">${escapeHtml(item.title)}</a>
+                            </h3>
+
+                            <div class="price-line mt-3">
+                                <span class="price-main">${escapeHtml(item.servicePrice)}</span>
+                                <span class="price-note">${escapeHtml(item.serviceArea)}</span>
+                            </div>
+
+                            <p class="card-location mt-3">
+                                <i class="fa-solid fa-location-dot mr-1"></i>
+                                ${escapeHtml(item.location)}
+                            </p>
+
+                            <p class="card-desc mt-3">${escapeHtml(item.description)}</p>
+
+                            <div class="meta-grid mt-4">
+                                <div><strong>Chuyên môn:</strong> ${escapeHtml(item.serviceSpecialty)}</div>
+                                <div><strong>Năng lực:</strong> ${escapeHtml(item.serviceExp)}</div>
+                                <div><strong>Khu vực:</strong> ${escapeHtml(item.serviceArea)}</div>
+                                <div><strong>Nhóm:</strong> Xây dựng</div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <a href="${item.profileUrl}" class="poster-box">
+                                <span class="poster-avatar">${avatarText}</span>
+                                <span class="min-w-0">
+                                    <span class="poster-name block">${escapeHtml(item.poster)}</span>
+                                    <span class="poster-role block">${escapeHtml(item.posterSub)}</span>
+                                </span>
+                            </a>
+
+                            <div class="card-actions">
+                                ${phoneLink ? `
+                                    <a href="tel:${escapeHtml(phoneLink)}" class="call-btn" aria-label="Gọi ngay">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </a>
+                                ` : ""}
+
+                                <a href="${item.detailUrl}" class="detail-btn">
+                                    <i class="fa-solid fa-eye"></i> Xem chi tiết
+                                </a>
+
+                                ${createFavoriteButton(item.id, "construction")}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderProjectCard(item) {
+            return `
+                <article class="result-card project-card">
+                    <div class="project-thumb">
+                        <a href="${item.detailUrl}" aria-label="${escapeHtml(item.title)}">
+                            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'">
+                        </a>
+                    </div>
+
+                    <div class="project-body">
+                        <div>
+                            <span class="project-status ${escapeHtml(item.statusType)}">
+                                <i class="fa-solid fa-bolt"></i> ${escapeHtml(item.statusLabel)}
+                            </span>
+
+                            <h3 class="card-title mt-3">
+                                <a href="${item.detailUrl}">${escapeHtml(item.title)}</a>
+                            </h3>
+
+                            <p class="card-location mt-3">
+                                <i class="fa-solid fa-location-dot mr-1"></i>
+                                ${escapeHtml(item.location)}
+                            </p>
+
+                            <p class="card-desc mt-3">${escapeHtml(item.description)}</p>
+
+                            <div class="project-meta-grid mt-4">
+                                <div class="project-meta-item">
+                                    <div class="label">Loại dự án</div>
+                                    <div class="value">${escapeHtml(item.typeName)}</div>
+                                </div>
+                                <div class="project-meta-item">
+                                    <div class="label">Quy mô</div>
+                                    <div class="value">${escapeHtml(item.area)}</div>
+                                </div>
+                                <div class="project-meta-item">
+                                    <div class="label">Chủ đầu tư</div>
+                                    <div class="value">${escapeHtml(item.developer)}</div>
+                                </div>
+                                <div class="project-meta-item">
+                                    <div class="label">Media</div>
+                                    <div class="value">${escapeHtml(String(item.mediaCount || 0))} ảnh</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-actions">
+                            <a href="${item.detailUrl}" class="detail-btn">
+                                <i class="fa-solid fa-building"></i> Xem dự án
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderNewsCard(item) {
+            return `
+                <article class="result-card news-card">
+                    <div class="news-thumb">
+                        <a href="${item.detailUrl}" aria-label="${escapeHtml(item.title)}">
+                            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'">
+                        </a>
+                    </div>
+
+                    <div class="news-body">
+                        <div>
+                            <div class="card-chip-row">
+                                <span class="card-chip primary">${escapeHtml(item.category)}</span>
+                                <span class="card-chip secondary">Tin tức</span>
+                            </div>
+
+                            <h3 class="card-title mt-3">
+                                <a href="${item.detailUrl}">${escapeHtml(item.title)}</a>
+                            </h3>
+
+                            <p class="card-desc mt-3">${escapeHtml(item.summary)}</p>
+
+                            <div class="news-meta-grid mt-4">
+                                <div class="news-meta-item">
+                                    <div class="label">Tác giả</div>
+                                    <div class="value">${escapeHtml(item.author)}</div>
+                                </div>
+                                <div class="news-meta-item">
+                                    <div class="label">Ngày đăng</div>
+                                    <div class="value">${escapeHtml(formatDate(item.createdAt))}</div>
+                                </div>
+                                <div class="news-meta-item">
+                                    <div class="label">Chủ đề</div>
+                                    <div class="value">${escapeHtml(item.topic)}</div>
+                                </div>
+                                <div class="news-meta-item">
+                                    <div class="label">Nhóm</div>
+                                    <div class="value">Tin tức</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-actions">
+                            <a href="${item.detailUrl}" class="detail-btn">
+                                <i class="fa-solid fa-newspaper"></i> Đọc bài viết
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function getAllCities() {
+            const source = []
+                .concat(getSalePosts())
+                .concat(getRentalPosts())
+                .concat(getConstructionPosts());
+
+            const cities = Array.from(new Set(source.map(item => item.city).filter(Boolean)));
+            return cities.sort((a, b) => a.localeCompare(b, "vi"));
+        }
+
+        function fillCityOptions() {
+            const select = document.getElementById("searchCity");
+            const cities = getAllCities();
+
+            select.innerHTML =
+                `<option value="">Toàn quốc</option>` +
+                cities.map(city => `<option value="${escapeHtml(city)}">${escapeHtml(city)}</option>`).join("");
+        }
+
+        function getQuickLinks() {
+            return [
+                {
+                    title: "Nhà đất bán",
+                    sub: "Tìm nhanh căn hộ, nhà phố, đất nền đang hiển thị",
+                    url: "../pages/nha-dat-ban.html"
+                },
+                {
+                    title: "Nhà đất cho thuê",
+                    sub: "Xem nhanh căn hộ, mặt bằng, văn phòng cho thuê",
+                    url: "../pages/nha-dat-cho-thue.html"
+                },
+                {
+                    title: "Dự án",
+                    sub: "Theo dõi danh sách dự án đang mở bán hoặc nổi bật",
+                    url: "../pages/du-an.html"
+                },
+                {
+                    title: "Xây dựng",
+                    sub: "Tìm doanh nghiệp, nhà thầu, dịch vụ thi công",
+                    url: "../pages/xay-dung.html"
+                },
+                {
+                    title: "Giá nhà đất",
+                    sub: "Xem báo cáo giá theo khu vực và phường xã",
+                    url: "../pages/gia-nha-dat.html"
+                },
+                {
+                    title: "Tin tức",
+                    sub: "Đọc thêm bài viết thị trường, pháp lý và kinh nghiệm",
+                    url: "../pages/tin-tuc.html"
+                }
+            ];
+        }
+
+        function renderQuickLinks() {
+            const container = document.getElementById("quickLinkList");
+            container.innerHTML = getQuickLinks().map(item => `
+                <a href="${item.url}" class="side-item">
+                    <div class="side-item-title">${escapeHtml(item.title)}</div>
+                    <div class="side-item-sub">${escapeHtml(item.sub)}</div>
+                </a>
+            `).join("");
+        }
+
+        function applySearchFilter(results) {
+            const keyword = normalizeText(state.currentKeyword);
+            const city = state.currentCity;
+            const category = state.currentCategory;
+            const tab = state.currentTab;
+
+            return results.filter(item => {
+                const text = buildSearchText(item.raw || item);
+                const matchKeyword = !keyword || text.includes(keyword);
+
+                let itemCategory = item.type;
+                if (item.type === "sale" || item.type === "rental" || item.type === "project" || item.type === "construction" || item.type === "news") {
+                    itemCategory = item.type;
+                }
+
+                const cityValue = item.raw && item.raw.city ? item.raw.city : "";
+                const matchCity = !city || cityValue === city || normalizeText(item.location).includes(normalizeText(city));
+
+                const matchCategory = category === "all" ? true : itemCategory === category;
+                const matchTab = tab === "all" ? true : itemCategory === tab;
+
+                return matchKeyword && matchCity && matchCategory && matchTab;
+            });
+        }
+
+        function updateHero() {
+            const heroTitle = document.getElementById("heroTitle");
+            const heroDesc = document.getElementById("heroDesc");
+
+            const categoryLabels = {
+                all: "toàn site",
+                sale: "nhà đất bán",
+                rental: "nhà đất cho thuê",
+                project: "dự án",
+                construction: "xây dựng",
+                news: "tin tức"
+            };
+
+            const categoryText = categoryLabels[state.currentCategory] || "toàn site";
+            const keywordText = state.currentKeyword ? ` cho từ khóa "${state.currentKeyword}"` : "";
+            const cityText = state.currentCity ? ` tại ${state.currentCity}` : "";
+
+            heroTitle.textContent = `Kết quả tìm kiếm ${categoryText}${cityText}`;
+            heroDesc.textContent = `Hệ thống đang tìm trong nhóm ${categoryText}${keywordText}${cityText}. Bạn có thể đổi nhóm nội dung, từ khóa hoặc khu vực để lọc sâu hơn.`;
+        }
+
+        function updateSummary(filtered) {
+            const count = filtered.length;
+            const summarySub = document.getElementById("summarySub");
+
+            const categoryLabels = {
+                all: "tất cả nội dung",
+                sale: "nhà đất bán",
+                rental: "nhà đất cho thuê",
+                project: "dự án",
+                construction: "xây dựng",
+                news: "tin tức"
+            };
+
+            const tabLabel = categoryLabels[state.currentTab] || "tất cả nội dung";
+            const keywordLabel = state.currentKeyword ? `"${state.currentKeyword}"` : "không có từ khóa";
+            const cityLabel = state.currentCity || "toàn quốc";
+
+            summarySub.innerHTML = `
+                Tìm thấy <span class="summary-highlight">${count}</span> kết quả trong nhóm
+                <span class="summary-highlight">${escapeHtml(tabLabel)}</span>,
+                từ khóa <span class="summary-highlight">${escapeHtml(keywordLabel)}</span>,
+                khu vực <span class="summary-highlight">${escapeHtml(cityLabel)}</span>.
+            `;
+        }
+
+        function renderResults(filtered) {
+            const resultList = document.getElementById("resultList");
+
+            if (!filtered.length) {
+                resultList.innerHTML = `
+                    <div class="empty-box">
+                        Không tìm thấy nội dung phù hợp với bộ lọc hiện tại.
+                        Bạn thử đổi từ khóa, nhóm nội dung hoặc tỉnh thành để tìm lại.
+                    </div>
+                `;
+                return;
+            }
+
+            resultList.innerHTML = filtered.map(item => {
+                if (item.type === "sale" || item.type === "rental") return renderPropertyCard(item);
+                if (item.type === "construction") return renderConstructionCard(item);
+                if (item.type === "project") return renderProjectCard(item);
+                return renderNewsCard(item);
+            }).join("");
+
+            attachFavoriteEvents();
+        }
+
+        function renderSeoFallback(filtered) {
+            const container = document.getElementById("seoContent");
+            if (!container) return;
+
+            const categoryLabels = {
+                all: "toàn site",
+                sale: "nhà đất bán",
+                rental: "nhà đất cho thuê",
+                project: "dự án",
+                construction: "xây dựng",
+                news: "tin tức"
+            };
+
+            const titleKeyword = state.currentKeyword || "bất động sản";
+            const titleCategory = categoryLabels[state.currentCategory] || "toàn site";
+            const titleCity = state.currentCity || "toàn quốc";
+
+            container.innerHTML = `
+                <div class="seo-wrapper">
+                    <div class="seo-text collapsed" id="seoContent-text">
+                        <p>Trang tìm kiếm trên ToamViet giúp người dùng truy xuất nhanh nội dung theo từ khóa, nhóm nội dung và khu vực. Với từ khóa ${escapeHtml(titleKeyword)}, hệ thống đang lọc trong nhóm ${escapeHtml(titleCategory)} tại ${escapeHtml(titleCity)} để hiển thị các kết quả phù hợp nhất.</p>
+                        <p>Việc gom toàn bộ nhà đất bán, nhà đất cho thuê, dự án, xây dựng và tin tức vào cùng một luồng tìm kiếm giúp website tăng khả năng điều hướng nội bộ, cải thiện trải nghiệm người dùng và hỗ trợ mở rộng độ phủ SEO theo truy vấn dài.</p>
+                        <p>Hiện tại hệ thống đang ghi nhận ${filtered.length} kết quả phù hợp. Khi dữ liệu trên website tăng thêm, trang tìm kiếm này sẽ tiếp tục đóng vai trò là điểm truy cập nhanh để người dùng đi vào đúng nội dung chi tiết mà không phải mở từng danh mục riêng lẻ.</p>
+                    </div>
+                    <button type="button" class="seo-toggle-btn" id="seoContent-toggle" aria-expanded="false">
+                        <span class="seo-toggle-label">Xem thêm</span>
+                        <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+                    </button>
+                </div>
+            `;
+
+            const toggleBtn = document.getElementById("seoContent-toggle");
+            const seoText = document.getElementById("seoContent-text");
+            const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+            if (!toggleBtn || !seoText || !toggleLabel) return;
+
+            toggleBtn.addEventListener("click", function () {
+                const isCollapsed = seoText.classList.contains("collapsed");
+
+                if (isCollapsed) {
+                    seoText.classList.remove("collapsed");
+                    toggleBtn.classList.add("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "true");
+                    toggleLabel.textContent = "Thu gọn";
+                } else {
+                    seoText.classList.add("collapsed");
+                    toggleBtn.classList.remove("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "false");
+                    toggleLabel.textContent = "Xem thêm";
+                }
+            });
+        }
+
+        async function buildAllResults() {
+            const salePosts = getSalePosts().map((post, index) => normalizePropertyResult(post, index, "sale"));
+            const rentalPosts = getRentalPosts().map((post, index) => normalizePropertyResult(post, index, "rental"));
+            const constructionPosts = getConstructionPosts().map((post, index) => normalizeConstructionResult(post, index));
+            const projects = (await getProjects()).map((project, index) => normalizeProjectResult(project, index));
+            const news = (await getNewsPosts()).map((item, index) => normalizeNewsResult(item, index));
+
+            return []
+                .concat(salePosts)
+                .concat(rentalPosts)
+                .concat(projects)
+                .concat(constructionPosts)
+                .concat(news);
+        }
+
+        function syncTabButtons() {
+            document.querySelectorAll("#tabRow .tab-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.dataset.tab === state.currentTab);
+            });
+        }
+
+        function syncFormInputs() {
+            document.getElementById("searchKeyword").value = state.currentKeyword;
+            document.getElementById("searchCategory").value = state.currentCategory;
+            document.getElementById("searchCity").value = state.currentCity;
+            syncTabButtons();
+        }
+
+        function renderSearchPage() {
+            const filtered = applySearchFilter(state.allResults);
+            updateHero();
+            updateSummary(filtered);
+            renderResults(filtered);
+
+            if (typeof renderSeoContent === "function") {
+                renderSeoFallback(filtered);
+            } else {
+                renderSeoFallback(filtered);
+            }
+
+            updateUrlQuery();
+        }
+
+        function readQueryToState() {
+            state.currentKeyword = getQueryParam("keyword");
+            state.currentCategory = getQueryParam("category") || "all";
+            state.currentCity = getQueryParam("city");
+            state.currentTab = state.currentCategory !== "all" ? state.currentCategory : "all";
+        }
+
+        function bindEvents() {
+            document.getElementById("searchBtn").addEventListener("click", function () {
+                state.currentKeyword = document.getElementById("searchKeyword").value.trim();
+                state.currentCategory = document.getElementById("searchCategory").value;
+                state.currentCity = document.getElementById("searchCity").value;
+                state.currentTab = state.currentCategory !== "all" ? state.currentCategory : "all";
+                syncTabButtons();
+                renderSearchPage();
+            });
+
+            document.getElementById("resetBtn").addEventListener("click", function () {
+                state.currentKeyword = "";
+                state.currentCategory = "all";
+                state.currentCity = "";
+                state.currentTab = "all";
+                syncFormInputs();
+                renderSearchPage();
+            });
+
+            document.getElementById("searchKeyword").addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    document.getElementById("searchBtn").click();
+                }
+            });
+
+            document.getElementById("searchCategory").addEventListener("change", function () {
+                state.currentCategory = this.value;
+                state.currentTab = this.value !== "all" ? this.value : "all";
+                syncTabButtons();
+            });
+
+            document.querySelectorAll("#tabRow .tab-btn").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    state.currentTab = this.dataset.tab || "all";
+                    syncTabButtons();
+                    renderSearchPage();
+                });
+            });
+        }
+
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". Tôi đang cần hỗ trợ tìm kiếm trên website. " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        window.sendToZalo = sendToZalo;
+
+        window.addEventListener("load", async function () {
+            await initSharedComponents();
+
+            fillCityOptions();
+            renderQuickLinks();
+            readQueryToState();
+            syncFormInputs();
+            bindEvents();
+
+            state.allResults = await buildAllResults();
+            renderSearchPage();
+        });
+    </script>
+</body>
+</html>
