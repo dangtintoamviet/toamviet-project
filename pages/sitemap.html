@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sơ đồ website | ToamViet.com.vn</title>
+    <title>Sitemap | ToamViet.com.vn</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
-        rel="stylesheet"
-    />
 
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
@@ -24,9 +22,9 @@
             --vip-color: #008b8b;
             --vip-dark: #0f766e;
             --hover-color: #ff8c00;
-            --soft-bg: #f8fafc;
             --text-main: #1f2937;
             --text-soft: #64748b;
+            --soft-bg: #f5f7fa;
             --stroke: #e5e7eb;
             --white: #ffffff;
         }
@@ -51,43 +49,38 @@
         }
 
         .page-shell {
-            padding: 0 0 32px;
+            padding-bottom: 36px;
         }
 
-        .breadcrumb-wrap {
+        .page-breadcrumb {
             margin-bottom: 18px;
-        }
-
-        .breadcrumb {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            color: #64748b;
             font-size: 14px;
-            color: #64748b;
+            line-height: 1.7;
         }
 
-        .breadcrumb a {
-            color: #64748b;
+        .page-breadcrumb a {
+            color: inherit;
             transition: color 0.2s ease;
         }
 
-        .breadcrumb a:hover {
+        .page-breadcrumb a:hover {
             color: var(--vip-color);
         }
 
-        .hero-box {
+        .hero-card {
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, #0f766e 0%, #008b8b 55%, #0f172a 100%);
+            background: linear-gradient(135deg, #0f766e 0%, #008b8b 58%, #0f172a 100%);
             border-radius: 24px;
             padding: 28px;
             color: white;
-            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.10);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
             margin-bottom: 24px;
         }
 
-        .hero-box::before,
-        .hero-box::after {
+        .hero-card::before,
+        .hero-card::after {
             content: "";
             position: absolute;
             border-radius: 999px;
@@ -95,18 +88,18 @@
             pointer-events: none;
         }
 
-        .hero-box::before {
+        .hero-card::before {
             width: 220px;
             height: 220px;
-            right: -60px;
-            top: -60px;
+            right: -70px;
+            top: -70px;
         }
 
-        .hero-box::after {
+        .hero-card::after {
             width: 140px;
             height: 140px;
-            left: -35px;
-            bottom: -45px;
+            left: -30px;
+            bottom: -40px;
         }
 
         .hero-content {
@@ -121,18 +114,18 @@
             padding: 8px 14px;
             border-radius: 999px;
             background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.16);
             font-size: 11px;
             font-weight: 800;
-            text-transform: uppercase;
             letter-spacing: 0.05em;
+            text-transform: uppercase;
             margin-bottom: 14px;
         }
 
         .hero-title {
             margin: 0 0 10px;
             font-size: clamp(26px, 3vw, 34px);
-            line-height: 1.3;
+            line-height: 1.28;
             font-weight: 900;
             color: #fff;
             text-transform: none;
@@ -140,152 +133,127 @@
 
         .hero-desc {
             margin: 0;
-            max-width: 880px;
+            max-width: 900px;
             font-size: 14px;
-            line-height: 1.9;
+            line-height: 1.85;
             color: rgba(255,255,255,0.9);
         }
 
         .sitemap-layout {
             display: grid;
-            grid-template-columns: minmax(0, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 22px;
         }
 
         .sitemap-card {
-            background: var(--white);
+            background: #fff;
             border: 1px solid var(--stroke);
             border-radius: 22px;
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
             overflow: hidden;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
         }
 
-        .sitemap-card-head {
+        .card-head {
             padding: 18px 20px;
             border-bottom: 1px solid #eef2f7;
-            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
         }
 
-        .sitemap-card-title {
+        .card-title {
             margin: 0;
-            font-size: 18px;
+            font-size: 19px;
             line-height: 1.4;
             font-weight: 800;
-            color: var(--text-main);
+            color: #0f172a;
             text-transform: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .sitemap-card-sub {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-soft);
+        .card-title i {
+            color: var(--vip-color);
         }
 
-        .sitemap-card-body {
-            padding: 20px;
+        .card-sub {
+            margin: 8px 0 0;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #64748b;
         }
 
-        .link-grid {
+        .card-body {
+            padding: 18px 20px 20px;
+        }
+
+        .link-list {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
+            gap: 10px;
         }
 
         .link-item {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            padding: 14px 14px;
-            border: 1px solid #e9eef4;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid #eef2f7;
             border-radius: 16px;
             background: #fff;
-            transition: all 0.25s ease;
-            color: inherit;
-            min-height: 100%;
+            transition: all 0.22s ease;
         }
 
         .link-item:hover {
-            border-color: rgba(0, 139, 139, 0.28);
+            border-color: rgba(0,139,139,0.28);
             background: #f8ffff;
             transform: translateY(-1px);
-            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.04);
         }
 
         .link-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
             background: #ecfeff;
             color: var(--vip-color);
-            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 13px;
+            margin-top: 1px;
         }
 
         .link-content {
             min-width: 0;
+            flex: 1;
         }
 
-        .link-title {
-            margin: 0;
+        .link-label {
+            display: block;
             font-size: 14px;
-            font-weight: 800;
             line-height: 1.55;
+            font-weight: 800;
             color: #0f172a;
             text-transform: none;
         }
 
         .link-desc {
+            display: block;
             margin-top: 4px;
             font-size: 12px;
-            line-height: 1.65;
+            line-height: 1.7;
             color: #64748b;
+        }
+
+        .full-span {
+            grid-column: 1 / -1;
         }
 
         .seo-block-shell {
             margin-top: 26px;
         }
 
-        .seo-fallback-box {
-            background: #fff;
-            border: 1px solid var(--stroke);
-            border-radius: 22px;
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
-            padding: 22px;
-        }
-
-        .seo-fallback-title {
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--vip-color);
-            margin-bottom: 12px;
-        }
-
-        .seo-fallback-content {
-            color: #475569;
-            font-size: 14px;
-            line-height: 1.85;
-        }
-
-        .seo-fallback-content p {
-            margin: 0 0 12px;
-        }
-
-        .seo-fallback-content p:last-child {
-            margin-bottom: 0;
-        }
-
         @media (max-width: 991px) {
-            .link-grid {
+            .sitemap-layout {
                 grid-template-columns: 1fr;
             }
         }
@@ -295,8 +263,8 @@
                 padding-bottom: 22px;
             }
 
-            .hero-box {
-                padding: 20px 16px;
+            .hero-card {
+                padding: 20px;
                 border-radius: 20px;
             }
 
@@ -304,487 +272,642 @@
                 font-size: 24px;
             }
 
-            .hero-desc {
-                font-size: 14px;
-                line-height: 1.8;
+            .card-head,
+            .card-body {
+                padding-left: 16px;
+                padding-right: 16px;
             }
 
-            .sitemap-card-head,
-            .sitemap-card-body {
-                padding: 16px;
-            }
-
-            .sitemap-card-title {
+            .card-title {
                 font-size: 17px;
+            }
+
+            .link-item {
+                padding: 11px 12px;
+                border-radius: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="site-header"></div>
-    <div id="site-mobile-menu"></div>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
 
     <main class="container-custom page-shell">
-        <div class="breadcrumb-wrap">
-            <nav class="breadcrumb">
-                <a href="../index.html">Trang chủ</a>
-                <span>/</span>
-                <span>Sơ đồ website</span>
-            </nav>
+        <div class="page-breadcrumb">
+            <a href="../index.html">Trang chủ</a>
+            <span class="mx-2">/</span>
+            <span class="text-slate-700 font-semibold">Sitemap</span>
         </div>
 
-        <section class="hero-box">
+        <section class="hero-card">
             <div class="hero-content">
                 <div class="hero-badge">
                     <i class="fa-solid fa-sitemap"></i>
-                    Điều hướng toàn bộ website
+                    Sơ đồ toàn bộ website
                 </div>
-                <h1 class="hero-title">Sơ đồ website ToamViet.com.vn</h1>
+                <h1 class="hero-title">Sitemap ToamViet.com.vn</h1>
                 <p class="hero-desc">
-                    Trang này tổng hợp toàn bộ các khu vực nội dung chính của website ToamViet, bao gồm
-                    nhà đất bán, nhà đất cho thuê, dự án, tin tức, xây dựng, giá nhà đất, danh bạ
-                    doanh nghiệp, danh bạ môi giới và các trang tài khoản. Bạn có thể dùng trang này
-                    để điều hướng nhanh hoặc kiểm tra cấu trúc website.
+                    Trang này tổng hợp các nhóm trang chính, danh mục lớn, danh mục con và các trang chức năng quan trọng trên toàn bộ website để người dùng và công cụ tìm kiếm dễ theo dõi cấu trúc nội dung hơn.
                 </p>
             </div>
         </section>
 
         <section class="sitemap-layout">
-
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Trang chính</h2>
-                    <div class="sitemap-card-sub">Các trang gốc quan trọng</div>
+            <article class="sitemap-card">
+                <div class="card-head">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-house"></i>
+                        Nhà đất bán
+                    </h2>
+                    <p class="card-sub">Các trang danh mục thuộc nhóm mua bán bất động sản.</p>
                 </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
-                        <a href="../index.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-house"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Trang chủ</p>
-                                <div class="link-desc">Trang tổng hợp toàn bộ nội dung nổi bật của hệ thống.</div>
-                            </div>
-                        </a>
-
-                        <a href="../pages/sitemap.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-sitemap"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Sơ đồ website</p>
-                                <div class="link-desc">Trang điều hướng tổng hợp toàn bộ cấu trúc website.</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Nhà đất bán</h2>
-                    <div class="sitemap-card-sub">Danh mục bán theo menu</div>
-                </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
+                <div class="card-body">
+                    <div class="link-list">
                         <a href="../pages/nha-dat-ban.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-building"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Nhà đất bán</p>
-                                <div class="link-desc">Trang tổng hợp tất cả tin bán bất động sản.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-grid-2"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Trang tổng nhà đất bán</span>
+                                <span class="link-desc">Trang danh sách chính của toàn bộ tin nhà đất bán.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-can-ho-chung-cu" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-city"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán căn hộ chung cư</p>
-                                <div class="link-desc">Danh mục bán căn hộ chung cư.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-building"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán căn hộ chung cư</span>
+                                <span class="link-desc">Danh mục tin bán căn hộ chung cư.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-chung-cu-mini-can-ho-dich-vu" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-door-open"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán chung cư mini, căn hộ dịch vụ</p>
-                                <div class="link-desc">Nhóm tin bán chung cư mini và căn hộ dịch vụ.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-city"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán chung cư mini, căn hộ dịch vụ</span>
+                                <span class="link-desc">Danh mục bán căn hộ dịch vụ và chung cư mini.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-nha-rieng" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-house-chimney"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán nhà riêng</p>
-                                <div class="link-desc">Danh mục bán nhà riêng theo khu vực.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-house-chimney"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán nhà riêng</span>
+                                <span class="link-desc">Danh mục nhà riêng bán lại trên thị trường.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-nha-biet-thu-lien-ke" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-house-user"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán nhà biệt thự, liền kề</p>
-                                <div class="link-desc">Tin bán biệt thự và nhà liền kề.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-house-user"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán nhà biệt thự, liền kề</span>
+                                <span class="link-desc">Danh mục biệt thự và nhà liền kề.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-nha-mat-pho" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-road"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán nhà mặt phố</p>
-                                <div class="link-desc">Danh mục nhà mặt phố, vị trí kinh doanh.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-shop"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán nhà mặt phố</span>
+                                <span class="link-desc">Nhóm nhà mặt tiền, mặt phố và vị trí kinh doanh.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-shophouse-nha-pho-thuong-mai" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-shop"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán shophouse, nhà phố thương mại</p>
-                                <div class="link-desc">Danh mục shophouse và nhà phố thương mại.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-store"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán shophouse, nhà phố thương mại</span>
+                                <span class="link-desc">Danh mục shophouse và nhà phố thương mại.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-dat-nen-du-an" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-map"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán đất nền dự án</p>
-                                <div class="link-desc">Tin bán đất nền trong các dự án.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-layer-group"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán đất nền dự án</span>
+                                <span class="link-desc">Tin bán đất nền thuộc dự án quy hoạch.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-dat" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-mountain-sun"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán đất</p>
-                                <div class="link-desc">Danh mục đất ở, đất nền và các loại đất khác.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-map"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán đất</span>
+                                <span class="link-desc">Danh mục đất thổ cư, đất ở và đất khác.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-trang-trai-khu-nghi-duong" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-tree-city"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán trang trại, khu nghỉ dưỡng</p>
-                                <div class="link-desc">Nhóm bất động sản nghỉ dưỡng, sinh thái, farmstay.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-tree-city"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán trang trại, khu nghỉ dưỡng</span>
+                                <span class="link-desc">Nhóm bất động sản nghỉ dưỡng và mô hình trang trại.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-condotel" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-hotel"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán condotel</p>
-                                <div class="link-desc">Danh mục condotel và bất động sản lưu trú.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-hotel"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán condotel</span>
+                                <span class="link-desc">Danh mục condotel và sản phẩm lưu trú đầu tư.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-kho-nha-xuong" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-warehouse"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán kho, nhà xưởng</p>
-                                <div class="link-desc">Nhóm kho bãi, nhà xưởng, bất động sản công nghiệp.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-warehouse"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán kho, nhà xưởng</span>
+                                <span class="link-desc">Nhóm bất động sản công nghiệp và kho xưởng.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-ban.html?category=ban-bat-dong-san-khac" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-layer-group"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Bán loại bất động sản khác</p>
-                                <div class="link-desc">Các nhóm sản phẩm bán chưa nằm trong danh mục chính.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-ellipsis"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Bán loại bất động sản khác</span>
+                                <span class="link-desc">Các loại hình bán khác ngoài danh mục chính.</span>
+                            </span>
                         </a>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Nhà đất cho thuê</h2>
-                    <div class="sitemap-card-sub">Danh mục cho thuê theo menu</div>
+            <article class="sitemap-card">
+                <div class="card-head">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-key"></i>
+                        Nhà đất cho thuê
+                    </h2>
+                    <p class="card-sub">Các trang danh mục thuộc nhóm cho thuê bất động sản.</p>
                 </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
+                <div class="card-body">
+                    <div class="link-list">
                         <a href="../pages/nha-dat-cho-thue.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-key"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Nhà đất cho thuê</p>
-                                <div class="link-desc">Trang tổng hợp tất cả tin cho thuê bất động sản.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-grid-2"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Trang tổng nhà đất cho thuê</span>
+                                <span class="link-desc">Trang danh sách chính của toàn bộ tin cho thuê.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-can-ho-chung-cu" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-city"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê căn hộ chung cư</p>
-                                <div class="link-desc">Danh mục căn hộ chung cư cho thuê.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-building"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê căn hộ chung cư</span>
+                                <span class="link-desc">Danh mục căn hộ cho thuê.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-chung-cu-mini-can-ho-dich-vu" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-door-open"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê chung cư mini, căn hộ dịch vụ</p>
-                                <div class="link-desc">Nhóm căn hộ mini và căn hộ dịch vụ cho thuê.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-city"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê chung cư mini, căn hộ dịch vụ</span>
+                                <span class="link-desc">Nhóm căn hộ dịch vụ và chung cư mini cho thuê.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-nha-rieng" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-house"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê nhà riêng</p>
-                                <div class="link-desc">Nhà nguyên căn và nhà riêng cho thuê.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-house-chimney"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê nhà riêng</span>
+                                <span class="link-desc">Danh mục nhà riêng cho thuê.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-nha-biet-thu-lien-ke" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-house-user"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê nhà biệt thự, liền kề</p>
-                                <div class="link-desc">Biệt thự và liền kề cho thuê dài hạn hoặc khai thác.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-house-user"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê nhà biệt thự, liền kề</span>
+                                <span class="link-desc">Nhóm biệt thự và liền kề cho thuê.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-nha-mat-pho" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-road"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê nhà mặt phố</p>
-                                <div class="link-desc">Tin thuê nhà mặt phố, mặt tiền kinh doanh.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-shop"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê nhà mặt phố</span>
+                                <span class="link-desc">Danh mục nhà mặt phố và mặt tiền kinh doanh.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-shophouse-nha-pho-thuong-mai" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-shop"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê shophouse, nhà phố thương mại</p>
-                                <div class="link-desc">Shophouse và nhà phố thương mại cho thuê.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-store"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê shophouse, nhà phố thương mại</span>
+                                <span class="link-desc">Nhóm shophouse và nhà phố thương mại cho thuê.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-nha-tro-phong-tro" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-bed"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê nhà trọ, phòng trọ</p>
-                                <div class="link-desc">Nhà trọ, phòng trọ và lưu trú phổ thông.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-bed"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê nhà trọ, phòng trọ</span>
+                                <span class="link-desc">Danh mục phòng trọ và chỗ ở ngắn hạn, dài hạn.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-van-phong" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-briefcase"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê văn phòng</p>
-                                <div class="link-desc">Văn phòng làm việc cho doanh nghiệp và cá nhân.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-briefcase"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê văn phòng</span>
+                                <span class="link-desc">Nhóm mặt bằng văn phòng cho doanh nghiệp.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-sang-nhuong-cua-hang-ki-ot" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-store"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê, sang nhượng cửa hàng, ki ốt</p>
-                                <div class="link-desc">Mặt bằng thương mại, cửa hàng, ki ốt.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-shop-lock"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê, sang nhượng cửa hàng, ki ốt</span>
+                                <span class="link-desc">Danh mục cửa hàng và ki ốt kinh doanh.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-kho-nha-xuong-dat" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-warehouse"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê kho, nhà xưởng, đất</p>
-                                <div class="link-desc">Kho bãi, nhà xưởng và đất cho thuê.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-warehouse"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê kho, nhà xưởng, đất</span>
+                                <span class="link-desc">Nhóm kho xưởng và đất thuê phục vụ sản xuất, lưu trữ.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/nha-dat-cho-thue.html?category=cho-thue-bat-dong-san-khac" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-layer-group"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Cho thuê loại bất động sản khác</p>
-                                <div class="link-desc">Các nhóm cho thuê ngoài danh mục chính.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-ellipsis"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cho thuê loại bất động sản khác</span>
+                                <span class="link-desc">Các loại hình cho thuê khác ngoài danh mục chính.</span>
+                            </span>
                         </a>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Dự án</h2>
-                    <div class="sitemap-card-sub">Trang dự án và danh mục liên quan</div>
+            <article class="sitemap-card">
+                <div class="card-head">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-building-circle-check"></i>
+                        Dự án
+                    </h2>
+                    <p class="card-sub">Trang tổng dự án và các nhóm loại hình dự án hiện có trên menu.</p>
                 </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
+                <div class="card-body">
+                    <div class="link-list">
                         <a href="../pages/du-an.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-building"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Dự án</p>
-                                <div class="link-desc">Trang tổng hợp các dự án trên toàn hệ thống.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-grid-2"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Trang tổng dự án</span>
+                                <span class="link-desc">Trang danh sách tổng hợp các dự án trên hệ thống.</span>
+                            </span>
                         </a>
 
-                        <a href="../pages/danh-muc-du-an.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-table-cells-large"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Danh mục dự án</p>
-                                <div class="link-desc">Trang gom nhóm danh mục và bộ lọc dự án.</div>
-                            </div>
+                        <a href="../pages/du-an.html?category=can-ho-chung-cu" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-building"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Căn hộ chung cư</span>
+                                <span class="link-desc">Nhóm dự án căn hộ và khu căn hộ.</span>
+                            </span>
                         </a>
 
-                        <a href="../pages/chi-tiet-du-an.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-circle-info"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Chi tiết dự án</p>
-                                <div class="link-desc">Trang chi tiết cho từng dự án cụ thể.</div>
-                            </div>
+                        <a href="../pages/du-an.html?category=cao-oc-van-phong" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-building-columns"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Cao ốc văn phòng</span>
+                                <span class="link-desc">Nhóm dự án tòa nhà và cao ốc văn phòng.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=trung-tam-thuong-mai" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-cart-shopping"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Trung tâm thương mại</span>
+                                <span class="link-desc">Các dự án trung tâm thương mại và bán lẻ.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=khu-do-thi-moi" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-city"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Khu đô thị mới</span>
+                                <span class="link-desc">Nhóm dự án khu đô thị quy mô lớn và đồng bộ.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=khu-phuc-hop" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-layer-group"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Khu phức hợp</span>
+                                <span class="link-desc">Dự án tích hợp nhiều công năng trong cùng quần thể.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=nha-o-xa-hoi" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-people-roof"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Nhà ở xã hội</span>
+                                <span class="link-desc">Nhóm dự án nhà ở xã hội và sản phẩm phục vụ ở thực.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=khu-nghi-duong-sinh-thai" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-leaf"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Khu nghỉ dưỡng, Sinh thái</span>
+                                <span class="link-desc">Các dự án nghỉ dưỡng và sinh thái.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=khu-cong-nghiep" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-industry"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Khu công nghiệp</span>
+                                <span class="link-desc">Nhóm khu công nghiệp và hạ tầng sản xuất.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=biet-thu-lien-ke" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-house-user"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Biệt thự, liền kề</span>
+                                <span class="link-desc">Nhóm dự án biệt thự và khu nhà liền kề.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=shophouse" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-store"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Shophouse</span>
+                                <span class="link-desc">Các dự án có sản phẩm shophouse và thương mại phố.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=nha-mat-pho" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-shop"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Nhà mặt phố</span>
+                                <span class="link-desc">Nhóm dự án nhà mặt phố và trục thương mại.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/du-an.html?category=du-an-khac" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-ellipsis"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Dự án khác</span>
+                                <span class="link-desc">Các loại dự án khác chưa nằm trong nhóm chính.</span>
+                            </span>
                         </a>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Giá nhà đất</h2>
-                    <div class="sitemap-card-sub">Báo cáo và thống kê giá</div>
+            <article class="sitemap-card">
+                <div class="card-head">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-newspaper"></i>
+                        Tin tức
+                    </h2>
+                    <p class="card-sub">Nhóm nội dung biên tập, bài viết thị trường và chuyên đề tin tức.</p>
                 </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
-                        <a href="../pages/gia-nha-dat.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-chart-line"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Giá nhà đất</p>
-                                <div class="link-desc">Trang báo cáo giá nhà đất theo khu vực và dữ liệu tin bán.</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Xây dựng</h2>
-                    <div class="sitemap-card-sub">Dịch vụ và nội dung xây dựng</div>
-                </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
-                        <a href="../pages/xay-dung.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Xây dựng</p>
-                                <div class="link-desc">Trang tổng hợp dịch vụ xây dựng, nhà thầu và đơn vị chuyên môn.</div>
-                            </div>
-                        </a>
-
-                        <a href="../pages/chi-tiet-tin.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-file-lines"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Chi tiết tin đăng</p>
-                                <div class="link-desc">Trang chi tiết dùng chung cho tin bán, thuê và xây dựng.</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Tin tức</h2>
-                    <div class="sitemap-card-sub">Nội dung biên tập và bài viết</div>
-                </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
+                <div class="card-body">
+                    <div class="link-list">
                         <a href="../pages/tin-tuc.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-newspaper"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Tin tức</p>
-                                <div class="link-desc">Trang tổng hợp bài viết tin tức và nội dung biên tập.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-grid-2"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Trang tổng tin tức</span>
+                                <span class="link-desc">Trang danh sách bài viết tin tức và biên tập.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/tin-tuc.html?category=tin-thi-truong" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-chart-line"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Tin thị trường</span>
+                                <span class="link-desc">Nhóm bài viết cập nhật diễn biến và xu hướng thị trường.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/tin-tuc.html?category=du-an-noi-bat" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-building-circle-check"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Dự án nổi bật</span>
+                                <span class="link-desc">Các bài viết giới thiệu và phân tích dự án nổi bật.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/tin-tuc.html?category=phan-tich-dau-tu" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-coins"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Phân tích đầu tư</span>
+                                <span class="link-desc">Nhóm bài viết chuyên sâu về đầu tư và dòng tiền.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/tin-tuc.html?category=phap-ly-bat-dong-san" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-scale-balanced"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Pháp lý bất động sản</span>
+                                <span class="link-desc">Nhóm nội dung pháp lý, hồ sơ và lưu ý khi giao dịch.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/chi-tiet-tin-tuc.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-book-open"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Chi tiết tin tức</p>
-                                <div class="link-desc">Trang chi tiết cho từng bài viết tin tức.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-book-open"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Chi tiết tin tức</span>
+                                <span class="link-desc">Trang chi tiết cho từng bài viết tin tức.</span>
+                            </span>
                         </a>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Danh bạ</h2>
-                    <div class="sitemap-card-sub">Doanh nghiệp và môi giới</div>
+            <article class="sitemap-card">
+                <div class="card-head">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        Xây dựng
+                    </h2>
+                    <p class="card-sub">Nhóm dịch vụ xây dựng, nhà thầu, thiết kế và hoàn thiện.</p>
                 </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
+                <div class="card-body">
+                    <div class="link-list">
+                        <a href="../pages/xay-dung.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-grid-2"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Trang tổng xây dựng</span>
+                                <span class="link-desc">Trang danh sách chính của các dịch vụ và nội dung xây dựng.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/xay-dung.html?category=xay-nha-tron-goi" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-house"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Xây nhà trọn gói</span>
+                                <span class="link-desc">Nhóm dịch vụ xây nhà trọn gói.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/xay-dung.html?category=thi-cong-phan-tho" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Thi công phần thô</span>
+                                <span class="link-desc">Dịch vụ phần thô và kết cấu công trình.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/xay-dung.html?category=thiet-ke-kien-truc" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-compass-drafting"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Thiết kế kiến trúc</span>
+                                <span class="link-desc">Nhóm dịch vụ thiết kế kiến trúc và quy hoạch mặt bằng.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/xay-dung.html?category=sua-chua-cai-tao" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-hammer"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Sửa chữa cải tạo</span>
+                                <span class="link-desc">Nhóm dịch vụ sửa chữa, nâng cấp và cải tạo công trình.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/xay-dung.html?category=noi-that-hoan-thien" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-couch"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Nội thất hoàn thiện</span>
+                                <span class="link-desc">Dịch vụ hoàn thiện, thi công và lắp đặt nội thất.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/xay-dung.html?category=vat-lieu-xay-dung" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-cubes"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Vật liệu xây dựng</span>
+                                <span class="link-desc">Nhóm vật liệu, thiết bị và nguồn cung xây dựng.</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="sitemap-card">
+                <div class="card-head">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-address-book"></i>
+                        Danh bạ
+                    </h2>
+                    <p class="card-sub">Nhóm trang danh bạ doanh nghiệp, môi giới và hồ sơ chi tiết.</p>
+                </div>
+                <div class="card-body">
+                    <div class="link-list">
                         <a href="../pages/danh-ba-doanh-nghiep.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-building-shield"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Danh bạ doanh nghiệp</p>
-                                <div class="link-desc">Danh sách doanh nghiệp và đơn vị dịch vụ trên hệ thống.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-building"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Danh bạ doanh nghiệp</span>
+                                <span class="link-desc">Trang danh sách doanh nghiệp, nhà thầu và đơn vị dịch vụ.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/danh-ba-moi-gioi.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-user-tie"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Danh bạ môi giới</p>
-                                <div class="link-desc">Danh sách môi giới, cá nhân và chuyên viên đang hiển thị.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-user-tie"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Danh bạ môi giới</span>
+                                <span class="link-desc">Trang danh sách môi giới và chuyên viên tư vấn.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/chi-tiet-doanh-nghiep.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-address-card"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Chi tiết doanh nghiệp</p>
-                                <div class="link-desc">Trang hồ sơ chi tiết cho doanh nghiệp, nhà thầu, đơn vị.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-id-badge"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Chi tiết doanh nghiệp</span>
+                                <span class="link-desc">Trang hồ sơ chi tiết doanh nghiệp và đơn vị dịch vụ.</span>
+                            </span>
                         </a>
 
                         <a href="../pages/chi-tiet-moi-gioi.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-id-badge"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Chi tiết môi giới</p>
-                                <div class="link-desc">Trang hồ sơ chi tiết cho môi giới và cá nhân đăng tin.</div>
-                            </div>
+                            <span class="link-icon"><i class="fa-solid fa-user-check"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Chi tiết môi giới</span>
+                                <span class="link-desc">Trang hồ sơ chi tiết môi giới, cá nhân và chuyên viên tư vấn.</span>
+                            </span>
                         </a>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="sitemap-card">
-                <div class="sitemap-card-head">
-                    <h2 class="sitemap-card-title">Tài khoản và công cụ người dùng</h2>
-                    <div class="sitemap-card-sub">Nhóm trang thao tác chính</div>
+            <article class="sitemap-card full-span">
+                <div class="card-head">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-folder-open"></i>
+                        Các trang chức năng và trang chi tiết dùng chung
+                    </h2>
+                    <p class="card-sub">Nhóm trang hỗ trợ vận hành, hiển thị chi tiết và các trang điều hướng quan trọng trên website.</p>
                 </div>
-                <div class="sitemap-card-body">
-                    <div class="link-grid">
-                        <a href="../user/dang-tin.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Đăng tin</p>
-                                <div class="link-desc">Trang đăng tin dùng chung cho bán, thuê và xây dựng.</div>
-                            </div>
+                <div class="card-body">
+                    <div class="link-list">
+                        <a href="../index.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-house-chimney"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Trang chủ</span>
+                                <span class="link-desc">Trang tổng quan chính của toàn bộ website.</span>
+                            </span>
                         </a>
 
-                        <a href="../user/tin-da-luu.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-heart"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Tin đã lưu</p>
-                                <div class="link-desc">Trang quản lý các tin người dùng đã lưu lại.</div>
-                            </div>
+                        <a href="../pages/gia-nha-dat.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-chart-column"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Giá nhà đất</span>
+                                <span class="link-desc">Báo cáo và thống kê giá nhà đất theo khu vực.</span>
+                            </span>
                         </a>
 
-                        <a href="../user/dang-nhap.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-right-to-bracket"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Đăng nhập</p>
-                                <div class="link-desc">Trang đăng nhập tài khoản người dùng.</div>
-                            </div>
+                        <a href="../pages/chi-tiet-tin.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-file-lines"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Chi tiết tin đăng</span>
+                                <span class="link-desc">Trang chi tiết dùng chung cho tin bán, thuê và xây dựng.</span>
+                            </span>
                         </a>
 
-                        <a href="../user/dang-ky.html" class="link-item">
-                            <div class="link-icon"><i class="fa-solid fa-user-plus"></i></div>
-                            <div class="link-content">
-                                <p class="link-title">Đăng ký</p>
-                                <div class="link-desc">Trang tạo mới tài khoản trên hệ thống.</div>
-                            </div>
+                        <a href="../pages/chi-tiet-du-an.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-building-circle-check"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Chi tiết dự án</span>
+                                <span class="link-desc">Trang hồ sơ chi tiết cho từng dự án cụ thể.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/danh-muc-du-an.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-diagram-project"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Danh mục dự án</span>
+                                <span class="link-desc">Trang gom nhóm và điều hướng các nội dung liên quan đến dự án.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/tin-da-luu.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-heart"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Tin đã lưu</span>
+                                <span class="link-desc">Trang lưu lại các tin yêu thích để xem lại nhanh.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/dang-tin.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-pen-to-square"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Đăng tin</span>
+                                <span class="link-desc">Trang đăng nội dung cho nhà đất bán, cho thuê và xây dựng.</span>
+                            </span>
+                        </a>
+
+                        <a href="../pages/sitemap.html" class="link-item">
+                            <span class="link-icon"><i class="fa-solid fa-sitemap"></i></span>
+                            <span class="link-content">
+                                <span class="link-label">Sitemap HTML</span>
+                                <span class="link-desc">Trang sơ đồ nội dung HTML dành cho người dùng.</span>
+                            </span>
                         </a>
                     </div>
                 </div>
-            </div>
-
+            </article>
         </section>
 
         <section class="seo-block-shell">
@@ -792,7 +915,7 @@
         </section>
     </main>
 
-    <div id="site-footer"></div>
+    <div id="siteFooter"></div>
 
     <button
         id="goToTop"
@@ -828,28 +951,12 @@
     <script src="../assets/js/main.js"></script>
 
     <script>
-        function renderSeoFallback() {
-            const seoContainer = document.getElementById("seoContent");
-            if (!seoContainer) return;
-
-            seoContainer.innerHTML = `
-                <div class="seo-fallback-box">
-                    <div class="seo-fallback-title">Thông tin thêm về sơ đồ website</div>
-                    <div class="seo-fallback-content">
-                        <p>Trang sơ đồ website giúp người dùng và công cụ tìm kiếm hiểu rõ cấu trúc nội dung chính của ToamViet.com.vn. Tại đây, các nhóm nội dung được chia rõ theo từng khu vực lớn như nhà đất bán, nhà đất cho thuê, dự án, xây dựng, tin tức, giá nhà đất và danh bạ.</p>
-                        <p>Việc xây dựng sitemap dạng HTML giúp tăng khả năng điều hướng nội bộ, hỗ trợ người dùng truy cập nhanh đến đúng danh mục cần tìm và cũng giúp hệ thống có thêm một lớp liên kết nội bộ rõ ràng, nhất quán.</p>
-                        <p>Khi website mở rộng thêm danh mục hoặc trang mới, sitemap này nên tiếp tục được cập nhật đồng bộ với sitemap.xml để đảm bảo cả người dùng lẫn công cụ tìm kiếm đều tiếp cận đúng cấu trúc mới nhất của website.</p>
-                    </div>
-                </div>
-            `;
-        }
-
         async function initSharedComponents() {
             try {
                 if (typeof loadComponent === "function") {
-                    await loadComponent("site-header", "../components/header-inner.html");
-                    await loadComponent("site-mobile-menu", "../components/mobile-menu-inner.html");
-                    await loadComponent("site-footer", "../components/footer-inner.html");
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
 
                     if (typeof setupFixedHeaderSpacing === "function") {
                         setupFixedHeaderSpacing();
@@ -883,13 +990,6 @@
 
             if (typeof renderSeoContent === "function") {
                 renderSeoContent("seoContent", "sitemap");
-            } else {
-                renderSeoFallback();
-            }
-
-            if (typeof getSeoContentByKey === "function") {
-                const check = getSeoContentByKey("sitemap");
-                if (!check) renderSeoFallback();
             }
         });
     </script>
