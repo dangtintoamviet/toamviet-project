@@ -1,1 +1,611 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>500 - Lỗi hệ thống | ToamViet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --text-main: #1f2937;
+            --text-soft: #64748b;
+            --stroke: #e5e7eb;
+            --danger: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Roboto", sans-serif;
+            background: linear-gradient(180deg, #f8fbfc 0%, #f4f7fa 100%);
+            color: var(--text-main);
+        }
+
+        .error-page-shell {
+            padding: 26px 0 44px;
+            min-height: calc(100vh - 120px);
+            display: flex;
+            align-items: center;
+        }
+
+        .error-wrap {
+            width: 100%;
+        }
+
+        .error-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .error-card,
+        .help-card {
+            background: #fff;
+            border: 1px solid var(--stroke);
+            border-radius: 28px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        }
+
+        .error-card {
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at top right, rgba(0, 139, 139, 0.08), transparent 34%),
+                radial-gradient(circle at bottom left, rgba(255, 140, 0, 0.08), transparent 28%),
+                #ffffff;
+        }
+
+        .error-card::after {
+            content: "";
+            position: absolute;
+            right: -90px;
+            top: -90px;
+            width: 220px;
+            height: 220px;
+            border-radius: 999px;
+            background: rgba(15, 118, 110, 0.05);
+            pointer-events: none;
+        }
+
+        .error-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 38px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: var(--danger);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 18px;
+        }
+
+        .error-code {
+            font-size: clamp(64px, 10vw, 110px);
+            line-height: 1;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: -0.04em;
+            margin: 0 0 16px;
+        }
+
+        .error-title {
+            margin: 0 0 14px;
+            font-size: clamp(26px, 3vw, 36px);
+            line-height: 1.28;
+            font-weight: 800;
+            color: #0f172a;
+            text-transform: none;
+            max-width: 760px;
+        }
+
+        .error-desc {
+            margin: 0;
+            max-width: 760px;
+            font-size: 15px;
+            line-height: 1.9;
+            color: var(--text-soft);
+        }
+
+        .error-note {
+            margin-top: 22px;
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #475569;
+        }
+
+        .error-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .primary-action,
+        .secondary-action {
+            min-height: 48px;
+            padding: 0 20px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 800;
+            transition: all 0.25s ease;
+        }
+
+        .primary-action {
+            background: linear-gradient(135deg, var(--vip-color), var(--vip-dark));
+            color: #fff;
+            box-shadow: 0 14px 28px rgba(0, 139, 139, 0.16);
+        }
+
+        .primary-action:hover {
+            transform: translateY(-1px);
+            opacity: 0.96;
+        }
+
+        .secondary-action {
+            background: #fff;
+            color: #334155;
+            border: 1px solid #dbe4ee;
+        }
+
+        .secondary-action:hover {
+            border-color: rgba(0, 139, 139, 0.32);
+            color: var(--vip-color);
+            background: #f8ffff;
+        }
+
+        .quick-links {
+            margin-top: 26px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 16px;
+            border-radius: 18px;
+            text-decoration: none;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            transition: all 0.25s ease;
+            color: inherit;
+        }
+
+        .quick-link:hover {
+            border-color: rgba(0, 139, 139, 0.28);
+            background: #f8ffff;
+            transform: translateY(-1px);
+        }
+
+        .quick-link-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0fdfa;
+            color: var(--vip-color);
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .quick-link-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.45;
+            text-transform: none;
+        }
+
+        .quick-link-sub {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.55;
+            margin-top: 3px;
+        }
+
+        .help-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .help-title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.35;
+            text-transform: none;
+        }
+
+        .help-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 18px;
+            background: #f8fafc;
+        }
+
+        .help-box-title {
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--vip-color);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            margin-bottom: 10px;
+        }
+
+        .help-list {
+            margin: 0;
+            padding-left: 18px;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .help-list li + li {
+            margin-top: 6px;
+        }
+
+        .status-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            color: #9a3412;
+            font-size: 13px;
+            line-height: 1.7;
+            font-weight: 700;
+        }
+
+        .status-line i {
+            flex-shrink: 0;
+            color: var(--hover-color);
+        }
+
+        .contact-box {
+            padding: 18px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(0, 139, 139, 0.08), rgba(15, 118, 110, 0.06));
+            border: 1px solid rgba(0, 139, 139, 0.12);
+        }
+
+        .contact-box p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #475569;
+        }
+
+        .contact-box strong {
+            color: #0f172a;
+        }
+
+        .mini-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .mini-btn {
+            min-height: 42px;
+            padding: 0 15px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            border: 1px solid #dbe4ee;
+            background: #fff;
+            color: #334155;
+            transition: all 0.25s ease;
+        }
+
+        .mini-btn:hover {
+            color: var(--vip-color);
+            border-color: rgba(0, 139, 139, 0.3);
+            background: #f8ffff;
+        }
+
+        @media (max-width: 1100px) {
+            .error-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .error-page-shell {
+                padding: 18px 0 26px;
+            }
+
+            .error-card,
+            .help-card {
+                border-radius: 22px;
+            }
+
+            .error-card,
+            .help-card {
+                padding: 18px;
+            }
+
+            .error-title {
+                font-size: 24px;
+            }
+
+            .error-desc,
+            .error-note,
+            .help-list,
+            .contact-box p {
+                font-size: 14px;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+
+            .error-actions {
+                flex-direction: column;
+            }
+
+            .primary-action,
+            .secondary-action {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
+
+    <main class="error-page-shell">
+        <div class="container-custom error-wrap">
+            <div class="error-grid">
+                <section class="error-card">
+                    <div class="error-badge">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Lỗi máy chủ nội bộ
+                    </div>
+
+                    <div class="error-code">500</div>
+
+                    <h1 class="error-title">Hệ thống đang gặp sự cố tạm thời, vui lòng thử lại sau ít phút</h1>
+
+                    <p class="error-desc">
+                        Trang bạn vừa mở hiện chưa thể xử lý do lỗi từ phía máy chủ hoặc dữ liệu hệ thống.
+                        Đây thường là lỗi tạm thời. Bạn có thể quay lại trang chủ, thử tải lại trang,
+                        hoặc chuyển sang các danh mục chính để tiếp tục sử dụng website.
+                    </p>
+
+                    <div class="error-note">
+                        Nếu lỗi này lặp lại nhiều lần ở cùng một trang, bạn nên kiểm tra lại đường dẫn đang mở
+                        hoặc liên hệ quản trị viên để được hỗ trợ xử lý nhanh hơn.
+                    </div>
+
+                    <div class="error-actions">
+                        <a href="index.html" class="primary-action">
+                            <i class="fa-solid fa-house"></i>
+                            Về trang chủ
+                        </a>
+
+                        <a href="javascript:location.reload();" class="secondary-action">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            Tải lại trang
+                        </a>
+
+                        <a href="pages/lien-he.html" class="secondary-action">
+                            <i class="fa-solid fa-envelope"></i>
+                            Liên hệ hỗ trợ
+                        </a>
+                    </div>
+
+                    <div class="quick-links">
+                        <a href="pages/nha-dat-ban.html" class="quick-link">
+                            <span class="quick-link-icon">
+                                <i class="fa-solid fa-house-circle-check"></i>
+                            </span>
+                            <span>
+                                <div class="quick-link-title">Nhà đất bán</div>
+                                <div class="quick-link-sub">Xem các tin bán đang hiển thị</div>
+                            </span>
+                        </a>
+
+                        <a href="pages/nha-dat-cho-thue.html" class="quick-link">
+                            <span class="quick-link-icon">
+                                <i class="fa-solid fa-key"></i>
+                            </span>
+                            <span>
+                                <div class="quick-link-title">Nhà đất cho thuê</div>
+                                <div class="quick-link-sub">Tìm nhanh căn hộ, nhà phố, mặt bằng</div>
+                            </span>
+                        </a>
+
+                        <a href="pages/du-an.html" class="quick-link">
+                            <span class="quick-link-icon">
+                                <i class="fa-solid fa-building"></i>
+                            </span>
+                            <span>
+                                <div class="quick-link-title">Dự án</div>
+                                <div class="quick-link-sub">Theo dõi các dự án đang mở bán</div>
+                            </span>
+                        </a>
+
+                        <a href="pages/xay-dung.html" class="quick-link">
+                            <span class="quick-link-icon">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                            </span>
+                            <span>
+                                <div class="quick-link-title">Xây dựng</div>
+                                <div class="quick-link-sub">Tìm doanh nghiệp và dịch vụ xây dựng</div>
+                            </span>
+                        </a>
+                    </div>
+                </section>
+
+                <aside class="help-card">
+                    <h2 class="help-title">Bạn có thể thử các cách này</h2>
+
+                    <div class="help-box">
+                        <div class="help-box-title">Gợi ý xử lý nhanh</div>
+                        <ol class="help-list">
+                            <li>Tải lại trang hiện tại sau vài giây.</li>
+                            <li>Quay lại trang trước rồi mở lại liên kết.</li>
+                            <li>Chuyển sang các trang chính như Nhà đất bán, Dự án hoặc Xây dựng.</li>
+                            <li>Nếu lỗi lặp lại, gửi link trang bị lỗi cho quản trị viên.</li>
+                        </ol>
+                    </div>
+
+                    <div class="status-line">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Mã lỗi 500 thường xuất hiện khi máy chủ xử lý dữ liệu bị gián đoạn hoặc cấu hình trang đang có vấn đề tạm thời.</span>
+                    </div>
+
+                    <div class="contact-box">
+                        <p>
+                            <strong>ToamViet.com.vn</strong> luôn ưu tiên trải nghiệm ổn định cho người dùng.
+                            Nếu bạn cần hỗ trợ ngay, hãy dùng nút chat Zalo ở góc phải màn hình hoặc truy cập trang liên hệ để gửi thông tin lỗi.
+                        </p>
+
+                        <div class="mini-actions">
+                            <a href="pages/tin-tuc.html" class="mini-btn">
+                                <i class="fa-solid fa-newspaper"></i>
+                                Tin tức
+                            </a>
+                            <a href="pages/gia-nha-dat.html" class="mini-btn">
+                                <i class="fa-solid fa-chart-line"></i>
+                                Giá nhà đất
+                            </a>
+                            <a href="pages/sitemap.html" class="mini-btn">
+                                <i class="fa-solid fa-sitemap"></i>
+                                Sitemap
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <button
+        id="goToTop"
+        onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+    >
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
+
+    <div
+        class="zalo-chat-btn wiggle"
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+    >
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+
+    <div id="chatForm">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+            <span
+                onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+                style="cursor:pointer; font-size: 20px;"
+            >&times;</span>
+        </div>
+        <div class="chat-body">
+            <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần hỗ trợ lỗi ở trang nào?"></textarea>
+            <button class="btn-send" onclick="sendToZalo()">Bắt đầu chat trên Zalo</button>
+        </div>
+    </div>
+
+    <script src="assets/js/component-loader.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "components/header-root.html");
+                    await loadComponent("siteMobileMenu", "components/mobile-menu-root.html");
+                    await loadComponent("siteFooter", "components/footer-root.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        function sendToZalo() {
+            const name = document.getElementById("cusName").value.trim();
+            const msg = document.getElementById("cusMsg").value.trim();
+            const phone = "0946239289";
+
+            if (!name) {
+                alert("Vui lòng cho biết tên của bạn");
+                return;
+            }
+
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". Tôi đang gặp lỗi 500 trên website. " + msg;
+            const encodedMsg = encodeURIComponent(fullMsg);
+            window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+        }
+
+        window.addEventListener("load", async function () {
+            await initSharedComponents();
+        });
+    </script>
+</body>
+</html>
