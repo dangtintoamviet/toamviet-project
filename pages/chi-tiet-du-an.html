@@ -211,16 +211,17 @@
         }
 
         .hero-gallery-bar {
-            padding: 14px 18px 18px;
+            padding: 16px 18px 18px;
             background: #fff;
             border-top: 1px solid #eef2f7;
         }
 
         .hero-thumbs {
             display: flex;
-            gap: 10px;
+            gap: 14px;
             overflow-x: auto;
             scrollbar-width: none;
+            align-items: stretch;
         }
 
         .hero-thumbs::-webkit-scrollbar {
@@ -228,9 +229,9 @@
         }
 
         .hero-thumb {
-            width: 96px;
-            height: 72px;
-            border-radius: 14px;
+            width: 120px;
+            height: 86px;
+            border-radius: 16px;
             overflow: hidden;
             border: 2px solid #dbe4ee;
             background: #dbe4ea;
@@ -238,6 +239,7 @@
             flex: 0 0 auto;
             transition: all 0.25s ease;
             padding: 0;
+            display: block;
         }
 
         .hero-thumb.active {
@@ -350,6 +352,7 @@
             line-height: 1.55;
             color: var(--text-strong);
             word-break: break-word;
+            text-transform: none;
         }
 
         .hero-actions {
@@ -441,6 +444,7 @@
             font-size: 13px;
             color: #64748b;
             line-height: 1.7;
+            text-transform: none;
         }
 
         .stats-grid {
@@ -907,9 +911,13 @@
                 padding: 12px 12px 14px;
             }
 
+            .hero-thumbs {
+                gap: 10px;
+            }
+
             .hero-thumb {
-                width: 78px;
-                height: 58px;
+                width: 98px;
+                height: 70px;
                 border-radius: 12px;
             }
 
@@ -1103,6 +1111,11 @@
             .hero-pill {
                 font-size: 9px;
                 padding: 6px 9px;
+            }
+
+            .hero-thumb {
+                width: 92px;
+                height: 66px;
             }
 
             .stats-grid,
@@ -1475,8 +1488,8 @@
                 .replace(/đ/g, "d")
                 .toLowerCase()
                 .trim()
-                .replace(/[^a-z0-9\s-]/g, "")
-                .replace(/\s+/g, "-")
+                .replace(/[^a-z0-9\\s-]/g, "")
+                .replace(/\\s+/g, "-")
                 .replace(/-+/g, "-");
         }
 
@@ -1530,6 +1543,14 @@
             );
         }
 
+        function toTitleCaseWords(text) {
+            return String(text || "")
+                .toLowerCase()
+                .replace(/\b\w/g, function (char) {
+                    return char.toUpperCase();
+                });
+        }
+
         function formatProjectTypeLabel(value) {
             const raw = String(value || "").trim();
             if (!raw) return "Đang cập nhật";
@@ -1566,16 +1587,12 @@
 
             if (map[normalized]) return map[normalized];
 
-            const pretty = raw
+            const cleaned = raw
                 .replace(/[-_]+/g, " ")
                 .replace(/\s+/g, " ")
-                .trim()
-                .toLowerCase()
-                .replace(/\b\w/g, function (char) {
-                    return char.toUpperCase();
-                });
+                .trim();
 
-            return pretty;
+            return toTitleCaseWords(cleaned);
         }
 
         function getProjectImage(project, index = 0) {
@@ -1635,7 +1652,7 @@
             const name = project.name || project.projectName || project.title || `Dự án ${index + 1}`;
             const slug = String(project.slug || project.projectSlug || slugifyText(name)).trim();
             const type = formatProjectTypeLabel(project.type || project.projectType || project.category || "Đang cập nhật");
-            const status = project.status || project.projectStatus || "Đang cập nhật";
+            const status = toTitleCaseWords(project.status || project.projectStatus || "Đang cập nhật");
             const investor = project.investor || project.developer || project.owner || project.contactName || "Đang cập nhật";
             const area = project.area || project.scale || project.landArea || project.size || "Đang cập nhật";
             const priceInfo = normalizePrice(project.price ?? project.priceFrom ?? project.minPrice ?? "");
