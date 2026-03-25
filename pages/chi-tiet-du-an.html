@@ -96,13 +96,13 @@
 
         .hero-main {
             overflow: hidden;
-            position: relative;
         }
 
         .hero-slider {
             position: relative;
             min-height: 520px;
             background: #dbe4ea;
+            overflow: hidden;
         }
 
         .hero-slide-image,
@@ -208,16 +208,24 @@
             font-weight: 700;
         }
 
+        .hero-gallery-bar {
+            padding: 16px 18px 18px;
+            background: #fff;
+            border-top: 1px solid #eef2f7;
+        }
+
+        .hero-gallery-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #64748b;
+            margin-bottom: 10px;
+            text-transform: none;
+        }
+
         .hero-thumbs {
-            position: absolute;
-            left: 18px;
-            right: 18px;
-            bottom: 16px;
-            z-index: 4;
             display: flex;
             gap: 10px;
             overflow-x: auto;
-            padding-top: 145px;
             scrollbar-width: none;
         }
 
@@ -226,21 +234,22 @@
         }
 
         .hero-thumb {
-            width: 92px;
-            height: 70px;
+            width: 96px;
+            height: 72px;
             border-radius: 14px;
             overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.25);
+            border: 2px solid #dbe4ee;
             background: #dbe4ea;
             cursor: pointer;
             flex: 0 0 auto;
             transition: all 0.25s ease;
+            padding: 0;
         }
 
         .hero-thumb.active {
-            border-color: #fff;
+            border-color: var(--vip-color);
             transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.12);
         }
 
         .hero-thumb img {
@@ -285,6 +294,7 @@
             line-height: 1.3;
             margin-bottom: 4px;
             transition: color 0.2s ease;
+            text-transform: none;
         }
 
         .owner-role {
@@ -462,7 +472,7 @@
             line-height: 1.2;
             color: var(--text-strong);
             margin-bottom: 6px;
-            text-transform: none;
+            word-break: break-word;
         }
 
         .stat-hint {
@@ -835,11 +845,7 @@
 
         @media (max-width: 992px) {
             .hero-slider {
-                min-height: 460px;
-            }
-
-            .hero-thumbs {
-                padding-top: 100px;
+                min-height: 420px;
             }
 
             .related-grid,
@@ -853,47 +859,60 @@
                 padding-bottom: 22px;
             }
 
+            .breadcrumb {
+                font-size: 13px;
+                gap: 6px;
+            }
+
             .hero-slider {
-                min-height: 330px;
-                border-radius: 18px;
+                min-height: 280px;
+                border-radius: 18px 18px 0 0;
             }
 
             .hero-content {
                 left: 16px;
                 right: 16px;
-                bottom: 16px;
+                bottom: 14px;
                 max-width: calc(100% - 32px);
             }
 
             .hero-title {
-                font-size: 24px;
-                margin-bottom: 10px;
+                font-size: 18px;
+                margin-bottom: 8px;
+                line-height: 1.3;
             }
 
             .hero-address {
-                font-size: 14px;
-                line-height: 1.7;
-                margin-bottom: 12px;
+                font-size: 13px;
+                line-height: 1.6;
+                margin-bottom: 10px;
+                gap: 8px;
+            }
+
+            .hero-badges,
+            .hero-pills {
+                gap: 8px;
             }
 
             .hero-badge,
             .hero-pill {
-                font-size: 11px;
-                padding: 7px 11px;
-                min-height: 32px;
+                font-size: 10px;
+                padding: 6px 10px;
+                min-height: 30px;
             }
 
-            .hero-thumbs {
-                left: 14px;
-                right: 14px;
-                bottom: 12px;
-                gap: 8px;
-                padding-top: 80px;
+            .hero-gallery-bar {
+                padding: 12px 12px 14px;
+            }
+
+            .hero-gallery-title {
+                font-size: 12px;
+                margin-bottom: 8px;
             }
 
             .hero-thumb {
                 width: 78px;
-                height: 60px;
+                height: 58px;
                 border-radius: 12px;
             }
 
@@ -903,15 +922,89 @@
                 padding: 16px;
             }
 
-            .owner-info-grid,
-            .hero-actions,
-            .stats-grid,
-            .amenities-grid {
+            .owner-link {
+                gap: 12px;
+            }
+
+            .owner-avatar {
+                width: 58px;
+                height: 58px;
+                font-size: 20px;
+            }
+
+            .owner-name {
+                font-size: 18px;
+            }
+
+            .owner-role {
+                font-size: 13px;
+            }
+
+            .owner-chip-row {
+                gap: 8px;
+            }
+
+            .owner-chip {
+                font-size: 11px;
+                padding: 7px 10px;
+                min-height: 32px;
+            }
+
+            .owner-info-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .owner-info-item {
+                padding: 12px;
+            }
+
+            .owner-info-label {
+                font-size: 10px;
+                margin-bottom: 5px;
+            }
+
+            .owner-info-value {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .hero-actions {
                 grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .btn-main,
+            .btn-soft {
+                min-height: 44px;
+                font-size: 13px;
+                border-radius: 12px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 14px;
+                min-height: 116px;
+            }
+
+            .stat-label {
+                font-size: 10px;
+                margin-bottom: 8px;
             }
 
             .stat-value {
-                font-size: 24px;
+                font-size: 18px;
+                line-height: 1.25;
+                margin-bottom: 4px;
+            }
+
+            .stat-hint {
+                font-size: 12px;
+                line-height: 1.55;
             }
 
             .section-head h2,
@@ -919,8 +1012,116 @@
                 font-size: 19px;
             }
 
+            .section-sub {
+                font-size: 13px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .info-item {
+                padding: 13px;
+                border-radius: 14px;
+            }
+
+            .info-label {
+                font-size: 10px;
+                margin-bottom: 6px;
+            }
+
+            .info-value {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .project-desc {
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .amenities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .amenity-item {
+                padding: 14px;
+            }
+
+            .amenity-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+
+            .amenity-title {
+                font-size: 14px;
+            }
+
+            .amenity-desc {
+                font-size: 12px;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+
             .related-thumb {
                 height: 190px;
+            }
+
+            .related-body {
+                padding: 16px;
+            }
+
+            .related-title {
+                font-size: 16px;
+            }
+
+            .related-address {
+                font-size: 13px;
+            }
+
+            .related-pill {
+                font-size: 11px;
+                padding: 7px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-slider {
+                min-height: 250px;
+            }
+
+            .hero-title {
+                font-size: 16px;
+            }
+
+            .hero-address {
+                font-size: 12px;
+            }
+
+            .hero-badge,
+            .hero-pill {
+                font-size: 9px;
+                padding: 6px 9px;
+            }
+
+            .stats-grid,
+            .owner-info-grid,
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-card,
+            .owner-info-item,
+            .info-item {
+                padding: 12px;
+            }
+
+            .stat-value {
+                font-size: 17px;
             }
         }
     </style>
@@ -982,7 +1183,10 @@
                             </span>
                         </div>
                     </div>
+                </div>
 
+                <div class="hero-gallery-bar">
+                    <div class="hero-gallery-title">Hình ảnh dự án</div>
                     <div class="hero-thumbs" id="heroGalleryStrip"></div>
                 </div>
             </div>
@@ -1330,6 +1534,54 @@
             );
         }
 
+        function formatProjectTypeLabel(value) {
+            const raw = String(value || "").trim();
+            if (!raw) return "Đang cập nhật";
+
+            const normalized = normalizeText(raw);
+
+            const map = {
+                "biet-thu-lien-ke": "Biệt thự liền kề",
+                "biet thu lien ke": "Biệt thự liền kề",
+                "can-ho-chung-cu": "Căn hộ chung cư",
+                "can ho chung cu": "Căn hộ chung cư",
+                "cao-oc-van-phong": "Cao ốc văn phòng",
+                "cao oc van phong": "Cao ốc văn phòng",
+                "trung-tam-thuong-mai": "Trung tâm thương mại",
+                "trung tam thuong mai": "Trung tâm thương mại",
+                "khu-do-thi-moi": "Khu đô thị mới",
+                "khu do thi moi": "Khu đô thị mới",
+                "khu-phuc-hop": "Khu phức hợp",
+                "khu phuc hop": "Khu phức hợp",
+                "nha-o-xa-hoi": "Nhà ở xã hội",
+                "nha o xa hoi": "Nhà ở xã hội",
+                "khu-nghi-duong-sinh-thai": "Khu nghỉ dưỡng sinh thái",
+                "khu nghi duong sinh thai": "Khu nghỉ dưỡng sinh thái",
+                "khu-cong-nghiep": "Khu công nghiệp",
+                "khu cong nghiep": "Khu công nghiệp",
+                "shophouse": "Shophouse",
+                "nha-mat-pho": "Nhà mặt phố",
+                "nha mat pho": "Nhà mặt phố",
+                "du-an-khac": "Dự án khác",
+                "du an khac": "Dự án khác",
+                "dat-nen": "Đất nền",
+                "dat nen": "Đất nền"
+            };
+
+            if (map[normalized]) return map[normalized];
+
+            const pretty = raw
+                .replace(/[-_]+/g, " ")
+                .replace(/\s+/g, " ")
+                .trim()
+                .toLowerCase()
+                .replace(/\b\w/g, function (char) {
+                    return char.toUpperCase();
+                });
+
+            return pretty;
+        }
+
         function getProjectImage(project, index = 0) {
             if (project.thumbnail && String(project.thumbnail).trim()) return project.thumbnail;
             if (project.image && String(project.image).trim()) return project.image;
@@ -1386,7 +1638,7 @@
         function normalizeProject(project, index = 0) {
             const name = project.name || project.projectName || project.title || `Dự án ${index + 1}`;
             const slug = String(project.slug || project.projectSlug || slugifyText(name)).trim();
-            const type = project.type || project.projectType || project.category || "Đang cập nhật";
+            const type = formatProjectTypeLabel(project.type || project.projectType || project.category || "Đang cập nhật");
             const status = project.status || project.projectStatus || "Đang cập nhật";
             const investor = project.investor || project.developer || project.owner || project.contactName || "Đang cập nhật";
             const area = project.area || project.scale || project.landArea || project.size || "Đang cập nhật";
@@ -1533,7 +1785,7 @@
             document.getElementById("contactArea").textContent = project.area;
             document.getElementById("contactPosts").textContent = `${formatNumber(project.salePostsCount)} / ${formatNumber(project.rentalPostsCount)}`;
             document.getElementById("contactStatus").textContent = project.status;
-            document.getElementById("goToCategoryBtn").href = `../pages/danh-muc-du-an.html?projectId=${encodeURIComponent(project.id)}&slug=${encodeURIComponent(project.slug || project.id)}`;
+            document.getElementById("goToCategoryBtn").href = `../pages/danh-muc-du-an.html?projectId=${encodeURIComponent(project.id)}`;
 
             const highlights = [
                 {
@@ -1889,13 +2141,9 @@
 
             if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
                 const keyBySlug = `project-${selectedProject.slug || ""}`;
-                const hasKeyBySlug = !!getSeoContentByKey(keyBySlug);
-                const hasProjectKey = !!getSeoContentByKey("project");
-
-                if (hasKeyBySlug) {
-                    renderSeoContent("seoContent", keyBySlug);
-                } else if (hasProjectKey) {
-                    renderSeoContent("seoContent", "project");
+                const externalContent = getSeoContentByKey(keyBySlug) || getSeoContentByKey("project");
+                if (externalContent) {
+                    renderSeoContent("seoContent", getSeoContentByKey(keyBySlug) ? keyBySlug : "project");
                 } else {
                     renderSeoFallback();
                 }
