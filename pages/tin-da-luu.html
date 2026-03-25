@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tin đã lưu - ToamViet.com.vn</title>
+    <title>Tin đã lưu | ToamViet.com.vn</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet"
+    />
 
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
         :root {
             --vip-color: #008b8b;
             --hover-color: #ff8c00;
             --soft-bg: #f5f7fa;
-            --text-main: #2c2c2c;
+            --text-main: #1f2937;
+            --text-soft: #64748b;
             --border-color: #e5e7eb;
         }
 
@@ -31,19 +39,16 @@
 
         body {
             margin: 0;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Roboto", sans-serif;
             background: var(--soft-bg);
             color: var(--text-main);
         }
 
-        .container-custom {
-            max-width: 1460px;
-            margin: 0 auto;
-            padding: 0 18px;
+        a {
+            text-decoration: none;
         }
 
         .page-shell {
-            padding-top: 0;
             padding-bottom: 30px;
         }
 
@@ -54,6 +59,7 @@
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
         }
 
         .page-intro {
@@ -64,7 +70,9 @@
             font-size: 24px;
             font-weight: 800;
             color: var(--text-main);
-            text-transform: uppercase;
+            line-height: 1.35;
+            text-transform: none;
+            font-family: "Roboto", sans-serif;
         }
 
         .tab-wrap {
@@ -76,7 +84,7 @@
 
         .tab-btn {
             border: 1px solid #dbe2ea;
-            background: white;
+            background: #fff;
             color: #475569;
             min-height: 44px;
             padding: 0 18px;
@@ -93,7 +101,7 @@
 
         .tab-btn.active {
             background: var(--vip-color);
-            color: white;
+            color: #fff;
             border-color: var(--vip-color);
             box-shadow: 0 10px 18px rgba(0, 139, 139, 0.18);
         }
@@ -146,6 +154,8 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             line-height: 1.45;
+            font-family: "Roboto", sans-serif;
+            text-transform: none;
         }
 
         .card-desc {
@@ -218,7 +228,7 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            color: white;
+            color: #fff;
             background: linear-gradient(135deg, rgba(0,139,139,0.94), rgba(15,118,110,0.94));
             box-shadow: 0 6px 18px rgba(0,0,0,0.12);
         }
@@ -252,7 +262,7 @@
 
         .view-btn {
             background: var(--vip-color);
-            color: white;
+            color: #fff;
             min-height: 40px;
             padding: 0 14px;
             border-radius: 10px;
@@ -349,10 +359,8 @@
             border-radius: 999px;
         }
 
-        @media (max-width: 1200px) {
-            .container-custom {
-                max-width: 1280px;
-            }
+        .seo-shell {
+            margin-top: 26px;
         }
 
         @media (max-width: 1024px) {
@@ -408,7 +416,7 @@
                 Quản lý các tin bạn đã lưu để xem lại nhanh hơn.
                 Hiện có
                 <strong id="totalSavedCount">0</strong>
-                tin đã lưu trong tài khoản trình duyệt này.
+                tin đã lưu trong trình duyệt này.
             </p>
 
             <div class="tab-wrap">
@@ -443,6 +451,10 @@
                 </div>
             </aside>
         </div>
+
+        <section class="seo-shell">
+            <div id="seoContent"></div>
+        </section>
     </main>
 
     <div id="site-footer"></div>
@@ -463,7 +475,7 @@
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
             <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn dự án nào?"></textarea>
-            <button class="btn-send" onclick="sendToZalo()">BẮT ĐẦU CHAT TRÊN ZALO</button>
+            <button class="btn-send" onclick="sendToZalo()">Bắt đầu chat trên Zalo</button>
         </div>
     </div>
 
@@ -471,6 +483,8 @@
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
     <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
+    <script src="../assets/js/main.js"></script>
 
     <script>
         const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
@@ -483,7 +497,7 @@
         const fallbackSalePosts = [
             {
                 id: "demo-sale-1",
-                title: "NGOẠI GIAO GỬI BÁN CĂN BIỆT THỰ VINHOMES ĐAN PHƯỢNG VIEW HỒ 19 HECTA",
+                title: "Ngoại giao gửi bán căn biệt thự Vinhomes Đan Phượng view hồ 19 hecta",
                 propertyType: "Biệt thự",
                 propertyPrice: "60 tỷ",
                 propertyArea: "300",
@@ -497,7 +511,7 @@
                 contactName: "Nguyễn Thành An",
                 roleLabel: "Môi giới chuyên nghiệp",
                 contactPhone: "0912598888",
-                contactProfileUrl: "../pages/danh-ba-moi-gioi.html",
+                profileType: "canhan",
                 status: "demo",
                 createdAt: new Date().toISOString(),
                 flow: "real_estate",
@@ -552,7 +566,6 @@
                 description: "Giải pháp thi công đồng bộ từ thiết kế đến bàn giao hoàn thiện, phù hợp khách hàng cần tiến độ rõ ràng và kiểm soát chi phí tốt.",
                 contactName: "Bình Dương Cons Co., Ltd",
                 contactPhone: "0946239289",
-                contactProfileUrl: "../pages/danh-ba-doanh-nghiep.html",
                 profileType: "doanhnghiep",
                 roleLabel: "Doanh nghiệp / Nhà thầu",
                 createdAt: new Date().toISOString(),
@@ -620,6 +633,7 @@
             return String(value || "")
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
                 .toLowerCase()
                 .replace(/\s+/g, " ")
                 .trim();
@@ -629,11 +643,31 @@
             return String(value || "")
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
                 .toLowerCase()
                 .trim()
                 .replace(/[^a-z0-9\s-]/g, "")
                 .replace(/\s+/g, "-")
                 .replace(/-+/g, "-");
+        }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("site-header", "../components/header-inner.html");
+                    await loadComponent("site-mobile-menu", "../components/mobile-menu-inner.html");
+                    await loadComponent("site-footer", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
         }
 
         function safeScrollToTop() {
@@ -687,21 +721,15 @@
         }
 
         function getSaleFavorites() {
-            return getStorageArray(FAVORITE_SALE_STORAGE_KEY).map(function (id) {
-                return String(id).trim();
-            }).filter(Boolean);
+            return getStorageArray(FAVORITE_SALE_STORAGE_KEY).map(id => String(id).trim()).filter(Boolean);
         }
 
         function getRentalFavorites() {
-            return getStorageArray(FAVORITE_RENTAL_STORAGE_KEY).map(function (id) {
-                return String(id).trim();
-            }).filter(Boolean);
+            return getStorageArray(FAVORITE_RENTAL_STORAGE_KEY).map(id => String(id).trim()).filter(Boolean);
         }
 
         function getConstructionFavorites() {
-            return getStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY).map(function (id) {
-                return String(id).trim();
-            }).filter(Boolean);
+            return getStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY).map(id => String(id).trim()).filter(Boolean);
         }
 
         function updateHeaderFavoriteCount() {
@@ -725,14 +753,11 @@
             const normalizedId = String(postId || "").trim();
 
             if (tab === "sale") {
-                const next = getSaleFavorites().filter(id => id !== normalizedId);
-                setStorageArray(FAVORITE_SALE_STORAGE_KEY, next);
+                setStorageArray(FAVORITE_SALE_STORAGE_KEY, getSaleFavorites().filter(id => id !== normalizedId));
             } else if (tab === "rental") {
-                const next = getRentalFavorites().filter(id => id !== normalizedId);
-                setStorageArray(FAVORITE_RENTAL_STORAGE_KEY, next);
+                setStorageArray(FAVORITE_RENTAL_STORAGE_KEY, getRentalFavorites().filter(id => id !== normalizedId));
             } else {
-                const next = getConstructionFavorites().filter(id => id !== normalizedId);
-                setStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY, next);
+                setStorageArray(FAVORITE_CONSTRUCTION_STORAGE_KEY, getConstructionFavorites().filter(id => id !== normalizedId));
             }
 
             updateHeaderFavoriteCount();
@@ -867,7 +892,7 @@
                 return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(String(postId || "").trim())}`;
             }
 
-            return `../pages/chi-tiet-doanh-nghiep.html?id=${encodeURIComponent(String(postId || "").trim())}`;
+            return `../pages/chi-tiet-moi-gioi.html?id=${encodeURIComponent(String(postId || "").trim())}`;
         }
 
         function getVipLevel(post) {
@@ -1066,7 +1091,7 @@
 
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] transition">
+                            <h3 class="card-title font-bold text-[16px] text-gray-800 leading-snug hover:text-[--vip-color] transition">
                                 <a href="${detailUrl}">${title}</a>
                             </h3>
 
@@ -1186,7 +1211,7 @@
 
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] transition">
+                            <h3 class="card-title font-bold text-[16px] text-gray-800 leading-snug hover:text-[--vip-color] transition">
                                 <a href="${detailUrl}">${title}</a>
                             </h3>
 
@@ -1306,7 +1331,7 @@
                                 </a>
 
                                 <span class="meta-chip">
-                                    <i class="fa-solid fa-flask"></i> Demo
+                                    <i class="fa-solid fa-bookmark"></i> Đã lưu
                                 </span>
                             </div>
 
@@ -1396,25 +1421,73 @@
             }).join("");
         }
 
-        function getSidebarNewsItems() {
-            return fallbackNewsItems;
-        }
-
-        function getSidebarProjectItems() {
-            return fallbackProjectItems;
-        }
-
         function renderSidebars() {
-            renderSidebarList(newsSidebarList, getSidebarNewsItems());
-            renderSidebarList(projectSidebarList, getSidebarProjectItems());
+            renderSidebarList(newsSidebarList, fallbackNewsItems);
+            renderSidebarList(projectSidebarList, fallbackProjectItems);
         }
 
-        window.addEventListener("load", () => {
+        function renderSeoFallback() {
+            const container = document.getElementById("seoContent");
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="seo-wrapper">
+                    <div class="seo-text collapsed" id="seoContent-text">
+                        <p>Trang tin đã lưu giúp người dùng quản lý nhanh những tin bán, tin thuê và dịch vụ xây dựng đã quan tâm trên hệ thống ToamViet. Đây là một lớp tiện ích quan trọng giúp tăng trải nghiệm quay lại xem tin, so sánh tin và ra quyết định thuận tiện hơn.</p>
+                        <p>Với nhóm người dùng đang theo dõi nhiều sản phẩm cùng lúc, trang này đóng vai trò như một khu vực quản lý cá nhân, nơi các nội dung quan tâm được gom lại theo từng nhóm để tiết kiệm thời gian tìm lại. Điều này đặc biệt hữu ích khi người dùng muốn đối chiếu giá, khu vực, pháp lý hoặc đơn vị đăng tin.</p>
+                        <p>Về lâu dài, trang tin đã lưu cũng hỗ trợ tốt cho hệ sinh thái nội dung của website vì tạo thêm luồng quay lại giữa các trang bán, thuê, xây dựng, tin tức và dự án, từ đó giúp hành trình sử dụng mạch lạc và đồng bộ hơn trên toàn site.</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="seo-toggle-btn"
+                        id="seoContent-toggle"
+                        aria-expanded="false"
+                    >
+                        <span class="seo-toggle-label">Xem thêm</span>
+                        <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+                    </button>
+                </div>
+            `;
+
+            const toggleBtn = document.getElementById("seoContent-toggle");
+            const seoText = document.getElementById("seoContent-text");
+            const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+            if (!toggleBtn || !seoText || !toggleLabel) return;
+
+            toggleBtn.addEventListener("click", () => {
+                const isCollapsed = seoText.classList.contains("collapsed");
+
+                if (isCollapsed) {
+                    seoText.classList.remove("collapsed");
+                    toggleBtn.classList.add("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "true");
+                    toggleLabel.textContent = "Thu gọn";
+                } else {
+                    seoText.classList.add("collapsed");
+                    toggleBtn.classList.remove("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "false");
+                    toggleLabel.textContent = "Xem thêm";
+                }
+            });
+        }
+
+        async function initPage() {
+            await initSharedComponents();
             updateHeaderFavoriteCount();
             renderSavedListings();
             renderSidebars();
+
+            if (typeof renderSeoContent === "function") {
+                renderSeoContent("seoContent", "saved-posts");
+            } else {
+                renderSeoFallback();
+            }
+
             setTimeout(updateHeaderFavoriteCount, 400);
-        });
+        }
+
+        window.addEventListener("load", initPage);
 
         window.addEventListener("storage", function () {
             updateHeaderFavoriteCount();
@@ -1424,7 +1497,5 @@
         window.switchTab = switchTab;
         window.removeFavorite = removeFavorite;
     </script>
-
-    <script src="../assets/js/main.js"></script>
 </body>
 </html>
