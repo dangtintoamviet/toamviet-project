@@ -5,17 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>404 - Không tìm thấy trang | ToamViet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="assets/css/components.css" />
     <link rel="stylesheet" href="assets/css/mobile.css" />
-    <link rel="stylesheet" href="assets/css/seo-content.css" />
 
     <style>
         :root {
@@ -25,7 +23,8 @@
             --soft-bg: #f4f7fa;
             --text-main: #1f2937;
             --text-soft: #64748b;
-            --stroke: #e2e8f0;
+            --stroke: #e5e7eb;
+            --warning: #ea580c;
         }
 
         * {
@@ -39,119 +38,111 @@
         body {
             margin: 0;
             font-family: "Roboto", sans-serif;
-            background: var(--soft-bg);
+            background: linear-gradient(180deg, #f8fbfc 0%, #f4f7fa 100%);
             color: var(--text-main);
         }
 
         .error-page-shell {
-            padding: 28px 0 40px;
-        }
-
-        .breadcrumb-wrap {
-            margin-bottom: 18px;
-        }
-
-        .breadcrumb {
+            padding: 26px 0 44px;
+            min-height: calc(100vh - 120px);
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.7;
+            align-items: center;
         }
 
-        .breadcrumb a {
-            color: inherit;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .breadcrumb a:hover {
-            color: var(--vip-color);
-        }
-
-        .error-hero {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #0f766e 0%, #008b8b 58%, #0f172a 100%);
-            border-radius: 28px;
-            padding: 34px;
-            color: #fff;
-            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
-            margin-bottom: 24px;
-        }
-
-        .error-hero::before,
-        .error-hero::after {
-            content: "";
-            position: absolute;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.08);
-            pointer-events: none;
-        }
-
-        .error-hero::before {
-            width: 260px;
-            height: 260px;
-            top: -90px;
-            right: -70px;
-        }
-
-        .error-hero::after {
-            width: 150px;
-            height: 150px;
-            left: -40px;
-            bottom: -40px;
+        .error-wrap {
+            width: 100%;
         }
 
         .error-grid {
-            position: relative;
-            z-index: 1;
             display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-            gap: 24px;
-            align-items: center;
+            grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .error-card,
+        .help-card {
+            background: #fff;
+            border: 1px solid var(--stroke);
+            border-radius: 28px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        }
+
+        .error-card {
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at top right, rgba(0, 139, 139, 0.08), transparent 34%),
+                radial-gradient(circle at bottom left, rgba(255, 140, 0, 0.08), transparent 28%),
+                #ffffff;
+        }
+
+        .error-card::after {
+            content: "";
+            position: absolute;
+            right: -90px;
+            top: -90px;
+            width: 220px;
+            height: 220px;
+            border-radius: 999px;
+            background: rgba(15, 118, 110, 0.05);
+            pointer-events: none;
         }
 
         .error-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            min-height: 36px;
+            min-height: 38px;
             padding: 8px 14px;
             border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.16);
-            background: rgba(255,255,255,0.12);
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            color: var(--warning);
             font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .error-code {
-            font-size: clamp(60px, 9vw, 104px);
+            font-size: clamp(64px, 10vw, 110px);
             line-height: 1;
             font-weight: 900;
-            letter-spacing: -0.03em;
-            margin: 0 0 14px;
+            color: #0f172a;
+            letter-spacing: -0.04em;
+            margin: 0 0 16px;
         }
 
         .error-title {
-            font-size: clamp(24px, 3.1vw, 34px);
-            line-height: 1.3;
+            margin: 0 0 14px;
+            font-size: clamp(26px, 3vw, 36px);
+            line-height: 1.28;
             font-weight: 800;
-            margin: 0 0 12px;
-            color: #fff;
+            color: #0f172a;
             text-transform: none;
+            max-width: 760px;
         }
 
         .error-desc {
-            font-size: 15px;
-            line-height: 1.85;
-            color: rgba(255,255,255,0.92);
-            max-width: 760px;
             margin: 0;
+            max-width: 760px;
+            font-size: 15px;
+            line-height: 1.9;
+            color: var(--text-soft);
+        }
+
+        .error-note {
+            margin-top: 22px;
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #475569;
         }
 
         .error-actions {
@@ -161,255 +152,252 @@
             margin-top: 24px;
         }
 
-        .error-btn {
+        .primary-action,
+        .secondary-action {
+            min-height: 48px;
+            padding: 0 20px;
+            border-radius: 14px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 9px;
-            min-height: 48px;
-            padding: 0 18px;
-            border-radius: 14px;
             text-decoration: none;
             font-size: 14px;
             font-weight: 800;
             transition: all 0.25s ease;
         }
 
-        .error-btn-primary {
-            background: #fff;
-            color: var(--vip-dark);
-            border: 1px solid #fff;
+        .primary-action {
+            background: linear-gradient(135deg, var(--vip-color), var(--vip-dark));
+            color: #fff;
+            box-shadow: 0 14px 28px rgba(0, 139, 139, 0.16);
         }
 
-        .error-btn-primary:hover {
+        .primary-action:hover {
             transform: translateY(-1px);
             opacity: 0.96;
         }
 
-        .error-btn-outline {
-            background: rgba(255,255,255,0.08);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.22);
-        }
-
-        .error-btn-outline:hover {
-            background: rgba(255,255,255,0.14);
-        }
-
-        .error-side-card {
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.14);
-            border-radius: 22px;
-            padding: 22px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .error-side-title {
-            font-size: 13px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: rgba(255,255,255,0.82);
-            margin-bottom: 12px;
-        }
-
-        .error-side-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .error-side-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-height: 52px;
-            padding: 12px 14px;
-            border-radius: 16px;
-            background: rgba(255,255,255,0.10);
-            border: 1px solid rgba(255,255,255,0.10);
-            text-decoration: none;
-            color: #fff;
-            transition: all 0.25s ease;
-        }
-
-        .error-side-link:hover {
-            background: rgba(255,255,255,0.16);
-        }
-
-        .error-side-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.14);
-            flex-shrink: 0;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .info-card {
+        .secondary-action {
             background: #fff;
-            border: 1px solid var(--stroke);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+            color: #334155;
+            border: 1px solid #dbe4ee;
         }
 
-        .info-label {
-            font-size: 11px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #94a3b8;
-            margin-bottom: 10px;
+        .secondary-action:hover {
+            border-color: rgba(0, 139, 139, 0.32);
+            color: var(--vip-color);
+            background: #f8ffff;
         }
 
-        .info-value {
-            font-size: 18px;
-            line-height: 1.5;
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        .quick-links-wrap {
-            background: #fff;
-            border: 1px solid var(--stroke);
-            border-radius: 24px;
-            padding: 22px;
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
-            margin-bottom: 24px;
-        }
-
-        .section-title {
-            position: relative;
-            font-size: 18px;
-            font-weight: 800;
-            color: #1e293b;
-            margin: 0 0 18px;
-            padding-left: 14px;
-            text-transform: none;
-        }
-
-        .section-title::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 3px;
-            width: 4px;
-            height: 18px;
-            border-radius: 999px;
-            background: linear-gradient(180deg, var(--vip-color), var(--hover-color));
-        }
-
-        .quick-links-grid {
+        .quick-links {
+            margin-top: 26px;
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
+            gap: 12px;
         }
 
-        .quick-link-card {
+        .quick-link {
             display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            padding: 16px;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 16px;
             border-radius: 18px;
-            border: 1px solid #e8edf3;
-            background: #fff;
             text-decoration: none;
-            color: inherit;
+            border: 1px solid #e2e8f0;
+            background: #fff;
             transition: all 0.25s ease;
+            color: inherit;
         }
 
-        .quick-link-card:hover {
-            border-color: rgba(0,139,139,0.28);
+        .quick-link:hover {
+            border-color: rgba(0, 139, 139, 0.28);
             background: #f8ffff;
             transform: translateY(-1px);
         }
 
         .quick-link-icon {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 14px;
-            background: #ecfeff;
-            color: var(--vip-color);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            background: #f0fdfa;
+            color: var(--vip-color);
             flex-shrink: 0;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .quick-link-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 800;
             color: #0f172a;
-            line-height: 1.5;
-            margin-bottom: 4px;
+            line-height: 1.45;
+            text-transform: none;
         }
 
-        .quick-link-desc {
+        .quick-link-sub {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.55;
+            margin-top: 3px;
+        }
+
+        .help-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .help-title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.35;
+            text-transform: none;
+        }
+
+        .help-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 18px;
+            background: #f8fafc;
+        }
+
+        .help-box-title {
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--vip-color);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            margin-bottom: 10px;
+        }
+
+        .help-list {
+            margin: 0;
+            padding-left: 18px;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .help-list li + li {
+            margin-top: 6px;
+        }
+
+        .status-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
             font-size: 13px;
             line-height: 1.7;
-            color: #64748b;
+            font-weight: 700;
         }
 
-        .seo-block-shell {
-            margin-top: 8px;
+        .status-line i {
+            flex-shrink: 0;
+            color: #2563eb;
+        }
+
+        .contact-box {
+            padding: 18px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(0, 139, 139, 0.08), rgba(15, 118, 110, 0.06));
+            border: 1px solid rgba(0, 139, 139, 0.12);
+        }
+
+        .contact-box p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #475569;
+        }
+
+        .contact-box strong {
+            color: #0f172a;
+        }
+
+        .mini-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .mini-btn {
+            min-height: 42px;
+            padding: 0 15px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            border: 1px solid #dbe4ee;
+            background: #fff;
+            color: #334155;
+            transition: all 0.25s ease;
+        }
+
+        .mini-btn:hover {
+            color: var(--vip-color);
+            border-color: rgba(0, 139, 139, 0.3);
+            background: #f8ffff;
         }
 
         @media (max-width: 1100px) {
             .error-grid {
                 grid-template-columns: 1fr;
             }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         @media (max-width: 768px) {
             .error-page-shell {
-                padding: 22px 0 28px;
+                padding: 18px 0 26px;
             }
 
-            .error-hero {
-                padding: 22px 18px;
+            .error-card,
+            .help-card {
                 border-radius: 22px;
             }
 
-            .error-code {
-                font-size: 58px;
+            .error-card,
+            .help-card {
+                padding: 18px;
             }
 
-            .error-desc {
+            .error-title {
+                font-size: 24px;
+            }
+
+            .error-desc,
+            .error-note,
+            .help-list,
+            .contact-box p {
                 font-size: 14px;
-                line-height: 1.8;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
             }
 
             .error-actions {
                 flex-direction: column;
             }
 
-            .error-btn {
+            .primary-action,
+            .secondary-action {
                 width: 100%;
-            }
-
-            .quick-links-wrap,
-            .info-card {
-                border-radius: 18px;
-            }
-
-            .quick-links-grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -419,161 +407,129 @@
     <div id="siteMobileMenu"></div>
 
     <main class="error-page-shell">
-        <div class="container-custom">
-            <div class="breadcrumb-wrap">
-                <nav class="breadcrumb">
-                    <a href="index.html">Trang chủ</a>
-                    <span>/</span>
-                    <span>404</span>
-                </nav>
-            </div>
+        <div class="container-custom error-wrap">
+            <div class="error-grid">
+                <section class="error-card">
+                    <div class="error-badge">
+                        <i class="fa-solid fa-compass"></i>
+                        Trang không tồn tại
+                    </div>
 
-            <section class="error-hero">
-                <div class="error-grid">
-                    <div>
-                        <div class="error-badge">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            Trang không tồn tại hoặc đã đổi đường dẫn
-                        </div>
+                    <div class="error-code">404</div>
 
-                        <div class="error-code">404</div>
+                    <h1 class="error-title">Không tìm thấy trang bạn đang truy cập</h1>
 
-                        <h1 class="error-title">Xin lỗi, chúng tôi không tìm thấy trang bạn đang muốn mở</h1>
+                    <p class="error-desc">
+                        Liên kết này có thể đã thay đổi, bị xóa, nhập sai đường dẫn hoặc trang chưa còn hoạt động.
+                        Bạn có thể quay về trang chủ hoặc chuyển sang các chuyên mục lớn của ToamViet để tiếp tục tìm nội dung phù hợp.
+                    </p>
 
-                        <p class="error-desc">
-                            Liên kết này có thể đã bị thay đổi, bị xóa hoặc nhập sai địa chỉ. Bạn có thể quay về trang chủ, mở lại các danh mục chính của website hoặc dùng các lối tắt bên dưới để tiếp tục tìm nội dung phù hợp.
+                    <div class="error-note">
+                        Nếu bạn mở từ một liên kết cũ hoặc bookmark đã lưu trước đó, hãy thử kiểm tra lại đường dẫn,
+                        hoặc dùng sitemap để tìm đúng trang đang hoạt động trên website.
+                    </div>
+
+                    <div class="error-actions">
+                        <a href="index.html" class="primary-action">
+                            <i class="fa-solid fa-house"></i>
+                            Về trang chủ
+                        </a>
+
+                        <a href="pages/sitemap.html" class="secondary-action">
+                            <i class="fa-solid fa-sitemap"></i>
+                            Xem sitemap
+                        </a>
+
+                        <a href="javascript:history.back();" class="secondary-action">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Quay lại trang trước
+                        </a>
+                    </div>
+
+                    <div class="quick-links">
+                        <a href="pages/nha-dat-ban.html" class="quick-link">
+                            <span class="quick-link-icon">
+                                <i class="fa-solid fa-house-circle-check"></i>
+                            </span>
+                            <span>
+                                <div class="quick-link-title">Nhà đất bán</div>
+                                <div class="quick-link-sub">Tìm nhanh căn hộ, nhà phố, đất nền</div>
+                            </span>
+                        </a>
+
+                        <a href="pages/nha-dat-cho-thue.html" class="quick-link">
+                            <span class="quick-link-icon">
+                                <i class="fa-solid fa-key"></i>
+                            </span>
+                            <span>
+                                <div class="quick-link-title">Nhà đất cho thuê</div>
+                                <div class="quick-link-sub">Xem căn hộ, văn phòng, mặt bằng cho thuê</div>
+                            </span>
+                        </a>
+
+                        <a href="pages/du-an.html" class="quick-link">
+                            <span class="quick-link-icon">
+                                <i class="fa-solid fa-building"></i>
+                            </span>
+                            <span>
+                                <div class="quick-link-title">Dự án</div>
+                                <div class="quick-link-sub">Theo dõi các dự án nổi bật trên hệ thống</div>
+                            </span>
+                        </a>
+
+                        <a href="pages/xay-dung.html" class="quick-link">
+                            <span class="quick-link-icon">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                            </span>
+                            <span>
+                                <div class="quick-link-title">Xây dựng</div>
+                                <div class="quick-link-sub">Tìm doanh nghiệp, nhà thầu, dịch vụ thi công</div>
+                            </span>
+                        </a>
+                    </div>
+                </section>
+
+                <aside class="help-card">
+                    <h2 class="help-title">Bạn có thể làm gì tiếp theo?</h2>
+
+                    <div class="help-box">
+                        <div class="help-box-title">Gợi ý nhanh</div>
+                        <ol class="help-list">
+                            <li>Kiểm tra lại đường dẫn bạn vừa nhập.</li>
+                            <li>Quay lại trang trước để mở đúng liên kết.</li>
+                            <li>Dùng sitemap để tìm đúng trang đang hoạt động.</li>
+                            <li>Chuyển sang các danh mục chính để tiếp tục tìm kiếm.</li>
+                        </ol>
+                    </div>
+
+                    <div class="status-line">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Mã lỗi 404 thường xuất hiện khi trang không còn tồn tại, link bị sai hoặc nội dung đã đổi đường dẫn.</span>
+                    </div>
+
+                    <div class="contact-box">
+                        <p>
+                            <strong>ToamViet.com.vn</strong> đang được xây dựng theo hệ sinh thái nội dung đồng bộ.
+                            Nếu bạn phát hiện liên kết lỗi trong website, hãy báo lại để hệ thống cập nhật và tối ưu tốt hơn.
                         </p>
 
-                        <div class="error-actions">
-                            <a href="index.html" class="error-btn error-btn-primary">
-                                <i class="fa-solid fa-house"></i>
-                                Về trang chủ
-                            </a>
-
-                            <a href="pages/nha-dat-ban.html" class="error-btn error-btn-outline">
-                                <i class="fa-solid fa-building"></i>
-                                Nhà đất bán
-                            </a>
-
-                            <a href="pages/tin-tuc.html" class="error-btn error-btn-outline">
+                        <div class="mini-actions">
+                            <a href="pages/tin-tuc.html" class="mini-btn">
                                 <i class="fa-solid fa-newspaper"></i>
                                 Tin tức
                             </a>
-                        </div>
-                    </div>
-
-                    <div class="error-side-card">
-                        <div class="error-side-title">Lối đi nhanh</div>
-
-                        <div class="error-side-list">
-                            <a href="pages/nha-dat-ban.html" class="error-side-link">
-                                <span class="error-side-icon"><i class="fa-solid fa-house"></i></span>
-                                <span>Nhà đất bán</span>
+                            <a href="pages/gia-nha-dat.html" class="mini-btn">
+                                <i class="fa-solid fa-chart-line"></i>
+                                Giá nhà đất
                             </a>
-
-                            <a href="pages/nha-dat-cho-thue.html" class="error-side-link">
-                                <span class="error-side-icon"><i class="fa-solid fa-key"></i></span>
-                                <span>Nhà đất cho thuê</span>
-                            </a>
-
-                            <a href="pages/du-an.html" class="error-side-link">
-                                <span class="error-side-icon"><i class="fa-solid fa-city"></i></span>
-                                <span>Dự án</span>
-                            </a>
-
-                            <a href="pages/xay-dung.html" class="error-side-link">
-                                <span class="error-side-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span>
-                                <span>Xây dựng</span>
-                            </a>
-
-                            <a href="pages/danh-ba-doanh-nghiep.html" class="error-side-link">
-                                <span class="error-side-icon"><i class="fa-solid fa-building-shield"></i></span>
-                                <span>Danh bạ doanh nghiệp</span>
-                            </a>
-
-                            <a href="pages/danh-ba-moi-gioi.html" class="error-side-link">
-                                <span class="error-side-icon"><i class="fa-solid fa-user-tie"></i></span>
-                                <span>Danh bạ môi giới</span>
+                            <a href="pages/lien-he.html" class="mini-btn">
+                                <i class="fa-solid fa-envelope"></i>
+                                Liên hệ
                             </a>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <section class="info-grid">
-                <div class="info-card">
-                    <div class="info-label">Gợi ý 1</div>
-                    <div class="info-value">Kiểm tra lại đường dẫn vừa mở hoặc thử quay về menu chính</div>
-                </div>
-
-                <div class="info-card">
-                    <div class="info-label">Gợi ý 2</div>
-                    <div class="info-value">Nếu đây là tin đăng cũ, nội dung có thể đã bị ẩn hoặc đổi cấu trúc link</div>
-                </div>
-
-                <div class="info-card">
-                    <div class="info-label">Gợi ý 3</div>
-                    <div class="info-value">Bạn cũng có thể liên hệ nhanh qua nút chat ở góc phải để được hỗ trợ</div>
-                </div>
-            </section>
-
-            <section class="quick-links-wrap">
-                <h2 class="section-title">Các trang bạn có thể cần ngay</h2>
-
-                <div class="quick-links-grid">
-                    <a href="pages/gia-nha-dat.html" class="quick-link-card">
-                        <div class="quick-link-icon"><i class="fa-solid fa-chart-line"></i></div>
-                        <div>
-                            <div class="quick-link-title">Giá nhà đất</div>
-                            <div class="quick-link-desc">Xem báo cáo và thống kê giá theo khu vực.</div>
-                        </div>
-                    </a>
-
-                    <a href="pages/xay-dung.html" class="quick-link-card">
-                        <div class="quick-link-icon"><i class="fa-solid fa-hammer"></i></div>
-                        <div>
-                            <div class="quick-link-title">Dịch vụ xây dựng</div>
-                            <div class="quick-link-desc">Tìm công ty, kỹ sư, nhà thầu và dịch vụ liên quan.</div>
-                        </div>
-                    </a>
-
-                    <a href="pages/chi-tiet-tin.html" class="quick-link-card">
-                        <div class="quick-link-icon"><i class="fa-regular fa-file-lines"></i></div>
-                        <div>
-                            <div class="quick-link-title">Chi tiết tin đăng</div>
-                            <div class="quick-link-desc">Trang chi tiết dùng chung cho tin bán, thuê và xây dựng.</div>
-                        </div>
-                    </a>
-
-                    <a href="pages/chi-tiet-tin-tuc.html" class="quick-link-card">
-                        <div class="quick-link-icon"><i class="fa-solid fa-book-open"></i></div>
-                        <div>
-                            <div class="quick-link-title">Chi tiết tin tức</div>
-                            <div class="quick-link-desc">Trang chi tiết cho từng bài viết tin tức.</div>
-                        </div>
-                    </a>
-
-                    <a href="pages/sitemap.html" class="quick-link-card">
-                        <div class="quick-link-icon"><i class="fa-solid fa-sitemap"></i></div>
-                        <div>
-                            <div class="quick-link-title">Sitemap HTML</div>
-                            <div class="quick-link-desc">Xem nhanh toàn bộ cấu trúc trang hiện có của website.</div>
-                        </div>
-                    </a>
-
-                    <a href="pages/tin-da-luu.html" class="quick-link-card">
-                        <div class="quick-link-icon"><i class="fa-solid fa-heart"></i></div>
-                        <div>
-                            <div class="quick-link-title">Tin đã lưu</div>
-                            <div class="quick-link-desc">Mở lại các tin bạn đã lưu trong trình duyệt hiện tại.</div>
-                        </div>
-                    </a>
-                </div>
-            </section>
-
-            <section class="seo-block-shell">
-                <div id="seoContent404"></div>
-            </section>
+                </aside>
+            </div>
         </div>
     </main>
 
@@ -603,22 +559,21 @@
         </div>
         <div class="chat-body">
             <input type="text" id="cusName" placeholder="Tên của bạn..." required />
-            <textarea id="cusMsg" rows="3" placeholder="Bạn cần hỗ trợ trang hoặc nội dung nào?"></textarea>
+            <textarea id="cusMsg" rows="3" placeholder="Bạn cần hỗ trợ trang nào?"></textarea>
             <button class="btn-send" onclick="sendToZalo()">Bắt đầu chat trên Zalo</button>
         </div>
     </div>
 
     <script src="assets/js/component-loader.js"></script>
-    <script src="assets/js/seo-content.js"></script>
     <script src="assets/js/main.js"></script>
 
     <script>
         async function initSharedComponents() {
             try {
                 if (typeof loadComponent === "function") {
-                    await loadComponent("siteHeader", "components/header-inner.html");
-                    await loadComponent("siteMobileMenu", "components/mobile-menu-inner.html");
-                    await loadComponent("siteFooter", "components/footer-inner.html");
+                    await loadComponent("siteHeader", "components/header-root.html");
+                    await loadComponent("siteMobileMenu", "components/mobile-menu-root.html");
+                    await loadComponent("siteFooter", "components/footer-root.html");
 
                     if (typeof setupFixedHeaderSpacing === "function") {
                         setupFixedHeaderSpacing();
@@ -632,52 +587,6 @@
             }
         }
 
-        function render404SeoFallback() {
-            const seoContainer = document.getElementById("seoContent404");
-            if (!seoContainer) return;
-
-            seoContainer.innerHTML = `
-                <div class="seo-wrapper">
-                    <div class="seo-text collapsed" id="seo404-text">
-                        <p>Trang 404 là một phần cần thiết trong cấu trúc kỹ thuật của website bất động sản, giúp người dùng không bị rơi vào trạng thái mất phương hướng khi truy cập nhầm đường dẫn hoặc mở một liên kết đã cũ. Thay vì chỉ báo lỗi đơn giản, trang này nên dẫn người dùng quay lại các điểm truy cập quan trọng như trang chủ, danh mục nhà đất bán, nhà đất cho thuê, dự án, xây dựng và tin tức.</p>
-                        <p>Đối với SEO, một trang 404 được xây dựng rõ ràng, có điều hướng nội bộ tốt và đồng bộ giao diện với toàn website sẽ giúp cải thiện trải nghiệm người dùng, giảm tỷ lệ thoát và hỗ trợ công cụ tìm kiếm hiểu rằng website vẫn đang kiểm soát tốt các URL không còn hợp lệ.</p>
-                        <p>Với hệ sinh thái nội dung của Tổ Ấm Việt, trang 404 còn đóng vai trò như một lớp chuyển hướng mềm, giúp người dùng nhanh chóng quay lại đúng nhóm nội dung họ cần thay vì rời site hoàn toàn. Đây là một chi tiết nhỏ nhưng rất quan trọng trong quá trình hoàn thiện website bất động sản chuyên nghiệp.</p>
-                    </div>
-                    <button
-                        type="button"
-                        class="seo-toggle-btn"
-                        id="seo404-toggle"
-                        aria-expanded="false"
-                    >
-                        <span class="seo-toggle-label">Xem thêm</span>
-                        <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
-                    </button>
-                </div>
-            `;
-
-            const toggleBtn = document.getElementById("seo404-toggle");
-            const seoText = document.getElementById("seo404-text");
-            const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
-
-            if (!toggleBtn || !seoText || !toggleLabel) return;
-
-            toggleBtn.addEventListener("click", function () {
-                const isCollapsed = seoText.classList.contains("collapsed");
-
-                if (isCollapsed) {
-                    seoText.classList.remove("collapsed");
-                    toggleBtn.classList.add("expanded");
-                    toggleBtn.setAttribute("aria-expanded", "true");
-                    toggleLabel.textContent = "Thu gọn";
-                } else {
-                    seoText.classList.add("collapsed");
-                    toggleBtn.classList.remove("expanded");
-                    toggleBtn.setAttribute("aria-expanded", "false");
-                    toggleLabel.textContent = "Xem thêm";
-                }
-            });
-        }
-
         function sendToZalo() {
             const name = document.getElementById("cusName").value.trim();
             const msg = document.getElementById("cusMsg").value.trim();
@@ -688,24 +597,13 @@
                 return;
             }
 
-            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". " + msg;
+            const fullMsg = "Chào admin Tổ Ấm Việt, tôi là " + name + ". Tôi đang gặp lỗi 404 trên website. " + msg;
             const encodedMsg = encodeURIComponent(fullMsg);
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
 
         window.addEventListener("load", async function () {
             await initSharedComponents();
-
-            if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
-                const has404Seo = getSeoContentByKey("404");
-                if (has404Seo) {
-                    renderSeoContent("seoContent404", "404");
-                } else {
-                    render404SeoFallback();
-                }
-            } else {
-                render404SeoFallback();
-            }
         });
     </script>
 </body>
