@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Danh bạ Doanh nghiệp | ToamViet.com.vn</title>
+    <title>Danh bạ doanh nghiệp | ToamViet.com.vn</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
 
     <style>
         :root {
@@ -20,12 +28,19 @@
             --stroke: #e5e7eb;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Roboto", sans-serif;
             background: var(--soft-bg);
             color: var(--text-main);
+            margin: 0;
         }
 
         .container-custom {
@@ -34,7 +49,9 @@
             padding: 0 15px;
         }
 
-        .page-shell { padding: 28px 0 56px; }
+        .page-shell {
+            padding: 24px 0 32px;
+        }
 
         .search-box,
         .list-card,
@@ -54,10 +71,11 @@
         .section-kicker {
             font-size: 18px;
             font-weight: 800;
-            text-transform: uppercase;
-            color: var(--vip-color);
-            letter-spacing: 0.05em;
+            text-transform: none;
+            color: var(--text-main);
+            line-height: 1.4;
             margin-bottom: 14px;
+            font-family: "Roboto", sans-serif;
         }
 
         .filter-input,
@@ -71,6 +89,7 @@
             outline: none;
             background: #fff;
             transition: 0.2s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .filter-input:focus,
@@ -84,16 +103,20 @@
             border-radius: 12px;
             background: var(--vip-color);
             color: white;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 800;
             padding: 0 18px;
             transition: 0.25s ease;
             border: none;
             cursor: pointer;
+            font-family: "Roboto", sans-serif;
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.16);
         }
 
-        .primary-btn:hover { opacity: 0.92; }
+        .primary-btn:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
 
         .tab-row {
             display: flex;
@@ -112,6 +135,7 @@
             font-weight: 700;
             cursor: pointer;
             transition: 0.25s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .tab-btn:hover {
@@ -128,14 +152,18 @@
 
         .page-title {
             font-size: 20px;
-            font-weight: 700;
+            font-weight: 800;
             color: #111827;
             margin-bottom: 6px;
+            line-height: 1.35;
+            text-transform: none;
+            font-family: "Roboto", sans-serif;
         }
 
         .page-subtitle {
             font-size: 14px;
             color: #6b7280;
+            line-height: 1.7;
         }
 
         .directory-card {
@@ -177,16 +205,20 @@
         .directory-title-link {
             color: var(--vip-color);
             transition: 0.22s ease;
+            text-decoration: none;
         }
 
-        .directory-title-link:hover { color: var(--hover-color); }
+        .directory-title-link:hover {
+            color: var(--hover-color);
+        }
 
         .directory-title {
             font-size: 18px;
             font-weight: 800;
             line-height: 1.45;
-            text-transform: uppercase;
+            text-transform: none;
             color: inherit;
+            font-family: "Roboto", sans-serif;
         }
 
         .meta-line {
@@ -195,12 +227,13 @@
             gap: 10px;
             font-size: 14px;
             color: #4b5563;
+            line-height: 1.7;
         }
 
         .meta-line i {
             width: 18px;
             color: #9ca3af;
-            margin-top: 2px;
+            margin-top: 3px;
             flex-shrink: 0;
         }
 
@@ -222,6 +255,7 @@
             border-radius: 999px;
             letter-spacing: 0.04em;
             border: 1px solid transparent;
+            font-family: "Roboto", sans-serif;
         }
 
         .tag-blue {
@@ -251,14 +285,18 @@
         .sidebar-title {
             font-size: 13px;
             font-weight: 800;
-            text-transform: uppercase;
+            text-transform: none;
             color: #111827;
             margin-bottom: 14px;
             padding-left: 12px;
             border-left: 4px solid var(--vip-color);
+            line-height: 1.45;
+            font-family: "Roboto", sans-serif;
         }
 
-        .sidebar-card { padding: 20px; }
+        .sidebar-card {
+            padding: 20px;
+        }
 
         .sidebar-list li {
             display: flex;
@@ -268,9 +306,12 @@
             border-bottom: 1px dashed #e5e7eb;
             font-size: 14px;
             color: #4b5563;
+            line-height: 1.7;
         }
 
-        .sidebar-list li:last-child { border-bottom: none; }
+        .sidebar-list li:last-child {
+            border-bottom: none;
+        }
 
         .register-box {
             background: #111827;
@@ -285,6 +326,15 @@
             line-height: 1.8;
         }
 
+        .register-title {
+            font-size: 14px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            text-transform: none;
+            line-height: 1.4;
+            font-family: "Roboto", sans-serif;
+        }
+
         .outline-light-btn {
             width: 100%;
             margin-top: 16px;
@@ -294,10 +344,11 @@
             color: #111827;
             font-size: 14px;
             font-weight: 800;
-            text-transform: uppercase;
+            text-transform: none;
             border: none;
             transition: 0.25s ease;
             cursor: pointer;
+            font-family: "Roboto", sans-serif;
         }
 
         .outline-light-btn:hover {
@@ -333,6 +384,7 @@
             color: #374151;
             cursor: pointer;
             transition: 0.2s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .page-btn:hover {
@@ -346,8 +398,15 @@
             border-color: var(--vip-color);
         }
 
+        .seo-block-shell {
+            margin-top: 28px;
+        }
+
         @media (max-width: 1024px) {
-            .directory-card { padding: 20px; }
+            .directory-card {
+                padding: 20px;
+            }
+
             .directory-logo-link {
                 width: 130px;
                 height: 130px;
@@ -355,13 +414,30 @@
         }
 
         @media (max-width: 768px) {
-            .directory-card { flex-direction: column; }
+            .directory-card {
+                flex-direction: column;
+            }
+
             .directory-logo-link {
                 width: 100%;
                 height: 220px;
             }
-            .page-title { font-size: 21px; }
-            .search-box { padding: 18px; }
+
+            .page-title {
+                font-size: 18px;
+            }
+
+            .search-box {
+                padding: 18px;
+            }
+
+            .page-shell {
+                padding: 18px 0 24px;
+            }
+
+            .section-kicker {
+                font-size: 17px;
+            }
         }
     </style>
 </head>
@@ -392,13 +468,13 @@
                 <button class="tab-btn" data-filter="chu-dau-tu">Chủ đầu tư</button>
                 <button class="tab-btn" data-filter="san-giao-dich">Sàn giao dịch</button>
                 <button class="tab-btn" data-filter="noi-that">Dịch vụ nội thất</button>
-                <button class="tab-btn" data-filter="xay-dung">Xây dựng & Kiến trúc</button>
+                <button class="tab-btn" data-filter="xay-dung">Xây dựng & kiến trúc</button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <section class="lg:col-span-2 space-y-5">
                     <div class="list-card p-5">
-                        <h1 class="page-title">Danh bạ Doanh nghiệp</h1>
+                        <h1 class="page-title">Danh bạ doanh nghiệp</h1>
                         <p class="page-subtitle">
                             Hiển thị <span id="resultCount" class="font-bold text-slate-700">0</span> kết quả phù hợp
                         </p>
@@ -415,7 +491,7 @@
                     </div>
 
                     <div class="register-box">
-                        <h4 class="font-black mb-3 uppercase text-sm">Đăng ký hồ sơ hiển thị</h4>
+                        <h4 class="register-title">Đăng ký hồ sơ hiển thị</h4>
                         <p>
                             Bạn muốn doanh nghiệp của mình xuất hiện trong danh bạ ToamViet?
                             Hãy tạo tài khoản và bổ sung đầy đủ thông tin để được duyệt hiển thị.
@@ -426,6 +502,10 @@
                     </div>
                 </aside>
             </div>
+
+            <section class="seo-block-shell">
+                <div id="seoContent"></div>
+            </section>
         </div>
     </main>
 
@@ -435,6 +515,7 @@
     <script src="../assets/js/post-storage.js"></script>
     <script src="../assets/js/project-service.js"></script>
     <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
     <script src="../assets/js/main.js"></script>
 
     <script>
@@ -553,7 +634,7 @@
                 "chu-dau-tu": { text: "Chủ đầu tư", cls: "tag-blue" },
                 "san-giao-dich": { text: "Sàn giao dịch", cls: "tag-green" },
                 "noi-that": { text: "Dịch vụ nội thất", cls: "tag-purple" },
-                "xay-dung": { text: "Xây dựng & Kiến trúc", cls: "tag-orange" }
+                "xay-dung": { text: "Xây dựng & kiến trúc", cls: "tag-orange" }
             };
             const config = map[tag];
             if (!config) return "";
@@ -637,7 +718,7 @@
             return [
                 {
                     id: "dn-001",
-                    name: "CÔNG TY CỔ PHẦN ĐẦU TƯ TỔ ẤM VIỆT",
+                    name: "Công ty cổ phần đầu tư Tổ Ấm Việt",
                     logo: FALLBACK_LOGO,
                     address: "Tầng 31, Keangnam Landmark 72, Cầu Giấy, Hà Nội",
                     city: "Hà Nội",
@@ -648,7 +729,7 @@
                 },
                 {
                     id: "dn-002",
-                    name: "TẬP ĐOÀN BẤT ĐỘNG SẢN THUẬN PHÁT",
+                    name: "Tập đoàn bất động sản Thuận Phát",
                     logo: FALLBACK_LOGO,
                     address: "Khu đô thị Sala, TP. Hồ Chí Minh",
                     city: "TP Hồ Chí Minh",
@@ -659,7 +740,7 @@
                 },
                 {
                     id: "dn-003",
-                    name: "CÔNG TY XÂY DỰNG AN PHÁT",
+                    name: "Công ty xây dựng An Phát",
                     logo: FALLBACK_LOGO,
                     address: "Dĩ An, Bình Dương",
                     city: "Bình Dương",
@@ -683,7 +764,7 @@
                 if (!map.has(key)) {
                     map.set(key, {
                         id: createPostId(post, index),
-                        name: buildPoster(post).toUpperCase(),
+                        name: buildPoster(post),
                         logo: getCardImage(post),
                         address: buildLocation(post),
                         city: post.city || "",
@@ -732,7 +813,7 @@
             return [
                 { key: "xay-dung", label: "Doanh nghiệp xây dựng", count: stats["xay-dung"] },
                 { key: "noi-that", label: "Tư vấn thiết kế nội thất", count: stats["noi-that"] },
-                { key: "san-giao-dich", label: "Quản lý bất động sản", count: stats["san-giao-dich"] },
+                { key: "san-giao-dich", label: "Sàn giao dịch", count: stats["san-giao-dich"] },
                 { key: "chu-dau-tu", label: "Chủ đầu tư", count: stats["chu-dau-tu"] }
             ];
         }
@@ -881,7 +962,86 @@
             });
         }
 
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("site-header", "../components/header-inner.html");
+                    await loadComponent("site-mobile-menu", "../components/mobile-menu-inner.html");
+                    await loadComponent("site-footer", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        function renderSeoFallback() {
+            const container = document.getElementById("seoContent");
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="seo-wrapper">
+                    <div class="seo-text collapsed" id="seoContent-text">
+                        <p>Danh bạ doanh nghiệp trên ToamViet là nơi tổng hợp các đơn vị hoạt động trong nhiều nhóm lĩnh vực như chủ đầu tư, sàn giao dịch, nội thất, xây dựng và kiến trúc. Người dùng có thể tra cứu nhanh tên doanh nghiệp, khu vực hoạt động, thông tin liên hệ và nhóm dịch vụ liên quan.</p>
+                        <p>Trang này đóng vai trò quan trọng trong hệ thống liên kết nội bộ vì giúp kết nối giữa hồ sơ doanh nghiệp, các tin đăng bất động sản, dịch vụ xây dựng và các nội dung chuyên sâu theo từng mảng hoạt động. Khi dữ liệu doanh nghiệp được cập nhật đều, khả năng hiển thị tự nhiên của website cũng sẽ tốt hơn theo từng cụm từ khóa liên quan.</p>
+                        <p>Về lâu dài, đây cũng là nền tảng phù hợp để mở rộng các trang danh bạ theo tỉnh thành, theo lĩnh vực và theo quy mô doanh nghiệp nhằm tăng chiều sâu nội dung cho toàn hệ thống.</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="seo-toggle-btn"
+                        id="seoContent-toggle"
+                        aria-expanded="false"
+                    >
+                        <span class="seo-toggle-label">Xem thêm</span>
+                        <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+                    </button>
+                </div>
+            `;
+
+            const toggleBtn = document.getElementById("seoContent-toggle");
+            const seoText = document.getElementById("seoContent-text");
+            const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+            if (!toggleBtn || !seoText || !toggleLabel) return;
+
+            toggleBtn.addEventListener("click", () => {
+                const isCollapsed = seoText.classList.contains("collapsed");
+
+                if (isCollapsed) {
+                    seoText.classList.remove("collapsed");
+                    toggleBtn.classList.add("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "true");
+                    toggleLabel.textContent = "Thu gọn";
+                } else {
+                    seoText.classList.add("collapsed");
+                    toggleBtn.classList.remove("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "false");
+                    toggleLabel.textContent = "Xem thêm";
+                }
+            });
+        }
+
+        function renderSeoBlock() {
+            if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
+                const externalContent = getSeoContentByKey("directory-business") || getSeoContentByKey("business-directory");
+                if (externalContent) {
+                    renderSeoContent("seoContent", getSeoContentByKey("directory-business") ? "directory-business" : "business-directory");
+                    return;
+                }
+            }
+
+            renderSeoFallback();
+        }
+
         async function initPage() {
+            await initSharedComponents();
+
             const posts = getPostsFromStorage();
             directoryData = posts.length ? buildDirectoryDataFromPosts(posts) : getFallbackDirectoryData();
 
@@ -889,6 +1049,7 @@
             initTabs();
             initSearch();
             renderDirectory();
+            renderSeoBlock();
         }
 
         window.addEventListener("load", initPage);
