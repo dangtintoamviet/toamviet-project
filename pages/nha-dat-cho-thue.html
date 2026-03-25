@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
@@ -34,7 +34,7 @@
         }
 
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Roboto", sans-serif;
             background-color: var(--soft-bg);
             color: var(--text-main);
             margin: 0;
@@ -64,8 +64,9 @@
             font-size: 22px;
             font-weight: 800;
             color: var(--text-main);
-            text-transform: uppercase;
+            text-transform: none;
             line-height: 1.35;
+            font-family: "Roboto", sans-serif;
         }
 
         .card-container {
@@ -84,7 +85,7 @@
         }
 
         .card-image-box {
-            width: 285px;
+            width: 276px;
             min-height: 100%;
             background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
             overflow: hidden;
@@ -129,6 +130,7 @@
             outline: none;
             min-height: 46px;
             transition: all 0.25s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .filter-select:focus,
@@ -163,6 +165,7 @@
             color: white;
             transition: all 0.25s ease;
             box-shadow: 0 8px 18px rgba(0, 139, 139, 0.18);
+            font-family: "Roboto", sans-serif;
         }
 
         .filter-submit-btn:hover {
@@ -190,17 +193,18 @@
         .vip-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 7px 12px;
+            gap: 5px;
+            padding: 5px 10px;
             border-radius: 999px;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.03em;
             border: 1px solid rgba(255,255,255,0.65);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            line-height: 1;
         }
 
         .vip-badge.kim-cuong {
@@ -272,6 +276,36 @@
             margin-top: 28px;
         }
 
+        .meta-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 14px;
+            margin-top: 14px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .phone-reveal-btn {
+            background: var(--vip-color);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 18px rgba(0, 139, 139, 0.14);
+            border: none;
+            transition: all 0.25s ease;
+            min-height: 40px;
+            font-family: "Roboto", sans-serif;
+        }
+
+        .phone-reveal-btn:hover {
+            opacity: 0.95;
+        }
+
         @media (max-width: 1024px) {
             .filter-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -331,6 +365,22 @@
             .seo-section-shell {
                 margin-top: 22px;
             }
+
+            .meta-grid-compact {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px 10px;
+                font-size: 11px;
+            }
+
+            .vip-badge {
+                padding: 5px 9px;
+                font-size: 8px;
+            }
+
+            .phone-reveal-btn {
+                font-size: 11px;
+                padding: 10px 14px;
+            }
         }
 
         @media (max-width: 640px) {
@@ -386,7 +436,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <section class="lg:col-span-3 space-y-6">
                 <div class="page-intro-box">
-                    <h1 id="pageHeading" class="section-title">CHO THUÊ NHÀ ĐẤT TẠI VIỆT NAM</h1>
+                    <h1 id="pageHeading" class="section-title">Cho thuê nhà đất tại Việt Nam</h1>
                     <p id="pageSubheading" class="text-gray-500 text-sm mt-2 leading-6">
                         Hiện có <span id="listing-count" class="font-bold text-gray-700">0</span> tin đăng cho thuê đang hiển thị
                     </p>
@@ -595,6 +645,28 @@
                 .trim();
         }
 
+        function toTitleCaseWords(text) {
+            return String(text || "")
+                .toLowerCase()
+                .split(" ")
+                .filter(Boolean)
+                .map(function (word) {
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                })
+                .join(" ");
+        }
+
+        function formatDisplayTitle(title) {
+            const raw = String(title || "").trim();
+            if (!raw) return "Tin cho thuê bất động sản";
+
+            if (raw === raw.toUpperCase()) {
+                return toTitleCaseWords(raw);
+            }
+
+            return raw;
+        }
+
         function getCurrentCategory() {
             const params = new URLSearchParams(window.location.search);
             return (params.get("category") || "").trim();
@@ -607,7 +679,7 @@
 
         function syncPageHeading() {
             const title = getPageTitleByCategory();
-            pageHeading.textContent = title.toUpperCase();
+            pageHeading.textContent = title;
             document.title = title + " - ToamViet.com.vn";
         }
 
@@ -628,6 +700,13 @@
 
         function normalizePhone(phone) {
             return String(phone || '').replace(/[^\d+]/g, '');
+        }
+
+        function maskPhone(phone) {
+            const normalized = normalizePhone(phone);
+            if (!normalized) return "Liên hệ";
+            if (normalized.length <= 3) return normalized;
+            return normalized.slice(0, -3) + "***";
         }
 
         function slugifyText(value) {
@@ -758,6 +837,21 @@
 
             setRentalFavorites(next);
             renderListings();
+        }
+
+        function handleRevealPhone(button, phone) {
+            const normalized = normalizePhone(phone);
+            if (!normalized) return;
+
+            const revealed = button.getAttribute("data-revealed") === "true";
+
+            if (!revealed) {
+                button.setAttribute("data-revealed", "true");
+                button.innerHTML = '<i class="fa-solid fa-phone"></i> ' + escapeHtml(normalized);
+                return;
+            }
+
+            window.location.href = 'tel:' + normalized;
         }
 
         function getResolvedCategory(post) {
@@ -1009,15 +1103,13 @@
             const profileName = escapeHtml(getPosterName(post));
             const profileDesc = escapeHtml(getPosterRole(post));
             const phone = post.contactPhone || post.phone || 'Đang cập nhật';
-            const shortPhone = phone.length >= 7 ? `${phone.slice(0, 4)} ${phone.slice(4, 7)} ***` : phone;
+            const shortPhone = escapeHtml(maskPhone(phone));
             const avatarText = escapeHtml(getAvatarText(post));
             const img = escapeHtml(getCardImage(post));
             const direction = escapeHtml(post.propertyDirection || 'Đang cập nhật');
             const legal = escapeHtml(post.propertyLegal || 'Đang cập nhật');
             const imageCount = Array.isArray(post.images) ? post.images.length : 0;
-            const phoneLink = normalizePhone(phone);
-            const safeTitle = escapeHtml(post.title || 'Tin cho thuê bất động sản');
-            const safePropertyType = escapeHtml(post.propertyType || 'Bất động sản');
+            const safeTitle = escapeHtml(formatDisplayTitle(post.title || 'Tin cho thuê bất động sản'));
             const safeCategoryName = escapeHtml(getResolvedCategoryName(post));
             const safeDescription = escapeHtml(post.description || 'Nội dung đang được cập nhật...');
             const safeLocation = escapeHtml(location);
@@ -1069,9 +1161,9 @@
                             </div>
                         </div>
 
-                        <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div class="p-[14px] md:p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 class="card-title font-bold text-[16px] text-gray-800 uppercase leading-snug hover:text-[--vip-color] transition">
+                                <h3 class="card-title font-bold text-[16px] text-gray-800 leading-snug hover:text-[--vip-color] transition">
                                     <a href="${detailUrl}">${safeTitle}</a>
                                 </h3>
 
@@ -1094,10 +1186,9 @@
                                     <i class="fa-solid fa-location-dot mr-1"></i>${safeLocation}
                                 </p>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-[12px] text-slate-500">
+                                <div class="meta-grid-compact">
                                     <div><strong class="text-slate-700">Pháp lý:</strong> ${legal}</div>
                                     <div><strong class="text-slate-700">Danh mục:</strong> ${safeCategoryName}</div>
-                                    <div><strong class="text-slate-700">Loại hình:</strong> ${safePropertyType}</div>
                                 </div>
                             </div>
 
@@ -1113,15 +1204,15 @@
                                 </a>
 
                                 <div class="flex gap-2 flex-wrap">
-                                    ${
-                                        phoneLink
-                                            ? `<a href="tel:${phoneLink}" class="bg-[--vip-color] text-white px-4 py-2 rounded-lg font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm hover:opacity-90 transition">
-                                                    <i class="fa-solid fa-phone"></i> ${escapeHtml(shortPhone)}
-                                               </a>`
-                                            : `<button class="bg-[--vip-color] text-white px-4 py-2 rounded-lg font-bold text-xs lg:text-sm flex items-center gap-2 shadow-sm cursor-default">
-                                                    <i class="fa-solid fa-phone"></i> ${escapeHtml(shortPhone)}
-                                               </button>`
-                                    }
+                                    <button
+                                        type="button"
+                                        class="phone-reveal-btn"
+                                        data-revealed="false"
+                                        onclick="handleRevealPhone(this, '${escapeHtml(String(phone)).replace(/'/g, "\\'")}')"
+                                        title="Hiện số điện thoại"
+                                    >
+                                        <i class="fa-solid fa-phone"></i> ${shortPhone}
+                                    </button>
 
                                     <button
                                         type="button"
@@ -1254,6 +1345,7 @@
 
         window.filterByHotArea = filterByHotArea;
         window.toggleFavorite = toggleFavorite;
+        window.handleRevealPhone = handleRevealPhone;
         window.addEventListener('load', initPage);
     </script>
 
