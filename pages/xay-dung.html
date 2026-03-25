@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dịch vụ Xây dựng & Sửa chữa | Tổ Ấm Việt</title>
+    <title>Dịch vụ xây dựng & sửa chữa | Tổ Ấm Việt</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -85,6 +85,7 @@
             outline: none;
             min-height: 46px;
             transition: all 0.25s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .filter-select:focus,
@@ -102,6 +103,7 @@
             font-weight: 800;
             white-space: nowrap;
             transition: all 0.25s ease;
+            font-family: "Roboto", sans-serif;
         }
 
         .filter-submit-btn {
@@ -142,7 +144,21 @@
             font-size: 20px;
             font-weight: 800;
             color: var(--text-main);
-            text-transform: uppercase;
+            text-transform: none;
+            line-height: 1.35;
+            font-family: "Roboto", sans-serif;
+        }
+
+        .sidebar-heading {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--vip-color);
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            text-transform: none;
+            line-height: 1.45;
+            font-family: "Roboto", sans-serif;
         }
 
         .hot-area-btn {
@@ -156,6 +172,7 @@
             transition: 0.2s ease;
             background: #fff;
             text-align: left;
+            font-family: "Roboto", sans-serif;
         }
 
         .hot-area-btn:hover {
@@ -164,6 +181,7 @@
             color: var(--hover-color);
         }
 
+        /* Giữ nguyên card xây dựng */
         .con-card {
             background: white;
             border-radius: 24px;
@@ -376,6 +394,7 @@
             text-decoration: none;
             transition: all 0.25s ease;
             box-sizing: border-box;
+            font-family: "Roboto", sans-serif;
         }
 
         .con-btn-main {
@@ -498,6 +517,10 @@
 
             .section-title {
                 font-size: 18px;
+            }
+
+            .sidebar-heading {
+                font-size: 13px;
             }
 
             .con-card {
@@ -636,14 +659,14 @@
 
                 <aside class="hidden lg:block space-y-6">
                     <div class="sidebar-card">
-                        <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Khu vực nổi bật</h4>
+                        <h4 class="sidebar-heading">Khu vực nổi bật</h4>
                         <div id="hot-areas" class="space-y-3 text-sm text-gray-600">
                             <div class="text-gray-400 text-[13px]">Chưa có dữ liệu</div>
                         </div>
                     </div>
 
                     <div class="sidebar-card">
-                        <h4 class="font-bold text-[--vip-color] border-b pb-2 mb-4 uppercase text-[13px]">Gợi ý hệ thống</h4>
+                        <h4 class="sidebar-heading">Gợi ý hệ thống</h4>
                         <ul class="text-sm space-y-3 text-gray-600">
                             <li class="leading-6">Dịch vụ xây dựng được đăng từ trang Đăng tin sau khi được duyệt sẽ tự động hiển thị tại đây.</li>
                             <li class="leading-6">Bạn nên nhập rõ loại hình, khu vực hoạt động và năng lực để hệ thống lọc chính xác hơn.</li>
@@ -1444,6 +1467,8 @@
             serviceTypeFilter.value = "";
             cityFilter.value = "";
             sortFilter.value = "newest";
+
+            applyCategoryFromUrlToFilter();
             renderListings();
         }
 
