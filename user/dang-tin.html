@@ -1510,13 +1510,13 @@
             userGroup.textContent = currentUser.accountGroupLabel || (currentUser.accountGroup === "construction" ? "Xây dựng" : "Bất động sản");
             userEmail.textContent = currentUser.email || "---";
             userPhone.textContent = currentUser.phone || "---";
-            userBrand.textContent = currentUser.brandName || "---";
-            userAvatar.textContent = getInitials(currentUser.fullName || currentUser.brandName);
+            userBrand.textContent = currentUser.brandName || currentUser.companyName || "---";
+            userAvatar.textContent = getInitials(currentUser.fullName || currentUser.brandName || currentUser.companyName);
 
-            contactName.value = currentUser.brandName || currentUser.fullName || "";
+            contactName.value = currentUser.brandName || currentUser.companyName || currentUser.fullName || "";
             contactPhone.value = currentUser.phone || "";
             contactEmail.value = currentUser.email || "";
-            previewPoster.textContent = currentUser.brandName || currentUser.fullName || "Chưa có";
+            previewPoster.textContent = currentUser.brandName || currentUser.companyName || currentUser.fullName || "Chưa có";
         }
 
         function extractLocationsFromCommonFiles() {
@@ -2091,7 +2091,7 @@
             const locationText = [ward, city].filter(Boolean).join(", ");
 
             previewLocation.textContent = locationText || "Chưa chọn";
-            previewPoster.textContent = contactName || ((currentUser && (currentUser.brandName || currentUser.fullName)) || "Chưa có");
+            previewPoster.textContent = contactName || ((currentUser && (currentUser.brandName || currentUser.companyName || currentUser.fullName)) || "Chưa có");
             previewTitle.textContent = title || "Tiêu đề sẽ hiện ở đây sau khi bạn nhập";
             previewImagesCount.textContent = selectedImages.length + " ảnh";
             previewVip.textContent = currentFlow === "real_estate" ? getVipLabel(currentVipLevel) : "Không áp dụng";
@@ -2365,10 +2365,24 @@
             return true;
         }
 
-        function resolveContactProfileUrl() {
+        function resolveContactProfileUrl(currentUser) {
+            const profileId =
+                (currentUser && (
+                    currentUser.companyId ||
+                    currentUser.businessId ||
+                    currentUser.enterpriseId ||
+                    currentUser.profileId ||
+                    currentUser.contactProfileId ||
+                    currentUser.userId ||
+                    currentUser.accountId ||
+                    currentUser.id
+                )) || "";
+
+            if (!profileId) return "";
+
             return currentProfile === "doanhnghiep"
-                ? "../pages/danh-ba-doanh-nghiep.html"
-                : "../pages/danh-ba-moi-gioi.html";
+                ? "../pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(profileId)
+                : "../pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(profileId);
         }
 
         function buildPostData() {
@@ -2387,17 +2401,52 @@
                     ? preparedImages[0].dataUrl
                     : FALLBACK_IMAGE;
 
+            const resolvedUserId = currentUser && (currentUser.id || currentUser.userId || currentUser.accountId || currentUser.profileId)
+                ? String(currentUser.id || currentUser.userId || currentUser.accountId || currentUser.profileId).trim()
+                : "";
+
+            const resolvedCompanyId = currentProfile === "doanhnghiep"
+                ? String(
+                    (currentUser && (
+                        currentUser.companyId ||
+                        currentUser.businessId ||
+                        currentUser.enterpriseId ||
+                        currentUser.profileId ||
+                        currentUser.contactProfileId ||
+                        currentUser.accountId ||
+                        currentUser.id
+                    )) || ""
+                ).trim()
+                : "";
+
             const baseData = {
                 id: baseId,
-                userId: currentUser && currentUser.id ? currentUser.id : "",
+                userId: resolvedUserId,
                 accountGroup: currentUser && currentUser.accountGroup ? currentUser.accountGroup : "",
                 accountGroupLabel: currentUser && currentUser.accountGroupLabel ? currentUser.accountGroupLabel : "",
                 role: currentUser && currentUser.role ? currentUser.role : "",
                 roleLabel: currentUser && currentUser.roleLabel ? currentUser.roleLabel : "",
                 brandName: currentUser && currentUser.brandName ? currentUser.brandName : "",
+                companyName: currentProfile === "doanhnghiep"
+                    ? ((currentUser && (currentUser.companyName || currentUser.brandName || currentUser.fullName)) || "")
+                    : "",
                 fullName: currentUser && currentUser.fullName ? currentUser.fullName : "",
                 email: currentUser && currentUser.email ? currentUser.email : "",
                 phone: currentUser && currentUser.phone ? currentUser.phone : "",
+
+                profileId: resolvedUserId,
+                contactProfileId: currentProfile === "doanhnghiep" ? resolvedCompanyId : resolvedUserId,
+                accountId: currentUser && (currentUser.accountId || currentUser.id) ? String(currentUser.accountId || currentUser.id).trim() : "",
+                ownerProfileId: currentProfile === "doanhnghiep" ? resolvedCompanyId : resolvedUserId,
+
+                companyId: resolvedCompanyId,
+                businessId: resolvedCompanyId,
+                enterpriseId: resolvedCompanyId,
+
+                contactUserId: resolvedUserId,
+                contactId: currentProfile === "doanhnghiep" ? resolvedCompanyId : resolvedUserId,
+                posterId: currentProfile === "doanhnghiep" ? resolvedCompanyId : resolvedUserId,
+                authorId: resolvedUserId,
 
                 flow: currentFlow,
                 postType: currentFlow === "construction" ? "xaydung" : currentPostType,
@@ -2417,7 +2466,7 @@
                 contactName: document.getElementById("contactName").value.trim(),
                 contactPhone: sanitizePhone(document.getElementById("contactPhone").value.trim()),
                 contactEmail: contactEmailValue,
-                contactProfileUrl: resolveContactProfileUrl(),
+                contactProfileUrl: resolveContactProfileUrl(currentUser),
 
                 detailUrl: "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(baseId),
 
