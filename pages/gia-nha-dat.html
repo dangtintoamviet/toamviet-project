@@ -26,14 +26,20 @@
             --hover-color: #ff8c00;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: "Roboto", sans-serif;
             background-color: #f4f7fa;
             color: var(--text-dark);
             line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
+            margin: 0;
         }
 
         h1 {
@@ -227,7 +233,7 @@
             color: var(--vip-color);
             padding: 5px 10px;
             border-radius: 6px;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 12px;
             border: 1px solid #ccfbf1;
             white-space: nowrap;
@@ -257,7 +263,7 @@
             margin-bottom: 20px;
         }
 
-        .seo-dynamic-box {
+        .dynamic-seo-card {
             background: #fff;
             border: 1px solid #e2e8f0;
             border-radius: 20px;
@@ -265,26 +271,26 @@
             box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
         }
 
-        .seo-dynamic-title {
-            font-size: 22px;
-            font-weight: 800;
-            line-height: 1.4;
-            color: #0f172a;
+        .dynamic-seo-title {
             margin: 0 0 12px;
+            font-size: 22px;
+            line-height: 1.35;
+            font-weight: 800;
+            color: #0f172a;
             text-transform: none;
         }
 
-        .seo-dynamic-text {
+        .dynamic-seo-content {
+            color: #475569;
             font-size: 15px;
             line-height: 1.9;
-            color: #475569;
         }
 
-        .seo-dynamic-text p {
+        .dynamic-seo-content p {
             margin: 0 0 14px;
         }
 
-        .seo-dynamic-text p:last-child {
+        .dynamic-seo-content p:last-child {
             margin-bottom: 0;
         }
 
@@ -323,18 +329,18 @@
                 border-radius: 16px;
             }
 
-            .seo-dynamic-box {
+            .dynamic-seo-card {
                 padding: 18px;
                 border-radius: 16px;
             }
 
-            .seo-dynamic-title {
+            .dynamic-seo-title {
                 font-size: 19px;
             }
 
-            .seo-dynamic-text {
+            .dynamic-seo-content {
                 font-size: 14px;
-                line-height: 1.85;
+                line-height: 1.8;
             }
         }
     </style>
@@ -360,7 +366,7 @@
                         </div>
 
                         <h1 id="page-title" class="hero-title">
-                            Báo cáo giá nhà đất tại Việt Nam
+                            Báo cáo giá nhà đất tại Việt Nam
                         </h1>
 
                         <p class="hero-desc">
@@ -416,18 +422,18 @@
                     <span class="sub-title">Giá trung bình</span>
                     <div class="flex items-baseline gap-1 mt-2">
                         <h2 id="avg-land-price" class="text-3xl font-black text-slate-800">0</h2>
-                        <span class="text-[12px] font-bold text-slate-500 uppercase">Tr/m²</span>
+                        <span class="text-[12px] font-bold text-slate-400 uppercase">Tr/m²</span>
                     </div>
                 </div>
 
                 <div class="stats-card border-l-4 border-l-[--vip-color]">
                     <span class="sub-title">Khu vực tâm điểm</span>
-                    <h2 id="top-project" class="text-lg font-bold text-slate-800 mt-2 truncate">Đang cập nhật</h2>
+                    <h2 id="top-project" class="text-lg font-bold text-slate-700 mt-2 truncate">Đang cập nhật</h2>
                 </div>
 
                 <div class="stats-card">
                     <span class="sub-title">Cập nhật lúc</span>
-                    <h2 id="current-date" class="text-lg font-bold text-slate-800 mt-2">--/--/----</h2>
+                    <h2 id="current-date" class="text-lg font-bold text-slate-700 mt-2">--/--/----</h2>
                 </div>
             </div>
 
@@ -439,14 +445,14 @@
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
                             <tr class="bg-white text-slate-500 text-[10px] uppercase tracking-wider border-b">
-                                <th class="px-6 py-4 font-extrabold">Phường / Xã / Sản phẩm</th>
-                                <th class="px-6 py-4 text-center font-extrabold">Số tin</th>
-                                <th class="px-6 py-4 font-extrabold text-nowrap">Giá thấp</th>
-                                <th class="px-6 py-4 font-extrabold text-nowrap">Giá cao</th>
+                                <th class="px-6 py-4 font-bold">Phường / Xã / Sản phẩm</th>
+                                <th class="px-6 py-4 text-center font-bold">Số tin</th>
+                                <th class="px-6 py-4 font-bold text-nowrap">Giá thấp</th>
+                                <th class="px-6 py-4 font-bold text-nowrap">Giá cao</th>
                                 <th class="px-6 py-4 text-slate-900 font-black">Trung bình</th>
                             </tr>
                         </thead>
-                        <tbody id="price-table-body" class="text-[13px] text-slate-800 font-semibold"></tbody>
+                        <tbody id="price-table-body" class="text-[13px] text-slate-700 font-medium"></tbody>
                     </table>
                 </div>
             </div>
@@ -528,25 +534,6 @@
             }
         }
 
-        function escapeHtml(value) {
-            return String(value || "")
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function normalizeText(value) {
-            return String(value || "")
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/đ/g, "d")
-                .toLowerCase()
-                .replace(/\s+/g, " ")
-                .trim();
-        }
-
         function parseVietnamesePriceToMillion(priceText) {
             if (!priceText) return null;
 
@@ -622,6 +609,15 @@
                 sanitizeAreaValue(post.realEstateType) ||
                 "Bất động sản"
             );
+        }
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
         function getFallbackData() {
@@ -718,14 +714,14 @@
                     labels: labels,
                     datasets: [{
                         data: dataPoints,
-                        backgroundColor: "rgba(0, 139, 139, 0.92)",
-                        borderColor: "rgba(0, 110, 110, 1)",
+                        backgroundColor: "rgba(0, 139, 139, 0.95)",
+                        borderColor: "rgba(0, 112, 112, 1)",
                         borderWidth: 1,
-                        borderRadius: 5,
-                        barThickness: isMobile ? 10 : 18,
-                        maxBarThickness: isMobile ? 12 : 20,
-                        categoryPercentage: 0.58,
-                        barPercentage: 0.72
+                        borderRadius: 6,
+                        barThickness: isMobile ? 10 : 22,
+                        maxBarThickness: isMobile ? 10 : 22,
+                        categoryPercentage: isMobile ? 0.72 : 0.58,
+                        barPercentage: 0.7
                     }]
                 },
                 options: {
@@ -736,16 +732,14 @@
                         legend: { display: false },
                         tooltip: {
                             titleColor: "#0f172a",
-                            bodyColor: "#0f172a",
-                            backgroundColor: "#ffffff",
-                            borderColor: "#cbd5e1",
+                            bodyColor: "#334155",
+                            backgroundColor: "rgba(255,255,255,0.98)",
+                            borderColor: "#e2e8f0",
                             borderWidth: 1,
                             displayColors: false,
-                            titleFont: { family: "Roboto", size: 12, weight: "700" },
-                            bodyFont: { family: "Roboto", size: 12, weight: "700" },
                             callbacks: {
                                 label: function(context) {
-                                    return " " + context.raw + " Tr/m²";
+                                    return context.raw + " Tr/m²";
                                 }
                             }
                         }
@@ -755,32 +749,38 @@
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: "rgba(148, 163, 184, 0.14)",
-                                lineWidth: 1,
-                                drawBorder: false
+                                color: "#e8eef5",
+                                lineWidth: 1
                             },
-                            border: { display: false },
+                            border: {
+                                color: "#cbd5e1",
+                                width: 1.2
+                            },
                             ticks: {
-                                color: "#334155",
+                                color: "#475569",
                                 font: {
-                                    family: "Roboto",
                                     weight: "700",
                                     size: 11
                                 },
-                                padding: 8
+                                callback: function(value) {
+                                    return value;
+                                }
                             }
                         },
                         x: {
-                            grid: { display: false, drawBorder: false },
-                            border: { display: false },
+                            grid: {
+                                display: false
+                            },
+                            border: {
+                                color: "#cbd5e1",
+                                width: 1.2
+                            },
                             ticks: {
-                                color: "#0f172a",
+                                color: "#1e293b",
                                 font: {
-                                    family: "Roboto",
                                     weight: "700",
                                     size: 11
-                                },
-                                padding: 8
+                                }
                             }
                         }
                     }
@@ -843,48 +843,65 @@
             });
         }
 
-        function updateTitle(city, ward) {
-            const pageTitle = document.getElementById("page-title");
-            const parts = ["Báo cáo giá nhà đất tại"];
+        function getSelectedLocationLabel() {
+            const city = document.getElementById("filter-city").value;
+            const ward = document.getElementById("filter-ward").value;
 
-            if (ward) {
-                parts.push(ward);
-            } else if (city) {
-                parts.push(city);
-            } else {
-                parts.push("Việt Nam");
-            }
-
-            pageTitle.textContent = parts.join(" ");
-        }
-
-        function getSeoLocationText(city, ward) {
             if (ward && city) return ward + ", " + city;
             if (ward) return ward;
             if (city) return city;
-            return "toàn hệ thống";
+            return "Việt Nam";
+        }
+
+        function updateTitle() {
+            const city = document.getElementById("filter-city").value;
+            const ward = document.getElementById("filter-ward").value;
+            const pageTitle = document.getElementById("page-title");
+
+            if (ward) {
+                pageTitle.textContent = "Báo cáo giá nhà đất tại " + ward;
+                return;
+            }
+
+            if (city) {
+                pageTitle.textContent = "Báo cáo giá nhà đất tại " + city;
+                return;
+            }
+
+            pageTitle.textContent = "Báo cáo giá nhà đất tại Việt Nam";
         }
 
         function renderDynamicSeo() {
+            const seoContainer = document.getElementById("seoContent");
+            if (!seoContainer) return;
+
             const city = document.getElementById("filter-city").value;
             const ward = document.getElementById("filter-ward").value;
-            const locationText = getSeoLocationText(city, ward);
-            const seoTitle = ward || city
-                ? "Giá nhà đất tại " + locationText
-                : "Giá nhà đất tại Việt Nam";
 
-            const content = `
-                <div class="seo-dynamic-box">
-                    <h2 class="seo-dynamic-title">${escapeHtml(seoTitle)}</h2>
-                    <div class="seo-dynamic-text">
-                        <p>${escapeHtml(seoTitle)} đang được tổng hợp dựa trên dữ liệu tin bán đã duyệt hiển thị trên hệ thống. Nội dung này giúp người mua, người bán và nhà đầu tư có thêm cơ sở tham khảo khi theo dõi mặt bằng giá thực tế theo từng khu vực và nhóm bất động sản.</p>
-                        <p>Thông qua bộ lọc tỉnh thành và phường xã, người dùng có thể xem nhanh biến động đơn giá trung bình, khoảng giá thấp - cao và số lượng tin đang được phân tích tại ${escapeHtml(locationText)}. Đây là lớp dữ liệu hữu ích để so sánh khu vực, nhận diện điểm nóng và theo dõi xu hướng giá dễ hơn.</p>
-                        <p>Về lâu dài, phần nội dung giá nhà đất theo khu vực như ${escapeHtml(locationText)} cũng hỗ trợ rất tốt cho SEO tổng thể của website, đặc biệt với các truy vấn tìm kiếm liên quan đến giá đất, giá nhà và mặt bằng bất động sản theo địa phương.</p>
+            let seoTitle = "Giá đất tại Việt Nam";
+            let locationText = "Việt Nam";
+
+            if (ward && city) {
+                seoTitle = "Giá đất tại " + ward + ", " + city;
+                locationText = ward + ", " + city;
+            } else if (ward) {
+                seoTitle = "Giá đất tại " + ward;
+                locationText = ward;
+            } else if (city) {
+                seoTitle = "Giá đất tại " + city;
+                locationText = city;
+            }
+
+            seoContainer.innerHTML = `
+                <div class="dynamic-seo-card">
+                    <h2 class="dynamic-seo-title">${escapeHtml(seoTitle)}</h2>
+                    <div class="dynamic-seo-content">
+                        <p>Trang giá nhà đất giúp người dùng theo dõi mặt bằng giá bất động sản thực tế tại <strong>${escapeHtml(locationText)}</strong> thông qua dữ liệu tin đăng bán đã được duyệt trên hệ thống. Đây là lớp nội dung quan trọng để người mua, người bán và nhà đầu tư có thêm cơ sở tham khảo trước khi đưa ra quyết định.</p>
+                        <p>Khi dữ liệu được cập nhật đều đặn, nội dung về <strong>${escapeHtml(seoTitle.toLowerCase())}</strong> sẽ hỗ trợ rất tốt cho SEO tổng thể của website, đặc biệt ở các truy vấn dài theo tỉnh thành, phường xã và loại hình bất động sản. Đồng thời, trang này cũng giúp tăng liên kết nội bộ giữa danh sách tin đăng, trang khu vực và các trang phân tích chuyên sâu hơn.</p>
+                        <p>Về lâu dài, khu vực này có thể mở rộng thêm các nội dung như xu hướng tăng giảm theo thời gian, so sánh giữa các nhóm sản phẩm và báo cáo biến động giá theo từng giai đoạn để nâng chiều sâu thông tin và tăng giá trị sử dụng cho người xem.</p>
                     </div>
                 </div>
             `;
-
-            document.getElementById("seoContent").innerHTML = content;
         }
 
         function renderEmptyState() {
@@ -912,10 +929,7 @@
             const allNormalized = pageState.normalizedPosts;
             populateFilters(allNormalized);
 
-            const city = document.getElementById("filter-city").value;
-            const ward = document.getElementById("filter-ward").value;
-
-            updateTitle(city, ward);
+            updateTitle();
 
             const normalized = getFilteredNormalizedPosts(allNormalized);
             const stats = buildStats(normalized);
@@ -964,10 +978,10 @@
 
                 tableBody.innerHTML += `
                     <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-3 font-extrabold text-slate-800">${escapeHtml(row.ward)} - ${escapeHtml(row.propertyType)}</td>
-                        <td class="px-6 py-3 text-center text-slate-700 font-bold">${row.count}</td>
-                        <td class="px-6 py-3 text-slate-700 font-bold">${row.min.toFixed(1)} Tr/m²</td>
-                        <td class="px-6 py-3 text-slate-700 font-bold">${row.max.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-3 font-bold text-slate-800">${escapeHtml(row.ward)} - ${escapeHtml(row.propertyType)}</td>
+                        <td class="px-6 py-3 text-center text-slate-500">${row.count}</td>
+                        <td class="px-6 py-3 text-slate-600 font-mono">${row.min.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-3 text-slate-600 font-mono">${row.max.toFixed(1)} Tr/m²</td>
                         <td class="px-6 py-3"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
                     </tr>
                 `;
