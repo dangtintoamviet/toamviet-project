@@ -31,6 +31,9 @@
             background-color: #f4f7fa;
             color: var(--text-dark);
             line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
         h1 {
@@ -224,7 +227,7 @@
             color: var(--vip-color);
             padding: 5px 10px;
             border-radius: 6px;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 12px;
             border: 1px solid #ccfbf1;
             white-space: nowrap;
@@ -252,6 +255,37 @@
             font-size: 13px;
             line-height: 1.7;
             margin-bottom: 20px;
+        }
+
+        .seo-dynamic-box {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+        }
+
+        .seo-dynamic-title {
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.4;
+            color: #0f172a;
+            margin: 0 0 12px;
+            text-transform: none;
+        }
+
+        .seo-dynamic-text {
+            font-size: 15px;
+            line-height: 1.9;
+            color: #475569;
+        }
+
+        .seo-dynamic-text p {
+            margin: 0 0 14px;
+        }
+
+        .seo-dynamic-text p:last-child {
+            margin-bottom: 0;
         }
 
         @media (max-width: 900px) {
@@ -287,6 +321,20 @@
             .filter-wrap {
                 padding: 14px;
                 border-radius: 16px;
+            }
+
+            .seo-dynamic-box {
+                padding: 18px;
+                border-radius: 16px;
+            }
+
+            .seo-dynamic-title {
+                font-size: 19px;
+            }
+
+            .seo-dynamic-text {
+                font-size: 14px;
+                line-height: 1.85;
             }
         }
     </style>
@@ -368,18 +416,18 @@
                     <span class="sub-title">Giá trung bình</span>
                     <div class="flex items-baseline gap-1 mt-2">
                         <h2 id="avg-land-price" class="text-3xl font-black text-slate-800">0</h2>
-                        <span class="text-[12px] font-bold text-slate-400 uppercase">Tr/m²</span>
+                        <span class="text-[12px] font-bold text-slate-500 uppercase">Tr/m²</span>
                     </div>
                 </div>
 
                 <div class="stats-card border-l-4 border-l-[--vip-color]">
                     <span class="sub-title">Khu vực tâm điểm</span>
-                    <h2 id="top-project" class="text-lg font-bold text-slate-700 mt-2 truncate">Đang cập nhật</h2>
+                    <h2 id="top-project" class="text-lg font-bold text-slate-800 mt-2 truncate">Đang cập nhật</h2>
                 </div>
 
                 <div class="stats-card">
                     <span class="sub-title">Cập nhật lúc</span>
-                    <h2 id="current-date" class="text-lg font-bold text-slate-700 mt-2">--/--/----</h2>
+                    <h2 id="current-date" class="text-lg font-bold text-slate-800 mt-2">--/--/----</h2>
                 </div>
             </div>
 
@@ -390,15 +438,15 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
-                            <tr class="bg-white text-slate-400 text-[10px] uppercase tracking-wider border-b">
-                                <th class="px-6 py-4 font-bold">Phường / Xã / Sản phẩm</th>
-                                <th class="px-6 py-4 text-center font-bold">Số tin</th>
-                                <th class="px-6 py-4 font-bold text-nowrap">Giá thấp</th>
-                                <th class="px-6 py-4 font-bold text-nowrap">Giá cao</th>
+                            <tr class="bg-white text-slate-500 text-[10px] uppercase tracking-wider border-b">
+                                <th class="px-6 py-4 font-extrabold">Phường / Xã / Sản phẩm</th>
+                                <th class="px-6 py-4 text-center font-extrabold">Số tin</th>
+                                <th class="px-6 py-4 font-extrabold text-nowrap">Giá thấp</th>
+                                <th class="px-6 py-4 font-extrabold text-nowrap">Giá cao</th>
                                 <th class="px-6 py-4 text-slate-900 font-black">Trung bình</th>
                             </tr>
                         </thead>
-                        <tbody id="price-table-body" class="text-[13px] text-slate-700 font-medium"></tbody>
+                        <tbody id="price-table-body" class="text-[13px] text-slate-800 font-semibold"></tbody>
                     </table>
                 </div>
             </div>
@@ -478,6 +526,25 @@
             } catch (error) {
                 console.error("Không thể load component dùng chung:", error);
             }
+        }
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
         }
 
         function parseVietnamesePriceToMillion(priceText) {
@@ -651,27 +718,70 @@
                     labels: labels,
                     datasets: [{
                         data: dataPoints,
-                        backgroundColor: "rgba(0, 139, 139, 0.82)",
-                        borderRadius: 6,
-                        barThickness: isMobile ? 12 : 28
+                        backgroundColor: "rgba(0, 139, 139, 0.92)",
+                        borderColor: "rgba(0, 110, 110, 1)",
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        barThickness: isMobile ? 10 : 18,
+                        maxBarThickness: isMobile ? 12 : 20,
+                        categoryPercentage: 0.58,
+                        barPercentage: 0.72
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: false,
                     plugins: {
-                        legend: { display: false }
+                        legend: { display: false },
+                        tooltip: {
+                            titleColor: "#0f172a",
+                            bodyColor: "#0f172a",
+                            backgroundColor: "#ffffff",
+                            borderColor: "#cbd5e1",
+                            borderWidth: 1,
+                            displayColors: false,
+                            titleFont: { family: "Roboto", size: 12, weight: "700" },
+                            bodyFont: { family: "Roboto", size: 12, weight: "700" },
+                            callbacks: {
+                                label: function(context) {
+                                    return " " + context.raw + " Tr/m²";
+                                }
+                            }
+                        }
                     },
                     indexAxis: isMobile ? "y" : "x",
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: "#f1f5f9" },
-                            ticks: { color: "#64748b", font: { weight: "bold", size: 10 } }
+                            grid: {
+                                color: "rgba(148, 163, 184, 0.14)",
+                                lineWidth: 1,
+                                drawBorder: false
+                            },
+                            border: { display: false },
+                            ticks: {
+                                color: "#334155",
+                                font: {
+                                    family: "Roboto",
+                                    weight: "700",
+                                    size: 11
+                                },
+                                padding: 8
+                            }
                         },
                         x: {
-                            grid: { display: false },
-                            ticks: { color: "#1e293b", font: { weight: "bold", size: 10 } }
+                            grid: { display: false, drawBorder: false },
+                            border: { display: false },
+                            ticks: {
+                                color: "#0f172a",
+                                font: {
+                                    family: "Roboto",
+                                    weight: "700",
+                                    size: 11
+                                },
+                                padding: 8
+                            }
                         }
                     }
                 }
@@ -748,6 +858,35 @@
             pageTitle.textContent = parts.join(" ");
         }
 
+        function getSeoLocationText(city, ward) {
+            if (ward && city) return ward + ", " + city;
+            if (ward) return ward;
+            if (city) return city;
+            return "toàn hệ thống";
+        }
+
+        function renderDynamicSeo() {
+            const city = document.getElementById("filter-city").value;
+            const ward = document.getElementById("filter-ward").value;
+            const locationText = getSeoLocationText(city, ward);
+            const seoTitle = ward || city
+                ? "Giá đất tại " + locationText
+                : "Giá đất tại toàn hệ thống";
+
+            const content = `
+                <div class="seo-dynamic-box">
+                    <h2 class="seo-dynamic-title">${escapeHtml(seoTitle)}</h2>
+                    <div class="seo-dynamic-text">
+                        <p>${escapeHtml(seoTitle)} đang được tổng hợp dựa trên dữ liệu tin bán đã duyệt hiển thị trên hệ thống. Nội dung này giúp người mua, người bán và nhà đầu tư có thêm cơ sở tham khảo khi theo dõi mặt bằng giá thực tế theo từng khu vực và nhóm bất động sản.</p>
+                        <p>Thông qua bộ lọc tỉnh thành và phường xã, người dùng có thể xem nhanh biến động đơn giá trung bình, khoảng giá thấp - cao và số lượng tin đang được phân tích tại ${escapeHtml(locationText)}. Đây là lớp dữ liệu hữu ích để so sánh khu vực, nhận diện điểm nóng và theo dõi xu hướng giá dễ hơn.</p>
+                        <p>Về lâu dài, phần nội dung giá nhà đất theo khu vực như ${escapeHtml(locationText)} cũng hỗ trợ rất tốt cho SEO tổng thể của website, đặc biệt với các truy vấn tìm kiếm liên quan đến giá đất, giá nhà và mặt bằng bất động sản theo địa phương.</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById("seoContent").innerHTML = content;
+        }
+
         function renderEmptyState() {
             document.getElementById("avg-land-price").innerText = "0";
             document.getElementById("hero-avg-price").innerText = "0";
@@ -764,6 +903,7 @@
             `;
 
             renderChart(["Chưa có dữ liệu"], [0]);
+            renderDynamicSeo();
         }
 
         function renderReport() {
@@ -824,10 +964,10 @@
 
                 tableBody.innerHTML += `
                     <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-3 font-bold text-slate-800">${row.ward} - ${row.propertyType}</td>
-                        <td class="px-6 py-3 text-center text-slate-500">${row.count}</td>
-                        <td class="px-6 py-3 text-slate-500 font-mono">${row.min.toFixed(1)} Tr/m²</td>
-                        <td class="px-6 py-3 text-slate-500 font-mono">${row.max.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-3 font-extrabold text-slate-800">${escapeHtml(row.ward)} - ${escapeHtml(row.propertyType)}</td>
+                        <td class="px-6 py-3 text-center text-slate-700 font-bold">${row.count}</td>
+                        <td class="px-6 py-3 text-slate-700 font-bold">${row.min.toFixed(1)} Tr/m²</td>
+                        <td class="px-6 py-3 text-slate-700 font-bold">${row.max.toFixed(1)} Tr/m²</td>
                         <td class="px-6 py-3"><span class="price-badge">${avg.toFixed(1)} Tr/m²</span></td>
                     </tr>
                 `;
@@ -843,6 +983,7 @@
             document.getElementById("hero-top-area").innerText = topArea;
 
             renderChart(labels, dataPoints);
+            renderDynamicSeo();
         }
 
         function initData() {
@@ -878,11 +1019,6 @@
 
         window.addEventListener("load", async function () {
             await initSharedComponents();
-
-            if (typeof renderSeoContent === "function") {
-                renderSeoContent("seoContent", "price");
-            }
-
             initData();
             renderReport();
         });
