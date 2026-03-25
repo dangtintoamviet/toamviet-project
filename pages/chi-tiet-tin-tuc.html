@@ -1,1 +1,1018 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết tin tức | ToamViet.com.vn</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --text-strong: #1f2937;
+            --text-soft: #64748b;
+            --soft-bg: #f8fafc;
+            --border-color: #e5e7eb;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Roboto", sans-serif;
+            background: var(--soft-bg);
+            color: #1e293b;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .page-shell {
+            padding-bottom: 32px;
+        }
+
+        .breadcrumb-wrap {
+            margin-bottom: 18px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #64748b;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--vip-color);
+        }
+
+        .news-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .article-card,
+        .side-card,
+        .empty-box {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+        }
+
+        .article-card {
+            overflow: hidden;
+        }
+
+        .article-hero {
+            position: relative;
+            min-height: 420px;
+            background: #dbe4ea;
+            overflow: hidden;
+        }
+
+        .article-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            position: absolute;
+            inset: 0;
+        }
+
+        .article-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(15, 23, 42, 0.04) 0%, rgba(15, 23, 42, 0.12) 32%, rgba(15, 23, 42, 0.68) 100%);
+        }
+
+        .article-hero-content {
+            position: absolute;
+            left: 28px;
+            right: 28px;
+            bottom: 26px;
+            z-index: 2;
+            color: #fff;
+            max-width: 860px;
+        }
+
+        .article-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .article-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 34px;
+            padding: 7px 13px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .article-chip.category {
+            background: linear-gradient(135deg, rgba(0,139,139,0.96), rgba(15,118,110,0.92));
+            color: #fff;
+        }
+
+        .article-chip.meta {
+            background: rgba(255,255,255,0.92);
+            color: var(--vip-color);
+        }
+
+        .article-title {
+            margin: 0 0 14px;
+            font-size: clamp(26px, 3vw, 34px);
+            line-height: 1.28;
+            font-weight: 800;
+            color: #fff;
+            text-transform: none;
+        }
+
+        .article-meta-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 18px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.92);
+        }
+
+        .article-meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .article-body-wrap {
+            padding: 26px 28px 28px;
+        }
+
+        .article-summary {
+            background: #f8ffff;
+            border: 1px solid #dbe4ee;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+
+        .article-summary-title {
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--vip-color);
+            margin-bottom: 10px;
+        }
+
+        .article-summary-text {
+            font-size: 15px;
+            line-height: 1.85;
+            color: #475569;
+        }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.95;
+            color: #334155;
+        }
+
+        .article-content p {
+            margin: 0 0 16px;
+        }
+
+        .article-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .article-content h2,
+        .article-content h3 {
+            margin: 26px 0 12px;
+            font-size: 22px;
+            line-height: 1.45;
+            font-weight: 800;
+            color: var(--text-strong);
+            text-transform: none;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 0 0 18px;
+            padding-left: 22px;
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+        }
+
+        .article-inline-image {
+            margin: 22px 0;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            background: #f8fafc;
+        }
+
+        .article-inline-image img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            max-height: 520px;
+        }
+
+        .article-inline-caption {
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #64748b;
+            background: #fff;
+            border-top: 1px solid #eef2f7;
+        }
+
+        .article-bottom-actions {
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px dashed #dbe4ee;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .article-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 42px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid #dbe4ee;
+            background: #fff;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 800;
+            transition: all 0.25s ease;
+        }
+
+        .article-action-btn:hover {
+            color: var(--vip-color);
+            border-color: rgba(0,139,139,0.35);
+            background: #f8ffff;
+        }
+
+        .side-card {
+            padding: 20px;
+        }
+
+        .side-title {
+            margin: 0 0 14px;
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.35;
+            color: var(--text-strong);
+            text-transform: none;
+        }
+
+        .side-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .side-news-item {
+            display: grid;
+            grid-template-columns: 96px minmax(0, 1fr);
+            gap: 12px;
+            align-items: start;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #dbe4ee;
+            color: inherit;
+        }
+
+        .side-news-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .side-news-thumb {
+            width: 96px;
+            height: 78px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .side-news-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .side-news-title {
+            margin: 0 0 6px;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.6;
+            color: #0f172a;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-transform: none;
+            transition: color 0.2s ease;
+        }
+
+        .side-news-item:hover .side-news-title {
+            color: var(--vip-color);
+        }
+
+        .side-news-meta {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #64748b;
+        }
+
+        .topic-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .topic-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 36px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: 12px;
+            font-weight: 800;
+            color: #334155;
+            transition: all 0.25s ease;
+        }
+
+        .topic-chip:hover {
+            color: var(--vip-color);
+            border-color: rgba(0,139,139,0.35);
+            background: #f8ffff;
+        }
+
+        .seo-block-shell {
+            margin-top: 26px;
+        }
+
+        .empty-box {
+            padding: 20px;
+            border-style: dashed;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 1200px) {
+            .news-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-shell {
+                padding-bottom: 22px;
+            }
+
+            .breadcrumb {
+                font-size: 13px;
+                gap: 6px;
+            }
+
+            .article-hero {
+                min-height: 300px;
+            }
+
+            .article-hero-content {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+            }
+
+            .article-title {
+                font-size: 22px;
+                margin-bottom: 10px;
+                line-height: 1.34;
+            }
+
+            .article-chip {
+                font-size: 10px;
+                min-height: 30px;
+                padding: 6px 10px;
+            }
+
+            .article-meta-line {
+                gap: 8px 14px;
+                font-size: 12px;
+            }
+
+            .article-body-wrap {
+                padding: 18px 16px 20px;
+            }
+
+            .article-summary {
+                padding: 14px;
+                border-radius: 16px;
+                margin-bottom: 18px;
+            }
+
+            .article-summary-text {
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .article-content {
+                font-size: 15px;
+                line-height: 1.88;
+            }
+
+            .article-content h2,
+            .article-content h3 {
+                font-size: 19px;
+                margin: 22px 0 10px;
+            }
+
+            .side-card {
+                padding: 16px;
+            }
+
+            .side-title {
+                font-size: 18px;
+            }
+
+            .side-news-item {
+                grid-template-columns: 86px minmax(0, 1fr);
+            }
+
+            .side-news-thumb {
+                width: 86px;
+                height: 72px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+    <div id="site-mobile-menu"></div>
+
+    <main class="container-custom page-shell">
+        <div class="breadcrumb-wrap">
+            <nav class="breadcrumb">
+                <a href="../index.html">Trang chủ</a>
+                <span>/</span>
+                <a href="../pages/tin-tuc.html">Tin tức</a>
+                <span>/</span>
+                <span id="breadcrumbTitle">Chi tiết tin tức</span>
+            </nav>
+        </div>
+
+        <section class="news-layout">
+            <article class="article-card">
+                <div class="article-hero">
+                    <img id="articleHeroImage" src="../assets/images/fallback-property.jpg" alt="Tin tức" />
+                    <div class="article-hero-content">
+                        <div class="article-chip-row">
+                            <span class="article-chip category" id="articleCategoryChip">
+                                <i class="fa-solid fa-newspaper"></i>
+                                Tin tức
+                            </span>
+                            <span class="article-chip meta" id="articleStatusChip">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Đang hiển thị
+                            </span>
+                        </div>
+
+                        <h1 class="article-title" id="articleTitle">Tiêu đề bài viết</h1>
+
+                        <div class="article-meta-line">
+                            <span class="article-meta-item">
+                                <i class="fa-regular fa-calendar"></i>
+                                <span id="articleDate">--/--/----</span>
+                            </span>
+                            <span class="article-meta-item">
+                                <i class="fa-regular fa-user"></i>
+                                <span id="articleAuthor">ToamViet</span>
+                            </span>
+                            <span class="article-meta-item">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <span id="articleTopic">Tin tức thị trường</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-body-wrap">
+                    <div class="article-summary">
+                        <div class="article-summary-title">Tóm tắt nhanh</div>
+                        <div class="article-summary-text" id="articleSummary">
+                            Nội dung tóm tắt bài viết đang được cập nhật.
+                        </div>
+                    </div>
+
+                    <div class="article-content" id="articleContent"></div>
+
+                    <div class="article-bottom-actions">
+                        <a href="../pages/tin-tuc.html" class="article-action-btn">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Quay lại tin tức
+                        </a>
+                        <a href="../pages/nha-dat-ban.html" class="article-action-btn">
+                            <i class="fa-solid fa-house"></i>
+                            Xem nhà đất bán
+                        </a>
+                        <a href="../pages/du-an.html" class="article-action-btn">
+                            <i class="fa-solid fa-building"></i>
+                            Xem dự án
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <aside class="side-stack">
+                <div class="side-card">
+                    <h3 class="side-title">Bài viết liên quan</h3>
+                    <div class="side-list" id="relatedNewsList"></div>
+                </div>
+
+                <div class="side-card">
+                    <h3 class="side-title">Chủ đề nhanh</h3>
+                    <div class="topic-list" id="topicChipList"></div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="seo-block-shell">
+            <div id="seoContent"></div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/seo-content.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        const FALLBACK_IMAGE = "../assets/images/fallback-property.jpg";
+
+        const fallbackNews = [
+            {
+                id: "news-1",
+                slug: "xu-huong-thi-truong-bat-dong-san-2026",
+                title: "Xu hướng thị trường bất động sản năm 2026 có gì đáng chú ý?",
+                category: "Tin tức thị trường",
+                status: "Đang hiển thị",
+                author: "Ban biên tập ToamViet",
+                image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80",
+                summary: "Thị trường bất động sản đang bước vào giai đoạn chọn lọc rõ hơn giữa nhóm sản phẩm có nhu cầu ở thực, sản phẩm đầu tư dòng tiền và khu vực có lực đẩy hạ tầng mạnh.",
+                content: [
+                    "Thị trường bất động sản năm 2026 đang cho thấy sự phân hóa rõ nét hơn giữa từng nhóm sản phẩm. Những khu vực có hạ tầng kết nối tốt, dân cư thực tăng đều và mức giá còn phù hợp tiếp tục giữ được thanh khoản tốt hơn mặt bằng chung.",
+                    "Trong khi đó, nhóm sản phẩm phục vụ nhu cầu ở thực như căn hộ vừa túi tiền, nhà phố khu dân cư hoàn chỉnh và bất động sản gần trung tâm hành chính vẫn nhận được sự quan tâm ổn định. Đây là nhóm có sức chống chịu tốt hơn trong những giai đoạn thị trường điều chỉnh.",
+                    "Với nhà đầu tư, bài toán hiện nay không chỉ nằm ở giá mua mà còn ở khả năng khai thác, tốc độ lấp đầy dân cư, pháp lý và mức độ phát triển hạ tầng quanh khu vực. Những yếu tố này đang trở thành thước đo quan trọng để đánh giá triển vọng tăng giá trung hạn.",
+                    "Về dài hạn, thị trường vẫn còn dư địa phát triển tốt tại các địa phương đang mở rộng đô thị, cải thiện giao thông liên vùng và thu hút thêm doanh nghiệp, khu công nghiệp hoặc cụm dịch vụ lớn."
+                ],
+                createdAt: "2026-03-22T09:30:00",
+                topic: "Tin tức thị trường"
+            },
+            {
+                id: "news-2",
+                slug: "5-luu-y-khi-chon-doanh-nghiep-hoac-nha-thau",
+                title: "5 lưu ý quan trọng khi chọn doanh nghiệp hoặc nhà thầu",
+                category: "Kinh nghiệm hữu ích",
+                status: "Đang hiển thị",
+                author: "ToamViet Team",
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
+                summary: "Trước khi làm việc với doanh nghiệp hoặc nhà thầu, người dùng nên đánh giá kỹ năng lực thật, hồ sơ pháp lý, hợp đồng, tiến độ và cách xử lý phát sinh trong quá trình triển khai.",
+                content: [
+                    "Khi lựa chọn doanh nghiệp hoặc nhà thầu, điều đầu tiên cần kiểm tra là hồ sơ hoạt động, thông tin pháp lý và năng lực đã được thể hiện qua những dự án thực tế trước đó. Đây là bước giúp người dùng giảm rủi ro ngay từ đầu.",
+                    "Bên cạnh đó, việc đọc kỹ hợp đồng, điều khoản thanh toán, tiến độ thi công, phạm vi công việc và trách nhiệm bảo hành là rất quan trọng. Một đơn vị làm việc rõ ràng thường thể hiện sự minh bạch ngay từ giai đoạn báo giá và tư vấn ban đầu.",
+                    "Người dùng cũng nên yêu cầu đối chiếu các hình ảnh công trình, thông tin liên hệ tham chiếu hoặc hồ sơ hoàn thành của những dự án tương tự để đánh giá mức độ phù hợp với nhu cầu thực tế của mình.",
+                    "Cuối cùng, hãy ưu tiên các đơn vị có khả năng phản hồi nhanh, giải thích rõ vấn đề chuyên môn và xử lý phát sinh hợp lý. Đây thường là dấu hiệu cho thấy kinh nghiệm vận hành thực tế tốt hơn."
+                ],
+                createdAt: "2026-03-20T15:20:00",
+                topic: "Kinh nghiệm hữu ích"
+            },
+            {
+                id: "news-3",
+                slug: "cach-kiem-tra-phap-ly-va-nang-luc-don-vi",
+                title: "Cách kiểm tra pháp lý và năng lực đơn vị trước khi làm việc",
+                category: "Tư vấn người dùng",
+                status: "Đang hiển thị",
+                author: "ToamViet Support",
+                image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1600&q=80",
+                summary: "Pháp lý rõ ràng và năng lực thực tế là hai tiêu chí quan trọng để người dùng yên tâm hơn trước khi hợp tác trong các giao dịch hoặc dịch vụ liên quan đến bất động sản.",
+                content: [
+                    "Một trong những cách kiểm tra nhanh pháp lý của đơn vị là xem kỹ tên pháp nhân, mã số doanh nghiệp, địa chỉ hoạt động, thông tin người đại diện và độ nhất quán giữa các kênh mà đơn vị đang công bố.",
+                    "Người dùng cũng nên xem đơn vị đó đã từng triển khai những công việc gì, ở khu vực nào, có chuyên sâu vào một phân khúc cụ thể hay không. Việc chuyên sâu thường giúp hiệu quả tư vấn và xử lý công việc thực tế tốt hơn.",
+                    "Trong quá trình trao đổi, nếu đơn vị cung cấp được hồ sơ rõ ràng, giải thích chi tiết, chủ động nêu phương án và minh bạch các giới hạn công việc thì đây thường là tín hiệu tích cực về năng lực làm việc.",
+                    "Ngược lại, nếu thông tin thiếu nhất quán, báo giá mơ hồ hoặc không làm rõ trách nhiệm của các bên, người dùng nên cân nhắc kỹ trước khi quyết định hợp tác."
+                ],
+                createdAt: "2026-03-18T11:10:00",
+                topic: "Tư vấn người dùng"
+            },
+            {
+                id: "news-4",
+                slug: "nhung-khu-vuc-nao-dang-duoc-quan-tam-nhieu",
+                title: "Những khu vực nào đang được quan tâm nhiều trên thị trường hiện nay?",
+                category: "Tin tức thị trường",
+                status: "Đang hiển thị",
+                author: "Ban phân tích ToamViet",
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80",
+                summary: "Các khu vực có hạ tầng mới, tốc độ đô thị hóa tốt và nguồn cung còn phù hợp đang thu hút sự chú ý của cả người mua ở thực lẫn nhà đầu tư trung hạn.",
+                content: [
+                    "Tâm lý người mua hiện nay có xu hướng dịch chuyển về các khu vực có khả năng kết nối thực tế tốt, thời gian di chuyển hợp lý và dân cư tăng đều.",
+                    "Những nơi có trục giao thông lớn, dự án công cộng, khu công nghiệp hoặc trung tâm hành chính mới thường tạo ra kỳ vọng lớn hơn về nhu cầu nhà ở và dịch vụ đi kèm.",
+                    "Tuy nhiên, việc được quan tâm nhiều không đồng nghĩa khu vực nào cũng phù hợp để đầu tư ngay. Nhà đầu tư vẫn cần nhìn thêm yếu tố pháp lý, thanh khoản, mặt bằng giá hiện tại và biên độ tăng trưởng tương lai."
+                ],
+                createdAt: "2026-03-17T08:45:00",
+                topic: "Tin tức thị trường"
+            }
+        ];
+
+        let currentArticle = null;
+        let allArticles = [];
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function slugifyText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+        }
+
+        function getQueryParam(key) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(key) || "";
+        }
+
+        function formatDate(value) {
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return "Đang cập nhật";
+            return date.toLocaleDateString("vi-VN");
+        }
+
+        function normalizeArticle(item, index = 0) {
+            const title = item.title || item.name || `Bài viết ${index + 1}`;
+            const slug = String(item.slug || slugifyText(title)).trim();
+
+            return {
+                ...item,
+                id: item.id || slug || `news-${index + 1}`,
+                slug,
+                title,
+                category: item.category || "Tin tức",
+                status: item.status || "Đang hiển thị",
+                author: item.author || item.contactName || "ToamViet",
+                image: item.image || item.thumbnail || item.coverImage || FALLBACK_IMAGE,
+                summary: item.summary || item.shortDescription || "Nội dung tóm tắt đang được cập nhật.",
+                content: Array.isArray(item.content) ? item.content : (item.content ? String(item.content).split(/\n+/).filter(Boolean) : []),
+                createdAt: item.createdAt || new Date().toISOString(),
+                topic: item.topic || item.category || "Tin tức"
+            };
+        }
+
+        function getNewsFromStorage() {
+            const possibleKeys = [
+                "newsPosts",
+                "news",
+                "toamviet_news",
+                "toamvietNews",
+                "posts"
+            ];
+
+            for (const key of possibleKeys) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    if (!raw) continue;
+                    const parsed = JSON.parse(raw);
+
+                    if (Array.isArray(parsed) && parsed.length) return parsed;
+                    if (parsed && Array.isArray(parsed.items) && parsed.items.length) return parsed.items;
+                } catch (error) {}
+            }
+
+            return [];
+        }
+
+        function getNewsFromPostStorage() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getNewsPosts === "function") {
+                    return window.postStorage.getNewsPosts();
+                }
+            } catch (error) {
+                console.warn("Không đọc được dữ liệu tin tức từ postStorage:", error);
+            }
+            return null;
+        }
+
+        async function getArticles() {
+            let items = getNewsFromPostStorage();
+
+            if (items instanceof Promise) {
+                items = await items;
+            }
+
+            if (!Array.isArray(items) || !items.length) {
+                items = getNewsFromStorage();
+            }
+
+            if (!Array.isArray(items) || !items.length) {
+                items = fallbackNews;
+            }
+
+            return items.map(normalizeArticle);
+        }
+
+        function findArticle(articles, idParam, slugParam) {
+            const id = String(idParam || "").trim();
+            const slug = String(slugParam || "").trim();
+
+            if (slug) {
+                const bySlug = articles.find(item => normalizeText(item.slug) === normalizeText(slug));
+                if (bySlug) return bySlug;
+            }
+
+            if (id) {
+                const byId = articles.find(item => String(item.id) === id);
+                if (byId) return byId;
+
+                const bySlugifiedId = articles.find(item => slugifyText(item.title) === slugifyText(id));
+                if (bySlugifiedId) return bySlugifiedId;
+            }
+
+            return articles[0] || null;
+        }
+
+        function renderHero(article) {
+            document.getElementById("articleHeroImage").src = article.image || FALLBACK_IMAGE;
+            document.getElementById("articleHeroImage").alt = article.title;
+            document.getElementById("articleTitle").textContent = article.title;
+            document.getElementById("articleDate").textContent = formatDate(article.createdAt);
+            document.getElementById("articleAuthor").textContent = article.author;
+            document.getElementById("articleTopic").textContent = article.topic;
+            document.getElementById("breadcrumbTitle").textContent = article.title;
+            document.getElementById("articleCategoryChip").innerHTML = `<i class="fa-solid fa-newspaper"></i>${escapeHtml(article.category)}`;
+            document.getElementById("articleStatusChip").innerHTML = `<i class="fa-solid fa-circle-check"></i>${escapeHtml(article.status)}`;
+            document.getElementById("articleSummary").textContent = article.summary;
+        }
+
+        function renderArticleContent(article) {
+            const contentEl = document.getElementById("articleContent");
+            const paragraphs = Array.isArray(article.content) && article.content.length
+                ? article.content
+                : [
+                    article.summary,
+                    "Nội dung bài viết đang được biên tập và cập nhật thêm để người dùng có thể theo dõi thông tin rõ ràng, dễ đọc và có giá trị tham khảo hơn trong quá trình tìm hiểu thị trường.",
+                    "Trong giai đoạn tiếp theo, bài viết có thể được bổ sung thêm số liệu, nhận định xu hướng, ví dụ thực tế và liên kết đến các trang liên quan để tăng chiều sâu nội dung."
+                ];
+
+            let html = "";
+            paragraphs.forEach((paragraph, index) => {
+                if (index === 1 && article.image) {
+                    html += `
+                        <div class="article-inline-image">
+                            <img src="${escapeHtml(article.image)}" alt="${escapeHtml(article.title)}" onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'">
+                            <div class="article-inline-caption">Hình minh họa cho nội dung: ${escapeHtml(article.title)}</div>
+                        </div>
+                    `;
+                }
+                html += `<p>${escapeHtml(paragraph)}</p>`;
+            });
+
+            contentEl.innerHTML = html;
+        }
+
+        function renderRelatedNews(article, articles) {
+            const related = articles
+                .filter(item => item.id !== article.id)
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .slice(0, 5);
+
+            const list = document.getElementById("relatedNewsList");
+
+            if (!related.length) {
+                list.innerHTML = `<div class="empty-box">Chưa có bài viết liên quan để hiển thị thêm.</div>`;
+                return;
+            }
+
+            list.innerHTML = related.map(item => `
+                <a href="../pages/chi-tiet-tin-tuc.html?slug=${encodeURIComponent(item.slug || item.id)}" class="side-news-item">
+                    <div class="side-news-thumb">
+                        <img
+                            src="${escapeHtml(item.image || FALLBACK_IMAGE)}"
+                            alt="${escapeHtml(item.title)}"
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='../assets/images/fallback-property.jpg'"
+                        />
+                    </div>
+                    <div class="min-w-0">
+                        <h4 class="side-news-title">${escapeHtml(item.title)}</h4>
+                        <div class="side-news-meta">${escapeHtml(item.category)} • ${escapeHtml(formatDate(item.createdAt))}</div>
+                    </div>
+                </a>
+            `).join("");
+        }
+
+        function renderTopicChips(articles) {
+            const topics = Array.from(new Set(articles.map(item => item.topic || item.category).filter(Boolean))).slice(0, 8);
+            const list = document.getElementById("topicChipList");
+
+            if (!topics.length) {
+                list.innerHTML = `<div class="empty-box">Chưa có chủ đề để hiển thị.</div>`;
+                return;
+            }
+
+            list.innerHTML = topics.map(topic => `
+                <a href="../pages/tin-tuc.html" class="topic-chip">
+                    <i class="fa-solid fa-tag"></i>
+                    ${escapeHtml(topic)}
+                </a>
+            `).join("");
+        }
+
+        function renderSeoFallback() {
+            const seoContainer = document.getElementById("seoContent");
+            if (!seoContainer) return;
+
+            const articleTitle = currentArticle ? currentArticle.title : "tin tức bất động sản";
+            const articleCategory = currentArticle ? currentArticle.category : "tin tức";
+
+            seoContainer.innerHTML = `
+                <div class="seo-wrapper">
+                    <div class="seo-text collapsed" id="seoContent-text">
+                        <p>Bài viết ${escapeHtml(articleTitle)} trên ToamViet được xây dựng nhằm giúp người dùng theo dõi thông tin ${escapeHtml(articleCategory.toLowerCase())} theo cách rõ ràng, dễ đọc và có tính tham khảo cao hơn. Đây là nhóm nội dung quan trọng hỗ trợ website tăng chiều sâu thông tin và cải thiện trải nghiệm người dùng.</p>
+                        <p>Với các bài viết thuộc nhóm ${escapeHtml(articleCategory)}, việc đầu tư nội dung chi tiết, có cấu trúc tốt và liên kết với các trang liên quan như dự án, tin đăng, doanh nghiệp hoặc môi giới sẽ giúp tăng giá trị SEO tổng thể cho hệ thống. Đây cũng là cách để mở rộng độ phủ cho các từ khóa dài liên quan đến thị trường, kinh nghiệm và tư vấn người dùng.</p>
+                        <p>Trong tương lai, mỗi bài viết có thể tiếp tục được bổ sung thêm số liệu, ví dụ thực tế, hình ảnh minh họa và liên kết nội bộ để tăng chiều sâu nội dung cũng như cải thiện thời gian ở lại trang.</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="seo-toggle-btn"
+                        id="seoContent-toggle"
+                        aria-expanded="false"
+                    >
+                        <span class="seo-toggle-label">Xem thêm</span>
+                        <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+                    </button>
+                </div>
+            `;
+
+            const toggleBtn = document.getElementById("seoContent-toggle");
+            const seoText = document.getElementById("seoContent-text");
+            const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+            if (!toggleBtn || !seoText || !toggleLabel) return;
+
+            toggleBtn.addEventListener("click", () => {
+                const isCollapsed = seoText.classList.contains("collapsed");
+
+                if (isCollapsed) {
+                    seoText.classList.remove("collapsed");
+                    toggleBtn.classList.add("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "true");
+                    toggleLabel.textContent = "Thu gọn";
+                } else {
+                    seoText.classList.add("collapsed");
+                    toggleBtn.classList.remove("expanded");
+                    toggleBtn.setAttribute("aria-expanded", "false");
+                    toggleLabel.textContent = "Xem thêm";
+                }
+            });
+        }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("site-header", "../components/header-inner.html");
+                    await loadComponent("site-mobile-menu", "../components/mobile-menu-inner.html");
+                    await loadComponent("site-footer", "../components/footer-inner.html");
+
+                    if (typeof setupFixedHeaderSpacing === "function") {
+                        setupFixedHeaderSpacing();
+                    }
+                    if (typeof watchHeaderSpacing === "function") {
+                        watchHeaderSpacing();
+                    }
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        async function initPage() {
+            await initSharedComponents();
+
+            allArticles = await getArticles();
+
+            const newsId = getQueryParam("id");
+            const newsSlug = getQueryParam("slug");
+            const selectedArticle = findArticle(allArticles, newsId, newsSlug);
+
+            if (!selectedArticle) {
+                document.title = "Chi tiết tin tức | ToamViet.com.vn";
+                document.querySelector(".page-shell").innerHTML = `
+                    <div class="empty-box">
+                        Không tìm thấy dữ liệu bài viết để hiển thị.
+                    </div>
+                `;
+                return;
+            }
+
+            currentArticle = selectedArticle;
+            document.title = `${selectedArticle.title} | ToamViet.com.vn`;
+
+            renderHero(selectedArticle);
+            renderArticleContent(selectedArticle);
+            renderRelatedNews(selectedArticle, allArticles);
+            renderTopicChips(allArticles);
+
+            if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
+                const keyBySlug = `news-${selectedArticle.slug || ""}`;
+                const externalContent = getSeoContentByKey(keyBySlug) || getSeoContentByKey("news");
+                if (externalContent) {
+                    renderSeoContent("seoContent", getSeoContentByKey(keyBySlug) ? keyBySlug : "news");
+                } else {
+                    renderSeoFallback();
+                }
+            } else {
+                renderSeoFallback();
+            }
+        }
+
+        window.addEventListener("load", function () {
+            initPage();
+        });
+    </script>
+</body>
+</html>
