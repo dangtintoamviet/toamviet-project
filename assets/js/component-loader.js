@@ -56,7 +56,6 @@ function ensureFavicon(basePath) {
     favicon.setAttribute("type", "image/png");
     document.head.appendChild(favicon);
   }
-
   favicon.setAttribute("href", faviconHref);
 
   let shortcutIcon = document.querySelector('link[rel="shortcut icon"]');
@@ -66,7 +65,6 @@ function ensureFavicon(basePath) {
     shortcutIcon.setAttribute("type", "image/png");
     document.head.appendChild(shortcutIcon);
   }
-
   shortcutIcon.setAttribute("href", faviconHref);
 
   let appleTouchIcon = document.querySelector('link[rel="apple-touch-icon"]');
@@ -75,80 +73,150 @@ function ensureFavicon(basePath) {
     appleTouchIcon.setAttribute("rel", "apple-touch-icon");
     document.head.appendChild(appleTouchIcon);
   }
-
   appleTouchIcon.setAttribute("href", faviconHref);
 }
 
+function getHeaderHost() {
+  return (
+    document.getElementById("site-header") ||
+    document.getElementById("siteHeader")
+  );
+}
+
+function getFooterHost() {
+  return (
+    document.getElementById("site-footer") ||
+    document.getElementById("siteFooter")
+  );
+}
+
+function getMobileMenuHost() {
+  return (
+    document.getElementById("site-mobile-menu") ||
+    document.getElementById("siteMobileMenu")
+  );
+}
+
+function getInnerHeaderElement() {
+  const headerHost = getHeaderHost();
+  if (!headerHost) return null;
+
+  return (
+    headerHost.querySelector(".site-header") ||
+    headerHost.querySelector("header") ||
+    headerHost.firstElementChild
+  );
+}
+
 function ensureHeaderSpacer() {
-  const siteHeader = document.getElementById("site-header");
-  if (!siteHeader) return null;
+  const headerHost = getHeaderHost();
+  if (!headerHost) return null;
 
   let spacer = document.getElementById("header-spacer");
 
   if (!spacer) {
     spacer = document.createElement("div");
     spacer.id = "header-spacer";
-    siteHeader.insertAdjacentElement("afterend", spacer);
+    headerHost.insertAdjacentElement("afterend", spacer);
   }
 
   return spacer;
 }
 
 function setupFixedHeaderSpacing() {
-  const siteHeader = document.getElementById("site-header");
-  if (!siteHeader) return;
+  const headerHost = getHeaderHost();
+  if (!headerHost) return;
 
-  const innerHeader = siteHeader.querySelector("header");
+  const innerHeader = getInnerHeaderElement();
   const spacer = ensureHeaderSpacer();
   if (!spacer) return;
 
   const context = getPageContext();
 
-  siteHeader.style.position = "fixed";
-  siteHeader.style.top = "0";
-  siteHeader.style.left = "0";
-  siteHeader.style.right = "0";
-  siteHeader.style.zIndex = "1000";
-  siteHeader.style.background = "#ffffff";
-  siteHeader.style.boxShadow = "0 1px 0 rgba(0,0,0,0.04)";
-  siteHeader.style.margin = "0";
+  headerHost.style.position = "fixed";
+  headerHost.style.top = "0";
+  headerHost.style.left = "0";
+  headerHost.style.right = "0";
+  headerHost.style.width = "100%";
+  headerHost.style.zIndex = "1000";
+  headerHost.style.background = "#ffffff";
+  headerHost.style.boxShadow = "0 1px 0 rgba(0,0,0,0.04)";
+  headerHost.style.margin = "0";
 
   if (innerHeader) {
     innerHeader.style.position = "static";
     innerHeader.style.top = "auto";
     innerHeader.style.left = "auto";
     innerHeader.style.right = "auto";
-    innerHeader.style.zIndex = "auto";
     innerHeader.style.margin = "0";
+    innerHeader.style.zIndex = "auto";
   }
 
-  const headerHeight = Math.ceil(siteHeader.offsetHeight || 0);
+  const headerHeight = Math.ceil(headerHost.getBoundingClientRect().height || headerHost.offsetHeight || 0);
 
+  document.documentElement.style.setProperty("--site-header-height", `${headerHeight}px`);
+
+  spacer.style.display = "block";
   spacer.style.width = "100%";
   spacer.style.margin = "0";
   spacer.style.padding = "0";
+  spacer.style.pointerEvents = "none";
+  spacer.style.flex = "0 0 auto";
 
   if (context.isHomePage) {
     spacer.style.height = `${headerHeight}px`;
+    document.body.classList.remove("has-fixed-header-gap");
   } else {
-    const extraGap = window.innerWidth <= 768 ? 14 : 20;
-    spacer.style.height = `${headerHeight + extraGap}px`;
+    spacer.style.height = `${headerHeight}px`;
+    document.body.classList.add("has-fixed-header-gap");
   }
 }
 
 function watchHeaderSpacing() {
+  if (window.__toamvietHeaderSpacingBound) return;
+  window.__toamvietHeaderSpacingBound = true;
+
   let tries = 0;
 
   const timer = setInterval(() => {
     tries += 1;
     setupFixedHeaderSpacing();
 
-    const siteHeader = document.getElementById("site-header");
-    if ((siteHeader && siteHeader.offsetHeight > 0) || tries > 30) {
+    const headerHost = getHeaderHost();
+    if ((headerHost && headerHost.offsetHeight > 0) || tries > 40) {
       clearInterval(timer);
     }
   }, 120);
+
+  window.addEventListener("resize", setupFixedHeaderSpacing);
+  window.addEventListener("orientationchange", setupFixedHeaderSpacing);
+  window.addEventListener("load", setupFixedHeaderSpacing);
+
+  const headerHost = getHeaderHost();
+  if (!headerHost) return;
+
+  const innerHeader = getInnerHeaderElement();
+
+  if ("ResizeObserver" in window) {
+    if (window.__toamvietHeaderResizeObserver) {
+      window.__toamvietHeaderResizeObserver.disconnect();
+    }
+
+    const observer = new ResizeObserver(() => {
+      setupFixedHeaderSpacing();
+    });
+
+    observer.observe(headerHost);
+    if (innerHeader && innerHeader !== headerHost) {
+      observer.observe(innerHeader);
+    }
+
+    window.__toamvietHeaderResizeObserver = observer;
+  }
 }
+
+window.setupFixedHeaderSpacing = setupFixedHeaderSpacing;
+window.watchHeaderSpacing = watchHeaderSpacing;
 
 document.addEventListener("DOMContentLoaded", async function () {
   const context = getPageContext();
@@ -156,28 +224,40 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   ensureFavicon(context.basePath);
 
-  if (document.getElementById("site-header")) {
+  const headerHost =
+    document.getElementById("site-header") ||
+    document.getElementById("siteHeader");
+
+  const footerHost =
+    document.getElementById("site-footer") ||
+    document.getElementById("siteFooter");
+
+  const mobileMenuHost =
+    document.getElementById("site-mobile-menu") ||
+    document.getElementById("siteMobileMenu");
+
+  if (headerHost) {
     tasks.push(
       loadComponent(
-        "site-header",
+        headerHost.id,
         `${context.basePath}/components/${context.headerFile}`
       )
     );
   }
 
-  if (document.getElementById("site-footer")) {
+  if (footerHost) {
     tasks.push(
       loadComponent(
-        "site-footer",
+        footerHost.id,
         `${context.basePath}/components/${context.footerFile}`
       )
     );
   }
 
-  if (document.getElementById("site-mobile-menu")) {
+  if (mobileMenuHost) {
     tasks.push(
       loadComponent(
-        "site-mobile-menu",
+        mobileMenuHost.id,
         `${context.basePath}/components/${context.mobileMenuFile}`
       )
     );
@@ -185,9 +265,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   await Promise.all(tasks);
 
+  setupFixedHeaderSpacing();
   watchHeaderSpacing();
-  window.addEventListener("resize", setupFixedHeaderSpacing);
 
-  setTimeout(setupFixedHeaderSpacing, 300);
-  setTimeout(setupFixedHeaderSpacing, 800);
+  setTimeout(setupFixedHeaderSpacing, 200);
+  setTimeout(setupFixedHeaderSpacing, 500);
+  setTimeout(setupFixedHeaderSpacing, 1000);
 });
