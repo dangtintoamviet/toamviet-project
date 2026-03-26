@@ -152,7 +152,9 @@ function setupFixedHeaderSpacing() {
     innerHeader.style.zIndex = "auto";
   }
 
-  const headerHeight = Math.ceil(headerHost.getBoundingClientRect().height || headerHost.offsetHeight || 0);
+  const headerHeight = Math.ceil(
+    headerHost.getBoundingClientRect().height || headerHost.offsetHeight || 0
+  );
 
   document.documentElement.style.setProperty("--site-header-height", `${headerHeight}px`);
 
@@ -164,10 +166,10 @@ function setupFixedHeaderSpacing() {
   spacer.style.flex = "0 0 auto";
 
   if (context.isHomePage) {
-    spacer.style.height = `${headerHeight}px`;
+    spacer.style.height = "0px";
     document.body.classList.remove("has-fixed-header-gap");
   } else {
-    spacer.style.height = `${headerHeight}px`;
+    spacer.style.height = "0px";
     document.body.classList.add("has-fixed-header-gap");
   }
 }
