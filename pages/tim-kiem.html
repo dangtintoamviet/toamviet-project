@@ -28,13 +28,9 @@
             --danger: #dc2626;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
             margin: 0;
@@ -268,16 +264,16 @@
         .result-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
         .result-card {
             background: #fff;
-            border: 1px solid #e8edf3;
-            border-radius: 20px;
+            border: 1px solid #e7edf3;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
-            transition: 0.28s ease;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+            transition: 0.25s ease;
         }
 
         .result-card:hover {
@@ -286,20 +282,25 @@
             transform: translateY(-1px);
         }
 
-        .property-card {
+        .property-card,
+        .project-card,
+        .news-card {
             display: grid;
-            grid-template-columns: 290px minmax(0, 1fr);
-            min-height: 100%;
+            grid-template-columns: 240px minmax(0, 1fr);
+            align-items: stretch;
         }
 
-        .property-thumb {
+        .property-thumb,
+        .project-thumb,
+        .news-thumb {
             position: relative;
             background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
-            min-height: 100%;
             overflow: hidden;
         }
 
-        .property-thumb img {
+        .property-thumb img,
+        .project-thumb img,
+        .news-thumb img {
             width: 100%;
             height: 100%;
             min-height: 220px;
@@ -311,25 +312,26 @@
         .service-badge,
         .image-count-badge {
             position: absolute;
-            left: 12px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 7px 12px;
             border-radius: 999px;
             font-size: 10px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            border: 1px solid rgba(255,255,255,0.6);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
         }
 
-        .vip-badge {
+        .vip-badge,
+        .service-badge {
             top: 12px;
+            left: 12px;
+            padding: 6px 10px;
             color: #fff;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.55);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
         }
 
         .vip-badge.kim-cuong {
@@ -350,27 +352,28 @@
         }
 
         .service-badge {
-            top: 12px;
-            color: #fff;
             background: linear-gradient(135deg, rgba(0,139,139,0.96), rgba(15,118,110,0.96));
         }
 
         .image-count-badge {
             left: 12px;
             bottom: 12px;
+            padding: 6px 10px;
             color: #fff;
-            background: rgba(15,23,42,0.45);
-            font-size: 11px;
+            background: rgba(15,23,42,0.52);
+            border: 1px solid rgba(255,255,255,0.16);
             text-transform: none;
             letter-spacing: 0;
         }
 
-        .property-body {
+        .property-body,
+        .project-body,
+        .news-body {
             padding: 16px 18px;
             display: flex;
             flex-direction: column;
+            gap: 12px;
             justify-content: space-between;
-            gap: 14px;
         }
 
         .card-chip-row {
@@ -383,8 +386,8 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            min-height: 32px;
-            padding: 6px 10px;
+            min-height: 28px;
+            padding: 5px 10px;
             border-radius: 999px;
             font-size: 10px;
             font-weight: 800;
@@ -394,14 +397,14 @@
 
         .card-chip.primary {
             background: #ecfeff;
-            border: 1px solid #99f6e4;
+            border: 1px solid #c7f9f2;
             color: #0f766e;
         }
 
         .card-chip.secondary {
-            background: #fff7ed;
-            border: 1px solid #fed7aa;
-            color: #ea580c;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: #475569;
         }
 
         .card-title {
@@ -425,10 +428,8 @@
         .price-line {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px 14px;
             align-items: center;
-            font-size: 15px;
-            font-weight: 700;
         }
 
         .price-main {
@@ -439,13 +440,13 @@
 
         .price-sub {
             color: var(--vip-color);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 800;
         }
 
         .price-note {
-            color: #475569;
-            font-size: 14px;
+            color: #64748b;
+            font-size: 13px;
             font-weight: 700;
         }
 
@@ -453,28 +454,37 @@
             font-size: 13px;
             color: #64748b;
             line-height: 1.7;
+            margin: 0;
         }
 
         .card-desc {
-            font-size: 14px;
+            font-size: 13px;
             color: #64748b;
-            line-height: 1.8;
+            line-height: 1.75;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            margin: 0;
         }
 
-        .meta-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 8px 14px;
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 30px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid #e7edf3;
+            background: #f8fafc;
             font-size: 12px;
-            color: #64748b;
-        }
-
-        .meta-grid strong {
-            color: #334155;
+            color: #475569;
         }
 
         .card-footer {
@@ -482,7 +492,7 @@
             justify-content: space-between;
             align-items: center;
             gap: 12px;
-            padding-top: 14px;
+            padding-top: 12px;
             border-top: 1px solid #edf2f7;
             flex-wrap: wrap;
         }
@@ -497,8 +507,8 @@
         }
 
         .poster-avatar {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 999px;
             background: linear-gradient(135deg, var(--vip-color), var(--vip-dark));
             color: #fff;
@@ -538,16 +548,16 @@
         .detail-btn,
         .call-btn,
         .favorite-btn {
-            min-height: 40px;
+            min-height: 38px;
             border-radius: 12px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
-            transition: all 0.25s ease;
+            transition: all 0.22s ease;
             cursor: pointer;
         }
 
@@ -564,15 +574,18 @@
             background: #f8ffff;
         }
 
+        .call-btn,
+        .favorite-btn {
+            width: 38px;
+        }
+
         .call-btn {
-            width: 40px;
             border: 1px solid #fed7aa;
             color: #ea580c;
             background: #fff7ed;
         }
 
         .favorite-btn {
-            width: 40px;
             border: 1px solid #dbe4ee;
             color: #64748b;
             background: #fff;
@@ -584,44 +597,12 @@
             background: #fff5f5;
         }
 
-        .project-card,
-        .news-card {
-            display: grid;
-            grid-template-columns: 270px minmax(0, 1fr);
-            align-items: stretch;
-        }
-
-        .project-thumb,
-        .news-thumb {
-            position: relative;
-            background: linear-gradient(180deg, #eef2f7 0%, #e5e7eb 100%);
-            overflow: hidden;
-        }
-
-        .project-thumb img,
-        .news-thumb img {
-            width: 100%;
-            height: 100%;
-            min-height: 220px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .project-body,
-        .news-body {
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 14px;
-        }
-
         .project-status {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 12px;
-            border-radius: 12px;
+            padding: 7px 11px;
+            border-radius: 999px;
             font-size: 11px;
             font-weight: 800;
             width: fit-content;
@@ -635,39 +616,6 @@
         .project-status.soon {
             background: #fff7ed;
             color: #ea580c;
-        }
-
-        .project-meta-grid,
-        .news-meta-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px 14px;
-        }
-
-        .project-meta-item,
-        .news-meta-item {
-            background: #f8fafc;
-            border: 1px solid #edf2f7;
-            border-radius: 14px;
-            padding: 12px;
-        }
-
-        .project-meta-item .label,
-        .news-meta-item .label {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            margin-bottom: 6px;
-        }
-
-        .project-meta-item .value,
-        .news-meta-item .value {
-            font-size: 13px;
-            font-weight: 800;
-            color: #0f172a;
-            line-height: 1.55;
         }
 
         .search-side-card {
@@ -761,7 +709,7 @@
             .property-thumb img,
             .project-thumb img,
             .news-thumb img {
-                min-height: 230px;
+                min-height: 220px;
             }
         }
 
@@ -810,12 +758,6 @@
             .tab-btn {
                 white-space: nowrap;
                 flex: 0 0 auto;
-            }
-
-            .meta-grid,
-            .project-meta-grid,
-            .news-meta-grid {
-                grid-template-columns: 1fr;
             }
 
             .card-footer {
@@ -1610,8 +1552,8 @@
                 chip1: post.propertyCategoryName || post.propertyType || "Bất động sản",
                 chip2: type === "sale" ? "Nhà đất bán" : "Nhà đất cho thuê",
                 description: post.description || "Đang cập nhật mô tả chi tiết.",
-                legal: post.propertyLegal || "Đang cập nhật",
-                direction: post.propertyDirection || "Đang cập nhật",
+                legal: post.propertyLegal || "Chưa rõ pháp lý",
+                direction: post.propertyDirection || "Chưa rõ hướng",
                 beds: post.propertyBeds || "0",
                 imageCount: Array.isArray(post.images) ? post.images.length : 1,
                 vipLevel,
@@ -1684,6 +1626,7 @@
         function renderPropertyCard(item) {
             const avatarText = escapeHtml(getAvatarText(item.poster));
             const phoneLink = String(item.phone || "").replace(/[^\d+]/g, "");
+
             return `
                 <article class="result-card property-card">
                     <div class="property-thumb">
@@ -1693,12 +1636,12 @@
 
                         ${item.vipLevel ? `
                             <span class="vip-badge ${escapeHtml(item.vipLevel)}">
-                                <i class="fa-solid fa-crown"></i> ${escapeHtml(item.vipLabel)}
+                                <i class="fa-solid fa-crown"></i>${escapeHtml(item.vipLabel)}
                             </span>
                         ` : ""}
 
                         <span class="image-count-badge">
-                            <i class="fa-regular fa-image"></i> ${item.imageCount}
+                            <i class="fa-regular fa-image"></i>${item.imageCount}
                         </span>
                     </div>
 
@@ -1720,17 +1663,15 @@
                             </div>
 
                             <p class="card-location mt-3">
-                                <i class="fa-solid fa-location-dot mr-1"></i>
-                                ${escapeHtml(item.location)}
+                                <i class="fa-solid fa-location-dot mr-1"></i>${escapeHtml(item.location)}
                             </p>
 
                             <p class="card-desc mt-3">${escapeHtml(item.description)}</p>
 
-                            <div class="meta-grid mt-4">
-                                <div><strong>Pháp lý:</strong> ${escapeHtml(item.legal)}</div>
-                                <div><strong>Hướng:</strong> ${escapeHtml(item.direction)}</div>
-                                <div><strong>Phòng ngủ:</strong> ${escapeHtml(item.beds)}</div>
-                                <div><strong>Nhóm:</strong> ${escapeHtml(item.chip2)}</div>
+                            <div class="meta-row mt-4">
+                                <span class="meta-pill"><i class="fa-solid fa-scale-balanced"></i>${escapeHtml(item.legal)}</span>
+                                <span class="meta-pill"><i class="fa-solid fa-compass"></i>${escapeHtml(item.direction)}</span>
+                                <span class="meta-pill"><i class="fa-solid fa-bed"></i>${escapeHtml(item.beds)} PN</span>
                             </div>
                         </div>
 
@@ -1751,7 +1692,7 @@
                                 ` : ""}
 
                                 <a href="${item.detailUrl}" class="detail-btn">
-                                    <i class="fa-solid fa-eye"></i> Xem tin
+                                    <i class="fa-solid fa-eye"></i>Xem tin
                                 </a>
 
                                 ${createFavoriteButton(item.id, item.type === "sale" ? "sale" : "rental")}
@@ -1765,6 +1706,7 @@
         function renderConstructionCard(item) {
             const avatarText = escapeHtml(getAvatarText(item.poster));
             const phoneLink = String(item.phone || "").replace(/[^\d+]/g, "");
+
             return `
                 <article class="result-card property-card">
                     <div class="property-thumb">
@@ -1773,11 +1715,11 @@
                         </a>
 
                         <span class="service-badge">
-                            <i class="fa-solid fa-screwdriver-wrench"></i> ${escapeHtml(item.serviceType)}
+                            <i class="fa-solid fa-screwdriver-wrench"></i>${escapeHtml(item.serviceType)}
                         </span>
 
                         <span class="image-count-badge">
-                            <i class="fa-regular fa-image"></i> ${item.imageCount}
+                            <i class="fa-regular fa-image"></i>${item.imageCount}
                         </span>
                     </div>
 
@@ -1798,17 +1740,14 @@
                             </div>
 
                             <p class="card-location mt-3">
-                                <i class="fa-solid fa-location-dot mr-1"></i>
-                                ${escapeHtml(item.location)}
+                                <i class="fa-solid fa-location-dot mr-1"></i>${escapeHtml(item.location)}
                             </p>
 
                             <p class="card-desc mt-3">${escapeHtml(item.description)}</p>
 
-                            <div class="meta-grid mt-4">
-                                <div><strong>Chuyên môn:</strong> ${escapeHtml(item.serviceSpecialty)}</div>
-                                <div><strong>Năng lực:</strong> ${escapeHtml(item.serviceExp)}</div>
-                                <div><strong>Khu vực:</strong> ${escapeHtml(item.serviceArea)}</div>
-                                <div><strong>Nhóm:</strong> Xây dựng</div>
+                            <div class="meta-row mt-4">
+                                <span class="meta-pill"><i class="fa-solid fa-layer-group"></i>${escapeHtml(item.serviceSpecialty)}</span>
+                                <span class="meta-pill"><i class="fa-solid fa-medal"></i>${escapeHtml(item.serviceExp)}</span>
                             </div>
                         </div>
 
@@ -1829,7 +1768,7 @@
                                 ` : ""}
 
                                 <a href="${item.detailUrl}" class="detail-btn">
-                                    <i class="fa-solid fa-eye"></i> Xem chi tiết
+                                    <i class="fa-solid fa-eye"></i>Xem chi tiết
                                 </a>
 
                                 ${createFavoriteButton(item.id, "construction")}
@@ -1852,7 +1791,7 @@
                     <div class="project-body">
                         <div>
                             <span class="project-status ${escapeHtml(item.statusType)}">
-                                <i class="fa-solid fa-bolt"></i> ${escapeHtml(item.statusLabel)}
+                                <i class="fa-solid fa-bolt"></i>${escapeHtml(item.statusLabel)}
                             </span>
 
                             <h3 class="card-title mt-3">
@@ -1860,35 +1799,22 @@
                             </h3>
 
                             <p class="card-location mt-3">
-                                <i class="fa-solid fa-location-dot mr-1"></i>
-                                ${escapeHtml(item.location)}
+                                <i class="fa-solid fa-location-dot mr-1"></i>${escapeHtml(item.location)}
                             </p>
 
                             <p class="card-desc mt-3">${escapeHtml(item.description)}</p>
 
-                            <div class="project-meta-grid mt-4">
-                                <div class="project-meta-item">
-                                    <div class="label">Loại dự án</div>
-                                    <div class="value">${escapeHtml(item.typeName)}</div>
-                                </div>
-                                <div class="project-meta-item">
-                                    <div class="label">Quy mô</div>
-                                    <div class="value">${escapeHtml(item.area)}</div>
-                                </div>
-                                <div class="project-meta-item">
-                                    <div class="label">Chủ đầu tư</div>
-                                    <div class="value">${escapeHtml(item.developer)}</div>
-                                </div>
-                                <div class="project-meta-item">
-                                    <div class="label">Media</div>
-                                    <div class="value">${escapeHtml(String(item.mediaCount || 0))} ảnh</div>
-                                </div>
+                            <div class="meta-row mt-4">
+                                <span class="meta-pill"><i class="fa-solid fa-building"></i>${escapeHtml(item.typeName)}</span>
+                                <span class="meta-pill"><i class="fa-solid fa-expand"></i>${escapeHtml(item.area)}</span>
+                                <span class="meta-pill"><i class="fa-solid fa-city"></i>${escapeHtml(item.developer)}</span>
+                                <span class="meta-pill"><i class="fa-regular fa-image"></i>${escapeHtml(String(item.mediaCount || 0))} ảnh</span>
                             </div>
                         </div>
 
                         <div class="card-actions">
                             <a href="${item.detailUrl}" class="detail-btn">
-                                <i class="fa-solid fa-building"></i> Xem dự án
+                                <i class="fa-solid fa-building"></i>Xem dự án
                             </a>
                         </div>
                     </div>
@@ -1918,29 +1844,16 @@
 
                             <p class="card-desc mt-3">${escapeHtml(item.summary)}</p>
 
-                            <div class="news-meta-grid mt-4">
-                                <div class="news-meta-item">
-                                    <div class="label">Tác giả</div>
-                                    <div class="value">${escapeHtml(item.author)}</div>
-                                </div>
-                                <div class="news-meta-item">
-                                    <div class="label">Ngày đăng</div>
-                                    <div class="value">${escapeHtml(formatDate(item.createdAt))}</div>
-                                </div>
-                                <div class="news-meta-item">
-                                    <div class="label">Chủ đề</div>
-                                    <div class="value">${escapeHtml(item.topic)}</div>
-                                </div>
-                                <div class="news-meta-item">
-                                    <div class="label">Nhóm</div>
-                                    <div class="value">Tin tức</div>
-                                </div>
+                            <div class="meta-row mt-4">
+                                <span class="meta-pill"><i class="fa-solid fa-user"></i>${escapeHtml(item.author)}</span>
+                                <span class="meta-pill"><i class="fa-regular fa-calendar"></i>${escapeHtml(formatDate(item.createdAt))}</span>
+                                <span class="meta-pill"><i class="fa-solid fa-tag"></i>${escapeHtml(item.topic)}</span>
                             </div>
                         </div>
 
                         <div class="card-actions">
                             <a href="${item.detailUrl}" class="detail-btn">
-                                <i class="fa-solid fa-newspaper"></i> Đọc bài viết
+                                <i class="fa-solid fa-newspaper"></i>Đọc bài viết
                             </a>
                         </div>
                     </div>
@@ -2193,13 +2106,7 @@
             updateHero();
             updateSummary(filtered);
             renderResults(filtered);
-
-            if (typeof renderSeoContent === "function") {
-                renderSeoFallback(filtered);
-            } else {
-                renderSeoFallback(filtered);
-            }
-
+            renderSeoFallback(filtered);
             updateUrlQuery();
         }
 
