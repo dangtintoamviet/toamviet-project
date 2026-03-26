@@ -123,6 +123,32 @@ function ensureHeaderSpacer() {
   return spacer;
 }
 
+function getExtraGapByPath() {
+  const path = window.location.pathname.toLowerCase();
+  const isMobile = window.innerWidth <= 768;
+
+  const detailLikePages = [
+    "/pages/chi-tiet-tin.html",
+    "/pages/chi-tiet-tin-tuc.html",
+    "/pages/chi-tiet-du-an.html",
+    "/pages/chi-tiet-doanh-nghiep.html",
+    "/pages/chi-tiet-moi-gioi.html",
+    "/pages/tin-da-luu.html"
+  ];
+
+  const authPages = ["/auth/dang-nhap.html", "/auth/dang-ky.html"];
+
+  if (detailLikePages.some(item => path.includes(item))) {
+    return isMobile ? 10 : 14;
+  }
+
+  if (authPages.some(item => path.includes(item))) {
+    return isMobile ? 10 : 14;
+  }
+
+  return 0;
+}
+
 function setupFixedHeaderSpacing() {
   const headerHost = getHeaderHost();
   if (!headerHost) return;
@@ -153,23 +179,27 @@ function setupFixedHeaderSpacing() {
   }
 
   const headerHeight = Math.ceil(
-    headerHost.getBoundingClientRect().height || headerHost.offsetHeight || 0
+    headerHost.getBoundingClientRect().height ||
+    headerHost.offsetHeight ||
+    0
   );
 
-  document.documentElement.style.setProperty("--site-header-height", `${headerHeight}px`);
+  const extraGap = context.isHomePage ? 0 : getExtraGapByPath();
+  const finalGap = headerHeight + extraGap;
+
+  document.documentElement.style.setProperty("--site-header-height", `${finalGap}px`);
 
   spacer.style.display = "block";
   spacer.style.width = "100%";
+  spacer.style.height = "0px";
   spacer.style.margin = "0";
   spacer.style.padding = "0";
   spacer.style.pointerEvents = "none";
   spacer.style.flex = "0 0 auto";
 
   if (context.isHomePage) {
-    spacer.style.height = "0px";
     document.body.classList.remove("has-fixed-header-gap");
   } else {
-    spacer.style.height = "0px";
     document.body.classList.add("has-fixed-header-gap");
   }
 }
@@ -226,17 +256,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   ensureFavicon(context.basePath);
 
-  const headerHost =
-    document.getElementById("site-header") ||
-    document.getElementById("siteHeader");
-
-  const footerHost =
-    document.getElementById("site-footer") ||
-    document.getElementById("siteFooter");
-
-  const mobileMenuHost =
-    document.getElementById("site-mobile-menu") ||
-    document.getElementById("siteMobileMenu");
+  const headerHost = getHeaderHost();
+  const footerHost = getFooterHost();
+  const mobileMenuHost = getMobileMenuHost();
 
   if (headerHost) {
     tasks.push(
