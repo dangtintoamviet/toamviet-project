@@ -1282,13 +1282,39 @@
         function getResolvedProfileType(post) {
             const rawProfileType = normalizeText(post.profileType || post.accountType || post.userType || "");
             const rawRole = normalizeText(post.roleLabel || post.role || "");
-            const hasCompanyId = !!String(post.companyId || post.businessId || post.enterpriseId || post.company_id || post.business_id || post.enterprise_id || "").trim();
-            const hasCompanyName = !!String(post.companyName || "").trim();
+
+            const hasCompanyId = !!String(
+                post.companyId ||
+                post.businessId ||
+                post.enterpriseId ||
+                post.company_id ||
+                post.business_id ||
+                post.enterprise_id ||
+                post.brandId ||
+                post.brand_id ||
+                post.serviceBrandId ||
+                post.service_brand_id ||
+                post.businessProfileId ||
+                post.business_profile_id ||
+                post.contractorId ||
+                post.contractor_id ||
+                ""
+            ).trim();
+
+            const hasBusinessName = !!String(
+                post.companyName ||
+                post.brandName ||
+                post.serviceBrand ||
+                post.businessName ||
+                post.contractorName ||
+                ""
+            ).trim();
 
             if (
                 rawProfileType === "doanhnghiep" ||
                 rawProfileType === "business" ||
-                rawProfileType === "company"
+                rawProfileType === "company" ||
+                rawProfileType === "enterprise"
             ) {
                 return "doanhnghiep";
             }
@@ -1304,7 +1330,12 @@
 
             if (
                 rawRole.includes("doanh nghiep") ||
-                rawRole.includes("chu dau tu")
+                rawRole.includes("doanhnghiep") ||
+                rawRole.includes("chu dau tu") ||
+                rawRole.includes("nha thau") ||
+                rawRole.includes("cong ty") ||
+                rawRole.includes("đơn vị thi công") ||
+                rawRole.includes("don vi thi cong")
             ) {
                 return "doanhnghiep";
             }
@@ -1317,7 +1348,7 @@
                 return "canhan";
             }
 
-            if (hasCompanyId || hasCompanyName) {
+            if (hasCompanyId || hasBusinessName) {
                 return "doanhnghiep";
             }
 
@@ -1350,6 +1381,14 @@
                 post.company_id,
                 post.business_id,
                 post.enterprise_id,
+                post.brandId,
+                post.brand_id,
+                post.serviceBrandId,
+                post.service_brand_id,
+                post.businessProfileId,
+                post.business_profile_id,
+                post.contractorId,
+                post.contractor_id,
                 post.contactProfileId,
                 post.profileId,
                 post.ownerProfileId,
@@ -1498,18 +1537,28 @@
             const normalizedRole = normalizeText(rawRole);
             const profileType = getResolvedProfileType(post);
 
-            if (normalizedRole.includes("doanh nghiep") || normalizedRole.includes("doanhnghiep")) {
-                return "Doanh nghiệp";
+            if (
+                normalizedRole.includes("doanh nghiep") ||
+                normalizedRole.includes("doanhnghiep") ||
+                normalizedRole.includes("chu dau tu") ||
+                normalizedRole.includes("nha thau") ||
+                normalizedRole.includes("cong ty")
+            ) {
+                return rawRole || "Doanh nghiệp";
             }
-            if (normalizedRole.includes("moi gioi") || normalizedRole.includes("chuyen vien") || normalizedRole.includes("nha thau")) {
-                return rawRole;
+
+            if (
+                normalizedRole.includes("moi gioi") ||
+                normalizedRole.includes("chuyen vien") ||
+                normalizedRole.includes("ca nhan")
+            ) {
+                return rawRole || "Cá nhân";
             }
-            if (normalizedRole.includes("ca nhan")) {
-                return "Cá nhân";
-            }
+
             if (profileType === "doanhnghiep") {
                 return "Doanh nghiệp";
             }
+
             return rawRole || "Cá nhân";
         }
 
