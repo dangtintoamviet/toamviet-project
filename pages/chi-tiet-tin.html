@@ -1411,7 +1411,7 @@
             return "";
         }
 
-        function getProfileDetailLink(post) {
+        function getProfileDetailLink(post, fallbackId) {
             const safeContactProfileUrl =
                 post.contactProfileUrl && !isDirectoryProfileUrl(post.contactProfileUrl)
                     ? String(post.contactProfileUrl).trim()
@@ -1432,7 +1432,7 @@
             if (safeOwnerProfileUrl) return safeOwnerProfileUrl;
 
             const profileType = getResolvedProfileType(post);
-            const representativeId = getProfileIdFromPost(post);
+            const representativeId = getProfileIdFromPost(post) || String(fallbackId || "").trim();
 
             if (!representativeId) {
                 return "javascript:void(0)";
@@ -1959,8 +1959,8 @@
 
         function renderSharedContact(post, phone, postId) {
             const profileType = getResolvedProfileType(post);
-            const profileId = getProfileIdFromPost(post);
-            const profileUrl = getProfileDetailLink(post);
+            const profileId = getProfileIdFromPost(post) || String(postId || "").trim();
+            const profileUrl = getProfileDetailLink(post, postId);
 
             els.posterName.textContent = buildPoster(post);
             els.posterRole.textContent = getPosterSub(post);
@@ -1977,8 +1977,8 @@
                 els.posterProfileLink.title = "Chưa có hồ sơ người đăng để mở";
             } else {
                 els.posterProfileLink.classList.remove("disabled");
-                els.posterProfileLink.style.cursor = "";
-                els.posterProfileLink.title = "";
+                els.posterProfileLink.style.cursor = "pointer";
+                els.posterProfileLink.title = "Xem hồ sơ người đăng";
             }
 
             bindPhoneReveal(phone);
