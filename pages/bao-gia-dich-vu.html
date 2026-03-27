@@ -72,7 +72,14 @@
     }
     .pricing-title { margin: 0 0 8px; font-size: 22px; line-height: 1.35; font-weight: 900; color: #0f172a; text-transform: none; }
     .market-price { font-size: 14px; color: #94a3b8; margin-bottom: 4px; text-decoration: line-through; font-weight: 700; }
+    .duration-badge {
+      display: inline-flex; align-items: center; gap: 7px; margin-bottom: 8px;
+      padding: 7px 11px; border-radius: 999px; background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; font-size: 11px; font-weight: 800;
+    }
     .our-price { font-size: 34px; line-height: 1.2; color: var(--danger); font-weight: 900; margin-bottom: 6px; }
+    .price-duration {
+      display: block; font-size: 13px; line-height: 1.6; color: #64748b; font-weight: 700; margin-top: 4px;
+    }
     .free-now {
       display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: #ecfdf5; color: #15803d; border: 1px solid #bbf7d0; font-size: 12px; font-weight: 800; margin-bottom: 14px;
     }
@@ -80,7 +87,20 @@
     .feature-list { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
     .feature-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.7; color: #475569; }
     .feature-list i { color: var(--vip-color); margin-top: 2px; }
-    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+
+    .compare-table-wrap { overflow: hidden; }
+    .table-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 transparent;
+      padding-bottom: 4px;
+      scroll-snap-type: x proximity;
+    }
+    .table-scroll::-webkit-scrollbar { height: 7px; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+    table { width: 100%; border-collapse: collapse; min-width: 860px; }
     thead th {
       text-align: left; font-size: 13px; font-weight: 900; color: #0f172a; padding: 14px 12px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; text-transform: uppercase; letter-spacing: 0.03em;
     }
@@ -90,10 +110,25 @@
     .price-new { color: var(--danger); font-weight: 900; }
     .price-free { color: #15803d; font-weight: 900; }
     .subtle-note { font-size: 13px; line-height: 1.8; color: #64748b; margin-top: 12px; }
+    .swipe-hint {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .faq-item { border: 1px solid #eef2f7; border-radius: 18px; padding: 18px; background: #fff; }
     .faq-q { margin: 0 0 8px; font-size: 16px; line-height: 1.5; font-weight: 800; color: #0f172a; text-transform: none; }
     .cta-box { background: linear-gradient(135deg, rgba(0,139,139,0.08), rgba(255,140,0,0.06)); border: 1px solid rgba(0,139,139,0.12); border-radius: 20px; padding: 18px; margin-top: 16px; }
     .seo-block-shell { margin-top: 24px; }
+
     @media (max-width: 991px) {
       .intro-grid, .pricing-grid, .faq-grid { grid-template-columns: 1fr; }
     }
@@ -103,6 +138,9 @@
       .hero-card, .info-card, .pricing-card, .faq-card, .compare-table-wrap { padding-left: 16px; padding-right: 16px; }
       .hero-card { padding-top: 22px; padding-bottom: 22px; }
       .our-price { font-size: 28px; }
+      .compare-table-wrap { padding-bottom: 16px; }
+      .table-scroll { margin-left: -2px; margin-right: -2px; }
+      .swipe-hint { display: inline-flex; }
     }
   </style>
 </head>
@@ -151,8 +189,9 @@
         <article class="pricing-card">
           <div class="pricing-tag"><i class="fa-solid fa-bullhorn"></i> Gói cơ bản</div>
           <h2 class="pricing-title">Tin thường</h2>
-          <div class="market-price">Tham khảo thị trường: từ 45.000 - 60.000đ / tin</div>
-          <div class="our-price">19.000đ</div>
+          <div class="market-price">Tham khảo thị trường: từ 45.000 - 60.000đ / tin / 30 ngày</div>
+          <div class="duration-badge"><i class="fa-regular fa-calendar-days"></i> Thời gian sử dụng 90 ngày</div>
+          <div class="our-price">19.000đ <span class="price-duration">/ tin / 90 ngày</span></div>
           <div class="free-now"><i class="fa-solid fa-circle-check"></i> Hiện tại đang miễn phí 100%</div>
           <p class="pricing-note">Phù hợp với cá nhân, tin đăng thử nghiệm, chủ nhà hoặc người đăng nhu cầu ngắn hạn.</p>
           <ul class="feature-list">
@@ -165,8 +204,9 @@
         <article class="pricing-card">
           <div class="pricing-tag"><i class="fa-solid fa-star"></i> Gói nổi bật</div>
           <h2 class="pricing-title">Tin nổi bật</h2>
-          <div class="market-price">Tham khảo thị trường: từ 90.000 - 150.000đ / tin</div>
-          <div class="our-price">49.000đ</div>
+          <div class="market-price">Tham khảo thị trường: từ 90.000 - 150.000đ / tin / 30 ngày</div>
+          <div class="duration-badge"><i class="fa-regular fa-calendar-days"></i> Thời gian sử dụng 90 ngày</div>
+          <div class="our-price">49.000đ <span class="price-duration">/ tin / 90 ngày</span></div>
           <div class="free-now"><i class="fa-solid fa-circle-check"></i> Hiện tại đang miễn phí 100%</div>
           <p class="pricing-note">Tăng độ nổi bật cho tin cần bán nhanh, cho thuê nhanh hoặc dịch vụ cần tiếp cận khách tốt hơn.</p>
           <ul class="feature-list">
@@ -179,8 +219,9 @@
         <article class="pricing-card">
           <div class="pricing-tag"><i class="fa-solid fa-crown"></i> Gói cao cấp</div>
           <h2 class="pricing-title">Tin VIP</h2>
-          <div class="market-price">Tham khảo thị trường: từ 150.000 - 300.000đ / tin</div>
-          <div class="our-price">99.000đ</div>
+          <div class="market-price">Tham khảo thị trường: từ 150.000 - 300.000đ / tin / 30 ngày</div>
+          <div class="duration-badge"><i class="fa-regular fa-calendar-days"></i> Thời gian sử dụng 90 ngày</div>
+          <div class="our-price">99.000đ <span class="price-duration">/ tin / 90 ngày</span></div>
           <div class="free-now"><i class="fa-solid fa-circle-check"></i> Hiện tại đang miễn phí 100%</div>
           <p class="pricing-note">Dành cho dự án, sản phẩm cần đẩy mạnh nhận diện hoặc doanh nghiệp muốn có vị trí hiển thị tốt hơn.</p>
           <ul class="feature-list">
@@ -193,54 +234,61 @@
 
       <section class="compare-table-wrap">
         <div class="section-kicker">Bảng giá gợi ý</div>
-        <table>
-          <thead>
-            <tr>
-              <th>Gói dịch vụ</th>
-              <th>Mốc tham khảo công khai</th>
-              <th>Giá niêm yết ToamViet</th>
-              <th>Trạng thái hiện tại</th>
-              <th>Ghi chú</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Tin thường</strong></td>
-              <td><span class="price-old">45.000 - 60.000đ</span></td>
-              <td><span class="price-new">19.000đ</span></td>
-              <td><span class="price-free">Miễn phí 100%</span></td>
-              <td>Phù hợp tin đăng cơ bản, đăng thử, đăng đều hằng ngày</td>
-            </tr>
-            <tr>
-              <td><strong>Tin nổi bật</strong></td>
-              <td><span class="price-old">90.000 - 150.000đ</span></td>
-              <td><span class="price-new">49.000đ</span></td>
-              <td><span class="price-free">Miễn phí 100%</span></td>
-              <td>Tăng nhận diện tốt hơn cho tin cần bán/cho thuê nhanh</td>
-            </tr>
-            <tr>
-              <td><strong>Tin VIP</strong></td>
-              <td><span class="price-old">150.000 - 300.000đ</span></td>
-              <td><span class="price-new">99.000đ</span></td>
-              <td><span class="price-free">Miễn phí 100%</span></td>
-              <td>Dành cho sản phẩm trọng điểm, dự án, doanh nghiệp</td>
-            </tr>
-            <tr>
-              <td><strong>Gói 10 tin / tháng</strong></td>
-              <td><span class="price-old">450.000đ / gói</span></td>
-              <td><span class="price-new">149.000đ / gói</span></td>
-              <td><span class="price-free">Miễn phí 100%</span></td>
-              <td>Phù hợp môi giới nhỏ hoặc người đăng đều tay</td>
-            </tr>
-            <tr>
-              <td><strong>Gói doanh nghiệp / dự án</strong></td>
-              <td><span class="price-old">900.000 - 1.500.000đ / tháng</span></td>
-              <td><span class="price-new">299.000đ / tháng</span></td>
-              <td><span class="price-free">Miễn phí 100%</span></td>
-              <td>Dành cho đơn vị cần đăng số lượng lớn, làm thương hiệu dài hơn</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Gói dịch vụ</th>
+                <th>Mốc tham khảo công khai</th>
+                <th>Giá niêm yết ToamViet</th>
+                <th>Trạng thái hiện tại</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tin thường</strong></td>
+                <td><span class="price-old">45.000 - 60.000đ / 30 ngày</span></td>
+                <td><span class="price-new">19.000đ / 90 ngày</span></td>
+                <td><span class="price-free">Miễn phí 100%</span></td>
+                <td>Phù hợp tin đăng cơ bản, đăng thử, đăng đều hằng ngày</td>
+              </tr>
+              <tr>
+                <td><strong>Tin nổi bật</strong></td>
+                <td><span class="price-old">90.000 - 150.000đ / 30 ngày</span></td>
+                <td><span class="price-new">49.000đ / 90 ngày</span></td>
+                <td><span class="price-free">Miễn phí 100%</span></td>
+                <td>Tăng nhận diện tốt hơn cho tin cần bán/cho thuê nhanh</td>
+              </tr>
+              <tr>
+                <td><strong>Tin VIP</strong></td>
+                <td><span class="price-old">150.000 - 300.000đ / 30 ngày</span></td>
+                <td><span class="price-new">99.000đ / 90 ngày</span></td>
+                <td><span class="price-free">Miễn phí 100%</span></td>
+                <td>Dành cho sản phẩm trọng điểm, dự án, doanh nghiệp</td>
+              </tr>
+              <tr>
+                <td><strong>Gói 10 tin</strong></td>
+                <td><span class="price-old">450.000đ / gói / 30 ngày</span></td>
+                <td><span class="price-new">149.000đ / gói / 90 ngày</span></td>
+                <td><span class="price-free">Miễn phí 100%</span></td>
+                <td>Phù hợp môi giới nhỏ hoặc người đăng đều tay</td>
+              </tr>
+              <tr>
+                <td><strong>Gói doanh nghiệp / dự án</strong></td>
+                <td><span class="price-old">900.000 - 1.500.000đ / 30 ngày</span></td>
+                <td><span class="price-new">299.000đ / 90 ngày</span></td>
+                <td><span class="price-free">Miễn phí 100%</span></td>
+                <td>Dành cho đơn vị cần đăng số lượng lớn, làm thương hiệu dài hơn</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="swipe-hint">
+          <i class="fa-solid fa-left-right"></i>
+          Vuốt ngang để xem hết bảng giá trên điện thoại
+        </div>
 
         <p class="subtle-note">
           Giá trên trang này nên được hiểu là <strong>giá niêm yết dự kiến sau giai đoạn miễn phí</strong>.
