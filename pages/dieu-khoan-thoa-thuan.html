@@ -1,1 +1,588 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Điều khoản thỏa thuận | ToamViet.com.vn</title>
 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/mobile.css" />
+  <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+  <style>
+    :root {
+      --vip-color: #008b8b;
+      --vip-dark: #0f766e;
+      --hover-color: #ff8c00;
+      --soft-bg: #f5f7fa;
+      --text-main: #1f2937;
+      --text-soft: #64748b;
+      --stroke: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      background: var(--soft-bg);
+      color: var(--text-main);
+    }
+
+    .terms-page-shell {
+      padding-top: 14px;
+      padding-bottom: 34px;
+    }
+
+    .hero-card,
+    .summary-card,
+    .terms-card,
+    .contact-card {
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      margin-bottom: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 24%),
+        linear-gradient(135deg, #0f766e 0%, #008b8b 52%, #0f172a 100%);
+      color: #fff;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -72px;
+      bottom: -72px;
+      width: 220px;
+      height: 220px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3vw, 38px);
+      line-height: 1.23;
+      font-weight: 900;
+      color: #fff;
+      text-transform: none;
+    }
+
+    .hero-desc {
+      max-width: 920px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .summary-card,
+    .contact-card,
+    .terms-card {
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .summary-item {
+      border: 1px solid #eef2f7;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .summary-title {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .summary-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #64748b;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--vip-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--vip-color);
+      padding-left: 12px;
+    }
+
+    .terms-title {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.35;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .terms-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #475569;
+    }
+
+    .terms-text + .terms-text {
+      margin-top: 12px;
+    }
+
+    .terms-list {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: #475569;
+    }
+
+    .terms-list li {
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, rgba(0,139,139,0.08), rgba(255,140,0,0.06));
+      border: 1px solid rgba(0,139,139,0.12);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .contact-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .contact-text {
+      margin: 0 0 14px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #475569;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.22s ease;
+    }
+
+    .contact-btn-primary {
+      background: var(--vip-color);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(0,139,139,0.18);
+    }
+
+    .contact-btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .contact-btn-soft {
+      background: #fff;
+      color: #475569;
+      border: 1px solid #d1d5db;
+    }
+
+    .contact-btn-soft:hover {
+      border-color: rgba(0,139,139,0.3);
+      color: var(--vip-color);
+      background: #f8ffff;
+    }
+
+    .seo-block-shell {
+      margin-top: 24px;
+    }
+
+    @media (max-width: 991px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .terms-page-shell {
+        padding-top: 10px;
+        padding-bottom: 24px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .terms-card,
+      .contact-card {
+        border-radius: 20px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .terms-card,
+      .contact-card {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero-card {
+        padding-top: 22px;
+        padding-bottom: 22px;
+      }
+
+      .terms-title {
+        font-size: 22px;
+      }
+
+      .contact-actions {
+        flex-direction: column;
+      }
+
+      .contact-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <div id="siteMobileMenu"></div>
+
+  <main class="terms-page-shell">
+    <div class="container-custom">
+      <section class="hero-card">
+        <div class="hero-badge">
+          <i class="fa-solid fa-file-signature"></i>
+          Điều khoản thỏa thuận
+        </div>
+        <h1 class="hero-title">Điều khoản thỏa thuận sử dụng ToamViet.com.vn</h1>
+        <p class="hero-desc">
+          Khi truy cập, sử dụng hoặc gửi nội dung lên ToamViet.com.vn, người dùng được hiểu là đã đọc,
+          đồng ý và chấp nhận các nguyên tắc sử dụng được nêu trong trang điều khoản này.
+          Nội dung được xây dựng nhằm giúp việc sử dụng website rõ ràng hơn, minh bạch hơn và thuận tiện hơn cho cả người đăng tin lẫn người xem nội dung.
+        </p>
+      </section>
+
+      <section class="summary-card">
+        <div class="section-kicker">Tóm tắt nhanh</div>
+        <div class="summary-grid">
+          <article class="summary-item">
+            <h2 class="summary-title">Sử dụng đúng mục đích</h2>
+            <p class="summary-text">Người dùng cần sử dụng website đúng với nhóm chức năng và nội dung mà ToamViet đang cung cấp.</p>
+          </article>
+          <article class="summary-item">
+            <h2 class="summary-title">Chịu trách nhiệm với nội dung gửi lên</h2>
+            <p class="summary-text">Người đăng tin cần tự chịu trách nhiệm với tính chính xác, tính hợp pháp và mức độ phù hợp của nội dung đã cung cấp.</p>
+          </article>
+          <article class="summary-item">
+            <h2 class="summary-title">ToamViet có quyền kiểm duyệt</h2>
+            <p class="summary-text">Website có quyền kiểm tra, điều chỉnh, từ chối hoặc gỡ nội dung không phù hợp để giữ chất lượng toàn hệ thống.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="terms-card">
+        <div class="section-kicker">1. Phạm vi áp dụng</div>
+        <h2 class="terms-title">Điều khoản này áp dụng cho ai?</h2>
+        <p class="terms-text">
+          Điều khoản thỏa thuận này áp dụng cho mọi cá nhân, tổ chức truy cập, xem nội dung, liên hệ hỗ trợ
+          hoặc sử dụng bất kỳ tính năng nào trên website ToamViet.com.vn.
+        </p>
+        <p class="terms-text">
+          Các nhóm nội dung được áp dụng bao gồm nhưng không giới hạn ở nhà đất bán, nhà đất cho thuê, dự án,
+          tin tức, giá nhà đất, dịch vụ xây dựng, danh bạ doanh nghiệp, danh bạ môi giới và các trang hỗ trợ liên quan.
+        </p>
+      </section>
+
+      <section class="terms-card">
+        <div class="section-kicker">2. Nguyên tắc sử dụng website</div>
+        <h2 class="terms-title">Người dùng cần tuân thủ điều gì khi sử dụng?</h2>
+        <p class="terms-text">
+          Người dùng cần sử dụng website một cách thiện chí, đúng mục đích, không gây ảnh hưởng tiêu cực đến hệ thống,
+          không đăng tải nội dung sai lệch, gây hiểu nhầm hoặc vi phạm quy định pháp luật hiện hành.
+        </p>
+        <ul class="terms-list">
+          <li>Không sử dụng website để phát tán nội dung sai sự thật, lừa đảo hoặc gây ảnh hưởng đến người dùng khác.</li>
+          <li>Không đưa lên các nội dung vi phạm pháp luật, vi phạm quyền sở hữu, quyền riêng tư hoặc các quyền hợp pháp khác.</li>
+          <li>Không lợi dụng website để can thiệp, gây gián đoạn hoặc làm sai lệch trải nghiệm của hệ thống.</li>
+        </ul>
+      </section>
+
+      <section class="terms-card">
+        <div class="section-kicker">3. Trách nhiệm của người đăng tin</div>
+        <h2 class="terms-title">Ai chịu trách nhiệm với nội dung đã đăng?</h2>
+        <p class="terms-text">
+          Người đăng tin chịu trách nhiệm đối với toàn bộ nội dung, hình ảnh, mức giá, thông tin liên hệ
+          và các dữ liệu khác mà mình gửi lên website.
+        </p>
+        <p class="terms-text">
+          ToamViet có thể hỗ trợ kiểm tra, rà soát hoặc định dạng lại nội dung để đồng bộ hiển thị,
+          nhưng điều đó không thay thế cho trách nhiệm của người dùng về tính đúng đắn, hợp pháp và phù hợp của dữ liệu đã cung cấp.
+        </p>
+      </section>
+
+      <section class="terms-card">
+        <div class="section-kicker">4. Quyền kiểm duyệt và điều chỉnh nội dung</div>
+        <h2 class="terms-title">ToamViet có thể từ chối hoặc gỡ nội dung không?</h2>
+        <p class="terms-text">
+          Có. Để đảm bảo chất lượng chung của nền tảng, ToamViet có quyền xem xét, chỉnh sửa ở mức kỹ thuật,
+          từ chối hiển thị, tạm ẩn hoặc gỡ bỏ những nội dung được đánh giá là không phù hợp với định hướng của website.
+        </p>
+        <ul class="terms-list">
+          <li>Nội dung thiếu rõ ràng, sai nhóm danh mục hoặc gây hiểu nhầm cho người xem.</li>
+          <li>Nội dung có dấu hiệu trùng lặp quá mức, spam hoặc làm xấu trải nghiệm chung.</li>
+          <li>Nội dung có thông tin không phù hợp, không chính xác hoặc vi phạm quy định pháp luật.</li>
+        </ul>
+      </section>
+
+      <section class="terms-card">
+        <div class="section-kicker">5. Giới hạn trách nhiệm</div>
+        <h2 class="terms-title">ToamViet chịu trách nhiệm đến đâu?</h2>
+        <p class="terms-text">
+          ToamViet là nền tảng hiển thị, tổ chức và hỗ trợ nội dung trong phạm vi khả năng vận hành của website.
+          Website không mặc nhiên bảo đảm tuyệt đối rằng mọi thông tin do người dùng cung cấp đều hoàn toàn chính xác tại mọi thời điểm.
+        </p>
+        <p class="terms-text">
+          Người dùng cần chủ động kiểm tra thêm thông tin trước khi ra quyết định giao dịch, hợp tác hoặc liên hệ làm việc
+          dựa trên các nội dung đang hiển thị trên website.
+        </p>
+      </section>
+
+      <section class="terms-card">
+        <div class="section-kicker">6. Dịch vụ hiện tại và thay đổi trong tương lai</div>
+        <h2 class="terms-title">Website có thể thay đổi chính sách hoặc tính năng không?</h2>
+        <p class="terms-text">
+          ToamViet có thể thay đổi giao diện, tính năng, quy trình đăng tin, mức hỗ trợ hoặc chính sách dịch vụ
+          để phù hợp hơn với định hướng phát triển của website trong từng giai đoạn.
+        </p>
+        <p class="terms-text">
+          Các thay đổi quan trọng nếu có sẽ được cập nhật trực tiếp trên các trang liên quan để người dùng tiện theo dõi,
+          bao gồm cả các trang như báo giá dịch vụ, FAQ, chính sách bảo mật hoặc điều khoản thỏa thuận.
+        </p>
+      </section>
+
+      <section class="terms-card">
+        <div class="section-kicker">7. Liên kết với các trang khác trong hệ thống</div>
+        <h2 class="terms-title">Điều khoản này liên quan gì đến các trang nền khác?</h2>
+        <p class="terms-text">
+          Điều khoản thỏa thuận nên được hiểu cùng với các trang nền khác của website như chính sách bảo mật,
+          trang liên hệ, câu hỏi thường gặp, giới thiệu và báo giá dịch vụ để người dùng có cái nhìn đầy đủ hơn
+          về cách website vận hành và hỗ trợ.
+        </p>
+      </section>
+
+      <section class="contact-card">
+        <div class="section-kicker">Liên hệ khi cần giải thích thêm</div>
+        <div class="contact-box">
+          <h2 class="contact-title">Bạn cần làm rõ thêm về điều khoản sử dụng?</h2>
+          <p class="contact-text">
+            Nếu bạn có thắc mắc liên quan đến nội dung điều khoản, quy trình đăng tin hoặc cách website vận hành,
+            bạn có thể liên hệ trực tiếp với ToamViet để được hỗ trợ rõ hơn.
+          </p>
+
+          <div class="contact-actions">
+            <a class="contact-btn contact-btn-primary" href="tel:0982368978">
+              <i class="fa-solid fa-phone-volume"></i>
+              0982368978
+            </a>
+            <a class="contact-btn contact-btn-soft" href="mailto:dangtin.toamviet@gmail.com">
+              <i class="fa-solid fa-envelope"></i>
+              dangtin.toamviet@gmail.com
+            </a>
+            <a class="contact-btn contact-btn-soft" href="../pages/lien-he.html">
+              <i class="fa-solid fa-arrow-right"></i>
+              Xem trang liên hệ
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="seo-block-shell">
+        <div id="seoContent"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <button
+    id="goToTop"
+    onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+  >
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <div
+    class="zalo-chat-btn wiggle"
+    onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+  >
+    <i class="fa-solid fa-comment-dots"></i>
+  </div>
+
+  <div id="chatForm">
+    <div class="chat-header">
+      <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+      <span
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+        style="cursor:pointer; font-size: 20px;"
+      >&times;</span>
+    </div>
+    <div class="chat-body">
+      <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+      <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
+      <button class="btn-send" onclick="sendToZaloChat()">Bắt đầu chat trên Zalo</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/component-loader.js"></script>
+  <script src="../assets/js/seo-content.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <script>
+    async function initSharedComponents() {
+      try {
+        if (typeof loadComponent === "function") {
+          await loadComponent("siteHeader", "../components/header-inner.html");
+          await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+          await loadComponent("siteFooter", "../components/footer-inner.html");
+
+          if (typeof setupFixedHeaderSpacing === "function") {
+            setupFixedHeaderSpacing();
+          }
+          if (typeof watchHeaderSpacing === "function") {
+            watchHeaderSpacing();
+          }
+        }
+      } catch (error) {
+        console.error("Không thể load component dùng chung:", error);
+      }
+    }
+
+    function renderTermsSeoFallback() {
+      const container = document.getElementById("seoContent");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="seo-wrapper">
+          <div class="seo-text collapsed" id="seoContent-text">
+            <p>Trang điều khoản thỏa thuận là một phần quan trọng trong bộ trang nền của ToamViet, giúp người dùng hiểu rõ nguyên tắc sử dụng website trước khi đăng tin, xem nội dung hoặc liên hệ hỗ trợ. Đây là trang góp phần làm cho hệ thống trở nên minh bạch và chuyên nghiệp hơn.</p>
+            <p>Khi website phát triển nhiều nhóm nội dung như nhà đất, dự án, xây dựng, danh bạ và các trang pháp lý, việc có một trang điều khoản rõ ràng sẽ giúp giảm rủi ro hiểu sai vai trò của nền tảng, đồng thời xác lập trách nhiệm giữa người dùng và website trong quá trình sử dụng.</p>
+            <p>Về mặt SEO và thương hiệu, điều khoản thỏa thuận cũng là một trang nền có giá trị vì giúp hoàn thiện cấu trúc website, bổ sung tín hiệu uy tín và hỗ trợ niềm tin người dùng khi truy cập hệ thống trong dài hạn.</p>
+          </div>
+          <button type="button" class="seo-toggle-btn" id="seoContent-toggle" aria-expanded="false">
+            <span class="seo-toggle-label">Xem thêm</span>
+            <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+          </button>
+        </div>
+      `;
+
+      const toggleBtn = document.getElementById("seoContent-toggle");
+      const seoText = document.getElementById("seoContent-text");
+      const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+      if (!toggleBtn || !seoText || !toggleLabel) return;
+
+      toggleBtn.addEventListener("click", function () {
+        const isCollapsed = seoText.classList.contains("collapsed");
+
+        if (isCollapsed) {
+          seoText.classList.remove("collapsed");
+          toggleBtn.classList.add("expanded");
+          toggleBtn.setAttribute("aria-expanded", "true");
+          toggleLabel.textContent = "Thu gọn";
+        } else {
+          seoText.classList.add("collapsed");
+          toggleBtn.classList.remove("expanded");
+          toggleBtn.setAttribute("aria-expanded", "false");
+          toggleLabel.textContent = "Xem thêm";
+        }
+      });
+    }
+
+    function sendToZaloChat() {
+      const name = document.getElementById("cusName").value.trim();
+      const msg = document.getElementById("cusMsg").value.trim();
+      const phone = "0982368978";
+
+      if (!name) {
+        alert("Vui lòng cho biết tên của bạn");
+        return;
+      }
+
+      const fullMsg = "Chào ToamViet, tôi là " + name + ". " + msg;
+      const encodedMsg = encodeURIComponent(fullMsg);
+      window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+    }
+
+    window.addEventListener("load", async function () {
+      await initSharedComponents();
+
+      if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function" && getSeoContentByKey("dieu-khoan-thoa-thuan")) {
+        renderSeoContent("seoContent", "dieu-khoan-thoa-thuan");
+      } else {
+        renderTermsSeoFallback();
+      }
+    });
+  </script>
+</body>
+</html>
