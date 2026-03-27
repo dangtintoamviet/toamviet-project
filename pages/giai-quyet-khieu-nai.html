@@ -1,1 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giải quyết khiếu nại | ToamViet.com.vn</title>
 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/mobile.css" />
+  <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+  <style>
+    :root {
+      --vip-color: #008b8b;
+      --vip-dark: #0f766e;
+      --hover-color: #ff8c00;
+      --soft-bg: #f5f7fa;
+      --text-main: #1f2937;
+      --text-soft: #64748b;
+      --stroke: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      background: var(--soft-bg);
+      color: var(--text-main);
+    }
+
+    .complaint-page-shell {
+      padding-top: 14px;
+      padding-bottom: 34px;
+    }
+
+    .hero-card,
+    .summary-card,
+    .process-card,
+    .contact-card,
+    .faq-card {
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      margin-bottom: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 24%),
+        linear-gradient(135deg, #0f766e 0%, #008b8b 52%, #0f172a 100%);
+      color: #fff;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -72px;
+      bottom: -72px;
+      width: 220px;
+      height: 220px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3vw, 38px);
+      line-height: 1.23;
+      font-weight: 900;
+      color: #fff;
+      text-transform: none;
+    }
+
+    .hero-desc {
+      max-width: 920px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .summary-card,
+    .process-card,
+    .contact-card,
+    .faq-card {
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--vip-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--vip-color);
+      padding-left: 12px;
+    }
+
+    .section-title {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.35;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .section-desc {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #475569;
+    }
+
+    .summary-grid,
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .faq-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary-item,
+    .faq-item,
+    .step-item {
+      border: 1px solid #eef2f7;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .summary-title,
+    .faq-q,
+    .step-title,
+    .contact-title {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .summary-text,
+    .faq-a,
+    .step-text,
+    .contact-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #64748b;
+    }
+
+    .process-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step-item {
+      display: grid;
+      grid-template-columns: 70px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .step-badge {
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: #ecfeff;
+      color: var(--vip-color);
+      font-size: 14px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .note-list {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: #475569;
+    }
+
+    .note-list li {
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, rgba(0,139,139,0.08), rgba(255,140,0,0.06));
+      border: 1px solid rgba(0,139,139,0.12);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.22s ease;
+    }
+
+    .contact-btn-primary {
+      background: var(--vip-color);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(0,139,139,0.18);
+    }
+
+    .contact-btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .contact-btn-soft {
+      background: #fff;
+      color: #475569;
+      border: 1px solid #d1d5db;
+    }
+
+    .contact-btn-soft:hover {
+      border-color: rgba(0,139,139,0.3);
+      color: var(--vip-color);
+      background: #f8ffff;
+    }
+
+    .seo-block-shell {
+      margin-top: 24px;
+    }
+
+    @media (max-width: 991px) {
+      .summary-grid,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .complaint-page-shell {
+        padding-top: 10px;
+        padding-bottom: 24px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .process-card,
+      .contact-card,
+      .faq-card {
+        border-radius: 20px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .process-card,
+      .contact-card,
+      .faq-card {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero-card {
+        padding-top: 22px;
+        padding-bottom: 22px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+
+      .step-item {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-actions {
+        flex-direction: column;
+      }
+
+      .contact-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <div id="siteMobileMenu"></div>
+
+  <main class="complaint-page-shell">
+    <div class="container-custom">
+      <section class="hero-card">
+        <div class="hero-badge">
+          <i class="fa-solid fa-scale-balanced"></i>
+          Giải quyết khiếu nại
+        </div>
+        <h1 class="hero-title">Quy trình tiếp nhận và giải quyết khiếu nại tại ToamViet.com.vn</h1>
+        <p class="hero-desc">
+          ToamViet tiếp nhận các phản ánh, khiếu nại và góp ý liên quan đến nội dung hiển thị trên website,
+          trải nghiệm sử dụng, thông tin đăng tải hoặc các trường hợp cần rà soát để bảo đảm tính minh bạch,
+          phù hợp và an toàn hơn cho người dùng.
+        </p>
+      </section>
+
+      <section class="summary-card">
+        <div class="section-kicker">Tóm tắt nhanh</div>
+        <div class="summary-grid">
+          <article class="summary-item">
+            <h2 class="summary-title">Tiếp nhận rõ ràng</h2>
+            <p class="summary-text">Người dùng có thể gửi phản ánh qua điện thoại hoặc email với nội dung càng cụ thể càng tốt.</p>
+          </article>
+          <article class="summary-item">
+            <h2 class="summary-title">Ưu tiên kiểm tra thực tế</h2>
+            <p class="summary-text">ToamViet sẽ xem xét trên cơ sở dữ liệu đang hiển thị, thông tin người dùng cung cấp và tình trạng thực tế của nội dung.</p>
+          </article>
+          <article class="summary-item">
+            <h2 class="summary-title">Xử lý theo từng trường hợp</h2>
+            <p class="summary-text">Không phải mọi phản ánh đều giống nhau, nên thời gian và cách xử lý có thể khác tùy mức độ phức tạp.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="process-card">
+        <div class="section-kicker">Quy trình xử lý</div>
+        <h2 class="section-title">Các bước giải quyết khiếu nại</h2>
+        <p class="section-desc">
+          Để việc hỗ trợ được nhanh và rõ ràng hơn, ToamViet áp dụng quy trình tiếp nhận và xử lý theo các bước dưới đây.
+        </p>
+
+        <div class="process-grid" style="margin-top:18px;">
+          <article class="step-item">
+            <div class="step-badge">Bước 1</div>
+            <div>
+              <h3 class="step-title">Tiếp nhận thông tin khiếu nại</h3>
+              <p class="step-text">
+                Người dùng gửi nội dung phản ánh hoặc khiếu nại qua số điện thoại hỗ trợ, email hoặc các kênh liên hệ chính thức của ToamViet.
+                Nội dung nên ghi rõ vấn đề đang gặp, link trang liên quan, mã tin nếu có và mong muốn xử lý.
+              </p>
+            </div>
+          </article>
+
+          <article class="step-item">
+            <div class="step-badge">Bước 2</div>
+            <div>
+              <h3 class="step-title">Xác minh và rà soát dữ liệu</h3>
+              <p class="step-text">
+                ToamViet sẽ kiểm tra thông tin trên hệ thống, đối chiếu với dữ liệu đang hiển thị công khai
+                và xem xét thêm các chi tiết người dùng đã cung cấp để đánh giá tình huống.
+              </p>
+            </div>
+          </article>
+
+          <article class="step-item">
+            <div class="step-badge">Bước 3</div>
+            <div>
+              <h3 class="step-title">Phản hồi hướng xử lý</h3>
+              <p class="step-text">
+                Sau khi có cơ sở kiểm tra ban đầu, ToamViet sẽ phản hồi theo khả năng vận hành thực tế,
+                ví dụ: yêu cầu bổ sung thông tin, điều chỉnh nội dung, tạm ẩn nội dung, gỡ nội dung hoặc giải thích rõ tình trạng hiện tại.
+              </p>
+            </div>
+          </article>
+
+          <article class="step-item">
+            <div class="step-badge">Bước 4</div>
+            <div>
+              <h3 class="step-title">Hoàn tất hoặc tiếp tục theo dõi</h3>
+              <p class="step-text">
+                Khi có kết quả xử lý, ToamViet sẽ thông tin lại cho người dùng trong phạm vi phù hợp.
+                Với các trường hợp cần theo dõi thêm, website có thể tiếp tục rà soát và cập nhật từng phần.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="process-card">
+        <div class="section-kicker">Những trường hợp thường gặp</div>
+        <h2 class="section-title">ToamViet có thể tiếp nhận khiếu nại về những nội dung nào?</h2>
+        <ul class="note-list">
+          <li>Tin đăng có thông tin sai, thiếu rõ ràng hoặc gây hiểu nhầm cho người xem.</li>
+          <li>Nội dung hiển thị chưa đúng danh mục, sai link hoặc sai thông tin liên hệ.</li>
+          <li>Yêu cầu chỉnh sửa, gỡ bỏ hoặc rà soát một nội dung đã được đăng tải trên website.</li>
+          <li>Phản ánh liên quan đến trải nghiệm sử dụng, bố cục hiển thị hoặc lỗi ở các trang chức năng.</li>
+          <li>Góp ý để website cải thiện chất lượng hỗ trợ, khả năng tìm kiếm hoặc tính minh bạch thông tin.</li>
+        </ul>
+      </section>
+
+      <section class="process-card">
+        <div class="section-kicker">Lưu ý khi gửi khiếu nại</div>
+        <h2 class="section-title">Càng đầy đủ thông tin, việc xử lý càng nhanh hơn</h2>
+        <ul class="note-list">
+          <li>Nên gửi kèm link trang, tên trang hoặc mã tin nếu có.</li>
+          <li>Nên mô tả ngắn gọn nhưng rõ vấn đề đang gặp và mong muốn xử lý.</li>
+          <li>Nếu liên quan đến chỉnh sửa dữ liệu, nên gửi kèm nội dung đúng để đối chiếu nhanh.</li>
+          <li>Trong một số trường hợp, ToamViet có thể cần thêm thời gian để rà soát trước khi phản hồi kết luận cuối cùng.</li>
+        </ul>
+      </section>
+
+      <section class="faq-card">
+        <div class="section-kicker">Câu hỏi thường gặp</div>
+        <div class="faq-grid">
+          <article class="faq-item">
+            <h3 class="faq-q">ToamViet có tiếp nhận mọi loại khiếu nại không?</h3>
+            <p class="faq-a">ToamViet ưu tiên tiếp nhận các phản ánh liên quan trực tiếp đến nội dung và trải nghiệm sử dụng trên website.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3 class="faq-q">Bao lâu thì có phản hồi?</h3>
+            <p class="faq-a">Thời gian phản hồi phụ thuộc vào mức độ rõ ràng của thông tin và tính chất của từng trường hợp cụ thể.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3 class="faq-q">Nếu cần chỉnh sửa tin gấp thì nên làm gì?</h3>
+            <p class="faq-a">Bạn nên gọi trực tiếp hoặc gửi email kèm link tin và nội dung cần chỉnh để đội ngũ hỗ trợ rà soát nhanh hơn.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3 class="faq-q">ToamViet có gỡ nội dung nếu phát hiện không phù hợp không?</h3>
+            <p class="faq-a">Có. Website có thể tạm ẩn, điều chỉnh hoặc gỡ nội dung khi xét thấy cần thiết để bảo đảm chất lượng hệ thống.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact-card">
+        <div class="section-kicker">Liên hệ tiếp nhận khiếu nại</div>
+        <div class="contact-box">
+          <h2 class="contact-title">Gửi phản ánh hoặc khiếu nại đến ToamViet</h2>
+          <p class="contact-text">
+            Bạn có thể liên hệ trực tiếp qua điện thoại hoặc email để gửi phản ánh, khiếu nại hoặc yêu cầu rà soát nội dung.
+            Khi liên hệ, bạn nên ghi rõ link trang, mô tả vấn đề và thông tin cần hỗ trợ để việc xử lý thuận lợi hơn.
+          </p>
+
+          <div class="contact-actions">
+            <a class="contact-btn contact-btn-primary" href="tel:0982368978">
+              <i class="fa-solid fa-phone-volume"></i>
+              0982368978
+            </a>
+            <a class="contact-btn contact-btn-soft" href="mailto:dangtin.toamviet@gmail.com">
+              <i class="fa-solid fa-envelope"></i>
+              dangtin.toamviet@gmail.com
+            </a>
+            <a class="contact-btn contact-btn-soft" href="../pages/lien-he.html">
+              <i class="fa-solid fa-arrow-right"></i>
+              Xem trang liên hệ
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="seo-block-shell">
+        <div id="seoContent"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <button
+    id="goToTop"
+    onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+  >
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <div
+    class="zalo-chat-btn wiggle"
+    onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+  >
+    <i class="fa-solid fa-comment-dots"></i>
+  </div>
+
+  <div id="chatForm">
+    <div class="chat-header">
+      <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+      <span
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+        style="cursor:pointer; font-size: 20px;"
+      >&times;</span>
+    </div>
+    <div class="chat-body">
+      <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+      <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
+      <button class="btn-send" onclick="sendToZaloChat()">Bắt đầu chat trên Zalo</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/component-loader.js"></script>
+  <script src="../assets/js/seo-content.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <script>
+    async function initSharedComponents() {
+      try {
+        if (typeof loadComponent === "function") {
+          await loadComponent("siteHeader", "../components/header-inner.html");
+          await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+          await loadComponent("siteFooter", "../components/footer-inner.html");
+
+          if (typeof setupFixedHeaderSpacing === "function") {
+            setupFixedHeaderSpacing();
+          }
+          if (typeof watchHeaderSpacing === "function") {
+            watchHeaderSpacing();
+          }
+        }
+      } catch (error) {
+        console.error("Không thể load component dùng chung:", error);
+      }
+    }
+
+    function renderComplaintSeoFallback() {
+      const container = document.getElementById("seoContent");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="seo-wrapper">
+          <div class="seo-text collapsed" id="seoContent-text">
+            <p>Trang giải quyết khiếu nại là một phần quan trọng trong nhóm trang nền của ToamViet, giúp người dùng biết rõ cần phản ánh vấn đề ở đâu, theo cách nào và kỳ vọng xử lý ra sao. Khi website phát triển nhiều nhóm nội dung như nhà đất, dự án, xây dựng và danh bạ, việc có quy trình tiếp nhận rõ ràng sẽ giúp tăng niềm tin với người dùng.</p>
+            <p>Không chỉ mang ý nghĩa hỗ trợ vận hành, trang này còn góp phần thể hiện tính minh bạch của nền tảng khi sẵn sàng tiếp nhận phản ánh, rà soát dữ liệu và xử lý các nội dung chưa phù hợp. Đây là yếu tố quan trọng để website phát triển bền hơn trong dài hạn.</p>
+            <p>Về mặt cấu trúc site, đây cũng là một trang hỗ trợ tốt cho thương hiệu và SEO vì bổ sung thêm một lớp nội dung pháp lý - hỗ trợ cần thiết, đồng bộ với các trang như liên hệ, FAQ, điều khoản thỏa thuận và chính sách bảo mật.</p>
+          </div>
+          <button type="button" class="seo-toggle-btn" id="seoContent-toggle" aria-expanded="false">
+            <span class="seo-toggle-label">Xem thêm</span>
+            <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+          </button>
+        </div>
+      `;
+
+      const toggleBtn = document.getElementById("seoContent-toggle");
+      const seoText = document.getElementById("seoContent-text");
+      const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+      if (!toggleBtn || !seoText || !toggleLabel) return;
+
+      toggleBtn.addEventListener("click", function () {
+        const isCollapsed = seoText.classList.contains("collapsed");
+
+        if (isCollapsed) {
+          seoText.classList.remove("collapsed");
+          toggleBtn.classList.add("expanded");
+          toggleBtn.setAttribute("aria-expanded", "true");
+          toggleLabel.textContent = "Thu gọn";
+        } else {
+          seoText.classList.add("collapsed");
+          toggleBtn.classList.remove("expanded");
+          toggleBtn.setAttribute("aria-expanded", "false");
+          toggleLabel.textContent = "Xem thêm";
+        }
+      });
+    }
+
+    function sendToZaloChat() {
+      const name = document.getElementById("cusName").value.trim();
+      const msg = document.getElementById("cusMsg").value.trim();
+      const phone = "0982368978";
+
+      if (!name) {
+        alert("Vui lòng cho biết tên của bạn");
+        return;
+      }
+
+      const fullMsg = "Chào ToamViet, tôi là " + name + ". " + msg;
+      const encodedMsg = encodeURIComponent(fullMsg);
+      window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+    }
+
+    window.addEventListener("load", async function () {
+      await initSharedComponents();
+
+      if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function" && getSeoContentByKey("giai-quyet-khieu-nai")) {
+        renderSeoContent("seoContent", "giai-quyet-khieu-nai");
+      } else {
+        renderComplaintSeoFallback();
+      }
+    });
+  </script>
+</body>
+</html>
