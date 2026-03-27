@@ -52,6 +52,22 @@
             padding-bottom: 28px;
         }
 
+        .page-breadcrumb {
+            margin-bottom: 18px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .page-breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-breadcrumb a:hover {
+            color: var(--vip-color);
+        }
+
         .page-intro-box {
             background: #fff;
             border: 1px solid #e5e7eb;
@@ -111,7 +127,7 @@
             font-family: "Roboto", sans-serif;
         }
 
-        .card-desc {
+        card-desc {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -396,6 +412,15 @@
     <div id="site-mobile-menu"></div>
 
     <main class="container-custom page-shell">
+        <div class="page-breadcrumb">
+            <a href="../index.html">Trang chủ</a>
+            <span class="mx-2">/</span>
+            <a id="breadcrumbRentLink" href="../pages/nha-dat-cho-thue.html">Nhà đất cho thuê</a>
+            <span id="breadcrumbRentCurrent" class="text-slate-700 font-semibold hidden">Nhà đất cho thuê</span>
+            <span id="breadcrumbSeparator" class="mx-2 hidden">/</span>
+            <span id="breadcrumbCurrent" class="text-slate-700 font-semibold hidden"></span>
+        </div>
+
         <div class="filter-panel mb-6">
             <div class="filter-grid">
                 <div>
@@ -620,6 +645,10 @@
         const dataNote = document.getElementById('data-note');
         const pageHeading = document.getElementById('pageHeading');
         const pageSubheading = document.getElementById('pageSubheading');
+        const breadcrumbRentLink = document.getElementById('breadcrumbRentLink');
+        const breadcrumbRentCurrent = document.getElementById('breadcrumbRentCurrent');
+        const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
+        const breadcrumbSeparator = document.getElementById('breadcrumbSeparator');
 
         const keywordFilter = document.getElementById('keywordFilter');
         const typeFilter = document.getElementById('typeFilter');
@@ -681,6 +710,24 @@
             const title = getPageTitleByCategory();
             pageHeading.textContent = title;
             document.title = title + " - ToamViet.com.vn";
+        }
+
+        function syncBreadcrumb() {
+            const category = getCurrentCategory();
+
+            if (category && CATEGORY_MAP[category]) {
+                breadcrumbRentLink.classList.remove("hidden");
+                breadcrumbRentCurrent.classList.add("hidden");
+                breadcrumbCurrent.textContent = CATEGORY_MAP[category].name;
+                breadcrumbCurrent.classList.remove("hidden");
+                breadcrumbSeparator.classList.remove("hidden");
+            } else {
+                breadcrumbRentLink.classList.add("hidden");
+                breadcrumbRentCurrent.classList.remove("hidden");
+                breadcrumbCurrent.textContent = "";
+                breadcrumbCurrent.classList.add("hidden");
+                breadcrumbSeparator.classList.add("hidden");
+            }
         }
 
         function renderCategoryFilterOptions() {
@@ -1324,6 +1371,7 @@
         function initPage() {
             renderCategoryFilterOptions();
             syncPageHeading();
+            syncBreadcrumb();
             syncFilterByCategory();
             renderListings();
             updateFavoriteCount();
