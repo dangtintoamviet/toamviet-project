@@ -1,1 +1,600 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chính sách bảo mật | ToamViet.com.vn</title>
 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/mobile.css" />
+  <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+  <style>
+    :root {
+      --vip-color: #008b8b;
+      --vip-dark: #0f766e;
+      --hover-color: #ff8c00;
+      --soft-bg: #f5f7fa;
+      --text-main: #1f2937;
+      --text-soft: #64748b;
+      --stroke: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      background: var(--soft-bg);
+      color: var(--text-main);
+    }
+
+    .policy-page-shell {
+      padding-top: 14px;
+      padding-bottom: 34px;
+    }
+
+    .hero-card,
+    .policy-card,
+    .contact-card,
+    .summary-card {
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      margin-bottom: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 24%),
+        linear-gradient(135deg, #0f766e 0%, #008b8b 52%, #0f172a 100%);
+      color: #fff;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -72px;
+      bottom: -72px;
+      width: 220px;
+      height: 220px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3vw, 38px);
+      line-height: 1.23;
+      font-weight: 900;
+      color: #fff;
+      text-transform: none;
+    }
+
+    .hero-desc {
+      max-width: 920px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .summary-card,
+    .contact-card {
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .summary-item {
+      border: 1px solid #eef2f7;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .summary-title {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .summary-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #64748b;
+    }
+
+    .policy-layout {
+      display: grid;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .policy-card {
+      padding: 22px;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--vip-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--vip-color);
+      padding-left: 12px;
+    }
+
+    .policy-title {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.35;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .policy-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #475569;
+    }
+
+    .policy-text + .policy-text {
+      margin-top: 12px;
+    }
+
+    .policy-list {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: #475569;
+    }
+
+    .policy-list li {
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, rgba(0,139,139,0.08), rgba(255,140,0,0.06));
+      border: 1px solid rgba(0,139,139,0.12);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .contact-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .contact-text {
+      margin: 0 0 14px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #475569;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.22s ease;
+    }
+
+    .contact-btn-primary {
+      background: var(--vip-color);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(0,139,139,0.18);
+    }
+
+    .contact-btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .contact-btn-soft {
+      background: #fff;
+      color: #475569;
+      border: 1px solid #d1d5db;
+    }
+
+    .contact-btn-soft:hover {
+      border-color: rgba(0,139,139,0.3);
+      color: var(--vip-color);
+      background: #f8ffff;
+    }
+
+    .seo-block-shell {
+      margin-top: 24px;
+    }
+
+    @media (max-width: 991px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .policy-page-shell {
+        padding-top: 10px;
+        padding-bottom: 24px;
+      }
+
+      .hero-card,
+      .policy-card,
+      .contact-card,
+      .summary-card {
+        border-radius: 20px;
+      }
+
+      .hero-card,
+      .policy-card,
+      .contact-card,
+      .summary-card {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero-card {
+        padding-top: 22px;
+        padding-bottom: 22px;
+      }
+
+      .policy-title {
+        font-size: 22px;
+      }
+
+      .contact-actions {
+        flex-direction: column;
+      }
+
+      .contact-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <div id="siteMobileMenu"></div>
+
+  <main class="policy-page-shell">
+    <div class="container-custom">
+      <section class="hero-card">
+        <div class="hero-badge">
+          <i class="fa-solid fa-shield-halved"></i>
+          Chính sách bảo mật
+        </div>
+        <h1 class="hero-title">Chính sách bảo mật thông tin trên ToamViet.com.vn</h1>
+        <p class="hero-desc">
+          ToamViet tôn trọng quyền riêng tư của người dùng và cam kết bảo vệ các thông tin được cung cấp trong quá trình sử dụng website.
+          Trang này giúp người dùng hiểu rõ website thu thập gì, sử dụng dữ liệu ra sao và cách liên hệ khi cần hỗ trợ liên quan đến thông tin cá nhân.
+        </p>
+      </section>
+
+      <section class="summary-card">
+        <div class="section-kicker">Tóm tắt nhanh</div>
+        <div class="summary-grid">
+          <article class="summary-item">
+            <h2 class="summary-title">Chỉ thu thập thông tin cần thiết</h2>
+            <p class="summary-text">ToamViet chỉ ưu tiên các dữ liệu cần cho việc đăng tin, liên hệ hỗ trợ và vận hành website.</p>
+          </article>
+          <article class="summary-item">
+            <h2 class="summary-title">Không dùng sai mục đích</h2>
+            <p class="summary-text">Thông tin người dùng được dùng để hỗ trợ hiển thị nội dung, liên hệ xác minh hoặc chăm sóc khi cần thiết.</p>
+          </article>
+          <article class="summary-item">
+            <h2 class="summary-title">Có quyền yêu cầu cập nhật</h2>
+            <p class="summary-text">Người dùng có thể liên hệ để yêu cầu chỉnh sửa, cập nhật hoặc gỡ bỏ thông tin trong phạm vi phù hợp.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="policy-layout">
+        <article class="policy-card">
+          <div class="section-kicker">1. Phạm vi áp dụng</div>
+          <h2 class="policy-title">Chính sách này áp dụng cho ai?</h2>
+          <p class="policy-text">
+            Chính sách bảo mật này áp dụng cho người dùng truy cập, xem nội dung, liên hệ hỗ trợ hoặc sử dụng các chức năng trên website ToamViet.com.vn,
+            bao gồm nhưng không giới hạn ở các nhóm nội dung như nhà đất bán, nhà đất cho thuê, dự án, tin tức, giá nhà đất và xây dựng.
+          </p>
+          <p class="policy-text">
+            Khi người dùng tiếp tục sử dụng website, điều đó được hiểu là người dùng đã đọc, hiểu và đồng ý với nguyên tắc xử lý thông tin được nêu trong chính sách này.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <div class="section-kicker">2. Loại thông tin có thể được thu thập</div>
+          <h2 class="policy-title">ToamViet có thể thu thập những thông tin gì?</h2>
+          <p class="policy-text">
+            Trong quá trình người dùng sử dụng website, ToamViet có thể thu thập một số thông tin do người dùng chủ động cung cấp hoặc phát sinh từ quá trình sử dụng dịch vụ.
+          </p>
+          <ul class="policy-list">
+            <li>Thông tin liên hệ như họ tên, số điện thoại, email khi người dùng gửi biểu mẫu hoặc liên hệ hỗ trợ.</li>
+            <li>Thông tin liên quan đến tin đăng như tiêu đề, mô tả, hình ảnh, khu vực, mức giá và nội dung người dùng cung cấp để đăng tải.</li>
+            <li>Dữ liệu kỹ thuật cơ bản như thời gian truy cập, loại thiết bị, trình duyệt hoặc một số thông tin cần thiết để cải thiện trải nghiệm sử dụng.</li>
+          </ul>
+        </article>
+
+        <article class="policy-card">
+          <div class="section-kicker">3. Mục đích sử dụng thông tin</div>
+          <h2 class="policy-title">Thông tin được dùng để làm gì?</h2>
+          <p class="policy-text">
+            ToamViet sử dụng thông tin người dùng trước hết để vận hành website ổn định, hỗ trợ xử lý các yêu cầu liên quan đến đăng tin,
+            cập nhật nội dung, phản hồi câu hỏi và nâng cao chất lượng trải nghiệm trên hệ thống.
+          </p>
+          <ul class="policy-list">
+            <li>Tiếp nhận và xử lý nội dung người dùng gửi lên website.</li>
+            <li>Liên hệ xác minh, phản hồi hoặc hỗ trợ khi có yêu cầu liên quan đến tin đăng.</li>
+            <li>Cải thiện trải nghiệm sử dụng và tối ưu giao diện, tính năng, nội dung hiển thị.</li>
+            <li>Hỗ trợ đảm bảo an toàn, hạn chế nội dung sai lệch, trùng lặp hoặc không phù hợp.</li>
+          </ul>
+        </article>
+
+        <article class="policy-card">
+          <div class="section-kicker">4. Nguyên tắc bảo vệ dữ liệu</div>
+          <h2 class="policy-title">ToamViet bảo vệ thông tin người dùng như thế nào?</h2>
+          <p class="policy-text">
+            ToamViet cố gắng áp dụng các biện pháp quản lý và kỹ thuật phù hợp để hạn chế truy cập trái phép, sử dụng sai mục đích hoặc làm lộ dữ liệu người dùng.
+            Tuy nhiên, do môi trường internet luôn tồn tại rủi ro nhất định, ToamViet không thể cam kết loại bỏ hoàn toàn mọi nguy cơ ngoài ý muốn.
+          </p>
+          <p class="policy-text">
+            Trong phạm vi vận hành thực tế, website ưu tiên hạn chế việc thu thập dư thừa, chỉ giữ lại những thông tin cần cho hoạt động của hệ thống và hỗ trợ người dùng.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <div class="section-kicker">5. Chia sẻ thông tin</div>
+          <h2 class="policy-title">Thông tin của người dùng có bị chia sẻ không?</h2>
+          <p class="policy-text">
+            ToamViet không chủ trương chia sẻ thông tin cá nhân của người dùng cho bên thứ ba một cách tùy tiện.
+            Trong một số trường hợp cần thiết, việc cung cấp hoặc phối hợp xử lý thông tin có thể diễn ra khi có yêu cầu hợp pháp,
+            khi cần hỗ trợ vận hành hệ thống hoặc khi người dùng chủ động công khai dữ liệu trong nội dung tin đăng.
+          </p>
+          <p class="policy-text">
+            Người dùng cần hiểu rằng một số thông tin được đưa vào tin đăng công khai sẽ hiển thị ra ngoài theo đúng mục đích của nội dung đó,
+            ví dụ như số điện thoại liên hệ, tên người đăng hoặc thông tin giới thiệu đơn vị.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <div class="section-kicker">6. Quyền của người dùng</div>
+          <h2 class="policy-title">Người dùng có thể yêu cầu gì liên quan đến dữ liệu?</h2>
+          <p class="policy-text">
+            Người dùng có thể chủ động liên hệ ToamViet để yêu cầu xem xét cập nhật, chỉnh sửa hoặc gỡ bỏ một số thông tin đã cung cấp,
+            đặc biệt trong các trường hợp dữ liệu hiển thị sai, không còn phù hợp hoặc cần điều chỉnh theo nhu cầu thực tế.
+          </p>
+          <ul class="policy-list">
+            <li>Yêu cầu chỉnh sửa thông tin liên hệ hoặc nội dung đã cung cấp.</li>
+            <li>Yêu cầu gỡ bỏ hoặc hạn chế hiển thị một số dữ liệu trong phạm vi phù hợp.</li>
+            <li>Yêu cầu giải thích thêm về cách dữ liệu đang được sử dụng trên website.</li>
+          </ul>
+        </article>
+
+        <article class="policy-card">
+          <div class="section-kicker">7. Cập nhật chính sách</div>
+          <h2 class="policy-title">Chính sách này có thể thay đổi không?</h2>
+          <p class="policy-text">
+            ToamViet có thể cập nhật, điều chỉnh hoặc bổ sung nội dung chính sách bảo mật theo nhu cầu vận hành thực tế của website.
+            Khi có thay đổi đáng kể, nội dung mới sẽ được cập nhật trực tiếp trên trang này để người dùng dễ theo dõi.
+          </p>
+          <p class="policy-text">
+            Người dùng nên kiểm tra lại chính sách bảo mật theo định kỳ để nắm được phiên bản đang có hiệu lực tại thời điểm sử dụng dịch vụ.
+          </p>
+        </article>
+
+        <article class="contact-card">
+          <div class="section-kicker">Liên hệ về bảo mật thông tin</div>
+          <div class="contact-box">
+            <h2 class="contact-title">Cần hỗ trợ liên quan đến dữ liệu hoặc quyền riêng tư?</h2>
+            <p class="contact-text">
+              Nếu bạn cần trao đổi thêm về thông tin cá nhân, nội dung hiển thị trên website hoặc yêu cầu cập nhật dữ liệu,
+              bạn có thể liên hệ trực tiếp với ToamViet qua các kênh hỗ trợ bên dưới.
+            </p>
+
+            <div class="contact-actions">
+              <a class="contact-btn contact-btn-primary" href="tel:0982368978">
+                <i class="fa-solid fa-phone-volume"></i>
+                0982368978
+              </a>
+              <a class="contact-btn contact-btn-soft" href="mailto:dangtin.toamviet@gmail.com">
+                <i class="fa-solid fa-envelope"></i>
+                dangtin.toamviet@gmail.com
+              </a>
+              <a class="contact-btn contact-btn-soft" href="../pages/lien-he.html">
+                <i class="fa-solid fa-arrow-right"></i>
+                Xem trang liên hệ
+              </a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="seo-block-shell">
+        <div id="seoContent"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <button
+    id="goToTop"
+    onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+  >
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <div
+    class="zalo-chat-btn wiggle"
+    onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+  >
+    <i class="fa-solid fa-comment-dots"></i>
+  </div>
+
+  <div id="chatForm">
+    <div class="chat-header">
+      <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+      <span
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+        style="cursor:pointer; font-size: 20px;"
+      >&times;</span>
+    </div>
+    <div class="chat-body">
+      <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+      <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
+      <button class="btn-send" onclick="sendToZaloChat()">Bắt đầu chat trên Zalo</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/component-loader.js"></script>
+  <script src="../assets/js/seo-content.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <script>
+    async function initSharedComponents() {
+      try {
+        if (typeof loadComponent === "function") {
+          await loadComponent("siteHeader", "../components/header-inner.html");
+          await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+          await loadComponent("siteFooter", "../components/footer-inner.html");
+
+          if (typeof setupFixedHeaderSpacing === "function") {
+            setupFixedHeaderSpacing();
+          }
+          if (typeof watchHeaderSpacing === "function") {
+            watchHeaderSpacing();
+          }
+        }
+      } catch (error) {
+        console.error("Không thể load component dùng chung:", error);
+      }
+    }
+
+    function renderPrivacySeoFallback() {
+      const container = document.getElementById("seoContent");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="seo-wrapper">
+          <div class="seo-text collapsed" id="seoContent-text">
+            <p>Chính sách bảo mật là một trong những trang nền quan trọng giúp ToamViet hoàn thiện cấu trúc website và tăng độ tin cậy với người dùng. Khi người dùng truy cập, đăng tin hoặc liên hệ hỗ trợ, việc website công khai rõ cách thu thập và sử dụng thông tin sẽ tạo cảm giác minh bạch và chuyên nghiệp hơn.</p>
+            <p>Đối với một website đang phát triển hệ sinh thái nội dung như ToamViet, trang chính sách bảo mật còn giúp làm rõ nguyên tắc xử lý dữ liệu, giới hạn sử dụng thông tin và quyền của người dùng khi cần cập nhật hoặc yêu cầu hỗ trợ liên quan đến dữ liệu cá nhân.</p>
+            <p>Về mặt SEO và thương hiệu, đây cũng là một trang quan trọng để hoàn thiện nhóm trang pháp lý cơ bản, hỗ trợ tốt hơn cho uy tín website trong mắt người dùng và công cụ tìm kiếm.</p>
+          </div>
+          <button type="button" class="seo-toggle-btn" id="seoContent-toggle" aria-expanded="false">
+            <span class="seo-toggle-label">Xem thêm</span>
+            <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+          </button>
+        </div>
+      `;
+
+      const toggleBtn = document.getElementById("seoContent-toggle");
+      const seoText = document.getElementById("seoContent-text");
+      const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+      if (!toggleBtn || !seoText || !toggleLabel) return;
+
+      toggleBtn.addEventListener("click", function () {
+        const isCollapsed = seoText.classList.contains("collapsed");
+
+        if (isCollapsed) {
+          seoText.classList.remove("collapsed");
+          toggleBtn.classList.add("expanded");
+          toggleBtn.setAttribute("aria-expanded", "true");
+          toggleLabel.textContent = "Thu gọn";
+        } else {
+          seoText.classList.add("collapsed");
+          toggleBtn.classList.remove("expanded");
+          toggleBtn.setAttribute("aria-expanded", "false");
+          toggleLabel.textContent = "Xem thêm";
+        }
+      });
+    }
+
+    function sendToZaloChat() {
+      const name = document.getElementById("cusName").value.trim();
+      const msg = document.getElementById("cusMsg").value.trim();
+      const phone = "0982368978";
+
+      if (!name) {
+        alert("Vui lòng cho biết tên của bạn");
+        return;
+      }
+
+      const fullMsg = "Chào ToamViet, tôi là " + name + ". " + msg;
+      const encodedMsg = encodeURIComponent(fullMsg);
+      window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+    }
+
+    window.addEventListener("load", async function () {
+      await initSharedComponents();
+
+      if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function" && getSeoContentByKey("chinh-sach-bao-mat")) {
+        renderSeoContent("seoContent", "chinh-sach-bao-mat");
+      } else {
+        renderPrivacySeoFallback();
+      }
+    });
+  </script>
+</body>
+</html>
