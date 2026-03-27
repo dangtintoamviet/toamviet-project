@@ -553,7 +553,8 @@
     const pageState = {
       sourcePosts: [],
       normalizedPosts: [],
-      isFallback: false
+      isFallback: false,
+      addressData: []
     };
 
     async function initSharedComponents() {
@@ -572,6 +573,18 @@
         }
       } catch (error) {
         console.error("Không thể load component dùng chung:", error);
+      }
+    }
+
+    async function loadVietnamAddressData() {
+      try {
+        const response = await fetch("../assets/data/vietnam-address.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("Không thể tải dữ liệu địa chỉ");
+        const data = await response.json();
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        console.error("Lỗi đọc file vietnam-address.json:", error);
+        return [];
       }
     }
 
@@ -630,18 +643,89 @@
       return text.replace(/^Bán\s+/i, "").trim();
     }
 
+    function buildCityAliases(name, slug) {
+      const aliases = new Set();
+      const normalizedName = normalizeText(name);
+      const normalizedSlug = normalizeText(String(slug || "").replace(/-/g, " "));
+
+      if (normalizedName) aliases.add(normalizedName);
+      if (normalizedSlug) aliases.add(normalizedSlug);
+
+      const noTinh = normalizedName.replace(/^tinh\s+/, "").trim();
+      const noThanhPho = normalizedName.replace(/^thanh pho\s+/, "").trim();
+
+      if (noTinh) aliases.add(noTinh);
+      if (noThanhPho) aliases.add(noThanhPho);
+
+      if (normalizedName.includes("ho chi minh")) {
+        aliases.add("tp hcm");
+        aliases.add("tphcm");
+        aliases.add("hcm");
+        aliases.add("ho chi minh");
+      }
+
+      if (normalizedName.includes("da nang")) {
+        aliases.add("tp da nang");
+      }
+
+      if (normalizedName.includes("can tho")) {
+        aliases.add("tp can tho");
+      }
+
+      if (normalizedName.includes("hai phong")) {
+        aliases.add("tp hai phong");
+      }
+
+      return Array.from(aliases);
+    }
+
+    function resolveCityBySharedFile(rawCity) {
+      const cityText = sanitizeAreaValue(rawCity);
+      if (!cityText) return "";
+
+      const normalizedRaw = normalizeText(cityText);
+      for (const item of pageState.addressData) {
+        const aliases = buildCityAliases(item.name, item.slug);
+        if (aliases.includes(normalizedRaw)) {
+          return item.name;
+        }
+      }
+
+      return cityText;
+    }
+
+    function resolveWardBySharedFile(rawWard, resolvedCity) {
+      const wardText = sanitizeAreaValue(rawWard);
+      if (!wardText) return "";
+
+      const cityEntry = pageState.addressData.find(function (item) {
+        return item.name === resolvedCity;
+      });
+
+      if (!cityEntry || !Array.isArray(cityEntry.wards)) {
+        return wardText;
+      }
+
+      const normalizedWard = normalizeText(wardText);
+      const match = cityEntry.wards.find(function (ward) {
+        return normalizeText(ward) === normalizedWard;
+      });
+
+      return match || wardText;
+    }
+
     function extractCity(post) {
-      return (
+      const rawCity =
         sanitizeAreaValue(post.city) ||
         sanitizeAreaValue(post.province) ||
         sanitizeAreaValue(post.provinceName) ||
-        sanitizeAreaValue(post.state) ||
-        "Khác"
-      );
+        sanitizeAreaValue(post.state);
+
+      return resolveCityBySharedFile(rawCity) || "Khác";
     }
 
-    function extractWard(post) {
-      return (
+    function extractWard(post, cityName) {
+      const rawWard =
         sanitizeAreaValue(post.ward) ||
         sanitizeAreaValue(post.wardName) ||
         sanitizeAreaValue(post.commune) ||
@@ -651,9 +735,9 @@
         sanitizeAreaValue(post.subArea) ||
         sanitizeAreaValue(post.areaLevel2) ||
         sanitizeAreaValue(post.district) ||
-        sanitizeAreaValue(post.districtName) ||
-        "Khu vực khác"
-      );
+        sanitizeAreaValue(post.districtName);
+
+      return resolveWardBySharedFile(rawWard, cityName) || "Khu vực khác";
     }
 
     function resolveCategoryInfo(post) {
@@ -743,7 +827,7 @@
         if (!priceInMillion || !area || area <= 0) return null;
 
         const city = extractCity(post);
-        const ward = extractWard(post);
+        const ward = extractWard(post, city);
         const propertyType = extractPropertyType(post);
         const categorySlug = extractCategorySlug(post);
         const unitPrice = priceInMillion / area;
@@ -893,9 +977,9 @@
       const selectedWard = wardSelect.value;
       const selectedCategory = categorySelect.value;
 
-      const cities = uniqueSorted(allNormalizedPosts.map(function (item) {
-        return item.city;
-      }));
+      const cities = pageState.addressData.length
+        ? pageState.addressData.map(function (item) { return item.name; })
+        : uniqueSorted(allNormalizedPosts.map(function (item) { return item.city; }));
 
       citySelect.innerHTML =
         '<option value="">Tất cả tỉnh/thành</option>' +
@@ -905,15 +989,25 @@
 
       citySelect.value = cities.includes(selectedCity) ? selectedCity : "";
 
-      const wardSource = citySelect.value
-        ? allNormalizedPosts.filter(function (item) {
-            return item.city === citySelect.value;
-          })
-        : allNormalizedPosts;
+      let wards = [];
+      if (pageState.addressData.length) {
+        if (citySelect.value) {
+          const cityEntry = pageState.addressData.find(function (item) {
+            return item.name === citySelect.value;
+          });
+          wards = cityEntry && Array.isArray(cityEntry.wards) ? cityEntry.wards : [];
+        }
+      } else {
+        const wardSource = citySelect.value
+          ? allNormalizedPosts.filter(function (item) {
+              return item.city === citySelect.value;
+            })
+          : allNormalizedPosts;
 
-      const wards = uniqueSorted(wardSource.map(function (item) {
-        return item.ward;
-      }));
+        wards = uniqueSorted(wardSource.map(function (item) {
+          return item.ward;
+        }));
+      }
 
       wardSelect.innerHTML =
         '<option value="">Tất cả phường/xã</option>' +
@@ -952,16 +1046,6 @@
         const categoryOk = categorySlug ? item.categorySlug === categorySlug : true;
         return cityOk && wardOk && categoryOk;
       });
-    }
-
-    function getSelectedLocationLabel() {
-      const city = document.getElementById("filter-city").value;
-      const ward = document.getElementById("filter-ward").value;
-
-      if (ward && city) return ward + ", " + city;
-      if (ward) return ward;
-      if (city) return city;
-      return "Việt Nam";
     }
 
     function getSelectedCategoryLabel() {
@@ -1147,7 +1231,8 @@
       renderDynamicSeo();
     }
 
-    function initData() {
+    async function initData() {
+      pageState.addressData = await loadVietnamAddressData();
       const source = getPropertyPosts();
       pageState.sourcePosts = source.posts;
       pageState.normalizedPosts = normalizePostsForPrice(source.posts);
@@ -1169,7 +1254,11 @@
       window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
     }
 
-    document.getElementById("filter-city").addEventListener("change", renderReport);
+    document.getElementById("filter-city").addEventListener("change", function () {
+      document.getElementById("filter-ward").value = "";
+      renderReport();
+    });
+
     document.getElementById("filter-ward").addEventListener("change", renderReport);
     document.getElementById("filter-category").addEventListener("change", renderReport);
 
@@ -1182,7 +1271,7 @@
 
     window.addEventListener("load", async function () {
       await initSharedComponents();
-      initData();
+      await initData();
       renderReport();
     });
 
