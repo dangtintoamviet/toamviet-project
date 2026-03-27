@@ -1,1 +1,706 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liên hệ | ToamViet.com.vn</title>
 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/mobile.css" />
+  <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+  <style>
+    :root {
+      --vip-color: #008b8b;
+      --vip-dark: #0f766e;
+      --hover-color: #ff8c00;
+      --soft-bg: #f5f7fa;
+      --text-main: #1f2937;
+      --text-soft: #64748b;
+      --stroke: #e5e7eb;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      background: var(--soft-bg);
+      color: var(--text-main);
+    }
+
+    .contact-page-shell {
+      padding-top: 14px;
+      padding-bottom: 34px;
+    }
+
+    .hero-card,
+    .contact-card,
+    .form-card,
+    .faq-card,
+    .note-card {
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      margin-bottom: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 24%),
+        linear-gradient(135deg, #0f766e 0%, #008b8b 52%, #0f172a 100%);
+      color: #fff;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -72px;
+      bottom: -72px;
+      width: 220px;
+      height: 220px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3vw, 38px);
+      line-height: 1.23;
+      font-weight: 900;
+      color: #fff;
+      text-transform: none;
+    }
+
+    .hero-desc {
+      max-width: 900px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .contact-card,
+    .form-card,
+    .faq-card,
+    .note-card {
+      padding: 22px;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--vip-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--vip-color);
+      padding-left: 12px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 26px;
+      line-height: 1.35;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .section-desc {
+      margin: 0 0 18px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-soft);
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid #eef2f7;
+      border-radius: 18px;
+      background: #fff;
+      transition: 0.2s ease;
+    }
+
+    .contact-item:hover {
+      border-color: rgba(0,139,139,0.25);
+      background: #f8ffff;
+      transform: translateY(-1px);
+    }
+
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: #ecfeff;
+      color: var(--vip-color);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+
+    .contact-value {
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: none;
+      word-break: break-word;
+    }
+
+    .contact-value a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .contact-value a:hover {
+      color: var(--vip-color);
+    }
+
+    .contact-sub {
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-soft);
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .quick-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.22s ease;
+    }
+
+    .quick-btn-primary {
+      background: var(--vip-color);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(0,139,139,0.18);
+    }
+
+    .quick-btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .quick-btn-soft {
+      background: #fff;
+      color: #475569;
+      border: 1px solid #d1d5db;
+    }
+
+    .quick-btn-soft:hover {
+      border-color: rgba(0,139,139,0.3);
+      color: var(--vip-color);
+      background: #f8ffff;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-control,
+    .form-textarea {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 14px;
+      background: #fff;
+      padding: 13px 14px;
+      font-size: 14px;
+      outline: none;
+      font-family: "Roboto", sans-serif;
+      transition: 0.22s ease;
+    }
+
+    .form-control:focus,
+    .form-textarea:focus {
+      border-color: var(--vip-color);
+      box-shadow: 0 0 0 3px rgba(0,139,139,0.08);
+    }
+
+    .form-textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      min-height: 48px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--vip-color), var(--vip-dark));
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.22s ease;
+      box-shadow: 0 10px 22px rgba(0,139,139,0.18);
+    }
+
+    .submit-btn:hover {
+      opacity: 0.96;
+      transform: translateY(-1px);
+    }
+
+    .faq-card,
+    .note-card {
+      margin-bottom: 22px;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .faq-item {
+      border: 1px solid #eef2f7;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .faq-q {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .faq-a {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #64748b;
+    }
+
+    .note-box {
+      background: linear-gradient(135deg, rgba(0,139,139,0.08), rgba(255,140,0,0.06));
+      border: 1px solid rgba(0,139,139,0.12);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .note-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .note-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #475569;
+    }
+
+    .seo-block-shell {
+      margin-top: 24px;
+    }
+
+    @media (max-width: 991px) {
+      .contact-layout,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .contact-page-shell {
+        padding-top: 10px;
+        padding-bottom: 24px;
+      }
+
+      .hero-card,
+      .contact-card,
+      .form-card,
+      .faq-card,
+      .note-card {
+        border-radius: 20px;
+      }
+
+      .hero-card,
+      .contact-card,
+      .form-card,
+      .faq-card,
+      .note-card {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero-card {
+        padding-top: 22px;
+        padding-bottom: 22px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+
+      .contact-value {
+        font-size: 16px;
+      }
+
+      .quick-actions {
+        flex-direction: column;
+      }
+
+      .quick-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <div id="siteMobileMenu"></div>
+
+  <main class="contact-page-shell">
+    <div class="container-custom">
+      <section class="hero-card">
+        <div class="hero-badge">
+          <i class="fa-solid fa-headset"></i>
+          Hỗ trợ & liên hệ
+        </div>
+        <h1 class="hero-title">Liên hệ với ToamViet.com.vn</h1>
+        <p class="hero-desc">
+          Nếu bạn cần hỗ trợ đăng tin, chỉnh sửa nội dung, tư vấn sử dụng website hoặc trao đổi hợp tác,
+          bạn có thể liên hệ trực tiếp với đội ngũ ToamViet qua số điện thoại hoặc email bên dưới.
+        </p>
+      </section>
+
+      <section class="contact-layout">
+        <article class="contact-card">
+          <div class="section-kicker">Thông tin liên hệ</div>
+          <h2 class="section-title">Kênh hỗ trợ chính thức</h2>
+          <p class="section-desc">
+            ToamViet ưu tiên hỗ trợ nhanh qua điện thoại và email để xử lý các nhu cầu liên quan đến đăng tin,
+            duyệt nội dung và phối hợp cập nhật thông tin trên website.
+          </p>
+
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fa-solid fa-phone"></i>
+              </div>
+              <div>
+                <div class="contact-label">Số điện thoại hỗ trợ</div>
+                <div class="contact-value">
+                  <a href="tel:0982368978">0982368978</a>
+                </div>
+                <div class="contact-sub">Hỗ trợ các nhu cầu liên quan đến đăng tin, chỉnh sửa nội dung và hướng dẫn sử dụng website.</div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div>
+                <div class="contact-label">Email hỗ trợ</div>
+                <div class="contact-value">
+                  <a href="mailto:dangtin.toamviet@gmail.com">dangtin.toamviet@gmail.com</a>
+                </div>
+                <div class="contact-sub">Phù hợp khi cần gửi nội dung chi tiết, file, hình ảnh hoặc yêu cầu hỗ trợ theo từng trường hợp cụ thể.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <a class="quick-btn quick-btn-primary" href="tel:0982368978">
+              <i class="fa-solid fa-phone-volume"></i>
+              Gọi hỗ trợ ngay
+            </a>
+            <a class="quick-btn quick-btn-soft" href="mailto:dangtin.toamviet@gmail.com">
+              <i class="fa-solid fa-paper-plane"></i>
+              Gửi email
+            </a>
+          </div>
+        </article>
+
+        <article class="form-card">
+          <div class="section-kicker">Biểu mẫu nhanh</div>
+          <h2 class="section-title">Gửi nội dung cần hỗ trợ</h2>
+          <p class="section-desc">
+            Bạn có thể điền nhanh biểu mẫu bên dưới. Khi bấm gửi, hệ thống sẽ mở email để bạn hoàn tất nội dung gửi đến đội ngũ hỗ trợ.
+          </p>
+
+          <form class="form-grid" onsubmit="sendContactEmail(event)">
+            <input type="text" id="contactName" class="form-control" placeholder="Họ và tên của bạn" required />
+            <input type="tel" id="contactPhone" class="form-control" placeholder="Số điện thoại" />
+            <input type="email" id="contactEmail" class="form-control" placeholder="Email của bạn" />
+            <input type="text" id="contactSubject" class="form-control" placeholder="Tiêu đề cần hỗ trợ" required />
+            <textarea id="contactMessage" class="form-textarea" placeholder="Mô tả nội dung bạn cần hỗ trợ..." required></textarea>
+            <button type="submit" class="submit-btn">
+              <i class="fa-solid fa-paper-plane mr-2"></i>
+              Gửi yêu cầu hỗ trợ
+            </button>
+          </form>
+        </article>
+      </section>
+
+      <section class="faq-card">
+        <div class="section-kicker">Câu hỏi thường gặp</div>
+        <div class="faq-grid">
+          <article class="faq-item">
+            <h3 class="faq-q">ToamViet hiện có thu phí đăng tin không?</h3>
+            <p class="faq-a">Hiện tại website đang trong giai đoạn hỗ trợ phát triển nội dung, nên đăng tin vẫn đang miễn phí.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3 class="faq-q">Khi nào nên gọi điện?</h3>
+            <p class="faq-a">Bạn nên gọi khi cần được hướng dẫn nhanh, cần xử lý gấp hoặc cần trao đổi trực tiếp về nội dung đăng tin.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3 class="faq-q">Khi nào nên gửi email?</h3>
+            <p class="faq-a">Bạn nên gửi email khi cần mô tả chi tiết, gửi hình ảnh, file đính kèm hoặc cần lưu lại nội dung trao đổi rõ ràng hơn.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3 class="faq-q">ToamViet hỗ trợ những nhóm nội dung nào?</h3>
+            <p class="faq-a">Website hiện hỗ trợ nhóm nhà đất bán, nhà đất cho thuê, dự án, tin tức, giá nhà đất, xây dựng và các nội dung liên quan.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="note-card">
+        <div class="section-kicker">Lưu ý khi liên hệ</div>
+        <div class="note-box">
+          <h3 class="note-title">Để hỗ trợ nhanh hơn</h3>
+          <p class="note-text">
+            Khi liên hệ, bạn nên ghi rõ nội dung cần hỗ trợ, link trang liên quan hoặc mô tả ngắn về vấn đề đang gặp.
+            Nếu là yêu cầu chỉnh sửa tin đăng, bạn nên gửi kèm link hoặc mã tin để đội ngũ hỗ trợ xử lý nhanh hơn.
+          </p>
+        </div>
+      </section>
+
+      <section class="seo-block-shell">
+        <div id="seoContent"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <button
+    id="goToTop"
+    onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+  >
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <div
+    class="zalo-chat-btn wiggle"
+    onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+  >
+    <i class="fa-solid fa-comment-dots"></i>
+  </div>
+
+  <div id="chatForm">
+    <div class="chat-header">
+      <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+      <span
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+        style="cursor:pointer; font-size: 20px;"
+      >&times;</span>
+    </div>
+    <div class="chat-body">
+      <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+      <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
+      <button class="btn-send" onclick="sendToZaloChat()">Bắt đầu chat trên Zalo</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/component-loader.js"></script>
+  <script src="../assets/js/seo-content.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <script>
+    async function initSharedComponents() {
+      try {
+        if (typeof loadComponent === "function") {
+          await loadComponent("siteHeader", "../components/header-inner.html");
+          await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+          await loadComponent("siteFooter", "../components/footer-inner.html");
+
+          if (typeof setupFixedHeaderSpacing === "function") {
+            setupFixedHeaderSpacing();
+          }
+          if (typeof watchHeaderSpacing === "function") {
+            watchHeaderSpacing();
+          }
+        }
+      } catch (error) {
+        console.error("Không thể load component dùng chung:", error);
+      }
+    }
+
+    function sendContactEmail(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("contactName").value.trim();
+      const phone = document.getElementById("contactPhone").value.trim();
+      const email = document.getElementById("contactEmail").value.trim();
+      const subject = document.getElementById("contactSubject").value.trim();
+      const message = document.getElementById("contactMessage").value.trim();
+
+      const body = [
+        "Chào ToamViet,",
+        "",
+        "Tôi là: " + name,
+        phone ? "Số điện thoại: " + phone : "",
+        email ? "Email: " + email : "",
+        "",
+        "Nội dung cần hỗ trợ:",
+        message
+      ].filter(Boolean).join("\n");
+
+      const mailto = "mailto:dangtin.toamviet@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      window.location.href = mailto;
+    }
+
+    function renderContactSeoFallback() {
+      const container = document.getElementById("seoContent");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="seo-wrapper">
+          <div class="seo-text collapsed" id="seoContent-text">
+            <p>Trang liên hệ của ToamViet là nơi tập trung các kênh hỗ trợ chính thức để người dùng kết nối nhanh với đội ngũ vận hành website. Việc công khai rõ số điện thoại và email giúp tăng độ tin cậy, đồng thời tạo cảm giác minh bạch khi người dùng cần hỗ trợ đăng tin, chỉnh sửa nội dung hoặc hỏi về cách sử dụng nền tảng.</p>
+            <p>Với một website đang phát triển hệ sinh thái nội dung như ToamViet, trang liên hệ không chỉ là nơi để người dùng tìm thông tin hỗ trợ mà còn là điểm tăng niềm tin thương hiệu. Khi được trình bày rõ ràng, dễ nhìn và đồng bộ giao diện với toàn site, trang này góp phần làm website chuyên nghiệp hơn trong mắt khách hàng.</p>
+            <p>Về mặt SEO, đây cũng là một trang nền quan trọng giúp hoàn thiện cấu trúc website, hỗ trợ tín hiệu uy tín cho thương hiệu và bổ sung thêm liên kết nội bộ tới các nhóm trang chính đang hoạt động trên hệ thống.</p>
+          </div>
+          <button type="button" class="seo-toggle-btn" id="seoContent-toggle" aria-expanded="false">
+            <span class="seo-toggle-label">Xem thêm</span>
+            <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+          </button>
+        </div>
+      `;
+
+      const toggleBtn = document.getElementById("seoContent-toggle");
+      const seoText = document.getElementById("seoContent-text");
+      const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+      if (!toggleBtn || !seoText || !toggleLabel) return;
+
+      toggleBtn.addEventListener("click", function () {
+        const isCollapsed = seoText.classList.contains("collapsed");
+
+        if (isCollapsed) {
+          seoText.classList.remove("collapsed");
+          toggleBtn.classList.add("expanded");
+          toggleBtn.setAttribute("aria-expanded", "true");
+          toggleLabel.textContent = "Thu gọn";
+        } else {
+          seoText.classList.add("collapsed");
+          toggleBtn.classList.remove("expanded");
+          toggleBtn.setAttribute("aria-expanded", "false");
+          toggleLabel.textContent = "Xem thêm";
+        }
+      });
+    }
+
+    function sendToZaloChat() {
+      const name = document.getElementById("cusName").value.trim();
+      const msg = document.getElementById("cusMsg").value.trim();
+      const phone = "0982368978";
+
+      if (!name) {
+        alert("Vui lòng cho biết tên của bạn");
+        return;
+      }
+
+      const fullMsg = "Chào ToamViet, tôi là " + name + ". " + msg;
+      const encodedMsg = encodeURIComponent(fullMsg);
+      window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+    }
+
+    window.addEventListener("load", async function () {
+      await initSharedComponents();
+
+      if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function" && getSeoContentByKey("lien-he")) {
+        renderSeoContent("seoContent", "lien-he");
+      } else {
+        renderContactSeoFallback();
+      }
+    });
+  </script>
+</body>
+</html>
