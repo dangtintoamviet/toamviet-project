@@ -1,1 +1,563 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Câu hỏi thường gặp | ToamViet.com.vn</title>
 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/mobile.css" />
+  <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+  <style>
+    :root {
+      --vip-color: #008b8b;
+      --vip-dark: #0f766e;
+      --hover-color: #ff8c00;
+      --soft-bg: #f5f7fa;
+      --text-main: #1f2937;
+      --text-soft: #64748b;
+      --stroke: #e5e7eb;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      background: var(--soft-bg);
+      color: var(--text-main);
+    }
+
+    .faq-page-shell {
+      padding-top: 14px;
+      padding-bottom: 34px;
+    }
+
+    .hero-card,
+    .faq-group-card,
+    .support-card {
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      margin-bottom: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 24%),
+        linear-gradient(135deg, #0f766e 0%, #008b8b 52%, #0f172a 100%);
+      color: #fff;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -72px;
+      bottom: -72px;
+      width: 220px;
+      height: 220px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3vw, 38px);
+      line-height: 1.23;
+      font-weight: 900;
+      color: #fff;
+      text-transform: none;
+    }
+
+    .hero-desc {
+      max-width: 920px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .faq-layout {
+      display: grid;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .faq-group-card,
+    .support-card {
+      padding: 22px;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--vip-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--vip-color);
+      padding-left: 12px;
+    }
+
+    .group-title {
+      margin: 0 0 8px;
+      font-size: 24px;
+      line-height: 1.35;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .group-desc {
+      margin: 0 0 18px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-soft);
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .faq-item {
+      border: 1px solid #eef2f7;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+      transition: 0.2s ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(0,139,139,0.22);
+      background: #f8ffff;
+      transform: translateY(-1px);
+    }
+
+    .faq-q {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .faq-a {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #64748b;
+    }
+
+    .support-box {
+      background: linear-gradient(135deg, rgba(0,139,139,0.08), rgba(255,140,0,0.06));
+      border: 1px solid rgba(0,139,139,0.12);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .support-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .support-text {
+      margin: 0 0 14px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #475569;
+    }
+
+    .support-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .support-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.22s ease;
+    }
+
+    .support-btn-primary {
+      background: var(--vip-color);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(0,139,139,0.18);
+    }
+
+    .support-btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .support-btn-soft {
+      background: #fff;
+      color: #475569;
+      border: 1px solid #d1d5db;
+    }
+
+    .support-btn-soft:hover {
+      border-color: rgba(0,139,139,0.3);
+      color: var(--vip-color);
+      background: #f8ffff;
+    }
+
+    .seo-block-shell {
+      margin-top: 24px;
+    }
+
+    @media (max-width: 991px) {
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .faq-page-shell {
+        padding-top: 10px;
+        padding-bottom: 24px;
+      }
+
+      .hero-card,
+      .faq-group-card,
+      .support-card {
+        border-radius: 20px;
+      }
+
+      .hero-card,
+      .faq-group-card,
+      .support-card {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero-card {
+        padding-top: 22px;
+        padding-bottom: 22px;
+      }
+
+      .group-title {
+        font-size: 22px;
+      }
+
+      .support-actions {
+        flex-direction: column;
+      }
+
+      .support-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <div id="siteMobileMenu"></div>
+
+  <main class="faq-page-shell">
+    <div class="container-custom">
+      <section class="hero-card">
+        <div class="hero-badge">
+          <i class="fa-solid fa-circle-question"></i>
+          Câu hỏi thường gặp
+        </div>
+        <h1 class="hero-title">Những câu hỏi thường gặp trên ToamViet.com.vn</h1>
+        <p class="hero-desc">
+          Trang này tổng hợp các câu hỏi phổ biến liên quan đến đăng tin, duyệt tin, chỉnh sửa nội dung,
+          sử dụng các nhóm trang trên website và cách liên hệ hỗ trợ khi cần xử lý nhanh.
+        </p>
+      </section>
+
+      <section class="faq-layout">
+        <article class="faq-group-card">
+          <div class="section-kicker">Nhóm 1</div>
+          <h2 class="group-title">Đăng tin và hiển thị nội dung</h2>
+          <p class="group-desc">
+            Đây là nhóm câu hỏi thường gặp nhất của người dùng mới khi bắt đầu sử dụng ToamViet.
+          </p>
+
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h3 class="faq-q">ToamViet hiện có thu phí đăng tin không?</h3>
+              <p class="faq-a">Hiện tại website vẫn đang trong giai đoạn hỗ trợ phát triển nội dung nên đăng tin đang miễn phí.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Tôi có thể đăng những nhóm nội dung nào?</h3>
+              <p class="faq-a">Bạn có thể đăng nhà đất bán, nhà đất cho thuê, dịch vụ xây dựng và các nội dung liên quan đúng với cấu trúc của website.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Đăng tin xong có hiển thị ngay không?</h3>
+              <p class="faq-a">Thông thường tin cần qua bước kiểm tra nội dung trước khi hiển thị public để đảm bảo chất lượng và tính đồng bộ trên website.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Vì sao tin của tôi chưa thấy xuất hiện?</h3>
+              <p class="faq-a">Có thể tin đang chờ duyệt, nội dung chưa đầy đủ, hình ảnh chưa đúng hoặc hệ thống chưa cập nhật ra ngoài ngay tại thời điểm bạn kiểm tra.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="faq-group-card">
+          <div class="section-kicker">Nhóm 2</div>
+          <h2 class="group-title">Chỉnh sửa, cập nhật và hỗ trợ</h2>
+          <p class="group-desc">
+            Nhóm này dành cho các câu hỏi khi người dùng cần sửa nội dung hoặc cần được hỗ trợ thủ công.
+          </p>
+
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h3 class="faq-q">Tôi muốn sửa tin đã đăng thì làm thế nào?</h3>
+              <p class="faq-a">Bạn nên gửi rõ link hoặc mã tin cần chỉnh sửa, kèm nội dung muốn thay đổi để đội ngũ hỗ trợ xử lý nhanh hơn.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Tôi có thể cập nhật lại hình ảnh hoặc thông tin liên hệ không?</h3>
+              <p class="faq-a">Có. Bạn có thể liên hệ hỗ trợ và gửi nội dung cập nhật, bao gồm ảnh mới, số điện thoại mới hoặc thông tin cần điều chỉnh.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Khi nào nên gọi điện thay vì gửi email?</h3>
+              <p class="faq-a">Bạn nên gọi khi cần hỗ trợ nhanh, cần xử lý gấp hoặc cần trao đổi trực tiếp về một vấn đề cụ thể.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Khi nào nên gửi email?</h3>
+              <p class="faq-a">Bạn nên gửi email khi cần mô tả chi tiết, gửi file, ảnh hoặc cần lưu lại nội dung trao đổi rõ ràng hơn.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="faq-group-card">
+          <div class="section-kicker">Nhóm 3</div>
+          <h2 class="group-title">Dự án, xây dựng và các trang nội dung</h2>
+          <p class="group-desc">
+            Một số câu hỏi liên quan đến cách website tổ chức dữ liệu dự án, dịch vụ xây dựng và các trang con.
+          </p>
+
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h3 class="faq-q">Trang dự án dùng để làm gì?</h3>
+              <p class="faq-a">Trang dự án giúp gom các nội dung theo từng dự án để người dùng xem tổng quan và đi sâu vào chi tiết, danh mục hoặc tin liên quan.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Danh mục dự án khác gì với chi tiết dự án?</h3>
+              <p class="faq-a">Danh mục dự án là nơi gom các tin thuộc một dự án, còn chi tiết dự án tập trung vào phần giới thiệu tổng quan của chính dự án đó.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Trang xây dựng có dành riêng cho nhà thầu và doanh nghiệp không?</h3>
+              <p class="faq-a">Có. Nhóm xây dựng được thiết kế để hiển thị dịch vụ, thương hiệu, đơn vị thi công hoặc các nội dung liên quan đến xây dựng và hoàn thiện.</p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q">Tại sao một số trang có nội dung SEO dài ở cuối?</h3>
+              <p class="faq-a">Đó là phần nội dung hỗ trợ SEO và giải thích thêm cho người dùng, đồng thời giúp website có cấu trúc nội dung đầy đủ hơn.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="support-card">
+          <div class="section-kicker">Cần hỗ trợ thêm?</div>
+          <div class="support-box">
+            <h3 class="support-title">Liên hệ trực tiếp với ToamViet</h3>
+            <p class="support-text">
+              Nếu câu hỏi của bạn chưa có trong trang này, bạn có thể liên hệ trực tiếp với đội ngũ hỗ trợ để được hướng dẫn nhanh hơn.
+            </p>
+
+            <div class="support-actions">
+              <a class="support-btn support-btn-primary" href="tel:0982368978">
+                <i class="fa-solid fa-phone-volume"></i>
+                Gọi 0982368978
+              </a>
+              <a class="support-btn support-btn-soft" href="mailto:dangtin.toamviet@gmail.com">
+                <i class="fa-solid fa-envelope"></i>
+                dangtin.toamviet@gmail.com
+              </a>
+              <a class="support-btn support-btn-soft" href="../pages/lien-he.html">
+                <i class="fa-solid fa-arrow-right"></i>
+                Xem trang liên hệ
+              </a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="seo-block-shell">
+        <div id="seoContent"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <button
+    id="goToTop"
+    onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+  >
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <div
+    class="zalo-chat-btn wiggle"
+    onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+  >
+    <i class="fa-solid fa-comment-dots"></i>
+  </div>
+
+  <div id="chatForm">
+    <div class="chat-header">
+      <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+      <span
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+        style="cursor:pointer; font-size: 20px;"
+      >&times;</span>
+    </div>
+    <div class="chat-body">
+      <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+      <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
+      <button class="btn-send" onclick="sendToZaloChat()">Bắt đầu chat trên Zalo</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/component-loader.js"></script>
+  <script src="../assets/js/seo-content.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <script>
+    async function initSharedComponents() {
+      try {
+        if (typeof loadComponent === "function") {
+          await loadComponent("siteHeader", "../components/header-inner.html");
+          await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+          await loadComponent("siteFooter", "../components/footer-inner.html");
+
+          if (typeof setupFixedHeaderSpacing === "function") {
+            setupFixedHeaderSpacing();
+          }
+          if (typeof watchHeaderSpacing === "function") {
+            watchHeaderSpacing();
+          }
+        }
+      } catch (error) {
+        console.error("Không thể load component dùng chung:", error);
+      }
+    }
+
+    function renderFaqSeoFallback() {
+      const container = document.getElementById("seoContent");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="seo-wrapper">
+          <div class="seo-text collapsed" id="seoContent-text">
+            <p>Trang câu hỏi thường gặp trên ToamViet giúp người dùng mới tiết kiệm thời gian khi cần tìm hiểu nhanh về cách đăng tin, cách nội dung được hiển thị và cách liên hệ hỗ trợ khi cần xử lý nhanh. Đây là một trong những trang nền rất quan trọng để tăng độ rõ ràng cho toàn bộ hệ thống.</p>
+            <p>Khi website có nhiều nhóm nội dung như nhà đất bán, cho thuê, dự án, xây dựng và tin tức, việc có một trang FAQ riêng sẽ giúp giảm bớt các câu hỏi lặp lại, đồng thời làm cho trải nghiệm người dùng mạch lạc hơn ngay từ giai đoạn đầu.</p>
+            <p>Về mặt SEO, đây cũng là một trang hữu ích vì bổ sung thêm lớp nội dung giải thích, tăng độ hoàn thiện cho cấu trúc site và hỗ trợ tín hiệu tin cậy cho thương hiệu ToamViet trong mắt người dùng lẫn công cụ tìm kiếm.</p>
+          </div>
+          <button type="button" class="seo-toggle-btn" id="seoContent-toggle" aria-expanded="false">
+            <span class="seo-toggle-label">Xem thêm</span>
+            <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+          </button>
+        </div>
+      `;
+
+      const toggleBtn = document.getElementById("seoContent-toggle");
+      const seoText = document.getElementById("seoContent-text");
+      const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+      if (!toggleBtn || !seoText || !toggleLabel) return;
+
+      toggleBtn.addEventListener("click", function () {
+        const isCollapsed = seoText.classList.contains("collapsed");
+
+        if (isCollapsed) {
+          seoText.classList.remove("collapsed");
+          toggleBtn.classList.add("expanded");
+          toggleBtn.setAttribute("aria-expanded", "true");
+          toggleLabel.textContent = "Thu gọn";
+        } else {
+          seoText.classList.add("collapsed");
+          toggleBtn.classList.remove("expanded");
+          toggleBtn.setAttribute("aria-expanded", "false");
+          toggleLabel.textContent = "Xem thêm";
+        }
+      });
+    }
+
+    function sendToZaloChat() {
+      const name = document.getElementById("cusName").value.trim();
+      const msg = document.getElementById("cusMsg").value.trim();
+      const phone = "0982368978";
+
+      if (!name) {
+        alert("Vui lòng cho biết tên của bạn");
+        return;
+      }
+
+      const fullMsg = "Chào ToamViet, tôi là " + name + ". " + msg;
+      const encodedMsg = encodeURIComponent(fullMsg);
+      window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+    }
+
+    window.addEventListener("load", async function () {
+      await initSharedComponents();
+
+      if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function" && getSeoContentByKey("cau-hoi-thuong-gap")) {
+        renderSeoContent("seoContent", "cau-hoi-thuong-gap");
+      } else {
+        renderFaqSeoFallback();
+      }
+    });
+  </script>
+</body>
+</html>
