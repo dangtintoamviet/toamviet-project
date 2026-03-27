@@ -1,1 +1,733 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giới thiệu | ToamViet.com.vn</title>
 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/mobile.css" />
+  <link rel="stylesheet" href="../assets/css/seo-content.css" />
+
+  <style>
+    :root {
+      --vip-color: #008b8b;
+      --vip-dark: #0f766e;
+      --hover-color: #ff8c00;
+      --soft-bg: #f5f7fa;
+      --text-main: #1f2937;
+      --text-soft: #64748b;
+      --stroke: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      background: var(--soft-bg);
+      color: var(--text-main);
+    }
+
+    .about-page-shell {
+      padding-top: 14px;
+      padding-bottom: 34px;
+    }
+
+    .hero-card,
+    .intro-card,
+    .mission-card,
+    .value-card,
+    .timeline-card,
+    .contact-card {
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      margin-bottom: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 24%),
+        linear-gradient(135deg, #0f766e 0%, #008b8b 52%, #0f172a 100%);
+      color: #fff;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -72px;
+      bottom: -72px;
+      width: 220px;
+      height: 220px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3vw, 40px);
+      line-height: 1.23;
+      font-weight: 900;
+      color: #fff;
+      text-transform: none;
+    }
+
+    .hero-desc {
+      max-width: 920px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--vip-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--vip-color);
+      padding-left: 12px;
+    }
+
+    .section-title {
+      margin: 0 0 10px;
+      font-size: 26px;
+      line-height: 1.35;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .section-desc {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #475569;
+    }
+
+    .intro-card,
+    .mission-card,
+    .timeline-card,
+    .contact-card {
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      height: 100%;
+    }
+
+    .stat-box {
+      border: 1px solid #eef2f7;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 900;
+      color: var(--vip-color);
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .mission-grid,
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .mission-card,
+    .value-card {
+      padding: 20px;
+    }
+
+    .mission-icon,
+    .value-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: #ecfeff;
+      color: var(--vip-color);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .mission-title,
+    .value-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .mission-text,
+    .value-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #64748b;
+    }
+
+    .timeline-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+      padding: 16px;
+      border: 1px solid #eef2f7;
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .timeline-year {
+      min-height: 42px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: #ecfeff;
+      color: var(--vip-color);
+      font-size: 14px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeline-title {
+      margin: 0 0 6px;
+      font-size: 17px;
+      line-height: 1.5;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .timeline-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #64748b;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, rgba(0,139,139,0.08), rgba(255,140,0,0.06));
+      border: 1px solid rgba(0,139,139,0.12);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .contact-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: none;
+    }
+
+    .contact-text {
+      margin: 0 0 14px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #475569;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.22s ease;
+    }
+
+    .contact-btn-primary {
+      background: var(--vip-color);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(0,139,139,0.18);
+    }
+
+    .contact-btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .contact-btn-soft {
+      background: #fff;
+      color: #475569;
+      border: 1px solid #d1d5db;
+    }
+
+    .contact-btn-soft:hover {
+      border-color: rgba(0,139,139,0.3);
+      color: var(--vip-color);
+      background: #f8ffff;
+    }
+
+    .seo-block-shell {
+      margin-top: 24px;
+    }
+
+    @media (max-width: 991px) {
+      .intro-grid,
+      .mission-grid,
+      .values-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .about-page-shell {
+        padding-top: 10px;
+        padding-bottom: 24px;
+      }
+
+      .hero-card,
+      .intro-card,
+      .mission-card,
+      .value-card,
+      .timeline-card,
+      .contact-card {
+        border-radius: 20px;
+      }
+
+      .hero-card,
+      .intro-card,
+      .mission-card,
+      .value-card,
+      .timeline-card,
+      .contact-card {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero-card {
+        padding-top: 22px;
+        padding-bottom: 22px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-actions {
+        flex-direction: column;
+      }
+
+      .contact-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <div id="siteMobileMenu"></div>
+
+  <main class="about-page-shell">
+    <div class="container-custom">
+      <section class="hero-card">
+        <div class="hero-badge">
+          <i class="fa-solid fa-circle-info"></i>
+          Về ToamViet
+        </div>
+        <h1 class="hero-title">Giới thiệu về ToamViet.com.vn</h1>
+        <p class="hero-desc">
+          ToamViet được xây dựng theo hướng trở thành một nền tảng nội dung bất động sản và xây dựng rõ ràng, dễ dùng,
+          thân thiện với người đăng tin và thuận tiện cho người dùng khi tìm kiếm thông tin về nhà đất bán, cho thuê, dự án,
+          giá nhà đất, doanh nghiệp, môi giới và dịch vụ xây dựng.
+        </p>
+
+        <div class="hero-points">
+          <span class="hero-pill"><i class="fa-solid fa-house"></i> Nhà đất bán & cho thuê</span>
+          <span class="hero-pill"><i class="fa-solid fa-diagram-project"></i> Dự án</span>
+          <span class="hero-pill"><i class="fa-solid fa-trowel-bricks"></i> Xây dựng</span>
+          <span class="hero-pill"><i class="fa-solid fa-newspaper"></i> Nội dung hỗ trợ SEO</span>
+        </div>
+      </section>
+
+      <section class="intro-grid">
+        <article class="intro-card">
+          <div class="section-kicker">ToamViet là gì?</div>
+          <h2 class="section-title">Một website đang được xây theo hướng thực tế, dễ mở rộng và rõ cấu trúc</h2>
+          <p class="section-desc">
+            ToamViet không chỉ là nơi đăng tin mà còn là một hệ thống nội dung được tổ chức thành nhiều lớp:
+            trang danh mục, trang chi tiết, trang dự án, trang doanh nghiệp, trang môi giới, nhóm nội dung xây dựng
+            và các trang hỗ trợ như liên hệ, FAQ, báo giá dịch vụ, chính sách bảo mật.
+          </p>
+          <p class="section-desc" style="margin-top:12px;">
+            Mục tiêu là giúp người dùng nhìn thấy một website gọn gàng, dễ hiểu, có định hướng thương hiệu rõ ràng
+            và có thể phát triển nội dung dài hạn theo hướng SEO bền vững.
+          </p>
+        </article>
+
+        <aside class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-number">6+</div>
+            <div class="stat-label">Nhóm nội dung chính đang được phát triển đồng bộ</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">2</div>
+            <div class="stat-label">Luồng người dùng chính: người đăng tin và người tìm kiếm nội dung</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Hướng đi chung: rõ cấu trúc, dễ dùng, dễ SEO, dễ mở rộng</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Tập trung đồng bộ giao diện, nội dung và trải nghiệm toàn site</div>
+          </div>
+        </aside>
+      </section>
+
+      <section style="margin-bottom:22px;">
+        <div class="section-kicker">Mục tiêu phát triển</div>
+        <div class="mission-grid">
+          <article class="mission-card">
+            <div class="mission-icon"><i class="fa-solid fa-users"></i></div>
+            <h3 class="mission-title">Thân thiện với người dùng</h3>
+            <p class="mission-text">
+              Website được xây theo cách người dùng phổ thông vẫn dễ đọc, dễ thao tác và dễ hiểu khi tìm nội dung hoặc đăng tin.
+            </p>
+          </article>
+
+          <article class="mission-card">
+            <div class="mission-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <h3 class="mission-title">Rõ cấu trúc nội dung</h3>
+            <p class="mission-text">
+              Mỗi nhóm trang đều có vai trò rõ ràng: danh mục, chi tiết, dự án, danh bạ, xây dựng, pháp lý, hỗ trợ và các trang nền.
+            </p>
+          </article>
+
+          <article class="mission-card">
+            <div class="mission-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h3 class="mission-title">Phát triển dài hạn theo SEO</h3>
+            <p class="mission-text">
+              ToamViet ưu tiên xây nội dung có chiều sâu, có liên kết nội bộ tốt và có khả năng mở rộng dần theo từng cụm chủ đề.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section style="margin-bottom:22px;">
+        <div class="section-kicker">Giá trị định hướng</div>
+        <div class="values-grid">
+          <article class="value-card">
+            <div class="value-icon"><i class="fa-solid fa-eye"></i></div>
+            <h3 class="value-title">Minh bạch</h3>
+            <p class="value-text">
+              Nội dung, thông tin hỗ trợ và các trang nền như liên hệ, FAQ, báo giá, chính sách bảo mật đều được công khai rõ ràng.
+            </p>
+          </article>
+
+          <article class="value-card">
+            <div class="value-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+            <h3 class="value-title">Chỉnh chu</h3>
+            <p class="value-text">
+              Website được hoàn thiện từng phần theo hướng đồng bộ giao diện, tránh vá chắp vá và ưu tiên trải nghiệm tổng thể.
+            </p>
+          </article>
+
+          <article class="value-card">
+            <div class="value-icon"><i class="fa-solid fa-seedling"></i></div>
+            <h3 class="value-title">Tăng trưởng bền</h3>
+            <p class="value-text">
+              Không chạy theo số lượng trang rời rạc mà tập trung làm đúng cấu trúc để sau này mở rộng nhanh hơn và bền hơn.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="timeline-card">
+        <div class="section-kicker">Hướng phát triển</div>
+        <h2 class="section-title">Lộ trình hoàn thiện ToamViet</h2>
+        <div class="timeline-list">
+          <article class="timeline-item">
+            <div class="timeline-year">Giai đoạn 1</div>
+            <div>
+              <h3 class="timeline-title">Hoàn thiện khung website và các nhóm trang cốt lõi</h3>
+              <p class="timeline-text">
+                Tập trung xây các trang nền tảng như danh mục nhà đất, dự án, tin tức, xây dựng, giá nhà đất, danh bạ và các trang pháp lý/hỗ trợ.
+              </p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-year">Giai đoạn 2</div>
+            <div>
+              <h3 class="timeline-title">Đồng bộ dữ liệu và tối ưu trải nghiệm người đăng</h3>
+              <p class="timeline-text">
+                Kết nối tốt hơn giữa luồng đăng tin, chi tiết tin, chi tiết hồ sơ doanh nghiệp/môi giới và các trang danh mục liên quan.
+              </p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-year">Giai đoạn 3</div>
+            <div>
+              <h3 class="timeline-title">Mở rộng cụm nội dung theo SEO và thương hiệu</h3>
+              <p class="timeline-text">
+                Xây thêm các cụm nội dung chuyên sâu theo địa phương, nhóm dự án, nhóm dịch vụ và nhóm nhu cầu tìm kiếm thực tế của người dùng.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact-card">
+        <div class="section-kicker">Liên hệ với ToamViet</div>
+        <div class="contact-box">
+          <h2 class="contact-title">Bạn muốn đồng hành hoặc cần hỗ trợ?</h2>
+          <p class="contact-text">
+            Nếu bạn cần hỗ trợ đăng tin, chỉnh sửa nội dung, trao đổi hợp tác hoặc cần hướng dẫn sử dụng website,
+            bạn có thể liên hệ trực tiếp với ToamViet qua các kênh bên dưới.
+          </p>
+
+          <div class="contact-actions">
+            <a class="contact-btn contact-btn-primary" href="tel:0982368978">
+              <i class="fa-solid fa-phone-volume"></i>
+              0982368978
+            </a>
+            <a class="contact-btn contact-btn-soft" href="mailto:dangtin.toamviet@gmail.com">
+              <i class="fa-solid fa-envelope"></i>
+              dangtin.toamviet@gmail.com
+            </a>
+            <a class="contact-btn contact-btn-soft" href="../pages/lien-he.html">
+              <i class="fa-solid fa-arrow-right"></i>
+              Xem trang liên hệ
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="seo-block-shell">
+        <div id="seoContent"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <button
+    id="goToTop"
+    onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))"
+  >
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <div
+    class="zalo-chat-btn wiggle"
+    onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+  >
+    <i class="fa-solid fa-comment-dots"></i>
+  </div>
+
+  <div id="chatForm">
+    <div class="chat-header">
+      <span><i class="fa-solid fa-comments"></i> Hỗ trợ Tổ Ấm Việt</span>
+      <span
+        onclick="typeof safeToggleForm === 'function' ? safeToggleForm() : (typeof toggleForm === 'function' ? toggleForm() : null)"
+        style="cursor:pointer; font-size: 20px;"
+      >&times;</span>
+    </div>
+    <div class="chat-body">
+      <input type="text" id="cusName" placeholder="Tên của bạn..." required />
+      <textarea id="cusMsg" rows="3" placeholder="Bạn cần tư vấn nội dung nào?"></textarea>
+      <button class="btn-send" onclick="sendToZaloChat()">Bắt đầu chat trên Zalo</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/component-loader.js"></script>
+  <script src="../assets/js/seo-content.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <script>
+    async function initSharedComponents() {
+      try {
+        if (typeof loadComponent === "function") {
+          await loadComponent("siteHeader", "../components/header-inner.html");
+          await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+          await loadComponent("siteFooter", "../components/footer-inner.html");
+
+          if (typeof setupFixedHeaderSpacing === "function") {
+            setupFixedHeaderSpacing();
+          }
+          if (typeof watchHeaderSpacing === "function") {
+            watchHeaderSpacing();
+          }
+        }
+      } catch (error) {
+        console.error("Không thể load component dùng chung:", error);
+      }
+    }
+
+    function renderAboutSeoFallback() {
+      const container = document.getElementById("seoContent");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="seo-wrapper">
+          <div class="seo-text collapsed" id="seoContent-text">
+            <p>Trang giới thiệu là một trong những trang nền quan trọng giúp ToamViet xây dựng niềm tin thương hiệu với người dùng. Khi website có nhiều nhóm nội dung như nhà đất bán, cho thuê, dự án, xây dựng, danh bạ và các trang hỗ trợ, việc có một trang giới thiệu rõ ràng sẽ giúp người xem hiểu ToamViet đang làm gì và đang phát triển theo hướng nào.</p>
+            <p>Không chỉ mang tính hình thức, trang này còn là nơi thể hiện định hướng phát triển website theo cách rõ cấu trúc, thân thiện với người dùng và phù hợp với chiến lược nội dung dài hạn. Đây là điểm giúp ToamViet khác biệt hơn so với những website chỉ tập trung vào danh sách tin mà thiếu phần nền thương hiệu.</p>
+            <p>Về mặt SEO, trang giới thiệu cũng góp phần hoàn thiện hệ thống liên kết nội bộ, tăng độ đầy đủ cho bộ trang nền và hỗ trợ tín hiệu uy tín cho toàn bộ website trong quá trình phát triển lâu dài.</p>
+          </div>
+          <button type="button" class="seo-toggle-btn" id="seoContent-toggle" aria-expanded="false">
+            <span class="seo-toggle-label">Xem thêm</span>
+            <i class="fa-solid fa-chevron-down seo-toggle-icon"></i>
+          </button>
+        </div>
+      `;
+
+      const toggleBtn = document.getElementById("seoContent-toggle");
+      const seoText = document.getElementById("seoContent-text");
+      const toggleLabel = toggleBtn ? toggleBtn.querySelector(".seo-toggle-label") : null;
+
+      if (!toggleBtn || !seoText || !toggleLabel) return;
+
+      toggleBtn.addEventListener("click", function () {
+        const isCollapsed = seoText.classList.contains("collapsed");
+
+        if (isCollapsed) {
+          seoText.classList.remove("collapsed");
+          toggleBtn.classList.add("expanded");
+          toggleBtn.setAttribute("aria-expanded", "true");
+          toggleLabel.textContent = "Thu gọn";
+        } else {
+          seoText.classList.add("collapsed");
+          toggleBtn.classList.remove("expanded");
+          toggleBtn.setAttribute("aria-expanded", "false");
+          toggleLabel.textContent = "Xem thêm";
+        }
+      });
+    }
+
+    function sendToZaloChat() {
+      const name = document.getElementById("cusName").value.trim();
+      const msg = document.getElementById("cusMsg").value.trim();
+      const phone = "0982368978";
+
+      if (!name) {
+        alert("Vui lòng cho biết tên của bạn");
+        return;
+      }
+
+      const fullMsg = "Chào ToamViet, tôi là " + name + ". " + msg;
+      const encodedMsg = encodeURIComponent(fullMsg);
+      window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
+    }
+
+    window.addEventListener("load", async function () {
+      await initSharedComponents();
+
+      if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function" && getSeoContentByKey("gioi-thieu")) {
+        renderSeoContent("seoContent", "gioi-thieu");
+      } else {
+        renderAboutSeoFallback();
+      }
+    });
+  </script>
+</body>
+</html>
