@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cho thuê nhà đất tại Việt Nam - ToamViet.com.vn</title>
+    <title>Tổng hợp nhà đất cho thuê tại Việt Nam - ToamViet.com.vn</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
@@ -127,12 +127,14 @@
             font-family: "Roboto", sans-serif;
         }
 
-        card-desc {
+        .card-desc {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             line-height: 1.65;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .filter-select,
@@ -355,6 +357,11 @@
                 padding-bottom: 18px;
             }
 
+            .page-breadcrumb {
+                margin-top: 8px;
+                margin-bottom: 16px;
+            }
+
             .page-intro-box {
                 padding: 16px;
                 border-radius: 16px;
@@ -461,7 +468,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <section class="lg:col-span-3 space-y-6">
                 <div class="page-intro-box">
-                    <h1 id="pageHeading" class="section-title">Cho thuê nhà đất tại Việt Nam</h1>
+                    <h1 id="pageHeading" class="section-title">Tổng hợp nhà đất cho thuê tại Việt Nam</h1>
                     <p id="pageSubheading" class="text-gray-500 text-sm mt-2 leading-6">
                         Hiện có <span id="listing-count" class="font-bold text-gray-700">0</span> tin đăng cho thuê đang hiển thị
                     </p>
@@ -703,7 +710,7 @@
 
         function getPageTitleByCategory() {
             const category = getCurrentCategory();
-            return CATEGORY_MAP[category] ? CATEGORY_MAP[category].name : "Cho thuê nhà đất tại Việt Nam";
+            return CATEGORY_MAP[category] ? CATEGORY_MAP[category].name : "Tổng hợp nhà đất cho thuê tại Việt Nam";
         }
 
         function syncPageHeading() {
