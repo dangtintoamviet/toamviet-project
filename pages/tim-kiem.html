@@ -44,6 +44,22 @@
             padding-bottom: 34px;
         }
 
+        .page-breadcrumb {
+            margin-bottom: 18px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .page-breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-breadcrumb a:hover {
+            color: var(--vip-color);
+        }
+
         .search-hero,
         .search-filter-card,
         .search-summary-card,
@@ -719,6 +735,12 @@
                 padding-bottom: 24px;
             }
 
+            .page-breadcrumb {
+                margin-bottom: 14px;
+                font-size: 12px;
+                line-height: 1.6;
+            }
+
             .search-hero,
             .search-filter-card,
             .search-summary-card,
@@ -778,6 +800,15 @@
 
     <main class="search-page-shell">
         <div class="container-custom">
+            <div class="page-breadcrumb">
+                <a href="../index.html">Trang chủ</a>
+                <span class="mx-2">/</span>
+                <a id="breadcrumbSearchLink" href="../pages/tim-kiem.html">Tìm kiếm</a>
+                <span id="breadcrumbSearchCurrent" class="text-slate-700 font-semibold hidden">Tìm kiếm</span>
+                <span id="breadcrumbSeparator" class="mx-2 hidden">/</span>
+                <span id="breadcrumbCurrent" class="text-slate-700 font-semibold hidden"></span>
+            </div>
+
             <section class="search-hero">
                 <div class="hero-badge">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -904,6 +935,15 @@
         const FAVORITE_SALE_STORAGE_KEY = "favoriteSalePosts";
         const FAVORITE_RENTAL_STORAGE_KEY = "favoriteRentalPosts";
         const FAVORITE_CONSTRUCTION_STORAGE_KEY = "favoriteConstructionPosts";
+
+        const SEARCH_CATEGORY_LABELS = {
+            all: "Tìm kiếm",
+            sale: "Nhà đất bán",
+            rental: "Nhà đất cho thuê",
+            project: "Dự án",
+            construction: "Xây dựng",
+            news: "Tin tức"
+        };
 
         const fallbackSalePosts = [
             {
@@ -1935,13 +1975,9 @@
                 const text = buildSearchText(item.raw || item);
                 const matchKeyword = !keyword || text.includes(keyword);
 
-                let itemCategory = item.type;
-                if (item.type === "sale" || item.type === "rental" || item.type === "project" || item.type === "construction" || item.type === "news") {
-                    itemCategory = item.type;
-                }
-
+                const itemCategory = item.type;
                 const cityValue = item.raw && item.raw.city ? item.raw.city : "";
-                const matchCity = !city || cityValue === city || normalizeText(item.location).includes(normalizeText(city));
+                const matchCity = !city || cityValue === city || normalizeText(item.location || "").includes(normalizeText(city));
 
                 const matchCategory = category === "all" ? true : itemCategory === category;
                 const matchTab = tab === "all" ? true : itemCategory === tab;
@@ -1969,6 +2005,37 @@
 
             heroTitle.textContent = `Kết quả tìm kiếm ${categoryText}${cityText}`;
             heroDesc.textContent = `Hệ thống đang tìm trong nhóm ${categoryText}${keywordText}${cityText}. Bạn có thể đổi nhóm nội dung, từ khóa hoặc khu vực để lọc sâu hơn.`;
+        }
+
+        function updateBreadcrumb() {
+            const breadcrumbSearchLink = document.getElementById("breadcrumbSearchLink");
+            const breadcrumbSearchCurrent = document.getElementById("breadcrumbSearchCurrent");
+            const breadcrumbSeparator = document.getElementById("breadcrumbSeparator");
+            const breadcrumbCurrent = document.getElementById("breadcrumbCurrent");
+
+            let currentLabel = "";
+
+            if (state.currentCategory && state.currentCategory !== "all") {
+                currentLabel = SEARCH_CATEGORY_LABELS[state.currentCategory] || "Tìm kiếm";
+            } else if (state.currentKeyword) {
+                currentLabel = `Từ khóa: ${state.currentKeyword}`;
+            } else if (state.currentCity) {
+                currentLabel = `Khu vực: ${state.currentCity}`;
+            }
+
+            if (currentLabel) {
+                breadcrumbSearchLink.classList.remove("hidden");
+                breadcrumbSearchCurrent.classList.add("hidden");
+                breadcrumbSeparator.classList.remove("hidden");
+                breadcrumbCurrent.classList.remove("hidden");
+                breadcrumbCurrent.textContent = currentLabel;
+            } else {
+                breadcrumbSearchLink.classList.add("hidden");
+                breadcrumbSearchCurrent.classList.remove("hidden");
+                breadcrumbSeparator.classList.add("hidden");
+                breadcrumbCurrent.classList.add("hidden");
+                breadcrumbCurrent.textContent = "";
+            }
         }
 
         function updateSummary(filtered) {
@@ -2104,6 +2171,7 @@
         function renderSearchPage() {
             const filtered = applySearchFilter(state.allResults);
             updateHero();
+            updateBreadcrumb();
             updateSummary(filtered);
             renderResults(filtered);
             renderSeoFallback(filtered);
@@ -2147,6 +2215,10 @@
                 state.currentCategory = this.value;
                 state.currentTab = this.value !== "all" ? this.value : "all";
                 syncTabButtons();
+            });
+
+            document.getElementById("searchCity").addEventListener("change", function () {
+                state.currentCity = this.value;
             });
 
             document.querySelectorAll("#tabRow .tab-btn").forEach(btn => {
