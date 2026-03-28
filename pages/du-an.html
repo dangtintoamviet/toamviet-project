@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dự án bất động sản | ToamViet.com.vn</title>
+    <title>Dự án bất động sản trên toàn quốc | ToamViet.com.vn</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
@@ -55,6 +55,22 @@
         .page-shell {
             padding-top: 0;
             padding-bottom: 28px;
+        }
+
+        .page-breadcrumb {
+            margin-bottom: 18px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .page-breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-breadcrumb a:hover {
+            color: var(--vip-color);
         }
 
         .section-title {
@@ -816,6 +832,11 @@
                 margin: 10px auto 18px;
             }
 
+            .page-breadcrumb {
+                font-size: 12px;
+                margin-bottom: 14px;
+            }
+
             .project-slider,
             .project-slider-track {
                 min-height: 300px;
@@ -1014,6 +1035,17 @@
     </section>
 
     <main class="container-custom page-shell">
+        <div class="page-breadcrumb">
+            <a href="../index.html">Trang chủ</a>
+            <span class="mx-2">/</span>
+            <a id="breadcrumbProjectLink" href="../pages/du-an.html">Dự án</a>
+            <span id="breadcrumbProjectCurrent" class="text-slate-700 font-semibold hidden">Dự án</span>
+            <span id="breadcrumbSeparator1" class="mx-2 hidden">/</span>
+            <span id="breadcrumbCategoryCurrent" class="text-slate-700 font-semibold hidden"></span>
+            <span id="breadcrumbSeparator2" class="mx-2 hidden">/</span>
+            <span id="breadcrumbProjectNameCurrent" class="text-slate-700 font-semibold hidden"></span>
+        </div>
+
         <section class="page-intro-box mb-6">
             <h1 class="section-title" id="pageTitle">Dự án bất động sản trên Toàn quốc</h1>
             <p class="page-intro-desc" id="pageIntroDesc">
@@ -1450,6 +1482,13 @@
         const sliderNextBtn = document.getElementById("sliderNextBtn");
         const projectSlider = document.getElementById("projectSlider");
 
+        const breadcrumbProjectLink = document.getElementById("breadcrumbProjectLink");
+        const breadcrumbProjectCurrent = document.getElementById("breadcrumbProjectCurrent");
+        const breadcrumbCategoryCurrent = document.getElementById("breadcrumbCategoryCurrent");
+        const breadcrumbProjectNameCurrent = document.getElementById("breadcrumbProjectNameCurrent");
+        const breadcrumbSeparator1 = document.getElementById("breadcrumbSeparator1");
+        const breadcrumbSeparator2 = document.getElementById("breadcrumbSeparator2");
+
         const urlParams = new URLSearchParams(window.location.search);
         const activeCategorySlug = (urlParams.get("category") || "").trim();
         const activeProjectSlug = (urlParams.get("slug") || "").trim();
@@ -1486,7 +1525,7 @@
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
                 .replace(/đ/g, "d")
-                .toLowerCase()
+                toLowerCase()
                 .trim()
                 .replace(/[^a-z0-9\s-]/g, "")
                 .replace(/\s+/g, "-")
@@ -1503,9 +1542,9 @@
             return String(name || "TV")
                 .split(" ")
                 .filter(Boolean)
-                .slice(0, 2)
-                .map(word => word.charAt(0).toUpperCase())
-                .join("") || "TV";
+                slice(0, 2)
+                map(word => word.charAt(0).toUpperCase())
+                join("") || "TV";
         }
 
         function normalizePrice(price) {
@@ -1768,6 +1807,49 @@
             document.title = `${activeCategoryConfig.pageTitle} | ToamViet.com.vn`;
             pageTitleEl.textContent = activeCategoryConfig.pageTitle;
             pageIntroDescEl.textContent = activeCategoryConfig.intro;
+        }
+
+        function syncBreadcrumb() {
+            if (currentFocusedProject) {
+                breadcrumbProjectLink.classList.remove("hidden");
+                breadcrumbProjectCurrent.classList.add("hidden");
+
+                if (currentFocusedProject.categorySlug && PROJECT_CATEGORY_CONFIG[currentFocusedProject.categorySlug]) {
+                    breadcrumbSeparator1.classList.remove("hidden");
+                    breadcrumbCategoryCurrent.textContent = PROJECT_CATEGORY_CONFIG[currentFocusedProject.categorySlug].label;
+                    breadcrumbCategoryCurrent.classList.remove("hidden");
+                } else {
+                    breadcrumbSeparator1.classList.add("hidden");
+                    breadcrumbCategoryCurrent.textContent = "";
+                    breadcrumbCategoryCurrent.classList.add("hidden");
+                }
+
+                breadcrumbSeparator2.classList.remove("hidden");
+                breadcrumbProjectNameCurrent.textContent = currentFocusedProject.name || "Chi tiết dự án";
+                breadcrumbProjectNameCurrent.classList.remove("hidden");
+                return;
+            }
+
+            if (activeCategorySlug && PROJECT_CATEGORY_CONFIG[activeCategorySlug]) {
+                breadcrumbProjectLink.classList.remove("hidden");
+                breadcrumbProjectCurrent.classList.add("hidden");
+                breadcrumbSeparator1.classList.remove("hidden");
+                breadcrumbCategoryCurrent.textContent = PROJECT_CATEGORY_CONFIG[activeCategorySlug].label;
+                breadcrumbCategoryCurrent.classList.remove("hidden");
+                breadcrumbSeparator2.classList.add("hidden");
+                breadcrumbProjectNameCurrent.textContent = "";
+                breadcrumbProjectNameCurrent.classList.add("hidden");
+                return;
+            }
+
+            breadcrumbProjectLink.classList.add("hidden");
+            breadcrumbProjectCurrent.classList.remove("hidden");
+            breadcrumbSeparator1.classList.add("hidden");
+            breadcrumbCategoryCurrent.textContent = "";
+            breadcrumbCategoryCurrent.classList.add("hidden");
+            breadcrumbSeparator2.classList.add("hidden");
+            breadcrumbProjectNameCurrent.textContent = "";
+            breadcrumbProjectNameCurrent.classList.add("hidden");
         }
 
         function fillTypeFilter() {
@@ -2337,6 +2419,7 @@
 
             applyFocusedProjectMode();
             updatePageByCategory();
+            syncBreadcrumb();
 
             const overviewSource = currentFocusedProject
                 ? [currentFocusedProject]
