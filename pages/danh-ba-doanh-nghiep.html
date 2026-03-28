@@ -53,6 +53,22 @@
             padding: 24px 0 32px;
         }
 
+        .page-breadcrumb {
+            margin-bottom: 18px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .page-breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-breadcrumb a:hover {
+            color: var(--vip-color);
+        }
+
         .search-box,
         .list-card,
         .sidebar-card,
@@ -438,6 +454,12 @@
             .section-kicker {
                 font-size: 17px;
             }
+
+            .page-breadcrumb {
+                margin-bottom: 14px;
+                font-size: 12px;
+                line-height: 1.6;
+            }
         }
     </style>
 </head>
@@ -447,6 +469,15 @@
 
     <main class="page-shell">
         <div class="container-custom">
+            <div class="page-breadcrumb">
+                <a href="../index.html">Trang chủ</a>
+                <span class="mx-2">/</span>
+                <a id="breadcrumbDirectoryLink" href="../pages/danh-ba-doanh-nghiep.html">Danh bạ doanh nghiệp</a>
+                <span id="breadcrumbDirectoryCurrent" class="text-slate-700 font-semibold hidden">Danh bạ doanh nghiệp</span>
+                <span id="breadcrumbSeparator" class="mx-2 hidden">/</span>
+                <span id="breadcrumbCurrent" class="text-slate-700 font-semibold hidden"></span>
+            </div>
+
             <div class="search-box">
                 <div class="section-kicker">Tìm kiếm doanh nghiệp</div>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -474,8 +505,8 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <section class="lg:col-span-2 space-y-5">
                     <div class="list-card p-5">
-                        <h1 class="page-title">Danh bạ doanh nghiệp</h1>
-                        <p class="page-subtitle">
+                        <h1 class="page-title" id="pageTitle">Danh bạ doanh nghiệp</h1>
+                        <p class="page-subtitle" id="pageSubtitle">
                             Hiển thị <span id="resultCount" class="font-bold text-slate-700">0</span> kết quả phù hợp
                         </p>
                     </div>
@@ -522,6 +553,14 @@
         const ITEMS_PER_PAGE = 6;
         const FALLBACK_LOGO = "../assets/images/fallback-property.jpg";
 
+        const DIRECTORY_CATEGORY_LABELS = {
+            "chu-dau-tu": "Chủ đầu tư",
+            "san-giao-dich": "Sàn giao dịch",
+            "noi-that": "Dịch vụ nội thất",
+            "xay-dung": "Xây dựng & kiến trúc",
+            "all": "Danh bạ doanh nghiệp"
+        };
+
         let currentPage = 1;
         let currentFilter = "all";
         let cityOptionsLoaded = false;
@@ -559,6 +598,11 @@
             ];
 
             return stableParts.map(slugifyText).filter(Boolean).join("-") || "tin";
+        }
+
+        function getUrlCategory() {
+            const params = new URLSearchParams(window.location.search);
+            return (params.get("category") || "").trim();
         }
 
         function getAllowedPublicStatuses() {
@@ -871,12 +915,51 @@
             }
         }
 
+        function updatePageHeading() {
+            const pageTitleEl = document.getElementById("pageTitle");
+            const pageSubtitleEl = document.getElementById("pageSubtitle");
+
+            if (currentFilter === "all") {
+                pageTitleEl.textContent = "Danh bạ doanh nghiệp";
+                pageSubtitleEl.innerHTML = `Hiển thị <span id="resultCount" class="font-bold text-slate-700">0</span> kết quả phù hợp`;
+                return;
+            }
+
+            const label = DIRECTORY_CATEGORY_LABELS[currentFilter] || "Danh bạ doanh nghiệp";
+            pageTitleEl.textContent = label;
+            pageSubtitleEl.innerHTML = `Hiển thị <span id="resultCount" class="font-bold text-slate-700">0</span> kết quả phù hợp`;
+        }
+
+        function syncBreadcrumb() {
+            const breadcrumbDirectoryLink = document.getElementById("breadcrumbDirectoryLink");
+            const breadcrumbDirectoryCurrent = document.getElementById("breadcrumbDirectoryCurrent");
+            const breadcrumbCurrent = document.getElementById("breadcrumbCurrent");
+            const breadcrumbSeparator = document.getElementById("breadcrumbSeparator");
+
+            if (currentFilter && currentFilter !== "all" && DIRECTORY_CATEGORY_LABELS[currentFilter]) {
+                breadcrumbDirectoryLink.classList.remove("hidden");
+                breadcrumbDirectoryCurrent.classList.add("hidden");
+                breadcrumbCurrent.textContent = DIRECTORY_CATEGORY_LABELS[currentFilter];
+                breadcrumbCurrent.classList.remove("hidden");
+                breadcrumbSeparator.classList.remove("hidden");
+            } else {
+                breadcrumbDirectoryLink.classList.add("hidden");
+                breadcrumbDirectoryCurrent.classList.remove("hidden");
+                breadcrumbCurrent.textContent = "";
+                breadcrumbCurrent.classList.add("hidden");
+                breadcrumbSeparator.classList.add("hidden");
+            }
+        }
+
         function renderDirectory() {
+            updatePageHeading();
+            syncBreadcrumb();
+
             const container = document.getElementById("businessList");
             const resultCount = document.getElementById("resultCount");
 
             const filtered = filterData();
-            resultCount.textContent = filtered.length;
+            if (resultCount) resultCount.textContent = filtered.length;
             renderSidebarStats(directoryData);
 
             if (!filtered.length) {
@@ -896,6 +979,22 @@
 
             container.innerHTML = pageItems.map(renderCard).join("");
             renderPagination(filtered.length);
+        }
+
+        function setActiveTab(filterKey) {
+            document.querySelectorAll("#tabButtons .tab-btn").forEach(item => {
+                item.classList.toggle("active", item.dataset.filter === filterKey);
+            });
+        }
+
+        function applyCategoryFromUrl() {
+            const category = getUrlCategory();
+            if (!category) return;
+
+            if (DIRECTORY_CATEGORY_LABELS[category]) {
+                currentFilter = category;
+                setActiveTab(category);
+            }
         }
 
         function initTabs() {
@@ -1028,10 +1127,26 @@
         }
 
         function renderSeoBlock() {
+            let seoKey = "directory-business";
+
+            if (currentFilter && currentFilter !== "all") {
+                seoKey = `directory-business-${currentFilter}`;
+            }
+
             if (typeof renderSeoContent === "function" && typeof getSeoContentByKey === "function") {
-                const externalContent = getSeoContentByKey("directory-business") || getSeoContentByKey("business-directory");
+                const externalContent =
+                    getSeoContentByKey(seoKey) ||
+                    getSeoContentByKey("directory-business") ||
+                    getSeoContentByKey("business-directory");
+
                 if (externalContent) {
-                    renderSeoContent("seoContent", getSeoContentByKey("directory-business") ? "directory-business" : "business-directory");
+                    if (getSeoContentByKey(seoKey)) {
+                        renderSeoContent("seoContent", seoKey);
+                    } else if (getSeoContentByKey("directory-business")) {
+                        renderSeoContent("seoContent", "directory-business");
+                    } else {
+                        renderSeoContent("seoContent", "business-directory");
+                    }
                     return;
                 }
             }
@@ -1048,6 +1163,7 @@
             await loadCitiesFromAddressFile();
             initTabs();
             initSearch();
+            applyCategoryFromUrl();
             renderDirectory();
             renderSeoBlock();
         }
