@@ -34,8 +34,12 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: "Roboto", "Segoe UI", sans-serif;
+            font-family: "Roboto", sans-serif;
             background: var(--soft-bg);
             color: #1e293b;
             margin: 0;
@@ -56,22 +60,39 @@
             padding-bottom: 28px;
         }
 
-        .page-breadcrumb {
+        .breadcrumb-wrap {
             margin-bottom: 18px;
-            color: #64748b;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
             font-size: 13px;
             line-height: 1.7;
-            font-family: "Roboto", "Segoe UI", sans-serif;
+            color: #64748b;
+            font-weight: 500;
         }
 
-        .page-breadcrumb a {
-            color: inherit;
+        .breadcrumb a {
+            color: #475569;
             text-decoration: none;
-            transition: 0.2s ease;
+            transition: 0.22s ease;
         }
 
-        .page-breadcrumb a:hover {
+        .breadcrumb a:hover {
             color: var(--vip-color);
+        }
+
+        .breadcrumb-sep {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .breadcrumb-current {
+            color: var(--vip-color);
+            font-weight: 800;
         }
 
         .page-hero {
@@ -122,17 +143,16 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 18px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .hero-title {
             font-size: 30px;
             line-height: 1.35;
             font-weight: 900;
-            margin-bottom: 12px;
+            margin: 0 0 12px;
             max-width: 820px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
             text-transform: none;
+            color: #fff;
         }
 
         .hero-desc {
@@ -140,7 +160,7 @@
             line-height: 1.8;
             color: rgba(255,255,255,0.92);
             max-width: 900px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
+            margin: 0;
         }
 
         .hero-points {
@@ -164,14 +184,12 @@
             letter-spacing: 0.05em;
             color: rgba(255,255,255,0.8);
             margin-bottom: 6px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .hero-point .value {
             font-size: 14px;
             font-weight: 800;
             line-height: 1.5;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .layout-grid {
@@ -199,7 +217,6 @@
             font-size: 14px;
             margin-bottom: 6px;
             text-decoration: none;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .admin-sidebar-item:hover,
@@ -231,7 +248,6 @@
             letter-spacing: 0.05em;
             color: #64748b;
             margin-bottom: 10px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .stats-value {
@@ -240,14 +256,12 @@
             font-weight: 900;
             color: #0f172a;
             margin-bottom: 10px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .stats-note {
             font-size: 12px;
             color: #64748b;
             line-height: 1.5;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .toolbar-card,
@@ -261,13 +275,15 @@
             justify-content: space-between;
             gap: 14px;
             margin-bottom: 18px;
+            flex-wrap: wrap;
         }
 
         .toolbar-title {
             font-size: 20px;
             font-weight: 900;
             color: #0f172a;
-            font-family: "Roboto", "Segoe UI", sans-serif;
+            text-transform: none;
+            line-height: 1.35;
         }
 
         .toolbar-sub {
@@ -275,7 +291,6 @@
             color: #64748b;
             margin-top: 4px;
             line-height: 1.7;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .toolbar-actions {
@@ -300,7 +315,6 @@
             letter-spacing: 0.05em;
             color: #64748b;
             margin-bottom: 8px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .input-field,
@@ -315,7 +329,8 @@
             outline: none;
             transition: 0.25s ease;
             min-height: 48px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
+            font-family: "Roboto", sans-serif;
+            color: #0f172a;
         }
 
         .input-field:focus,
@@ -338,11 +353,11 @@
             cursor: pointer;
             transition: 0.25s ease;
             white-space: nowrap;
-            font-family: "Roboto", "Segoe UI", sans-serif;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            font-family: "Roboto", sans-serif;
         }
 
         .btn-primary {
@@ -399,16 +414,6 @@
             background: #ffedd5;
         }
 
-        .btn-primary:disabled,
-        .btn-soft:disabled,
-        .btn-dark:disabled,
-        .btn-success:disabled,
-        .btn-danger:disabled,
-        .btn-warning:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
         .status-box {
             display: none;
             margin-bottom: 16px;
@@ -416,7 +421,7 @@
             border-radius: 14px;
             font-size: 13px;
             line-height: 1.6;
-            font-family: "Roboto", "Segoe UI", sans-serif;
+            font-weight: 500;
         }
 
         .status-box.error {
@@ -453,14 +458,13 @@
             font-size: 18px;
             font-weight: 900;
             color: #0f172a;
-            font-family: "Roboto", "Segoe UI", sans-serif;
+            text-transform: none;
         }
 
         .list-sub {
             font-size: 13px;
             color: #64748b;
             margin-top: 4px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .pending-pill {
@@ -470,7 +474,6 @@
             border-radius: 999px;
             font-size: 12px;
             font-weight: 900;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .post-list {
@@ -503,6 +506,7 @@
             object-fit: cover;
             border: 1px solid #e2e8f0;
             background: #f8fafc;
+            display: block;
         }
 
         .badge-row {
@@ -522,7 +526,6 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .badge-pending {
@@ -571,7 +574,7 @@
             line-height: 1.5;
             color: #0f172a;
             margin-bottom: 10px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
+            text-transform: none;
         }
 
         .post-desc {
@@ -583,7 +586,6 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .meta-tags {
@@ -604,7 +606,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .meta-grid {
@@ -621,7 +622,6 @@
             font-size: 13px;
             color: #64748b;
             line-height: 1.6;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .meta-box-title {
@@ -631,7 +631,6 @@
             color: #0f172a;
             margin-bottom: 6px;
             letter-spacing: 0.04em;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .post-actions {
@@ -657,7 +656,6 @@
             border: 1px dashed #cbd5e1;
             border-radius: 18px;
             background: #fff;
-            font-family: "Roboto", "Segoe UI", sans-serif;
         }
 
         .hidden {
@@ -757,12 +755,6 @@
                 width: 100%;
                 flex: 1 1 100%;
             }
-
-            .page-breadcrumb {
-                margin-bottom: 14px;
-                font-size: 12px;
-                line-height: 1.6;
-            }
         }
     </style>
 </head>
@@ -773,12 +765,14 @@
     <main class="py-8 md:py-10">
         <div class="container-custom page-shell">
             <div class="admin-shell">
-                <div class="page-breadcrumb">
-                    <a href="../index.html">Trang chủ</a>
-                    <span class="mx-2">/</span>
-                    <a href="admin-dashboard.html">Admin</a>
-                    <span class="mx-2">/</span>
-                    <span class="text-slate-700 font-semibold">Kiểm duyệt tin đăng</span>
+                <div class="breadcrumb-wrap">
+                    <nav class="breadcrumb" aria-label="Breadcrumb">
+                        <a href="../index.html">Trang chủ</a>
+                        <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+                        <a href="admin-dashboard.html">Admin</a>
+                        <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+                        <span class="breadcrumb-current">Kiểm duyệt tin đăng</span>
+                    </nav>
                 </div>
 
                 <section class="page-hero">
@@ -792,7 +786,7 @@
 
                         <p class="hero-desc">
                             Trang này dùng để duyệt toàn bộ tin chờ xử lý từ luồng bất động sản bán, cho thuê và xây dựng.
-                            Khi duyệt hoặc từ chối, hệ thống sẽ cập nhật lại allPosts, các store phụ và nhóm dự án để dữ liệu ngoài public luôn đồng bộ.
+                            Khi duyệt hoặc từ chối, hệ thống sẽ cập nhật lại nguồn dữ liệu chính và đồng bộ các store phụ để dữ liệu ngoài public luôn thống nhất.
                         </p>
 
                         <div class="hero-points">
@@ -838,7 +832,7 @@
                             <div class="stats-card">
                                 <div class="stats-label">Tổng tin hệ thống</div>
                                 <div class="stats-value" id="statTotal">0</div>
-                                <div class="stats-note">Tất cả tin đang lưu trong nguồn dữ liệu hiện tại.</div>
+                                <div class="stats-note">Tất cả tin đang lưu trong nguồn dữ liệu chính.</div>
                             </div>
                             <div class="stats-card">
                                 <div class="stats-label">Tin chờ duyệt</div>
@@ -916,6 +910,7 @@
                                         <option value="approved">Đã duyệt</option>
                                         <option value="rejected">Từ chối</option>
                                         <option value="hidden">Đang ẩn</option>
+                                        <option value="demo">Demo</option>
                                     </select>
                                 </div>
 
@@ -978,9 +973,17 @@
 
         let allPosts = [];
         let filteredPosts = [];
-        let isBusy = false;
 
         document.addEventListener("DOMContentLoaded", initPage);
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
         function safeParseJSON(raw, fallback) {
             try {
@@ -1000,16 +1003,11 @@
                 .trim();
         }
 
-        function slugifyText(value) {
-            return String(value || "")
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/đ/g, "d")
-                .toLowerCase()
-                .trim()
-                .replace(/[^a-z0-9\s-]/g, "")
-                .replace(/\s+/g, "-")
-                .replace(/-+/g, "-");
+        function normalizeStatus(status) {
+            const raw = normalizeText(status);
+            if (!raw) return "pending";
+            if (raw === "published") return "approved";
+            return raw;
         }
 
         function showStatus(type, message) {
@@ -1022,13 +1020,6 @@
             globalStatus.textContent = "";
         }
 
-        function setBusyState(nextState) {
-            isBusy = !!nextState;
-            refreshBtn.disabled = isBusy;
-            approveAllVisibleBtn.disabled = isBusy;
-            clearFilterBtn.disabled = isBusy;
-        }
-
         function formatDateTime(iso) {
             if (!iso) return "---";
             const d = new Date(iso);
@@ -1037,293 +1028,76 @@
         }
 
         function getPostId(post) {
-            if (post && post.id !== undefined && post.id !== null && String(post.id).trim()) {
-                return String(post.id).trim();
-            }
-
-            if (post && post.postId !== undefined && post.postId !== null && String(post.postId).trim()) {
-                return String(post.postId).trim();
-            }
-
-            if (post && post.slug !== undefined && post.slug !== null && String(post.slug).trim()) {
-                return String(post.slug).trim();
-            }
-
-            return [
-                post.title,
-                post.propertyType,
-                post.serviceType,
-                post.city,
-                post.ward,
-                post.contactPhone,
-                post.phone,
-                post.projectSlug,
-                post.projectName,
-                post.flow,
-                post.postType,
-                post.createdAt
-            ].map(slugifyText).filter(Boolean).join("-") || ("post-" + Date.now());
+            if (!post || typeof post !== "object") return "";
+            return String(post.id || post.postId || post.slug || "").trim();
         }
 
-        function cloneData(data) {
-            return safeParseJSON(JSON.stringify(data), Array.isArray(data) ? [] : {});
-        }
-
-        function getProjectTypeNameFromSlug(slug) {
-            const PROJECT_CATEGORIES = [
-                { slug: "can-ho-chung-cu", name: "Căn hộ chung cư" },
-                { slug: "cao-oc-van-phong", name: "Cao ốc văn phòng" },
-                { slug: "trung-tam-thuong-mai", name: "Trung tâm thương mại" },
-                { slug: "khu-do-thi-moi", name: "Khu đô thị mới" },
-                { slug: "khu-phuc-hop", name: "Khu phức hợp" },
-                { slug: "nha-o-xa-hoi", name: "Nhà ở xã hội" },
-                { slug: "khu-nghi-duong-sinh-thai", name: "Khu nghỉ dưỡng, Sinh thái" },
-                { slug: "khu-cong-nghiep", name: "Khu công nghiệp" },
-                { slug: "biet-thu-lien-ke", name: "Biệt thự, liền kề" },
-                { slug: "shophouse", name: "Shophouse" },
-                { slug: "nha-mat-pho", name: "Nhà mặt phố" },
-                { slug: "du-an-khac", name: "Dự án khác" }
-            ];
-
-            const found = PROJECT_CATEGORIES.find(function (item) {
-                return item.slug === slug;
-            });
-
-            return found ? found.name : "";
-        }
-
-        function getProjectTypeSlugFromValue(value) {
-            const PROJECT_CATEGORIES = [
-                { slug: "can-ho-chung-cu", name: "Căn hộ chung cư" },
-                { slug: "cao-oc-van-phong", name: "Cao ốc văn phòng" },
-                { slug: "trung-tam-thuong-mai", name: "Trung tâm thương mại" },
-                { slug: "khu-do-thi-moi", name: "Khu đô thị mới" },
-                { slug: "khu-phuc-hop", name: "Khu phức hợp" },
-                { slug: "nha-o-xa-hoi", name: "Nhà ở xã hội" },
-                { slug: "khu-nghi-duong-sinh-thai", name: "Khu nghỉ dưỡng, Sinh thái" },
-                { slug: "khu-cong-nghiep", name: "Khu công nghiệp" },
-                { slug: "biet-thu-lien-ke", name: "Biệt thự, liền kề" },
-                { slug: "shophouse", name: "Shophouse" },
-                { slug: "nha-mat-pho", name: "Nhà mặt phố" },
-                { slug: "du-an-khac", name: "Dự án khác" }
-            ];
-
-            const normalized = normalizeText(value);
-            const found = PROJECT_CATEGORIES.find(function (item) {
-                return item.slug === value || normalizeText(item.name) === normalized;
-            });
-
-            return found ? found.slug : "";
-        }
-
-        function getStorageArray(key) {
-            const data = safeParseJSON(localStorage.getItem(key) || "[]", []);
-            return Array.isArray(data) ? data : [];
-        }
-
-        function getAllPostsFromSource() {
+        function getAllPosts() {
             try {
                 if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
                     const posts = window.postStorage.getAllPosts();
-                    if (Array.isArray(posts)) return cloneData(posts);
+                    return Array.isArray(posts) ? posts : [];
                 }
             } catch (error) {
                 console.warn("postStorage.getAllPosts lỗi:", error);
             }
 
-            return getStorageArray("allPosts");
+            return safeParseJSON(localStorage.getItem("allPosts") || "[]", []);
         }
 
-        function saveArrayToPossibleTargets(key, data) {
-            const safeData = Array.isArray(data) ? cloneData(data) : [];
-
-            localStorage.setItem(key, JSON.stringify(safeData));
-
-            if (!window.postStorage) return;
-
-            const methodCandidates = {
-                allPosts: ["saveAllPosts", "setAllPosts", "updateAllPosts"],
-                propertyPosts: ["savePropertyPosts", "setPropertyPosts", "updatePropertyPosts"],
-                salePosts: ["saveSalePosts", "setSalePosts", "updateSalePosts"],
-                rentalPosts: ["saveRentalPosts", "setRentalPosts", "updateRentalPosts"],
-                constructionPosts: ["saveConstructionPosts", "setConstructionPosts", "updateConstructionPosts"],
-                projects: ["saveProjects", "setProjects", "updateProjects"]
-            };
-
-            const methods = methodCandidates[key] || [];
-
-            methods.forEach(function (methodName) {
-                try {
-                    if (typeof window.postStorage[methodName] === "function") {
-                        window.postStorage[methodName](cloneData(safeData));
-                    }
-                } catch (error) {
-                    console.warn("postStorage." + methodName + " lỗi:", error);
-                }
-            });
-        }
-
-        function dispatchSiteSync(detail) {
+        function syncAllDerivedStores() {
             try {
-                window.dispatchEvent(new CustomEvent("toamviet:data-sync", {
-                    detail: detail || {}
-                }));
-            } catch (error) {}
-
-            try {
-                window.dispatchEvent(new Event("storage"));
-            } catch (error) {}
-        }
-
-        function rebuildCompatibilityStores(posts) {
-            const propertyPosts = posts.filter(function (item) {
-                return item.flow === "real_estate";
-            });
-
-            const salePosts = propertyPosts.filter(function (item) {
-                return item.postType === "ban";
-            });
-
-            const rentalPosts = propertyPosts.filter(function (item) {
-                return item.postType === "thue";
-            });
-
-            const constructionPosts = posts.filter(function (item) {
-                return item.flow === "construction";
-            });
-
-            saveArrayToPossibleTargets("propertyPosts", propertyPosts);
-            saveArrayToPossibleTargets("salePosts", salePosts);
-            saveArrayToPossibleTargets("rentalPosts", rentalPosts);
-            saveArrayToPossibleTargets("constructionPosts", constructionPosts);
-        }
-
-        function syncProjectStoreFromPosts(posts) {
-            const oldProjects = getStorageArray("projects");
-            const map = new Map();
-
-            oldProjects.forEach(function (project) {
-                if (!project || !project.slug) return;
-
-                const typeSlug = getProjectTypeSlugFromValue(project.type);
-                map.set(project.slug, {
-                    ...project,
-                    type: typeSlug || project.type || "",
-                    typeName: project.typeName || getProjectTypeNameFromSlug(typeSlug || project.type) || "",
-                    postCount: 0,
-                    pendingCount: 0,
-                    rejectedCount: 0,
-                    hiddenCount: 0,
-                    totalPosts: 0
-                });
-            });
-
-            posts.forEach(function (post) {
-                if (!post || !post.projectSlug || !post.projectName) return;
-
-                const slug = post.projectSlug;
-                const existing = map.get(slug) || {
-                    id: post.projectId || ("project_" + slug),
-                    name: post.projectName,
-                    slug: slug,
-                    city: post.city || "",
-                    ward: post.ward || "",
-                    addressDetail: post.addressDetail || "",
-                    type: post.projectType || "",
-                    typeName: post.projectTypeName || "",
-                    developer: post.projectDeveloper || "",
-                    postCount: 0,
-                    pendingCount: 0,
-                    rejectedCount: 0,
-                    hiddenCount: 0,
-                    totalPosts: 0,
-                    createdAt: new Date().toISOString(),
-                    lastPostAt: post.createdAt || new Date().toISOString()
-                };
-
-                existing.name = existing.name || post.projectName;
-                existing.city = existing.city || post.city || "";
-                existing.ward = existing.ward || post.ward || "";
-                existing.addressDetail = existing.addressDetail || post.addressDetail || "";
-                existing.type = existing.type || post.projectType || "";
-                existing.typeName = existing.typeName || post.projectTypeName || getProjectTypeNameFromSlug(existing.type) || "";
-                existing.developer = existing.developer || post.projectDeveloper || "";
-                existing.totalPosts = (existing.totalPosts || 0) + 1;
-                existing.lastPostAt = post.updatedAt || post.createdAt || existing.lastPostAt || new Date().toISOString();
-
-                const status = post.status || "pending";
-                if (status === "approved") {
-                    existing.postCount = (existing.postCount || 0) + 1;
-                } else if (status === "pending") {
-                    existing.pendingCount = (existing.pendingCount || 0) + 1;
-                } else if (status === "rejected") {
-                    existing.rejectedCount = (existing.rejectedCount || 0) + 1;
-                } else if (status === "hidden") {
-                    existing.hiddenCount = (existing.hiddenCount || 0) + 1;
+                if (window.postStorage && typeof window.postStorage.syncDerivedStores === "function") {
+                    window.postStorage.syncDerivedStores();
                 }
-
-                map.set(slug, existing);
-            });
-
-            const nextProjects = Array.from(map.values()).sort(function (a, b) {
-                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
-            });
-
-            saveArrayToPossibleTargets("projects", nextProjects);
-        }
-
-        function syncAllDerivedStores(posts) {
-            const sourcePosts = Array.isArray(posts) ? posts : getAllPostsFromSource();
-            rebuildCompatibilityStores(sourcePosts);
-            syncProjectStoreFromPosts(sourcePosts);
-
-            if (window.projectService && typeof window.projectService.syncProjectCounts === "function") {
-                try {
-                    window.projectService.syncProjectCounts(sourcePosts, true);
-                } catch (error) {
-                    console.warn("projectService.syncProjectCounts lỗi:", error);
-                }
+            } catch (error) {
+                console.warn("postStorage.syncDerivedStores lỗi:", error);
             }
 
-            dispatchSiteSync({
-                source: "admin-review-posts",
-                totalPosts: sourcePosts.length
-            });
-        }
-
-        function saveAllPostsToSource(posts) {
-            saveArrayToPossibleTargets("allPosts", posts);
-            syncAllDerivedStores(posts);
+            try {
+                if (window.projectService && typeof window.projectService.syncProjectCounts === "function") {
+                    const posts = getAllPosts();
+                    window.projectService.syncProjectCounts(posts, false);
+                }
+            } catch (error) {
+                console.warn("projectService.syncProjectCounts lỗi:", error);
+            }
         }
 
         function getStatusLabel(status) {
-            if (status === "approved") return "Đã duyệt";
-            if (status === "rejected") return "Từ chối";
-            if (status === "hidden") return "Đang ẩn";
+            const normalized = normalizeStatus(status);
+            if (normalized === "approved") return "Đã duyệt";
+            if (normalized === "rejected") return "Từ chối";
+            if (normalized === "hidden") return "Đang ẩn";
+            if (normalized === "demo") return "Demo";
             return "Chờ duyệt";
         }
 
         function getStatusBadgeClass(status) {
-            if (status === "approved") return "badge-approved";
-            if (status === "rejected") return "badge-rejected";
-            if (status === "hidden") return "badge-hidden";
+            const normalized = normalizeStatus(status);
+            if (normalized === "approved") return "badge-approved";
+            if (normalized === "rejected") return "badge-rejected";
+            if (normalized === "hidden") return "badge-hidden";
+            if (normalized === "demo") return "badge-project";
             return "badge-pending";
         }
 
         function getFlowLabel(post) {
-            if (post.flow === "construction") return "Xây dựng";
+            if (normalizeText(post.flow) === "construction") return "Xây dựng";
             return "Bất động sản";
         }
 
         function getPostTypeLabel(post) {
-            if (post.postType === "ban") return "Tin bán";
-            if (post.postType === "thue") return "Tin thuê";
+            const type = normalizeText(post.postType);
+            if (type === "ban") return "Tin bán";
+            if (type === "thue") return "Tin thuê";
             return "Xây dựng";
         }
 
         function getPostTypeBadgeClass(post) {
-            if (post.postType === "ban") return "badge-sale";
-            if (post.postType === "thue") return "badge-rent";
+            const type = normalizeText(post.postType);
+            if (type === "ban") return "badge-sale";
+            if (type === "thue") return "badge-rent";
             return "badge-construction";
         }
 
@@ -1343,25 +1117,25 @@
         }
 
         function getPostPriceText(post) {
-            if (post.flow === "construction") {
+            if (normalizeText(post.flow) === "construction") {
                 return post.servicePrice || (post.servicePriceData && post.servicePriceData.display) || "Chưa có giá";
             }
             return post.propertyPrice || (post.propertyPriceData && post.propertyPriceData.display) || "Chưa có giá";
         }
 
         function getPostAreaText(post) {
-            if (post.flow === "construction") {
+            if (normalizeText(post.flow) === "construction") {
                 return post.serviceExp || post.serviceArea || "Chưa có";
             }
             return post.propertyArea ? (post.propertyArea + " m²") : "Chưa có";
         }
 
         function getPostLocationText(post) {
-            return [post.ward, post.city].filter(Boolean).join(", ") || "Chưa có vị trí";
+            return [post.addressDetail, post.ward, post.city].filter(Boolean).join(", ") || "Chưa có vị trí";
         }
 
         function getPostMetaText(post) {
-            if (post.flow === "construction") {
+            if (normalizeText(post.flow) === "construction") {
                 return post.serviceType || post.serviceSpecialty || "Chưa cập nhật";
             }
             return post.propertyLegal || post.propertyType || "Chưa cập nhật";
@@ -1372,16 +1146,17 @@
         }
 
         function getDetailLink(post) {
+            if (post.detailUrl && String(post.detailUrl).trim()) return post.detailUrl;
             const id = getPostId(post);
             return "../pages/chi-tiet-tin.html?id=" + encodeURIComponent(id);
         }
 
         function updateStats() {
             const total = allPosts.length;
-            const pending = allPosts.filter(function (p) { return (p.status || "pending") === "pending"; }).length;
-            const approved = allPosts.filter(function (p) { return p.status === "approved"; }).length;
-            const rejected = allPosts.filter(function (p) { return p.status === "rejected"; }).length;
-            const hidden = allPosts.filter(function (p) { return p.status === "hidden"; }).length;
+            const pending = allPosts.filter(function (p) { return normalizeStatus(p.status) === "pending"; }).length;
+            const approved = allPosts.filter(function (p) { return normalizeStatus(p.status) === "approved"; }).length;
+            const rejected = allPosts.filter(function (p) { return normalizeStatus(p.status) === "rejected"; }).length;
+            const hidden = allPosts.filter(function (p) { return normalizeStatus(p.status) === "hidden"; }).length;
 
             document.getElementById("statTotal").textContent = total;
             document.getElementById("statPending").textContent = pending;
@@ -1391,16 +1166,16 @@
         }
 
         function loadPosts() {
-            allPosts = getAllPostsFromSource().slice().sort(function (a, b) {
+            allPosts = getAllPosts().slice().sort(function (a, b) {
                 return new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0);
             });
         }
 
         function applyFilters() {
             const keyword = normalizeText(searchInput.value);
-            const flowValue = flowFilter.value;
-            const typeValue = typeFilter.value;
-            const statusValue = statusFilter.value;
+            const flowValue = normalizeText(flowFilter.value);
+            const typeValue = normalizeText(typeFilter.value);
+            const statusValue = normalizeText(statusFilter.value);
 
             filteredPosts = allPosts.filter(function (post) {
                 const searchable = normalizeText([
@@ -1423,9 +1198,9 @@
                 ].filter(Boolean).join(" "));
 
                 const matchKeyword = !keyword || searchable.includes(keyword);
-                const matchFlow = flowValue === "all" || post.flow === flowValue;
-                const matchType = typeValue === "all" || post.postType === typeValue;
-                const matchStatus = statusValue === "all" || (post.status || "pending") === statusValue;
+                const matchFlow = flowValue === "all" || normalizeText(post.flow) === flowValue;
+                const matchType = typeValue === "all" || normalizeText(post.postType) === typeValue;
+                const matchStatus = statusValue === "all" || normalizeStatus(post.status) === statusValue;
 
                 return matchKeyword && matchFlow && matchType && matchStatus;
             });
@@ -1436,7 +1211,7 @@
 
         function updateResultInfo() {
             const pendingCount = allPosts.filter(function (p) {
-                return (p.status || "pending") === "pending";
+                return normalizeStatus(p.status) === "pending";
             }).length;
 
             pendingCountBadge.textContent = pendingCount + " Tin mới";
@@ -1451,69 +1226,69 @@
 
         function buildPostCard(post) {
             const id = getPostId(post);
-            const status = post.status || "pending";
+            const status = normalizeStatus(post.status);
             const projectBadge = post.projectName
-                ? '<span class="badge badge-project"><i class="fa-solid fa-building"></i>' + post.projectName + '</span>'
+                ? '<span class="badge badge-project"><i class="fa-solid fa-building"></i>' + escapeHtml(post.projectName) + '</span>'
                 : '';
 
             const imageCount = Array.isArray(post.images) ? post.images.length : 0;
             const detailLink = getDetailLink(post);
-            const imageSrc = getPostThumb(post);
+            const imageSrc = escapeHtml(getPostThumb(post));
 
             return `
-                <article class="post-card" id="post-${id}">
+                <article class="post-card" id="post-${escapeHtml(id)}">
                     <div class="post-layout">
                         <img
                             class="post-thumb"
                             src="${imageSrc}"
-                            alt="${post.title || "Tin đăng"}"
+                            alt="${escapeHtml(post.title || "Tin đăng")}"
                             onerror="this.src='${FALLBACK_PROPERTY_IMAGE}'"
                         />
 
                         <div class="post-main">
                             <div class="badge-row">
                                 <span class="badge ${getStatusBadgeClass(status)}">
-                                    <i class="fa-solid fa-circle-info"></i>${getStatusLabel(status)}
+                                    <i class="fa-solid fa-circle-info"></i>${escapeHtml(getStatusLabel(status))}
                                 </span>
                                 <span class="badge ${getPostTypeBadgeClass(post)}">
-                                    <i class="fa-solid fa-tag"></i>${getPostTypeLabel(post)}
+                                    <i class="fa-solid fa-tag"></i>${escapeHtml(getPostTypeLabel(post))}
                                 </span>
                                 <span class="badge badge-project" style="background:#eff6ff;color:#1d4ed8;">
-                                    <i class="fa-solid fa-layer-group"></i>${getFlowLabel(post)}
+                                    <i class="fa-solid fa-layer-group"></i>${escapeHtml(getFlowLabel(post))}
                                 </span>
                                 ${projectBadge}
                             </div>
 
-                            <div class="post-title">${post.title || "Chưa có tiêu đề"}</div>
-                            <div class="post-desc">${post.description || "Chưa có mô tả chi tiết."}</div>
+                            <div class="post-title">${escapeHtml(post.title || "Chưa có tiêu đề")}</div>
+                            <div class="post-desc">${escapeHtml(post.description || "Chưa có mô tả chi tiết.")}</div>
 
                             <div class="meta-tags">
-                                <span class="info-tag"><i class="fa-solid fa-tag"></i>${getPostPriceText(post)}</span>
-                                <span class="info-tag"><i class="fa-solid fa-expand"></i>${getPostAreaText(post)}</span>
-                                <span class="info-tag"><i class="fa-solid fa-location-dot"></i>${getPostLocationText(post)}</span>
+                                <span class="info-tag"><i class="fa-solid fa-tag"></i>${escapeHtml(getPostPriceText(post))}</span>
+                                <span class="info-tag"><i class="fa-solid fa-expand"></i>${escapeHtml(getPostAreaText(post))}</span>
+                                <span class="info-tag"><i class="fa-solid fa-location-dot"></i>${escapeHtml(getPostLocationText(post))}</span>
                                 <span class="info-tag"><i class="fa-solid fa-image"></i>${imageCount} ảnh</span>
-                                <span class="info-tag"><i class="fa-solid fa-phone"></i>${post.contactPhone || post.phone || "Chưa có SĐT"}</span>
+                                <span class="info-tag"><i class="fa-solid fa-phone"></i>${escapeHtml(post.contactPhone || post.phone || "Chưa có SĐT")}</span>
                             </div>
 
                             <div class="meta-grid">
                                 <div class="meta-box">
                                     <div class="meta-box-title">Người đăng</div>
-                                    <div>${getPosterText(post)}</div>
+                                    <div>${escapeHtml(getPosterText(post))}</div>
                                 </div>
 
                                 <div class="meta-box">
                                     <div class="meta-box-title">Pháp lý / Loại hình</div>
-                                    <div>${getPostMetaText(post)}</div>
+                                    <div>${escapeHtml(getPostMetaText(post))}</div>
                                 </div>
 
                                 <div class="meta-box">
                                     <div class="meta-box-title">Ngày tạo</div>
-                                    <div>${formatDateTime(post.createdAt)}</div>
+                                    <div>${escapeHtml(formatDateTime(post.createdAt))}</div>
                                 </div>
 
                                 <div class="meta-box">
                                     <div class="meta-box-title">Cập nhật gần nhất</div>
-                                    <div>${formatDateTime(post.updatedAt || post.createdAt)}</div>
+                                    <div>${escapeHtml(formatDateTime(post.updatedAt || post.createdAt))}</div>
                                 </div>
                             </div>
                         </div>
@@ -1524,25 +1299,25 @@
                             </a>
 
                             ${status !== "approved"
-                                ? `<button class="btn-success" type="button" onclick="handlePostAction('${id}', 'approve')">
+                                ? `<button class="btn-success" type="button" onclick="handlePostAction('${escapeHtml(id)}', 'approve')">
                                         <i class="fa-solid fa-circle-check mr-2"></i>Duyệt đăng
                                    </button>`
-                                : `<button class="btn-warning" type="button" onclick="handlePostAction('${id}', 'hide')">
+                                : `<button class="btn-warning" type="button" onclick="handlePostAction('${escapeHtml(id)}', 'hide')">
                                         <i class="fa-solid fa-eye-slash mr-2"></i>Ẩn tin
                                    </button>`
                             }
 
                             ${status !== "rejected"
-                                ? `<button class="btn-danger" type="button" onclick="handlePostAction('${id}', 'reject')">
+                                ? `<button class="btn-danger" type="button" onclick="handlePostAction('${escapeHtml(id)}', 'reject')">
                                         <i class="fa-solid fa-xmark mr-2"></i>Từ chối
                                    </button>`
-                                : `<button class="btn-soft" type="button" onclick="handlePostAction('${id}', 'pending')">
+                                : `<button class="btn-soft" type="button" onclick="handlePostAction('${escapeHtml(id)}', 'pending')">
                                         <i class="fa-solid fa-rotate-left mr-2"></i>Trả về chờ duyệt
                                    </button>`
                             }
 
                             ${status === "hidden"
-                                ? `<button class="btn-primary" type="button" onclick="handlePostAction('${id}', 'approve')">
+                                ? `<button class="btn-primary" type="button" onclick="handlePostAction('${escapeHtml(id)}', 'approve')">
                                         <i class="fa-solid fa-eye mr-2"></i>Hiện lại
                                    </button>`
                                 : ""
@@ -1566,37 +1341,45 @@
             }).join("");
         }
 
-        function findPostIndexById(posts, targetId) {
-            return posts.findIndex(function (post) {
+        function getPostByIdFromCurrentData(targetId) {
+            return allPosts.find(function (post) {
                 return getPostId(post) === String(targetId);
-            });
+            }) || null;
         }
 
         function updatePostStatusById(targetId, nextStatus) {
-            const posts = getAllPostsFromSource();
-            const index = findPostIndexById(posts, targetId);
+            const normalizedStatus = normalizeStatus(nextStatus);
+
+            if (window.postStorage && typeof window.postStorage.togglePostStatus === "function") {
+                window.postStorage.togglePostStatus(targetId, normalizedStatus);
+                return;
+            }
+
+            if (window.postStorage && typeof window.postStorage.updatePost === "function") {
+                window.postStorage.updatePost(targetId, {
+                    status: normalizedStatus,
+                    updatedAt: new Date().toISOString()
+                });
+                return;
+            }
+
+            const posts = getAllPosts();
+            const index = posts.findIndex(function (post) {
+                return getPostId(post) === String(targetId);
+            });
 
             if (index === -1) {
                 throw new Error("POST_NOT_FOUND");
             }
 
             const nowIso = new Date().toISOString();
-            const nextData = {
+            posts[index] = {
                 ...posts[index],
-                status: nextStatus,
+                status: normalizedStatus,
                 updatedAt: nowIso
             };
 
-            if (nextStatus === "approved") {
-                nextData.approvedAt = nowIso;
-            }
-
-            if (nextStatus === "rejected") {
-                nextData.rejectedAt = nowIso;
-            }
-
-            posts[index] = nextData;
-            saveAllPostsToSource(posts);
+            localStorage.setItem("allPosts", JSON.stringify(posts));
         }
 
         function getActionConfirmMessage(action) {
@@ -1616,16 +1399,14 @@
         }
 
         function animateRemoveCard(id) {
-            const element = document.getElementById("post-" + id);
+            const element = document.getElementById("post-" + CSS.escape(String(id)));
             if (!element) return;
 
             element.style.transform = "scale(0.98)";
             element.style.opacity = "0";
         }
 
-        async function handlePostAction(id, action) {
-            if (isBusy) return;
-
+        function handlePostAction(id, action) {
             const message = getActionConfirmMessage(action);
             if (!confirm(message)) return;
 
@@ -1636,29 +1417,25 @@
             if (action === "pending") nextStatus = "pending";
 
             try {
-                setBusyState(true);
                 animateRemoveCard(id);
                 updatePostStatusById(id, nextStatus);
+                syncAllDerivedStores();
 
                 setTimeout(function () {
                     loadPosts();
                     updateStats();
                     applyFilters();
                     showStatus("success", getActionSuccessMessage(action));
-                    setBusyState(false);
                 }, 220);
             } catch (error) {
                 console.error("Không thể cập nhật trạng thái tin:", error);
-                showStatus("error", "Không thể cập nhật trạng thái tin. Vui lòng kiểm tra lại dữ liệu nguồn.");
-                setBusyState(false);
+                showStatus("error", "Không thể cập nhật trạng thái tin. Vui lòng kiểm tra lại dữ liệu thật của hệ thống.");
             }
         }
 
-        async function approveAllVisible() {
-            if (isBusy) return;
-
+        function approveAllVisible() {
             const visiblePending = filteredPosts.filter(function (post) {
-                return (post.status || "pending") === "pending";
+                return normalizeStatus(post.status) === "pending";
             });
 
             if (!visiblePending.length) {
@@ -1670,36 +1447,21 @@
             if (!confirmBulk) return;
 
             try {
-                setBusyState(true);
-
-                const posts = getAllPostsFromSource();
-                const nowIso = new Date().toISOString();
-                let updatedCount = 0;
-
                 visiblePending.forEach(function (post) {
                     const id = getPostId(post);
-                    const index = findPostIndexById(posts, id);
-                    if (index === -1) return;
-
-                    posts[index] = {
-                        ...posts[index],
-                        status: "approved",
-                        approvedAt: nowIso,
-                        updatedAt: nowIso
-                    };
-                    updatedCount += 1;
+                    if (id) {
+                        updatePostStatusById(id, "approved");
+                    }
                 });
 
-                saveAllPostsToSource(posts);
+                syncAllDerivedStores();
                 loadPosts();
                 updateStats();
                 applyFilters();
-                showStatus("success", "Đã duyệt hàng loạt " + updatedCount + " tin và đồng bộ lại dữ liệu.");
-                setBusyState(false);
+                showStatus("success", "Đã duyệt hàng loạt " + visiblePending.length + " tin và đồng bộ lại dữ liệu.");
             } catch (error) {
                 console.error("Lỗi duyệt hàng loạt:", error);
                 showStatus("error", "Không thể duyệt hàng loạt. Vui lòng kiểm tra lại dữ liệu.");
-                setBusyState(false);
             }
         }
 
@@ -1739,13 +1501,13 @@
                 applyFilters();
 
                 if (!allPosts.length) {
-                    showStatus("info", "Hiện nguồn dữ liệu chưa có tin đăng nào để kiểm duyệt.");
+                    showStatus("info", "Hiện hệ thống chưa có tin đăng nào để kiểm duyệt.");
                 } else {
                     hideStatus();
                 }
             } catch (error) {
                 console.error("Lỗi khởi tạo trang kiểm duyệt:", error);
-                showStatus("error", "Không thể tải dữ liệu kiểm duyệt. Hãy kiểm tra lại postStorage hoặc nguồn allPosts.");
+                showStatus("error", "Không thể tải dữ liệu kiểm duyệt. Hãy kiểm tra lại postStorage hoặc nguồn dữ liệu bài viết.");
             }
         }
 
@@ -1756,22 +1518,12 @@
 
         clearFilterBtn.addEventListener("click", clearFilters);
         refreshBtn.addEventListener("click", function () {
-            initPage();
-            showStatus("success", "Đã làm mới dữ liệu kiểm duyệt từ nguồn hiện tại.");
+            loadPosts();
+            updateStats();
+            applyFilters();
+            showStatus("success", "Đã làm mới dữ liệu kiểm duyệt từ nguồn bài viết.");
         });
         approveAllVisibleBtn.addEventListener("click", approveAllVisible);
-
-        window.addEventListener("storage", function () {
-            loadPosts();
-            updateStats();
-            applyFilters();
-        });
-
-        window.addEventListener("toamviet:data-sync", function () {
-            loadPosts();
-            updateStats();
-            applyFilters();
-        });
 
         window.handlePostAction = handlePostAction;
     </script>
