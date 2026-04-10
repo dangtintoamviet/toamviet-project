@@ -1,0 +1,125 @@
+ToamViet platform + payment patch notes - 2026-04-10
+
+Đã bổ sung trong bộ zip này:
+1) Lớp thanh toán thật cho VIP/gói đăng tin
+   - api/payment/create-order.js
+   - api/payment/status.js
+   - api/payment/vnpay-return.js
+   - api/payment/vnpay-ipn.js
+   - api/_lib/payment-core.js
+   - tạo vòng đời đơn hàng thật: tạo đơn -> chuyển cổng thanh toán -> return/IPN -> ghi trạng thái -> cấp entitlement -> nâng VIP tin
+
+2) Frontend thanh toán
+   - assets/js/payment-service.js
+   - assets/css/payment.css
+   - pages/thanh-toan-ket-qua.html
+   - user/dang-tin.html + user/sua-tin.html tự điều hướng sang cổng thanh toán khi bật thu phí và user chọn VIP cao hơn quyền hiện có
+   - panel chọn package theo cấp VIP trên trang đăng/sửa tin
+
+3) Cấu hình admin
+   - admin/cai-dat-he-thong.html bổ sung:
+     - chọn cổng thanh toán mặc định
+     - tiền tố mã đơn hàng
+     - đường dẫn trang kết quả thanh toán
+     - toggle auto cấp entitlement
+     - toggle auto nâng VIP cho tin
+     - catalog gói VIP dạng JSON để cấu hình giá/duration/code/enable
+
+4) Mở rộng settings lõi
+   - assets/js/platform-core.js
+   - assets/js/supabase-data-service.js
+   - seed thêm default settings cho paymentProvider, paymentResultPath, paymentPackages...
+
+5) SQL mở rộng cho order lifecycle
+   - supabase-payment-upgrade-2026-04-10.sql
+   - listing_orders có thêm gateway, package_snapshot, provider_transaction_no, paid_at, result_code, entitlement_expires_at, callback_payload
+   - thêm bảng payment_transactions
+   - user_entitlements có source_order_id để chống cấp quyền trùng khi callback lặp
+
+6) Tài liệu triển khai
+   - PAYMENT_SETUP_GUIDE.md
+   - ghi rõ thứ tự SQL cần chạy và các biến môi trường Vercel cần khai báo
+
+Lưu ý triển khai bắt buộc để thanh toán chạy thật:
+1) Chạy SQL theo thứ tự:
+   - supabase-hardening-2026-04-10.sql
+   - supabase-platform-upgrade-2026-04-10.sql
+   - supabase-payment-upgrade-2026-04-10.sql
+
+2) Khai báo env trên Vercel:
+   - SUPABASE_URL
+   - SUPABASE_ANON_KEY
+   - SUPABASE_SERVICE_ROLE_KEY
+   - SITE_URL
+   - VNPAY_TMN_CODE
+   - VNPAY_HASH_SECRET
+   - VNPAY_BASE_URL
+   - VNPAY_RETURN_URL (khuyến nghị)
+
+3) Đăng ký với VNPay:
+   - Return URL: https://ten-mien-cua-ban/api/payment/vnpay-return
+   - IPN URL: https://ten-mien-cua-ban/api/payment/vnpay-ipn
+
+Ghi chú trung thực:
+- Bộ code này đã có đầy đủ khung kỹ thuật để chạy thanh toán thật theo mô hình redirect + callback/IPN của VNPay.
+- Để giao dịch live thực sự thành công, vẫn cần merchant credentials thật và cấu hình môi trường phía triển khai.
+
+
+[2026-04-10 Bổ sung vá lỗi public]
+- Vá lại link hồ sơ chi tiết môi giới/doanh nghiệp bằng ưu tiên profileId trực tiếp từ tin đăng và bổ sung tải hồ sơ public từ Supabase theo id.
+- Cố định ảnh card nhà đất bán, nhà đất cho thuê, tin đã lưu và trang tìm kiếm để ảnh luôn phủ đúng khung, không làm card cao bất thường.
+- Gia cố nút tìm kiếm nhanh ở trang chủ để luôn điều hướng sang trang tìm kiếm.
+- Chuẩn hóa thêm link tin tức sang trang chi tiết tin tức với id + slug ở các cụm quan trọng.
+
+- 2026-04-10 bổ sung vá sâu public: chặn fallback link hồ sơ bằng id tin đăng, tăng khả năng tự suy ra profile id từ tin khi mở chi tiết môi giới/doanh nghiệp, kéo ảnh card full chiều cao khung ở nhà đất bán/cho thuê/tin đã lưu/tìm kiếm, làm bộ lọc trang chủ -> tìm kiếm giữ đúng khu vực, và chuẩn hóa thêm link tin tức sidebar/fallback sang chi tiết bài viết đúng id + slug.
+
+[2026-04-10 r3]
+- Chốt lại khung ảnh card theo hướng: giới hạn khung cố định để ảnh dọc không làm vỡ card, nhưng ảnh vẫn phủ kín toàn bộ khung card trên các trang danh sách liên quan.
+- Đồng bộ lại font Roboto và độ đậm/nhạt chính trong toàn bộ cụm admin để gần với admin-dashboard.html hơn.
+
+[2026-04-10 r4]
+- Điều chỉnh CSS khung ảnh card dùng chung: giữ crop giữa ảnh dọc nhưng cho khung ảnh desktop stretch theo chiều cao card, xóa khoảng trắng phía dưới ảnh ở các card danh sách liên quan.
+
+
+[R5 - 2026-04-10]
+- Mobile home: đồng bộ độ rộng slider card Môi giới tiêu biểu với Doanh nghiệp tiêu biểu để card ngắn lại, hiển thị cân hơn trên mobile.
+
+
+[ADMIN AUDIT - 2026-04-10]
+- Rà và vá lại cụm admin theo hướng giữ nguyên giao diện, tập trung vào quyền truy cập và độ ổn định của nút bấm.
+- admin/cai-dat-he-thong.html: bind lại 2 switch thanh toán còn thiếu (tự cấp entitlement, tự nâng VIP), bổ sung chống bấm lặp và làm cho các nút đồng bộ chạy đúng luồng dữ liệu trung tâm hơn thay vì chỉ refresh số liệu.
+- admin/kiem-duyet-tin.html: bổ sung chặn truy cập admin ở chế độ fallback/local, chống double-click cho các nút duyệt/ẩn/từ chối và nút duyệt hàng loạt, đồng thời chuẩn hóa lại thông báo trạng thái khi refresh.
+- admin/quan-ly-thanh-vien.html: bổ sung kiểm tra quyền admin fallback, chống double-click cho các nút duyệt/mở khóa/chuyển chờ duyệt và nút refresh.
+- admin/quan-ly-du-an.html: chống double-click cho các nút thao tác, phát sự kiện tv:projects-synced khi lưu project để các khối admin/public cùng tab cập nhật ngay, và đồng bộ thêm statusVisibility theo adminStatus khi ẩn/hiện dự án.
+- admin/admin-dashboard.html: bổ sung trạng thái loading cho các nút tổng quan và cho quick actions làm mới cache/dự án chạy dữ liệu thật hơn trước.
+
+[Admin/User/Auth hardening r8]
+- Siết lại cụm auth + admin + user theo hướng fail-closed:
+  + user/dang-tin.html: nếu có Supabase data service thì đăng tin phải ghi thành công trên backend mới coi là hoàn tất, không âm thầm fallback local nữa.
+  + user/sua-tin.html: nếu có Supabase data service thì sửa tin phải ghi thành công trên backend mới lưu.
+  + user/quan-ly-tin.html: ẩn/hiện tin, xóa tin, nhân bản tin ưu tiên backend; nếu lỗi thì không tự sửa local rồi báo thành công.
+  + user/tai-khoan.html: lưu hồ sơ và đổi mật khẩu không còn báo thành công cục bộ khi backend lỗi.
+- auth/dang-nhap.html: khi tài khoản pending/blocked, sau đăng nhập sẽ chuyển về trang tài khoản thay vì đẩy vào luồng đăng tin.
+- assets/js/supabase-data-service.js:
+  + thêm updateProjectAdminStatus()
+  + siết trusted status/profile theo DB hơn, không ưu tiên user_metadata.status
+  + tôn trọng projectCreationMode khi tự tạo dự án
+  + lọc project hidden khỏi dữ liệu public và khỏi bundle hồ sơ public
+  + thêm hiddenProjects cache để giữ trạng thái ẩn dự án ổn định ngay cả khi DB cũ chưa có cột mới
+- admin/quan-ly-du-an.html:
+  + nút ẩn/hiện dự án đi qua supabaseDataService.updateProjectAdminStatus()
+  + sau thao tác sẽ sync lại listing/project/public caches
+- thêm file SQL:
+  + supabase-auth-admin-user-hardening-2026-04-10.sql
+
+[r9] Auth + Admin + User hardening review
+- User dang-tin / sua-tin / tai-khoan / quan-ly-tin: bỏ fallback ghi local cho các thao tác dữ liệu thật (đăng, sửa, lưu hồ sơ, ẩn/hiện, xóa, nhân bản). Khi thiếu hoặc lỗi Supabase, hệ thống báo lỗi và không đổi local giả.
+- Admin kiem-duyet-tin / quan-ly-thanh-vien / quan-ly-du-an: bỏ fallback local cho các thao tác kiểm duyệt và đổi trạng thái; chỉ chấp nhận thao tác khi đồng bộ được với Supabase.
+- Quan ly du an: nút ẩn/hiện dự án truyền id ưu tiên trước slug để tránh lệch thao tác khi slug trùng hoặc thay đổi.
+- Đã check syntax JS cho assets/js/supabase-data-service.js và script inline của các trang auth/admin/user đã chạm.
+
+2026-04-10 r10
+- Chuẩn hóa toàn bộ link động sang trang chi tiết tin / dự án / tin tức / hồ sơ user bằng helper dùng chung trong user-storage.
+- Vá các cụm index, nha-dat-ban, nha-dat-cho-thue, tim-kiem, tin-da-luu, xay-dung, du-an, danh-muc-du-an, danh-ba-moi-gioi, danh-ba-doanh-nghiep, chi-tiet-tin, chi-tiet-moi-gioi, chi-tiet-doanh-nghiep, chi-tiet-du-an, admin/kiem-duyet-tin, admin/quan-ly-du-an, admin/quan-ly-thanh-vien.
+- Giảm rủi ro nối nhầm id tin đăng sang hồ sơ user hoặc nối thiếu slug/project params ở trang chi tiết.
+

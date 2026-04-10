@@ -111,7 +111,7 @@
             align-items: flex-end;
             justify-content: center;
             overflow: hidden;
-            padding: 28px 0 30px;
+            padding: calc(var(--site-header-height, 0px) + 28px) 0 30px;
         }
 
         .hero-banner img {
@@ -139,7 +139,7 @@
         .search-tabs {
             display: inline-flex;
             gap: 8px;
-            margin: 0 auto 14px;
+            margin: 0 auto 10px;
             flex-wrap: wrap;
             justify-content: center;
             width: 100%;
@@ -168,24 +168,24 @@
         }
 
         .hero-filter-shell {
-            max-width: 1380px;
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 8px;
-            border-radius: 30px;
+            padding: 6px;
+            border-radius: 24px;
             background: linear-gradient(90deg, rgba(15,139,141,0.92) 0%, rgba(245,158,11,0.92) 100%);
-            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+            box-shadow: 0 16px 34px rgba(15, 23, 42, 0.14);
         }
 
         .hero-filter-panel {
             background: rgba(255,255,255,0.98);
-            border-radius: 24px;
-            padding: 12px;
+            border-radius: 18px;
+            padding: 10px;
         }
 
         .hero-filter-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.95fr) minmax(0, 0.95fr) auto;
-            gap: 12px;
+            grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr) minmax(0, 0.9fr) auto;
+            gap: 10px;
             align-items: center;
         }
 
@@ -196,11 +196,11 @@
         .vip-input,
         .vip-select {
             width: 100%;
-            min-height: 50px;
+            min-height: 46px;
             border: 1px solid #dbe3eb;
             background: #fff;
-            border-radius: 18px;
-            padding: 0 16px;
+            border-radius: 14px;
+            padding: 0 14px;
             font-size: 14px;
             color: #334155;
             outline: none;
@@ -214,16 +214,14 @@
         }
 
         .vip-submit-btn {
-            min-height: 50px;
+            min-height: 46px;
             border: none;
-            border-radius: 18px;
-            padding: 0 24px;
+            border-radius: 14px;
+            padding: 0 20px;
             background: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
             color: white;
             font-size: 13px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
             cursor: pointer;
             transition: all 0.25s ease;
             white-space: nowrap;
@@ -332,6 +330,7 @@
             line-height: 1.45;
             min-height: 46px;
             display: -webkit-box;
+            line-clamp: 2;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
@@ -402,6 +401,14 @@
             font-size: 12px;
             font-weight: 800;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .poster-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .poster-name {
@@ -412,6 +419,11 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 140px;
+            transition: color 0.25s ease;
+        }
+
+        .poster-box:hover .poster-name {
+            color: var(--brand-green);
         }
 
         .poster-role {
@@ -607,6 +619,14 @@
             font-size: 12px;
             font-weight: 800;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .construction-mini-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .construction-mini-user {
@@ -732,29 +752,40 @@
             border-color: #fecaca;
         }
 
-        .company-card {
+        .featured-desktop-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .company-card,
+        .agent-card {
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 18px;
-            padding: 18px 14px;
-            text-align: center;
+            padding: 14px;
             transition: 0.25s ease;
             text-decoration: none;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 118px;
             height: 100%;
         }
 
-        .company-card:hover {
+        .company-card:hover,
+        .agent-card:hover {
             box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
             transform: translateY(-2px);
             border-color: rgba(15, 139, 141, 0.35);
         }
 
-        .company-avatar {
-            width: 76px;
-            height: 76px;
-            border-radius: 999px;
-            margin: 0 auto 12px;
+        .company-avatar,
+        .agent-avatar {
+            width: 96px;
+            height: 82px;
+            border-radius: 18px;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -762,38 +793,73 @@
             color: white;
             font-size: 22px;
             font-weight: 900;
-        }
-
-        .agent-card {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 18px;
-            padding: 18px 14px;
-            text-align: center;
-            transition: 0.25s ease;
-            text-decoration: none;
-            display: block;
-            height: 100%;
-        }
-
-        .agent-card:hover {
-            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
-            border-color: rgba(15, 139, 141, 0.35);
-            transform: translateY(-2px);
+            overflow: hidden;
+            flex-shrink: 0;
         }
 
         .agent-avatar {
-            width: 74px;
-            height: 74px;
-            border-radius: 999px;
-            margin: 0 auto 12px;
+            background: linear-gradient(135deg, #0f172a, #334155);
+            font-size: 20px;
+        }
+
+        .company-avatar img,
+        .agent-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .featured-card-content {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .featured-card-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1.35;
+            margin: 0;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .featured-card-phone {
+            font-size: 14px;
+            color: #475569;
+            margin-top: 8px;
+            line-height: 1.35;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .featured-card-tag-row {
             display: flex;
             align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .featured-card-tag {
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0f172a, #334155);
-            color: white;
-            font-size: 20px;
-            font-weight: 900;
+            min-height: 30px;
+            padding: 0 12px;
+            border-radius: 999px;
+            border: 1px solid #bfdbfe;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
 
         .location-grid {
@@ -921,6 +987,11 @@
             display: block;
         }
 
+        .desktop-only.grid,
+        .desktop-only.featured-desktop-grid {
+            display: grid;
+        }
+
         .mobile-only {
             display: none;
         }
@@ -954,7 +1025,7 @@
 
             .hero-banner {
                 min-height: 280px;
-                padding: 28px 0 18px;
+                padding: calc(var(--site-header-height, 0px) + 18px) 0 18px;
             }
 
             .location-grid {
@@ -973,14 +1044,42 @@
                 padding: 40px 0;
             }
 
+            .featured-desktop-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .company-card,
+            .agent-card {
+                padding: 12px;
+                gap: 12px;
+                min-height: 108px;
+            }
+
+            .company-avatar,
+            .agent-avatar {
+                width: 86px;
+                height: 74px;
+                border-radius: 16px;
+            }
+
+            .featured-card-title {
+                font-size: 14px;
+            }
+
+            .featured-card-phone {
+                font-size: 13px;
+                margin-top: 6px;
+            }
+
             .section-title,
             h2.section-title {
                 font-size: 20px;
             }
 
             .hero-banner {
-                min-height: 235px;
-                padding: 56px 0 14px;
+                min-height: 238px;
+                padding: calc(var(--site-header-height, 0px) + 10px) 0 8px;
                 align-items: flex-end;
             }
 
@@ -990,13 +1089,13 @@
 
             .search-tabs {
                 width: 100%;
-                justify-content: flex-start;
+                justify-content: center;
                 flex-wrap: nowrap;
-                gap: 10px;
-                margin-bottom: 12px;
+                gap: 8px;
+                margin-bottom: 8px;
                 overflow-x: auto;
                 overflow-y: hidden;
-                padding: 0 2px 2px;
+                padding: 0 22px 4px;
                 -ms-overflow-style: none;
                 scrollbar-width: none;
             }
@@ -1006,23 +1105,33 @@
             }
 
             .search-tab {
-                min-height: 40px;
-                padding: 0 16px;
+                min-height: 34px;
+                padding: 0 14px;
                 font-size: 11px;
                 white-space: nowrap;
                 flex: 0 0 auto;
                 border-radius: 999px;
+                border-color: rgba(255, 255, 255, 0.32);
+                background: rgba(15, 23, 42, 0.42);
+                box-shadow: 0 6px 14px rgba(15, 23, 42, 0.1);
+            }
+
+            .search-tab.active {
+                background: rgba(15, 23, 42, 0.72);
+                border-color: rgba(255, 255, 255, 0.48);
             }
 
             .hero-filter-shell {
-                border-radius: 26px;
-                padding: 7px;
-                box-shadow: 0 16px 34px rgba(15, 23, 42, 0.18);
+                width: 100%;
+                max-width: 100%;
+                border-radius: 22px;
+                padding: 5px;
+                box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
             }
 
             .hero-filter-panel {
-                padding: 12px;
-                border-radius: 22px;
+                padding: 8px;
+                border-radius: 16px;
             }
 
             .hero-filter-grid {
@@ -1030,59 +1139,53 @@
             }
 
             .vip-input {
-                min-height: 56px;
-                border-radius: 20px;
-                margin-bottom: 12px;
-                padding: 0 18px;
-                font-size: 14px;
-                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+                min-height: 38px;
+                height: 38px;
+                border-radius: 13px;
+                margin-bottom: 6px;
+                padding: 0 13px;
+                font-size: 12px;
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
             }
 
             .hero-filter-slider {
-                display: flex;
-                gap: 12px;
-                overflow-x: auto;
-                overflow-y: hidden;
-                padding: 2px 2px 6px;
-                scroll-snap-type: x proximity;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-
-            .hero-filter-slider::-webkit-scrollbar {
-                display: none;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 6px;
+                padding: 0;
+                overflow: visible;
             }
 
             .hero-filter-slider .vip-select,
             .hero-filter-slider .vip-submit-wrap {
-                flex: 0 0 auto;
-                scroll-snap-align: start;
+                min-width: 0;
+                width: 100%;
             }
 
             .hero-filter-slider .vip-select {
-                width: auto;
-                min-width: 178px;
-                min-height: 52px;
-                border-radius: 999px;
-                padding: 0 20px;
-                font-size: 14px;
+                min-height: 36px;
+                height: 36px;
+                border-radius: 12px;
+                padding: 0 12px;
+                font-size: 12px;
                 font-weight: 600;
                 border: 1px solid #d7dee7;
-                box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
                 background: #fff;
             }
 
             .hero-filter-slider .vip-submit-wrap {
-                min-width: 210px;
+                grid-column: 1 / -1;
             }
 
             .hero-filter-slider .vip-submit-btn {
                 width: 100%;
-                min-height: 52px;
-                border-radius: 999px;
-                padding: 0 22px;
-                font-size: 13px;
-                box-shadow: 0 10px 20px rgba(15, 139, 141, 0.22);
+                min-height: 38px;
+                height: 38px;
+                border-radius: 12px;
+                padding: 0 14px;
+                font-size: 12px;
+                box-shadow: 0 6px 12px rgba(15, 139, 141, 0.16);
             }
 
             .listing-thumb {
@@ -1152,7 +1255,7 @@
                             </select>
 
                             <div class="vip-submit-wrap">
-                                <button id="heroSearchBtn" class="vip-submit-btn">
+                                <button id="heroSearchBtn" type="button" class="vip-submit-btn" onclick="handleHeroSearch()">
                                     <i class="fa-solid fa-magnifying-glass mr-2"></i>
                                     Tìm kiếm ngay
                                 </button>
@@ -1206,10 +1309,14 @@
                     <a href="pages/du-an.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
-                <div class="swiper projectSwiper section-swiper">
-                    <div id="projectWrapper" class="swiper-wrapper"></div>
-                    <div class="swiper-button-next project-next"></div>
-                    <div class="swiper-button-prev project-prev"></div>
+                <div id="projectDesktopGrid" class="desktop-only grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+                <div class="mobile-only">
+                    <div class="swiper projectSwiper section-swiper">
+                        <div id="projectMobileWrapper" class="swiper-wrapper"></div>
+                        <div class="swiper-button-next project-next"></div>
+                        <div class="swiper-button-prev project-prev"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1234,10 +1341,14 @@
                     <a href="pages/danh-ba-doanh-nghiep.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
-                <div class="swiper companySwiper section-swiper">
-                    <div id="companyWrapper" class="swiper-wrapper"></div>
-                    <div class="swiper-button-next company-next"></div>
-                    <div class="swiper-button-prev company-prev"></div>
+                <div id="companyDesktopGrid" class="desktop-only featured-desktop-grid"></div>
+
+                <div class="mobile-only">
+                    <div class="swiper companySwiper section-swiper">
+                        <div id="companyWrapper" class="swiper-wrapper"></div>
+                        <div class="swiper-button-next company-next"></div>
+                        <div class="swiper-button-prev company-prev"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1249,10 +1360,14 @@
                     <a href="pages/danh-ba-moi-gioi.html" class="section-link">Xem thêm <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
 
-                <div class="swiper agentSwiper section-swiper">
-                    <div id="agentWrapper" class="swiper-wrapper"></div>
-                    <div class="swiper-button-next agent-next"></div>
-                    <div class="swiper-button-prev agent-prev"></div>
+                <div id="agentDesktopGrid" class="desktop-only featured-desktop-grid"></div>
+
+                <div class="mobile-only">
+                    <div class="swiper agentSwiper section-swiper">
+                        <div id="agentWrapper" class="swiper-wrapper"></div>
+                        <div class="swiper-button-next agent-next"></div>
+                        <div class="swiper-button-prev agent-prev"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1276,50 +1391,49 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                    <a href="pages/chi-tiet-tin-tuc.html?slug=xu-huong-thi-truong-bat-dong-san-2026" class="lg:col-span-2 group cursor-pointer block">
+                    <a href="pages/chi-tiet-tin-tuc.html?id=news-latest-3&slug=xu-huong-dong-tien-dau-tu-bat-dong-san-2026" class="lg:col-span-2 group cursor-pointer block">
                         <div class="news-card-img">
-                            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1000" alt="Tin tức bất động sản nổi bật" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                            <img src="https://images.unsplash.com/photo-1460317442991-0ec209397118?w=1000" alt="Xu hướng dòng tiền đầu tư bất động sản năm 2026" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                         </div>
                         <h3 class="news-main-title mt-5 text-[18px] md:text-[20px] font-semibold text-[--brand-green] leading-snug group-hover:opacity-90 transition">
-                            Thị trường bất động sản năm 2026: Những phân khúc nào sẽ dẫn đầu xu hướng?
+                            Xu hướng dòng tiền đầu tư bất động sản trong năm 2026
                         </h3>
                         <p class="text-gray-500 mt-3 text-sm leading-relaxed">
-                            Theo các chuyên gia, dòng tiền đang có xu hướng quay lại các sản phẩm phục vụ nhu cầu thực như căn hộ tầm trung, đất nền vùng ven có pháp lý sạch và nhóm tài sản khai thác được dòng tiền thật.
+                            Giới đầu tư đang dần chuyển hướng sang những khu vực có hạ tầng phát triển mạnh, pháp lý rõ ràng và nhu cầu ở thực tăng cao.
                         </p>
                     </a>
 
                     <div class="space-y-6">
-                        <a href="pages/chi-tiet-tin-tuc.html?slug=5-luu-y-khi-chon-doanh-nghiep-hoac-nha-thau" class="flex gap-4 cursor-pointer group">
-                            <img src="https://images.unsplash.com/photo-1448630360428-65ff2c0257ef?w=300" alt="Lãi suất ngân hàng giảm sâu" class="news-side-img" />
+                        <a href="pages/chi-tiet-tin-tuc.html?id=news-popular-1&slug=menh-tho-hop-cay-gi" class="flex gap-4 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1448630360428-65ff2c0257ef?w=300" alt="Mệnh Thổ hợp cây gì" class="news-side-img" />
                             <div>
                                 <h4 class="news-side-title text-[14px] font-semibold leading-6 line-clamp-2 group-hover:text-[--brand-green] transition">
-                                    5 lưu ý quan trọng khi chọn doanh nghiệp hoặc nhà thầu
+                                    Mệnh Thổ Hợp Cây Gì? 12 Loại Cây Hợp Mệnh Thổ Hút Tài Lộc
                                 </h4>
-                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Kinh nghiệm hữu ích</p>
+                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Phân tích đầu tư</p>
                             </div>
                         </a>
 
-                        <a href="pages/chi-tiet-tin-tuc.html?slug=cach-kiem-tra-phap-ly-va-nang-luc-don-vi" class="flex gap-4 cursor-pointer group">
-                            <img src="https://images.unsplash.com/photo-1592595894519-02319c2ec51f?w=300" alt="Dự án mới miền Trung" class="news-side-img" />
+                        <a href="pages/chi-tiet-tin-tuc.html?id=news-popular-2&slug=cach-tinh-m2-xay-dung" class="flex gap-4 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1592595894519-02319c2ec51f?w=300" alt="Cách tính m2 xây dựng" class="news-side-img" />
                             <div>
                                 <h4 class="news-side-title text-[14px] font-semibold leading-6 line-clamp-2 group-hover:text-[--brand-green] transition">
-                                    Cách kiểm tra pháp lý và năng lực đơn vị trước khi làm việc
+                                    Cách Tính M2 Xây Dựng Ứng Dụng Trong Xây Sửa Nhà
                                 </h4>
-                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Tư vấn người dùng</p>
+                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Phân tích đầu tư</p>
                             </div>
                         </a>
 
-                        <a href="pages/chi-tiet-tin-tuc.html?slug=nhung-khu-vuc-nao-dang-duoc-quan-tam-nhieu" class="flex gap-4 cursor-pointer group">
-                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=300" alt="Cẩm nang pháp lý mua đất nền" class="news-side-img" />
+                        <a href="pages/chi-tiet-tin-tuc.html?id=news-popular-3&slug=5-kinh-nghiem-mua-nha-dau-tien-cho-nguoi-tre" class="flex gap-4 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=300" alt="Kinh nghiệm mua nhà đầu tiên" class="news-side-img" />
                             <div>
                                 <h4 class="news-side-title text-[14px] font-semibold leading-6 line-clamp-2 group-hover:text-[--brand-green] transition">
-                                    Những khu vực nào đang được quan tâm nhiều trên thị trường hiện nay?
+                                    5 Kinh Nghiệm Mua Nhà Đầu Tiên Cho Người Trẻ
                                 </h4>
-                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Tin tức thị trường</p>
+                                <p class="text-[12px] text-gray-400 mt-1">Nguồn: Phân tích đầu tư</p>
                             </div>
                         </a>
-                    </div>
-                </div>
+                    </div></div>
             </div>
         </section>
 
@@ -1660,21 +1774,21 @@
         ];
 
         const fallbackCompanies = [
-            { name: "Công ty BĐS Minh Phát", role: "Doanh nghiệp / Sàn BĐS", url: "pages/chi-tiet-doanh-nghiep.html?id=home-sale-2" },
-            { name: "Doanh nghiệp Sao Việt", role: "Doanh nghiệp / Cho thuê", url: "pages/chi-tiet-doanh-nghiep.html?id=home-rent-2" },
-            { name: "Studio Kiến Trúc Việt", role: "Đơn vị thiết kế", url: "pages/chi-tiet-doanh-nghiep.html?id=home-build-1" },
-            { name: "Bình Dương Cons", role: "Nhà thầu xây dựng", url: "pages/chi-tiet-doanh-nghiep.html?id=home-build-2" },
-            { name: "Urban Decor", role: "Nội thất / Hoàn thiện", url: "pages/chi-tiet-doanh-nghiep.html?id=home-build-3" },
-            { name: "Công ty BĐS Prime", role: "Doanh nghiệp thương mại", url: "pages/chi-tiet-doanh-nghiep.html?id=home-rent-4" }
+            { name: "Công ty BĐS Minh Phát", role: "Doanh nghiệp / Sàn BĐS", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Doanh nghiệp Sao Việt", role: "Doanh nghiệp / Cho thuê", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Studio Kiến Trúc Việt", role: "Đơn vị thiết kế", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Bình Dương Cons", role: "Nhà thầu xây dựng", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Urban Decor", role: "Nội thất / Hoàn thiện", url: "pages/danh-ba-doanh-nghiep.html" },
+            { name: "Công ty BĐS Prime", role: "Doanh nghiệp thương mại", url: "pages/danh-ba-doanh-nghiep.html" }
         ];
 
         const fallbackAgents = [
-            { name: "Nguyễn Thành An", role: "Môi giới chuyên nghiệp", url: "pages/chi-tiet-moi-gioi.html?id=home-sale-1" },
-            { name: "Trần Thị Lan Anh", role: "Chuyên viên cho thuê", url: "pages/chi-tiet-moi-gioi.html?id=home-rent-1" },
-            { name: "Lê Thu Trang", role: "Môi giới chuyên nghiệp", url: "pages/chi-tiet-moi-gioi.html?id=home-sale-3" },
-            { name: "Trần Quang Huy", role: "Chuyên viên tư vấn", url: "pages/chi-tiet-moi-gioi.html?id=home-sale-4" },
-            { name: "Lý Minh Quân", role: "Chuyên viên cho thuê", url: "pages/chi-tiet-moi-gioi.html?id=home-rent-3" },
-            { name: "Phạm Hữu Đức", role: "Môi giới nhà phố", url: "pages/chi-tiet-moi-gioi.html?id=home-sale-1" }
+            { name: "Nguyễn Thành An", role: "Môi giới chuyên nghiệp", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Trần Thị Lan Anh", role: "Chuyên viên cho thuê", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Lê Thu Trang", role: "Môi giới chuyên nghiệp", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Trần Quang Huy", role: "Chuyên viên tư vấn", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Lý Minh Quân", role: "Chuyên viên cho thuê", url: "pages/danh-ba-moi-gioi.html" },
+            { name: "Phạm Hữu Đức", role: "Môi giới nhà phố", url: "pages/danh-ba-moi-gioi.html" }
         ];
 
         function escapeHtml(value) {
@@ -1726,6 +1840,127 @@
                 .replace(/đ/g, "d")
                 .trim()
                 .toLowerCase();
+        }
+
+        function normalizeMemberStatusValue(value) {
+            const normalized = normalizeText(value);
+            if (normalized === "active" || normalized === "approved") return "approved";
+            if (normalized === "pending" || normalized === "blocked") return normalized;
+            return "approved";
+        }
+
+        function buildProfileLookupMap() {
+            const profiles = getStoredProfiles();
+            const map = new Map();
+
+            function setKey(key, status) {
+                const normalizedKey = normalizeText(key);
+                if (!normalizedKey) return;
+                if (!map.has(normalizedKey)) {
+                    map.set(normalizedKey, normalizeMemberStatusValue(status));
+                }
+            }
+
+            profiles.forEach(function (entry) {
+                const status = normalizeMemberStatusValue(
+                    entry.adminStatus ||
+                    entry.status ||
+                    entry.memberStatus ||
+                    (entry.raw && (entry.raw.adminStatus || entry.raw.status || entry.raw.memberStatus)) ||
+                    "approved"
+                );
+
+                const keys = [
+                    entry.id,
+                    entry.profileId,
+                    entry.userId,
+                    entry.accountId,
+                    entry.contactProfileId,
+                    entry.ownerProfileId,
+                    entry.companyId,
+                    entry.businessId,
+                    entry.enterpriseId,
+                    entry.email,
+                    entry.phone,
+                    entry.contactPhone,
+                    entry.contactEmail
+                ];
+
+                keys.forEach(function (key) {
+                    setKey(key, status);
+                });
+            });
+
+            return map;
+        }
+
+        function getPostOwnerStatus(post) {
+            const profileMap = buildProfileLookupMap();
+            const candidates = [
+                post.profileId,
+                post.contactProfileId,
+                post.ownerProfileId,
+                post.userId,
+                post.accountId,
+                post.contactUserId,
+                post.contactId,
+                post.posterId,
+                post.authorId,
+                post.companyId,
+                post.businessId,
+                post.enterpriseId,
+                post.profile_id,
+                post.contact_profile_id,
+                post.user_id,
+                post.account_id,
+                post.contactEmail,
+                post.email,
+                post.contactPhone,
+                post.phone
+            ];
+
+            for (const candidate of candidates) {
+                const key = normalizeText(candidate);
+                if (key && profileMap.has(key)) {
+                    return profileMap.get(key);
+                }
+            }
+
+            return "approved";
+        }
+
+        function isSuppressedOwnerStatus(status) {
+            const normalized = normalizeMemberStatusValue(status);
+            return normalized === "blocked" || normalized === "pending";
+        }
+
+        function isPostVisibleOnHome(post) {
+            if (!post || typeof post !== "object") return false;
+
+            const normalizedPostStatus = normalizeText(post.status);
+            const postAllowed =
+                normalizedPostStatus === "approved" ||
+                normalizedPostStatus === "demo" ||
+                normalizedPostStatus === "published";
+
+            if (!postAllowed) return false;
+
+            const ownerStatus = getPostOwnerStatus(post);
+            if (isSuppressedOwnerStatus(ownerStatus)) return false;
+
+            return true;
+        }
+
+        function isProfileVisibleOnHome(entry) {
+            if (!entry || typeof entry !== "object") return false;
+            const status = normalizeMemberStatusValue(
+                entry.adminStatus ||
+                entry.status ||
+                entry.memberStatus ||
+                (entry.raw && (entry.raw.adminStatus || entry.raw.status || entry.raw.memberStatus)) ||
+                "approved"
+            );
+            return !isSuppressedOwnerStatus(status);
         }
 
         function slugifyText(value) {
@@ -1812,6 +2047,13 @@
         }
 
         function buildPoster(post) {
+            const resolvedProfile = window.userStorage && typeof window.userStorage.resolvePostProfile === "function"
+                ? window.userStorage.resolvePostProfile(post)
+                : null;
+
+            if (resolvedProfile && resolvedProfile.displayName) {
+                return resolvedProfile.displayName;
+            }
             const profileType = getResolvedProfileType(post);
             if (profileType === "doanhnghiep") {
                 return post.companyName || post.brandName || post.serviceBrand || post.contactName || post.fullName || "Doanh nghiệp";
@@ -1820,6 +2062,9 @@
         }
 
         function getPosterSub(post) {
+            const resolvedProfile = window.userStorage && typeof window.userStorage.resolvePostProfile === "function"
+                ? window.userStorage.resolvePostProfile(post)
+                : null;
             const rawRole = post.roleLabel || post.role || "";
             const normalizedRole = String(rawRole || "")
                 .normalize("NFD")
@@ -1844,7 +2089,7 @@
             if (getResolvedProfileType(post) === "doanhnghiep") {
                 return "Doanh nghiệp";
             }
-            return rawRole || "Người đăng";
+            return (resolvedProfile && resolvedProfile.roleLabel) || rawRole || "Người đăng";
         }
 
         function getAvatarText(name) {
@@ -1854,6 +2099,58 @@
                 .slice(0, 2)
                 .map(word => word.charAt(0).toUpperCase())
                 .join("") || "TV";
+        }
+
+        function getContactAvatar(post) {
+            const resolvedProfile = window.userStorage && typeof window.userStorage.resolvePostProfile === "function"
+                ? window.userStorage.resolvePostProfile(post)
+                : null;
+
+            if (resolvedProfile && resolvedProfile.avatar) {
+                return resolvedProfile.avatar;
+            }
+            return (
+                post.avatar ||
+                post.avatarUrl ||
+                post.avatar_url ||
+                post.logo ||
+                post.logoUrl ||
+                post.logo_url ||
+                post.photoURL ||
+                post.photoUrl ||
+                post.picture ||
+                post.imageUrl ||
+                post.image_url ||
+                (post.raw && (
+                    post.raw.avatar ||
+                    post.raw.avatarUrl ||
+                    post.raw.avatar_url ||
+                    post.raw.logo ||
+                    post.raw.logoUrl ||
+                    post.raw.logo_url ||
+                    post.raw.photoURL ||
+                    post.raw.photoUrl ||
+                    post.raw.picture
+                )) ||
+                ""
+            );
+        }
+
+        function renderAvatarMarkup(image, text, alt) {
+            const safeImage = String(image || "").trim();
+            const safeText = escapeHtml(text || "TV");
+            const safeAlt = escapeHtml(alt || "avatar");
+
+            if (!safeImage) return safeText;
+
+            return `<img src="${escapeHtml(safeImage)}" alt="${safeAlt}" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.parentElement.textContent='${safeText}'">`;
+        }
+
+        function maskPhoneNumber(phone) {
+            const digits = String(phone || "").replace(/\D+/g, "").trim();
+            if (!digits) return "";
+            if (digits.length <= 3) return digits;
+            return digits.slice(0, -3) + "***";
         }
 
         function buildLocation(post) {
@@ -1933,7 +2230,6 @@
                 post.contact_profile_id,
                 post.user_id,
                 post.account_id,
-                fallbackId
             ];
 
             const businessCandidates = [
@@ -1952,7 +2248,6 @@
                 post.posterId,
                 post.profile_id,
                 post.contact_profile_id,
-                fallbackId
             ];
 
             const candidates = profileType === "doanhnghiep" ? businessCandidates : personalCandidates;
@@ -1967,6 +2262,13 @@
         }
 
         function getProfileUrl(post, postId) {
+            const resolvedUrl = window.userStorage && typeof window.userStorage.getResolvedProfileUrl === "function"
+                ? window.userStorage.getResolvedProfileUrl(post, "", "")
+                : "";
+
+            if (resolvedUrl && resolvedUrl !== "javascript:void(0)") {
+                return normalizeInternalUrl(resolvedUrl);
+            }
             const safeContactProfileUrl =
                 post.contactProfileUrl && !isDirectoryProfileUrl(post.contactProfileUrl)
                     ? String(post.contactProfileUrl).trim()
@@ -1982,40 +2284,41 @@
                     ? String(post.ownerProfileUrl).trim()
                     : "";
 
-            if (safeContactProfileUrl) return safeContactProfileUrl;
-            if (safeProfileUrl) return safeProfileUrl;
-            if (safeOwnerProfileUrl) return safeOwnerProfileUrl;
+            if (safeContactProfileUrl) return normalizeInternalUrl(safeContactProfileUrl);
+            if (safeProfileUrl) return normalizeInternalUrl(safeProfileUrl);
+            if (safeOwnerProfileUrl) return normalizeInternalUrl(safeOwnerProfileUrl);
 
             const profileType = getResolvedProfileType(post);
-            const representativeId = getProfileIdFromPost(post, postId);
+            const representativeId = getProfileIdFromPost(post, "");
 
-            if (profileType === "doanhnghiep") {
-                return "pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(representativeId);
+            if (!representativeId) {
+                return "javascript:void(0)";
             }
 
-            return "pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(representativeId);
+            if (profileType === "doanhnghiep") {
+                return normalizeInternalUrl("pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(representativeId));
+            }
+
+            return normalizeInternalUrl("pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(representativeId));
         }
 
         function getDetailUrl(post, postId) {
-            if (post.detailUrl) return post.detailUrl;
-
-            let url = "pages/chi-tiet-tin.html?id=" + encodeURIComponent(postId);
-            if (post.slug) {
-                url += "&slug=" + encodeURIComponent(post.slug);
-            }
-            if (post.projectId) {
-                url += "&projectId=" + encodeURIComponent(post.projectId);
-            }
-            if (post.projectSlug) {
-                url += "&projectSlug=" + encodeURIComponent(post.projectSlug);
-            }
-            return url;
+            const resolvedUrl = window.userStorage && typeof window.userStorage.getResolvedPostDetailUrl === "function"
+                ? window.userStorage.getResolvedPostDetailUrl(post, postId || (post && post.id) || "", "")
+                : "";
+            return resolvedUrl && resolvedUrl !== "javascript:void(0)"
+                ? normalizeInternalUrl(resolvedUrl)
+                : "javascript:void(0)";
         }
 
         function getProjectDetailUrl(project, index = 0) {
-            if (project.detailUrl) return project.detailUrl;
-            const projectId = project.id || project.slug || slugifyText(project.name) || ("du-an-" + index);
-            return "pages/chi-tiet-du-an.html?id=" + encodeURIComponent(projectId);
+            const fallbackId = project && (project.id || project.projectId || project.project_id || project.slug || slugifyText(project.name) || ("du-an-" + index));
+            const resolvedUrl = window.userStorage && typeof window.userStorage.getResolvedProjectUrl === "function"
+                ? window.userStorage.getResolvedProjectUrl(project, fallbackId, "")
+                : "";
+            return resolvedUrl && resolvedUrl !== "javascript:void(0)"
+                ? normalizeInternalUrl(resolvedUrl)
+                : "javascript:void(0)";
         }
 
         function getVipLevel(post) {
@@ -2053,7 +2356,7 @@
                         post &&
                         normalizeText(post.flow) === "real_estate" &&
                         normalizeText(post.postType) === "ban" &&
-                        (normalizeText(post.status) === "approved" || normalizeText(post.status) === "demo" || normalizeText(post.status) === "published")
+                        isPostVisibleOnHome(post)
                     );
                     return filtered.length ? filtered : fallbackSalePosts;
                 }
@@ -2069,10 +2372,9 @@
                         if (!post) return false;
                         const flow = normalizeText(post.flow);
                         const type = normalizeText(post.postType);
-                        const status = normalizeText(post.status);
                         return flow === "real_estate" &&
                             (type === "thue" || type === "cho-thue" || type === "rent") &&
-                            (status === "approved" || status === "demo" || status === "published");
+                            isPostVisibleOnHome(post);
                     });
                     return filtered.length ? filtered : fallbackRentalPosts;
                 }
@@ -2087,7 +2389,7 @@
                     const filtered = posts.filter(post =>
                         post &&
                         (normalizeText(post.flow) === "construction" || normalizeText(post.postType) === "xaydung") &&
-                        (normalizeText(post.status) === "approved" || normalizeText(post.status) === "demo" || normalizeText(post.status) === "published")
+                        isPostVisibleOnHome(post)
                     );
                     return filtered.length ? filtered : fallbackConstructionPosts;
                 }
@@ -2095,78 +2397,461 @@
             return fallbackConstructionPosts;
         }
 
-        function getProjectCards() {
-            try {
-                if (window.projectService && typeof window.projectService.getAllProjects === "function") {
-                    const projects = window.projectService.getAllProjects() || [];
-                    if (projects.length) {
-                        return projects.slice(0, 8).map((project, index) => ({
-                            id: project.id || project.slug || project.name,
-                            name: project.name || "Dự án nổi bật",
-                            city: [project.ward, project.city].filter(Boolean).join(", ") || project.city || "Đang cập nhật",
-                            statusLabel: (project.statusLabel || project.status || "Nổi bật"),
-                            statusType: normalizeText(project.status).includes("mo") ? "live" : "soon",
-                            image: project.thumbnail || project.image || FALLBACK_IMAGE,
-                            area: project.projectArea || project.area || "Đang cập nhật",
-                            price: project.priceRange || project.price || "",
-                            mediaCount: project.mediaCount || (Array.isArray(project.images) ? project.images.length : 0) || (index + 7),
-                            detailUrl: project.detailUrl || ""
-                        }));
+        function buildProjectKey(project) {
+            return normalizeText(project.slug || project.id || project.projectId || project.name || "");
+        }
+
+        function buildProjectCardFromPost(post, index) {
+            const projectName = post.projectName || post.project || post.project_title || post.projectTitle || "";
+            const projectSlug = post.projectSlug || post.project_slug || slugifyText(projectName);
+            const projectId = post.projectId || post.project_id || post.projectRef || projectSlug || ("project-card-" + index);
+            return {
+                id: projectId,
+                projectId,
+                slug: projectSlug,
+                name: projectName || post.title || "Dự án nổi bật",
+                city: [post.ward, post.city].filter(Boolean).join(", ") || post.city || "Đang cập nhật",
+                image: getCardImage(post),
+                area: post.projectArea || post.area || post.size || "",
+                price: post.priceRange || post.projectPrice || post.propertyPrice || "",
+                mediaCount: Array.isArray(post.images) ? post.images.length : 0
+            };
+        }
+
+        function buildProjectLookupKeys(project) {
+            const keys = [
+                project && (project.projectId || project.id),
+                project && project.slug,
+                project && project.projectSlug,
+                project && project.name,
+                project && project.projectName
+            ];
+            return keys.map(function (value) {
+                return normalizeText(value);
+            }).filter(Boolean);
+        }
+
+        function collectProjectSummariesFromPosts() {
+            const summaryMap = new Map();
+            const sources = [...getSalePosts(), ...getRentalPosts()];
+
+            sources.forEach(function (post, index) {
+                const hasProjectInfo = !!String(post.projectName || post.project || post.projectSlug || post.projectId || "").trim();
+                if (!hasProjectInfo) return;
+                const card = buildProjectCardFromPost(post, index);
+                const keys = buildProjectLookupKeys(card);
+                if (!keys.length) return;
+
+                let summary = null;
+                for (const key of keys) {
+                    if (summaryMap.has(key)) {
+                        summary = summaryMap.get(key);
+                        break;
                     }
                 }
+
+                if (!summary) {
+                    summary = {
+                        price: card.price || "",
+                        area: card.area || "",
+                        city: card.city || "",
+                        image: card.image || "",
+                        mediaCount: Number(card.mediaCount || 0)
+                    };
+                } else {
+                    if (!summary.price && card.price) summary.price = card.price;
+                    if (!summary.area && card.area) summary.area = card.area;
+                    if (!summary.city && card.city) summary.city = card.city;
+                    if ((!summary.image || summary.image === FALLBACK_IMAGE) && card.image) summary.image = card.image;
+                    summary.mediaCount = Math.max(Number(summary.mediaCount || 0), Number(card.mediaCount || 0));
+                }
+
+                keys.forEach(function (key) {
+                    summaryMap.set(key, summary);
+                });
+            });
+
+            return summaryMap;
+        }
+
+        function getProjectCards() {
+            const merged = [];
+            const seen = new Set();
+            const projectSummaryMap = collectProjectSummariesFromPosts();
+
+            function normalizeProjectStatus(statusValue) {
+                const raw = String(statusValue || "").trim();
+                const normalized = normalizeText(raw);
+                if (!raw || normalized === "approved" || normalized === "published" || normalized === "demo") {
+                    return { label: "Nổi bật", type: "soon" };
+                }
+                if (normalized.includes("mo ban") || normalized.includes("dang mo ban") || normalized.includes("song") || normalized.includes("live")) {
+                    return { label: raw, type: "live" };
+                }
+                return { label: raw, type: "soon" };
+            }
+
+            function pushProject(project, index) {
+                if (!project || typeof project !== "object") return;
+                const normalizedName = String(project.name || project.projectName || "").trim();
+                const normalizedSlug = String(project.slug || project.projectSlug || slugifyText(normalizedName)).trim();
+                const normalizedId = String(project.id || project.projectId || normalizedSlug || normalizedName || ("du-an-" + index)).trim();
+                const statusInfo = normalizeProjectStatus(project.statusLabel || project.projectStatus || project.status);
+                const normalizedProject = {
+                    id: normalizedId,
+                    projectId: String(project.projectId || project.id || normalizedId).trim(),
+                    slug: normalizedSlug || slugifyText(normalizedName) || normalizedId,
+                    name: normalizedName || "Dự án nổi bật",
+                    city: [project.ward, project.city].filter(Boolean).join(", ") || project.city || project.address || project.addressDetail || "Đang cập nhật",
+                    statusLabel: statusInfo.label,
+                    statusType: statusInfo.type,
+                    image: project.thumbnail || project.image || project.coverImage || project.thumbnailUrl || FALLBACK_IMAGE,
+                    area: project.projectArea || project.area || project.scale || project.landArea || project.size || "",
+                    price: project.priceRange || project.priceText || project.price || project.priceFrom || project.minPrice || "",
+                    mediaCount: project.mediaCount || (Array.isArray(project.images) ? project.images.length : 0) || 0,
+                    detailUrl: getProjectDetailUrl({
+                        detailUrl: "",
+                        slug: normalizedSlug || slugifyText(normalizedName) || normalizedId,
+                        id: normalizedId,
+                        projectId: String(project.projectId || project.id || normalizedId).trim(),
+                        name: normalizedName
+                    }, index),
+                    ownerProfileUrl: normalizeInternalUrl(project.ownerProfileUrl || project.profileUrl || "")
+                };
+
+                const summaryKeys = buildProjectLookupKeys(normalizedProject);
+                let summary = null;
+                for (const key of summaryKeys) {
+                    if (projectSummaryMap.has(key)) {
+                        summary = projectSummaryMap.get(key);
+                        break;
+                    }
+                }
+                if (summary) {
+                    if (!normalizedProject.price && summary.price) normalizedProject.price = summary.price;
+                    if (!normalizedProject.area && summary.area) normalizedProject.area = summary.area;
+                    if ((!normalizedProject.city || normalizedProject.city === "Đang cập nhật") && summary.city) normalizedProject.city = summary.city;
+                    if ((!normalizedProject.image || normalizedProject.image === FALLBACK_IMAGE) && summary.image) normalizedProject.image = summary.image;
+                    normalizedProject.mediaCount = Math.max(Number(normalizedProject.mediaCount || 0), Number(summary.mediaCount || 0));
+                }
+
+                const key = buildProjectKey(normalizedProject);
+                if (!key || seen.has(key)) return;
+                seen.add(key);
+                merged.push(normalizedProject);
+            }
+
+            let serviceProjects = [];
+            try {
+                if (window.projectService && typeof window.projectService.getPublicProjects === "function") {
+                    serviceProjects = window.projectService.getPublicProjects() || [];
+                }
+                if ((!Array.isArray(serviceProjects) || !serviceProjects.length) && window.projectService && typeof window.projectService.getProjects === "function") {
+                    serviceProjects = window.projectService.getProjects() || [];
+                }
             } catch (error) {}
-            return fallbackProjects;
+
+            if (Array.isArray(serviceProjects) && serviceProjects.length) {
+                serviceProjects.forEach(pushProject);
+            }
+
+            getLocalProjectCards().forEach(pushProject);
+
+            if (merged.length < 4) {
+                fallbackProjects.forEach(function (item, index) {
+                    pushProject({ ...item, id: item.id || ("fallback-project-" + index), slug: item.slug || slugifyText(item.name) }, index);
+                });
+            }
+
+            const ranked = merged.sort(function (a, b) {
+                const aLive = a.statusType === "live" ? 1 : 0;
+                const bLive = b.statusType === "live" ? 1 : 0;
+                if (bLive !== aLive) return bLive - aLive;
+                return normalizeText(a.name).localeCompare(normalizeText(b.name), "vi");
+            });
+
+            return ranked.slice(0, Math.max(4, Math.min(8, ranked.length)));
+        }
+
+        function readLocalJson(key, fallback) {
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return fallback;
+                const parsed = JSON.parse(raw);
+                return parsed == null ? fallback : parsed;
+            } catch (error) {
+                return fallback;
+            }
+        }
+
+        function normalizeInternalUrl(url) {
+            const raw = String(url || "").trim();
+            if (!raw) return "";
+            if (/^(https?:|mailto:|tel:|javascript:)/i.test(raw)) return raw;
+
+            let normalized = raw.replace(/\\/g, "/");
+            normalized = normalized.replace(/^\.\//, "");
+            normalized = normalized.replace(/^\.\.\//, "");
+
+            const pageMatch = normalized.match(/(?:^|\/)(pages\/.*)$/i);
+            if (pageMatch) {
+                return pageMatch[1];
+            }
+
+            const componentMatch = normalized.match(/(?:^|\/)(components\/.*)$/i);
+            if (componentMatch) {
+                return componentMatch[1];
+            }
+
+            return normalized.replace(/^\//, "");
+        }
+
+        function getStoredProfiles() {
+            const collected = [];
+            const singleCandidates = [
+                readLocalJson("currentUser", null),
+                readLocalJson("registeredUser", null)
+            ];
+
+            singleCandidates.forEach(item => {
+                if (item && typeof item === "object" && !Array.isArray(item)) {
+                    collected.push(item);
+                }
+            });
+
+            const arrayCandidates = [
+                readLocalJson("registeredUsers", []),
+                readLocalJson("users", []),
+                readLocalJson("profiles", [])
+            ];
+
+            arrayCandidates.forEach(arr => {
+                if (Array.isArray(arr)) {
+                    arr.forEach(item => {
+                        if (item && typeof item === "object") {
+                            collected.push(item);
+                        }
+                    });
+                }
+            });
+
+            return collected;
+        }
+
+        function buildProfileName(entry) {
+            return entry.brandName || entry.companyName || entry.businessName || entry.fullName || entry.contactName || entry.displayName || entry.name || "Hồ sơ";
+        }
+
+        function getProfileAvatar(entry) {
+            return entry.avatar || entry.avatarUrl || entry.avatar_url || entry.logo || entry.logoUrl || entry.logo_url || entry.photoURL || entry.photoUrl || entry.picture || entry.imageUrl || entry.image_url || "";
+        }
+
+        function getProfileRepresentativeId(entry) {
+            const profileType = getResolvedProfileType(entry);
+            const personalCandidates = [
+                entry.profileId,
+                entry.id,
+                entry.userId,
+                entry.accountId,
+                entry.contactProfileId,
+                entry.ownerProfileId,
+                entry.profile_id,
+                entry.user_id,
+                entry.account_id
+            ];
+            const businessCandidates = [
+                entry.companyId,
+                entry.businessId,
+                entry.enterpriseId,
+                entry.id,
+                entry.profileId,
+                entry.accountId,
+                entry.company_id,
+                entry.business_id,
+                entry.enterprise_id,
+                entry.profile_id,
+                entry.account_id
+            ];
+            const candidates = profileType === "doanhnghiep" ? businessCandidates : personalCandidates;
+            for (const candidate of candidates) {
+                if (candidate !== undefined && candidate !== null && String(candidate).trim()) {
+                    return String(candidate).trim();
+                }
+            }
+            return "";
+        }
+
+        function buildProfileUrlFromEntry(entry) {
+            const existingUrl = normalizeInternalUrl(entry.profileUrl || entry.contactProfileUrl || entry.ownerProfileUrl || "");
+            const profileType = getResolvedProfileType(entry);
+            const representativeId = getProfileRepresentativeId(entry);
+
+            if (existingUrl) {
+                if (existingUrl.includes("?id=") || existingUrl.includes("&id=")) {
+                    return existingUrl;
+                }
+                if (/chi-tiet-(moi-gioi|doanh-nghiep)\.html/i.test(existingUrl) && representativeId) {
+                    return existingUrl + (existingUrl.includes("?") ? "&" : "?") + "id=" + encodeURIComponent(representativeId);
+                }
+                return existingUrl;
+            }
+
+            if (!representativeId) return "javascript:void(0)";
+            return profileType === "doanhnghiep"
+                ? "pages/chi-tiet-doanh-nghiep.html?id=" + encodeURIComponent(representativeId)
+                : "pages/chi-tiet-moi-gioi.html?id=" + encodeURIComponent(representativeId);
+        }
+
+        function mergeFeaturedItems(primaryItems, secondaryItems, minCount) {
+            const merged = [];
+            const seen = new Set();
+
+            function pushItem(item) {
+                if (!item || !item.name) return;
+                const key = normalizeText(item.id || item.profileId || item.name || item.url);
+                if (!key || seen.has(key)) return;
+                seen.add(key);
+                merged.push(item);
+            }
+
+            primaryItems.forEach(pushItem);
+            secondaryItems.forEach(pushItem);
+            return minCount ? merged.slice(0, Math.max(minCount, merged.length)) : merged;
+        }
+
+        function getLocalProjectCards() {
+            const keys = ["allProjects", "projects", "projectStore", "projectCards"];
+            const merged = [];
+            keys.forEach(key => {
+                const arr = readLocalJson(key, []);
+                if (Array.isArray(arr)) {
+                    arr.forEach(item => {
+                        if (item && typeof item === "object") merged.push(item);
+                    });
+                }
+            });
+            return merged;
         }
 
         function getCompanies() {
             const salePosts = getSalePosts();
             const rentalPosts = getRentalPosts();
             const constructionPosts = getConstructionPosts();
-
-            const companies = [...salePosts, ...rentalPosts, ...constructionPosts]
+            const postDerived = [...salePosts, ...rentalPosts, ...constructionPosts]
                 .map((post, index) => ({ post, postId: createPostId(post, index) }))
-                .filter(item => isBusinessProfile(item.post))
+                .filter(item => isBusinessProfile(item.post) && isPostVisibleOnHome(item.post))
                 .map(item => ({
+                    id: getProfileIdFromPost(item.post, item.postId),
                     name: buildPoster(item.post),
                     role: getPosterSub(item.post),
-                    url: getProfileUrl(item.post, item.postId)
+                    tag: "Doanh nghiệp",
+                    phone: item.post.contactPhone || item.post.phone || "",
+                    url: normalizeInternalUrl(getProfileUrl(item.post, item.postId)),
+                    avatar: getContactAvatar(item.post)
                 }));
 
-            const unique = [];
+            const profileDerived = getStoredProfiles()
+                .filter(item => isBusinessProfile(item) && isProfileVisibleOnHome(item))
+                .map(item => ({
+                    id: getProfileRepresentativeId(item),
+                    name: buildProfileName(item),
+                    role: item.roleLabel || item.role || "Doanh nghiệp",
+                    tag: "Doanh nghiệp",
+                    phone: item.contactPhone || item.phone || "",
+                    url: buildProfileUrlFromEntry(item),
+                    avatar: getProfileAvatar(item)
+                }));
+
+            const fallbackPool = fallbackCompanies.map((item, index) => ({
+                id: item.id || ("fallback-company-" + index),
+                name: item.name,
+                role: item.role || "Doanh nghiệp",
+                tag: "Doanh nghiệp",
+                phone: item.phone || "",
+                url: item.url,
+                avatar: item.avatar || ""
+            }));
+
+            const merged = [];
             const seen = new Set();
-            companies.forEach(item => {
-                const key = normalizeText(item.name);
+            [...profileDerived, ...postDerived, ...fallbackPool].forEach(item => {
+                if (!item || !item.name) return;
+                const key = normalizeText(item.id || item.name || item.url);
                 if (!key || seen.has(key)) return;
                 seen.add(key);
-                unique.push(item);
+                merged.push(item);
             });
 
-            return unique.length ? unique.slice(0, 12) : fallbackCompanies;
+            if (merged.length < 4) {
+                fallbackPool.forEach(item => {
+                    const key = normalizeText(item.id || item.name || item.url);
+                    if (merged.length >= 4 || seen.has(key)) return;
+                    seen.add(key);
+                    merged.push(item);
+                });
+            }
+
+            return merged.slice(0, Math.max(4, Math.min(12, merged.length)));
         }
 
         function getAgents() {
             const salePosts = getSalePosts();
             const rentalPosts = getRentalPosts();
-
-            const agents = [...salePosts, ...rentalPosts]
+            const postDerived = [...salePosts, ...rentalPosts]
                 .map((post, index) => ({ post, postId: createPostId(post, index) }))
-                .filter(item => !isBusinessProfile(item.post))
+                .filter(item => !isBusinessProfile(item.post) && isPostVisibleOnHome(item.post))
                 .map(item => ({
+                    id: getProfileIdFromPost(item.post, item.postId),
                     name: buildPoster(item.post),
                     role: getPosterSub(item.post),
-                    url: getProfileUrl(item.post, item.postId)
+                    tag: "Môi giới",
+                    phone: item.post.contactPhone || item.post.phone || "",
+                    url: normalizeInternalUrl(getProfileUrl(item.post, item.postId)),
+                    avatar: getContactAvatar(item.post)
                 }));
 
-            const unique = [];
+            const profileDerived = getStoredProfiles()
+                .filter(item => !isBusinessProfile(item) && isProfileVisibleOnHome(item))
+                .map(item => ({
+                    id: getProfileRepresentativeId(item),
+                    name: buildProfileName(item),
+                    role: item.roleLabel || item.role || "Môi giới",
+                    tag: "Môi giới",
+                    phone: item.contactPhone || item.phone || "",
+                    url: buildProfileUrlFromEntry(item),
+                    avatar: getProfileAvatar(item)
+                }));
+
+            const fallbackPool = fallbackAgents.map((item, index) => ({
+                id: item.id || ("fallback-agent-" + index),
+                name: item.name,
+                role: item.role || "Môi giới",
+                tag: "Môi giới",
+                phone: item.phone || "",
+                url: item.url,
+                avatar: item.avatar || ""
+            }));
+
+            const merged = [];
             const seen = new Set();
-            agents.forEach(item => {
-                const key = normalizeText(item.name);
+            [...profileDerived, ...postDerived, ...fallbackPool].forEach(item => {
+                if (!item || !item.name) return;
+                const key = normalizeText(item.id || item.name || item.url);
                 if (!key || seen.has(key)) return;
                 seen.add(key);
-                unique.push(item);
+                merged.push(item);
             });
 
-            return unique.length ? unique.slice(0, 10) : fallbackAgents;
+            if (merged.length < 4) {
+                fallbackPool.forEach(item => {
+                    const key = normalizeText(item.id || item.name || item.url);
+                    if (merged.length >= 4 || seen.has(key)) return;
+                    seen.add(key);
+                    merged.push(item);
+                });
+            }
+
+            return merged.slice(0, Math.max(4, Math.min(10, merged.length)));
         }
 
         function getLocationStats() {
@@ -2220,10 +2905,22 @@
         }
 
         function fillLocationFilter() {
+            let projectCities = [];
+
+            try {
+                const cachedProjects = JSON.parse(localStorage.getItem("projects") || "[]");
+                if (Array.isArray(cachedProjects)) {
+                    projectCities = cachedProjects.map(project => project && project.city).filter(Boolean);
+                }
+            } catch (error) {
+                projectCities = [];
+            }
+
             const cities = Array.from(new Set([
                 ...getSalePosts().map(post => post.city),
                 ...getRentalPosts().map(post => post.city),
-                ...getConstructionPosts().map(post => post.city)
+                ...getConstructionPosts().map(post => post.city),
+                ...projectCities
             ].filter(Boolean))).sort((a, b) => a.localeCompare(b, "vi"));
 
             const heroLocation = document.getElementById("heroLocation");
@@ -2237,12 +2934,24 @@
             const category = document.getElementById("heroCategory").value;
             const location = document.getElementById("heroLocation").value;
 
-            const searchPath = "pages/tim-kiem.html";
-            const url = new URL(searchPath, window.location.origin);
+            const normalizedCategory = ["sale", "rental", "project", "construction"].includes(category) ? category : "sale";
+            const url = new URL("pages/tim-kiem.html", window.location.origin);
 
-            if (keyword) url.searchParams.set("keyword", keyword);
-            if (category) url.searchParams.set("category", category);
-            if (location) url.searchParams.set("city", location);
+            if (keyword) {
+                url.searchParams.set("keyword", keyword);
+                url.searchParams.set("q", keyword);
+            }
+
+            if (location) {
+                url.searchParams.set("city", location);
+                url.searchParams.set("location", location);
+            }
+
+            url.searchParams.set("category", normalizedCategory);
+            url.searchParams.set("tab", normalizedCategory);
+            url.searchParams.set("type", normalizedCategory);
+            url.searchParams.set("section", normalizedCategory);
+            url.searchParams.set("source", "home-hero");
 
             window.location.href = url.pathname + url.search;
         }
@@ -2300,15 +3009,21 @@
         }
 
         function attachFavoriteEvents() {
-            document.querySelectorAll("[data-favorite-btn='true']").forEach(btn => {
-                btn.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    const postId = this.dataset.favId;
-                    const type = this.dataset.favType;
-                    if (!postId || !type) return;
-                    toggleFavorite(postId, type);
-                });
+            if (document.body.dataset.homeFavoriteDelegated === "true") return;
+            document.body.dataset.homeFavoriteDelegated = "true";
+
+            document.addEventListener("click", function (event) {
+                const button = event.target.closest("[data-favorite-btn='true']");
+                if (!button) return;
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const postId = String(button.dataset.favId || "").trim();
+                const type = String(button.dataset.favType || "").trim();
+
+                if (!postId || !type) return;
+                toggleFavorite(postId, type);
             });
         }
 
@@ -2331,7 +3046,7 @@
         function renderSaleCard(post, index, type = "sale") {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
-            const profileUrl = getProfileUrl(post, postId);
+            const profileUrl = getProfileUrl(post, getProfileIdFromPost(post, ""));
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Tiêu đề bất động sản");
             const price = escapeHtml(post.propertyPrice || "Liên hệ");
@@ -2339,7 +3054,8 @@
             const location = escapeHtml(buildLocation(post) || "Chưa cập nhật khu vực");
             const poster = escapeHtml(buildPoster(post));
             const posterSub = escapeHtml(getPosterSub(post));
-            const avatarText = escapeHtml(getAvatarText(buildPoster(post)));
+            const avatarText = getAvatarText(buildPoster(post));
+            const avatarImage = getContactAvatar(post);
             const vipLevel = getVipLevel(post);
             const vipLabel = escapeHtml(getVipLabel(vipLevel));
 
@@ -2369,7 +3085,7 @@
 
                         <div class="listing-footer">
                             <a href="${profileUrl}" class="poster-box">
-                                <div class="poster-avatar">${avatarText}</div>
+                                <div class="poster-avatar">${renderAvatarMarkup(avatarImage, avatarText, poster)}</div>
                                 <div class="min-w-0">
                                     <div class="poster-name">${poster}</div>
                                     <div class="poster-role">${posterSub}</div>
@@ -2390,11 +3106,12 @@
         function renderConstructionCard(post, index) {
             const postId = createPostId(post, index);
             const detailUrl = getDetailUrl(post, postId);
-            const profileUrl = getProfileUrl(post, postId);
+            const profileUrl = getProfileUrl(post, getProfileIdFromPost(post, ""));
             const imageUrl = escapeHtml(getCardImage(post));
             const title = escapeHtml(post.title || "Dịch vụ xây dựng");
             const poster = escapeHtml(buildPoster(post));
-            const avatarText = escapeHtml(getAvatarText(buildPoster(post)));
+            const avatarText = getAvatarText(buildPoster(post));
+            const avatarImage = getContactAvatar(post);
             const roleLine = escapeHtml(getPosterSub(post));
             const serviceType = escapeHtml(post.serviceType || "Xây dựng");
             const servicePrice = escapeHtml(post.servicePrice || "Liên hệ");
@@ -2419,7 +3136,7 @@
                         <div class="construction-body">
                             <div class="construction-topline">
                                 <a href="${profileUrl}" class="construction-mini-poster">
-                                    <div class="construction-mini-avatar">${avatarText}</div>
+                                    <div class="construction-mini-avatar">${renderAvatarMarkup(avatarImage, avatarText, poster)}</div>
                                     <div class="construction-mini-user">
                                         <div class="construction-mini-name">${poster}</div>
                                         <div class="construction-mini-role">${roleLine}</div>
@@ -2462,61 +3179,65 @@
             `;
         }
 
-        function renderProjectCard(project, index) {
+        function renderProjectCard(project, index, wrapSlide = true) {
             const statusType = project.statusType === "live" ? "live" : "soon";
             const statusLabel = escapeHtml(project.statusLabel || "Nổi bật");
             const sizeLine = [project.price, project.area].filter(Boolean).join(" • ");
             const detailUrl = getProjectDetailUrl(project, index);
-
-            return `
-                <div class="swiper-slide">
-                    <a href="${detailUrl}" class="project-card">
-                        <div class="project-image-wrap">
-                            <img src="${escapeHtml(project.image || FALLBACK_IMAGE)}" alt="${escapeHtml(project.name)}" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
-                            <span class="project-image-count">
-                                <i class="fa-regular fa-image"></i> ${escapeHtml(project.mediaCount || 0)}
-                            </span>
-                        </div>
-                        <div class="project-meta">
-                            <span class="project-status ${statusType}">${statusLabel}</span>
-                            <div class="project-title">${escapeHtml(project.name || "Dự án nổi bật")}</div>
-                            ${sizeLine ? `<div class="project-size">${escapeHtml(sizeLine)}</div>` : ""}
-                            <div class="project-location">${escapeHtml(project.city || "Đang cập nhật")}</div>
-                        </div>
-                    </a>
-                </div>
+            const cardMarkup = `
+                <a href="${normalizeInternalUrl(detailUrl)}" class="project-card">
+                    <div class="project-image-wrap">
+                        <img src="${escapeHtml(project.image || FALLBACK_IMAGE)}" alt="${escapeHtml(project.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
+                        <span class="project-image-count">
+                            <i class="fa-regular fa-image"></i> ${escapeHtml(project.mediaCount || 0)}
+                        </span>
+                    </div>
+                    <div class="project-meta">
+                        <span class="project-status ${statusType}">${statusLabel}</span>
+                        <div class="project-title">${escapeHtml(project.name || "Dự án nổi bật")}</div>
+                        ${sizeLine ? `<div class="project-size">${escapeHtml(sizeLine)}</div>` : ""}
+                        <div class="project-location">${escapeHtml(project.city || "Đang cập nhật")}</div>
+                    </div>
+                </a>
             `;
+            return wrapSlide ? `<div class="swiper-slide">${cardMarkup}</div>` : cardMarkup;
         }
 
-        function renderCompanyCard(item) {
-            const avatar = getAvatarText(item.name);
-            return `
-                <div class="swiper-slide">
-                    <a href="${item.url}" class="company-card">
-                        <div class="company-avatar">${escapeHtml(avatar)}</div>
-                        <h4 class="font-semibold text-[14px] text-slate-800 line-clamp-2 min-h-[40px]">${escapeHtml(item.name)}</h4>
-                        <p class="text-[12px] text-slate-500 mt-2">${escapeHtml(item.role || "Doanh nghiệp")}</p>
-                    </a>
-                </div>
+        function renderCompanyCard(item, wrapSlide = true) {
+            const avatarText = getAvatarText(item.name);
+            const maskedPhone = maskPhoneNumber(item.phone);
+            const cardMarkup = `
+                <a href="${normalizeInternalUrl(item.url)}" class="company-card">
+                    <div class="company-avatar">${renderAvatarMarkup(item.avatar || item.avatarUrl || "", avatarText, item.name)}</div>
+                    <div class="featured-card-content">
+                        <h4 class="featured-card-title">${escapeHtml(item.name)}</h4>
+                        ${maskedPhone ? `<div class="featured-card-phone"><i class="fa-solid fa-phone"></i><span>${escapeHtml(maskedPhone)}</span></div>` : ""}
+                        <div class="featured-card-tag-row"><span class="featured-card-tag">${escapeHtml(item.tag || "Doanh nghiệp")}</span></div>
+                    </div>
+                </a>
             `;
+            return wrapSlide ? `<div class="swiper-slide">${cardMarkup}</div>` : cardMarkup;
         }
 
-        function renderAgentCard(item) {
-            const avatar = getAvatarText(item.name);
-            return `
-                <div class="swiper-slide">
-                    <a href="${item.url}" class="agent-card">
-                        <div class="agent-avatar">${escapeHtml(avatar)}</div>
-                        <h4 class="font-semibold text-[14px] text-slate-800 line-clamp-2 min-h-[40px]">${escapeHtml(item.name)}</h4>
-                        <p class="text-[12px] text-slate-500 mt-2">${escapeHtml(item.role || "Môi giới")}</p>
-                    </a>
-                </div>
+        function renderAgentCard(item, wrapSlide = true) {
+            const avatarText = getAvatarText(item.name);
+            const maskedPhone = maskPhoneNumber(item.phone);
+            const cardMarkup = `
+                <a href="${normalizeInternalUrl(item.url)}" class="agent-card">
+                    <div class="agent-avatar">${renderAvatarMarkup(item.avatar || item.avatarUrl || "", avatarText, item.name)}</div>
+                    <div class="featured-card-content">
+                        <h4 class="featured-card-title">${escapeHtml(item.name)}</h4>
+                        ${maskedPhone ? `<div class="featured-card-phone"><i class="fa-solid fa-phone"></i><span>${escapeHtml(maskedPhone)}</span></div>` : ""}
+                        <div class="featured-card-tag-row"><span class="featured-card-tag">${escapeHtml(item.tag || "Môi giới")}</span></div>
+                    </div>
+                </a>
             `;
+            return wrapSlide ? `<div class="swiper-slide">${cardMarkup}</div>` : cardMarkup;
         }
 
         function renderLocationCard(item, isMain) {
             return `
-                <a href="${item.url}" class="location-card ${isMain ? "location-main" : ""}">
+                <a href="${normalizeInternalUrl(item.url)}" class="location-card ${isMain ? "location-main" : ""}">
                     <img src="${item.image}" alt="${escapeHtml(item.city)}" onerror="this.onerror=null;this.src='assets/images/fallback-property.jpg'">
                     <div class="location-overlay">
                         <h4 class="${isMain ? "text-[28px]" : "text-[18px]"}">${escapeHtml(item.city)}</h4>
@@ -2556,9 +3277,20 @@
 
         function renderProjectSection() {
             const projects = getProjectCards();
-            document.getElementById("projectWrapper").innerHTML = projects.length
-                ? projects.map((project, index) => renderProjectCard(project, index)).join("")
-                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu dự án.</div></div>`;
+            const desktopGrid = document.getElementById("projectDesktopGrid");
+            const mobileWrapper = document.getElementById("projectMobileWrapper");
+
+            if (desktopGrid) {
+                desktopGrid.innerHTML = projects.length
+                    ? projects.slice(0, 4).map((project, index) => renderProjectCard(project, index, false)).join("")
+                    : `<div class="empty-box lg:col-span-4">Chưa có dữ liệu dự án.</div>`;
+            }
+
+            if (mobileWrapper) {
+                mobileWrapper.innerHTML = projects.length
+                    ? projects.map((project, index) => renderProjectCard(project, index, true)).join("")
+                    : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu dự án.</div></div>`;
+            }
         }
 
         function renderConstructionSection() {
@@ -2571,23 +3303,78 @@
         }
 
         function renderCompanySection() {
-            const companies = getCompanies();
-            document.getElementById("companyWrapper").innerHTML = companies.length
-                ? companies.map(renderCompanyCard).join("")
-                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu doanh nghiệp.</div></div>`;
+            const desktopGrid = document.getElementById("companyDesktopGrid");
+            const mobileWrapper = document.getElementById("companyWrapper");
+            let companies = [];
+            try {
+                companies = getCompanies();
+            } catch (error) {
+                console.error("Lỗi load doanh nghiệp tiêu biểu:", error);
+                companies = fallbackCompanies.map(function (item, index) {
+                    return {
+                        id: item.id || ("fallback-company-" + index),
+                        name: item.name,
+                        role: item.role || "Doanh nghiệp",
+                        tag: "Doanh nghiệp",
+                        phone: item.phone || "",
+                        url: normalizeInternalUrl(item.url || "pages/danh-ba-doanh-nghiep.html"),
+                        avatar: item.avatar || ""
+                    };
+                });
+            }
+
+            if (desktopGrid) {
+                desktopGrid.innerHTML = companies.length
+                    ? companies.slice(0, 4).map(function (item) { return renderCompanyCard(item, false); }).join("")
+                    : `<div class="empty-box lg:col-span-4">Chưa có dữ liệu doanh nghiệp.</div>`;
+            }
+
+            if (mobileWrapper) {
+                mobileWrapper.innerHTML = companies.length
+                    ? companies.map(function (item) { return renderCompanyCard(item, true); }).join("")
+                    : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu doanh nghiệp.</div></div>`;
+            }
         }
 
         function renderAgentSection() {
             const agents = getAgents();
-            document.getElementById("agentWrapper").innerHTML = agents.length
-                ? agents.map(renderAgentCard).join("")
-                : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu môi giới.</div></div>`;
+            const desktopGrid = document.getElementById("agentDesktopGrid");
+            const mobileWrapper = document.getElementById("agentWrapper");
+
+            if (desktopGrid) {
+                desktopGrid.innerHTML = agents.length
+                    ? agents.slice(0, 4).map(item => renderAgentCard(item, false)).join("")
+                    : `<div class="empty-box lg:col-span-4">Chưa có dữ liệu môi giới.</div>`;
+            }
+
+            if (mobileWrapper) {
+                mobileWrapper.innerHTML = agents.length
+                    ? agents.map(item => renderAgentCard(item, true)).join("")
+                    : `<div class="swiper-slide"><div class="empty-box">Chưa có dữ liệu môi giới.</div></div>`;
+            }
         }
 
         function renderLocationSection() {
-            const items = getLocationStats();
             const locationGrid = document.getElementById("locationGrid");
-            locationGrid.innerHTML = items.map((item, index) => renderLocationCard(item, index === 0)).join("");
+            if (!locationGrid) return;
+            let items = [];
+            try {
+                items = getLocationStats();
+            } catch (error) {
+                console.error("Lỗi load địa điểm:", error);
+            }
+            if (!Array.isArray(items) || !items.length) {
+                items = [
+                    { city: "TP. Hồ Chí Minh", count: 81008, image: "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=1200", url: "pages/gia-nha-dat.html?city=TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh" },
+                    { city: "Hà Nội", count: 51110, image: "https://images.unsplash.com/photo-1555921015-5532091f6026?w=800", url: "pages/gia-nha-dat.html?city=H%C3%A0%20N%E1%BB%99i" },
+                    { city: "Đà Nẵng", count: 11345, image: "https://images.unsplash.com/photo-1559592481-74488ea56144?w=800", url: "pages/gia-nha-dat.html?city=%C4%90%C3%A0%20N%E1%BA%B5ng" },
+                    { city: "Bình Dương", count: 9221, image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800", url: "pages/gia-nha-dat.html?city=B%C3%ACnh%20D%C6%B0%C6%A1ng" },
+                    { city: "Đồng Nai", count: 8012, image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=800", url: "pages/gia-nha-dat.html?city=%C4%90%E1%BB%93ng%20Nai" }
+                ];
+            }
+            locationGrid.innerHTML = items.map(function (item, index) {
+                return renderLocationCard(item, index === 0);
+            }).join("");
         }
 
         let saleSwiperInstance = null;
@@ -2624,7 +3411,7 @@
                 },
                 breakpoints: {
                     640: { slidesPerView: 2, spaceBetween: 18 },
-                    1024: { slidesPerView: 4, spaceBetween: 22 }
+                    1024: { slidesPerView: 2.2, spaceBetween: 22 }
                 }
             });
 
@@ -2646,12 +3433,12 @@
                 },
                 breakpoints: {
                     640: { slidesPerView: 2.2, spaceBetween: 16 },
-                    1024: { slidesPerView: 5, spaceBetween: 18 }
+                    1024: { slidesPerView: 2.4, spaceBetween: 18 }
                 }
             });
 
             agentSwiperInstance = new Swiper(".agentSwiper", {
-                slidesPerView: 1.1,
+                slidesPerView: 1.2,
                 spaceBetween: 14,
                 navigation: {
                     nextEl: ".agent-next",
@@ -2659,7 +3446,7 @@
                 },
                 breakpoints: {
                     640: { slidesPerView: 2.2, spaceBetween: 16 },
-                    1024: { slidesPerView: 5, spaceBetween: 18 }
+                    1024: { slidesPerView: 2.4, spaceBetween: 18 }
                 }
             });
         }
@@ -2719,12 +3506,44 @@
             setTimeout(updateHeaderFavoriteCount, 400);
         }
 
-        window.addEventListener("load", async function () {
-            await initSharedComponents();
+        document.addEventListener("tv:posts-synced", function () {
+            renderSaleSection();
+            renderRentalSection();
+            renderProjectSection();
+            renderConstructionSection();
+            renderCompanySection();
+            renderAgentSection();
+            renderLocationSection();
+            updateHeaderFavoriteCount();
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
             initPage();
+            initSharedComponents();
+        });
+
+        window.addEventListener("load", function () {
+            initSwipers();
+            updateHeaderFavoriteCount();
+        });
+
+        window.addEventListener("storage", function (event) {
+            const key = String((event && event.key) || "").trim();
+            if (!key || [
+                FAVORITE_SALE_STORAGE_KEY,
+                FAVORITE_RENTAL_STORAGE_KEY,
+                FAVORITE_CONSTRUCTION_STORAGE_KEY
+            ].includes(key)) {
+                renderSaleSection();
+                renderRentalSection();
+                renderConstructionSection();
+                attachFavoriteEvents();
+                updateHeaderFavoriteCount();
+            }
         });
     </script>
 
+    <script src="assets/js/platform-core.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>

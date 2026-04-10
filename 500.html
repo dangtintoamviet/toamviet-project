@@ -566,29 +566,10 @@
     </div>
 
     <script src="assets/js/component-loader.js"></script>
+    <script src="assets/js/platform-core.js"></script>
     <script src="assets/js/main.js"></script>
 
     <script>
-        function applyErrorPageHeaderOffset() {
-            const pageShell = document.getElementById("errorPageShell");
-            const siteHeader = document.getElementById("siteHeader");
-            if (!pageShell || !siteHeader) return;
-
-            const headerElement =
-                siteHeader.querySelector("header") ||
-                siteHeader.querySelector(".site-header") ||
-                siteHeader.firstElementChild;
-
-            if (!headerElement) return;
-
-            const headerHeight = Math.ceil(headerElement.getBoundingClientRect().height || 0);
-            const basePaddingTop = Number(pageShell.dataset.basePaddingTop || 26);
-
-            if (headerHeight > 0) {
-                pageShell.style.paddingTop = (basePaddingTop + headerHeight) + "px";
-            }
-        }
-
         async function initSharedComponents() {
             try {
                 if (typeof loadComponent === "function") {
@@ -602,10 +583,6 @@
                     if (typeof watchHeaderSpacing === "function") {
                         watchHeaderSpacing();
                     }
-
-                    applyErrorPageHeaderOffset();
-                    setTimeout(applyErrorPageHeaderOffset, 120);
-                    setTimeout(applyErrorPageHeaderOffset, 400);
                 }
             } catch (error) {
                 console.error("Không thể load component dùng chung:", error);
@@ -628,16 +605,8 @@
         }
 
         window.addEventListener("load", async function () {
-            const pageShell = document.getElementById("errorPageShell");
-            if (pageShell && !pageShell.dataset.basePaddingTop) {
-                pageShell.dataset.basePaddingTop = "26";
-            }
-
             await initSharedComponents();
-            applyErrorPageHeaderOffset();
         });
-
-        window.addEventListener("resize", applyErrorPageHeaderOffset);
     </script>
 </body>
 </html>

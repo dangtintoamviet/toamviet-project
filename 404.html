@@ -25,7 +25,6 @@
             --text-soft: #64748b;
             --stroke: #e5e7eb;
             --warning: #ea580c;
-            --header-offset: 0px;
         }
 
         * {
@@ -41,12 +40,6 @@
             font-family: "Roboto", sans-serif;
             background: linear-gradient(180deg, #f8fbfc 0%, #f4f7fa 100%);
             color: var(--text-main);
-        }
-
-        .header-offset-spacer {
-            height: var(--header-offset);
-            width: 100%;
-            flex-shrink: 0;
         }
 
         .error-page-shell {
@@ -412,7 +405,6 @@
 <body>
     <div id="siteHeader"></div>
     <div id="siteMobileMenu"></div>
-    <div class="header-offset-spacer" id="headerOffsetSpacer" aria-hidden="true"></div>
 
     <main class="error-page-shell">
         <div class="container-custom error-wrap">
@@ -573,19 +565,10 @@
     </div>
 
     <script src="assets/js/component-loader.js"></script>
+    <script src="assets/js/platform-core.js"></script>
     <script src="assets/js/main.js"></script>
 
     <script>
-        function applyHeaderOffset() {
-            const header = document.getElementById("siteHeader");
-            const spacer = document.getElementById("headerOffsetSpacer");
-
-            if (!header || !spacer) return;
-
-            const headerHeight = header.offsetHeight || 0;
-            document.documentElement.style.setProperty("--header-offset", headerHeight + "px");
-            spacer.style.height = headerHeight + "px";
-        }
 
         async function initSharedComponents() {
             try {
@@ -600,10 +583,6 @@
                     if (typeof watchHeaderSpacing === "function") {
                         watchHeaderSpacing();
                     }
-
-                    applyHeaderOffset();
-                    setTimeout(applyHeaderOffset, 120);
-                    setTimeout(applyHeaderOffset, 400);
                 }
             } catch (error) {
                 console.error("Không thể load component dùng chung:", error);
@@ -625,10 +604,8 @@
             window.open("https://zalo.me/" + phone + "?text=" + encodedMsg, "_blank");
         }
 
-        window.addEventListener("resize", applyHeaderOffset);
         window.addEventListener("load", async function () {
             await initSharedComponents();
-            applyHeaderOffset();
         });
     </script>
 </body>
