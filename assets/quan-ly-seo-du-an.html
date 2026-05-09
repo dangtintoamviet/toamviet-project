@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script>
+  (function(){
+    function isAdmin(){try{var keys=['currentUser','registeredUser'];for(var i=0;i<keys.length;i++){var raw=localStorage.getItem(keys[i]);if(!raw)continue;var u=JSON.parse(raw);var r=String(u&&(u.systemRole||u.system_role||u.authRole||u.appRole||'')).trim().toLowerCase();if(r==='admin'||r==='administrator'||r==='quan tri vien'||r==='quantri')return true;}}catch(e){}return false;}
+    if(!localStorage.getItem('authToken')&&!isAdmin()){window.location.replace('../auth/dang-nhap.html?redirect='+encodeURIComponent(window.location.pathname));}
+  })();
+  </script>
+  <title>SEO Dự án & Danh mục dự án | ToamViet.com.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/main.css"/>
+  <link rel="stylesheet" href="../assets/css/components.css"/>
+  <link rel="stylesheet" href="../assets/css/mobile.css"/>
+  <link rel="stylesheet" href="../assets/css/admin-dashboard.css"/>
+  <style>
+    :root{--vip:#008b8b;--vipd:#0f766e;--soft:#f4f7fa;--stroke:#dbe4ee;--text:#334155;--muted:#64748b}
+    *{box-sizing:border-box}body{margin:0;background:var(--soft);font-family:'Roboto',sans-serif;color:var(--text);font-size:15px;line-height:1.65}
+    .cw{max-width:1480px;margin:0 auto;padding:0 16px}.pshell{padding-bottom:48px}
+    .adm-layout{display:flex;gap:0;align-items:flex-start;padding-top:20px}
+    .adm-sidebar{width:220px;flex-shrink:0;position:sticky;top:90px;margin-right:22px}
+    .adm-main{flex:1;min-width:0}
+    .sb-card{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 6px 24px rgba(15,23,42,.06);padding:14px}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:3px;transition:.15s}
+    .sb-item:hover,.sb-item.on{background:var(--vip);color:#fff}
+    .sb-item i{width:16px;text-align:center;font-size:13px}
+    .acc-group{margin:2px 0}
+    .acc-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left;transition:.15s}
+    .acc-btn:hover,.acc-btn.on{background:var(--vip);color:#fff}
+    .acc-btn .chev{transition:transform .2s;font-size:10px;flex-shrink:0}
+    .acc-group.open .acc-btn .chev{transform:rotate(180deg)}
+    .acc-group.open .acc-btn{background:var(--vip);color:#fff}
+    .acc-sub{display:none;margin:3px 0 5px 16px;padding-left:11px;border-left:2px solid #dbe4ee}
+    .acc-group.open .acc-sub{display:flex;flex-direction:column}
+    .acc-subitem{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:9px;color:#64748b;font-weight:700;font-size:13px;text-decoration:none;margin:2px 0;transition:.15s}
+    .acc-subitem:hover,.acc-subitem.on{background:#eaf2ff;color:#1d4ed8}
+    .sb-divider{height:1px;background:var(--stroke);margin:8px 0}
+    /* Hero */
+    .hero-card{background:linear-gradient(135deg,#0f766e,#008b8b);color:#fff;border-radius:22px;padding:26px 28px;margin-bottom:20px}
+    .hero-title{font-size:26px;font-weight:900;margin:0 0 8px}.hero-desc{font-size:14px;line-height:1.8;color:rgba(255,255,255,.9);margin:0}
+    /* Cards */
+    .form-card{background:#fff;border:1px solid var(--stroke);border-radius:20px;box-shadow:0 8px 28px rgba(15,23,42,.05);padding:24px;margin-bottom:20px}
+    .panel-card{background:#fff;border:1px solid var(--stroke);border-radius:20px;box-shadow:0 8px 28px rgba(15,23,42,.05);padding:24px}
+    .section-title{font-size:20px;font-weight:900;margin:0 0 6px}.section-sub{font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.6}
+    /* Form fields */
+    .fld,.fldta,.fldsel{width:100%;min-height:44px;padding:10px 13px;border:1.5px solid var(--stroke);border-radius:12px;background:#fff;font-size:14px;outline:none;font-family:inherit;color:var(--text);transition:.15s}
+    .fldta{min-height:100px;resize:vertical}.fld:focus,.fldta:focus,.fldsel:focus{border-color:var(--vip);box-shadow:0 0 0 3px rgba(0,139,139,.09)}
+    .lbl{display:block;font-size:13px;font-weight:800;margin-bottom:6px;color:#0f172a}.lbl span{font-weight:400;color:var(--muted)}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.gf{grid-column:1/-1}
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border:0;border-radius:12px;padding:0 18px;font-weight:800;cursor:pointer;font-size:14px;transition:.15s}
+    .bp{background:var(--vip);color:#fff}.bp:hover{background:var(--vipd)}.bs{background:#eff6ff;color:#1d4ed8}.bs:hover{background:#dbeafe}
+    .br{background:#fef2f2;color:#dc2626}
+    /* Tokens */
+    .tokens{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+    .token{background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid #bfdbfe;transition:.12s}
+    .token:hover{background:#1d4ed8;color:#fff}
+    /* Status */
+    .sbox{padding:12px 15px;border-radius:12px;font-weight:700;font-size:14px;display:none;margin-bottom:16px}
+    .sbox.show{display:block}.ok{background:#f0fdfa;color:#0f766e;border-left:4px solid #0f766e}.err{background:#fef2f2;color:#b91c1c;border-left:4px solid #b91c1c}
+    /* List */
+    .item{border:1px solid #e5e7eb;border-radius:14px;padding:14px;background:#fff;margin-bottom:10px}
+    .item-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:8px}
+    .item-title{font-size:14px;font-weight:800;color:#0f172a;margin:0}
+    .item-meta{font-size:12px;color:#64748b;display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+    .item-body{font-size:13px;color:#334155;line-height:1.6}
+    /* Tabs */
+    .ptabs{display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:20px}
+    .ptab{padding:11px 18px;border:0;background:none;font-weight:800;font-size:14px;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.15s}
+    .ptab.on{color:var(--vip);border-bottom-color:var(--vip)}
+    .ppanel{display:none}.ppanel.on{display:block}
+    /* Hint */
+    .hint{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:12px 14px;font-size:13px;color:#475569;line-height:1.7;margin-top:14px}
+    /* Simple editor */
+    .simple-editor{border:1.5px solid var(--stroke);border-radius:14px;overflow:hidden}
+    .simple-editor-toolbar{display:flex;flex-wrap:wrap;gap:5px;padding:9px 10px;border-bottom:1px solid var(--stroke);background:#f8fafc}
+    .simple-editor-toolbar button{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 9px;border:1px solid #dbe4ee;border-radius:8px;background:#fff;color:#334155;font-size:13px;font-weight:800;cursor:pointer}
+    .simple-editor-toolbar button.active{background:#0f172a;color:#fff;border-color:#0f172a}
+    .simple-editor-content{min-height:220px;padding:14px 16px;outline:none;font-size:15px;line-height:1.85;color:#0f172a}
+    .simple-editor-content:empty:before{content:attr(data-placeholder);color:#94a3b8}
+    @media(max-width:1100px){.adm-layout{flex-direction:column}.adm-sidebar{width:100%;position:static;margin-right:0;margin-bottom:16px}.g2,.g3{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div id="site-header"></div>
+<div id="site-mobile-menu"></div>
+<main class="pshell">
+<div class="cw">
+<div class="adm-layout">
+
+  <!-- Sidebar -->
+  <aside class="adm-sidebar">
+    <div class="sb-card">
+      <a href="admin-dashboard.html" class="sb-item"><i class="fa-solid fa-chart-line"></i>Tổng quan</a>
+      <a href="quan-ly-thanh-vien.html" class="sb-item"><i class="fa-solid fa-users"></i>Thành viên</a>
+      <a href="kiem-duyet-tin.html" class="sb-item"><i class="fa-solid fa-list-check"></i>Kiểm duyệt</a>
+      <div class="sb-divider"></div>
+      <div class="acc-group open">
+        <button type="button" class="acc-btn on"><span><i class="fa-solid fa-diagram-project"></i> Dự án</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-du-an.html" class="acc-subitem"><i class="fa-solid fa-list"></i>Danh sách</a>
+          <a href="quan-ly-noi-dung-du-an.html" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập nội dung</a>
+          <a href="quan-ly-chu-dau-tu.html" class="acc-subitem"><i class="fa-solid fa-building-circle-check"></i>Chủ đầu tư</a>
+          <a href="quan-ly-seo-du-an.html" class="acc-subitem on"><i class="fa-solid fa-magnifying-glass-chart"></i>SEO dự án</a>
+        </div>
+      </div>
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-newspaper"></i> Tin tức</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-tin-tuc.html#list" class="acc-subitem"><i class="fa-solid fa-list"></i>Tất cả bài viết</a>
+          <a href="quan-ly-tin-tuc.html#editor" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập bài viết</a>
+        </div>
+      </div>
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-magnifying-glass-chart"></i> SEO Landing</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-seo-landing.html#template" class="acc-subitem"><i class="fa-solid fa-code"></i>Template SEO</a>
+          <a href="quan-ly-seo-landing.html#override" class="acc-subitem"><i class="fa-solid fa-pen"></i>Override landing</a>
+        </div>
+      </div>
+
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-wallet"></i> Kiếm tiền / VIP</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-don-hang.html" class="acc-subitem"><i class="fa-solid fa-file-invoice-dollar"></i>Đơn hàng</a>
+          <a href="duyet-don-thu-phi.html" class="acc-subitem"><i class="fa-solid fa-money-check-dollar"></i>Duyệt đơn thu phí</a>
+          <a href="quan-ly-entitlement-vip.html" class="acc-subitem"><i class="fa-solid fa-crown"></i>Entitlement VIP</a>
+          <a href="cap-quyen-vip.html" class="acc-subitem"><i class="fa-solid fa-user-shield"></i>Cấp quyền VIP</a>
+        </div>
+      </div>
+      <div class="sb-divider"></div>
+      <a href="cai-dat-he-thong.html" class="sb-item"><i class="fa-solid fa-sliders"></i>Cài đặt hệ thống</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="adm-main">
+    <div class="hero-card">
+      <h1 class="hero-title"><i class="fa-solid fa-magnifying-glass-chart" style="opacity:.8;margin-right:10px"></i>SEO Dự án & Danh mục dự án</h1>
+      <p class="hero-desc">Cấu hình title, meta description và nội dung SEO cho trang danh mục dự án theo tỉnh/thành, loại hình. Riêng biệt với SEO trang listing bán/cho thuê.</p>
+    </div>
+
+    <div id="sbox" class="sbox"></div>
+
+    <!-- Page tabs -->
+    <div class="ptabs">
+      <button class="ptab on" data-panel="panelTemplate"><i class="fa-solid fa-code" style="margin-right:6px"></i>Template SEO dự án</button>
+      <button class="ptab" data-panel="panelOverride"><i class="fa-solid fa-pen" style="margin-right:6px"></i>Override trang dự án</button>
+      <button class="ptab" data-panel="panelList"><i class="fa-solid fa-list" style="margin-right:6px"></i>Danh sách đã cấu hình</button>
+    </div>
+
+    <!-- PANEL: Template -->
+    <div id="panelTemplate" class="ppanel on">
+      <div class="form-card">
+        <h2 class="section-title">Template SEO động cho dự án</h2>
+        <p class="section-sub">Dùng biến động để tự sinh title và mô tả cho trang danh mục dự án theo loại hình và địa điểm. Bấm vào token để chèn vào trường đang focus.</p>
+        <div class="tokens" id="tokenBar">
+          <span class="token" data-token="{project_type}">{project_type}</span>
+          <span class="token" data-token="{city}">{city}</span>
+          <span class="token" data-token="{ward}">{ward}</span>
+          <span class="token" data-token="{location}">{location}</span>
+          <span class="token" data-token="{total_projects}">{total_projects}</span>
+          <span class="token" data-token="{price_range}">{price_range}</span>
+          <span class="token" data-token="{handover_year}">{handover_year}</span>
+          <span class="token" data-token="{developer}">{developer}</span>
+        </div>
+        <div class="g3" style="margin-top:16px">
+          <div>
+            <label class="lbl">Phạm vi template</label>
+            <select id="tScopeType" class="fldsel">
+              <option value="default">Mặc định toàn danh mục dự án</option>
+              <option value="project_type">Theo loại hình dự án</option>
+              <option value="city">Theo tỉnh/thành</option>
+              <option value="type_city">Theo loại hình + tỉnh/thành</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">Loại hình dự án</label>
+            <select id="tProjType" class="fldsel">
+              <option value="">Tất cả loại hình</option>
+              <option value="can-ho">Căn hộ chung cư</option>
+              <option value="biet-thu">Biệt thự - Liền kề</option>
+              <option value="dat-nen">Đất nền - Khu đô thị</option>
+              <option value="van-phong">Văn phòng - Thương mại</option>
+              <option value="resort">Resort - Nghỉ dưỡng</option>
+              <option value="khu-cong-nghiep">Khu công nghiệp</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">Tỉnh/Thành</label>
+            <select id="tCity" class="fldsel"><option value="">Tất cả tỉnh/thành</option></select>
+          </div>
+          <div class="gf">
+            <label class="lbl">Scope key <span>(tự tạo)</span></label>
+            <input id="tScopeKey" class="fld" style="font-family:monospace;font-size:13px" placeholder="Tự tạo theo lựa chọn — có thể sửa tay"/>
+          </div>
+          <div class="gf">
+            <label class="lbl">Tiêu đề SEO <span>(title tag)</span></label>
+            <input id="tTitle" class="fld" placeholder="VD: Dự án {project_type} tại {location} – ToamViet"/>
+          </div>
+          <div class="gf">
+            <label class="lbl">Meta description</label>
+            <textarea id="tDesc" class="fldta" rows="3" placeholder="VD: Tổng hợp {total_projects} dự án {project_type} tại {location}. Xem thông tin, giá bán và tiến độ cập nhật mới nhất..."></textarea>
+          </div>
+          <div class="gf">
+            <label class="lbl">Nội dung SEO body <span>(hiển thị cuối trang danh mục dự án)</span></label>
+            <textarea id="tBody" placeholder="Viết 300–600 từ giới thiệu loại hình dự án, vị trí, ưu điểm..." style="display:none"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <button id="saveTplBtn" class="btn bp"><i class="fa-solid fa-floppy-disk"></i>Lưu template</button>
+          <button id="resetTplBtn" class="btn bs"><i class="fa-solid fa-rotate-left"></i>Làm mới</button>
+        </div>
+        <div class="hint"><strong>Lưu ý:</strong> Template này <em>chỉ áp dụng cho trang danh mục dự án</em> (VD: /du-an/can-ho, /du-an/ha-noi). Không ảnh hưởng đến trang listing bán/cho thuê. Dùng <strong>SEO Landing</strong> cho những trang đó.</div>
+      </div>
+    </div>
+
+    <!-- PANEL: Override -->
+    <div id="panelOverride" class="ppanel">
+      <div class="form-card">
+        <h2 class="section-title">Override trang dự án cụ thể</h2>
+        <p class="section-sub">Đặt tiêu đề và nội dung riêng hoàn toàn cho một trang dự án hoặc danh mục dự án theo địa điểm cụ thể, ghi đè template chung.</p>
+        <div class="g3">
+          <div>
+            <label class="lbl">Loại hình dự án</label>
+            <select id="oType" class="fldsel">
+              <option value="">Tất cả loại hình</option>
+              <option value="can-ho">Căn hộ chung cư</option>
+              <option value="biet-thu">Biệt thự - Liền kề</option>
+              <option value="dat-nen">Đất nền - Khu đô thị</option>
+              <option value="van-phong">Văn phòng - Thương mại</option>
+              <option value="resort">Resort - Nghỉ dưỡng</option>
+              <option value="khu-cong-nghiep">Khu công nghiệp</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">Tỉnh/Thành</label>
+            <select id="oCity" class="fldsel"><option value="">Tất cả tỉnh/thành</option></select>
+          </div>
+          <div>
+            <label class="lbl">Phường/Xã <span>(tùy chọn)</span></label>
+            <select id="oWard" class="fldsel"><option value="">Tất cả phường/xã</option></select>
+          </div>
+          <div class="gf">
+            <label class="lbl">Tiêu đề SEO tùy chỉnh</label>
+            <input id="oTitle" class="fld" placeholder="Tiêu đề riêng cho trang dự án này"/>
+          </div>
+          <div class="gf">
+            <label class="lbl">Meta description tùy chỉnh</label>
+            <textarea id="oDesc" class="fldta" rows="3" placeholder="Mô tả tùy chỉnh..."></textarea>
+          </div>
+          <div class="gf">
+            <label class="lbl">Nội dung SEO body tùy chỉnh</label>
+            <textarea id="oBody" placeholder="Nội dung SEO override..." style="display:none"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <button id="saveOvrBtn" class="btn bp"><i class="fa-solid fa-floppy-disk"></i>Lưu override</button>
+          <button id="resetOvrBtn" class="btn bs"><i class="fa-solid fa-rotate-left"></i>Làm mới</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL: List -->
+    <div id="panelList" class="ppanel">
+      <div class="panel-card">
+        <h2 class="section-title" style="margin-bottom:16px">Danh sách cấu hình SEO dự án</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div>
+            <h3 style="font-size:15px;font-weight:900;margin:0 0 10px">Template đang có</h3>
+            <div id="tplList" style="color:#64748b;font-size:13px">Đang tải...</div>
+          </div>
+          <div>
+            <h3 style="font-size:15px;font-weight:900;margin:0 0 10px">Override đang có</h3>
+            <div id="ovrList" style="color:#64748b;font-size:13px">Đang tải...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /adm-main -->
+</div><!-- /adm-layout -->
+</div><!-- /cw -->
+</main>
+<div id="site-footer"></div>
+<script src="../assets/js/core/tv-url-service.js"></script>
+<script src="../assets/js/component-loader.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/supabase-data-service.js"></script>
+<script src="../assets/js/simple-rich-editor.js"></script>
+<script>
+(function(){
+'use strict';
+var locations=[], curTplId='', curOvrId='';
+function $(i){return document.getElementById(i)}
+function esc(v){return String(v||'').replace(/[&<>"']/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];})}
+function status(t,m){var b=$('sbox');b.className='sbox show '+t;b.textContent=m;if(t!=='err')setTimeout(function(){b.className='sbox';},5000);}
+
+/* Tabs */
+document.querySelectorAll('.ptab').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.ptab').forEach(function(b){b.classList.remove('on');});
+    btn.classList.add('on');
+    var pid=btn.getAttribute('data-panel');
+    document.querySelectorAll('.ppanel').forEach(function(p){p.classList.remove('on');});
+    var panel=document.getElementById(pid);if(panel)panel.classList.add('on');
+  });
+});
+
+/* Token insert */
+var lastFocus=null;
+['tTitle','tDesc','tBody','oTitle','oDesc','oBody'].forEach(function(id){
+  var el=$(id);if(!el)return;
+  el.addEventListener('focus',function(){lastFocus=el;});
+});
+document.getElementById('tokenBar').addEventListener('click',function(e){
+  var t=e.target.closest('[data-token]');if(!t)return;
+  var tok=t.getAttribute('data-token');
+  if(!lastFocus)return;
+  if(lastFocus.isContentEditable){lastFocus.focus();document.execCommand('insertText',false,tok);}
+  else{var s=lastFocus.selectionStart,end=lastFocus.selectionEnd,v=lastFocus.value;lastFocus.value=v.slice(0,s)+tok+v.slice(end);lastFocus.selectionStart=lastFocus.selectionEnd=s+tok.length;lastFocus.focus();}
+});
+
+/* Mini rich editors — upgraded to SimpleRichEditor with image support */
+var editorTBody=null, editorOBody=null;
+function initSeoEditors(){
+  if(window.SimpleRichEditor){
+    editorTBody=window.SimpleRichEditor.create(document.getElementById('tBody'),{placeholder:'Viết 300–600 từ giới thiệu loại hình dự án, vị trí, ưu điểm đầu tư...',imageContext:'project'});
+    editorOBody=window.SimpleRichEditor.create(document.getElementById('oBody'),{placeholder:'Nội dung SEO override cho trang dự án cụ thể...',imageContext:'project'});
+  }
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initSeoEditors);}else{initSeoEditors();}
+function getTBodyContent(){return editorTBody?editorTBody.getContent():document.getElementById('tBody').value||'';}
+function setTBodyContent(v){if(editorTBody)editorTBody.setContent(v||'');else document.getElementById('tBody').value=v||'';}
+function getOBodyContent(){return editorOBody?editorOBody.getContent():document.getElementById('oBody').value||'';}
+function setOBodyContent(v){if(editorOBody)editorOBody.setContent(v||'');else document.getElementById('oBody').value=v||'';}
+
+/* Locations */
+async function loadLocs(){
+  try{var r=await fetch('../assets/data/vietnam-address.json');locations=await r.json();}catch(e){locations=[];}
+  ['tCity','oCity'].forEach(function(id){
+    var el=$(id);
+    el.innerHTML='<option value="">Tất cả tỉnh/thành</option>'+locations.map(function(it){return'<option value="'+esc(it.name)+'">'+esc(it.name)+'</option>';}).join('');
+  });
+  $('oCity').addEventListener('change',function(){syncWards('oCity','oWard');});
+}
+function syncWards(cId,wId){
+  var city=$(cId).value;var wards=[];
+  var rec=locations.find(function(it){return it.name===city;});
+  if(rec&&Array.isArray(rec.wards))wards=rec.wards;
+  $(wId).innerHTML='<option value="">Tất cả phường/xã</option>'+wards.map(function(w){return'<option value="'+esc(w)+'">'+esc(w)+'</option>';}).join('');
+}
+
+/* Scope key */
+function upScopeKey(){
+  var sType=$('tScopeType').value;var pType=$('tProjType').value;var city=$('tCity').value;
+  var key='project:';
+  if(sType==='default')key='project:default';
+  else if(sType==='project_type')key='project:'+pType;
+  else if(sType==='city')key='project:city:'+city;
+  else if(sType==='type_city')key='project:'+pType+':'+city;
+  $('tScopeKey').value=key;
+}
+['tScopeType','tProjType','tCity'].forEach(function(id){$(id).addEventListener('change',upScopeKey);});
+
+/* Save template */
+$('saveTplBtn').addEventListener('click',async function(){
+  var title=$('tTitle').value.trim();
+  var desc=$('tDesc').value.trim();
+  var body=$('tBody').innerHTML.trim();
+  if(!title&&!desc&&!body){status('err','Vui lòng nhập ít nhất tiêu đề SEO.');return;}
+  try{
+    var svc=window.supabaseDataService;
+    var payload={
+      id:curTplId||'',
+      scope_type:$('tScopeType').value,
+      scope_key:$('tScopeKey').value||'project:default',
+      template_name:'project_seo',
+      title_template:title,
+      description_template:desc,
+      body_template:body
+    };
+    if(typeof svc.saveAdminSeoTemplate==='function'){await svc.saveAdminSeoTemplate(payload);}
+    else{status('err','Chức năng chưa được kết nối với Supabase — sẽ hoàn thiện trong bản tiếp theo.');return;}
+    status('ok','✓ Đã lưu template SEO dự án.');resetTpl();await loadAll();
+  }catch(err){status('err',err.message||'Không thể lưu.');}
+});
+function resetTpl(){curTplId='';$('tScopeType').value='default';$('tProjType').value='';$('tCity').value='';$('tScopeKey').value='project:default';$('tTitle').value='';$('tDesc').value='';setTBodyContent('');upScopeKey();}
+$('resetTplBtn').addEventListener('click',resetTpl);
+
+/* Save override */
+$('saveOvrBtn').addEventListener('click',async function(){
+  var title=$('oTitle').value.trim();
+  if(!title){status('err','Vui lòng nhập tiêu đề SEO tùy chỉnh.');return;}
+  try{
+    var svc=window.supabaseDataService;
+    var payload={
+      id:curOvrId||'',
+      page_type:'project',
+      category_slug:$('oType').value||'',
+      city:$('oCity').value||'',
+      ward:$('oWard').value||'',
+      custom_title:title,
+      custom_description:$('oDesc').value.trim(),
+      custom_body:getOBodyContent()
+    };
+    if(typeof svc.saveAdminSeoOverride==='function'){await svc.saveAdminSeoOverride(payload);}
+    else{status('err','Chức năng chưa được kết nối — sẽ hoàn thiện trong bản tiếp theo.');return;}
+    status('ok','✓ Đã lưu override SEO dự án.');resetOvr();await loadAll();
+  }catch(err){status('err',err.message||'Không thể lưu.');}
+});
+function resetOvr(){curOvrId='';$('oType').value='';$('oCity').value='';syncWards('oCity','oWard');$('oWard').value='';$('oTitle').value='';$('oDesc').value='';setOBodyContent('');}
+$('resetOvrBtn').addEventListener('click',resetOvr);
+
+/* Load list */
+async function loadAll(){
+  try{
+    var svc=window.supabaseDataService;
+    if(typeof svc.refreshAdminSeoTemplates==='function'){
+      var templates=await svc.refreshAdminSeoTemplates();
+      var projTpls=(templates||[]).filter(function(t){return String(t.scope_key||'').startsWith('project:');});
+      $('tplList').innerHTML=projTpls.length?projTpls.map(function(it){
+        return'<div class="item"><div class="item-head"><div><div class="item-title">'+esc(it.scope_type)+' / '+esc(it.scope_key||'default')+'</div><div class="item-meta"><span>'+esc(it.title_template||'–')+'</span></div></div>'
+          +'<div style="display:flex;gap:6px"><button class="btn bs" style="min-height:32px;font-size:12px" data-etpl="'+esc(it.id)+'">Sửa</button>'
+          +'<button class="btn br" style="min-height:32px;font-size:12px" data-dtpl="'+esc(it.id)+'">Xóa</button></div></div></div>';
+      }).join(''):'<div style="color:#94a3b8;font-size:13px">Chưa có template nào cho dự án.</div>';
+    }
+    if(typeof svc.refreshAdminSeoOverrides==='function'){
+      var overrides=await svc.refreshAdminSeoOverrides();
+      var projOvrs=(overrides||[]).filter(function(o){return o.page_type==='project'||!o.page_type;});
+      $('ovrList').innerHTML=projOvrs.length?projOvrs.map(function(it){
+        return'<div class="item"><div class="item-head"><div><div class="item-title">'+esc(it.category_slug||'tất cả')+' / '+esc(it.city||'tất cả')+'</div><div class="item-meta"><span>'+esc(it.custom_title||'–')+'</span></div></div>'
+          +'<div style="display:flex;gap:6px"><button class="btn bs" style="min-height:32px;font-size:12px" data-eovr="'+esc(it.id)+'">Sửa</button>'
+          +'<button class="btn br" style="min-height:32px;font-size:12px" data-dovr="'+esc(it.id)+'">Xóa</button></div></div></div>';
+      }).join(''):'<div style="color:#94a3b8;font-size:13px">Chưa có override nào cho dự án.</div>';
+    }
+  }catch(err){status('err','Không thể tải danh sách SEO.');}
+}
+
+/* List actions */
+document.addEventListener('click',async function(e){
+  var etpl=e.target.getAttribute('data-etpl');var dtpl=e.target.getAttribute('data-dtpl');
+  var eovr=e.target.getAttribute('data-eovr');var dovr=e.target.getAttribute('data-dovr');
+  if(dtpl){if(!confirm('Xóa template này?'))return;try{await window.supabaseDataService.deleteAdminSeoTemplate(dtpl);status('ok','Đã xóa.');await loadAll();}catch(err){status('err',err.message||'Lỗi');}}
+  if(dovr){if(!confirm('Xóa override này?'))return;try{await window.supabaseDataService.deleteAdminSeoOverride(dovr);status('ok','Đã xóa.');await loadAll();}catch(err){status('err',err.message||'Lỗi');}}
+});
+
+/* Init */
+async function init(){
+  try{if(window.supabaseDataService&&typeof window.supabaseDataService.ensureAdminAccess==='function')await window.supabaseDataService.ensureAdminAccess();}
+  catch(err){status('err','Không có quyền truy cập.');return;}
+  await loadLocs();upScopeKey();await loadAll();
+}
+window.addEventListener('load',init);
+})();
+</script>
+<script>
+(function(){
+  function setupAcc(){
+    document.querySelectorAll('.acc-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var g=btn.closest('.acc-group');var wasOpen=g.classList.contains('open');
+        document.querySelectorAll('.acc-group').forEach(function(x){x.classList.remove('open');var b=x.querySelector('.acc-btn');if(b)b.classList.remove('on');});
+        if(!wasOpen){g.classList.add('open');btn.classList.add('on');}
+      });
+    });
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setupAcc);}else{setupAcc();}
+})();
+</script>
+
+<script>
+/* ADMIN SESSION DOUBLE-CHECK v4 — minimal, tin tưởng EARLY GUARD + localStorage */
+(function(){
+  var ADMIN_ROLES = ['super_admin','admin','moderator','finance','seo_manager','content_editor','support','administrator','quan tri vien','quantri'];
+
+  function isRoleAdmin(role) {
+    return ADMIN_ROLES.includes(String(role||'').trim().toLowerCase());
+  }
+
+  function hasLocalAdmin() {
+    try {
+      var keys = ['currentUser','registeredUser'];
+      for (var i=0; i<keys.length; i++) {
+        var raw = localStorage.getItem(keys[i]);
+        if (!raw) continue;
+        var u = JSON.parse(raw);
+        if (!u) continue;
+        var role = u.systemRole || u.system_role || u.authRole || u.appRole || '';
+        if (isRoleAdmin(role)) return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  // Chỉ double-check với Supabase 1 lần sau 3s để đồng bộ localStorage.
+  // KHÔNG kick user — EARLY GUARD ở đầu file đã lo việc đó.
+  // Đây chỉ là "soft refresh": nếu Supabase trả role admin thì update localStorage.
+  async function softRefreshFromSupabase() {
+    try {
+      var svc = window.supabaseDataService;
+      if (!svc || typeof svc.getCurrentUserProfile !== 'function') return;
+      var profile = await svc.getCurrentUserProfile().catch(function(){return null;});
+      if (!profile) return;
+      // Nếu Supabase trả role admin thì localStorage đã được update bởi ensureProfileRow
+      // Không cần làm gì thêm
+      var role = profile.systemRole || profile.system_role || '';
+      if (!isRoleAdmin(role) && !hasLocalAdmin()) {
+        // Cả Supabase và localStorage đều không có admin → LAST RESORT kick
+        // Nhưng chỉ làm sau khi chắc chắn (đã pass EARLY GUARD vẫn xuống đây)
+        console.warn('[AdminGuard v4] Không tìm thấy admin role cả ở Supabase và localStorage');
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(softRefreshFromSupabase, 3000);
+  });
+})();
+</script>
+</body>
+</html>

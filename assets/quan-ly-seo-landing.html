@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SEO Landing — Listing | ToamViet.com.vn</title>
+  <script>
+  (function(){
+    function isAdmin(){try{var keys=['currentUser','registeredUser'];for(var i=0;i<keys.length;i++){var raw=localStorage.getItem(keys[i]);if(!raw)continue;var u=JSON.parse(raw);var r=String(u&&(u.systemRole||u.system_role||'')).trim().toLowerCase();if(r==='admin'||r==='administrator')return true;}}catch(e){}return false;}
+    if(!localStorage.getItem('authToken')&&!isAdmin()){window.location.replace('../auth/dang-nhap.html?redirect='+encodeURIComponent(window.location.pathname));}
+  })();
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/main.css"/>
+  <link rel="stylesheet" href="../assets/css/components.css"/>
+  <link rel="stylesheet" href="../assets/css/mobile.css"/>
+  <link rel="stylesheet" href="../assets/css/admin-dashboard.css"/>
+  <style>
+    :root{--vip:#008b8b;--vipd:#0f766e;--soft:#f4f7fa;--stroke:#dbe4ee;--text:#334155;--muted:#64748b}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--soft);font-family:'Roboto',sans-serif;color:var(--text);font-size:15px;line-height:1.65}
+    /* Layout */
+    .cw{max-width:1480px;margin:0 auto;padding:0 16px}
+    .pshell{padding-bottom:48px}
+    .adm-layout{display:flex;gap:0;align-items:flex-start;padding-top:20px}
+    .adm-sidebar{width:220px;flex-shrink:0;position:sticky;top:90px;margin-right:22px}
+    .adm-main{flex:1;min-width:0}
+    /* Sidebar */
+    .sb-card{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 6px 24px rgba(15,23,42,.06);padding:14px;overflow:hidden}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:3px;transition:.15s}
+    .sb-item:hover,.sb-item.on{background:var(--vip);color:#fff}
+    .sb-item i{width:16px;text-align:center;font-size:13px}
+    .sb-div{height:1px;background:var(--stroke);margin:8px 0}
+    .acc-g{margin:2px 0}
+    .acc-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left;transition:.15s}
+    .acc-btn:hover,.acc-btn.on,.acc-g.open .acc-btn{background:var(--vip);color:#fff}
+    .acc-btn .chev{transition:transform .2s;font-size:10px;flex-shrink:0}
+    .acc-g.open .acc-btn .chev{transform:rotate(180deg)}
+    .acc-sub{display:none;margin:3px 0 5px 16px;padding-left:11px;border-left:2px solid var(--stroke)}
+    .acc-g.open .acc-sub{display:flex;flex-direction:column}
+    .acc-si,.acc-subitem{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:9px;color:#64748b;font-weight:700;font-size:13px;text-decoration:none;margin:2px 0;transition:.15s}
+    .acc-si:hover,.acc-si.on,.acc-subitem:hover,.acc-subitem.on{background:#eaf2ff;color:#1d4ed8}
+    /* Hero */
+    .hero-band{background:linear-gradient(135deg,#0f766e,#008b8b);border-radius:20px;padding:22px 26px;margin-bottom:20px;color:#fff}
+    .hero-band h1{font-size:22px;font-weight:900;margin:0 0 7px;line-height:1.3;display:flex;align-items:center;gap:10px}
+    .hero-band p{font-size:13px;line-height:1.75;color:rgba(255,255,255,.88);margin:0}
+    /* Tabs */
+    .tabs{display:flex;border-bottom:2px solid var(--stroke);margin-bottom:20px}
+    .tab{padding:10px 16px;border:0;background:none;font-weight:800;font-size:13px;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.15s;display:flex;align-items:center;gap:6px}
+    .tab.on{color:var(--vip);border-bottom-color:var(--vip)}
+    .panel{display:none}.panel.on{display:block}
+    /* Cards */
+    .fc{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 6px 20px rgba(15,23,42,.05);padding:22px;margin-bottom:16px}
+    .fc-h{font-size:17px;font-weight:900;color:#0f172a;margin:0 0 5px}
+    .fc-s{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 16px}
+    /* Tokens */
+    .tokens{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+    .tok{background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #bfdbfe;transition:.12s;user-select:none}
+    .tok:hover{background:#1d4ed8;color:#fff}
+    /* Form */
+    .fg{display:grid;gap:12px}
+    .fg3{grid-template-columns:1fr 1fr 1fr}
+    .gf{grid-column:1/-1}
+    .lbl{display:block;font-size:12px;font-weight:800;color:#0f172a;margin-bottom:5px}
+    .lbl em{font-weight:400;color:var(--muted);font-style:normal}
+    .fi,.fsel,.fta{width:100%;padding:9px 12px;border:1.5px solid var(--stroke);border-radius:11px;background:#fff;font-size:14px;outline:none;font-family:inherit;color:var(--text);transition:.15s}
+    .fi{min-height:42px}.fsel{min-height:42px}.fta{min-height:88px;resize:vertical}
+    .fi:focus,.fsel:focus,.fta:focus{border-color:var(--vip);box-shadow:0 0 0 3px rgba(0,139,139,.09)}
+    /* SimpleEditor */
+    .simple-editor{border:1.5px solid var(--stroke);border-radius:12px;overflow:hidden;background:#fff}
+    .simple-editor-toolbar{display:flex;flex-wrap:wrap;gap:5px;padding:8px 10px;border-bottom:1px solid var(--stroke);background:#f8fafc}
+    .simple-editor-toolbar button{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 8px;border:1px solid #dbe4ee;border-radius:8px;background:#fff;color:#334155;font-size:13px;font-weight:800;cursor:pointer}
+    .simple-editor-toolbar button.active{background:#0f172a;color:#fff;border-color:#0f172a}
+    .simple-editor-content{min-height:160px;padding:12px 14px;outline:none;font-size:14px;line-height:1.8;color:#0f172a}
+    .simple-editor-content:empty::before{content:attr(data-placeholder);color:#94a3b8}
+    .simple-editor-content img{max-width:100%;border-radius:8px;margin:6px 0}
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;border:0;border-radius:11px;padding:0 16px;font-weight:800;font-size:13px;cursor:pointer;transition:.15s}
+    .bp{background:var(--vip);color:#fff}.bp:hover{background:var(--vipd)}
+    .bs{background:#eff6ff;color:#1d4ed8}.bs:hover{background:#dbeafe}
+    .br{background:#fef2f2;color:#dc2626}
+    .brow{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+    /* Status */
+    .sbox{padding:11px 15px;border-radius:11px;font-weight:700;font-size:13px;display:none;margin-bottom:16px}
+    .sbox.on{display:block}
+    .ok{background:#f0fdfa;color:#0f766e;border-left:4px solid #0f766e}
+    .er{background:#fef2f2;color:#b91c1c;border-left:4px solid #b91c1c}
+    /* List */
+    .lg2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .lt{font-size:14px;font-weight:900;color:#0f172a;margin:0 0 10px;display:flex;align-items:center;gap:7px}
+    .li{border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#fff;margin-bottom:8px}
+    .li-h{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+    .li-t{font-size:13px;font-weight:800;color:#0f172a;margin:0}
+    .li-m{font-size:11px;color:#64748b;display:flex;flex-wrap:wrap;gap:5px;margin-top:3px}
+    .li-b{font-size:12px;color:#334155;line-height:1.6}
+    .li-a{display:flex;gap:5px;flex-shrink:0}
+    /* Hint */
+    .hint{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:10px 13px;font-size:13px;color:#475569;line-height:1.7;margin-top:12px}
+    .hint a{color:var(--vip);font-weight:800;text-decoration:none}
+    /* Responsive */
+    @media(max-width:1100px){.adm-layout{flex-direction:column}.adm-sidebar{width:100%;position:static;margin-right:0;margin-bottom:16px}}
+    @media(max-width:860px){.fg3{grid-template-columns:1fr 1fr}.lg2{grid-template-columns:1fr}}
+    @media(max-width:540px){.fg3{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div id="site-header"></div>
+<div id="site-mobile-menu"></div>
+
+<main class="pshell">
+<div class="cw">
+
+<!-- Hero -->
+<div class="hero-band">
+  <h1><i class="fa-solid fa-code"></i>SEO Landing — Trang listing</h1>
+  <p>Cấu hình SEO riêng cho <strong>Nhà đất bán · Nhà đất cho thuê · Xây dựng</strong>. SEO trang dự án đã có tại <strong>Dự án → SEO dự án</strong> — không cấu hình ở đây tránh chồng chéo.</p>
+</div>
+
+<div class="adm-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="adm-sidebar">
+    <div class="sb-card">
+      <a href="admin-dashboard.html" class="sb-item"><i class="fa-solid fa-chart-line"></i>Tổng quan</a>
+      <a href="quan-ly-thanh-vien.html" class="sb-item"><i class="fa-solid fa-users"></i>Thành viên</a>
+      <a href="kiem-duyet-tin.html" class="sb-item"><i class="fa-solid fa-list-check"></i>Kiểm duyệt</a>
+      <div class="sb-div"></div>
+      <div class="acc-g">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-diagram-project"></i> Dự án</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-du-an.html" class="acc-subitem"><i class="fa-solid fa-list"></i>Danh sách</a>
+          <a href="quan-ly-noi-dung-du-an.html" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập nội dung</a>
+          <a href="quan-ly-chu-dau-tu.html" class="acc-subitem"><i class="fa-solid fa-building-circle-check"></i>Chủ đầu tư</a>
+          <a href="quan-ly-seo-du-an.html" class="acc-subitem"><i class="fa-solid fa-magnifying-glass-chart"></i>SEO dự án</a>
+        </div>
+      </div>
+      <div class="acc-g">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-newspaper"></i> Tin tức</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-tin-tuc.html#list" class="acc-subitem"><i class="fa-solid fa-list"></i>Tất cả bài viết</a>
+          <a href="quan-ly-tin-tuc.html#editor" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập bài viết</a>
+        </div>
+      </div>
+      <div class="acc-g open" id="seoAccGroup">
+        <button type="button" class="acc-btn on"><span><i class="fa-solid fa-magnifying-glass-chart"></i> SEO Landing</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="#" class="acc-subitem on" id="navTpl" data-switchtab="tpl"><i class="fa-solid fa-code"></i>Template SEO</a>
+          <a href="#" class="acc-subitem" id="navOvr" data-switchtab="ovr"><i class="fa-solid fa-pen"></i>Override landing</a>
+          <a href="#" class="acc-subitem" id="navLst" data-switchtab="lst"><i class="fa-solid fa-list"></i>Danh sách</a>
+        </div>
+      </div>
+
+      <div class="acc-g">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-wallet"></i> Kiếm tiền / VIP</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-don-hang.html" class="acc-si"><i class="fa-solid fa-file-invoice-dollar"></i>Đơn hàng</a>
+          <a href="duyet-don-thu-phi.html" class="acc-si"><i class="fa-solid fa-money-check-dollar"></i>Duyệt đơn thu phí</a>
+          <a href="quan-ly-entitlement-vip.html" class="acc-si"><i class="fa-solid fa-crown"></i>Entitlement VIP</a>
+          <a href="cap-quyen-vip.html" class="acc-si"><i class="fa-solid fa-user-shield"></i>Cấp quyền VIP</a>
+        </div>
+      </div>
+      <div class="sb-div"></div>
+      <a href="cai-dat-he-thong.html" class="sb-item"><i class="fa-solid fa-sliders"></i>Cài đặt hệ thống</a>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="adm-main">
+    <div id="sbox" class="sbox"></div>
+
+    <!-- Tab bar -->
+    <div class="tabs">
+      <button class="tab on" data-tab="tpl"><i class="fa-solid fa-code"></i>Template SEO động</button>
+      <button class="tab" data-tab="ovr"><i class="fa-solid fa-pen"></i>Override landing</button>
+      <button class="tab" data-tab="lst"><i class="fa-solid fa-list"></i>Danh sách</button>
+    </div>
+
+    <!-- ════ PANEL: Template ════ -->
+    <div class="panel on" id="pTpl">
+      <div class="fc">
+        <div class="fc-h">Template SEO động</div>
+        <div class="fc-s">Sinh tự động title, mô tả và nội dung body cho trang listing theo phạm vi. Chỉ áp dụng cho <strong>Nhà đất bán · Cho thuê · Xây dựng</strong>.</div>
+
+        <!-- Tokens -->
+        <div class="tokens" id="tokenBar">
+          <span class="tok" data-v="{category_name}">{category_name}</span>
+          <span class="tok" data-v="{city}">{city}</span>
+          <span class="tok" data-v="{ward}">{ward}</span>
+          <span class="tok" data-v="{location}">{location}</span>
+          <span class="tok" data-v="{total_listings}">{total_listings}</span>
+          <span class="tok" data-v="{min_price}">{min_price}</span>
+          <span class="tok" data-v="{max_price}">{max_price}</span>
+          <span class="tok" data-v="{avg_price}">{avg_price}</span>
+          <span class="tok" data-v="{newest_at}">{newest_at}</span>
+        </div>
+
+        <div class="fg fg3">
+          <div>
+            <label class="lbl">Phạm vi áp dụng</label>
+            <select id="tScope" class="fsel">
+              <option value="default">Mặc định toàn site</option>
+              <option value="page_type">Theo loại trang</option>
+              <option value="category">Theo danh mục</option>
+              <option value="city">Theo tỉnh/thành</option>
+              <option value="category_city">Danh mục + tỉnh/thành</option>
+              <option value="category_city_ward">Danh mục + tỉnh/thành + phường/xã</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">Loại trang <em>(Không bao gồm Dự án)</em></label>
+            <select id="tPage" class="fsel">
+              <option value="sale">Nhà đất bán</option>
+              <option value="rental">Nhà đất cho thuê</option>
+              <option value="construction">Xây dựng</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">Tên template</label>
+            <input id="tName" class="fi" value="body" placeholder="body"/>
+          </div>
+          <div>
+            <label class="lbl">Danh mục BĐS</label>
+            <select id="tCat" class="fsel"></select>
+          </div>
+          <div>
+            <label class="lbl">Tỉnh/Thành</label>
+            <select id="tCity" class="fsel"><option value="">Tất cả tỉnh/thành</option></select>
+          </div>
+          <div>
+            <label class="lbl">Phường/Xã</label>
+            <select id="tWard" class="fsel"><option value="">Tất cả phường/xã</option></select>
+          </div>
+          <div class="gf">
+            <label class="lbl">Scope key <em>— tự tạo, sửa tay nếu cần</em></label>
+            <input id="tKey" class="fi" style="font-family:monospace;font-size:13px" placeholder="Tự tạo theo lựa chọn trên"/>
+          </div>
+          <div class="gf">
+            <label class="lbl">Tiêu đề SEO</label>
+            <input id="tTitle" class="fi" placeholder="VD: {category_name} tại {location} – ToamViet"/>
+          </div>
+          <div class="gf">
+            <label class="lbl">Meta description</label>
+            <textarea id="tDesc" class="fta" rows="3" placeholder="VD: Xem {total_listings} tin {category_name} tại {location}..."></textarea>
+          </div>
+          <div class="gf">
+            <label class="lbl">Nội dung SEO body <em>— hiển thị cuối trang listing</em></label>
+            <textarea id="tBodyRaw" style="display:none"></textarea>
+          </div>
+        </div>
+
+        <div class="brow">
+          <button id="btnSaveTpl" class="btn bp"><i class="fa-solid fa-floppy-disk"></i>Lưu template</button>
+          <button id="btnResetTpl" class="btn bs"><i class="fa-solid fa-rotate-left"></i>Làm mới</button>
+        </div>
+
+        <div class="hint">
+          SEO trang danh mục dự án → <a href="quan-ly-seo-du-an.html">Dự án → SEO dự án</a>. File này <strong>chỉ quản lý SEO cho listing bán/thuê/xây dựng</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: Override ════ -->
+    <div class="panel" id="pOvr">
+      <div class="fc">
+        <div class="fc-h">Override trang listing cụ thể</div>
+        <div class="fc-s">Đặt nội dung riêng hoàn toàn cho 1 trang listing cụ thể, ghi đè template chung.</div>
+
+        <div class="fg fg3">
+          <div>
+            <label class="lbl">Loại trang</label>
+            <select id="oPage" class="fsel">
+              <option value="sale">Nhà đất bán</option>
+              <option value="rental">Nhà đất cho thuê</option>
+              <option value="construction">Xây dựng</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">Danh mục</label>
+            <select id="oCat" class="fsel"></select>
+          </div>
+          <div>
+            <label class="lbl">Tỉnh/Thành</label>
+            <select id="oCity" class="fsel"><option value="">Tất cả tỉnh/thành</option></select>
+          </div>
+          <div class="gf">
+            <label class="lbl">Phường/Xã <em>— để trống = áp dụng toàn tỉnh</em></label>
+            <select id="oWard" class="fsel"><option value="">Tất cả phường/xã</option></select>
+          </div>
+          <div class="gf">
+            <label class="lbl">Tiêu đề SEO tùy chỉnh</label>
+            <input id="oTitle" class="fi" placeholder="Tiêu đề riêng cho trang này"/>
+          </div>
+          <div class="gf">
+            <label class="lbl">Meta description tùy chỉnh</label>
+            <textarea id="oDesc" class="fta" rows="3" placeholder="Mô tả tùy chỉnh..."></textarea>
+          </div>
+          <div class="gf">
+            <label class="lbl">Nội dung body tùy chỉnh</label>
+            <textarea id="oBodyRaw" style="display:none"></textarea>
+          </div>
+        </div>
+
+        <div class="brow">
+          <button id="btnSaveOvr" class="btn bp"><i class="fa-solid fa-floppy-disk"></i>Lưu override</button>
+          <button id="btnResetOvr" class="btn bs"><i class="fa-solid fa-rotate-left"></i>Làm mới</button>
+        </div>
+
+        <div class="hint">Chọn đúng loại trang + danh mục + tỉnh/thành + phường/xã để override áp dụng chính xác 1 landing.</div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: List ════ -->
+    <div class="panel" id="pLst">
+      <div class="fc">
+        <div class="lg2">
+          <div>
+            <div class="lt"><i class="fa-solid fa-code" style="color:var(--vip)"></i>Template đang có</div>
+            <div id="tplList"><span style="color:#94a3b8;font-size:13px">Đang tải...</span></div>
+          </div>
+          <div>
+            <div class="lt"><i class="fa-solid fa-pen" style="color:var(--vip)"></i>Override đang có</div>
+            <div id="ovrList"><span style="color:#94a3b8;font-size:13px">Đang tải...</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /adm-main -->
+</div><!-- /adm-layout -->
+</div><!-- /cw -->
+</main>
+
+<div id="site-footer"></div>
+<script src="../assets/js/component-loader.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/supabase-config.js"></script>
+<script src="../assets/js/supabase-data-service.js"></script>
+<script src="../assets/js/simple-rich-editor.js"></script>
+<script src="../assets/js/admin-sidebar.js"></script>
+<script>
+(function(){
+'use strict';
+
+/* ─── Helpers ─── */
+function $(i){return document.getElementById(i);}
+function esc(v){return String(v||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];});}
+function showStatus(msg,type){
+  var b=$('sbox');b.className='sbox on '+(type||'');b.textContent=msg;
+  if(type!=='er')setTimeout(function(){b.className='sbox';},5000);
+}
+
+/* ─── Tab switching ─── */
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-tab')===name);});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
+  var pmap={tpl:'pTpl',ovr:'pOvr',lst:'pLst'};
+  var p=$(pmap[name]);if(p)p.classList.add('on');
+  // sync sidebar nav
+  ['navTpl','navOvr','navLst'].forEach(function(id){
+    var el=$(id);if(el)el.classList.toggle('on',el.getAttribute('data-switchtab')===name);
+  });
+  history.replaceState({},'','#'+name);
+}
+document.querySelectorAll('.tab').forEach(function(btn){
+  btn.addEventListener('click',function(){switchTab(btn.getAttribute('data-tab'));});
+});
+// Sidebar nav clicks
+document.querySelectorAll('[data-switchtab]').forEach(function(a){
+  a.addEventListener('click',function(e){e.preventDefault();switchTab(a.getAttribute('data-switchtab'));});
+});
+// Init from hash
+var h=(location.hash||'').replace('#','');
+if(h==='ovr'||h==='override')switchTab('ovr');
+else if(h==='lst'||h==='list')switchTab('lst');
+
+/* ─── SimpleRichEditor ─── */
+var edTpl=null,edOvr=null;
+if(window.SimpleRichEditor){
+  edTpl=window.SimpleRichEditor.create($('tBodyRaw'),{placeholder:'Viết 300–500 từ giới thiệu khu vực, lợi ích, đặc điểm... tốt cho SEO.',imageContext:'generic'});
+  edOvr=window.SimpleRichEditor.create($('oBodyRaw'),{placeholder:'Nội dung override body...',imageContext:'generic'});
+}
+function getTBody(){return edTpl?edTpl.getContent():($('tBodyRaw').value||'');}
+function setTBody(v){if(edTpl)edTpl.setContent(v||'');else $('tBodyRaw').value=v||'';}
+function getOBody(){return edOvr?edOvr.getContent():($('oBodyRaw').value||'');}
+function setOBody(v){if(edOvr)edOvr.setContent(v||'');else $('oBodyRaw').value=v||'';}
+
+/* ─── Token insertion ─── */
+var lastFocus=null;
+['tTitle','tDesc','oTitle','oDesc'].forEach(function(id){
+  var el=$(id);if(el)el.addEventListener('focus',function(){lastFocus=el;});
+});
+$('tokenBar').addEventListener('click',function(e){
+  var tok=e.target.closest('[data-v]');if(!tok||!lastFocus)return;
+  var v=tok.getAttribute('data-v'),s=lastFocus.selectionStart,end=lastFocus.selectionEnd;
+  lastFocus.value=lastFocus.value.slice(0,s)+v+lastFocus.value.slice(end);
+  lastFocus.selectionStart=lastFocus.selectionEnd=s+v.length;lastFocus.focus();
+});
+
+/* ─── Locations ─── */
+var locs=[];
+async function loadLocs(){
+  try{var r=await fetch('../assets/data/vietnam-address.json');locs=await r.json();}catch(e){locs=[];}
+  ['tCity','oCity'].forEach(function(id){
+    $(id).innerHTML='<option value="">Tất cả tỉnh/thành</option>'+locs.map(function(l){return'<option value="'+esc(l.name)+'">'+esc(l.name)+'</option>';}).join('');
+  });
+  $('tCity').addEventListener('change',function(){syncW('tCity','tWard');upKey();});
+  $('oCity').addEventListener('change',function(){syncW('oCity','oWard');});
+}
+function syncW(cid,wid){
+  var city=$(cid).value,rec=locs.find(function(l){return l.name===city;}),wards=rec&&Array.isArray(rec.wards)?rec.wards:[];
+  $(wid).innerHTML='<option value="">Tất cả phường/xã</option>'+wards.map(function(w){return'<option value="'+esc(w)+'">'+esc(w)+'</option>';}).join('');
+}
+
+/* ─── Categories ─── */
+var CATS=[
+  {v:'',l:'Tất cả danh mục'},{v:'can-ho-chung-cu',l:'Căn hộ chung cư'},
+  {v:'nha-rieng',l:'Nhà riêng'},{v:'nha-mat-pho',l:'Nhà mặt phố'},
+  {v:'dat-nen',l:'Đất nền'},{v:'biet-thu',l:'Biệt thự'},
+  {v:'van-phong',l:'Văn phòng'},{v:'mat-bang',l:'Mặt bằng'},{v:'kho-xuong',l:'Kho xưởng'}
+];
+function fillCats(id){$(id).innerHTML=CATS.map(function(c){return'<option value="'+esc(c.v)+'">'+esc(c.l)+'</option>';}).join('');}
+
+/* ─── Scope key ─── */
+function upKey(){
+  var sc=$('tScope').value,pt=$('tPage').value,cat=$('tCat').value,city=$('tCity').value,ward=$('tWard').value,key='';
+  if(sc==='page_type')key=pt;
+  else if(sc==='category')key=cat;
+  else if(sc==='city')key=city;
+  else if(sc==='category_city')key=[cat,city].filter(Boolean).join('|');
+  else if(sc==='category_city_ward')key=[cat,city,ward].filter(Boolean).join('|');
+  $('tKey').value=key;
+}
+['tScope','tPage','tCat','tWard'].forEach(function(id){$(id).addEventListener('change',upKey);});
+
+/* ─── Current IDs ─── */
+var curTId='',curOId='';
+
+/* ─── Reset ─── */
+function resetTpl(){
+  curTId='';$('tScope').value='default';$('tPage').value='sale';$('tCat').value='';
+  $('tCity').value='';syncW('tCity','tWard');$('tWard').value='';
+  $('tName').value='body';$('tTitle').value='';$('tDesc').value='';
+  setTBody('');upKey();
+}
+function resetOvr(){
+  curOId='';$('oPage').value='sale';$('oCat').value='';
+  $('oCity').value='';syncW('oCity','oWard');$('oWard').value='';
+  $('oTitle').value='';$('oDesc').value='';setOBody('');
+}
+
+/* ─── Save template ─── */
+$('btnSaveTpl').addEventListener('click',async function(){
+  if(!$('tTitle').value.trim()){showStatus('Vui lòng nhập tiêu đề SEO.','er');return;}
+  try{
+    await window.supabaseDataService.saveAdminSeoTemplate({
+      id:curTId||'',scope_type:$('tScope').value,scope_key:$('tKey').value||'default',
+      template_name:$('tName').value||'body',title_template:$('tTitle').value.trim(),
+      description_template:$('tDesc').value.trim(),body_template:getTBody()
+    });
+    showStatus('✓ Đã lưu template SEO.','ok');
+    resetTpl();await loadAll();switchTab('lst');
+  }catch(e){showStatus(e.message||'Không thể lưu.','er');}
+});
+$('btnResetTpl').addEventListener('click',resetTpl);
+
+/* ─── Save override ─── */
+$('btnSaveOvr').addEventListener('click',async function(){
+  if(!$('oTitle').value.trim()){showStatus('Vui lòng nhập tiêu đề tùy chỉnh.','er');return;}
+  try{
+    await window.supabaseDataService.saveAdminSeoOverride({
+      id:curOId||'',page_type:$('oPage').value,category_slug:$('oCat').value||'',
+      city:$('oCity').value||'',ward:$('oWard').value||'',
+      custom_title:$('oTitle').value.trim(),custom_description:$('oDesc').value.trim(),
+      custom_body:getOBody()
+    });
+    showStatus('✓ Đã lưu override.','ok');
+    resetOvr();await loadAll();switchTab('lst');
+  }catch(e){showStatus(e.message||'Không thể lưu.','er');}
+});
+$('btnResetOvr').addEventListener('click',resetOvr);
+
+/* ─── Load all ─── */
+async function loadAll(){
+  try{
+    var svc=window.supabaseDataService;
+    var res=await Promise.all([svc.refreshAdminSeoTemplates(),svc.refreshAdminSeoOverrides()]);
+    window.__seoT=res[0]||[];window.__seoO=res[1]||[];
+    renderTpls(window.__seoT);renderOvrs(window.__seoO);
+  }catch(e){showStatus(e.message||'Không thể tải dữ liệu SEO.','er');}
+}
+
+/* ─── Render lists ─── */
+function renderTpls(rows){
+  var el=$('tplList');
+  if(!rows.length){el.innerHTML='<div style="color:#94a3b8;font-size:13px;padding:4px 0">Chưa có template nào.</div>';return;}
+  el.innerHTML=rows.map(function(it){
+    return'<div class="li"><div class="li-h"><div><div class="li-t">'+esc(it.scope_type)+' / '+esc(it.scope_key||'default')+'</div>'
+      +'<div class="li-m"><span>'+esc(it.template_name||'body')+'</span></div></div>'
+      +'<div class="li-a"><button class="btn bs" style="min-height:28px;font-size:11px" data-et="'+esc(it.id)+'">Sửa</button>'
+      +'<button class="btn br" style="min-height:28px;font-size:11px" data-dt="'+esc(it.id)+'">Xóa</button></div></div>'
+      +'<div class="li-b"><b>Tiêu đề:</b> '+esc(it.title_template||'—')+'</div></div>';
+  }).join('');
+}
+function renderOvrs(rows){
+  var el=$('ovrList');
+  if(!rows.length){el.innerHTML='<div style="color:#94a3b8;font-size:13px;padding:4px 0">Chưa có override nào.</div>';return;}
+  el.innerHTML=rows.map(function(it){
+    return'<div class="li"><div class="li-h"><div><div class="li-t">'+esc(it.page_type)+' / '+esc(it.category_slug||'tất cả')+'</div>'
+      +'<div class="li-m"><span>'+esc(it.city||'tất cả tỉnh')+'</span><span>'+esc(it.ward||'tất cả phường')+'</span></div></div>'
+      +'<div class="li-a"><button class="btn bs" style="min-height:28px;font-size:11px" data-eo="'+esc(it.id)+'">Sửa</button>'
+      +'<button class="btn br" style="min-height:28px;font-size:11px" data-do="'+esc(it.id)+'">Xóa</button></div></div>'
+      +'<div class="li-b"><b>Tiêu đề:</b> '+esc(it.custom_title||'—')+'</div></div>';
+  }).join('');
+}
+
+/* ─── List actions ─── */
+document.addEventListener('click',async function(e){
+  var et=e.target.getAttribute('data-et'),dt=e.target.getAttribute('data-dt');
+  var eo=e.target.getAttribute('data-eo'),dov=e.target.getAttribute('data-do');
+  if(et){
+    var it=(window.__seoT||[]).find(function(x){return String(x.id)===String(et);});
+    if(!it)return;
+    curTId=it.id;$('tScope').value=it.scope_type||'default';$('tPage').value=it.page_type||'sale';
+    $('tName').value=it.template_name||'body';$('tTitle').value=it.title_template||'';
+    $('tDesc').value=it.description_template||'';setTBody(it.body_template||'');
+    $('tKey').value=it.scope_key||'';
+    switchTab('tpl');window.scrollTo({top:0,behavior:'smooth'});
+  }
+  if(dt){
+    if(!confirm('Xóa template SEO này?'))return;
+    try{await window.supabaseDataService.deleteAdminSeoTemplate(dt);showStatus('Đã xóa.','ok');await loadAll();}
+    catch(e){showStatus(e.message||'Lỗi xóa.','er');}
+  }
+  if(eo){
+    var it=(window.__seoO||[]).find(function(x){return String(x.id)===String(eo);});
+    if(!it)return;
+    curOId=it.id;$('oPage').value=it.page_type||'sale';$('oCat').value=it.category_slug||'';
+    $('oCity').value=it.city||'';syncW('oCity','oWard');$('oWard').value=it.ward||'';
+    $('oTitle').value=it.custom_title||'';$('oDesc').value=it.custom_description||'';setOBody(it.custom_body||'');
+    switchTab('ovr');window.scrollTo({top:0,behavior:'smooth'});
+  }
+  if(dov){
+    if(!confirm('Xóa override này?'))return;
+    try{await window.supabaseDataService.deleteAdminSeoOverride(dov);showStatus('Đã xóa.','ok');await loadAll();}
+    catch(e){showStatus(e.message||'Lỗi xóa.','er');}
+  }
+});
+
+/* ─── Accordion sidebar ─── */
+function setupAccordions(){
+  document.querySelectorAll('.acc-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var g=btn.closest('.acc-g'),wasOpen=g.classList.contains('open');
+      document.querySelectorAll('.acc-g').forEach(function(x){x.classList.remove('open');var b=x.querySelector('.acc-btn');if(b)b.classList.remove('on');});
+      if(!wasOpen){g.classList.add('open');btn.classList.add('on');}
+    });
+  });
+}
+
+/* ─── Init ─── */
+async function init(){
+  try{
+    if(window.supabaseDataService&&typeof window.supabaseDataService.ensureAdminAccess==='function'){
+      await window.supabaseDataService.ensureAdminAccess();
+    }
+  }catch(e){
+    showStatus('Không có quyền truy cập.','er');
+    setTimeout(function(){window.location.href='../auth/dang-nhap.html';},1500);
+    return;
+  }
+  fillCats('tCat');fillCats('oCat');
+  await loadLocs();
+  resetTpl();resetOvr();
+  setupAccordions();
+  // Khởi tạo sidebar động dùng chung
+  if(window.buildAdminSidebar) window.buildAdminSidebar(location.hash==='#override'?'seo-override':'seo-template');
+  await loadAll();
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+}else{
+  init();
+}
+
+})();
+</script>
+
+<script>
+/* ADMIN SESSION DOUBLE-CHECK v4 — minimal, tin tưởng EARLY GUARD + localStorage */
+(function(){
+  var ADMIN_ROLES = ['super_admin','admin','moderator','finance','seo_manager','content_editor','support','administrator','quan tri vien','quantri'];
+
+  function isRoleAdmin(role) {
+    return ADMIN_ROLES.includes(String(role||'').trim().toLowerCase());
+  }
+
+  function hasLocalAdmin() {
+    try {
+      var keys = ['currentUser','registeredUser'];
+      for (var i=0; i<keys.length; i++) {
+        var raw = localStorage.getItem(keys[i]);
+        if (!raw) continue;
+        var u = JSON.parse(raw);
+        if (!u) continue;
+        var role = u.systemRole || u.system_role || u.authRole || u.appRole || '';
+        if (isRoleAdmin(role)) return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  // Chỉ double-check với Supabase 1 lần sau 3s để đồng bộ localStorage.
+  // KHÔNG kick user — EARLY GUARD ở đầu file đã lo việc đó.
+  // Đây chỉ là "soft refresh": nếu Supabase trả role admin thì update localStorage.
+  async function softRefreshFromSupabase() {
+    try {
+      var svc = window.supabaseDataService;
+      if (!svc || typeof svc.getCurrentUserProfile !== 'function') return;
+      var profile = await svc.getCurrentUserProfile().catch(function(){return null;});
+      if (!profile) return;
+      // Nếu Supabase trả role admin thì localStorage đã được update bởi ensureProfileRow
+      // Không cần làm gì thêm
+      var role = profile.systemRole || profile.system_role || '';
+      if (!isRoleAdmin(role) && !hasLocalAdmin()) {
+        // Cả Supabase và localStorage đều không có admin → LAST RESORT kick
+        // Nhưng chỉ làm sau khi chắc chắn (đã pass EARLY GUARD vẫn xuống đây)
+        console.warn('[AdminGuard v4] Không tìm thấy admin role cả ở Supabase và localStorage');
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(softRefreshFromSupabase, 3000);
+  });
+})();
+</script>
+</body>
+</html>

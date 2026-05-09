@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script>
+window.__TV_EXPECTED_SERVICE='admin-fix-2026-04-15-b';
+  (function(){
+    function isAdmin(){try{var keys=['currentUser','registeredUser'];var adminRoles=['super_admin','admin','moderator','finance','seo_manager','content_editor','support','administrator','quan tri vien','quantri'];for(var i=0;i<keys.length;i++){var raw=localStorage.getItem(keys[i]);if(!raw)continue;var u=JSON.parse(raw);var r=String(u&&(u.systemRole||u.system_role||u.authRole||u.appRole||'')).trim().toLowerCase();if(adminRoles.indexOf(r)!==-1)return true;}}catch(e){}return false;}
+    if(!localStorage.getItem('authToken')&&!isAdmin()){window.location.replace('../auth/dang-nhap.html?redirect='+encodeURIComponent(window.location.pathname+window.location.hash));}
+  })();
+  </script>
+  <title>Biên tập nội dung dự án | ToamViet.com.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/main.css"/>
+  <link rel="stylesheet" href="../assets/css/components.css"/>
+  <link rel="stylesheet" href="../assets/css/mobile.css"/>
+  <link rel="stylesheet" href="../assets/css/admin-dashboard.css"/>
+  <style>
+    :root{--vip:#008b8b;--vipd:#0f766e;--soft:#f4f7fa;--stroke:#dbe4ee;--text:#334155;--muted:#64748b}
+    *{box-sizing:border-box}body{margin:0;background:var(--soft);font-family:'Roboto',sans-serif;color:var(--text);font-size:14px;line-height:1.65}
+    .cw{max-width:1440px;margin:0 auto;padding:0 16px}.pshell{padding-bottom:40px}
+    /* Layout */
+    .adm-layout{display:flex;gap:0;align-items:flex-start;padding-top:20px}
+    .adm-sidebar{width:220px;flex-shrink:0;position:sticky;top:90px;margin-right:22px}
+    .adm-main{flex:1;min-width:0}
+    /* Sidebar */
+    .sb-card{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 6px 24px rgba(15,23,42,.06);padding:14px}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:3px;transition:.15s}
+    .sb-item:hover,.sb-item.on{background:var(--vip);color:#fff}
+    .sb-item i{width:16px;text-align:center;font-size:13px}
+    .acc-group{margin:2px 0}
+    .acc-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left;transition:.15s}
+    .acc-btn:hover,.acc-btn.on{background:var(--vip);color:#fff}
+    .acc-btn .chev{transition:transform .2s;font-size:10px;flex-shrink:0}
+    .acc-group.open .acc-btn .chev{transform:rotate(180deg)}
+    .acc-group.open .acc-btn{background:var(--vip);color:#fff}
+    .acc-sub{display:none;margin:3px 0 5px 16px;padding-left:11px;border-left:2px solid #dbe4ee}
+    .acc-group.open .acc-sub{display:flex;flex-direction:column}
+    .acc-subitem{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:9px;color:#64748b;font-weight:700;font-size:13px;text-decoration:none;margin:2px 0;transition:.15s}
+    .acc-subitem:hover,.acc-subitem.on{background:#eaf2ff;color:#1d4ed8}
+    .sb-divider{height:1px;background:var(--stroke);margin:8px 0}
+    /* Cards */
+    .card{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 6px 24px rgba(15,23,42,.05)}
+    /* Hero */
+    .hero{background:linear-gradient(135deg,#0f766e,#008b8b);color:#fff;border-radius:18px;padding:20px 24px;margin-bottom:18px}
+    .hero h1{font-size:22px;font-weight:900;margin:0 0 6px}.hero p{font-size:13px;color:rgba(255,255,255,.88);margin:0}
+    /* Status */
+    .sbox{padding:11px 14px;border-radius:12px;font-weight:700;font-size:13px;display:none;margin-bottom:14px}
+    .sbox.show{display:block}.sbox.ok{background:#f0fdfa;color:#0f766e;border-left:4px solid #0f766e}
+    .sbox.err{background:#fef2f2;color:#b91c1c;border-left:4px solid #b91c1c}.sbox.info{background:#eff6ff;color:#1d4ed8;border-left:4px solid #1d4ed8}
+    /* Btns */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;border:0;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer;font-size:13px;transition:.15s;text-decoration:none}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .bp{background:var(--vip);color:#fff}.bp:hover{background:var(--vipd)}
+    .bs{background:#eff6ff;color:#1d4ed8}.bs:hover{background:#dbeafe}
+    .bd{background:#0f172a;color:#fff}.bd:hover{background:#1e293b}
+    .br{background:#fef2f2;color:#dc2626}.br:hover{background:#fee2e2}
+    /* Fields */
+    .fld,.fldta,.fldsel{width:100%;min-height:40px;padding:9px 12px;border:1.5px solid var(--stroke);border-radius:10px;background:#fff;font-size:14px;outline:none;font-family:inherit;color:var(--text);transition:.15s}
+    .fldta{min-height:68px;resize:vertical}.fld:focus,.fldta:focus,.fldsel:focus{border-color:var(--vip);box-shadow:0 0 0 3px rgba(0,139,139,.09)}
+    .lbl{display:block;font-size:12px;font-weight:800;margin-bottom:5px;color:#0f172a}.lbl span{font-weight:400;color:var(--muted)}
+    /* List */
+    .pv{display:none}.pv.on{display:block}
+    .lhead{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+    .ltitle{font-size:18px;font-weight:900;margin:0}
+    .frow{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;align-items:end;margin-bottom:12px}
+    .li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px 15px;border:1px solid #e5e7eb;border-radius:13px;align-items:start;margin-bottom:8px;background:#fff;transition:.15s}
+    .li:hover{box-shadow:0 3px 14px rgba(0,139,139,.08)}.lt{font-size:14px;font-weight:800;color:#0f172a;margin-bottom:5px}
+    .lm{display:flex;flex-wrap:wrap;gap:6px;font-size:11px;color:#64748b;margin-bottom:4px}
+    .chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:800}
+    .cact{background:#ecfeff;color:#0f766e}.chid{background:#f1f5f9;color:#475569}
+    .lac{display:flex;gap:7px}
+    .mb{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 11px;border-radius:9px;border:0;font-weight:800;font-size:12px;cursor:pointer}
+    .mbs{background:#eff6ff;color:#1d4ed8}.mbp{background:#008b8b;color:#fff}.mbr{background:#fef2f2;color:#dc2626}
+    .empty{text-align:center;padding:32px 16px;color:#94a3b8}
+    /* Editor layout */
+    .ebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:13px 18px;border-bottom:1px solid var(--stroke);background:#f8fafc;border-radius:18px 18px 0 0}
+    .etitle{font-size:15px;font-weight:900;color:#0f172a}
+    /* Tabs */
+    .etabs{display:flex;border-bottom:2px solid #e5e7eb;background:#f8fafc;padding:0 16px;overflow-x:auto}
+    .etab{padding:12px 16px;border:0;background:none;font-weight:800;font-size:13px;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+    .etab.on{color:var(--vip);border-bottom-color:var(--vip)}
+    .ep{display:none;padding:18px 20px}.ep.on{display:block}
+    /* Rich editor */
+    .rew{border:1.5px solid var(--stroke);border-radius:12px;overflow:hidden}
+    .retb{display:flex;flex-wrap:wrap;gap:3px;padding:8px 10px;border-bottom:1px solid var(--stroke);background:#f8fafc;align-items:center}
+    .retb button,.retb .upl{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 7px;border:1px solid #dbe4ee;border-radius:6px;background:#fff;color:#334155;font-size:12px;font-weight:800;cursor:pointer;transition:.12s;gap:3px}
+    .retb button:hover{background:#f1f5f9}.retb button.act{background:#0f172a;color:#fff;border-color:#0f172a}
+    .retb .sep{width:1px;height:20px;background:#e2e8f0;margin:0 2px;align-self:center}
+    .rte{min-height:380px;max-height:780px;overflow-y:auto;padding:16px 18px;outline:none;font-size:15px;line-height:1.85;color:#0f172a}
+    .rte:empty:before{content:attr(data-placeholder);color:#94a3b8;pointer-events:none}
+    .rte h2{font-size:20px;font-weight:900;margin:16px 0 8px}.rte h3{font-size:16px;font-weight:800;margin:13px 0 6px}
+    .rte p{margin:0 0 10px}.rte ul{margin:8px 0 10px 20px;list-style:disc}.rte ol{margin:8px 0 10px 20px;list-style:decimal}
+    .rte table{width:100%;border-collapse:collapse;margin:12px 0}.rte td,.rte th{border:1px solid #cbd5e1;padding:7px 9px}.rte th{background:#f8fafc;font-weight:800}
+    .rte img{max-width:100%;height:auto;border-radius:10px;margin:8px 0;display:block}
+    .rte blockquote{border-left:4px solid #14b8a6;margin:12px 0;padding:6px 0 6px 14px;color:#475569;background:#f8fafc;border-radius:0 8px 8px 0}
+    .rte a{color:var(--vip);text-decoration:underline}
+    /* Gallery */
+    .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:9px;margin-top:10px}
+    .gal-item{position:relative;border-radius:9px;overflow:hidden;aspect-ratio:1;border:2px solid #e5e7eb;cursor:pointer}
+    .gal-item img{width:100%;height:100%;object-fit:cover;display:block}
+    .gal-item .gal-del{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(220,38,38,.85);color:#fff;border:0;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .gal-item .cover-badge{position:absolute;bottom:0;left:0;right:0;background:rgba(0,139,139,.85);color:#fff;font-size:9px;font-weight:800;text-align:center;padding:2px}
+    .gal-add{border-radius:9px;border:2px dashed #cbd5e1;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;aspect-ratio:1;cursor:pointer;font-size:11px;color:#94a3b8;font-weight:700;transition:.15s}
+    .gal-add:hover{border-color:var(--vip);color:var(--vip)}
+    /* 2-col info grid */
+    .ig2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .ig3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    /* SERP */
+    .serp{background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:10px;margin-top:10px}
+    .serp-t{font-size:13px;font-weight:700;color:#1a0dab;line-height:1.3;margin-bottom:2px}
+    .serp-u{font-size:10px;color:#0a6634;margin-bottom:2px}
+    .serp-d{font-size:11px;color:#4d5156;line-height:1.4}
+    /* WC */
+    .wcb{background:#e2e8f0;border-radius:7px;padding:2px 8px;font-size:11px;font-weight:800;color:#475569}
+    .wcb.ok{background:#dcfce7;color:#166534}.wcb.gr{background:#bbf7d0;color:#15803d}
+    /* Image upload */
+    .iua{border:2px dashed #cbd5e1;border-radius:11px;padding:12px;text-align:center;cursor:pointer;transition:.15s;background:#f8fafc}
+    .iua:hover{border-color:var(--vip)}.iprev{display:none;margin-top:8px}
+    .iprev img{width:100%;max-height:140px;object-fit:cover;border-radius:9px;border:1px solid var(--stroke)}
+
+    /* ── Enhanced Toolbar ── */
+    .retb{flex-wrap:wrap;row-gap:5px}
+    .retb button,.retb .upl{min-width:30px;height:30px;padding:0 8px;border-radius:7px;font-size:12px}
+    .ret-group{display:flex;align-items:center;gap:2px}
+    /* Font size select in toolbar */
+    .ret-fsize{height:28px;border:1px solid #dbe4ee;border-radius:6px;background:#fff;font-size:12px;font-weight:700;color:#334155;padding:0 4px;cursor:pointer;outline:none}
+    .ret-fsize:focus{border-color:var(--vip)}
+    /* Color picker */
+    .ret-color-wrap{position:relative;display:inline-flex;align-items:center;gap:0}
+    .ret-color-btn{min-width:30px;height:30px;padding:0 7px;border:1px solid #dbe4ee;border-radius:6px 0 0 6px;background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:3px;font-size:12px;color:#334155;font-weight:800}
+    .ret-color-btn:hover{background:#f1f5f9}
+    .ret-color-pick{width:26px;height:30px;padding:0;border:1px solid #dbe4ee;border-left:0;border-radius:0 6px 6px 0;cursor:pointer;background:#fff;overflow:hidden}
+    .ret-color-pick input[type=color]{width:36px;height:36px;border:0;padding:0;margin:-3px -5px;cursor:pointer;background:transparent}
+    /* Highlight color */
+    .ret-hl-wrap{position:relative;display:inline-flex;align-items:center}
+    .ret-hl-btn{min-width:30px;height:30px;padding:0 7px;border:1px solid #dbe4ee;border-radius:6px 0 0 6px;background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:3px;font-size:12px;color:#334155;font-weight:800}
+    .ret-hl-btn:hover{background:#f1f5f9}
+    .ret-hl-pick{width:26px;height:30px;padding:0;border:1px solid #dbe4ee;border-left:0;border-radius:0 6px 6px 0;cursor:pointer;background:#fff;overflow:hidden}
+    .ret-hl-pick input[type=color]{width:36px;height:36px;border:0;padding:0;margin:-3px -5px;cursor:pointer;background:transparent}
+    /* Dropdown popover */
+    .ret-drop{position:relative;display:inline-block}
+    .ret-drop-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;background:#fff;border:1px solid #dbe4ee;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);z-index:999;padding:6px;min-width:140px}
+    .ret-drop.open .ret-drop-menu{display:block}
+    .ret-drop-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;cursor:pointer;font-size:13px;color:#334155;font-weight:600;white-space:nowrap}
+    .ret-drop-item:hover{background:#f1f5f9}
+    /* Table dialog */
+    .ret-table-dlg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;align-items:center;justify-content:center}
+    .ret-table-dlg.open{display:flex}
+    .ret-table-box{background:#fff;border-radius:18px;padding:22px 24px;width:320px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+    .ret-table-box h4{font-size:15px;font-weight:900;margin:0 0 16px;color:#0f172a}
+    .ret-table-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+    /* Link dialog */
+    .ret-link-dlg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;align-items:center;justify-content:center}
+    .ret-link-dlg.open{display:flex}
+    .ret-link-box{background:#fff;border-radius:18px;padding:22px 24px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+    .ret-link-box h4{font-size:15px;font-weight:900;margin:0 0 16px;color:#0f172a}
+    /* Video embed dialog */
+    .ret-video-dlg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;align-items:center;justify-content:center}
+    .ret-video-dlg.open{display:flex}
+    .ret-video-box{background:#fff;border-radius:18px;padding:22px 24px;width:400px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+    /* Fullscreen */
+    .rew.fullscreen{position:fixed;inset:0;z-index:8888;border-radius:0;display:flex;flex-direction:column}
+    .rew.fullscreen .rte{flex:1;max-height:none}
+    /* Snippet picker */
+    .ret-snip-menu{min-width:200px}
+    .ret-snip-item{font-size:12px}
+    /* Find & Replace */
+    .ret-fnr{display:none;background:#f8fafc;border-top:1px solid var(--stroke);padding:8px 12px;gap:8px;align-items:center;flex-wrap:wrap}
+    .ret-fnr.open{display:flex}
+    .ret-fnr input{height:30px;padding:0 9px;border:1px solid #dbe4ee;border-radius:7px;font-size:12px;width:140px;outline:none}
+    .ret-fnr input:focus{border-color:var(--vip)}
+    .ret-fnr button{height:28px;padding:0 10px;border-radius:7px;border:1px solid #dbe4ee;background:#fff;font-size:12px;font-weight:700;cursor:pointer;color:#334155}
+    .ret-fnr button:hover{background:#f1f5f9}
+    .ret-fnr .close-fnr{margin-left:auto;color:#94a3b8}
+    /* Word count bar enhanced */
+    .rte-footer{padding:7px 14px;background:#f8fafc;border-top:1px solid var(--stroke);font-size:11px;color:#94a3b8;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+    /* Section templates */
+    .ret-tpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px 0}
+    .ret-tpl-item{padding:8px 10px;border-radius:8px;border:1px solid #e5e7eb;cursor:pointer;font-size:12px;font-weight:700;color:#334155;text-align:center;transition:.15s}
+    .ret-tpl-item:hover{background:#f0fdfa;border-color:var(--vip);color:var(--vip)}
+    .ret-tpl-item i{display:block;font-size:16px;margin-bottom:4px;opacity:.7}
+    @media(max-width:1024px){.adm-layout{flex-direction:column}.adm-sidebar{width:100%;position:static;margin-right:0;margin-bottom:16px}.ig2,.ig3{grid-template-columns:1fr}}
+    @media(max-width:640px){.frow{grid-template-columns:1fr}.li{grid-template-columns:1fr}.rte{min-height:300px}}
+  
+        /* mobile-dashboard-standard */
+
+        .adm-layout{align-items:start!important}
+        .adm-sidebar{position:sticky;top:92px;align-self:start;height:calc(100vh - 110px);overflow:hidden}
+        .adm-sidebar .sb-card{height:100%;overflow:auto;scrollbar-width:thin}
+        .adm-sidebar .sb-card::-webkit-scrollbar{width:6px}
+        .adm-sidebar .sb-card::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px}
+
+        @media (max-width: 1200px){
+            .cw{padding-left:16px!important;padding-right:16px!important}
+            .hero-card{padding:22px!important}
+            .stats-grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+        }
+
+        @media (max-width: 992px){
+            .adm-layout{grid-template-columns:1fr!important;gap:16px!important}
+            .adm-sidebar{position:static!important;top:auto!important;height:auto!important;overflow:visible!important}
+            .adm-sidebar .sb-card{height:auto!important;overflow:visible!important}
+            .toolbar-head{flex-direction:column!important;align-items:flex-start!important;gap:14px!important}
+            .btn-row{width:100%!important;display:flex!important;flex-wrap:wrap!important}
+            .btn-row .btn-soft,.btn-row .btn-primary{flex:1 1 180px!important;justify-content:center!important}
+            .page-hero{margin-bottom:16px!important}
+            .hero-points{grid-template-columns:1fr!important}
+        }
+
+        @media (max-width: 768px){
+            .page-breadcrumb{display:none!important}
+            .cw{padding-left:12px!important;padding-right:12px!important}
+            .hero-card{padding:16px!important;border-radius:22px!important}
+            .hero-title{font-size:24px!important;line-height:1.35!important}
+            .hero-desc,.toolbar-sub,.stats-note,.metric-note,.info-muted{font-size:13px!important;line-height:1.7!important}
+            .toolbar-card,.section-card,.stats-card,.metric-card,.table-card,.filter-card{border-radius:20px!important}
+            .stats-grid,.metric-grid{grid-template-columns:1fr!important;gap:12px!important}
+            .stats-card,.metric-card{padding:16px!important}
+            .stats-value,.metric-value{font-size:30px!important}
+            .field-grid,.filter-grid,.row{grid-template-columns:1fr!important;gap:12px!important}
+            .switch-row{grid-template-columns:1fr auto!important;gap:10px!important}
+            .btn-row{flex-direction:column!important;align-items:stretch!important}
+            .btn-row .btn-soft,.btn-row .btn-primary{width:100%!important}
+            .acc-btn,.sb-item{font-size:14px!important}
+            .acc-subitem{font-size:13px!important;padding:10px 12px 10px 28px!important}
+            .data-table th,.data-table td{padding:12px 10px!important;font-size:13px!important}
+            .table-wrap{overflow:auto!important;-webkit-overflow-scrolling:touch}
+            .content-stack{gap:14px!important}
+        }
+
+        @media (max-width: 640px){
+            .hero-title{font-size:22px!important}
+            .toolbar-title,.section-title{font-size:18px!important;line-height:1.35!important}
+            .hero-badge{font-size:12px!important;padding:8px 10px!important}
+            .stats-value,.metric-value{font-size:28px!important}
+            .page-shell{padding-bottom:14px!important}
+            .adm-main{min-width:0!important}
+        }
+
+
+        /* mobile-ui-refine-20260415b */
+        .adm-sidebar{
+            height:auto !important;
+            overflow:visible !important;
+        }
+        .adm-sidebar .sb-card{
+            height:auto !important;
+            overflow:visible !important;
+            box-shadow:0 6px 18px rgba(15,23,42,.04) !important;
+        }
+        .hero-card{
+            box-shadow:none !important;
+        }
+        .hero-card::before,
+        .hero-card::after,
+        .toolbar-card::before,
+        .toolbar-card::after{
+            display:none !important;
+            content:none !important;
+        }
+        @media (max-width: 768px){
+            .stats-grid,
+            .metric-grid{
+                grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+                gap:12px !important;
+            }
+            .stats-card,
+            .metric-card{
+                padding:14px !important;
+                min-height:auto !important;
+            }
+            .stats-value,
+            .metric-value{
+                font-size:26px !important;
+                line-height:1.2 !important;
+            }
+            .stats-label,
+            .metric-label{
+                font-size:12px !important;
+            }
+            .stats-note,
+            .metric-note{
+                font-size:12px !important;
+                line-height:1.6 !important;
+            }
+            .btn-soft,
+            .btn-primary,
+            .btn,
+            button{
+                min-height:40px !important;
+                padding:10px 12px !important;
+                font-size:13px !important;
+                border-radius:14px !important;
+            }
+            .btn-row{
+                gap:10px !important;
+            }
+            .hero-card{
+                padding:14px !important;
+                border-radius:20px !important;
+                margin-bottom:10px !important;
+            }
+            .hero-title{
+                font-size:22px !important;
+                line-height:1.35 !important;
+            }
+            .hero-desc{
+                font-size:13px !important;
+                line-height:1.65 !important;
+            }
+            .toolbar-card{
+                padding:14px !important;
+                border-radius:20px !important;
+                margin-bottom:14px !important;
+            }
+            .section-card,
+            .table-card,
+            .filter-card{
+                border-radius:20px !important;
+            }
+            .field-control,
+            input,
+            select,
+            textarea{
+                min-height:42px !important;
+                padding:10px 12px !important;
+                font-size:14px !important;
+            }
+            .table-wrap{
+                overflow:auto !important;
+                -webkit-overflow-scrolling:touch;
+            }
+            .acc-subitem{
+                padding-left:22px !important;
+            }
+        }
+        @media (max-width: 480px){
+            .stats-grid,
+            .metric-grid{
+                grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+            }
+            .stats-value,
+            .metric-value{
+                font-size:24px !important;
+            }
+            .hero-title{
+                font-size:20px !important;
+            }
+        }
+    
+        /* admin-mobile-refine-20260415c */
+        .adm-sidebar{
+            height:auto !important;
+            min-height:0 !important;
+            overflow:visible !important;
+        }
+        .adm-sidebar .sb-card{
+            height:auto !important;
+            min-height:0 !important;
+            overflow:visible !important;
+            padding-bottom:12px !important;
+            box-shadow:0 4px 14px rgba(15,23,42,.04) !important;
+        }
+        .hero-card,
+        .toolbar-card,
+        .section-card,
+        .stats-card,
+        .metric-card,
+        .table-card,
+        .filter-card{
+            box-shadow:0 4px 14px rgba(15,23,42,.04) !important;
+        }
+        .hero-card::before,
+        .hero-card::after,
+        .toolbar-card::before,
+        .toolbar-card::after,
+        .section-card::before,
+        .section-card::after{
+            display:none !important;
+            content:none !important;
+        }
+        @media (max-width: 768px){
+            .stats-grid,
+            .metric-grid{
+                grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+                gap:12px !important;
+            }
+            .stats-card,
+            .metric-card{
+                padding:14px !important;
+                min-height:auto !important;
+            }
+            .stats-value,
+            .metric-value{
+                font-size:24px !important;
+                line-height:1.2 !important;
+            }
+            .stats-label,
+            .metric-label{
+                font-size:12px !important;
+            }
+            .stats-note,
+            .metric-note,
+            .toolbar-sub,
+            .hero-desc,
+            .info-muted{
+                font-size:12px !important;
+                line-height:1.6 !important;
+            }
+            .hero-card{
+                padding:14px !important;
+                margin-bottom:10px !important;
+            }
+            .hero-title{
+                font-size:20px !important;
+                line-height:1.35 !important;
+            }
+            .toolbar-card{
+                padding:14px !important;
+                margin-bottom:14px !important;
+            }
+            .toolbar-head{
+                flex-direction:column !important;
+                align-items:flex-start !important;
+                gap:10px !important;
+            }
+            .btn-row,
+            .toolbar-actions{
+                width:100% !important;
+                display:flex !important;
+                flex-direction:row !important;
+                flex-wrap:wrap !important;
+                gap:10px !important;
+                justify-content:flex-start !important;
+            }
+            .btn-row .btn-soft,
+            .btn-row .btn-primary,
+            .toolbar-actions .btn-soft,
+            .toolbar-actions .btn-primary,
+            .toolbar-actions .btn-success,
+            .toolbar-actions .btn-warning,
+            .toolbar-actions .btn-danger,
+            .btn,
+            button{
+                flex:0 0 auto !important;
+                width:auto !important;
+                min-height:38px !important;
+                padding:9px 12px !important;
+                font-size:13px !important;
+                border-radius:14px !important;
+            }
+            .field-grid,
+            .filter-grid,
+            .row,
+            .toolbar-grid{
+                grid-template-columns:1fr !important;
+                gap:12px !important;
+            }
+            .table-wrap{
+                overflow:auto !important;
+                -webkit-overflow-scrolling:touch !important;
+            }
+            .data-table th,
+            .data-table td{
+                padding:12px 10px !important;
+                font-size:13px !important;
+            }
+            .acc-subitem{
+                padding-left:22px !important;
+            }
+        }
+        @media (max-width: 480px){
+            .stats-grid,
+            .metric-grid{
+                grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+            }
+            .stats-value,
+            .metric-value{
+                font-size:22px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="site-header"></div>
+<div id="site-mobile-menu"></div>
+<main class="pshell">
+<div class="cw">
+
+<div class="adm-layout">
+  <!-- Sidebar -->
+  <aside class="adm-sidebar">
+    <div class="sb-card">
+      <a href="admin-dashboard.html" class="sb-item "><i class="fa-solid fa-chart-line"></i>Tổng quan</a>
+      <a href="quan-ly-thanh-vien.html" class="sb-item "><i class="fa-solid fa-users"></i>Thành viên</a>
+      <a href="kiem-duyet-tin.html" class="sb-item "><i class="fa-solid fa-list-check"></i>Kiểm duyệt</a>
+      <div class="sb-divider"></div>
+      
+      <div class="acc-group open">
+        <button type="button" class="acc-btn on"><span><i class="fa-solid fa-diagram-project"></i> Dự án</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          
+          <a href="quan-ly-du-an.html" class="acc-subitem"><i class="fa-solid fa-list"></i>Danh sách</a>
+          <a href="quan-ly-noi-dung-du-an.html" class="acc-subitem on"><i class="fa-solid fa-pen-nib"></i>Biên tập nội dung</a>
+          <a href="quan-ly-chu-dau-tu.html" class="acc-subitem"><i class="fa-solid fa-building-circle-check"></i>Chủ đầu tư</a>
+          <a href="quan-ly-seo-du-an.html" class="acc-subitem"><i class="fa-solid fa-magnifying-glass-chart"></i>SEO dự án</a>
+    
+        </div>
+      </div>
+      
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-newspaper"></i> Tin tức</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          
+          <a href="quan-ly-tin-tuc.html#list" class="acc-subitem"><i class="fa-solid fa-list"></i>Tất cả bài viết</a>
+          <a href="quan-ly-tin-tuc.html#editor" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập bài viết</a>
+    
+        </div>
+      </div>
+      
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-magnifying-glass-chart"></i> SEO Landing</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          
+          <a href="quan-ly-seo-landing.html#template" class="acc-subitem"><i class="fa-solid fa-code"></i>Template SEO</a>
+          <a href="quan-ly-seo-landing.html#override" class="acc-subitem"><i class="fa-solid fa-pen"></i>Override landing</a>
+          <a href="quan-ly-seo-landing.html#list" class="acc-subitem"><i class="fa-solid fa-list"></i>Danh sách</a>
+    
+        </div>
+      </div>
+      <a href="cai-dat-he-thong.html" class="sb-item "><i class="fa-solid fa-sliders"></i>Cài đặt hệ thống</a>
+      <div class="sb-divider"></div>
+      
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-wallet"></i> Kiếm tiền / VIP</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          
+          <a href="quan-ly-don-hang.html" class="acc-subitem"><i class="fa-solid fa-file-invoice-dollar"></i>Đơn hàng</a>
+          <a href="duyet-don-thu-phi.html" class="acc-subitem"><i class="fa-solid fa-money-check-dollar"></i>Duyệt đơn thu phí</a>
+          <a href="quan-ly-entitlement-vip.html" class="acc-subitem"><i class="fa-solid fa-crown"></i>Entitlement VIP</a>
+          <a href="cap-quyen-vip.html" class="acc-subitem"><i class="fa-solid fa-user-shield"></i>Cấp quyền VIP</a>
+    
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="adm-main">
+    <section class="hero">
+      <h1><i class="fa-solid fa-diagram-project" style="opacity:.8;margin-right:9px"></i>Biên tập nội dung dự án</h1>
+      <p>Chọn dự án từ danh sách → viết mô tả, nội dung chi tiết, gallery ảnh và SEO → Lưu lên Supabase.</p>
+    </section>
+
+    <!-- SQL Migration Notice -->
+    <div id="sqlMigrationNotice" style="background:#fff;border:1.5px solid #fbbf24;border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;">
+      <i class="fa-solid fa-triangle-exclamation" style="color:#d97706;font-size:18px;margin-top:2px;flex-shrink:0"></i>
+      <div>
+        <div style="font-weight:800;font-size:14px;color:#92400e;margin-bottom:4px">⚙️ Cần chạy SQL migration một lần</div>
+        <div style="font-size:13px;color:#78350f;line-height:1.7">
+          Các cột mới (<code style="background:#fef3c7;padding:1px 5px;border-radius:4px">description, content, seo_title, gallery...</code>) chưa tồn tại trong Supabase của bạn.<br>
+          <strong>Cách fix:</strong> Mở <strong>Supabase Dashboard → SQL Editor</strong> → paste nội dung file <strong><code>supabase-complete-schema.sql</code></strong> → bấm <strong>Run</strong>.<br>
+          <span style="color:#059669">✓ Sau khi chạy xong, trang này sẽ hoạt động đầy đủ.</span>
+        </div>
+        <button onclick="document.getElementById('sqlMigrationNotice').style.display='none'" style="margin-top:8px;padding:4px 12px;border-radius:8px;border:1px solid #fbbf24;background:transparent;font-size:12px;font-weight:700;color:#92400e;cursor:pointer">✕ Đóng thông báo này</button>
+      </div>
+    </div>
+
+    <div id="sbox" class="sbox"></div>
+
+    <!-- LIST VIEW -->
+    <section id="vList" class="pv on">
+      <div class="card" style="padding:16px 18px;margin-bottom:14px">
+        <div class="lhead">
+          <div>
+            <h2 class="ltitle">Biên tập nội dung dự án</h2>
+            <div style="font-size:12px;color:#64748b;margin-top:3px">Chọn dự án có sẵn để biên tập, hoặc tạo bài viết nội dung mới cho dự án</div>
+          </div>
+          <div style="display:flex;gap:7px">
+            <button id="refreshBtn" class="btn bs"><i class="fa-solid fa-rotate"></i>Làm mới</button>
+            <button id="newContentBtn" class="btn bp"><i class="fa-solid fa-plus"></i>Viết nội dung mới</button>
+          </div>
+        </div>
+        <div class="frow">
+          <div><label class="lbl">Từ khoá / tên dự án</label><input id="fKw" class="fld" placeholder="Tìm tên dự án, chủ đầu tư..."></div>
+          <div><label class="lbl">Tỉnh/Thành</label><input id="fCity" class="fld" placeholder="VD: TP.HCM, Hà Nội..."></div>
+          <div style="padding-top:18px"><button id="applyBtn" class="btn bd" style="width:100%"><i class="fa-solid fa-magnifying-glass"></i>Lọc</button></div>
+        </div>
+      </div>
+      <div class="card"><div id="projList" style="padding:14px 16px;display:grid;gap:8px"></div>
+        <div id="projPager" style="display:flex;gap:6px;align-items:center;padding:10px 16px;border-top:1px solid #f1f5f9;background:#f8fafc;border-radius:0 0 18px 18px;flex-wrap:wrap"></div>
+      </div>
+    </section>
+
+    <!-- EDITOR VIEW -->
+    <section id="vEditor" class="pv">
+    <div class="card" style="overflow:hidden">
+      <!-- Action bar -->
+      <div class="ebar">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <div class="etitle"><i class="fa-solid fa-pen-nib" style="color:var(--vip);margin-right:7px"></i>
+              <span id="editorModeLabel">Biên tập dự án</span>
+            </div>
+            <!-- New project name input (only visible in create mode) -->
+            <div id="newProjNameWrap" style="display:none;flex:1;min-width:200px;max-width:400px">
+              <input id="newProjName" type="text" class="fld" placeholder="Nhập tên dự án mới..." style="font-weight:800;font-size:14px">
+            </div>
+            <!-- Existing project name display -->
+            <div id="existProjName" style="font-size:14px;font-weight:800;color:#0f172a"></div>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-top:3px" id="editorSubLabel">Nội dung · SEO · Gallery · Thông số kỹ thuật</div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button type="button" id="backBtn" class="btn bs"><i class="fa-solid fa-arrow-left"></i>Danh sách</button>
+          <a id="viewPublicBtn" href="#" target="_blank" class="btn bs" style="display:none"><i class="fa-solid fa-eye"></i>Xem trang</a>
+          <button type="button" id="saveBtn" class="btn bp"><i class="fa-solid fa-floppy-disk"></i>Lưu thay đổi</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="etabs">
+        <button type="button" class="etab on" data-tab="content"><i class="fa-solid fa-pen-nib"></i>Nội dung</button>
+        <button type="button" class="etab" data-tab="gallery"><i class="fa-solid fa-images"></i>Gallery ảnh</button>
+        <button type="button" class="etab" data-tab="seo"><i class="fa-solid fa-magnifying-glass-chart"></i>SEO</button>
+        <button type="button" class="etab" data-tab="info"><i class="fa-solid fa-circle-info"></i>Thông số</button>
+      </div>
+
+      <!-- TAB: Nội dung -->
+      <div id="tContent" class="ep on">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:18px;align-items:start">
+          <div>
+            <label class="lbl">Mô tả tóm tắt <span>(card & đầu trang chi tiết)</span></label>
+            <textarea id="pDesc" class="fldta" rows="3" style="margin-bottom:14px" placeholder="Mô tả ngắn gọn về dự án..."></textarea>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+              <label class="lbl" style="margin:0">Nội dung chi tiết</label>
+              <span class="wcb" id="wcBadge">0 từ</span>
+            </div>
+            <div class="rew" id="pRteWrap">
+              <!-- ══ TOOLBAR ══ -->
+              <div class="retb" id="pToolbar">
+
+                <!-- Nhóm 1: Undo / Redo -->
+                <div class="ret-group">
+                  <button type="button" data-pc="undo" title="Hoàn tác (Ctrl+Z)"><i class="fa-solid fa-rotate-left"></i></button>
+                  <button type="button" data-pc="redo" title="Làm lại (Ctrl+Y)"><i class="fa-solid fa-rotate-right"></i></button>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 2: Định dạng khối — Heading / Paragraph -->
+                <div class="ret-group">
+                  <div class="ret-drop" id="headingDrop">
+                    <button type="button" class="ret-drop-trigger" title="Kiểu đoạn văn" style="min-width:82px;font-size:12px;font-weight:800;gap:5px">
+                      <i class="fa-solid fa-heading" style="font-size:11px"></i>
+                      <span id="headingLabel">Đoạn văn</span>
+                      <i class="fa-solid fa-caret-down" style="font-size:9px;margin-left:auto"></i>
+                    </button>
+                    <div class="ret-drop-menu">
+                      <div class="ret-drop-item" data-hd="p" style="font-size:14px"><i class="fa-solid fa-paragraph" style="width:16px;opacity:.5"></i>Đoạn văn</div>
+                      <div class="ret-drop-item" data-hd="h1" style="font-size:20px;font-weight:900"><i class="fa-solid fa-heading" style="width:16px;opacity:.5"></i>Tiêu đề 1</div>
+                      <div class="ret-drop-item" data-hd="h2" style="font-size:17px;font-weight:800"><i class="fa-solid fa-heading" style="width:16px;opacity:.5;font-size:15px"></i>Tiêu đề 2</div>
+                      <div class="ret-drop-item" data-hd="h3" style="font-size:14px;font-weight:800"><i class="fa-solid fa-heading" style="width:16px;opacity:.5;font-size:12px"></i>Tiêu đề 3</div>
+                      <div class="ret-drop-item" data-hd="h4" style="font-size:13px;font-weight:700"><i class="fa-solid fa-heading" style="width:16px;opacity:.5;font-size:11px"></i>Tiêu đề 4</div>
+                      <div class="ret-drop-item" data-hd="blockquote"><i class="fa-solid fa-quote-right" style="width:16px;opacity:.5"></i>Trích dẫn</div>
+                      <div class="ret-drop-item" data-hd="pre"><i class="fa-solid fa-code" style="width:16px;opacity:.5"></i>Code block</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 3: Cỡ chữ -->
+                <div class="ret-group">
+                  <select class="ret-fsize" id="pFontSize" title="Cỡ chữ">
+                    <option value="">Cỡ</option>
+                    <option value="1">8px</option>
+                    <option value="2">10px</option>
+                    <option value="3">12px</option>
+                    <option value="4">14px</option>
+                    <option value="5">18px</option>
+                    <option value="6">24px</option>
+                    <option value="7">36px</option>
+                  </select>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 4: Định dạng ký tự -->
+                <div class="ret-group">
+                  <button type="button" data-pc="bold" title="Đậm (Ctrl+B)"><b>B</b></button>
+                  <button type="button" data-pc="italic" title="Nghiêng (Ctrl+I)"><i>I</i></button>
+                  <button type="button" data-pc="underline" title="Gạch chân (Ctrl+U)"><u>U</u></button>
+                  <button type="button" data-pc="strikeThrough" title="Gạch ngang"><s>S</s></button>
+                  <button type="button" data-pc="superscript" title="Chỉ số trên" style="font-size:11px">x<sup style="font-size:8px">²</sup></button>
+                  <button type="button" data-pc="subscript" title="Chỉ số dưới" style="font-size:11px">x<sub style="font-size:8px">₂</sub></button>
+                  <button type="button" data-pc="removeFormat" title="Xóa định dạng"><i class="fa-solid fa-eraser"></i></button>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 5: Màu chữ + Highlight -->
+                <div class="ret-group">
+                  <div class="ret-color-wrap" title="Màu chữ">
+                    <button type="button" class="ret-color-btn" id="applyFontColorBtn" title="Áp dụng màu chữ">
+                      <i class="fa-solid fa-font"></i>
+                      <span id="fontColorSwatch" style="display:inline-block;width:12px;height:4px;border-radius:2px;background:#e74c3c;margin-top:1px"></span>
+                    </button>
+                    <div class="ret-color-pick" title="Chọn màu">
+                      <input type="color" id="pFontColor" value="#e74c3c">
+                    </div>
+                  </div>
+                  <div class="ret-hl-wrap" title="Tô sáng">
+                    <button type="button" class="ret-hl-btn" id="applyHlBtn" title="Áp dụng tô sáng">
+                      <i class="fa-solid fa-highlighter"></i>
+                      <span id="hlSwatch" style="display:inline-block;width:12px;height:4px;border-radius:2px;background:#fef08a;margin-top:1px"></span>
+                    </button>
+                    <div class="ret-hl-pick" title="Chọn màu nền">
+                      <input type="color" id="pHlColor" value="#fef08a">
+                    </div>
+                  </div>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 6: Căn lề -->
+                <div class="ret-group">
+                  <button type="button" data-pc="justifyLeft" title="Căn trái"><i class="fa-solid fa-align-left"></i></button>
+                  <button type="button" data-pc="justifyCenter" title="Căn giữa"><i class="fa-solid fa-align-center"></i></button>
+                  <button type="button" data-pc="justifyRight" title="Căn phải"><i class="fa-solid fa-align-right"></i></button>
+                  <button type="button" data-pc="justifyFull" title="Căn đều"><i class="fa-solid fa-align-justify"></i></button>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 7: Danh sách + Indent -->
+                <div class="ret-group">
+                  <button type="button" data-pc="insertUnorderedList" title="Danh sách gạch đầu dòng"><i class="fa-solid fa-list-ul"></i></button>
+                  <button type="button" data-pc="insertOrderedList" title="Danh sách số thứ tự"><i class="fa-solid fa-list-ol"></i></button>
+                  <button type="button" data-pc="indent" title="Tăng thụt đầu dòng"><i class="fa-solid fa-indent"></i></button>
+                  <button type="button" data-pc="outdent" title="Giảm thụt đầu dòng"><i class="fa-solid fa-outdent"></i></button>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 8: Liên kết + Media -->
+                <div class="ret-group">
+                  <button type="button" data-pc="link" title="Chèn / Sửa liên kết"><i class="fa-solid fa-link"></i></button>
+                  <button type="button" data-pc="unlink" title="Xóa liên kết"><i class="fa-solid fa-link-slash"></i></button>
+                  <button type="button" data-pc="imgurl" title="Chèn ảnh từ URL"><i class="fa-solid fa-image"></i></button>
+                  <label class="upl" title="Upload ảnh từ máy" style="cursor:pointer">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <input type="file" id="peImgFile" accept="image/*" style="display:none">
+                  </label>
+                  <button type="button" data-pc="video" title="Nhúng video YouTube/Vimeo"><i class="fa-brands fa-youtube"></i></button>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 9: Chèn đặc biệt -->
+                <div class="ret-group">
+                  <button type="button" data-pc="table" title="Chèn bảng"><i class="fa-solid fa-table"></i></button>
+                  <button type="button" data-pc="insertHorizontalRule" title="Đường kẻ ngang"><i class="fa-solid fa-minus"></i></button>
+                  <button type="button" data-pc="blockquote" title="Trích dẫn"><i class="fa-solid fa-quote-right"></i></button>
+                  <button type="button" data-pc="code" title="Inline code"><i class="fa-solid fa-code"></i></button>
+
+                  <!-- Template nội dung nhanh -->
+                  <div class="ret-drop" id="snippetDrop" title="Mẫu nội dung nhanh">
+                    <button type="button" class="ret-drop-trigger" title="Chèn mẫu nội dung">
+                      <i class="fa-solid fa-bolt"></i>
+                      <i class="fa-solid fa-caret-down" style="font-size:9px"></i>
+                    </button>
+                    <div class="ret-drop-menu ret-snip-menu" style="min-width:220px">
+                      <div style="font-size:10px;font-weight:900;color:#94a3b8;padding:4px 10px 2px;text-transform:uppercase">Mẫu nội dung dự án</div>
+                      <div class="ret-drop-item ret-snip-item" data-snip="overview"><i class="fa-solid fa-binoculars" style="width:16px;opacity:.5"></i>Tổng quan dự án</div>
+                      <div class="ret-drop-item ret-snip-item" data-snip="location"><i class="fa-solid fa-location-dot" style="width:16px;opacity:.5"></i>Vị trí & Kết nối</div>
+                      <div class="ret-drop-item ret-snip-item" data-snip="amenities"><i class="fa-solid fa-star" style="width:16px;opacity:.5"></i>Tiện ích nội khu</div>
+                      <div class="ret-drop-item ret-snip-item" data-snip="legal"><i class="fa-solid fa-scale-balanced" style="width:16px;opacity:.5"></i>Pháp lý</div>
+                      <div class="ret-drop-item ret-snip-item" data-snip="payment"><i class="fa-solid fa-money-bill-wave" style="width:16px;opacity:.5"></i>Chính sách thanh toán</div>
+                      <div class="ret-drop-item ret-snip-item" data-snip="price"><i class="fa-solid fa-tag" style="width:16px;opacity:.5"></i>Bảng giá</div>
+                      <div class="ret-drop-item ret-snip-item" data-snip="progress"><i class="fa-solid fa-hard-hat" style="width:16px;opacity:.5"></i>Tiến độ xây dựng</div>
+                      <div class="ret-drop-item ret-snip-item" data-snip="invest"><i class="fa-solid fa-chart-line" style="width:16px;opacity:.5"></i>Tiềm năng đầu tư</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="sep"></div>
+
+                <!-- Nhóm 10: Tiện ích editor -->
+                <div class="ret-group">
+                  <button type="button" data-pc="findreplace" title="Tìm & Thay thế (Ctrl+H)"><i class="fa-solid fa-magnifying-glass"></i></button>
+                  <button type="button" data-pc="clearall" title="Xóa toàn bộ nội dung"><i class="fa-solid fa-trash-can"></i></button>
+                  <button type="button" data-pc="fullscreen" title="Toàn màn hình"><i class="fa-solid fa-expand" id="fullscreenIcon"></i></button>
+                </div>
+
+              </div><!-- /retb -->
+
+              <!-- Find & Replace bar (ẩn mặc định) -->
+              <div class="ret-fnr" id="pFnrBar">
+                <i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:12px"></i>
+                <input type="text" id="fnrFind" placeholder="Tìm...">
+                <input type="text" id="fnrReplace" placeholder="Thay thế...">
+                <button id="fnrDoReplace">Thay thế</button>
+                <button id="fnrDoReplaceAll">Tất cả</button>
+                <span id="fnrCount" style="font-size:11px;color:#94a3b8"></span>
+                <button class="close-fnr" id="fnrClose" title="Đóng"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+
+              <!-- Editor vùng viết -->
+              <div class="rte" id="pRte" contenteditable="true" data-placeholder="Viết nội dung chi tiết dự án — quy hoạch, tiện ích, pháp lý, chính sách thanh toán..."></div>
+
+              <!-- Footer bar -->
+              <div class="rte-footer">
+                <span><kbd style="background:#e2e8f0;padding:1px 5px;border-radius:4px;font-size:10px">Ctrl+B</kbd> đậm &nbsp;·&nbsp; <kbd style="background:#e2e8f0;padding:1px 5px;border-radius:4px;font-size:10px">Ctrl+I</kbd> nghiêng &nbsp;·&nbsp; <kbd style="background:#e2e8f0;padding:1px 5px;border-radius:4px;font-size:10px">Ctrl+H</kbd> tìm/thay &nbsp;·&nbsp; Kéo thả ảnh</span>
+                <div style="display:flex;gap:10px;align-items:center">
+                  <span id="pReadTime" style="color:#94a3b8"></span>
+                  <span id="pCcnt" style="color:#94a3b8">0 ký tự</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dialogs (Table / Link / Video) -->
+            <div class="ret-table-dlg" id="tableDlg">
+              <div class="ret-table-box">
+                <h4><i class="fa-solid fa-table" style="color:var(--vip);margin-right:8px"></i>Chèn bảng</h4>
+                <div class="ret-table-row">
+                  <div><label class="lbl">Số hàng</label><input id="tblRows" type="number" class="fld" value="3" min="1" max="20"></div>
+                  <div><label class="lbl">Số cột</label><input id="tblCols" type="number" class="fld" value="3" min="1" max="10"></div>
+                </div>
+                <div style="margin-bottom:12px">
+                  <label class="lbl">Tiêu đề cột</label>
+                  <select id="tblHeader" class="fldsel">
+                    <option value="yes">Có hàng tiêu đề (header)</option>
+                    <option value="no">Không có tiêu đề</option>
+                  </select>
+                </div>
+                <div style="margin-bottom:12px">
+                  <label class="lbl">Kiểu bảng</label>
+                  <select id="tblStyle" class="fldsel">
+                    <option value="default">Mặc định (đường kẻ đơn)</option>
+                    <option value="stripe">Xen kẽ màu (striped)</option>
+                    <option value="minimal">Tối giản (chỉ đường ngang)</option>
+                  </select>
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end">
+                  <button type="button" class="btn bs" id="tblCancel">Hủy</button>
+                  <button type="button" class="btn bp" id="tblInsert"><i class="fa-solid fa-table"></i>Chèn bảng</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ret-link-dlg" id="linkDlg">
+              <div class="ret-link-box">
+                <h4><i class="fa-solid fa-link" style="color:var(--vip);margin-right:8px"></i>Chèn / Sửa liên kết</h4>
+                <div style="margin-bottom:11px"><label class="lbl">Văn bản hiển thị</label><input id="linkText" type="text" class="fld" placeholder="Văn bản..."></div>
+                <div style="margin-bottom:11px"><label class="lbl">URL</label><input id="linkUrl" type="url" class="fld" placeholder="https://..."></div>
+                <div style="margin-bottom:14px">
+                  <label class="lbl">Mở liên kết</label>
+                  <select id="linkTarget" class="fldsel">
+                    <option value="_blank">Tab mới (_blank)</option>
+                    <option value="_self">Cùng tab (_self)</option>
+                  </select>
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end">
+                  <button type="button" class="btn bs" id="linkCancel">Hủy</button>
+                  <button type="button" class="btn bp" id="linkInsert"><i class="fa-solid fa-link"></i>Chèn liên kết</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ret-video-dlg" id="videoDlg">
+              <div class="ret-video-box">
+                <h4><i class="fa-brands fa-youtube" style="color:#ef4444;margin-right:8px"></i>Nhúng Video</h4>
+                <div style="margin-bottom:11px">
+                  <label class="lbl">URL video <span>(YouTube / Vimeo)</span></label>
+                  <input id="videoUrl" type="url" class="fld" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div style="margin-bottom:14px" class="ig2">
+                  <div><label class="lbl">Chiều rộng</label><input id="videoW" type="text" class="fld" value="100%"></div>
+                  <div><label class="lbl">Chiều cao (px)</label><input id="videoH" type="number" class="fld" value="400"></div>
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end">
+                  <button type="button" class="btn bs" id="videoCancel">Hủy</button>
+                  <button type="button" class="btn bp" id="videoInsert"><i class="fa-brands fa-youtube"></i>Nhúng video</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Right: cover + features -->
+          <div style="display:grid;gap:13px">
+            <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:14px">
+              <div style="font-weight:800;font-size:13px;margin-bottom:9px"><i class="fa-solid fa-image" style="color:var(--vip);margin-right:5px"></i>Ảnh đại diện</div>
+              <div class="iprev" id="iPrev"><img id="iImg" src="" alt=""/></div>
+              <input id="pImgUrl" type="url" class="fld" placeholder="URL ảnh..." style="margin-bottom:7px">
+              <div class="iua" id="iUpA">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size:18px;color:#94a3b8;margin-bottom:4px;display:block"></i>
+                <div style="font-size:12px;font-weight:700;color:#64748b">Kéo thả hoặc click chọn</div>
+                <input type="file" id="pImgFile" accept="image/*" style="display:none">
+              </div>
+              <button id="upImgBtn" type="button" class="btn bd" style="width:100%;margin-top:7px"><i class="fa-solid fa-upload"></i>Tải lên storage</button>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:14px">
+              <div style="font-weight:800;font-size:13px;margin-bottom:7px"><i class="fa-solid fa-star" style="color:#d97706;margin-right:5px"></i>Tính năng nổi bật</div>
+              <textarea id="pFeatures" class="fldta" rows="6" style="font-size:13px" placeholder="Mỗi dòng 1 tính năng:&#10;Hồ bơi ngoài trời&#10;Gym 5 sao&#10;An ninh 24/7"></textarea>
+              <div style="font-size:11px;color:#94a3b8;margin-top:4px">Mỗi dòng = 1 tính năng</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Gallery -->
+      <div id="tGallery" class="ep">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-size:15px;font-weight:900;color:#0f172a">Gallery ảnh dự án</div>
+            <div style="font-size:12px;color:#64748b;margin-top:3px">Upload nhiều ảnh · Bấm ảnh để đặt làm cover · Tối đa 20 ảnh</div>
+          </div>
+          <div style="display:flex;gap:7px">
+            <label class="btn bp" style="cursor:pointer"><i class="fa-solid fa-cloud-arrow-up"></i>Tải ảnh lên<input type="file" id="galFile" accept="image/*" multiple style="display:none"></label>
+            <button type="button" id="galClearBtn" class="btn br"><i class="fa-solid fa-trash"></i>Xóa tất cả</button>
+          </div>
+        </div>
+        <div id="galDrop" style="border:2px dashed #cbd5e1;border-radius:13px;padding:20px;text-align:center;background:#f8fafc;margin-bottom:13px;cursor:pointer;transition:.15s">
+          <i class="fa-solid fa-images" style="font-size:28px;color:#94a3b8;margin-bottom:8px;display:block"></i>
+          <div style="font-weight:800;font-size:13px;color:#475569">Kéo thả ảnh vào đây hoặc bấm "Tải ảnh lên"</div>
+        </div>
+        <div class="gal-grid" id="galGrid"></div>
+        <div style="margin-top:10px;font-size:12px;color:#94a3b8"><span id="galCnt">0</span> ảnh · Ảnh đầu tiên = ảnh đại diện</div>
+        <div style="display:flex;gap:7px;margin-top:12px">
+          <input type="url" id="galUrl" class="fld" placeholder="Hoặc nhập URL ảnh..." style="flex:1">
+          <button type="button" id="galAddUrl" class="btn bd"><i class="fa-solid fa-plus"></i>Thêm URL</button>
+        </div>
+      </div>
+
+      <!-- TAB: SEO -->
+      <div id="tSeo" class="ep">
+        <div style="display:grid;gap:14px">
+          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:12px 14px;font-size:13px;color:#1d4ed8">
+            <i class="fa-solid fa-circle-info" style="margin-right:7px"></i>Tiêu đề 55–65 ký tự · Mô tả 130–155 ký tự tốt nhất cho SEO.
+          </div>
+          <div class="ig2">
+            <div>
+              <label class="lbl">Tiêu đề SEO (title tag)</label>
+              <input id="pSeoTitle" type="text" class="fld" maxlength="80" placeholder="VD: Dự án ABC – Căn hộ cao cấp TP.HCM">
+              <div id="pSeoTitleCnt" style="font-size:11px;color:#64748b;margin-top:4px">0 / 65 ký tự</div>
+            </div>
+            <div>
+              <label class="lbl">Slug URL <span>(chỉ đọc)</span></label>
+              <input id="pSeoSlug" type="text" class="fld" style="font-family:monospace;background:#f8fafc" readonly>
+            </div>
+            <div style="grid-column:1/-1">
+              <label class="lbl">Meta description</label>
+              <textarea id="pSeoDesc" class="fldta" rows="3" maxlength="200" placeholder="Mô tả 130–155 ký tự, chứa từ khoá chính..."></textarea>
+              <div id="pSeoDescCnt" style="font-size:11px;color:#64748b;margin-top:4px">0 / 155 ký tự</div>
+            </div>
+            <div style="grid-column:1/-1">
+              <label class="lbl" style="display:flex;align-items:center;gap:7px">
+                <i class="fa-solid fa-key" style="color:var(--vip);font-size:13px"></i>
+                Từ khóa chính (Focus Keyword)
+                <span style="font-size:11px;color:#64748b;font-weight:500">· phân cách bằng dấu phẩy · tự lọc trùng</span>
+              </label>
+              <input id="pFocusKw" type="text" class="fld"
+                placeholder="VD: căn hộ aqua city, dự án aqua city biên hòa, mua căn hộ aqua city"
+                style="margin-bottom:4px">
+              <div style="font-size:11px;color:#64748b">
+                💡 Từ khóa chính giúp tối ưu SEO on-page. Nhập nhiều từ khóa, phân cách bằng dấu phẩy. Hệ thống tự lọc trùng lặp.
+              </div>
+              <div id="pFocusKwTags" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px"></div>
+            </div>
+            <div style="grid-column:1/-1">
+              <label class="lbl">Nội dung SEO body <span>(hiển thị cuối trang chi tiết)</span></label>
+              <div class="rew"><div class="rte" id="pSeoRte" contenteditable="true" style="min-height:200px" data-placeholder="Viết 300–600 từ về dự án, vị trí, tiện ích, pháp lý..."></div></div>
+            </div>
+            <div style="grid-column:1/-1">
+              <label class="lbl">JSON-LD Schema <span>(tùy chọn)</span></label>
+              <textarea id="pSeoSchema" class="fldta" rows="5" style="font-family:monospace;font-size:12px;background:#0f172a;color:#e2e8f0" placeholder='{"@context":"https://schema.org","@type":"Place","name":"Tên dự án"}'></textarea>
+            </div>
+          </div>
+          <div class="serp">
+            <div style="font-size:10px;font-weight:900;color:#0f766e;text-transform:uppercase;margin-bottom:7px">Google Preview</div>
+            <div class="serp-t" id="serpT">Tiêu đề trang dự án</div>
+            <div class="serp-u">toamviet.com.vn › du-an › ten-du-an</div>
+            <div class="serp-d" id="serpD">Mô tả sẽ hiển thị ở đây...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Thông số -->
+      <div id="tInfo" class="ep">
+        <div class="ig3">
+          <div><label class="lbl">Số căn tổng</label><input id="pUnits" type="number" class="fld" min="0" placeholder="VD: 2500"></div>
+          <div><label class="lbl">Căn đang mở bán</label><input id="pSale" type="number" class="fld" min="0" placeholder="VD: 400"></div>
+          <div><label class="lbl">Tình trạng</label>
+            <select id="pStatus" class="fldsel"><option value="">-- Chọn --</option><option value="Sắp mở bán">Sắp mở bán</option><option value="Đang mở bán">Đang mở bán</option><option value="Đang xây dựng">Đang xây dựng</option><option value="Hoàn thành">Hoàn thành – Đã bàn giao</option><option value="Tạm dừng">Tạm dừng</option></select>
+          </div>
+          <div><label class="lbl">Giá từ</label><input id="pPf" type="text" class="fld" placeholder="VD: 1.5 tỷ"></div>
+          <div><label class="lbl">Giá đến</label><input id="pPt" type="text" class="fld" placeholder="VD: 8 tỷ"></div>
+          <div><label class="lbl">Diện tích từ (m²)</label><input id="pAf" type="text" class="fld" placeholder="VD: 45"></div>
+          <div><label class="lbl">Diện tích đến (m²)</label><input id="pAt" type="text" class="fld" placeholder="VD: 150"></div>
+          <div><label class="lbl">Ngày khởi công</label><input id="pStart" type="date" class="fld"></div>
+          <div><label class="lbl">Ngày bàn giao</label><input id="pHandover" type="date" class="fld"></div>
+        </div>
+      </div>
+
+      <!-- Footer save bar -->
+      <div style="padding:13px 18px;border-top:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#f8fafc;border-radius:0 0 18px 18px">
+        <div style="font-size:12px;color:#64748b"><i class="fa-solid fa-cloud" style="color:var(--vip);margin-right:5px"></i><span id="saveNote">Lưu để cập nhật lên Supabase.</span></div>
+        <div style="display:flex;gap:7px">
+          <button type="button" id="backBtn2" class="btn bs"><i class="fa-solid fa-arrow-left"></i>Danh sách</button>
+          <a id="viewPublicBtn2" href="#" target="_blank" class="btn bs" style="display:none"><i class="fa-solid fa-eye"></i>Xem trang</a>
+          <button type="button" id="saveBtn2" class="btn bp"><i class="fa-solid fa-floppy-disk"></i>Lưu thay đổi</button>
+        </div>
+      </div>
+    </div>
+    </section>
+  </div><!-- /adm-main -->
+</div><!-- /adm-layout -->
+
+</div><!-- /cw -->
+</main>
+<div id="site-footer"></div>
+<script src="../assets/js/core/tv-url-service.js"></script>
+<script src="../assets/js/component-loader.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/supabase-data-service.js?v=20260425"></script>
+<script src="../assets/js/simple-rich-editor.js"></script>
+<script>
+(function(){
+'use strict';
+var curKey='',curProject=null,galImages=[];
+function $(i){return document.getElementById(i)}
+function esc(v){return String(v||'').replace(/[&<>"']/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];})}
+function slugify(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
+function status(t,m){var b=$('sbox');b.className='sbox show '+t;b.textContent=m;if(t!=='err')setTimeout(function(){b.className='sbox';},5000);}
+function rdF(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result);};r.onerror=rej;r.readAsDataURL(f);})}
+
+/* ── Mode: 'edit' | 'create' ── */
+var MODE='edit'; // 'edit' = existing project, 'create' = new project content
+
+function sview(v){
+  $('vList').classList.toggle('on',v==='list');
+  $('vEditor').classList.toggle('on',v==='editor');
+  // reset to first tab when opening editor
+  if(v==='editor'){
+    document.querySelectorAll('.etab').forEach(function(b){b.classList.remove('on');});
+    var firstTab=document.querySelector('.etab');if(firstTab)firstTab.classList.add('on');
+    document.querySelectorAll('.ep').forEach(function(p){p.classList.remove('on');});
+    var firstPanel=document.getElementById('tContent');if(firstPanel)firstPanel.classList.add('on');
+  }
+}
+
+function setMode(mode,project){
+  MODE=mode;
+  if(mode==='create'){
+    $('editorModeLabel').textContent='Viết nội dung dự án mới';
+    $('editorSubLabel').textContent='Tạo bài viết nội dung + SEO cho dự án chưa có trong hệ thống';
+    $('newProjNameWrap').style.display='block';
+    $('existProjName').textContent='';
+    $('existProjName').style.display='none';
+    $('viewPublicBtn').style.display='none';
+    if($('viewPublicBtn2'))$('viewPublicBtn2').style.display='none';
+    $('saveNote').textContent='Điền tên dự án và nội dung rồi bấm Lưu.';
+    $('newProjName').value='';
+    $('pSeoSlug').readOnly=false;
+  } else {
+    var name=(project&&project.name)||'Dự án';
+    $('editorModeLabel').textContent='Biên tập dự án';
+    $('editorSubLabel').textContent=name+' · Nội dung · SEO · Gallery · Thông số';
+    $('newProjNameWrap').style.display='none';
+    $('existProjName').textContent=name;
+    $('existProjName').style.display='';
+    $('viewPublicBtn').style.display='';
+    var __projectUrl = (typeof window !== 'undefined' && window.tvUrl && typeof window.tvUrl.buildProjectUrl === 'function')
+      ? window.tvUrl.buildProjectUrl(project || {}, (project && project.id) || '')
+      : '/du-an/' + encodeURIComponent((project && project.slug) || '').replace(/%2F/ig, '-');
+    if (!__projectUrl || __projectUrl === 'javascript:void(0)') __projectUrl = '/du-an/' + encodeURIComponent((project && project.slug) || '').replace(/%2F/ig, '-');
+    $('viewPublicBtn').href = __projectUrl;
+    if($('viewPublicBtn2')){$('viewPublicBtn2').style.display='';$('viewPublicBtn2').href=$('viewPublicBtn').href;}
+    $('saveNote').textContent='Lưu để cập nhật lên Supabase.';
+    $('pSeoSlug').readOnly=true;
+  }
+}
+
+/* ── Tabs ── */
+document.querySelectorAll('.etab').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.etab').forEach(function(b){b.classList.remove('on');});
+    btn.classList.add('on');
+    var id='t'+btn.getAttribute('data-tab').charAt(0).toUpperCase()+btn.getAttribute('data-tab').slice(1);
+    document.querySelectorAll('.ep').forEach(function(p){p.classList.remove('on');});
+    var ep=document.getElementById(id);if(ep)ep.classList.add('on');
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════
+   RICH EDITOR — FULL FEATURED ENGINE
+   ══════════════════════════════════════════════════════════════ */
+
+/* Helper: lấy range hiện tại */
+function saveRange(){var s=window.getSelection();if(s&&s.rangeCount>0)return s.getRangeAt(0).cloneRange();return null;}
+function restoreRange(rng){if(!rng)return;var s=window.getSelection();s.removeAllRanges();s.addRange(rng);}
+
+/* Chèn HTML tại vị trí cursor */
+function insertAtCursor(html){
+  $('pRte').focus();
+  document.execCommand('insertHTML',false,html);
+  updateWordCount();
+}
+
+/* ── updateWordCount / readtime ── */
+function updateWordCount(){
+  var t=$('pRte').innerText||'';
+  var w=t.trim().split(/\s+/).filter(Boolean).length;
+  var badge=$('wcBadge');
+  badge.textContent=w+' từ';
+  badge.className='wcb'+(w>=400?' gr':w>=200?' ok':'');
+  $('pCcnt').textContent=t.length+' ký tự';
+  var rt=Math.max(1,Math.ceil(w/200));
+  $('pReadTime').textContent=w>0?('~'+rt+' phút đọc'):'';
+}
+
+/* ── Heading dropdown ── */
+(function(){
+  var drop=$('headingDrop');
+  var trigger=drop.querySelector('.ret-drop-trigger');
+  var labelEl=$('headingLabel');
+  var labelMap={p:'Đoạn văn',h1:'Tiêu đề 1',h2:'Tiêu đề 2',h3:'Tiêu đề 3',h4:'Tiêu đề 4',blockquote:'Trích dẫn',pre:'Code block'};
+
+  trigger.addEventListener('click',function(e){e.stopPropagation();drop.classList.toggle('open');});
+  drop.querySelectorAll('[data-hd]').forEach(function(item){
+    item.addEventListener('click',function(){
+      var tag=this.getAttribute('data-hd');
+      $('pRte').focus();
+      if(tag==='pre'){document.execCommand('formatBlock',false,'pre');}
+      else{document.execCommand('formatBlock',false,tag);}
+      labelEl.textContent=labelMap[tag]||tag;
+      drop.classList.remove('open');
+    });
+  });
+  document.addEventListener('click',function(e){if(!drop.contains(e.target))drop.classList.remove('open');});
+})();
+
+/* ── Snippet dropdown ── */
+(function(){
+  var drop=$('snippetDrop');
+  var trigger=drop.querySelector('.ret-drop-trigger');
+
+  var SNIPPETS={
+    overview:'<h2>Tổng quan dự án</h2>\n<p>[Tên dự án] là khu đô thị / căn hộ cao cấp tọa lạc tại [địa chỉ], do [chủ đầu tư] phát triển. Dự án gồm [số căn] căn hộ với diện tích đa dạng từ [x]m² đến [y]m², đáp ứng nhu cầu ở thực và đầu tư của cư dân.</p>',
+    location:'<h2>Vị trí & Kết nối giao thông</h2>\n<p>[Tên dự án] nằm tại vị trí đắc địa, kết nối thuận tiện đến các trục đường chính:</p>\n<ul>\n<li>[x] phút đến trung tâm TP</li>\n<li>[y] phút đến sân bay</li>\n<li>[z] phút đến các trường học, bệnh viện lớn</li>\n</ul>',
+    amenities:'<h2>Tiện ích nội khu</h2>\n<p>Cư dân tại [Tên dự án] được hưởng hệ thống tiện ích đẳng cấp resort:</p>\n<ul>\n<li>Hồ bơi vô cực view thành phố</li>\n<li>Gym & Spa tiêu chuẩn 5 sao</li>\n<li>Khu vui chơi trẻ em ngoài trời</li>\n<li>Siêu thị, nhà hàng, cafe nội khu</li>\n<li>An ninh 24/7, camera AI</li>\n</ul>',
+    legal:'<h2>Pháp lý</h2>\n<p>[Tên dự án] có pháp lý minh bạch, đầy đủ:</p>\n<ul>\n<li>Sổ hồng / Sổ đỏ lâu dài</li>\n<li>Giấy phép xây dựng số: [...]</li>\n<li>Quyết định chấp thuận đầu tư số: [...]</li>\n</ul>',
+    payment:'<h2>Chính sách thanh toán</h2>\n<table style="width:100%;border-collapse:collapse;margin:12px 0"><tr><th style="border:1px solid #cbd5e1;padding:8px;background:#f8fafc;font-weight:800">Đợt</th><th style="border:1px solid #cbd5e1;padding:8px;background:#f8fafc;font-weight:800">Thời điểm</th><th style="border:1px solid #cbd5e1;padding:8px;background:#f8fafc;font-weight:800">Tỷ lệ</th></tr>\n<tr><td style="border:1px solid #cbd5e1;padding:8px">Đặt cọc</td><td style="border:1px solid #cbd5e1;padding:8px">Ký HĐMB</td><td style="border:1px solid #cbd5e1;padding:8px">5%</td></tr>\n<tr><td style="border:1px solid #cbd5e1;padding:8px">Đợt 1</td><td style="border:1px solid #cbd5e1;padding:8px">30 ngày sau HĐMB</td><td style="border:1px solid #cbd5e1;padding:8px">25%</td></tr>\n<tr><td style="border:1px solid #cbd5e1;padding:8px">Đợt 2</td><td style="border:1px solid #cbd5e1;padding:8px">Hoàn thiện phần thô</td><td style="border:1px solid #cbd5e1;padding:8px">30%</td></tr>\n<tr><td style="border:1px solid #cbd5e1;padding:8px">Nhận bàn giao</td><td style="border:1px solid #cbd5e1;padding:8px">Nhận nhà</td><td style="border:1px solid #cbd5e1;padding:8px">40%</td></tr>\n</table>',
+    price:'<h2>Bảng giá tham khảo</h2>\n<table style="width:100%;border-collapse:collapse;margin:12px 0"><tr><th style="border:1px solid #cbd5e1;padding:8px;background:#f8fafc;font-weight:800">Loại căn</th><th style="border:1px solid #cbd5e1;padding:8px;background:#f8fafc;font-weight:800">Diện tích</th><th style="border:1px solid #cbd5e1;padding:8px;background:#f8fafc;font-weight:800">Giá từ</th></tr>\n<tr><td style="border:1px solid #cbd5e1;padding:8px">Studio</td><td style="border:1px solid #cbd5e1;padding:8px">30 – 40 m²</td><td style="border:1px solid #cbd5e1;padding:8px">1.2 – 1.8 tỷ</td></tr>\n<tr><td style="border:1px solid #cbd5e1;padding:8px">1 phòng ngủ</td><td style="border:1px solid #cbd5e1;padding:8px">45 – 58 m²</td><td style="border:1px solid #cbd5e1;padding:8px">1.8 – 2.5 tỷ</td></tr>\n<tr><td style="border:1px solid #cbd5e1;padding:8px">2 phòng ngủ</td><td style="border:1px solid #cbd5e1;padding:8px">70 – 90 m²</td><td style="border:1px solid #cbd5e1;padding:8px">2.8 – 4.2 tỷ</td></tr>\n<tr><td style="border:1px solid #cbd5e1;padding:8px">3 phòng ngủ</td><td style="border:1px solid #cbd5e1;padding:8px">100 – 130 m²</td><td style="border:1px solid #cbd5e1;padding:8px">4.5 – 7.5 tỷ</td></tr>\n</table>\n<p><em>* Giá trên là giá tham khảo, chưa bao gồm VAT và phí bảo trì.</em></p>',
+    progress:'<h2>Tiến độ xây dựng</h2>\n<ul>\n<li>✅ Quý [x]/[năm]: Khởi công, hoàn thiện móng</li>\n<li>✅ Quý [x]/[năm]: Hoàn thành tầng hầm</li>\n<li>🔄 Quý [x]/[năm]: Xây dựng các tầng trung tầng</li>\n<li>⬜ Quý [x]/[năm]: Hoàn thiện nội thất, cảnh quan</li>\n<li>⬜ Quý [x]/[năm]: Bàn giao căn hộ</li>\n</ul>',
+    invest:'<h2>Tiềm năng đầu tư</h2>\n<p>[Tên dự án] là lựa chọn đầu tư hấp dẫn nhờ:</p>\n<ul>\n<li><strong>Vị trí chiến lược:</strong> [Lý do]</li>\n<li><strong>Tỷ suất cho thuê:</strong> [x]% – [y]%/năm</li>\n<li><strong>Tiềm năng tăng giá:</strong> [Phân tích]</li>\n<li><strong>Hỗ trợ vay ngân hàng:</strong> đến [x]% giá trị, lãi suất ưu đãi [y]%/năm</li>\n</ul>'
+  };
+
+  trigger.addEventListener('click',function(e){e.stopPropagation();drop.classList.toggle('open');});
+  drop.querySelectorAll('[data-snip]').forEach(function(item){
+    item.addEventListener('click',function(){
+      var key=this.getAttribute('data-snip');
+      var html=SNIPPETS[key]||'';
+      if(html)insertAtCursor(html);
+      drop.classList.remove('open');
+    });
+  });
+  document.addEventListener('click',function(e){if(!drop.contains(e.target))drop.classList.remove('open');});
+})();
+
+/* ── Font size ── */
+$('pFontSize').addEventListener('change',function(){
+  if(!this.value)return;
+  $('pRte').focus();
+  document.execCommand('fontSize',false,this.value);
+  this.value='';
+});
+
+/* ── Màu chữ ── */
+$('pFontColor').addEventListener('input',function(){
+  $('fontColorSwatch').style.background=this.value;
+});
+$('applyFontColorBtn').addEventListener('click',function(){
+  $('pRte').focus();
+  document.execCommand('foreColor',false,$('pFontColor').value);
+});
+
+/* ── Tô sáng (highlight) ── */
+$('pHlColor').addEventListener('input',function(){
+  $('hlSwatch').style.background=this.value;
+});
+$('applyHlBtn').addEventListener('click',function(){
+  $('pRte').focus();
+  document.execCommand('hiliteColor',false,$('pHlColor').value);
+});
+
+/* ── Table dialog ── */
+(function(){
+  var dlg=$('tableDlg');
+  function openTableDlg(){
+    window._savedProjRange=saveRange();
+    dlg.classList.add('open');
+    $('tblRows').focus();
+  }
+  function closeTableDlg(){dlg.classList.remove('open');}
+  $('tblCancel').addEventListener('click',closeTableDlg);
+  dlg.addEventListener('click',function(e){if(e.target===dlg)closeTableDlg();});
+  $('tblInsert').addEventListener('click',function(){
+    var rows=Math.max(1,Math.min(20,parseInt($('tblRows').value)||3));
+    var cols=Math.max(1,Math.min(10,parseInt($('tblCols').value)||3));
+    var hasHeader=$('tblHeader').value==='yes';
+    var style=$('tblStyle').value;
+
+    var baseCell='border:1px solid #cbd5e1;padding:9px 11px;';
+    var stripeEven='background:#f8fafc;';
+    var minimalCell='border:0;border-bottom:1px solid #e5e7eb;padding:9px 11px;';
+    var thStyle=baseCell+'background:#f0fdfa;font-weight:800;color:#0f172a;font-size:13px;';
+
+    var h='<table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px">';
+    for(var i=0;i<rows;i++){
+      var rowStyle='';
+      if(style==='stripe'&&i>0&&i%2===0)rowStyle=' style="background:#f8fafc"';
+      h+='<tr'+rowStyle+'>';
+      for(var j=0;j<cols;j++){
+        var isHeader=i===0&&hasHeader;
+        var tag=isHeader?'th':'td';
+        var cs=style==='minimal'?minimalCell:(isHeader?thStyle:baseCell+(style==='stripe'&&i>0&&i%2===0?stripeEven:''));
+        h+='<'+tag+' style="'+cs+'">&nbsp;</'+tag+'>';
+      }
+      h+='</tr>';
+    }
+    h+='</table>';
+
+    $('pRte').focus();
+    if(window._savedProjRange)restoreRange(window._savedProjRange);
+    document.execCommand('insertHTML',false,h);
+    closeTableDlg();
+    updateWordCount();
+  });
+  window._openTableDlg=openTableDlg;
+})();
+
+/* ── Link dialog ── */
+(function(){
+  var dlg=$('linkDlg');
+  function openLinkDlg(){
+    var sel=window.getSelection();
+    window._savedProjRange=saveRange();
+    $('linkText').value=sel&&sel.toString().trim()||'';
+    $('linkUrl').value='https://';
+    dlg.classList.add('open');
+    $('linkUrl').focus();
+  }
+  function closeLinkDlg(){dlg.classList.remove('open');}
+  $('linkCancel').addEventListener('click',closeLinkDlg);
+  dlg.addEventListener('click',function(e){if(e.target===dlg)closeLinkDlg();});
+  $('linkInsert').addEventListener('click',function(){
+    var url=$('linkUrl').value.trim();
+    var text=$('linkText').value.trim();
+    var target=$('linkTarget').value;
+    if(!url)return;
+    $('pRte').focus();
+    if(window._savedProjRange)restoreRange(window._savedProjRange);
+    var html='<a href="'+url.replace(/"/g,'&quot;')+'" target="'+target+'">'+
+             (text||(url.length>40?url.slice(0,40)+'…':url))+'</a>';
+    document.execCommand('insertHTML',false,html);
+    closeLinkDlg();
+  });
+  window._openLinkDlg=openLinkDlg;
+})();
+
+/* ── Video embed dialog ── */
+(function(){
+  var dlg=$('videoDlg');
+  function openVideoDlg(){window._savedProjRange=saveRange();dlg.classList.add('open');$('videoUrl').value='';$('videoUrl').focus();}
+  function closeVideoDlg(){dlg.classList.remove('open');}
+  $('videoCancel').addEventListener('click',closeVideoDlg);
+  dlg.addEventListener('click',function(e){if(e.target===dlg)closeVideoDlg();});
+  $('videoInsert').addEventListener('click',function(){
+    var url=$('videoUrl').value.trim();
+    if(!url)return;
+    var w=$('videoW').value.trim()||'100%';
+    var h=parseInt($('videoH').value)||400;
+    var embedUrl='';
+    var ytMatch=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    var vmMatch=url.match(/vimeo\.com\/(\d+)/);
+    if(ytMatch)embedUrl='https://www.youtube.com/embed/'+ytMatch[1]+'?rel=0&modestbranding=1';
+    else if(vmMatch)embedUrl='https://player.vimeo.com/video/'+vmMatch[1];
+    else embedUrl=url;
+    var html='<div style="position:relative;width:'+w+';margin:16px 0;border-radius:12px;overflow:hidden">'+
+             '<iframe src="'+embedUrl+'" width="100%" height="'+h+'" frameborder="0" '+
+             'allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" '+
+             'allowfullscreen style="display:block;border-radius:12px"></iframe></div><p><br></p>';
+    $('pRte').focus();
+    if(window._savedProjRange)restoreRange(window._savedProjRange);
+    document.execCommand('insertHTML',false,html);
+    closeVideoDlg();
+  });
+  window._openVideoDlg=openVideoDlg;
+})();
+
+/* ── Find & Replace ── */
+(function(){
+  var bar=$('pFnrBar');
+  var cnt=$('fnrCount');
+  function openFnr(){bar.classList.add('open');$('fnrFind').focus();}
+  function closeFnr(){bar.classList.remove('open');}
+  $('fnrClose').addEventListener('click',closeFnr);
+  function doReplace(all){
+    var find=$('fnrFind').value;
+    var rep=$('fnrReplace').value;
+    if(!find)return;
+    var html=$('pRte').innerHTML;
+    var regex=new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),all?'g':'');
+    var n=(html.match(regex)||[]).length;
+    $('pRte').innerHTML=html.replace(regex,rep);
+    cnt.textContent=n?('Đã thay '+n+' chỗ'):'Không tìm thấy';
+    updateWordCount();
+  }
+  $('fnrDoReplace').addEventListener('click',function(){doReplace(false);});
+  $('fnrDoReplaceAll').addEventListener('click',function(){doReplace(true);});
+  window._openFnr=openFnr;
+})();
+
+/* ── Fullscreen ── */
+var _isFullscreen=false;
+function toggleFullscreen(){
+  var wrap=$('pRteWrap');
+  _isFullscreen=!_isFullscreen;
+  wrap.classList.toggle('fullscreen',_isFullscreen);
+  $('fullscreenIcon').className=_isFullscreen?'fa-solid fa-compress':'fa-solid fa-expand';
+  document.body.style.overflow=_isFullscreen?'hidden':'';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&_isFullscreen)toggleFullscreen();});
+
+/* ── Toolbar main click handler ── */
+function peExec(c){
+  var rte=$('pRte');rte.focus();
+  // Heading / block
+  if(c==='h2'||c==='h3'||c==='p'){document.execCommand('formatBlock',false,c);return;}
+  if(c==='blockquote'){document.execCommand('formatBlock',false,'blockquote');return;}
+  if(c==='code'){
+    var sel=window.getSelection();
+    var txt=sel?sel.toString():'';
+    document.execCommand('insertHTML',false,'<code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:13px;color:#0f766e">'+(txt||'code')+'</code>');
+    return;
+  }
+  // Link / Unlink
+  if(c==='link'){window._openLinkDlg();return;}
+  if(c==='unlink'){document.execCommand('unlink',false,null);return;}
+  // Image
+  if(c==='imgurl'){
+    if(window.SimpleRichEditor&&typeof window.SimpleRichEditor.openImageModal==='function'){
+      var _savedProjRange=saveRange();
+      window.SimpleRichEditor.openImageModal(function(html){
+        $('pRte').focus();
+        if(_savedProjRange)restoreRange(_savedProjRange);
+        document.execCommand('insertHTML',false,html);
+      },'project');
+    }else{
+      var u2=prompt('URL ảnh:');
+      if(u2)insertAtCursor('<figure style="display:block;margin:14px 0;text-align:center"><img src="'+u2+'" alt="" style="max-width:100%;border-radius:10px"></figure><p><br></p>');
+    }
+    return;
+  }
+  // Video
+  if(c==='video'){window._openVideoDlg();return;}
+  // Table (custom dialog)
+  if(c==='table'){window._openTableDlg();return;}
+  // Find & Replace
+  if(c==='findreplace'){window._openFnr();return;}
+  // Clear all
+  if(c==='clearall'){
+    if(confirm('Xóa toàn bộ nội dung editor này?')){rte.innerHTML='';updateWordCount();}
+    return;
+  }
+  // Fullscreen
+  if(c==='fullscreen'){toggleFullscreen();return;}
+  // Standard execCommand
+  document.execCommand(c,false,null);
+  updateWordCount();
+}
+
+$('pToolbar').addEventListener('mousedown',function(e){
+  var b=e.target.closest('[data-pc]');
+  if(b){e.preventDefault();peExec(b.getAttribute('data-pc'));}
+});
+
+/* ── Editor events ── */
+$('pRte').addEventListener('input',updateWordCount);
+$('pRte').addEventListener('keyup',updateWordCount);
+
+/* Keyboard shortcuts bổ sung */
+$('pRte').addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&e.key==='h'){e.preventDefault();window._openFnr();}
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();window._openLinkDlg();}
+  // Tab → 4 spaces trong editor
+  if(e.key==='Tab'){
+    e.preventDefault();
+    document.execCommand('insertHTML',false,'&nbsp;&nbsp;&nbsp;&nbsp;');
+  }
+});
+
+$('pRte').addEventListener('drop',async function(e){
+  var fl=e.dataTransfer&&e.dataTransfer.files;
+  if(fl&&fl.length&&fl[0].type.startsWith('image/')){
+    e.preventDefault();
+    var u=await rdF(fl[0]);
+    insertAtCursor('<figure style="display:block;margin:14px 0;text-align:center"><img src="'+u+'" alt="" style="max-width:100%;border-radius:10px"></figure><p><br></p>');
+  }
+});
+
+$('pRte').addEventListener('paste',function(e){
+  e.preventDefault();
+  var h=e.clipboardData.getData('text/html');
+  if(h){
+    h=h.replace(/<style[\s\S]*?<\/style>/gi,'')
+       .replace(/<script[\s\S]*?<\/script>/gi,'')
+       .replace(/class="Mso[^"]*"/gi,'')
+       .replace(/<o:[^>]*>[\s\S]*?<\/o:[^>]*>/gi,'')
+       .replace(/style="[^"]*mso-[^"]*"/gi,'');
+    document.execCommand('insertHTML',false,h);
+  } else {
+    document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));
+  }
+  updateWordCount();
+});
+
+/* ── Upload ảnh vào body editor ── */
+$('peImgFile').addEventListener('change',async function(){
+  var f=this.files&&this.files[0];if(!f)return;
+  var _rngPE=saveRange();
+  try{
+    var u='';
+    if(window.supabaseDataService&&typeof window.supabaseDataService.uploadProjectImage==='function'){
+      var r=await window.supabaseDataService.uploadProjectImage(f,curKey||('proj-'+Date.now()));
+      u=r&&r.imageUrl||'';
+    }
+    if(!u)u=await rdF(f);
+    $('pRte').focus();
+    if(_rngPE)restoreRange(_rngPE);
+    insertAtCursor('<figure class="sre-image-block" contenteditable="false" style="display:block;margin:14px 0;text-align:center"><img src="'+u+'" alt="" style="max-width:100%;height:auto;border-radius:10px"></figure><p><br></p>');
+  }catch(err){console.warn('Image upload error:',err);}
+  this.value='';
+});
+
+/* ── Active state: tô sáng nút khi cursor ở trong block đó ── */
+$('pRte').addEventListener('keyup',updateActiveStates);
+$('pRte').addEventListener('mouseup',updateActiveStates);
+function updateActiveStates(){
+  var cmds=['bold','italic','underline','strikeThrough','justifyLeft','justifyCenter','justifyRight','justifyFull','insertUnorderedList','insertOrderedList','superscript','subscript'];
+  $('pToolbar').querySelectorAll('[data-pc]').forEach(function(btn){
+    var pc=btn.getAttribute('data-pc');
+    if(cmds.indexOf(pc)>=0){
+      try{btn.classList.toggle('act',document.queryCommandState(pc));}catch(e){}
+    }
+  });
+  // Update heading label
+  try{
+    var blk=document.queryCommandValue('formatBlock')||'';
+    var labelMap={p:'Đoạn văn',h1:'Tiêu đề 1',h2:'Tiêu đề 2',h3:'Tiêu đề 3',h4:'Tiêu đề 4',blockquote:'Trích dẫn',pre:'Code block'};
+    var el=$('headingLabel');
+    if(el)el.textContent=labelMap[blk.toLowerCase()]||'Định dạng';
+  }catch(e){}
+}
+
+/* ── Auto slug from new project name ── */
+$('newProjName').addEventListener('input',function(){
+  var s=slugify(this.value);
+  $('pSeoSlug').value=s;
+  upSerp();
+});
+
+/* ── SEO live preview ── */
+function upSerp(){
+  var t=($('pSeoTitle').value||$('newProjName').value||'Tiêu đề trang dự án').trim();
+  var d=($('pSeoDesc').value||'Mô tả sẽ hiển thị ở đây...').trim();
+  $('serpT').textContent=t.slice(0,65)+(t.length>65?'…':'');
+  $('serpD').textContent=d.slice(0,155)+(d.length>155?'…':'');
+  var tl=t.length,dl=d.length;
+  $('pSeoTitleCnt').textContent=tl+' / 65 ký tự';$('pSeoTitleCnt').style.color=tl>65?'#dc2626':tl>=45?'#0f766e':'#64748b';
+  $('pSeoDescCnt').textContent=dl+' / 155 ký tự';$('pSeoDescCnt').style.color=dl>155?'#dc2626':dl>=100?'#0f766e':'#64748b';
+}
+$('pSeoTitle').addEventListener('input',upSerp);
+$('pSeoDesc').addEventListener('input',upSerp);
+
+/* ── Focus Keyword dedup & tag preview ── */
+function renderKwTags(raw){
+  var tags=$('pFocusKwTags');if(!tags)return;
+  var parts=normKeywords(raw).split(',').map(function(s){return s.trim();}).filter(Boolean);
+  if(!parts.length){tags.innerHTML='';return;}
+  tags.innerHTML=parts.map(function(k){
+    return '<span style="display:inline-flex;align-items:center;gap:4px;background:#f0fdf4;border:1px solid #86efac;color:#166534;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px">'
+      +'<i class="fa-solid fa-tag" style="font-size:10px"></i>'+esc(k)+'</span>';
+  }).join('');
+}
+$('pFocusKw').addEventListener('input',function(){
+  var deduped=normKeywords(this.value);
+  renderKwTags(deduped);
+});
+$('pFocusKw').addEventListener('blur',function(){
+  var deduped=normKeywords(this.value);
+  if(deduped!==this.value.trim()) this.value=deduped;
+  renderKwTags(deduped);
+});
+
+/* ── Cover image ── */
+function syncIP(u){var w=$('iPrev'),img=$('iImg');w.style.display=u?'block':'none';img.src=u||'';}
+$('pImgUrl').addEventListener('input',function(){syncIP(this.value.trim());});
+$('iUpA').addEventListener('click',function(){$('pImgFile').click();});
+$('pImgFile').addEventListener('change',async function(){if(this.files[0])await upCover(this.files[0]);});
+$('upImgBtn').addEventListener('click',async function(){
+  var f=$('pImgFile').files[0];
+  if(!f){status('info','Chọn file ảnh trước.');return;}
+  await upCover(f);
+});
+async function upCover(f){
+  try{
+    var u='';
+    if(window.supabaseDataService&&typeof window.supabaseDataService.uploadProjectImage==='function'){
+      var r=await window.supabaseDataService.uploadProjectImage(f,curKey||('proj-'+Date.now()));
+      u=r&&r.imageUrl||'';
+    }
+    if(!u)u=await rdF(f);
+    $('pImgUrl').value=u;syncIP(u);
+    if(galImages.length===0)galImages=[{url:u}];
+    else galImages[0]={url:u};
+    renderGallery();
+    status('ok','Đã tải ảnh đại diện.');
+  }catch(err){status('err','Không tải được ảnh: '+(err.message||''));}
+}
+
+/* ── Gallery ── */
+function renderGallery(){
+  var grid=$('galGrid');
+  var items=galImages.map(function(img,i){
+    return'<div class="gal-item" onclick="pSetCover('+i+')" title="'+(i===0?'Ảnh đại diện — bấm ảnh khác để đổi':'Bấm để đặt làm ảnh đại diện')+'">'
+      +'<img src="'+esc(img.url)+'" alt="" onerror="this.src=\'../assets/images/fallback-property.jpg\'">'
+      +(i===0?'<div class="cover-badge">⭐ Cover</div>':'')
+      +'<button class="gal-del" onclick="event.stopPropagation();pDelGal('+i+')" title="Xóa ảnh"><i class="fa-solid fa-xmark"></i></button>'
+      +'</div>';
+  }).join('');
+  grid.innerHTML=items+'<div class="gal-add" onclick="document.getElementById(\'galFile\').click()"><i class="fa-solid fa-plus" style="font-size:16px"></i><span>Thêm ảnh</span></div>';
+  $('galCnt').textContent=galImages.length;
+  if(galImages.length>0){var firstUrl=galImages[0].url;if(firstUrl&&!$('pImgUrl').value.trim()){$('pImgUrl').value=firstUrl;syncIP(firstUrl);}}
+}
+window.pSetCover=function(i){if(i===0)return;galImages.unshift(galImages.splice(i,1)[0]);renderGallery();};
+window.pDelGal=function(i){galImages.splice(i,1);renderGallery();if(galImages.length>0){$('pImgUrl').value=galImages[0].url;syncIP(galImages[0].url);}else{$('pImgUrl').value='';syncIP('');}};
+async function addGalFile(f){
+  if(galImages.length>=20){status('err','Tối đa 20 ảnh.');return;}
+  var u='';
+  try{if(window.supabaseDataService&&typeof window.supabaseDataService.uploadProjectImage==='function'){var r=await window.supabaseDataService.uploadProjectImage(f,(curKey||'proj')+'-gal-'+Date.now());u=r&&r.imageUrl||'';}if(!u)u=await rdF(f);}
+  catch(e){u=await rdF(f);}
+  galImages.push({url:u});renderGallery();
+}
+$('galFile').addEventListener('change',async function(){for(var i=0;i<this.files.length;i++)await addGalFile(this.files[i]);this.value='';});
+['dragover','dragenter'].forEach(function(ev){$('galDrop').addEventListener(ev,function(e){e.preventDefault();this.style.borderColor='var(--vip)';}); });
+['dragleave','drop'].forEach(function(ev){$('galDrop').addEventListener(ev,function(e){if(ev==='drop'){e.preventDefault();for(var i=0;i<e.dataTransfer.files.length;i++)addGalFile(e.dataTransfer.files[i]);}this.style.borderColor='#cbd5e1';});});
+$('galDrop').addEventListener('click',function(){$('galFile').click();});
+$('galClearBtn').addEventListener('click',function(){if(!confirm('Xóa tất cả ảnh gallery?'))return;galImages=[];renderGallery();$('pImgUrl').value='';syncIP('');});
+$('galAddUrl').addEventListener('click',function(){
+  var u=$('galUrl').value.trim();
+  if(!u){status('info','Nhập URL ảnh trước.');return;}
+  if(galImages.length>=20){status('err','Tối đa 20 ảnh.');return;}
+  galImages.push({url:u});renderGallery();$('galUrl').value='';
+});
+
+/* ── Form fill / reset ── */
+function fillForm(p){
+  $('pDesc').value=p.description||'';
+  $('pRte').innerHTML=p.content||'';
+  var img=p.thumbnail_url||p.thumbnailUrl||p.image||'';
+  $('pImgUrl').value=img;syncIP(img);
+  var feats=Array.isArray(p.features)?p.features:(p.features?String(p.features).split(',').map(function(f){return f.trim();}):[]); 
+  $('pFeatures').value=feats.join('\n');
+  $('pSeoTitle').value=p.seo_title||p.seoTitle||'';
+  $('pSeoSlug').value=p.slug||'';
+  $('pSeoDesc').value=p.seo_description||p.seoDescription||'';
+  $('pSeoSchema').value=p.seo_schema||p.seoSchema||'';
+  $('pSeoRte').innerHTML=p.seo_body||p.seoBody||'';
+  var loadedKw=normKeywords(p.focus_keyword||p.focusKeyword||'');
+  $('pFocusKw').value=loadedKw;
+  renderKwTags(loadedKw);
+  $('pUnits').value=p.total_units||p.totalUnits||'';
+  $('pSale').value=p.open_for_sale_units||p.openForSaleUnits||'';
+  $('pPf').value=p.price_from||p.priceFrom||'';
+  $('pPt').value=p.price_to||p.priceTo||'';
+  $('pAf').value=p.area_from||p.areaFrom||'';
+  $('pAt').value=p.area_to||p.areaTo||'';
+  $('pStatus').value=p.completion_status||p.completionStatus||'';
+  $('pStart').value=p.start_date?String(p.start_date).split('T')[0]:(p.startDate?String(p.startDate).split('T')[0]:'');
+  $('pHandover').value=p.handover_date?String(p.handover_date).split('T')[0]:(p.handoverDate?String(p.handoverDate).split('T')[0]:'');
+  galImages=[];
+  var gal=p.gallery;
+  if(Array.isArray(gal)&&gal.length)galImages=gal.map(function(u){return{url:u};});
+  else if(img)galImages=[{url:img}];
+  renderGallery();upSerp();
+}
+function resetForm(){
+  $('pDesc').value='';$('pRte').innerHTML='';$('pImgUrl').value='';syncIP('');$('pFeatures').value='';
+  $('pSeoTitle').value='';$('pSeoSlug').value='';$('pSeoDesc').value='';$('pSeoSchema').value='';$('pSeoRte').innerHTML='';
+  if($('pFocusKw')){$('pFocusKw').value='';renderKwTags('');}
+  $('pUnits').value='';$('pSale').value='';$('pPf').value='';$('pPt').value='';
+  $('pAf').value='';$('pAt').value='';$('pStatus').value='';$('pStart').value='';$('pHandover').value='';
+  $('newProjName').value='';$('pSeoSlug').readOnly=true;
+  galImages=[];renderGallery();upSerp();
+}
+
+/* ── Project list ── */
+async function loadProjects(){
+  $('projList').innerHTML='<div class="empty"><i class="fa-solid fa-spinner fa-spin" style="font-size:20px;color:#94a3b8;margin-bottom:8px;display:block"></i>Đang tải danh sách dự án...</div>';
+  try{
+    var svc=window.supabaseDataService;
+    var projects;
+    if(typeof svc.refreshAdminProjects==='function'){
+      projects=await svc.refreshAdminProjects({keyword:$('fKw').value.trim(),city:$('fCity').value.trim()});
+    } else {
+      var sb=await svc.getClient();
+      var q=sb.from('projects').select('id,slug,name,city,developer,admin_status,hidden').order('updated_at',{ascending:false}).limit(100);
+      var kw=$('fKw').value.trim();if(kw)q=q.or('name.ilike.%'+kw+'%,developer.ilike.%'+kw+'%');
+      var ct=$('fCity').value.trim();if(ct)q=q.ilike('city','%'+ct+'%');
+      var res=await q;
+      if(res.error)throw res.error;
+      projects=res.data||[];
+    }
+    renderProjectList(Array.isArray(projects)?projects:[]);
+    // Hide migration notice if load succeeded — columns exist
+    var notice=document.getElementById('sqlMigrationNotice');
+    if(notice)notice.style.display='none';
+  }catch(err){
+    var msg=err&&err.message?err.message:'Lỗi không xác định';
+    status('err','Không thể tải danh sách dự án: '+msg);
+    $('projList').innerHTML='<div class="empty" style="color:#dc2626"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px;display:block;margin-bottom:8px"></i>'+esc(msg)+'</div>';
+  }
+}
+var proj_page=1;var proj_pageSize=15;var proj_allItems=[];
+function renderProjectList(projects){
+  proj_allItems=Array.isArray(projects)?projects:[];
+  renderProjectPage();
+}
+function renderProjectPage(){
+  var list=$('projList');
+  var total=proj_allItems.length;
+  var totalPages=Math.max(1,Math.ceil(total/proj_pageSize));
+  if(proj_page>totalPages)proj_page=totalPages;
+  var start=(proj_page-1)*proj_pageSize;
+  var page=proj_allItems.slice(start,start+proj_pageSize);
+  if(!total){
+    list.innerHTML='<div class="empty"><i class="fa-solid fa-diagram-project" style="font-size:28px;color:#cbd5e1;display:block;margin-bottom:8px"></i>'
+      +'<div>Chưa có dự án nào phù hợp.</div>'
+      +'<div style="margin-top:8px;font-size:12px">Hoặc bấm <strong>Viết nội dung mới</strong> để tạo bài cho dự án chưa có.</div></div>';
+    renderProjPager(0,0);return;
+  }
+  list.innerHTML=page.map(function(p){
+    var isHidden=p.hidden||(p.adminStatus||p.admin_status)==='hidden';
+    var hasContent=!!(p.content||p.description);
+    return'<article class="li">'
+      +'<div>'
+        +'<div class="lt">'+esc(p.name||'Dự án chưa có tên')+'</div>'
+        +'<div class="lm">'
+          +'<span class="chip '+(isHidden?'chid':'cact')+'">'+(isHidden?'Đang ẩn':'Hoạt động')+'</span>'
+          +(p.completion_status||p.completionStatus?'<span class="chip" style="background:#fef3c7;color:#b45309">'+esc(p.completion_status||p.completionStatus)+'</span>':'')
+          +(p.city?'<span><i class="fa-solid fa-location-dot" style="color:#94a3b8;margin-right:3px"></i>'+esc(p.city)+'</span>':'')
+          +(p.developer||p.typeName?'<span>'+esc(p.developer||p.typeName)+'</span>':'')
+          +'<span style="color:'+(hasContent?'#0f766e':'#94a3b8')+'">'+(hasContent?'<i class="fa-solid fa-check-circle"></i> Có nội dung':'<i class="fa-regular fa-file" style="opacity:.5"></i> Chưa có nội dung')+'</span>'
+        +'</div>'
+      +'</div>'
+      +'<div class="lac">'
+        +'<button type="button" class="mb mbp" data-edit="'+esc(p.id||p.slug)+'"><i class="fa-solid fa-pen-nib"></i>Biên tập</button>'
+        +'<a href="'+esc((typeof window!=='undefined'&&window.tvUrl&&window.tvUrl.buildProjectUrl?window.tvUrl.buildProjectUrl(p||{},(p&&p.id)||'')||('/du-an/'+encodeURIComponent(String(p.slug||'').trim()).replace(/%2F/ig,'-')):('/du-an/'+encodeURIComponent(String(p.slug||'').trim()).replace(/%2F/ig,'-'))))+'" target="_blank" class="mb mbs"><i class="fa-solid fa-eye"></i>Xem</a>'
+      +'</div>'
+    +'</article>';
+  }).join('');
+  list.querySelectorAll('[data-edit]').forEach(function(btn){
+    btn.addEventListener('click',async function(){await openEditor(btn.getAttribute('data-edit'));});
+  });
+  renderProjPager(proj_page,totalPages);
+}
+function renderProjPager(page,total){
+  var el=$('projPager');if(!el)return;
+  if(total<=1){el.innerHTML='';return;}
+  var btns='<span style="font-size:12px;color:#64748b;align-self:center">Trang '+page+'/'+total+'</span>';
+  btns+='<button class="btn bs" style="min-height:32px;font-size:12px;padding:0 10px" '+(page<=1?'disabled':'')+' onclick="proj_page=Math.max(1,proj_page-1);renderProjectPage()"><i class="fa-solid fa-chevron-left"></i></button>';
+  var s=Math.max(1,page-2),e=Math.min(total,s+4);
+  for(var i=s;i<=e;i++){btns+='<button class="btn '+(i===page?'bp':'bs')+'" style="min-height:32px;font-size:12px;padding:0 10px" onclick="proj_page='+i+';renderProjectPage()">'+i+'</button>';}
+  btns+='<button class="btn bs" style="min-height:32px;font-size:12px;padding:0 10px" '+(page>=total?'disabled':'')+' onclick="proj_page=Math.min('+total+',proj_page+1);renderProjectPage()"><i class="fa-solid fa-chevron-right"></i></button>';
+  el.innerHTML=btns;
+}
+
+/* ── Open editor (EDIT mode) ── */
+async function openEditor(key){
+  curKey=String(key||'').trim();if(!curKey)return;
+  curProject=null;
+  resetForm();sview('editor');
+  $('existProjName').textContent='Đang tải...';
+  $('saveNote').textContent='Đang tải dữ liệu dự án...';
+  setMode('edit',null);
+  try{
+    var p=await window.supabaseDataService.getAdminProjectDetail(curKey);
+    curProject=p;
+    fillForm(p);
+    setMode('edit',p);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(err){
+    status('err',err.message||'Không thể tải dữ liệu dự án.');
+    $('existProjName').textContent='Lỗi tải dữ liệu';
+  }
+}
+
+/* ── Open editor (CREATE mode) ── */
+function openCreateMode(){
+  curKey='';curProject=null;
+  resetForm();
+  setMode('create',null);
+  sview('editor');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(function(){$('newProjName').focus();},200);
+}
+
+/* ── Check URL param ── */
+function checkUrlParam(){
+  var params=new URLSearchParams(location.search);
+  var key=params.get('key')||params.get('id')||params.get('slug');
+  if(key)openEditor(key);
+}
+
+/* ── Build payload ── */
+function buildPayload(targetSlug){
+  var slug=targetSlug||$('pSeoSlug').value.trim();
+  var coverUrl=galImages.length>0?galImages[0].url:$('pImgUrl').value.trim();
+  return{
+    id:curKey||'',
+    slug:slug,
+    description:$('pDesc').value.trim(),
+    content:$('pRte').innerHTML.trim(),
+    seoTitle:$('pSeoTitle').value.trim(),
+    seoDescription:$('pSeoDesc').value.trim(),
+    seoBody:$('pSeoRte').innerHTML.trim(),
+    seoSchema:$('pSeoSchema').value.trim(),
+    thumbnailUrl:coverUrl,image:coverUrl,
+    gallery:galImages.map(function(g){return g.url;}),
+    features:$('pFeatures').value.split('\n').map(function(f){return f.trim();}).filter(Boolean),
+    totalUnits:$('pUnits').value,openForSaleUnits:$('pSale').value,
+    priceFrom:$('pPf').value.trim(),priceTo:$('pPt').value.trim(),
+    areaFrom:$('pAf').value.trim(),areaTo:$('pAt').value.trim(),
+    startDate:$('pStart').value||null,handoverDate:$('pHandover').value||null,
+    completionStatus:$('pStatus').value,
+    focusKeyword:normKeywords($('pFocusKw').value)
+  };
+}
+
+// Chuẩn hóa & lọc trùng từ khóa
+function normKeywords(raw){
+  var parts=(raw||'').split(/[,，;；]+/).map(function(s){return s.trim().toLowerCase();}).filter(Boolean);
+  var seen={},unique=[];
+  parts.forEach(function(k){if(!seen[k]){seen[k]=1;unique.push(k);}});
+  return unique.join(', ');
+}
+
+/* ── Save ── */
+async function doSave(){
+  var svc=window.supabaseDataService;
+  if(!svc){status('err','Không thể kết nối Supabase.');return;}
+
+  // Validate
+  if(MODE==='create'){
+    var newName=$('newProjName').value.trim();
+    if(!newName){status('err','Vui lòng nhập tên dự án.');$('newProjName').focus();return;}
+    var newSlug=slugify(newName)||('du-an-'+Date.now());
+    $('pSeoSlug').value=newSlug;
+    if(!$('pSeoTitle').value.trim())$('pSeoTitle').value=newName;
+    if(!$('pDesc').value.trim()&&!$('pRte').innerHTML.trim()){status('err','Vui lòng viết ít nhất mô tả tóm tắt hoặc nội dung chi tiết.');return;}
+  } else {
+    if(!curKey){status('err','Chưa chọn dự án để lưu.');return;}
+  }
+
+  var btns=[$('saveBtn'),$('saveBtn2')];
+  btns.forEach(function(b){if(b){b.disabled=true;b.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';}});
+
+  try{
+    if(MODE==='create'){
+      var newName2=$('newProjName').value.trim();
+      var newSlug2=slugify(newName2)||('du-an-'+Date.now());
+      // First ensure the project exists in DB (upsert by slug)
+      var sb=await svc.getClient();
+      // Tạo UUID hợp lệ cho project mới (projects.id là TEXT nhưng một số trigger cần UUID format)
+      var newProjUuid = (svc.createUuid && svc.createUuid()) ||
+        (window.crypto&&window.crypto.randomUUID?window.crypto.randomUUID():
+        'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:r&0x3|0x8).toString(16);}));
+      var upsertRes=await sb.from('projects').upsert({
+        id:newProjUuid, name:newName2, slug:newSlug2,
+        admin_status:'active', hidden:false,
+        updated_at:new Date().toISOString()
+      },{onConflict:'slug'}).select('id,slug').maybeSingle();
+      if(upsertRes.error)throw upsertRes.error;
+      var savedId=(upsertRes.data&&upsertRes.data.id)||newProjUuid;
+      curKey=savedId;
+      // Now save content
+      var payload=buildPayload(newSlug2);
+      payload.id=savedId;
+      await svc.saveAdminProjectContent(payload);
+      // Update UI to edit mode
+      var fakeProjObj={id:savedId,slug:newSlug2,name:newName2};
+      setMode('edit',fakeProjObj);
+      status('ok','✓ Đã tạo và lưu nội dung dự án "'+newName2+'" thành công!');
+      $('saveNote').textContent='Đã lưu lúc '+new Date().toLocaleTimeString('vi-VN');
+      // Reload project list in background
+      loadProjects();
+    } else {
+      var payload2=buildPayload();
+      await svc.saveAdminProjectContent(payload2);
+      status('ok','✓ Đã lưu nội dung dự án thành công!');
+      $('saveNote').textContent='Đã lưu lúc '+new Date().toLocaleTimeString('vi-VN');
+    }
+  }catch(err){
+    status('err',err.message||'Không thể lưu. Kiểm tra kết nối Supabase.');
+  }finally{
+    btns.forEach(function(b){if(b){b.disabled=false;b.innerHTML='<i class="fa-solid fa-floppy-disk"></i>Lưu thay đổi';}});
+  }
+}
+
+/* ── Event bindings ── */
+$('backBtn').addEventListener('click',function(){sview('list');});
+$('backBtn2').addEventListener('click',function(){sview('list');});
+$('saveBtn').addEventListener('click',doSave);
+$('saveBtn2').addEventListener('click',doSave);
+$('refreshBtn').addEventListener('click',loadProjects);
+$('applyBtn').addEventListener('click',loadProjects);
+$('newContentBtn').addEventListener('click',openCreateMode);
+
+/* ── Keyboard shortcut Ctrl+S ── */
+document.addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&e.key==='s'&&$('vEditor').classList.contains('on')){
+    e.preventDefault();doSave();
+  }
+});
+
+/* ── Init ── */
+async function init(){
+  try{
+    if(window.supabaseDataService&&typeof window.supabaseDataService.ensureAdminAccess==='function')
+      await window.supabaseDataService.ensureAdminAccess();
+  }catch(err){status('err',err.message||'Không có quyền truy cập.');return;}
+  renderGallery();
+  await loadProjects();
+  checkUrlParam();
+}
+
+window.addEventListener('load',init);
+})();
+</script>
+<script>
+(function(){
+  function setupAcc(){
+    document.querySelectorAll('.acc-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var g=btn.closest('.acc-group');var wasOpen=g.classList.contains('open');
+        document.querySelectorAll('.acc-group').forEach(function(x){x.classList.remove('open');var b=x.querySelector('.acc-btn');if(b)b.classList.remove('on');});
+        if(!wasOpen){g.classList.add('open');btn.classList.add('on');}
+      });
+    });
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setupAcc);}else{setupAcc();}
+})();
+</script>
+
+<script>
+/* ADMIN SESSION DOUBLE-CHECK v4 — minimal, tin tưởng EARLY GUARD + localStorage */
+(function(){
+  var ADMIN_ROLES = ['super_admin','admin','moderator','finance','seo_manager','content_editor','support','administrator','quan tri vien','quantri'];
+
+  function isRoleAdmin(role) {
+    return ADMIN_ROLES.includes(String(role||'').trim().toLowerCase());
+  }
+
+  function hasLocalAdmin() {
+    try {
+      var keys = ['currentUser','registeredUser'];
+      for (var i=0; i<keys.length; i++) {
+        var raw = localStorage.getItem(keys[i]);
+        if (!raw) continue;
+        var u = JSON.parse(raw);
+        if (!u) continue;
+        var role = u.systemRole || u.system_role || u.authRole || u.appRole || '';
+        if (isRoleAdmin(role)) return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  // Chỉ double-check với Supabase 1 lần sau 3s để đồng bộ localStorage.
+  // KHÔNG kick user — EARLY GUARD ở đầu file đã lo việc đó.
+  // Đây chỉ là "soft refresh": nếu Supabase trả role admin thì update localStorage.
+  async function softRefreshFromSupabase() {
+    try {
+      var svc = window.supabaseDataService;
+      if (!svc || typeof svc.getCurrentUserProfile !== 'function') return;
+      var profile = await svc.getCurrentUserProfile().catch(function(){return null;});
+      if (!profile) return;
+      // Nếu Supabase trả role admin thì localStorage đã được update bởi ensureProfileRow
+      // Không cần làm gì thêm
+      var role = profile.systemRole || profile.system_role || '';
+      if (!isRoleAdmin(role) && !hasLocalAdmin()) {
+        // Cả Supabase và localStorage đều không có admin → LAST RESORT kick
+        // Nhưng chỉ làm sau khi chắc chắn (đã pass EARLY GUARD vẫn xuống đây)
+        console.warn('[AdminGuard v4] Không tìm thấy admin role cả ở Supabase và localStorage');
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(softRefreshFromSupabase, 3000);
+  });
+})();
+</script>
+</body>
+</html>

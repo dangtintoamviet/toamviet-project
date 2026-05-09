@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script>
+  (function(){
+    function isAdmin(){try{var keys=['currentUser','registeredUser'];var adminRoles=['super_admin','admin','moderator','finance','seo_manager','content_editor','support','administrator','quan tri vien','quantri'];for(var i=0;i<keys.length;i++){var raw=localStorage.getItem(keys[i]);if(!raw)continue;var u=JSON.parse(raw);var r=String(u&&(u.systemRole||u.system_role||u.authRole||u.appRole||'')).trim().toLowerCase();if(adminRoles.indexOf(r)!==-1)return true;}}catch(e){}return false;}
+    if(!localStorage.getItem('authToken')&&!isAdmin()){window.location.replace('../auth/dang-nhap.html?redirect='+encodeURIComponent(window.location.pathname+window.location.hash));}
+  })();
+  </script>
+  <title>Quản lý tin tức | ToamViet.com.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/main.css"/>
+  <link rel="stylesheet" href="../assets/css/components.css"/>
+  <link rel="stylesheet" href="../assets/css/mobile.css"/>
+  <link rel="stylesheet" href="../assets/css/admin-dashboard.css"/>
+  <style>
+    :root{--vip:#008b8b;--vipd:#0f766e;--soft:#f4f7fa;--stroke:#dbe4ee;--text:#334155;--muted:#64748b}
+    *{box-sizing:border-box}body{margin:0;background:var(--soft);font-family:'Roboto',sans-serif;color:var(--text);font-size:15px;line-height:1.65}
+    .cw{max-width:1480px;margin:0 auto;padding:0 16px}.pshell{padding-bottom:48px}
+
+    /* ── Two-column admin layout ── */
+    .adm-layout{display:flex;gap:0;align-items:flex-start;padding-top:20px}
+    .adm-sidebar{width:220px;flex-shrink:0;position:sticky;top:90px;margin-right:22px}
+    .adm-main{flex:1;min-width:0}
+    /* Sidebar card */
+    .sb-card{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 6px 24px rgba(15,23,42,.06);padding:14px;overflow:hidden}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:3px;transition:.15s}
+    .sb-item:hover,.sb-item.on{background:var(--vip);color:#fff}
+    .sb-item i{width:16px;text-align:center;font-size:13px}
+    /* Accordion in sidebar */
+    .acc-group{margin:2px 0}
+    .acc-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left;transition:.15s}
+    .acc-btn:hover,.acc-btn.on{background:var(--vip);color:#fff}
+    .acc-btn .chev{transition:transform .2s;font-size:10px;flex-shrink:0}
+    .acc-group.open .acc-btn .chev{transform:rotate(180deg)}
+    .acc-group.open .acc-btn{background:var(--vip);color:#fff}
+    .acc-sub{display:none;margin:3px 0 5px 16px;padding-left:11px;border-left:2px solid #dbe4ee}
+    .acc-group.open .acc-sub{display:flex;flex-direction:column}
+    .acc-subitem{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:9px;color:#64748b;font-weight:700;font-size:13px;text-decoration:none;margin:2px 0;transition:.15s}
+    .acc-subitem:hover,.acc-subitem.on{background:#eaf2ff;color:#1d4ed8}
+    .sb-divider{height:1px;background:var(--stroke);margin:8px 0}
+    @media(max-width:1024px){.adm-layout{flex-direction:column}.adm-sidebar{width:100%;position:static;margin-right:0;margin-bottom:16px}}
+
+    /* Status */
+    .sbox{padding:13px 16px;border-radius:14px;font-weight:700;font-size:14px;display:none;margin-bottom:14px}
+    .sbox.show{display:block}.sbox.ok{background:#f0fdfa;color:#0f766e;border-left:4px solid #0f766e}
+    .sbox.err{background:#fef2f2;color:#b91c1c;border-left:4px solid #b91c1c}.sbox.info{background:#eff6ff;color:#1d4ed8;border-left:4px solid #1d4ed8}
+
+    /* Btns */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;border:0;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer;font-size:13px;transition:.15s;text-decoration:none}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .bp{background:var(--vip);color:#fff}.bp:hover{background:var(--vipd)}
+    .bs{background:#eff6ff;color:#1d4ed8}.bs:hover{background:#dbeafe}
+    .bd{background:#0f172a;color:#fff}.bd:hover{background:#1e293b}
+    .br{background:#fef2f2;color:#dc2626}.br:hover{background:#fee2e2}
+    .bw{background:#fffbeb;color:#d97706}
+
+    /* Card */
+    .card{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 6px 24px rgba(15,23,42,.05)}
+
+    /* Fields */
+    .fld,.fldta,.fldsel{width:100%;min-height:42px;padding:9px 12px;border:1.5px solid var(--stroke);border-radius:10px;background:#fff;font-size:14px;outline:none;font-family:inherit;color:var(--text)}
+    .fldta{min-height:68px;resize:vertical}.fld:focus,.fldta:focus,.fldsel:focus{border-color:var(--vip);box-shadow:0 0 0 3px rgba(0,139,139,.09)}
+    .lbl{display:block;font-size:12px;font-weight:800;margin-bottom:5px;color:#0f172a}.lbl span{font-weight:400;color:var(--muted)}
+
+    /* Page views */
+    .pv{display:none}.pv.on{display:block}
+
+    /* ── LIST VIEW ── */
+    .frow{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:9px;align-items:end;margin-bottom:14px}
+    .lhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+    .ltitle{font-size:18px;font-weight:900;margin:0}
+    .li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px 15px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;align-items:start;margin-bottom:9px;transition:.15s}
+    .li:hover{box-shadow:0 3px 16px rgba(0,139,139,.08)}.lt{font-size:14px;font-weight:800;color:#0f172a;margin-bottom:5px;line-height:1.45}
+    .lm{display:flex;flex-wrap:wrap;gap:6px;font-size:11px;color:#64748b;margin-bottom:4px}
+    .chip{display:inline-flex;align-items:center;gap:4px;min-height:20px;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:800}
+    .spublished,.sapproved{background:#ecfeff;color:#0f766e}.sdraft{background:#fef3c7;color:#b45309}.sarchived{background:#f1f5f9;color:#475569}
+    .lac{display:flex;gap:7px}
+    .mb{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 10px;border-radius:9px;border:0;font-weight:800;font-size:12px;cursor:pointer}
+    .mbs{background:#eff6ff;color:#1d4ed8}.mbr{background:#fef2f2;color:#dc2626}
+    .empty{text-align:center;padding:36px 16px;color:#94a3b8}
+
+    /* ── EDITOR ── */
+    .ebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:13px 18px;border-bottom:1px solid var(--stroke);background:#f8fafc;border-radius:18px 18px 0 0}
+    .etitle{font-size:15px;font-weight:900;color:#0f172a}
+    .eacts{display:flex;gap:6px;flex-wrap:wrap}
+    .etrow{padding:13px 18px;border-bottom:1px solid #f1f5f9}
+    .etgrid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:10px}
+    .esrow{padding:10px 18px 13px;border-bottom:1px solid #f1f5f9}
+    .ecarea{padding:16px 18px}
+
+    /* Rich editor */
+    .rew{border:1.5px solid var(--stroke);border-radius:13px;overflow:hidden}
+    .retb{display:flex;flex-wrap:wrap;gap:3px;padding:8px 10px;border-bottom:1px solid var(--stroke);background:#f8fafc;align-items:center}
+    .retb button,.retb .upl{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;border:1px solid #dbe4ee;border-radius:6px;background:#fff;color:#334155;font-size:12px;font-weight:800;cursor:pointer;gap:3px;transition:.12s}
+    .retb button:hover{background:#f1f5f9}.retb button.act{background:#0f172a;color:#fff;border-color:#0f172a}
+    .retb .sep{width:1px;height:20px;background:#e2e8f0;margin:0 2px;align-self:center}
+    .retb .tg{display:flex;gap:3px;align-items:center}.retb .tlbl{font-size:9px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin:0 2px}
+    .retb select{height:28px;padding:0 5px;border:1px solid #dbe4ee;border-radius:6px;font-size:11px;font-weight:700;background:#fff;outline:none}
+    .rte{min-height:480px;max-height:840px;overflow-y:auto;padding:16px 18px;outline:none;font-size:15px;line-height:1.85;color:#0f172a}
+    .rte:empty:before{content:attr(data-placeholder);color:#94a3b8;pointer-events:none}
+    .rte h2{font-size:20px;font-weight:900;margin:16px 0 8px}.rte h3{font-size:17px;font-weight:800;margin:14px 0 7px}
+    .rte p{margin:0 0 10px}.rte ul{margin:7px 0 10px 20px;list-style:disc}.rte ol{margin:7px 0 10px 20px;list-style:decimal}
+    .rte table{width:100%;border-collapse:collapse;margin:12px 0}.rte td,.rte th{border:1px solid #cbd5e1;padding:7px 9px}.rte th{background:#f8fafc;font-weight:800}
+    .rte img{max-width:100%;height:auto;border-radius:10px;margin:8px 0;display:block}
+    .rte blockquote{border-left:4px solid #14b8a6;margin:12px 0;padding:6px 0 6px 12px;color:#475569;background:#f8fafc;border-radius:0 9px 9px 0}
+    .rte a{color:var(--vip);text-decoration:underline}.rte hr{border:0;border-top:2px solid #e2e8f0;margin:16px 0}
+    .rte code{background:#f1f5f9;color:#0f766e;padding:2px 5px;border-radius:5px;font-size:13px}
+    .rte pre{background:#0f172a;color:#e2e8f0;padding:12px 14px;border-radius:10px;font-size:13px;overflow-x:auto;margin:10px 0}
+    .eftr{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;background:#f8fafc;border-top:1px solid var(--stroke);font-size:11px;color:#94a3b8;flex-wrap:wrap;gap:5px}
+    .wcb{background:#e2e8f0;border-radius:6px;padding:2px 7px;font-weight:800;font-size:11px;color:#475569}.wcb.ok{background:#dcfce7;color:#166534}.wcb.gr{background:#bbf7d0;color:#15803d}
+
+    /* ── Bottom metadata — 2×2 grid per column ── */
+    .mbot{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px 18px;border-top:2px solid #f1f5f9;background:#fcfdff;border-radius:0 0 18px 18px}
+    .ms{display:grid;gap:10px}.mst{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;padding-bottom:5px;border-bottom:1px solid #e5e7eb}
+    .ms-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    /* Image upload */
+    .iua{border:2px dashed #cbd5e1;border-radius:11px;padding:11px;text-align:center;cursor:pointer;transition:.15s;background:#f8fafc}
+    .iua:hover{border-color:var(--vip)}.iprev{display:none;margin-top:8px}
+    .iprev img{width:100%;max-height:140px;object-fit:cover;border-radius:9px;border:1px solid var(--stroke)}
+    /* SERP */
+    .serp{background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:10px}
+    .serp-t{font-size:13px;font-weight:700;color:#1a0dab;line-height:1.3;margin-bottom:2px}
+    .serp-u{font-size:10px;color:#0a6634;margin-bottom:2px}
+    .serp-d{font-size:11px;color:#4d5156;line-height:1.4}
+    /* HTML import modal */
+    .modal-bg{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,23,42,.6);align-items:center;justify-content:center;padding:20px}
+    .modal-bg.show{display:flex}.modal-box{background:#fff;border-radius:18px;padding:22px;max-width:700px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+
+    /* ══ ENHANCED TOOLBAR ADDITIONS ══ */
+    /* Dropdown popover */
+    .ret-drop{position:relative;display:inline-block}
+    .ret-drop-menu{display:none;position:absolute;top:calc(100%+4px);left:0;background:#fff;border:1px solid #dbe4ee;border-radius:10px;box-shadow:0 8px 28px rgba(15,23,42,.13);z-index:1000;padding:6px;min-width:150px}
+    .ret-drop.open .ret-drop-menu{display:block}
+    .ret-drop-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;cursor:pointer;font-size:13px;color:#334155;font-weight:600;white-space:nowrap;transition:.12s}
+    .ret-drop-item:hover{background:#f1f5f9;color:#0f766e}
+    /* Color pickers */
+    .ret-clr-wrap{display:inline-flex;align-items:center;border:1px solid #dbe4ee;border-radius:6px;overflow:hidden;height:28px}
+    .ret-clr-btn{display:inline-flex;align-items:center;justify-content:center;gap:3px;padding:0 6px;height:28px;background:#fff;cursor:pointer;font-size:12px;color:#334155;font-weight:800;border:0;border-right:1px solid #dbe4ee}
+    .ret-clr-btn:hover{background:#f1f5f9}
+    .ret-clr-inp{width:26px;height:28px;padding:0;border:0;background:#fff;cursor:pointer;overflow:hidden}
+    .ret-clr-inp input[type=color]{width:34px;height:34px;border:0;padding:0;margin:-3px -4px;cursor:pointer}
+    /* Fullscreen */
+    .rew.fullscreen{position:fixed;inset:0;z-index:8888;border-radius:0;display:flex;flex-direction:column}
+    .rew.fullscreen .rte{flex:1;max-height:none}
+    /* Find & Replace bar */
+    .efnr{display:none;background:#f8fafc;border-top:1px solid var(--stroke);padding:7px 12px;gap:7px;align-items:center;flex-wrap:wrap}
+    .efnr.open{display:flex}
+    .efnr input{height:28px;padding:0 8px;border:1px solid #dbe4ee;border-radius:6px;font-size:12px;width:135px;outline:none}
+    .efnr input:focus{border-color:var(--vip)}
+    .efnr button{height:26px;padding:0 9px;border-radius:6px;border:1px solid #dbe4ee;background:#fff;font-size:12px;font-weight:700;cursor:pointer;color:#334155}
+    .efnr button:hover{background:#f1f5f9}.efnr .fnr-close{margin-left:auto;color:#94a3b8}
+    /* Table dialog */
+    .news-dlg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;align-items:center;justify-content:center}
+    .news-dlg.open{display:flex}
+    .news-dlg-box{background:#fff;border-radius:18px;padding:22px 24px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+    .news-dlg-box h4{font-size:15px;font-weight:900;margin:0 0 15px;color:#0f172a}
+    /* Link dialog */
+    .news-link-dlg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;align-items:center;justify-content:center}
+    .news-link-dlg.open{display:flex}
+    /* Video dialog */
+    .news-video-dlg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;align-items:center;justify-content:center}
+    .news-video-dlg.open{display:flex}
+    /* Read time in footer */
+    .eftr{gap:8px;flex-wrap:wrap}
+    /* Snippet menu */
+    .snip-menu{min-width:210px}
+    .snip-item{font-size:12px}
+    /* Preview pane */
+    .ppane{display:none;background:#fff;border:1px solid var(--stroke);border-radius:14px;padding:18px;margin-top:14px}
+    .ppane.show{display:block}.ppane-body img{max-width:100%;border-radius:10px;margin:8px 0}
+    .ppane-body h2{font-size:19px;font-weight:900;margin:14px 0 7px}.ppane-body h3{font-size:16px;font-weight:800;margin:12px 0 6px}
+    .ppane-body p{margin:0 0 10px}.ppane-body{font-size:14px;line-height:1.8;color:#1e293b}
+    @media(max-width:900px){.frow{grid-template-columns:1fr 1fr}.mbot{grid-template-columns:1fr}.etgrid{grid-template-columns:1fr}.ms-2col{grid-template-columns:1fr}.rte{min-height:340px}}
+    @media(max-width:640px){.frow{grid-template-columns:1fr}.li{grid-template-columns:1fr}}
+  
+        /* mobile-dashboard-standard */
+
+        .adm-layout{align-items:start!important}
+        .adm-sidebar{position:sticky;top:92px;align-self:start;height:calc(100vh - 110px);overflow:hidden}
+        .adm-sidebar .sb-card{height:100%;overflow:auto;scrollbar-width:thin}
+        .adm-sidebar .sb-card::-webkit-scrollbar{width:6px}
+        .adm-sidebar .sb-card::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px}
+
+        @media (max-width: 1200px){
+            .cw{padding-left:16px!important;padding-right:16px!important}
+            .hero-card{padding:22px!important}
+            .stats-grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+        }
+
+        @media (max-width: 992px){
+            .adm-layout{grid-template-columns:1fr!important;gap:16px!important}
+            .adm-sidebar{position:static!important;top:auto!important;height:auto!important;overflow:visible!important}
+            .adm-sidebar .sb-card{height:auto!important;overflow:visible!important}
+            .toolbar-head{flex-direction:column!important;align-items:flex-start!important;gap:14px!important}
+            .btn-row{width:100%!important;display:flex!important;flex-wrap:wrap!important}
+            .btn-row .btn-soft,.btn-row .btn-primary{flex:1 1 180px!important;justify-content:center!important}
+            .page-hero{margin-bottom:16px!important}
+            .hero-points{grid-template-columns:1fr!important}
+        }
+
+        @media (max-width: 768px){
+            .page-breadcrumb{display:none!important}
+            .cw{padding-left:12px!important;padding-right:12px!important}
+            .hero-card{padding:16px!important;border-radius:22px!important}
+            .hero-title{font-size:24px!important;line-height:1.35!important}
+            .hero-desc,.toolbar-sub,.stats-note,.metric-note,.info-muted{font-size:13px!important;line-height:1.7!important}
+            .toolbar-card,.section-card,.stats-card,.metric-card,.table-card,.filter-card{border-radius:20px!important}
+            .stats-grid,.metric-grid{grid-template-columns:1fr!important;gap:12px!important}
+            .stats-card,.metric-card{padding:16px!important}
+            .stats-value,.metric-value{font-size:30px!important}
+            .field-grid,.filter-grid,.row{grid-template-columns:1fr!important;gap:12px!important}
+            .switch-row{grid-template-columns:1fr auto!important;gap:10px!important}
+            .btn-row{flex-direction:column!important;align-items:stretch!important}
+            .btn-row .btn-soft,.btn-row .btn-primary{width:100%!important}
+            .acc-btn,.sb-item{font-size:14px!important}
+            .acc-subitem{font-size:13px!important;padding:10px 12px 10px 28px!important}
+            .data-table th,.data-table td{padding:12px 10px!important;font-size:13px!important}
+            .table-wrap{overflow:auto!important;-webkit-overflow-scrolling:touch}
+            .content-stack{gap:14px!important}
+        }
+
+        @media (max-width: 640px){
+            .hero-title{font-size:22px!important}
+            .toolbar-title,.section-title{font-size:18px!important;line-height:1.35!important}
+            .hero-badge{font-size:12px!important;padding:8px 10px!important}
+            .stats-value,.metric-value{font-size:28px!important}
+            .page-shell{padding-bottom:14px!important}
+            .adm-main{min-width:0!important}
+        }
+
+
+        /* mobile-ui-refine-20260415b */
+        .adm-sidebar{
+            height:auto !important;
+            overflow:visible !important;
+        }
+        .adm-sidebar .sb-card{
+            height:auto !important;
+            overflow:visible !important;
+            box-shadow:0 6px 18px rgba(15,23,42,.04) !important;
+        }
+        .hero-card{
+            box-shadow:none !important;
+        }
+        .hero-card::before,
+        .hero-card::after,
+        .toolbar-card::before,
+        .toolbar-card::after{
+            display:none !important;
+            content:none !important;
+        }
+        @media (max-width: 768px){
+            .stats-grid,
+            .metric-grid{
+                grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+                gap:12px !important;
+            }
+            .stats-card,
+            .metric-card{
+                padding:14px !important;
+                min-height:auto !important;
+            }
+            .stats-value,
+            .metric-value{
+                font-size:26px !important;
+                line-height:1.2 !important;
+            }
+            .stats-label,
+            .metric-label{
+                font-size:12px !important;
+            }
+            .stats-note,
+            .metric-note{
+                font-size:12px !important;
+                line-height:1.6 !important;
+            }
+            .btn-soft,
+            .btn-primary,
+            .btn,
+            button{
+                min-height:40px !important;
+                padding:10px 12px !important;
+                font-size:13px !important;
+                border-radius:14px !important;
+            }
+            .btn-row{
+                gap:10px !important;
+            }
+            .hero-card{
+                padding:14px !important;
+                border-radius:20px !important;
+                margin-bottom:10px !important;
+            }
+            .hero-title{
+                font-size:22px !important;
+                line-height:1.35 !important;
+            }
+            .hero-desc{
+                font-size:13px !important;
+                line-height:1.65 !important;
+            }
+            .toolbar-card{
+                padding:14px !important;
+                border-radius:20px !important;
+                margin-bottom:14px !important;
+            }
+            .section-card,
+            .table-card,
+            .filter-card{
+                border-radius:20px !important;
+            }
+            .field-control,
+            input,
+            select,
+            textarea{
+                min-height:42px !important;
+                padding:10px 12px !important;
+                font-size:14px !important;
+            }
+            .table-wrap{
+                overflow:auto !important;
+                -webkit-overflow-scrolling:touch;
+            }
+            .acc-subitem{
+                padding-left:22px !important;
+            }
+        }
+        @media (max-width: 480px){
+            .stats-grid,
+            .metric-grid{
+                grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+            }
+            .stats-value,
+            .metric-value{
+                font-size:24px !important;
+            }
+            .hero-title{
+                font-size:20px !important;
+            }
+        }
+    
+        /* admin-mobile-refine-20260415c */
+        .adm-sidebar{
+            height:auto !important;
+            min-height:0 !important;
+            overflow:visible !important;
+        }
+        .adm-sidebar .sb-card{
+            height:auto !important;
+            min-height:0 !important;
+            overflow:visible !important;
+            padding-bottom:12px !important;
+            box-shadow:0 4px 14px rgba(15,23,42,.04) !important;
+        }
+        .hero-card,
+        .toolbar-card,
+        .section-card,
+        .stats-card,
+        .metric-card,
+        .table-card,
+        .filter-card{
+            box-shadow:0 4px 14px rgba(15,23,42,.04) !important;
+        }
+        .hero-card::before,
+        .hero-card::after,
+        .toolbar-card::before,
+        .toolbar-card::after,
+        .section-card::before,
+        .section-card::after{
+            display:none !important;
+            content:none !important;
+        }
+        @media (max-width: 768px){
+            .stats-grid,
+            .metric-grid{
+                grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+                gap:12px !important;
+            }
+            .stats-card,
+            .metric-card{
+                padding:14px !important;
+                min-height:auto !important;
+            }
+            .stats-value,
+            .metric-value{
+                font-size:24px !important;
+                line-height:1.2 !important;
+            }
+            .stats-label,
+            .metric-label{
+                font-size:12px !important;
+            }
+            .stats-note,
+            .metric-note,
+            .toolbar-sub,
+            .hero-desc,
+            .info-muted{
+                font-size:12px !important;
+                line-height:1.6 !important;
+            }
+            .hero-card{
+                padding:14px !important;
+                margin-bottom:10px !important;
+            }
+            .hero-title{
+                font-size:20px !important;
+                line-height:1.35 !important;
+            }
+            .toolbar-card{
+                padding:14px !important;
+                margin-bottom:14px !important;
+            }
+            .toolbar-head{
+                flex-direction:column !important;
+                align-items:flex-start !important;
+                gap:10px !important;
+            }
+            .btn-row,
+            .toolbar-actions{
+                width:100% !important;
+                display:flex !important;
+                flex-direction:row !important;
+                flex-wrap:wrap !important;
+                gap:10px !important;
+                justify-content:flex-start !important;
+            }
+            .btn-row .btn-soft,
+            .btn-row .btn-primary,
+            .toolbar-actions .btn-soft,
+            .toolbar-actions .btn-primary,
+            .toolbar-actions .btn-success,
+            .toolbar-actions .btn-warning,
+            .toolbar-actions .btn-danger,
+            .btn,
+            button{
+                flex:0 0 auto !important;
+                width:auto !important;
+                min-height:38px !important;
+                padding:9px 12px !important;
+                font-size:13px !important;
+                border-radius:14px !important;
+            }
+            .field-grid,
+            .filter-grid,
+            .row,
+            .toolbar-grid{
+                grid-template-columns:1fr !important;
+                gap:12px !important;
+            }
+            .table-wrap{
+                overflow:auto !important;
+                -webkit-overflow-scrolling:touch !important;
+            }
+            .data-table th,
+            .data-table td{
+                padding:12px 10px !important;
+                font-size:13px !important;
+            }
+            .acc-subitem{
+                padding-left:22px !important;
+            }
+        }
+        @media (max-width: 480px){
+            .stats-grid,
+            .metric-grid{
+                grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+            }
+            .stats-value,
+            .metric-value{
+                font-size:22px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="site-header"></div>
+<div id="site-mobile-menu"></div>
+<main class="pshell">
+<div class="cw">
+<div class="adm-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="adm-sidebar">
+    <div class="sb-card">
+      <a href="admin-dashboard.html" class="sb-item "><i class="fa-solid fa-chart-line"></i>Tổng quan</a>
+      <a href="quan-ly-thanh-vien.html" class="sb-item "><i class="fa-solid fa-users"></i>Thành viên</a>
+      <a href="kiem-duyet-tin.html" class="sb-item "><i class="fa-solid fa-list-check"></i>Kiểm duyệt</a>
+      <div class="sb-divider"></div>
+      
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-diagram-project"></i> Dự án</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          
+          <a href="quan-ly-du-an.html" class="acc-subitem"><i class="fa-solid fa-list"></i>Danh sách</a>
+          <a href="quan-ly-noi-dung-du-an.html" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập nội dung</a>
+          <a href="quan-ly-chu-dau-tu.html" class="acc-subitem"><i class="fa-solid fa-building-circle-check"></i>Chủ đầu tư</a>
+          <a href="quan-ly-seo-du-an.html" class="acc-subitem"><i class="fa-solid fa-magnifying-glass-chart"></i>SEO dự án</a>
+    
+        </div>
+      </div>
+      
+      <div class="acc-group open">
+        <button type="button" class="acc-btn on"><span><i class="fa-solid fa-newspaper"></i> Tin tức</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          
+          <a href="quan-ly-tin-tuc.html#list" class="acc-subitem on"><i class="fa-solid fa-list"></i>Tất cả bài viết</a>
+          <a href="quan-ly-tin-tuc.html#editor" class="acc-subitem on"><i class="fa-solid fa-pen-nib"></i>Biên tập bài viết</a>
+    
+        </div>
+      </div>
+      
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-magnifying-glass-chart"></i> SEO Landing</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          
+          <a href="quan-ly-seo-landing.html#template" class="acc-subitem"><i class="fa-solid fa-code"></i>Template SEO</a>
+          <a href="quan-ly-seo-landing.html#override" class="acc-subitem"><i class="fa-solid fa-pen"></i>Override landing</a>
+          <a href="quan-ly-seo-landing.html#list" class="acc-subitem"><i class="fa-solid fa-list"></i>Danh sách</a>
+    
+        </div>
+      </div>
+      <a href="cai-dat-he-thong.html" class="sb-item "><i class="fa-solid fa-sliders"></i>Cài đặt hệ thống</a>
+      <div class="sb-divider"></div>
+      
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-wallet"></i> Kiếm tiền / VIP</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          
+          <a href="quan-ly-don-hang.html" class="acc-subitem"><i class="fa-solid fa-file-invoice-dollar"></i>Đơn hàng</a>
+          <a href="duyet-don-thu-phi.html" class="acc-subitem"><i class="fa-solid fa-money-check-dollar"></i>Duyệt đơn thu phí</a>
+          <a href="quan-ly-entitlement-vip.html" class="acc-subitem"><i class="fa-solid fa-crown"></i>Entitlement VIP</a>
+          <a href="cap-quyen-vip.html" class="acc-subitem"><i class="fa-solid fa-user-shield"></i>Cấp quyền VIP</a>
+    
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main content ── -->
+  <div class="adm-main">
+    <div id="sbox" class="sbox"></div>
+
+    <!-- LIST VIEW -->
+    <section id="vList" class="pv">
+      <div class="card" style="padding:16px 18px;margin-bottom:14px">
+        <div class="lhead">
+          <div><h2 class="ltitle">Tất cả bài viết</h2><div id="nstats" style="font-size:12px;color:#64748b;margin-top:3px">Đang tải...</div></div>
+          <div style="display:flex;gap:7px"><button id="refreshBtn" class="btn bs"><i class="fa-solid fa-rotate"></i>Làm mới</button><button id="newPostBtn" class="btn bp"><i class="fa-solid fa-plus"></i>Bài mới</button></div>
+        </div>
+        <div class="frow">
+          <div><label class="lbl">Từ khoá</label><input id="fKw" class="fld" placeholder="Tìm tiêu đề..."></div>
+          <div><label class="lbl">Trạng thái</label><select id="fSt" class="fldsel"><option value="">Tất cả</option><option value="published">Hiển thị</option><option value="draft">Nháp</option><option value="archived">Lưu trữ</option></select></div>
+          <div><label class="lbl">Chuyên mục</label><select id="fCat" class="fldsel"><option value="">Tất cả chuyên mục</option></select></div>
+          <div style="padding-top:18px"><button id="applyBtn" class="btn bd" style="width:100%"><i class="fa-solid fa-magnifying-glass"></i>Lọc</button></div>
+        </div>
+      </div>
+      <div class="card"><div id="nList" style="padding:14px 16px;display:grid;gap:7px"></div>
+        <div id="newsPager" style="display:flex;gap:6px;padding:12px 16px;flex-wrap:wrap;border-top:1px solid #f1f5f9;background:#f8fafc;border-radius:0 0 18px 18px"></div>
+      </div>
+    </section>
+
+    <!-- EDITOR VIEW -->
+    <section id="vEditor" class="pv on">
+    <form id="nForm" autocomplete="off">
+    <input type="hidden" id="nId"/>
+    <div class="card" style="overflow:hidden">
+
+      <!-- Action bar -->
+      <div class="ebar">
+        <div><div class="etitle"><i class="fa-solid fa-pen-nib" style="color:var(--vip);margin-right:7px"></i>Biên tập bài viết</div></div>
+        <div class="eacts">
+          <button type="button" id="backBtn" class="btn bs"><i class="fa-solid fa-arrow-left"></i>Danh sách</button>
+          <button type="button" id="prevBtn" class="btn bw"><i class="fa-solid fa-eye"></i>Preview</button>
+          <button type="button" id="delBtn" class="btn br"><i class="fa-solid fa-trash"></i>Xóa</button>
+          <button type="button" id="draftBtn" class="btn bs"><i class="fa-solid fa-cloud"></i>Lưu nháp</button>
+          <button type="button" id="pubBtn" class="btn bp"><i class="fa-solid fa-paper-plane"></i>Xuất bản</button>
+        </div>
+      </div>
+
+      <!-- Title + Slug -->
+      <div class="etrow"><div class="etgrid">
+        <div><label class="lbl">Tiêu đề <span style="color:#dc2626">*</span></label>
+          <input id="nTitle" class="fld" type="text" placeholder="Tiêu đề bài viết..." style="font-size:15px;font-weight:700" required/></div>
+        <div><label class="lbl">Slug <span>(tự động)</span></label>
+          <input id="nSlug" class="fld" type="text" placeholder="slug-bai-viet" style="font-family:monospace;font-size:13px"/></div>
+      </div></div>
+
+      <!-- Summary -->
+      <div class="esrow">
+        <label class="lbl">Tóm tắt <span>(120–160 ký tự · card & SEO)</span></label>
+        <textarea id="nSummary" class="fldta" rows="2" placeholder="Tóm tắt ngắn gọn, chứa từ khoá chính..."></textarea>
+        <div id="scnt" style="font-size:11px;color:#94a3b8;margin-top:3px">0 ký tự</div>
+      </div>
+
+      <!-- Rich Editor -->
+      <div class="ecarea">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <label class="lbl" style="margin:0">Nội dung bài viết</label>
+          <div style="display:flex;gap:5px">
+            <button type="button" id="fsBtn" class="btn bs" style="min-height:28px;padding:0 9px;font-size:11px"><i class="fa-solid fa-expand"></i>Toàn màn hình</button>
+            <button type="button" id="htmlBtn" class="btn bs" style="min-height:28px;padding:0 9px;font-size:11px"><i class="fa-solid fa-code"></i>Dán HTML</button>
+          </div>
+        </div>
+
+        <div class="rew" id="rWrap">
+          <div class="retb" id="eTb">
+            <!-- Nhóm 1: Undo / Redo -->
+            <div class="tg">
+              <button type="button" data-c="undo" title="Hoàn tác (Ctrl+Z)"><i class="fa-solid fa-rotate-left"></i></button>
+              <button type="button" data-c="redo" title="Làm lại (Ctrl+Y)"><i class="fa-solid fa-rotate-right"></i></button>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 2: Heading dropdown -->
+            <div class="tg">
+              <span class="tlbl">H</span>
+              <div class="ret-drop" id="hdDrop">
+                <button type="button" class="hd-trigger" title="Kiểu đoạn văn" style="min-width:74px;font-size:12px;font-weight:800;gap:4px">
+                  <i class="fa-solid fa-heading" style="font-size:11px"></i>
+                  <span id="hdLabel">Đoạn</span>
+                  <i class="fa-solid fa-caret-down" style="font-size:9px;margin-left:auto"></i>
+                </button>
+                <div class="ret-drop-menu">
+                  <div class="ret-drop-item" data-hd="p"><i class="fa-solid fa-paragraph" style="width:14px;opacity:.5;font-size:11px"></i>Đoạn văn</div>
+                  <div class="ret-drop-item" data-hd="h1" style="font-size:18px;font-weight:900"><i class="fa-solid fa-heading" style="width:14px;opacity:.5"></i>Tiêu đề 1</div>
+                  <div class="ret-drop-item" data-hd="h2" style="font-size:16px;font-weight:800"><i class="fa-solid fa-heading" style="width:14px;opacity:.5;font-size:14px"></i>Tiêu đề 2</div>
+                  <div class="ret-drop-item" data-hd="h3" style="font-size:14px;font-weight:800"><i class="fa-solid fa-heading" style="width:14px;opacity:.5;font-size:12px"></i>Tiêu đề 3</div>
+                  <div class="ret-drop-item" data-hd="h4" style="font-size:13px;font-weight:700"><i class="fa-solid fa-heading" style="width:14px;opacity:.5;font-size:10px"></i>Tiêu đề 4</div>
+                  <div class="ret-drop-item" data-hd="blockquote"><i class="fa-solid fa-quote-right" style="width:14px;opacity:.5;font-size:11px"></i>Trích dẫn</div>
+                  <div class="ret-drop-item" data-hd="pre"><i class="fa-solid fa-code" style="width:14px;opacity:.5;font-size:11px"></i>Code block</div>
+                </div>
+              </div>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 3: Text format -->
+            <div class="tg">
+              <span class="tlbl">F</span>
+              <button type="button" data-c="bold" title="Đậm (Ctrl+B)"><b>B</b></button>
+              <button type="button" data-c="italic" title="Nghiêng (Ctrl+I)"><i>I</i></button>
+              <button type="button" data-c="underline" title="Gạch chân (Ctrl+U)"><u>U</u></button>
+              <button type="button" data-c="strikeThrough" title="Gạch ngang"><s>S</s></button>
+              <button type="button" data-c="hilite" title="Tô sáng vàng"><i class="fa-solid fa-highlighter"></i></button>
+              <button type="button" data-c="superscript" title="Chỉ số trên" style="font-size:11px">x<sup style="font-size:8px">²</sup></button>
+              <button type="button" data-c="subscript" title="Chỉ số dưới" style="font-size:11px">x<sub style="font-size:8px">₂</sub></button>
+              <button type="button" data-c="removeFormat" title="Xóa định dạng"><i class="fa-solid fa-eraser"></i></button>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 4: Căn lề -->
+            <div class="tg">
+              <button type="button" data-c="justifyLeft" title="Căn trái"><i class="fa-solid fa-align-left"></i></button>
+              <button type="button" data-c="justifyCenter" title="Căn giữa"><i class="fa-solid fa-align-center"></i></button>
+              <button type="button" data-c="justifyRight" title="Căn phải"><i class="fa-solid fa-align-right"></i></button>
+              <button type="button" data-c="justifyFull" title="Căn đều"><i class="fa-solid fa-align-justify"></i></button>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 5: List & Indent -->
+            <div class="tg">
+              <button type="button" data-c="insertUnorderedList" title="Danh sách gạch đầu dòng"><i class="fa-solid fa-list-ul"></i></button>
+              <button type="button" data-c="insertOrderedList" title="Danh sách số"><i class="fa-solid fa-list-ol"></i></button>
+              <button type="button" data-c="outdent" title="Giảm thụt dòng"><i class="fa-solid fa-outdent"></i></button>
+              <button type="button" data-c="indent" title="Tăng thụt dòng"><i class="fa-solid fa-indent"></i></button>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 6: Chèn -->
+            <div class="tg">
+              <span class="tlbl">Chèn</span>
+              <button type="button" data-c="link" title="Chèn liên kết (Ctrl+K)"><i class="fa-solid fa-link"></i></button>
+              <button type="button" data-c="unlink" title="Xóa liên kết"><i class="fa-solid fa-link-slash"></i></button>
+              <button type="button" data-c="imgurl" title="Chèn ảnh URL"><i class="fa-solid fa-image"></i></button>
+              <label class="upl" title="Upload ảnh từ máy" style="cursor:pointer">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <input type="file" id="eImgFile" accept="image/*" style="display:none">
+              </label>
+              <button type="button" data-c="video" title="Nhúng video YouTube/Vimeo"><i class="fa-brands fa-youtube"></i></button>
+              <button type="button" data-c="table" title="Chèn bảng"><i class="fa-solid fa-table"></i></button>
+              <button type="button" data-c="insertHorizontalRule" title="Đường ngang"><i class="fa-solid fa-minus"></i></button>
+              <button type="button" data-c="blockquote" title="Trích dẫn"><i class="fa-solid fa-quote-right"></i></button>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 7: Code -->
+            <div class="tg">
+              <span class="tlbl">Code</span>
+              <button type="button" data-c="icode" title="Inline code"><i class="fa-solid fa-code"></i></button>
+              <button type="button" data-c="pre" title="Code block"><i class="fa-brands fa-square-js"></i></button>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 8: Cỡ chữ + Màu -->
+            <div class="tg">
+              <span class="tlbl">Cỡ/Màu</span>
+              <select id="szSel" title="Cỡ chữ">
+                <option value="">Cỡ</option>
+                <option value="12px">12</option><option value="13px">13</option>
+                <option value="14px">14</option><option value="15px">15</option>
+                <option value="16px">16</option><option value="18px">18</option>
+                <option value="20px">20</option><option value="24px">24</option>
+                <option value="28px">28</option><option value="32px">32</option>
+              </select>
+              <!-- Màu chữ -->
+              <div class="ret-clr-wrap" title="Màu chữ">
+                <button type="button" class="ret-clr-btn" id="applyFcBtn" title="Áp dụng màu chữ">
+                  <i class="fa-solid fa-font"></i>
+                  <span id="fcSwatch" style="display:inline-block;width:10px;height:3px;border-radius:2px;background:#e74c3c;margin-top:1px"></span>
+                </button>
+                <div class="ret-clr-inp"><input type="color" id="fcPick" value="#e74c3c"></div>
+              </div>
+              <!-- Highlight color -->
+              <div class="ret-clr-wrap" title="Tô sáng tùy chọn">
+                <button type="button" class="ret-clr-btn" id="applyHlBtn" title="Áp dụng tô sáng">
+                  <i class="fa-solid fa-highlighter"></i>
+                  <span id="hlSwatch" style="display:inline-block;width:10px;height:3px;border-radius:2px;background:#fef08a;margin-top:1px"></span>
+                </button>
+                <div class="ret-clr-inp"><input type="color" id="hlPick" value="#fef08a"></div>
+              </div>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 9: Mẫu nội dung nhanh -->
+            <div class="tg">
+              <div class="ret-drop" id="snipDrop">
+                <button type="button" class="snip-trigger" title="Mẫu nội dung tin tức">
+                  <i class="fa-solid fa-bolt"></i>
+                  <i class="fa-solid fa-caret-down" style="font-size:9px"></i>
+                </button>
+                <div class="ret-drop-menu snip-menu">
+                  <div style="font-size:10px;font-weight:900;color:#94a3b8;padding:3px 10px 1px;text-transform:uppercase">Mẫu bài viết</div>
+                  <div class="ret-drop-item snip-item" data-snip="news_lead"><i class="fa-solid fa-newspaper" style="width:14px;opacity:.5"></i>Mở đầu tin tức</div>
+                  <div class="ret-drop-item snip-item" data-snip="market_overview"><i class="fa-solid fa-chart-line" style="width:14px;opacity:.5"></i>Tổng quan thị trường</div>
+                  <div class="ret-drop-item snip-item" data-snip="price_analysis"><i class="fa-solid fa-tag" style="width:14px;opacity:.5"></i>Phân tích giá</div>
+                  <div class="ret-drop-item snip-item" data-snip="project_news"><i class="fa-solid fa-building" style="width:14px;opacity:.5"></i>Tin dự án mới</div>
+                  <div class="ret-drop-item snip-item" data-snip="policy_news"><i class="fa-solid fa-scale-balanced" style="width:14px;opacity:.5"></i>Tin chính sách/pháp lý</div>
+                  <div class="ret-drop-item snip-item" data-snip="invest_guide"><i class="fa-solid fa-lightbulb" style="width:14px;opacity:.5"></i>Kinh nghiệm đầu tư</div>
+                  <div class="ret-drop-item snip-item" data-snip="buy_guide"><i class="fa-solid fa-house" style="width:14px;opacity:.5"></i>Hướng dẫn mua nhà</div>
+                  <div class="ret-drop-item snip-item" data-snip="faq"><i class="fa-solid fa-circle-question" style="width:14px;opacity:.5"></i>Hỏi & Đáp (FAQ)</div>
+                </div>
+              </div>
+            </div>
+            <div class="sep"></div>
+
+            <!-- Nhóm 10: Tiện ích editor -->
+            <div class="tg">
+              <button type="button" data-c="findreplace" title="Tìm & Thay thế (Ctrl+H)"><i class="fa-solid fa-magnifying-glass"></i></button>
+              <button type="button" data-c="clearall" title="Xóa toàn bộ nội dung"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+          </div><!-- /retb -->
+
+          <!-- Find & Replace bar -->
+          <div class="efnr" id="eFnrBar">
+            <i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:11px"></i>
+            <input type="text" id="fnrFind" placeholder="Tìm...">
+            <input type="text" id="fnrReplace" placeholder="Thay thế...">
+            <button id="fnrBtn">Thay thế</button>
+            <button id="fnrAllBtn">Tất cả</button>
+            <span id="fnrMsg" style="font-size:11px;color:#94a3b8"></span>
+            <button class="fnr-close" id="fnrClose"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <div class="rte" id="rte" contenteditable="true" data-placeholder="Bắt đầu viết nội dung ở đây. H2/H3, đậm, ảnh, bảng, trích dẫn..."></div>
+          <div class="eftr">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="wcb" id="wcb">0 từ</span>
+              <span id="ccnt" style="color:#94a3b8">0 ký tự</span>
+              <span id="readTime" style="color:#94a3b8"></span>
+            </div>
+            <span>
+              <kbd style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:10px">Ctrl+B</kbd> đậm &nbsp;·&nbsp;
+              <kbd style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:10px">Ctrl+K</kbd> link &nbsp;·&nbsp;
+              <kbd style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:10px">Ctrl+H</kbd> tìm/thay &nbsp;·&nbsp; Kéo thả ảnh
+            </span>
+          </div>
+        </div>
+
+        <!-- Table dialog -->
+        <div class="news-dlg" id="newsTblDlg">
+          <div class="news-dlg-box">
+            <h4><i class="fa-solid fa-table" style="color:var(--vip);margin-right:8px"></i>Chèn bảng</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:11px">
+              <div><label class="lbl">Số hàng</label><input id="ntRows" type="number" class="fld" value="3" min="1" max="20"></div>
+              <div><label class="lbl">Số cột</label><input id="ntCols" type="number" class="fld" value="3" min="1" max="10"></div>
+            </div>
+            <div style="margin-bottom:11px"><label class="lbl">Tiêu đề cột</label>
+              <select id="ntHeader" class="fldsel"><option value="yes">Có hàng tiêu đề (header)</option><option value="no">Không có tiêu đề</option></select>
+            </div>
+            <div style="margin-bottom:14px"><label class="lbl">Kiểu bảng</label>
+              <select id="ntStyle" class="fldsel">
+                <option value="default">Mặc định (đường kẻ đơn)</option>
+                <option value="stripe">Xen kẽ màu (striped)</option>
+                <option value="minimal">Tối giản (đường ngang)</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <button type="button" class="btn bs" id="ntCancel">Hủy</button>
+              <button type="button" class="btn bp" id="ntInsert"><i class="fa-solid fa-table"></i>Chèn</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Link dialog -->
+        <div class="news-link-dlg" id="newsLinkDlg">
+          <div class="news-dlg-box" style="width:360px">
+            <h4><i class="fa-solid fa-link" style="color:var(--vip);margin-right:8px"></i>Chèn liên kết</h4>
+            <div style="margin-bottom:10px"><label class="lbl">Văn bản</label><input id="nlText" type="text" class="fld" placeholder="Văn bản hiển thị..."></div>
+            <div style="margin-bottom:10px"><label class="lbl">URL</label><input id="nlUrl" type="url" class="fld" placeholder="https://..."></div>
+            <div style="margin-bottom:14px"><label class="lbl">Mở liên kết</label>
+              <select id="nlTarget" class="fldsel"><option value="_blank">Tab mới</option><option value="_self">Cùng tab</option></select>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <button type="button" class="btn bs" id="nlCancel">Hủy</button>
+              <button type="button" class="btn bp" id="nlInsert"><i class="fa-solid fa-link"></i>Chèn</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video dialog -->
+        <div class="news-video-dlg" id="newsVideoDlg">
+          <div class="news-dlg-box" style="width:380px">
+            <h4><i class="fa-brands fa-youtube" style="color:#ef4444;margin-right:8px"></i>Nhúng Video</h4>
+            <div style="margin-bottom:10px"><label class="lbl">URL video <span>(YouTube / Vimeo)</span></label>
+              <input id="nvUrl" type="url" class="fld" placeholder="https://www.youtube.com/watch?v=...">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+              <div><label class="lbl">Chiều rộng</label><input id="nvW" type="text" class="fld" value="100%"></div>
+              <div><label class="lbl">Chiều cao (px)</label><input id="nvH" type="number" class="fld" value="420"></div>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <button type="button" class="btn bs" id="nvCancel">Hủy</button>
+              <button type="button" class="btn bp" id="nvInsert"><i class="fa-brands fa-youtube"></i>Nhúng</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview pane -->
+        <div class="ppane" id="ppane">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;border-bottom:1px solid var(--stroke);padding-bottom:10px">
+            <i class="fa-solid fa-eye" style="color:var(--vip)"></i><strong>Xem trước bài viết</strong>
+          </div>
+          <div id="pTitle" style="font-size:22px;font-weight:900;margin-bottom:7px;color:#0f172a"></div>
+          <div id="pMeta" style="font-size:12px;color:#64748b;margin-bottom:10px;display:flex;gap:10px;flex-wrap:wrap"></div>
+          <div id="pImg" style="margin-bottom:12px"></div>
+          <div class="ppane-body" id="pBody"></div>
+        </div>
+      </div>
+
+      <!-- ── Metadata Bottom (2-col, 2-row per col) ── -->
+      <div class="mbot">
+        <!-- Left col -->
+        <div class="ms">
+          <div class="mst"><i class="fa-solid fa-folder" style="color:var(--vip);margin-right:5px"></i>Phân loại</div>
+          <div><label class="lbl">Nhóm chuyên mục</label><select id="nCatSel" class="fldsel"></select></div>
+          <div class="ms-2col">
+            <div><label class="lbl">Chuyên mục</label><input id="nCat" class="fld" placeholder="Tin thị trường"/></div>
+            <div><label class="lbl">Category slug</label><input id="nCatSlug" class="fld" placeholder="tin-thi-truong" style="font-family:monospace;font-size:12px"/></div>
+          </div>
+          <div class="ms-2col">
+            <div><label class="lbl">Topic</label><input id="nTopic" class="fld" placeholder="Xu hướng"/></div>
+            <div><label class="lbl">Tác giả</label><input id="nAuthor" class="fld" placeholder="Tổ Ấm Việt"/></div>
+          </div>
+          <div class="ms-2col">
+            <div><label class="lbl">Tỉnh/Thành</label><select id="nCity" class="fldsel"></select></div>
+            <div><label class="lbl">Phường/Xã</label><select id="nWard" class="fldsel"></select></div>
+          </div>
+          <div><label class="lbl">Thẻ nội dung <span>(phân cách bằng dấu phẩy)</span></label><input id="nTags" class="fld" placeholder="thị trường, căn hộ, đầu tư, TP.HCM"/></div>
+        </div>
+
+        <!-- Focus Keyword -->
+        <div style="margin-top:12px">
+          <label class="lbl" style="display:flex;align-items:center;gap:7px">
+            <i class="fa-solid fa-key" style="color:var(--vip);font-size:13px"></i>
+            Từ khóa chính (Focus Keyword)
+            <span style="font-size:11px;color:#64748b;font-weight:500">· phân cách bằng dấu phẩy · tự lọc trùng</span>
+          </label>
+          <input id="nFocusKw" type="text" class="fld"
+            placeholder="VD: giá nhà đất 2025, xu hướng bất động sản, đầu tư căn hộ"
+            style="margin-bottom:4px">
+          <div style="font-size:11px;color:#64748b">
+            💡 Từ khóa chính giúp SEO on-page. Nhập nhiều từ khóa, phân cách bằng dấy phẩy. Hệ thống tự lọc trùng.
+          </div>
+          <div id="nFocusKwTags" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px"></div>
+        </div>
+
+        <!-- Right col -->
+        <div class="ms">
+          <div class="mst"><i class="fa-solid fa-image" style="color:var(--vip);margin-right:5px"></i>Ảnh & Xuất bản</div>
+          <div><label class="lbl">URL ảnh đại diện</label><input id="nImg" class="fld" type="url" placeholder="https://..."/></div>
+          <div class="iua" id="iUpA">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size:20px;color:#94a3b8;margin-bottom:5px;display:block"></i>
+            <div style="font-size:12px;font-weight:700;color:#64748b">Kéo thả hoặc click chọn ảnh</div>
+            <input type="file" id="nImgFile" accept="image/*" style="display:none"/>
+          </div>
+          <button type="button" id="upImgBtn" class="btn bd" style="width:100%"><i class="fa-solid fa-upload"></i>Tải ảnh lên</button>
+          <div class="iprev" id="iPrev"><label class="lbl">Xem trước</label><img id="iImg" src="" alt=""/></div>
+          <div class="ms-2col">
+            <div><label class="lbl">Ngày xuất bản</label><input id="nPubAt" class="fld" type="datetime-local"/></div>
+            <div><label class="lbl">Trạng thái</label>
+              <select id="nStatus" class="fldsel">
+                <option value="published">✅ Hiển thị</option>
+                <option value="approved">✅ Đã duyệt</option>
+                <option value="draft">📝 Nháp</option>
+                <option value="archived">📦 Lưu trữ</option>
+              </select>
+            </div>
+          </div>
+          <div class="serp">
+            <div style="font-size:9px;font-weight:900;color:#0f766e;text-transform:uppercase;margin-bottom:6px">SERP Preview</div>
+            <div class="serp-t" id="sTitle">Tiêu đề bài viết</div>
+            <div class="serp-u">toamviet.com.vn › chi-tiet-tin-tuc.html</div>
+            <div class="serp-d" id="sDesc">Tóm tắt sẽ hiện ở đây...</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+            <button type="button" id="draftBtn2" class="btn bs" style="width:100%"><i class="fa-solid fa-cloud"></i>Lưu nháp</button>
+            <button type="button" id="pubBtn2" class="btn bp" style="width:100%"><i class="fa-solid fa-paper-plane"></i>Xuất bản</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /card -->
+    </form>
+    </section>
+
+  </div><!-- /adm-main -->
+</div><!-- /adm-layout -->
+</div><!-- /cw -->
+</main>
+
+<!-- HTML import modal -->
+<div id="htmlModal" class="modal-bg">
+  <div class="modal-box">
+    <div style="font-weight:900;font-size:16px;margin-bottom:10px"><i class="fa-solid fa-code" style="color:var(--vip);margin-right:7px"></i>Dán HTML vào editor</div>
+    <textarea id="htmlTa" rows="10" class="fldta" placeholder="Dán HTML ở đây..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end">
+      <button type="button" id="htmlCancel" class="btn bs">Huỷ</button>
+      <button type="button" id="htmlOk" class="btn bp"><i class="fa-solid fa-check"></i>Nhập vào editor</button>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+<script src="../assets/js/core/tv-url-service.js"></script>
+<script src="../assets/js/component-loader.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/admin-sidebar.js?v=20260415c"></script>
+<script src="../assets/js/supabase-data-service.js?v=20260425"></script>
+<script src="../assets/js/simple-rich-editor.js"></script>
+<script>
+(function(){
+'use strict';
+const CATS=[{g:'Tin tức',items:[
+  {l:'Tin thị trường',v:'Tin thị trường',s:'tin-thi-truong',t:'Thị trường'},
+  {l:'Dự án nổi bật',v:'Dự án nổi bật',s:'du-an-noi-bat',t:'Dự án'},
+  {l:'Phân tích đầu tư',v:'Phân tích đầu tư',s:'phan-tich-dau-tu',t:'Đầu tư'},
+  {l:'Pháp lý bất động sản',v:'Pháp lý bất động sản',s:'phap-ly-bat-dong-san',t:'Pháp lý'},
+  {l:'Kinh nghiệm mua nhà',v:'Kinh nghiệm mua nhà',s:'kinh-nghiem-mua-nha',t:'Kinh nghiệm'},
+  {l:'Quy hoạch & Hạ tầng',v:'Quy hoạch & Hạ tầng',s:'quy-hoach-ha-tang',t:'Quy hoạch'},
+  {l:'Tài chính & Vay vốn',v:'Tài chính & Vay vốn',s:'tai-chinh-vay-von',t:'Tài chính'},
+  {l:'Phong thủy nhà đất',v:'Phong thủy nhà đất',s:'phong-thuy-nha-dat',t:'Phong thủy'},
+  {l:'Xây dựng & Nội thất',v:'Xây dựng & Nội thất',s:'xay-dung-noi-that',t:'Xây dựng'},
+]}];
+const st={posts:[],filtered:[],selId:'',locs:[],view:'editor'};
+function $(i){return document.getElementById(i)}
+function esc(v){return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+/* ── Từ khóa chính: chuẩn hóa & lọc trùng ── */
+function normKeywords(raw){
+  var parts=(raw||'').split(/[,，;；]+/).map(function(s){return s.trim().toLowerCase();}).filter(Boolean);
+  var seen={},unique=[];
+  parts.forEach(function(k){if(!seen[k]){seen[k]=1;unique.push(k);}});
+  return unique.join(', ');
+}
+function renderNewsKwTags(raw){
+  var tags=document.getElementById('nFocusKwTags');if(!tags)return;
+  var parts=normKeywords(raw).split(',').map(function(s){return s.trim();}).filter(Boolean);
+  if(!parts.length){tags.innerHTML='';return;}
+  tags.innerHTML=parts.map(function(k){
+    return '<span style="display:inline-flex;align-items:center;gap:4px;background:#f0fdf4;border:1px solid #86efac;color:#166534;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px">'
+      +'<i class="fa-solid fa-tag" style="font-size:10px"></i>'+esc(k)+'</span>';
+  }).join('');
+}
+
+function slug(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
+function fmtD(v){if(!v)return'--';const d=new Date(v);return isNaN(d)?'--':d.toLocaleString('vi-VN')}
+function status(t,m){const b=$('sbox');b.className='sbox show '+(t==='ok'?'ok':t==='err'?'err':'info');b.textContent=m;if(t!=='err')setTimeout(()=>{b.className='sbox'},5000)}
+function gc(){return $('rte').innerHTML.trim()}
+function sc(v){$('rte').innerHTML=String(v||'');wc()}
+function wc(){const t=$('rte').innerText||'';const w=t.trim().split(/\s+/).filter(Boolean).length;const c=t.length;const b=$('wcb');b.textContent=w+' từ';b.className='wcb'+(w>=600?' gr':w>=300?' ok':'');$('ccnt').textContent=c+' ký tự'}
+function sview(v){st.view=v;$('vList').classList.toggle('on',v==='list');$('vEditor').classList.toggle('on',v==='editor');history.replaceState({},'','#'+v)}
+/* ══════════════════════════════════════════════════════════
+   ENHANCED EDITOR ENGINE — tin tức
+   ══════════════════════════════════════════════════════════ */
+
+/* helpers */
+function saveRng(){var s=window.getSelection();if(s&&s.rangeCount>0)return s.getRangeAt(0).cloneRange();return null;}
+function restRng(rng){if(!rng)return;var s=window.getSelection();s.removeAllRanges();s.addRange(rng);}
+function insertHtml(html){$('rte').focus();document.execCommand('insertHTML',false,html);wc();}
+
+function wc(){
+  const t=$('rte').innerText||'';
+  const w=t.trim().split(/\s+/).filter(Boolean).length;
+  const c=t.length;
+  const b=$('wcb');
+  b.textContent=w+' từ';
+  b.className='wcb'+(w>=600?' gr':w>=300?' ok':'');
+  $('ccnt').textContent=c+' ký tự';
+  const rt=Math.max(1,Math.ceil(w/200));
+  const rtEl=$('readTime');
+  if(rtEl)rtEl.textContent=w>0?('~'+rt+' phút đọc'):'';
+}
+
+/* ── Heading dropdown ── */
+(function(){
+  var drop=$('hdDrop'),trigger=drop.querySelector('.hd-trigger'),lbl=$('hdLabel');
+  var map={p:'Đoạn',h1:'H1',h2:'H2',h3:'H3',h4:'H4',blockquote:'Quote',pre:'Code'};
+  trigger.addEventListener('click',function(e){e.stopPropagation();drop.classList.toggle('open');});
+  drop.querySelectorAll('[data-hd]').forEach(function(item){
+    item.addEventListener('click',function(){
+      var tag=this.getAttribute('data-hd');
+      $('rte').focus();
+      document.execCommand('formatBlock',false,tag);
+      lbl.textContent=map[tag]||tag;
+      drop.classList.remove('open');
+      wc();
+    });
+  });
+  document.addEventListener('click',function(e){if(!drop.contains(e.target))drop.classList.remove('open');});
+})();
+
+/* ── Snippet dropdown ── */
+(function(){
+  var drop=$('snipDrop'),trigger=drop.querySelector('.snip-trigger');
+  var SNIPS={
+    news_lead:'<h2>Tóm tắt nội dung</h2>\n<p>[Viết đoạn mở đầu tóm gọn toàn bộ bài viết, trả lời: Ai? Cái gì? Khi nào? Ở đâu? Tại sao?]</p>',
+    market_overview:'<h2>Tổng quan thị trường bất động sản</h2>\n<p>Theo dữ liệu mới nhất, thị trường BĐS [khu vực] đang ghi nhận [xu hướng]. Giá căn hộ trung bình đạt [X] triệu đồng/m², tăng/giảm [Y]% so với cùng kỳ năm ngoái.</p>\n<h3>Điểm đáng chú ý</h3>\n<ul>\n<li>Phân khúc [A]: [diễn biến]</li>\n<li>Phân khúc [B]: [diễn biến]</li>\n<li>Khu vực [C]: [diễn biến]</li>\n</ul>',
+    price_analysis:'<h2>Phân tích biến động giá</h2>\n<p>Giá [loại hình] tại [khu vực] trong [thời gian] có xu hướng [tăng/giảm/ổn định], với mức biến động khoảng [X]% so với [mốc so sánh].</p>\n<h3>Các yếu tố tác động</h3>\n<ul>\n<li>Cung – cầu: [phân tích]</li>\n<li>Hạ tầng: [thông tin quy hoạch mới]</li>\n<li>Tín dụng: [lãi suất, điều kiện vay]</li>\n<li>Chính sách: [luật, nghị định mới]</li>\n</ul>',
+    project_news:'<h2>Dự án [Tên dự án] — Những điểm nổi bật</h2>\n<p>[Tên dự án] vừa được [chủ đầu tư] chính thức [khởi công/mở bán/bàn giao] tại [địa chỉ]. Đây là dự án [loại hình] quy mô [diện tích], gồm [số căn] căn hộ.</p>\n<h3>Thông tin chính</h3>\n<ul>\n<li>Chủ đầu tư: [tên]</li>\n<li>Vị trí: [địa chỉ đầy đủ]</li>\n<li>Quy mô: [số tòa, số căn]</li>\n<li>Giá bán từ: [X] tỷ đồng</li>\n<li>Tiến độ: [mốc bàn giao]</li>\n</ul>',
+    policy_news:'<h2>Nội dung chính sách / Quy định mới</h2>\n<p>[Tên văn bản pháp luật] có hiệu lực từ [ngày], quy định về [nội dung chính], tác động đến [đối tượng áp dụng].</p>\n<h3>Điểm mới đáng chú ý</h3>\n<ol>\n<li>[Điểm 1: mô tả ngắn]</li>\n<li>[Điểm 2: mô tả ngắn]</li>\n<li>[Điểm 3: mô tả ngắn]</li>\n</ol>\n<blockquote>💡 Khuyến nghị: [Lời khuyên thực tế cho độc giả dựa trên chính sách mới]</blockquote>',
+    invest_guide:'<h2>Kinh nghiệm đầu tư bất động sản [năm/loại hình]</h2>\n<p>Để đầu tư BĐS hiệu quả trong bối cảnh thị trường [mô tả tình hình], nhà đầu tư cần nắm vững các nguyên tắc cơ bản sau:</p>\n<h3>1. Đánh giá tiềm năng</h3>\n<p>[Hướng dẫn đánh giá vị trí, hạ tầng, quy hoạch]</p>\n<h3>2. Tính toán dòng tiền</h3>\n<p>[Công thức, ví dụ thực tế về ROI, tỷ suất cho thuê]</p>\n<h3>3. Quản lý rủi ro</h3>\n<p>[Các rủi ro thường gặp và cách phòng tránh]</p>',
+    buy_guide:'<h2>Hướng dẫn mua nhà [loại hình] từ A–Z</h2>\n<p>Mua nhà là quyết định tài chính lớn. Bài viết này sẽ hướng dẫn bạn từng bước từ lên kế hoạch đến nhận bàn giao.</p>\n<h3>Bước 1: Xác định nhu cầu & ngân sách</h3>\n<p>[Cách tính toán khả năng tài chính, mức vay hợp lý]</p>\n<h3>Bước 2: Tìm kiếm & Đánh giá</h3>\n<p>[Tiêu chí lựa chọn, cách kiểm tra pháp lý]</p>\n<h3>Bước 3: Đàm phán & Ký hợp đồng</h3>\n<p>[Những điều cần lưu ý trước khi ký]</p>\n<h3>Bước 4: Hoàn tất thủ tục</h3>\n<p>[Sang tên, đăng bộ, nhận bàn giao]</p>',
+    faq:'<h2>Câu hỏi thường gặp (FAQ)</h2>\n<h3>1. [Câu hỏi 1?]</h3>\n<p>[Trả lời 1]</p>\n<h3>2. [Câu hỏi 2?]</h3>\n<p>[Trả lời 2]</p>\n<h3>3. [Câu hỏi 3?]</h3>\n<p>[Trả lời 3]</p>'
+  };
+  trigger.addEventListener('click',function(e){e.stopPropagation();drop.classList.toggle('open');});
+  drop.querySelectorAll('[data-snip]').forEach(function(item){
+    item.addEventListener('click',function(){
+      var key=this.getAttribute('data-snip');
+      if(SNIPS[key])insertHtml(SNIPS[key]);
+      drop.classList.remove('open');
+    });
+  });
+  document.addEventListener('click',function(e){if(!drop.contains(e.target))drop.classList.remove('open');});
+})();
+
+/* ── Font size ── */
+$('szSel').addEventListener('change',function(){
+  if(!this.value)return;
+  $('rte').focus();
+  document.execCommand('fontSize',false,'7');
+  $('rte').querySelectorAll('font[size="7"]').forEach(function(el){el.style.fontSize=this.value;el.removeAttribute('size');}.bind(this));
+  this.value='';
+});
+
+/* ── Màu chữ ── */
+$('fcPick').addEventListener('input',function(){$('fcSwatch').style.background=this.value;});
+$('applyFcBtn').addEventListener('click',function(){$('rte').focus();document.execCommand('foreColor',false,$('fcPick').value);});
+
+/* ── Highlight ── */
+$('hlPick').addEventListener('input',function(){$('hlSwatch').style.background=this.value;});
+$('applyHlBtn').addEventListener('click',function(){$('rte').focus();document.execCommand('hiliteColor',false,$('hlPick').value);});
+
+/* ── Table dialog ── */
+(function(){
+  var dlg=$('newsTblDlg');
+  function openTbl(){window._newsRng=saveRng();dlg.classList.add('open');$('ntRows').focus();}
+  function closeTbl(){dlg.classList.remove('open');}
+  $('ntCancel').addEventListener('click',closeTbl);
+  dlg.addEventListener('click',function(e){if(e.target===dlg)closeTbl();});
+  $('ntInsert').addEventListener('click',function(){
+    var rows=Math.max(1,Math.min(20,parseInt($('ntRows').value)||3));
+    var cols=Math.max(1,Math.min(10,parseInt($('ntCols').value)||3));
+    var hasH=$('ntHeader').value==='yes';
+    var style=$('ntStyle').value;
+    var base='border:1px solid #cbd5e1;padding:9px 10px;';
+    var thS=base+'background:#f0fdfa;font-weight:800;color:#0f172a;';
+    var stripe='background:#f8fafc;';
+    var minS='border:0;border-bottom:1px solid #e5e7eb;padding:9px 10px;';
+    var h='<table style="width:100%;border-collapse:collapse;margin:14px 0;font-size:14px">';
+    for(var i=0;i<rows;i++){
+      var rs=(style==='stripe'&&i>0&&i%2===0)?' style="background:#f8fafc"':'';
+      h+='<tr'+rs+'>';
+      for(var j=0;j<cols;j++){
+        var isH=i===0&&hasH;
+        var tag=isH?'th':'td';
+        var cs=style==='minimal'?minS:(isH?thS:base+(style==='stripe'&&i>0&&i%2===0?stripe:''));
+        h+='<'+tag+' style="'+cs+'">&nbsp;</'+tag+'>';
+      }
+      h+='</tr>';
+    }
+    h+='</table>';
+    $('rte').focus();
+    if(window._newsRng)restRng(window._newsRng);
+    insertHtml(h);
+    closeTbl();
+  });
+  window._openNewsTbl=openTbl;
+})();
+
+/* ── Link dialog ── */
+(function(){
+  var dlg=$('newsLinkDlg');
+  function openLink(){
+    var sel=window.getSelection();
+    window._newsRng=saveRng();
+    $('nlText').value=sel&&sel.toString().trim()||'';
+    $('nlUrl').value='https://';
+    dlg.classList.add('open');
+    $('nlUrl').focus();
+  }
+  function closeLink(){dlg.classList.remove('open');}
+  $('nlCancel').addEventListener('click',closeLink);
+  dlg.addEventListener('click',function(e){if(e.target===dlg)closeLink();});
+  $('nlInsert').addEventListener('click',function(){
+    var url=$('nlUrl').value.trim();
+    if(!url)return;
+    var text=$('nlText').value.trim();
+    var target=$('nlTarget').value;
+    $('rte').focus();
+    if(window._newsRng)restRng(window._newsRng);
+    var html='<a href="'+url.replace(/"/g,'&quot;')+'" target="'+target+'">'+(text||url)+'</a>';
+    insertHtml(html);
+    closeLink();
+  });
+  window._openNewsLink=openLink;
+})();
+
+/* ── Video dialog ── */
+(function(){
+  var dlg=$('newsVideoDlg');
+  function openVideo(){window._newsRng=saveRng();dlg.classList.add('open');$('nvUrl').value='';$('nvUrl').focus();}
+  function closeVideo(){dlg.classList.remove('open');}
+  $('nvCancel').addEventListener('click',closeVideo);
+  dlg.addEventListener('click',function(e){if(e.target===dlg)closeVideo();});
+  $('nvInsert').addEventListener('click',function(){
+    var url=$('nvUrl').value.trim();
+    if(!url)return;
+    var w=$('nvW').value.trim()||'100%';
+    var h=parseInt($('nvH').value)||420;
+    var embedUrl='';
+    var ytM=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    var vmM=url.match(/vimeo\.com\/(\d+)/);
+    if(ytM)embedUrl='https://www.youtube.com/embed/'+ytM[1]+'?rel=0';
+    else if(vmM)embedUrl='https://player.vimeo.com/video/'+vmM[1];
+    else embedUrl=url;
+    var html='<div style="position:relative;width:'+w+';margin:14px 0;border-radius:12px;overflow:hidden">'
+      +'<iframe src="'+embedUrl+'" width="100%" height="'+h+'" frameborder="0" allowfullscreen style="display:block;border-radius:12px"></iframe>'
+      +'</div><p><br></p>';
+    $('rte').focus();
+    if(window._newsRng)restRng(window._newsRng);
+    insertHtml(html);
+    closeVideo();
+  });
+  window._openNewsVideo=openVideo;
+})();
+
+/* ── Find & Replace ── */
+(function(){
+  var bar=$('eFnrBar'),msg=$('fnrMsg');
+  function openFnr(){bar.classList.add('open');$('fnrFind').focus();}
+  function closeFnr(){bar.classList.remove('open');}
+  $('fnrClose').addEventListener('click',closeFnr);
+  function doReplace(all){
+    var find=$('fnrFind').value;
+    var rep=$('fnrReplace').value;
+    if(!find){msg.textContent='Nhập từ cần tìm';return;}
+    var html=$('rte').innerHTML;
+    var regex=new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),all?'gi':'i');
+    var n=(html.match(new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'))||[]).length;
+    $('rte').innerHTML=html.replace(regex,rep);
+    msg.textContent=n?('Thay '+n+' chỗ'):'Không tìm thấy';
+    wc();
+  }
+  $('fnrBtn').addEventListener('click',function(){doReplace(false);});
+  $('fnrAllBtn').addEventListener('click',function(){doReplace(true);});
+  window._openNewsFnr=openFnr;
+})();
+
+/* ── Main exec function (enhanced) ── */
+function exec(c){
+  $('rte').focus();
+  if(c==='h1'||c==='h2'||c==='h3'||c==='h4'||c==='p'){document.execCommand('formatBlock',false,c);updateHdLabel(c);wc();return;}
+  if(c==='hilite'){document.execCommand('hiliteColor',false,$('hlPick').value||'#fde047');return;}
+  if(c==='icode'){
+    const sel=window.getSelection();
+    if(sel&&sel.toString()){
+      const code=document.createElement('code');code.textContent=sel.toString();
+      const r=sel.getRangeAt(0);r.deleteContents();r.insertNode(code);
+    }
+    wc();return;
+  }
+  if(c==='pre'){document.execCommand('formatBlock',false,'pre');wc();return;}
+  if(c==='blockquote'){document.execCommand('formatBlock',false,'blockquote');wc();return;}
+  if(c==='link'){window._openNewsLink();return;}
+  if(c==='unlink'){document.execCommand('unlink',false,null);return;}
+  if(c==='imgurl'){
+    if(window.SimpleRichEditor&&typeof window.SimpleRichEditor.openImageModal==='function'){
+      var _savedNewsRange=saveRng();
+      window.SimpleRichEditor.openImageModal(function(html){
+        $('rte').focus();
+        if(_savedNewsRange)restRng(_savedNewsRange);
+        insertHtml(html);
+      },'news');
+    }else{
+      var url=prompt('URL ảnh:');
+      if(url)insertHtml('<figure style="display:block;margin:14px 0;text-align:center"><img src="'+url+'" alt="" style="max-width:100%;border-radius:10px"></figure><p><br></p>');
+    }
+    return;
+  }
+  if(c==='video'){window._openNewsVideo();return;}
+  if(c==='table'){window._openNewsTbl();return;}
+  if(c==='findreplace'){window._openNewsFnr();return;}
+  if(c==='clearall'){if(confirm('Xóa toàn bộ nội dung bài viết?')){$('rte').innerHTML='';wc();}return;}
+  document.execCommand(c,false,null);
+  wc();
+  updateActiveStates();
+}
+
+/* Active states */
+function updateHdLabel(tag){var map={p:'Đoạn',h1:'H1',h2:'H2',h3:'H3',h4:'H4',blockquote:'Quote',pre:'Code'};var el=$('hdLabel');if(el)el.textContent=map[tag]||'Đoạn';}
+function updateActiveStates(){
+  var cmds=['bold','italic','underline','strikeThrough','justifyLeft','justifyCenter','justifyRight','justifyFull','insertUnorderedList','insertOrderedList','superscript','subscript'];
+  $('eTb').querySelectorAll('[data-c]').forEach(function(btn){
+    var c=btn.getAttribute('data-c');
+    if(cmds.indexOf(c)>=0){try{btn.classList.toggle('act',document.queryCommandState(c));}catch(e){}}
+  });
+  try{var blk=document.queryCommandValue('formatBlock')||'';updateHdLabel(blk.toLowerCase());}catch(e){}
+}
+
+$('eTb').addEventListener('mousedown',function(e){
+  var b=e.target.closest('[data-c]');
+  if(b){e.preventDefault();exec(b.getAttribute('data-c'));}
+});
+$('rte').addEventListener('input',function(){wc();updateActiveStates();});
+$('rte').addEventListener('keyup',updateActiveStates);
+$('rte').addEventListener('mouseup',updateActiveStates);
+
+/* Keyboard shortcuts */
+$('rte').addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&e.key==='h'){e.preventDefault();window._openNewsFnr();}
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();window._openNewsLink();}
+  if(e.key==='Tab'){e.preventDefault();document.execCommand('insertText',false,'\u00a0\u00a0\u00a0\u00a0');}
+});
+$('rte').addEventListener('drop',async e=>{
+  const f=e.dataTransfer&&e.dataTransfer.files;
+  if(f&&f.length&&f[0].type.startsWith('image/')){
+    e.preventDefault();
+    var _rngDrop=(function(){var s=window.getSelection();if(s&&s.rangeCount>0)return s.getRangeAt(0).cloneRange();return null;})();
+    let u='';
+    try{
+      if(window.supabaseDataService&&typeof window.supabaseDataService.uploadNewsImageVariants==='function'){
+        const r=await window.supabaseDataService.uploadNewsImageVariants(f[0],$('nSlug').value||'drop-'+Date.now());
+        u=r&&(r.imageUrl||r.thumbnailUrl)||'';
+      }
+      if(!u)u=await rdF(f[0]);
+    }catch(err){ u=await rdF(f[0]); }
+    $('rte').focus();
+    if(_rngDrop){var sel=window.getSelection();sel.removeAllRanges();sel.addRange(_rngDrop);}
+    document.execCommand('insertHTML',false,'<figure class="sre-image-block" contenteditable="false" style="display:block;margin:14px 0;text-align:center"><img src="'+u+'" alt="" style="max-width:100%;height:auto;border-radius:10px"></figure><p><br></p>');
+    wc();
+  }
+});
+$('rte').addEventListener('paste',e=>{e.preventDefault();let h=e.clipboardData.getData('text/html');if(h){h=h.replace(/<style[\s\S]*?<\/style>/gi,'').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/class="Mso[^"]*"/gi,'').replace(/<o:[^>]*>[\s\S]*?<\/o:[^>]*>/gi,'').replace(/##\s*/g,'');document.execCommand('insertHTML',false,h);}else document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));wc();});
+function rdF(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(f)})}
+$('eImgFile').addEventListener('change',async function(){
+  const f=this.files&&this.files[0];if(!f)return;
+  var _rng=(function(){var s=window.getSelection();if(s&&s.rangeCount>0)return s.getRangeAt(0).cloneRange();return null;})();
+  try{
+    let u='';
+    if(window.supabaseDataService&&typeof window.supabaseDataService.uploadNewsImageVariants==='function'){
+      const r=await window.supabaseDataService.uploadNewsImageVariants(f,$('nSlug').value||'img-'+Date.now());
+      u=r&&(r.imageUrl||r.thumbnailUrl)||'';
+    }
+    if(!u)u=await rdF(f);
+    const rte=$('rte');rte.focus();
+    if(_rng){var sel=window.getSelection();sel.removeAllRanges();sel.addRange(_rng);}
+    document.execCommand('insertHTML',false,'<figure class="sre-image-block" contenteditable="false" style="display:block;margin:14px 0;text-align:center"><img src="'+u+'" alt="" style="max-width:100%;height:auto;border-radius:10px"></figure><p><br></p>');
+    wc();
+  }catch(err){status('err','Không thể tải ảnh')}
+  this.value='';
+});
+$('fsBtn').addEventListener('click',function(){const w=$('rWrap');if(!document.fullscreenElement){w.requestFullscreen&&w.requestFullscreen();this.innerHTML='<i class="fa-solid fa-compress"></i>Thu nhỏ'}else{document.exitFullscreen&&document.exitFullscreen();this.innerHTML='<i class="fa-solid fa-expand"></i>Toàn màn hình'}});
+$('htmlBtn').addEventListener('click',()=>{$('htmlModal').classList.add('show');$('htmlTa').focus()});
+$('htmlCancel').addEventListener('click',()=>$('htmlModal').classList.remove('show'));
+$('htmlOk').addEventListener('click',()=>{const r=$('htmlTa').value.trim();if(r)sc(r);$('htmlModal').classList.remove('show');$('htmlTa').value='';status('ok','Đã nhập HTML.')});
+$('htmlModal').addEventListener('click',e=>{if(e.target===$('htmlModal'))$('htmlModal').classList.remove('show')});
+function upPrev(){const t=$('nTitle').value.trim()||'Tiêu đề';const s=$('nSummary').value.trim();const img=$('nImg').value.trim();const au=$('nAuthor').value.trim()||'Tổ Ấm Việt';const dt=$('nPubAt').value?new Date($('nPubAt').value).toLocaleDateString('vi-VN'):new Date().toLocaleDateString('vi-VN');$('pTitle').textContent=t;$('pMeta').innerHTML='<span>📅 '+esc(dt)+'</span><span>✍️ '+esc(au)+'</span>';$('pImg').innerHTML=img?'<img src="'+esc(img)+'" style="max-width:100%;border-radius:12px;margin-bottom:12px" onerror="this.style.display=\'none\'">':'';$('pBody').innerHTML=gc()||('<p style="color:#94a3b8">'+esc(s||'Chưa có nội dung...')+'</p>');}
+$('prevBtn').addEventListener('click',function(){const p=$('ppane');const show=!p.classList.contains('show');p.classList.toggle('show',show);this.innerHTML=show?'<i class="fa-solid fa-eye-slash"></i>Đóng':'<i class="fa-solid fa-eye"></i>Preview';if(show)upPrev()});
+function upSerp(){const t=$('nTitle').value.trim()||'Tiêu đề';const d=$('nSummary').value.trim()||'Tóm tắt...';$('sTitle').textContent=t.slice(0,65)+(t.length>65?'…':'');$('sDesc').textContent=d.slice(0,155)+(d.length>155?'…':'');}
+$('nTitle').addEventListener('input',function(){if(!$('nSlug').value.trim())$('nSlug').value=slug(this.value);upSerp()});
+$('nSummary').addEventListener('input',function(){const l=this.value.length;$('scnt').textContent=l+' ký tự';$('scnt').style.color=l>155?'#dc2626':l>=100?'#0f766e':'#94a3b8';upSerp()});
+$('nImg').addEventListener('input',function(){syncIP(this.value.trim())});
+function pickCoverImage(){
+  var fileInput=$('nImgFile');
+  if(!fileInput){status('err','Không tìm thấy bộ chọn ảnh.');return;}
+  try{fileInput.value='';}catch(_){}
+  fileInput.click();
+}
+$('iUpA').addEventListener('click',pickCoverImage);
+$('upImgBtn').addEventListener('click',pickCoverImage);
+['dragover','dragenter'].forEach(ev=>$('iUpA').addEventListener(ev,e=>{e.preventDefault();$('iUpA').style.borderColor='var(--vip)'}));
+['dragleave','drop'].forEach(ev=>$('iUpA').addEventListener(ev,()=>{$('iUpA').style.borderColor=''}));
+$('iUpA').addEventListener('drop',async e=>{
+  e.preventDefault();
+  $('iUpA').style.borderColor='';
+  const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+  if(f&&f.type&&f.type.startsWith('image/'))await upCover(f);
+});
+$('nImgFile').addEventListener('change',async function(){
+  const f=this.files&&this.files[0];
+  if(f)await upCover(f);
+});
+async function upCover(f){
+  if(!f||!f.type||!f.type.startsWith('image/')){status('err','Vui lòng chọn đúng file ảnh.');return;}
+  status('info','Đang tải ảnh đại diện...');
+  let u='';
+  try{
+    if(window.supabaseDataService&&typeof window.supabaseDataService.uploadNewsImageVariants==='function'){
+      const r=await window.supabaseDataService.uploadNewsImageVariants(f,$('nSlug').value||$('nTitle').value||'cover-'+Date.now());
+      u=r&&(r.imageUrl||r.thumbnailUrl)||'';
+    }
+  }catch(err){
+    console.warn('[news-editor] cover upload to storage failed, fallback dataURL:',err);
+  }
+  if(!u){
+    try{u=await rdF(f);}catch(err){status('err','Không đọc được file ảnh.');return;}
+  }
+  $('nImg').value=u;
+  syncIP(u);
+  upSerp();
+  status('ok','Đã tải ảnh đại diện. Nhớ bấm Lưu nháp hoặc Xuất bản để lưu bài viết.');
+}
+function syncIP(u){const w=$('iPrev'),img=$('iImg');w.style.display=u?'block':'none';img.src=u||''}
+function popCats(){const sel=$('nCatSel'),flt=$('fCat');sel.innerHTML='<option value="">Chọn chuyên mục</option>'+CATS.map(g=>'<optgroup label="'+esc(g.g)+'">'+g.items.map(it=>'<option value="'+esc(it.s)+'" data-l="'+esc(it.v)+'" data-t="'+esc(it.t)+'">'+esc(it.l)+'</option>').join('')+'</optgroup>').join('');flt.innerHTML='<option value="">Tất cả</option>'+CATS[0].items.map(it=>'<option value="'+esc(it.v)+'">'+esc(it.l)+'</option>').join('');sel.addEventListener('change',function(){const o=this.options[this.selectedIndex];if(!o||!o.value)return;$('nCat').value=o.getAttribute('data-l')||o.textContent.trim();$('nCatSlug').value=o.value;if(!$('nTopic').value.trim())$('nTopic').value=o.getAttribute('data-t')||''});}
+async function loadLocs(){try{const r=await fetch('../assets/data/vietnam-address.json');st.locs=await r.json()}catch(e){st.locs=[]}const cs=$('nCity');cs.innerHTML='<option value="">Tỉnh/thành</option>'+st.locs.map(it=>'<option value="'+esc(it.name)+'">'+esc(it.name)+'</option>').join('');cs.addEventListener('change',()=>syncW(''));syncW('');}
+function syncW(sel){const city=$('nCity').value;const ws=$('nWard');const rec=st.locs.find(it=>String(it.name)===String(city));const wards=rec&&Array.isArray(rec.wards)?rec.wards:[];ws.innerHTML='<option value="">Phường/xã</option>'+wards.map(w=>'<option value="'+esc(w)+'">'+esc(w)+'</option>').join('');if(sel)ws.value=sel}
+function fill(p){const it=p||{};st.selId=it.id||'';$('nId').value=it.id||'';$('nSlug').value=it.slug||'';$('nTitle').value=it.title||'';$('nSummary').value=it.summary||'';$('nCat').value=it.category||'';$('nCatSlug').value=it.category_slug||it.categorySlug||'';$('nTopic').value=it.topic||'';$('nAuthor').value=it.author||'Tổ Ấm Việt';$('nCity').value=it.city||'';syncW(it.ward||'');$('nTags').value=Array.isArray(it.tags)?it.tags.join(', '):(it.tags||'');var loadedKwN=normKeywords(it.focus_keyword||it.focusKeyword||'');if(document.getElementById('nFocusKw')){document.getElementById('nFocusKw').value=loadedKwN;renderNewsKwTags(loadedKwN);}const img=it.thumbnail_url||it.thumbnailUrl||it.image||'';$('nImg').value=img;syncIP(img);$('nPubAt').value=it.published_at?new Date(it.published_at).toISOString().slice(0,16):'';$('nStatus').value=it.status||'published';const raw=typeof it.content==='string'?it.content:(Array.isArray(it.content)?it.content.join('\n'):'');sc(raw);upSerp();sview('editor');window.scrollTo({top:0,behavior:'smooth'});}
+function reset(){$('nForm').reset();st.selId='';$('nId').value='';$('nSlug').value='';$('nStatus').value='published';sc('');syncIP('');syncW('');$('scnt').textContent='0 ký tự';upSerp();var fkw=document.getElementById('nFocusKw');if(fkw){fkw.value='';renderNewsKwTags('');}}
+function payload(tSt){const t=$('nTitle').value.trim();const s=$('nSlug').value.trim()||slug(t)||('tin-'+Date.now());const rawId=$('nId').value.trim();const isUuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(rawId);return{id:isUuid?rawId:'',slug:s,title:t,summary:$('nSummary').value.trim(),category:$('nCat').value.trim()||'Tin tức',category_slug:$('nCatSlug').value.trim()||slug($('nCat').value.trim()||'tin-tuc'),topic:$('nTopic').value.trim()||$('nCat').value.trim()||'Tin tức',author:$('nAuthor').value.trim()||'Tổ Ấm Việt',city:$('nCity').value.trim(),ward:$('nWard').value.trim(),tags:$('nTags').value.split(',').map(v=>v.trim()).filter(Boolean),image:$('nImg').value.trim(),thumbnail_url:$('nImg').value.trim(),published_at:$('nPubAt').value?new Date($('nPubAt').value).toISOString():null,status:tSt||$('nStatus').value,content:gc(),focusKeyword:normKeywords(document.getElementById('nFocusKw')?document.getElementById('nFocusKw').value:'')};}
+var st_page=1;var st_pageSize=15;
+function renderList(){
+  var list=$('nList');
+  var posts=Array.isArray(st.filtered)?st.filtered:[];
+  var total=posts.length;
+  var totalPages=Math.max(1,Math.ceil(total/st_pageSize));
+  if(st_page>totalPages)st_page=totalPages;
+  var start=(st_page-1)*st_pageSize;
+  var pagePosts=posts.slice(start,start+st_pageSize);
+  $('nstats').textContent=total?('Tổng '+total+' bài · Trang '+st_page+'/'+totalPages):'Chưa có bài viết nào';
+  if(!total){list.innerHTML='<div class="empty"><i class="fa-regular fa-newspaper" style="font-size:28px;color:#cbd5e1;display:block;margin-bottom:8px"></i>Chưa có bài viết nào.</div>';renderNewsPager(0,0);return;}
+  list.innerHTML=pagePosts.map(function(it){
+    var s='s'+String(it.status||'published').toLowerCase();
+    return'<article class="li"><div><div class="lt">'+esc(it.title||'Bài chưa có tiêu đề')+'</div>'
+      +'<div class="lm"><span class="chip '+s+'">'+esc(it.status||'published')+'</span><span>'+esc(it.category||'Tin tức')+'</span><span>'+esc(fmtD(it.published_at||it.created_at))+'</span></div>'
+      +'<div style="font-size:12px;color:#64748b">'+esc((it.summary||'Chưa có tóm tắt').slice(0,120))+'</div></div>'
+      +'<div class="lac"><button type="button" class="mb mbs" data-a="edit" data-id="'+esc(it.id)+'"><i class="fa-solid fa-pen"></i>Sửa</button>'
+      +'<button type="button" class="mb mbr" data-a="del" data-id="'+esc(it.id)+'"><i class="fa-solid fa-trash"></i>Xóa</button></div></article>';
+  }).join('');
+  list.querySelectorAll('[data-a="edit"]').forEach(function(b){b.addEventListener('click',function(){var it=st.filtered.find(function(p){return String(p.id)===String(b.dataset.id);});fill(it||{});});});
+  list.querySelectorAll('[data-a="del"]').forEach(function(b){b.addEventListener('click',async function(){if(!confirm('Xóa bài viết này?'))return;try{await window.supabaseDataService.deleteAdminNewsPost(b.dataset.id);await loadPosts();status('ok','Đã xóa.')}catch(err){status('err',err.message||'Không thể xóa.');}});});
+  renderNewsPager(st_page,totalPages);
+}
+function renderNewsPager(page,total){
+  var el=$('newsPager');if(!el)return;
+  if(total<=1){el.innerHTML='';return;}
+  var btns='';
+  btns+='<button class="btn bs" style="min-height:34px;font-size:12px;padding:0 10px" '+(page<=1?'disabled':'')+' onclick="st_page=Math.max(1,st_page-1);renderList()"><i class="fa-solid fa-chevron-left"></i></button>';
+  var start=Math.max(1,page-2),end=Math.min(total,start+4);
+  for(var i=start;i<=end;i++){btns+='<button class="btn '+(i===page?'bp':'bs')+'" style="min-height:34px;font-size:12px;padding:0 10px" onclick="st_page='+i+';renderList()">'+i+'</button>';}
+  btns+='<button class="btn bs" style="min-height:34px;font-size:12px;padding:0 10px" '+(page>=total?'disabled':'')+' onclick="st_page=Math.min('+total+',st_page+1);renderList()"><i class="fa-solid fa-chevron-right"></i></button>';
+  el.innerHTML=btns;
+}
+async function loadPosts(){st_page=1;try{const posts=await window.supabaseDataService.refreshAdminNewsPosts({keyword:$('fKw').value.trim(),status:$('fSt').value.trim(),category:$('fCat').value.trim()});st.posts=Array.isArray(posts)?posts:[];st.filtered=st.posts.slice();renderList()}catch(err){status('err',err.message||'Không thể tải danh sách.');}}
+async function save(tSt){const p=payload(tSt);if(!p.title){status('err','Bạn cần nhập tiêu đề bài viết.');return}try{const saved=await window.supabaseDataService.saveAdminNewsPost(p);fill(saved||p);await loadPosts();status('ok','✓ Đã lưu — '+p.status+'.')}catch(err){status('err',err.message||'Không thể lưu bài viết.')}}
+async function delCur(){const id=$('nId').value.trim();if(!id){status('err','Chưa có bài viết nào để xóa.');return}if(!confirm('Xóa vĩnh viễn bài viết này?'))return;try{await window.supabaseDataService.deleteAdminNewsPost(id);reset();await loadPosts();sview('list');status('ok','Đã xóa bài viết.')}catch(err){status('err',err.message||'Không thể xóa.')}}
+$('newPostBtn').addEventListener('click',()=>{reset();sview('editor');status('info','Bắt đầu bài viết mới.')});
+$('backBtn').addEventListener('click',()=>sview('list'));
+$('refreshBtn').addEventListener('click',loadPosts);
+$('applyBtn').addEventListener('click',loadPosts);
+$('pubBtn').addEventListener('click',()=>save('published'));$('pubBtn2').addEventListener('click',()=>save('published'));
+$('draftBtn').addEventListener('click',()=>save('draft'));$('draftBtn2').addEventListener('click',()=>save('draft'));
+$('delBtn').addEventListener('click',delCur);
+async function init(){
+  try{if(window.supabaseDataService&&typeof window.supabaseDataService.ensureAdminAccess==='function')await window.supabaseDataService.ensureAdminAccess();}
+  catch(err){status('err',err.message||'Không có quyền truy cập.');return}
+  if(window.buildAdminSidebar) window.buildAdminSidebar(location.hash==='#list'?'news-list':'news-editor');
+  // Sync nav active state
+  function syncNavActive(view){
+    var nl=document.getElementById('navNewsList'), ne=document.getElementById('navNewsEditor');
+    if(nl) nl.classList.toggle('on', view==='list');
+    if(ne) ne.classList.toggle('on', view==='editor');
+  }
+  // Intercept sidebar nav clicks — prevent full navigation, use sview() instead
+  var navList=document.getElementById('navNewsList');
+  var navEditor=document.getElementById('navNewsEditor');
+  if(navList) navList.addEventListener('click',function(e){e.preventDefault();sview('list');});
+  if(navEditor) navEditor.addEventListener('click',function(e){e.preventDefault();sview('editor');reset();status('info','Bắt đầu bài viết mới.');});
+  // Patch sview to also update nav
+  var _sviewOrig = sview;
+  sview = function(v){ _sviewOrig(v); syncNavActive(v); };
+  popCats();await loadLocs();reset();await loadPosts();
+  sview(location.hash==='#list'?'list':'editor');upSerp();
+
+  /* ── Focus Keyword live events ── */
+  var nFkw=document.getElementById('nFocusKw');
+  if(nFkw){
+    nFkw.addEventListener('input',function(){renderNewsKwTags(this.value);});
+    nFkw.addEventListener('blur',function(){
+      var d=normKeywords(this.value);
+      if(d!==this.value.trim())this.value=d;
+      renderNewsKwTags(d);
+    });
+  }
+}
+window.addEventListener('load',init);
+})();
+</script>
+<script>
+(function(){
+  var page=location.pathname.split('/').pop().split('?')[0].split('#')[0];
+  function setupAcc(){
+    document.querySelectorAll('.acc-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var g=btn.closest('.acc-group');
+        var wasOpen=g.classList.contains('open');
+        document.querySelectorAll('.acc-group').forEach(function(x){x.classList.remove('open');var b=x.querySelector('.acc-btn');if(b)b.classList.remove('on');});
+        if(!wasOpen){g.classList.add('open');btn.classList.add('on');}
+      });
+    });
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setupAcc);}else{setupAcc();}
+})();
+</script>
+
+<script>
+/* ADMIN SESSION DOUBLE-CHECK v4 — minimal, tin tưởng EARLY GUARD + localStorage */
+(function(){
+  var ADMIN_ROLES = ['super_admin','admin','moderator','finance','seo_manager','content_editor','support','administrator','quan tri vien','quantri'];
+
+  function isRoleAdmin(role) {
+    return ADMIN_ROLES.includes(String(role||'').trim().toLowerCase());
+  }
+
+  function hasLocalAdmin() {
+    try {
+      var keys = ['currentUser','registeredUser'];
+      for (var i=0; i<keys.length; i++) {
+        var raw = localStorage.getItem(keys[i]);
+        if (!raw) continue;
+        var u = JSON.parse(raw);
+        if (!u) continue;
+        var role = u.systemRole || u.system_role || u.authRole || u.appRole || '';
+        if (isRoleAdmin(role)) return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  // Chỉ double-check với Supabase 1 lần sau 3s để đồng bộ localStorage.
+  // KHÔNG kick user — EARLY GUARD ở đầu file đã lo việc đó.
+  // Đây chỉ là "soft refresh": nếu Supabase trả role admin thì update localStorage.
+  async function softRefreshFromSupabase() {
+    try {
+      var svc = window.supabaseDataService;
+      if (!svc || typeof svc.getCurrentUserProfile !== 'function') return;
+      var profile = await svc.getCurrentUserProfile().catch(function(){return null;});
+      if (!profile) return;
+      // Nếu Supabase trả role admin thì localStorage đã được update bởi ensureProfileRow
+      // Không cần làm gì thêm
+      var role = profile.systemRole || profile.system_role || '';
+      if (!isRoleAdmin(role) && !hasLocalAdmin()) {
+        // Cả Supabase và localStorage đều không có admin → LAST RESORT kick
+        // Nhưng chỉ làm sau khi chắc chắn (đã pass EARLY GUARD vẫn xuống đây)
+        console.warn('[AdminGuard v4] Không tìm thấy admin role cả ở Supabase và localStorage');
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(softRefreshFromSupabase, 3000);
+  });
+})();
+</script>
+</body>
+</html>

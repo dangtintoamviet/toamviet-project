@@ -1,0 +1,2728 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+    /* ADMIN EARLY GUARD - chạy trước tất cả mọi thứ */
+    (function() {
+        function isAdminLocally() {
+            try {
+                var keys = ["currentUser","registeredUser"];
+                for (var k = 0; k < keys.length; k++) {
+                    var raw = localStorage.getItem(keys[k]);
+                    if (!raw) continue;
+                    var u = JSON.parse(raw);
+                    if (!u) continue;
+                    var role = String(u.systemRole||u.system_role||u.authRole||u.appRole||"").trim().toLowerCase();
+                    if (["super_admin","admin","moderator","finance","seo_manager","content_editor","support","administrator","quan tri vien","quantri"].includes(role)) return true;
+                }
+            } catch(e) {}
+            return false;
+        }
+        var token = localStorage.getItem("authToken");
+        if (!token && !isAdminLocally()) {
+            window.location.replace("../auth/dang-nhap.html?redirect=" + encodeURIComponent(window.location.pathname));
+        }
+    })();
+    </script>
+    <title>Quản lý dự án | Toamviet.com.vn</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/admin-dashboard.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --stroke: #e2e8f0;
+            --text-main: #f4f7fa;
+            --text-soft: #64748b;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #0f766e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Roboto", "Segoe UI", sans-serif;
+            background: var(--soft-bg);
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .container-custom {
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .admin-shell {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .page-shell {
+            padding-bottom: 28px;
+        }
+
+        .page-hero {
+            margin-bottom: 24px;
+        }
+
+        .hero-card,
+        .sidebar-card,
+        .toolbar-card,
+        .stats-card,
+        .list-card,
+        .project-card,
+        .detail-card {
+            background: white;
+            border: 1px solid var(--stroke);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .hero-card {
+            padding: 28px;
+            background: linear-gradient(135deg, #0f766e, #008b8b);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        .hero-title {
+            font-size: 30px;
+            line-height: 1.35;
+            font-weight: 900;
+            margin-bottom: 12px;
+            max-width: 850px;
+            color: #fff !important;
+            text-transform: none;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.92);
+            max-width: 940px;
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hero-point {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 14px;
+        }
+
+        .hero-point .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 6px;
+        }
+
+        .hero-point .value {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.5;
+            color: #fff;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 260px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar-card {
+            padding: 22px;
+            position: sticky;
+            top: 92px;
+        }
+
+        .admin-sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            transition: 0.25s ease;
+            color: #475569;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            text-decoration: none;
+        }
+
+        .admin-sidebar-item:hover,
+        .admin-sidebar-item.active {
+            background: var(--vip-color);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 139, 139, 0.16);
+        }
+
+        /* Accordion sidebar */
+        .acc-group{margin:3px 0}
+        .acc-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 15px;border-radius:14px;color:#475569;font-weight:700;font-size:15px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left;transition:background .15s,color .15s}
+        .acc-btn:hover,.acc-btn.on{background:var(--vip-color,#008b8b);color:#fff}
+        .acc-btn .chev{transition:transform .22s;font-size:11px;flex-shrink:0}
+        .acc-group.open .acc-btn .chev{transform:rotate(180deg)}
+        .acc-group.open .acc-btn{background:var(--vip-color,#008b8b);color:#fff}
+        .acc-sub{display:none;margin:4px 0 6px 18px;padding-left:12px;border-left:2px solid #dbe4ee}
+        .acc-group.open .acc-sub{display:flex;flex-direction:column}
+        .acc-subitem{display:flex;align-items:center;gap:7px;padding:9px 11px;border-radius:10px;color:#64748b;font-weight:700;font-size:13px;text-decoration:none;margin:2px 0;transition:.15s}
+        .acc-subitem:hover,.acc-subitem.on{background:#eaf2ff;color:#1d4ed8}
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .stats-card {
+            padding: 18px;
+        }
+
+        .stats-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .stats-value {
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .stats-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .toolbar-card,
+        .list-card,
+        .detail-card {
+            padding: 22px;
+        }
+
+        .toolbar-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .toolbar-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .toolbar-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.7;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .toolbar-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(170px, 1fr)) 140px;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .input-field,
+        .select-field {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--stroke);
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            transition: 0.25s ease;
+            min-height: 48px;
+        }
+
+        .input-field:focus,
+        .select-field:focus {
+            border-color: var(--vip-color);
+            box-shadow: 0 0 0 4px rgba(0,139,139,0.08);
+        }
+
+        .btn-primary,
+        .btn-soft,
+        .btn-dark,
+        .btn-success,
+        .btn-danger,
+        .btn-warning {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--vip-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--vip-dark);
+        }
+
+        .btn-soft {
+            background: #eef2ff;
+            color: #334155;
+        }
+
+        .btn-soft:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1e293b;
+        }
+
+        .btn-success {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .btn-success:hover {
+            background: #d1fae5;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        .btn-warning {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .btn-warning:hover {
+            background: #ffedd5;
+        }
+
+        .status-box {
+            display: none;
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .status-box.info {
+            display: block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .list-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .list-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .list-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .project-count-pill {
+            background: #ecfeff;
+            color: #0f766e;
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .project-card {
+            padding: 18px;
+            transition: 0.25s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .project-card.active {
+            border-color: #14b8a6;
+            box-shadow: 0 12px 28px rgba(20, 184, 166, 0.12);
+        }
+
+        .project-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .project-title {
+            font-size: 19px;
+            font-weight: 900;
+            line-height: 1.5;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .project-meta-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-type {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .badge-city {
+            background: #ecfeff;
+            color: #0f766e;
+        }
+
+        .badge-active {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .badge-hidden {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .project-desc {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+
+        .project-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .mini-stat {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 14px;
+        }
+
+        .mini-stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            letter-spacing: 0.04em;
+        }
+
+        .mini-stat-value {
+            font-size: 15px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .project-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .detail-card {
+            position: sticky;
+            top: 92px;
+            height: fit-content;
+        }
+
+        .detail-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .detail-sub {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .detail-box-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .detail-box-value {
+            font-size: 14px;
+            line-height: 1.8;
+            font-weight: 700;
+            color: #0f172a;
+            word-break: break-word;
+        }
+
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detail-list-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 13px;
+        }
+
+        .detail-list-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-list-label {
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .detail-list-value {
+            color: #0f172a;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+            font-style: italic;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            background: #fff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 1280px) {
+            .toolbar-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-card {
+                position: static;
+            }
+
+            .project-stats-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-card {
+                position: static;
+            }
+
+            .hero-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid,
+            .project-stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .toolbar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-card,
+            .sidebar-card,
+            .toolbar-card,
+            .list-card,
+            .detail-card,
+            .stats-card,
+            .project-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .toolbar-head,
+            .list-head,
+            .project-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .toolbar-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .project-actions .btn-soft,
+            .project-actions .btn-warning,
+            .project-actions .btn-primary {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .project-stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+    /* ── Wide admin layout (same as quan-ly-tin-tuc) ── */
+    
+    .cw{max-width:1480px;margin:0 auto;padding:0 16px}
+    .pshell{padding-bottom:48px}
+    .adm-layout{display:flex;gap:0;align-items:flex-start;padding-top:20px}
+    .adm-sidebar{width:220px;flex-shrink:0;position:sticky;top:90px;margin-right:22px}
+    .adm-main{flex:1;min-width:0}
+    .sb-card{background:#fff;border:1px solid var(--stroke,#dbe4ee);border-radius:18px;box-shadow:0 6px 24px rgba(15,23,42,.06);padding:14px}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:3px;transition:.15s}
+    .sb-item:hover,.sb-item.on{background:#008b8b;color:#fff}
+    .sb-item i{width:16px;text-align:center;font-size:13px}
+    .sb-divider{height:1px;background:var(--stroke,#dbe4ee);margin:8px 0}
+    .acc-group{margin:2px 0}
+    .acc-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left;transition:.15s}
+    .acc-btn:hover,.acc-btn.on{background:#008b8b;color:#fff}
+    .acc-btn .chev{transition:transform .2s;font-size:10px;flex-shrink:0}
+    .acc-group.open .acc-btn .chev{transform:rotate(180deg)}
+    .acc-group.open .acc-btn{background:#008b8b;color:#fff}
+    .acc-sub{display:none;margin:3px 0 5px 16px;padding-left:11px;border-left:2px solid #dbe4ee}
+    .acc-group.open .acc-sub{display:flex;flex-direction:column}
+    .acc-subitem{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:9px;color:#64748b;font-weight:700;font-size:13px;text-decoration:none;margin:2px 0;transition:.15s}
+    .acc-subitem:hover,.acc-subitem.on{background:#eaf2ff;color:#1d4ed8}
+    @media(max-width:1100px){.adm-layout{flex-direction:column}.adm-sidebar{width:100%;position:static;margin-right:0;margin-bottom:16px}}
+    </style>
+</head>
+<body>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
+
+    <main class="pshell">
+        <div class="cw">
+                <section class="page-hero">
+                    <div class="hero-card">
+                        <div class="hero-badge">
+                            <i class="fa-solid fa-diagram-project"></i>
+                            Trung tâm quản lý dự án
+                        </div>
+
+                        <h1 class="hero-title">Theo dõi toàn bộ nhóm dự án để đồng bộ dữ liệu tin đăng, trạng thái và số lượng bài liên quan</h1>
+
+                        <p class="hero-desc">
+                            Trang này dùng để kiểm tra toàn bộ dự án đã phát sinh từ luồng đăng tin. Khi đồng bộ lại, hệ thống sẽ gom số lượng tin theo dự án, phân loại theo trạng thái approved / pending / rejected / hidden và phục vụ cho các trang public như trang dự án, giá nhà đất và danh sách tin theo nhóm.
+                        </p>
+
+                        <div class="hero-points">
+                            <div class="hero-point">
+                                <div class="label">Nguồn dữ liệu</div>
+                                <div class="value">allPosts → projects</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Dùng chung</div>
+                                <div class="value">Header, footer, sidebar admin, stores phụ</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Mục tiêu</div>
+                                <div class="value">Giữ số liệu dự án sạch để đồng bộ public và SEO</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="adm-layout">
+                    
+  <!-- Sidebar -->
+  <aside class="adm-sidebar">
+    <div class="sb-card">
+      <a href="admin-dashboard.html" class="sb-item"><i class="fa-solid fa-chart-line"></i>Tổng quan</a>
+      <a href="quan-ly-thanh-vien.html" class="sb-item"><i class="fa-solid fa-users"></i>Thành viên</a>
+      <a href="kiem-duyet-tin.html" class="sb-item"><i class="fa-solid fa-list-check"></i>Kiểm duyệt</a>
+      <div class="sb-divider"></div>
+      <div class="acc-group open">
+        <button type="button" class="acc-btn on"><span><i class="fa-solid fa-diagram-project"></i> Dự án</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-du-an.html" class="acc-subitem on"><i class="fa-solid fa-list"></i>Danh sách</a>
+          <a href="quan-ly-noi-dung-du-an.html" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập nội dung</a>
+          <a href="quan-ly-chu-dau-tu.html" class="acc-subitem"><i class="fa-solid fa-building-circle-check"></i>Chủ đầu tư</a>
+          <a href="quan-ly-seo-du-an.html" class="acc-subitem"><i class="fa-solid fa-magnifying-glass-chart"></i>SEO dự án</a>
+        </div>
+      </div>
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-newspaper"></i> Tin tức</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-tin-tuc.html#list" class="acc-subitem"><i class="fa-solid fa-list"></i>Tất cả bài viết</a>
+          <a href="quan-ly-tin-tuc.html#editor" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập bài viết</a>
+        </div>
+      </div>
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-magnifying-glass-chart"></i> SEO Landing</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-seo-landing.html#template" class="acc-subitem"><i class="fa-solid fa-code"></i>Template SEO</a>
+          <a href="quan-ly-seo-landing.html#override" class="acc-subitem"><i class="fa-solid fa-pen"></i>Override landing</a>
+        </div>
+      </div>
+
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-wallet"></i> Kiếm tiền / VIP</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-don-hang.html" class="acc-subitem"><i class="fa-solid fa-file-invoice-dollar"></i>Đơn hàng</a>
+          <a href="duyet-don-thu-phi.html" class="acc-subitem"><i class="fa-solid fa-money-check-dollar"></i>Duyệt đơn thu phí</a>
+          <a href="quan-ly-entitlement-vip.html" class="acc-subitem"><i class="fa-solid fa-crown"></i>Entitlement VIP</a>
+          <a href="cap-quyen-vip.html" class="acc-subitem"><i class="fa-solid fa-user-shield"></i>Cấp quyền VIP</a>
+        </div>
+      </div>
+      <div class="sb-divider"></div>
+      <a href="cai-dat-he-thong.html" class="sb-item"><i class="fa-solid fa-sliders"></i>Cài đặt hệ thống</a>
+    </div>
+  </aside>
+
+                      <div class="adm-main">
+                        <div class="stats-grid">
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng dự án</div>
+                                <div class="stats-value" id="statTotalProjects">0</div>
+                                <div class="stats-note">Tất cả dự án đang lưu trong projects.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Đang hoạt động</div>
+                                <div class="stats-value" id="statActiveProjects">0</div>
+                                <div class="stats-note">Dự án có ít nhất 1 tin chưa bị ẩn hoàn toàn.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Có tin chờ duyệt</div>
+                                <div class="stats-value" id="statPendingProjects">0</div>
+                                <div class="stats-note">Cần theo dõi vì còn tin pending.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Đã ẩn</div>
+                                <div class="stats-value" id="statHiddenProjects">0</div>
+                                <div class="stats-note">Dự án đang bị ẩn khỏi danh sách admin.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng số bài</div>
+                                <div class="stats-value" id="statTotalPosts">0</div>
+                                <div class="stats-note">Tổng bài đã gom vào các dự án.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Phủ tỉnh/thành</div>
+                                <div class="stats-value" id="statCityCoverage">0</div>
+                                <div class="stats-note">Số tỉnh/thành hiện có dự án trong kho.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Phủ phường/xã</div>
+                                <div class="stats-value" id="statWardCoverage">0</div>
+                                <div class="stats-note">Số phường/xã đang có dữ liệu dự án.</div>
+                            </div>
+                            <div class="stats-card">
+                                <div class="stats-label">Cụm dự án trùng</div>
+                                <div class="stats-value" id="statDuplicateGroups">0</div>
+                                <div class="stats-note">Nhóm dự án gần giống cần admin rà hoặc gộp.</div>
+                            </div>
+                        </div>
+
+                        <section class="toolbar-card">
+                            <div class="toolbar-head">
+                                <div>
+                                    <div class="toolbar-title">Danh sách dự án</div>
+                                    <div class="toolbar-sub">
+                                        Lọc theo tên, khu vực, loại dự án và trạng thái để kiểm tra nhanh dữ liệu trước khi đồng bộ các trang public.
+                                    </div>
+                                </div>
+
+                                <div class="toolbar-actions">
+                                    <button id="syncProjectsBtn" class="btn-primary" type="button">
+                                        <i class="fa-solid fa-rotate mr-2"></i>Đồng bộ từ bài đăng
+                                    </button>
+                                    <button id="refreshBtn" class="btn-soft" type="button">
+                                        <i class="fa-solid fa-rotate-right mr-2"></i>Làm mới
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="globalStatus" class="status-box"></div>
+
+                            <div class="toolbar-grid">
+                                <div>
+                                    <label class="field-label" for="searchInput">Tìm theo tên dự án / khu vực / chủ đầu tư</label>
+                                    <input id="searchInput" type="text" class="input-field" placeholder="Nhập từ khóa cần tìm..." />
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="cityFilter">Tỉnh / Thành phố</label>
+                                    <select id="cityFilter" class="select-field">
+                                        <option value="all">Tất cả tỉnh/thành</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="typeFilter">Loại dự án</label>
+                                    <select id="typeFilter" class="select-field">
+                                        <option value="all">Tất cả loại</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label" for="statusFilter">Trạng thái dự án</label>
+                                    <select id="statusFilter" class="select-field">
+                                        <option value="all">Tất cả trạng thái</option>
+                                        <option value="active">Đang hoạt động</option>
+                                        <option value="has_pending">Có tin chờ duyệt</option>
+                                        <option value="hidden">Đã ẩn</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="field-label">&nbsp;</label>
+                                    <button id="clearFilterBtn" class="btn-dark w-full" type="button">Xóa lọc</button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="content-grid mt-6">
+                            <section class="list-card">
+                                <div class="list-head">
+                                    <div>
+                                        <div class="list-title">Dự án trong hệ thống</div>
+                                        <div class="list-sub" id="resultInfo">Đang tải dữ liệu dự án...</div>
+                                    </div>
+                                    <div class="project-count-pill" id="projectCountBadge">0 dự án</div>
+                                </div>
+
+                                <div id="projectList" class="project-list"></div>
+
+                        <div id="project-pagination" class="tv-pagination hidden"></div>
+
+                                <div id="emptyState" class="empty-box hidden">
+                                    Hiện không có dự án nào phù hợp với bộ lọc hiện tại.
+                                </div>
+                            </section>
+
+                            <aside class="detail-card">
+                                <div class="detail-title">Chi tiết nhanh dự án</div>
+                                <div class="detail-sub">Chọn một dự án để xem nhanh thống kê, khu vực, chủ đầu tư và liên kết public.</div>
+
+                                <div id="detailDefault">
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Trạng thái xem nhanh</div>
+                                        <div class="detail-box-value">Chưa chọn dự án nào để xem chi tiết.</div>
+                                    </div>
+                                </div>
+
+                                <div id="detailContent" class="hidden">
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Tên dự án</div>
+                                        <div class="detail-box-value" id="detailProjectName">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Thông tin chính</div>
+                                        <div class="detail-box-value" id="detailProjectMeta">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Chủ đầu tư / Đơn vị phát triển</div>
+                                        <div class="detail-box-value" id="detailProjectDeveloper">---</div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Liên kết public</div>
+                                        <div class="detail-box-value">
+                                            <a id="detailPublicLink" href="#" target="_blank" class="text-[--vip-color] font-extrabold hover:underline">
+                                                Mở trang public của dự án
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Thống kê theo trạng thái</div>
+                                        <div class="detail-list">
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Tổng bài</span>
+                                                <span class="detail-list-value" id="detailTotalPosts">0</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Đã duyệt</span>
+                                                <span class="detail-list-value" id="detailApprovedPosts">0</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Chờ duyệt</span>
+                                                <span class="detail-list-value" id="detailPendingPosts">0</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Từ chối</span>
+                                                <span class="detail-list-value" id="detailRejectedPosts">0</span>
+                                            </div>
+                                            <div class="detail-list-item">
+                                                <span class="detail-list-label">Đang ẩn</span>
+                                                <span class="detail-list-value" id="detailHiddenPosts">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <div class="detail-box-label">Gợi ý gộp dự án trùng</div>
+                                        <div class="detail-box-value" id="detailDuplicateProjects">Chưa phát hiện dự án gần giống.</div>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div><!-- /adm-main -->
+                </div><!-- /adm-layout -->
+                </div><!-- /cw -->
+    </main>
+
+    <!-- ========== EDITOR MODAL: Nội dung & SEO dự án ========== -->
+    <!-- ========== PROJECT EDITOR MODAL v2 ========== -->
+    <style>
+    #peo{font-family:'Roboto',sans-serif}
+    #peo .pe-tab{padding:13px 18px;border:0;background:none;font-weight:800;font-size:14px;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+    #peo .pe-tab.on{color:#008b8b;border-bottom-color:#008b8b}
+    #peo .pe-panel{display:none}#peo .pe-panel.on{display:block}
+    #peo .pef{width:100%;min-height:44px;padding:10px 13px;border:1.5px solid #dbe4ee;border-radius:12px;background:#fff;font-size:14px;outline:none;font-family:inherit;color:#334155;transition:.15s}
+    #peo .pef:focus{border-color:#008b8b;box-shadow:0 0 0 3px rgba(0,139,139,.1)}
+    #peo .pefl{display:block;font-size:13px;font-weight:800;margin-bottom:6px;color:#0f172a}
+    #peo .pefl span{font-weight:400;color:#64748b}
+    /* Rich editor toolbar */
+    #peo .retb{display:flex;flex-wrap:wrap;gap:3px;padding:9px 11px;border-bottom:1.5px solid #e5e7eb;background:#f8fafc;align-items:center}
+    #peo .retb button,#peo .retb .upl{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 7px;border:1px solid #dbe4ee;border-radius:7px;background:#fff;color:#334155;font-size:12px;font-weight:800;cursor:pointer;gap:4px;transition:.12s}
+    #peo .retb button:hover{background:#f1f5f9}#peo .retb button.act{background:#0f172a;color:#fff;border-color:#0f172a}
+    #peo .retb .sep{width:1px;height:22px;background:#e2e8f0;margin:0 2px;align-self:center}
+    #peo .retb select{height:30px;padding:0 6px;border:1px solid #dbe4ee;border-radius:7px;font-size:12px;font-weight:700;background:#fff;outline:none}
+    #peo .rte{min-height:420px;max-height:780px;overflow-y:auto;padding:18px 20px;outline:none;font-size:15px;line-height:1.85;color:#0f172a}
+    #peo .rte:empty:before{content:attr(data-placeholder);color:#94a3b8;pointer-events:none}
+    #peo .rte h2{font-size:21px;font-weight:900;margin:18px 0 9px}#peo .rte h3{font-size:17px;font-weight:800;margin:14px 0 7px}
+    #peo .rte p{margin:0 0 11px}#peo .rte ul{margin:8px 0 11px 20px;list-style:disc}#peo .rte ol{margin:8px 0 11px 20px;list-style:decimal}
+    #peo .rte table{width:100%;border-collapse:collapse;margin:12px 0}#peo .rte td,#peo .rte th{border:1px solid #cbd5e1;padding:7px 9px}#peo .rte th{background:#f8fafc;font-weight:800}
+    #peo .rte img{max-width:100%;height:auto;border-radius:10px;margin:8px 0;display:block}
+    #peo .rte blockquote{border-left:4px solid #14b8a6;margin:12px 0;padding:6px 0 6px 14px;color:#475569;background:#f8fafc;border-radius:0 9px 9px 0}
+    #peo .rte a{color:#008b8b;text-decoration:underline}#peo .rte hr{border:0;border-top:2px solid #e2e8f0;margin:16px 0}
+    #peo .rte code{background:#f1f5f9;color:#0f766e;padding:2px 5px;border-radius:5px;font-size:13px}
+    #peo .rte pre{background:#0f172a;color:#e2e8f0;padding:12px 14px;border-radius:10px;font-size:13px;overflow-x:auto;margin:10px 0}
+    /* Gallery */
+    #peo .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:10px}
+    #peo .gal-item{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:1;border:2px solid #e5e7eb;background:#f8fafc;cursor:pointer}
+    #peo .gal-item img{width:100%;height:100%;object-fit:cover;display:block}
+    #peo .gal-item .gal-del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(220,38,38,.85);color:#fff;border:0;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    #peo .gal-item .gal-cover-badge{position:absolute;bottom:0;left:0;right:0;background:rgba(0,139,139,.85);color:#fff;font-size:10px;font-weight:800;text-align:center;padding:3px}
+    #peo .gal-add{border-radius:10px;border:2px dashed #cbd5e1;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;aspect-ratio:1;cursor:pointer;font-size:11px;color:#94a3b8;font-weight:700;transition:.15s}
+    #peo .gal-add:hover{border-color:#008b8b;color:#008b8b}
+    /* Preview panel */
+    #peo .prev-hero{width:100%;max-height:260px;object-fit:cover;border-radius:14px;margin-bottom:14px;display:none}
+    #peo .prev-gallery{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px}
+    #peo .prev-gallery img{width:80px;height:80px;object-fit:cover;border-radius:8px;flex-shrink:0;border:1px solid #e5e7eb}
+    #peo .prev-title{font-size:22px;font-weight:900;color:#0f172a;margin-bottom:6px}
+    #peo .prev-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:#64748b;margin-bottom:14px}
+    #peo .prev-desc{font-size:15px;line-height:1.8;color:#334155;margin-bottom:14px}
+    #peo .prev-body{font-size:15px;line-height:1.85;color:#1e293b}
+    #peo .prev-body h2{font-size:20px;font-weight:900;margin:16px 0 8px}
+    #peo .prev-body h3{font-size:17px;font-weight:800;margin:13px 0 7px}
+    #peo .prev-body p{margin:0 0 11px}
+    #peo .prev-body img{max-width:100%;border-radius:10px;margin:8px 0}
+    #peo .prev-feat{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+    #peo .prev-feat span{background:#f0fdfa;color:#0f766e;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+    #peo .prev-infotable{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:14px}
+    #peo .prev-infotable td{padding:9px 12px;border-bottom:1px solid #f1f5f9}
+    #peo .prev-infotable td:first-child{font-weight:800;color:#475569;width:40%}
+    </style>
+
+    <div id="peo" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,.62);backdrop-filter:blur(4px);overflow-y:auto;padding:20px 0;">
+      <div style="max-width:1100px;margin:0 auto;padding:0 16px;">
+      <div style="background:#fff;border-radius:26px;box-shadow:0 32px 80px rgba(15,23,42,.2);overflow:hidden;">
+
+        <!-- Header -->
+        <div style="padding:20px 26px;background:linear-gradient(135deg,#0f766e,#008b8b);display:flex;align-items:center;justify-content:space-between;gap:14px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.65);margin-bottom:5px;"><i class="fa-solid fa-diagram-project"></i> Biên tập dự án</div>
+            <h2 id="editorModalTitle" style="font-size:21px;font-weight:900;color:#fff;margin:0;line-height:1.3;">Tên dự án</h2>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button id="pePreviewBtn" type="button" style="padding:0 16px;height:38px;border-radius:10px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-eye"></i>Xem trước</button>
+            <button id="closeEditorBtn" type="button" style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+
+        <!-- Tab bar -->
+        <div style="display:flex;border-bottom:2px solid #e5e7eb;background:#f8fafc;padding:0 18px;overflow-x:auto;">
+          <button type="button" class="pe-tab on" data-tab="content"><i class="fa-solid fa-pen-nib"></i>Nội dung</button>
+          <button type="button" class="pe-tab" data-tab="gallery"><i class="fa-solid fa-images"></i>Gallery ảnh</button>
+          <button type="button" class="pe-tab" data-tab="seo"><i class="fa-solid fa-magnifying-glass-chart"></i>SEO</button>
+          <button type="button" class="pe-tab" data-tab="info"><i class="fa-solid fa-circle-info"></i>Thông tin dự án</button>
+          <button type="button" class="pe-tab" data-tab="preview"><i class="fa-solid fa-desktop"></i>Xem trước</button>
+        </div>
+
+        <!-- Status -->
+        <div id="editorStatusBox" style="display:none;margin:14px 22px 0;padding:12px 15px;border-radius:12px;font-weight:700;font-size:14px;"></div>
+
+        <!-- ── TAB: NỘI DUNG ── -->
+        <div id="tabContent" class="pe-panel on" style="padding:22px 24px;">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:20px;align-items:start;">
+            <div>
+              <label class="pefl">Mô tả tóm tắt <span>(hiển thị ở card + đầu trang chi tiết)</span></label>
+              <textarea id="projDescription" class="pef" rows="3" style="min-height:80px;resize:vertical;" placeholder="Mô tả ngắn gọn, hấp dẫn về dự án..."></textarea>
+
+              <div style="margin-top:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <label class="pefl" style="margin:0;">Nội dung chi tiết dự án</label>
+                  <span id="peWcBadge" style="background:#e2e8f0;border-radius:7px;padding:3px 9px;font-size:12px;font-weight:800;color:#475569;">0 từ</span>
+                </div>
+                <!-- Rich text editor -->
+                <div style="border:1.5px solid #dbe4ee;border-radius:14px;overflow:hidden;">
+                  <div class="retb" id="peToolbar">
+                    <div style="display:flex;gap:3px;align-items:center">
+                      <button type="button" data-pc="undo" title="Hoàn tác"><i class="fa-solid fa-rotate-left"></i></button>
+                      <button type="button" data-pc="redo" title="Làm lại"><i class="fa-solid fa-rotate-right"></i></button>
+                    </div>
+                    <div class="sep"></div>
+                    <div style="display:flex;gap:3px;">
+                      <button type="button" data-pc="h2" title="H2"><b>H2</b></button>
+                      <button type="button" data-pc="h3" title="H3"><b>H3</b></button>
+                      <button type="button" data-pc="p" title="Đoạn"><i class="fa-solid fa-paragraph"></i></button>
+                    </div>
+                    <div class="sep"></div>
+                    <div style="display:flex;gap:3px;">
+                      <button type="button" data-pc="bold" title="Đậm"><b>B</b></button>
+                      <button type="button" data-pc="italic" title="Nghiêng"><i>I</i></button>
+                      <button type="button" data-pc="underline" title="Gạch chân"><u>U</u></button>
+                      <button type="button" data-pc="strikeThrough" title="Gạch ngang"><s>S</s></button>
+                      <button type="button" data-pc="removeFormat" title="Xóa định dạng"><i class="fa-solid fa-eraser"></i></button>
+                    </div>
+                    <div class="sep"></div>
+                    <div style="display:flex;gap:3px;">
+                      <button type="button" data-pc="justifyLeft"><i class="fa-solid fa-align-left"></i></button>
+                      <button type="button" data-pc="justifyCenter"><i class="fa-solid fa-align-center"></i></button>
+                      <button type="button" data-pc="justifyRight"><i class="fa-solid fa-align-right"></i></button>
+                    </div>
+                    <div class="sep"></div>
+                    <div style="display:flex;gap:3px;">
+                      <button type="button" data-pc="insertUnorderedList" title="Danh sách •"><i class="fa-solid fa-list-ul"></i></button>
+                      <button type="button" data-pc="insertOrderedList" title="Danh sách số"><i class="fa-solid fa-list-ol"></i></button>
+                    </div>
+                    <div class="sep"></div>
+                    <div style="display:flex;gap:3px;">
+                      <button type="button" data-pc="link" title="Liên kết"><i class="fa-solid fa-link"></i></button>
+                      <button type="button" data-pc="imgurl" title="Chèn ảnh URL"><i class="fa-solid fa-image"></i></button>
+                      <label class="upl" title="Tải ảnh lên" style="cursor:pointer"><i class="fa-solid fa-cloud-arrow-up"></i><input type="file" id="peImgFile" accept="image/*" style="display:none;"></label>
+                      <button type="button" data-pc="table" title="Bảng"><i class="fa-solid fa-table"></i></button>
+                      <button type="button" data-pc="insertHorizontalRule" title="Đường kẻ"><i class="fa-solid fa-minus"></i></button>
+                      <button type="button" data-pc="blockquote" title="Trích dẫn"><i class="fa-solid fa-quote-right"></i></button>
+                    </div>
+                    <div class="sep"></div>
+                    <select id="peFontSize"><option value="">Cỡ</option><option value="14px">14</option><option value="16px">16</option><option value="18px">18</option><option value="20px">20</option><option value="24px">24</option><option value="28px">28</option></select>
+                    <select id="peFontColor"><option value="">🎨</option><option value="#000">⚫</option><option value="#0f766e">🟢</option><option value="#1d4ed8">🔵</option><option value="#dc2626">🔴</option><option value="#d97706">🟡</option></select>
+                  </div>
+                  <div class="rte" id="projRte" contenteditable="true" data-placeholder="Viết nội dung chi tiết dự án ở đây — tổng quan quy hoạch, tiện ích, phân kỳ, chính sách thanh toán..."></div>
+                  <div style="padding:7px 16px;background:#f8fafc;border-top:1px solid #e5e7eb;font-size:12px;color:#94a3b8;display:flex;justify-content:space-between;">
+                    <span>Ctrl+B đậm · Ctrl+I nghiêng · Kéo thả ảnh vào nội dung</span>
+                    <span id="peCcnt">0 ký tự</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right column -->
+            <div style="display:grid;gap:14px;">
+              <!-- Cover image -->
+              <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:15px;">
+                <div style="font-weight:800;font-size:13px;margin-bottom:10px;color:#0f172a;"><i class="fa-solid fa-image" style="color:#008b8b;margin-right:6px;"></i>Ảnh đại diện</div>
+                <div id="projImagePreviewWrap" style="display:none;margin-bottom:9px;"><img id="projImagePreview" src="" alt="" style="width:100%;max-height:150px;object-fit:cover;border-radius:10px;border:1px solid #e2e8f0;"></div>
+                <input id="projImageUrl" type="url" class="pef" placeholder="URL ảnh đại diện..." style="margin-bottom:8px;">
+                <label style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:#fff;border:1.5px dashed #cbd5e1;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;color:#64748b;margin-bottom:6px;">
+                  <i class="fa-solid fa-cloud-arrow-up" style="color:#008b8b;"></i>Kéo thả / Chọn file
+                  <input type="file" id="projImageFile" accept="image/*" style="display:none;">
+                </label>
+                <button id="uploadProjImageBtn" type="button" style="width:100%;padding:9px;background:#008b8b;color:#fff;border:0;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;"><i class="fa-solid fa-upload" style="margin-right:6px;"></i>Tải lên storage</button>
+              </div>
+
+              <!-- Features -->
+              <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:15px;">
+                <div style="font-weight:800;font-size:13px;margin-bottom:10px;color:#0f172a;"><i class="fa-solid fa-star" style="color:#d97706;margin-right:6px;"></i>Tính năng nổi bật</div>
+                <textarea id="projFeatures" class="pef" rows="6" style="resize:vertical;font-size:13px;" placeholder="Mỗi dòng 1 tính năng:&#10;Hồ bơi ngoài trời&#10;Gym 5 sao&#10;An ninh 24/7&#10;Trường học nội khu&#10;Công viên cây xanh"></textarea>
+                <div style="font-size:12px;color:#94a3b8;margin-top:5px;">Mỗi dòng = 1 tính năng · Sẽ hiển thị dạng icon tag trên trang chi tiết</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB: GALLERY ── -->
+        <div id="tabGallery" class="pe-panel" style="padding:22px 24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <div style="font-size:16px;font-weight:900;color:#0f172a;">Gallery ảnh dự án</div>
+              <div style="font-size:13px;color:#64748b;margin-top:3px;">Upload nhiều ảnh · Kéo để sắp xếp · Bấm vào ảnh đầu để đặt làm ảnh đại diện · Tối đa 20 ảnh</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <label style="display:inline-flex;align-items:center;gap:7px;padding:0 16px;height:40px;background:#008b8b;color:#fff;border-radius:11px;cursor:pointer;font-weight:800;font-size:13px;">
+                <i class="fa-solid fa-cloud-arrow-up"></i>Tải ảnh lên
+                <input type="file" id="galUploadFile" accept="image/*" multiple style="display:none;">
+              </label>
+              <button type="button" id="galClearBtn" style="padding:0 14px;height:40px;border:1.5px solid #fecaca;background:#fef2f2;color:#dc2626;border-radius:11px;font-weight:800;font-size:13px;cursor:pointer;"><i class="fa-solid fa-trash"></i>Xóa tất cả</button>
+            </div>
+          </div>
+
+          <!-- Upload drop zone -->
+          <div id="galDropZone" style="border:2px dashed #cbd5e1;border-radius:16px;padding:28px;text-align:center;background:#f8fafc;margin-bottom:16px;transition:.15s;cursor:pointer;">
+            <i class="fa-solid fa-images" style="font-size:32px;color:#94a3b8;margin-bottom:10px;display:block;"></i>
+            <div style="font-weight:800;font-size:14px;color:#475569;">Kéo thả ảnh vào đây</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:4px;">Hoặc bấm nút "Tải ảnh lên" ở trên · JPG, PNG, WEBP</div>
+          </div>
+
+          <!-- Gallery grid -->
+          <div class="gal-grid" id="galGrid">
+            <div class="gal-add" id="galAddBtn">
+              <i class="fa-solid fa-plus" style="font-size:20px;"></i>
+              <span>Thêm ảnh</span>
+            </div>
+          </div>
+          <div style="margin-top:12px;font-size:13px;color:#94a3b8;"><span id="galCount">0</span> ảnh · Ảnh đầu tiên = ảnh đại diện · Bấm ✕ để xóa từng ảnh</div>
+
+          <!-- URL input -->
+          <div style="margin-top:16px;display:flex;gap:8px;align-items:center;">
+            <input type="url" id="galUrlInput" class="pef" placeholder="Hoặc nhập URL ảnh trực tiếp..." style="flex:1;">
+            <button type="button" id="galAddUrlBtn" style="padding:0 16px;height:44px;background:#0f172a;color:#fff;border:0;border-radius:11px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;"><i class="fa-solid fa-plus"></i>Thêm URL</button>
+          </div>
+        </div>
+
+        <!-- ── TAB: SEO ── -->
+        <div id="tabSeo" class="pe-panel" style="padding:22px 24px;">
+          <div style="display:grid;gap:16px;">
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:13px 15px;font-size:13px;color:#1d4ed8;line-height:1.7;">
+              <i class="fa-solid fa-circle-info" style="margin-right:8px;"></i>Nội dung SEO hiển thị trên trang <strong>chi tiết dự án</strong>. Tiêu đề 55–65 ký tự, mô tả 130–155 ký tự là tốt nhất.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div>
+                <label class="pefl">Tiêu đề SEO (title tag)</label>
+                <input id="projSeoTitle" type="text" class="pef" maxlength="80" placeholder="VD: Dự án Vinhomes Grand Park – Căn hộ TP.HCM">
+                <div id="projSeoTitleCount" style="font-size:12px;color:#64748b;margin-top:4px;">0 / 65 ký tự</div>
+              </div>
+              <div>
+                <label class="pefl">Slug URL <span>(chỉ đọc)</span></label>
+                <input id="projSeoSlug" type="text" class="pef" style="font-family:monospace;background:#f8fafc;" readonly>
+              </div>
+              <div style="grid-column:1/-1;">
+                <label class="pefl">Meta description</label>
+                <textarea id="projSeoDescription" class="pef" rows="3" style="resize:vertical;" maxlength="200" placeholder="Mô tả 130–155 ký tự, chứa từ khoá chính, hấp dẫn người click..."></textarea>
+                <div id="projSeoDescCount" style="font-size:12px;color:#64748b;margin-top:4px;">0 / 155 ký tự</div>
+              </div>
+              <div style="grid-column:1/-1;">
+                <label class="pefl">Nội dung SEO body <span>(hiển thị cuối trang chi tiết)</span></label>
+                <div style="border:1.5px solid #dbe4ee;border-radius:12px;overflow:hidden;">
+                  <div class="rte" id="projSeoRte" contenteditable="true" style="min-height:220px;" data-placeholder="Viết 300–600 từ về dự án, vị trí, tiện ích, pháp lý... Giúp Google index từ khoá dài."></div>
+                </div>
+              </div>
+              <div style="grid-column:1/-1;">
+                <label class="pefl">JSON-LD Schema <span>(tùy chọn)</span></label>
+                <textarea id="projSeoSchema" class="pef" rows="5" style="font-family:monospace;font-size:13px;background:#0f172a;color:#e2e8f0;resize:vertical;" placeholder='{"@context":"https://schema.org","@type":"Place","name":"Tên dự án"}'></textarea>
+              </div>
+            </div>
+            <!-- SERP live preview -->
+            <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;">
+              <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;margin-bottom:10px;">Google Search Preview</div>
+              <div id="serpTitle" style="font-size:17px;font-weight:700;color:#1a0dab;line-height:1.3;margin-bottom:3px;">Tiêu đề trang dự án</div>
+              <div id="serpUrl" style="font-size:12px;color:#0a6634;margin-bottom:3px;">toamviet.com.vn › du-an › ten-du-an</div>
+              <div id="serpDesc" style="font-size:13px;color:#4d5156;line-height:1.5;">Mô tả sẽ hiển thị ở đây...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB: THÔNG TIN DỰ ÁN ── -->
+        <div id="tabInfo" class="pe-panel" style="padding:22px 24px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+            <div>
+              <label class="pefl">Số căn tổng</label>
+              <input id="projTotalUnits" type="number" class="pef" min="0" placeholder="VD: 2500">
+            </div>
+            <div>
+              <label class="pefl">Căn đang mở bán</label>
+              <input id="projOpenForSale" type="number" class="pef" min="0" placeholder="VD: 400">
+            </div>
+            <div>
+              <label class="pefl">Tình trạng</label>
+              <select id="projCompletionStatus" class="pef">
+                <option value="">-- Chọn --</option>
+                <option value="Sắp mở bán">Sắp mở bán</option>
+                <option value="Đang mở bán">Đang mở bán</option>
+                <option value="Đang xây dựng">Đang xây dựng</option>
+                <option value="Hoàn thành">Hoàn thành – Đã bàn giao</option>
+                <option value="Tạm dừng">Tạm dừng</option>
+              </select>
+            </div>
+            <div>
+              <label class="pefl">Giá từ</label>
+              <input id="projPriceFrom" type="text" class="pef" placeholder="VD: 1.5 tỷ">
+            </div>
+            <div>
+              <label class="pefl">Giá đến</label>
+              <input id="projPriceTo" type="text" class="pef" placeholder="VD: 8 tỷ">
+            </div>
+            <div>
+              <label class="pefl">Diện tích từ (m²)</label>
+              <input id="projAreaFrom" type="text" class="pef" placeholder="VD: 45">
+            </div>
+            <div>
+              <label class="pefl">Diện tích đến (m²)</label>
+              <input id="projAreaTo" type="text" class="pef" placeholder="VD: 150">
+            </div>
+            <div>
+              <label class="pefl">Ngày khởi công</label>
+              <input id="projStartDate" type="date" class="pef">
+            </div>
+            <div>
+              <label class="pefl">Ngày bàn giao dự kiến</label>
+              <input id="projHandoverDate" type="date" class="pef">
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB: XEM TRƯỚC ── -->
+        <div id="tabPreview" class="pe-panel" style="padding:22px 24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div style="font-size:16px;font-weight:900;color:#0f172a;"><i class="fa-solid fa-desktop" style="color:#008b8b;margin-right:8px;"></i>Xem trước trang chi tiết dự án</div>
+            <button type="button" id="refreshPrevBtn" style="padding:0 14px;height:38px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;color:#475569;"><i class="fa-solid fa-rotate"></i> Cập nhật preview</button>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:18px;padding:24px;max-width:820px;margin:0 auto;">
+            <img id="prevHeroImg" class="prev-hero" src="" alt="">
+            <div class="prev-gallery" id="prevGallery"></div>
+            <div class="prev-title" id="prevTitle">Tên dự án</div>
+            <div class="prev-meta" id="prevMeta"></div>
+            <div class="prev-desc" id="prevDesc"></div>
+            <div class="prev-feat" id="prevFeat"></div>
+            <table class="prev-infotable" id="prevInfoTable"></table>
+            <div style="font-size:13px;font-weight:800;color:#0f172a;margin-bottom:10px;border-bottom:2px solid #f1f5f9;padding-bottom:8px;"><i class="fa-solid fa-pen-nib" style="color:#008b8b;margin-right:6px;"></i>Nội dung chi tiết</div>
+            <div class="prev-body" id="prevBody"></div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:16px 24px;border-top:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#f8fafc;">
+          <div style="font-size:13px;color:#64748b;"><i class="fa-solid fa-cloud" style="color:#008b8b;margin-right:6px;"></i><span id="editorSaveNote">Lưu để cập nhật ngay lên Supabase.</span></div>
+          <div style="display:flex;gap:8px;">
+            <button id="cancelEditorBtn" type="button" style="padding:0 18px;min-height:42px;border:1.5px solid #dbe4ee;border-radius:12px;font-weight:800;cursor:pointer;background:#fff;color:#475569;font-size:14px;">Đóng</button>
+            <button id="saveProjectContentBtn" type="button" style="padding:0 22px;min-height:42px;background:#0f766e;color:#fff;border:0;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-floppy-disk"></i>Lưu thay đổi</button>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+    <!-- ========== END EDITOR MODAL v2 ========== -->
+
+    <div id="siteFooter"></div>
+
+    <button id="goToTop" onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
+
+    <script src="../assets/js/api-config.js"></script>
+    <script src="../assets/js/admin-sidebar.js"></script>
+    <script src="../assets/js/session.js"></script>
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/vip-config.js"></script>
+    <script src="../assets/js/platform-core.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/pagination-helper.js"></script>
+    <script src="../assets/js/auth-api.js"></script>
+    <script src="../assets/js/supabase-data-service.js"></script>
+<script src="../assets/js/simple-rich-editor.js"></script>
+    <script src="../assets/js/user-helpers.js"></script>
+    <script src="../assets/js/chat-support.js"></script>
+    <script>
+        const PROJECT_CATEGORIES = [
+            { slug: "can-ho-chung-cu", name: "Căn hộ chung cư" },
+            { slug: "cao-oc-van-phong", name: "Cao ốc văn phòng" },
+            { slug: "trung-tam-thuong-mai", name: "Trung tâm thương mại" },
+            { slug: "khu-do-thi-moi", name: "Khu đô thị mới" },
+            { slug: "khu-phuc-hop", name: "Khu phức hợp" },
+            { slug: "nha-o-xa-hoi", name: "Nhà ở xã hội" },
+            { slug: "khu-nghi-duong-sinh-thai", name: "Khu nghỉ dưỡng, Sinh thái" },
+            { slug: "khu-cong-nghiep", name: "Khu công nghiệp" },
+            { slug: "biet-thu-lien-ke", name: "Biệt thự, liền kề" },
+            { slug: "shophouse", name: "Shophouse" },
+            { slug: "nha-mat-pho", name: "Nhà mặt phố" },
+            { slug: "du-an-khac", name: "Dự án khác" }
+        ];
+
+        const searchInput = document.getElementById("searchInput");
+        const cityFilter = document.getElementById("cityFilter");
+        const typeFilter = document.getElementById("typeFilter");
+        const statusFilter = document.getElementById("statusFilter");
+        const clearFilterBtn = document.getElementById("clearFilterBtn");
+        const refreshBtn = document.getElementById("refreshBtn");
+        const syncProjectsBtn = document.getElementById("syncProjectsBtn");
+
+        const projectList = document.getElementById("projectList");
+        const emptyState = document.getElementById("emptyState");
+        const resultInfo = document.getElementById("resultInfo");
+        const globalStatus = document.getElementById("globalStatus");
+        const projectCountBadge = document.getElementById("projectCountBadge");
+
+        const detailDefault = document.getElementById("detailDefault");
+        const detailContent = document.getElementById("detailContent");
+
+                const projectPagination = document.getElementById("project-pagination");
+        const PROJECTS_PER_PAGE = 8;
+        let projectCurrentPage = 1;
+
+        let allProjects = [];
+        let filteredProjects = [];
+        let selectedProjectSlug = "";
+
+
+        function safeParseJSON(raw, fallback) {
+            try {
+                return JSON.parse(raw);
+            } catch (error) {
+                return fallback;
+            }
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function showStatus(type, message) {
+            globalStatus.className = "status-box " + type;
+            globalStatus.textContent = message;
+        }
+
+        function hideStatus() {
+            globalStatus.className = "status-box";
+            globalStatus.textContent = "";
+        }
+
+        function getCurrentUser() {
+            try {
+                if (window.userStorage && typeof window.userStorage.getCurrentUser === "function") {
+                    return window.userStorage.getCurrentUser();
+                }
+            } catch (error) {
+                console.warn("userStorage.getCurrentUser lỗi:", error);
+            }
+
+            return safeParseJSON(localStorage.getItem("currentUser") || "null", null);
+        }
+
+        function isAdminUser(user) {
+            if (!user || typeof user !== "object") return false;
+
+            const values = [
+                user.systemRole,
+                user.system_role,
+                user.role,
+                user.profileRole,
+                user.roleLabel
+            ].map(function (value) {
+                return normalizeText(value);
+            }).filter(Boolean);
+
+            return values.some(function (value) {
+                return ["super_admin","admin","moderator","finance","seo_manager","content_editor","support","administrator","quan tri vien","quantri"].includes(value);
+            });
+        }
+
+        function formatDateTime(iso) {
+            if (!iso) return "---";
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return "---";
+            return d.toLocaleString("vi-VN");
+        }
+
+        function getProjectTypeNameFromSlug(slug) {
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === slug;
+            });
+            return found ? found.name : "";
+        }
+
+        function getProjectTypeSlugFromValue(value) {
+            const normalized = normalizeText(value);
+            const found = PROJECT_CATEGORIES.find(function (item) {
+                return item.slug === value || normalizeText(item.name) === normalized;
+            });
+            return found ? found.slug : "";
+        }
+
+        function getAllPosts() {
+            try {
+                if (window.postStorage && typeof window.postStorage.getAllPosts === "function") {
+                    const posts = window.postStorage.getAllPosts();
+                    return Array.isArray(posts) ? posts : [];
+                }
+            } catch (error) {
+                console.warn("postStorage.getAllPosts lỗi:", error);
+            }
+
+            return safeParseJSON(localStorage.getItem("allPosts") || "[]", []);
+        }
+
+        function getProjectsStore() {
+            return safeParseJSON(localStorage.getItem("projects") || "[]", []);
+        }
+
+        function saveProjectsStore(projects) {
+            const safeProjects = Array.isArray(projects) ? projects : [];
+            localStorage.setItem("projects", JSON.stringify(safeProjects));
+            try {
+                const detail = { projects: safeProjects };
+                document.dispatchEvent(new CustomEvent("tv:projects-synced", { detail: detail }));
+                window.dispatchEvent(new CustomEvent("tv:projects-synced", { detail: detail }));
+            } catch (error) {
+                console.warn("Không thể phát sự kiện tv:projects-synced:", error);
+            }
+        }
+
+        function setButtonBusy(button, busy, busyLabel) {
+            if (!button) return;
+            if (!button.dataset.originalLabel) {
+                button.dataset.originalLabel = button.innerHTML;
+            }
+            button.disabled = !!busy;
+            button.classList.toggle("is-loading", !!busy);
+            if (busy && busyLabel) {
+                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>' + busyLabel;
+            } else if (!busy && button.dataset.originalLabel) {
+                button.innerHTML = button.dataset.originalLabel;
+            }
+        }
+
+        async function runButtonTask(button, busyLabel, task) {
+            setButtonBusy(button, true, busyLabel);
+            try {
+                return await task();
+            } finally {
+                setButtonBusy(button, false);
+            }
+        }
+
+        function syncProjectStoreFromPosts(posts) {
+            const oldProjects = getProjectsStore();
+            const map = new Map();
+
+            oldProjects.forEach(function (project) {
+                if (!project || !project.slug) return;
+                const typeSlug = getProjectTypeSlugFromValue(project.type);
+                map.set(project.slug, {
+                    ...project,
+                    type: typeSlug || project.type || "",
+                    typeName: project.typeName || getProjectTypeNameFromSlug(typeSlug || project.type) || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0,
+                    adminStatus: project.adminStatus || "active"
+                });
+            });
+
+            posts.forEach(function (post) {
+                if (!post || !post.projectSlug || !post.projectName) return;
+
+                const slug = post.projectSlug;
+                const existing = map.get(slug) || {
+                    id: post.projectId || ("project_" + slug),
+                    name: post.projectName,
+                    slug: slug,
+                    city: post.city || "",
+                    ward: post.ward || "",
+                    addressDetail: post.addressDetail || "",
+                    type: post.projectType || "",
+                    typeName: post.projectTypeName || "",
+                    developer: post.projectDeveloper || "",
+                    postCount: 0,
+                    pendingCount: 0,
+                    rejectedCount: 0,
+                    hiddenCount: 0,
+                    totalPosts: 0,
+                    createdAt: new Date().toISOString(),
+                    lastPostAt: post.createdAt || new Date().toISOString(),
+                    adminStatus: "active"
+                };
+
+                existing.name = existing.name || post.projectName;
+                existing.city = existing.city || post.city || "";
+                existing.ward = existing.ward || post.ward || "";
+                existing.addressDetail = existing.addressDetail || post.addressDetail || "";
+                existing.type = existing.type || post.projectType || "";
+                existing.typeName = existing.typeName || post.projectTypeName || getProjectTypeNameFromSlug(existing.type) || "";
+                existing.developer = existing.developer || post.projectDeveloper || "";
+                existing.totalPosts = (existing.totalPosts || 0) + 1;
+                existing.lastPostAt = post.updatedAt || post.createdAt || existing.lastPostAt || new Date().toISOString();
+                existing.adminStatus = existing.adminStatus || "active";
+
+                const status = normalizeText(post.status || "pending") || "pending";
+                if (status === "approved") {
+                    existing.postCount = (existing.postCount || 0) + 1;
+                } else if (status === "pending") {
+                    existing.pendingCount = (existing.pendingCount || 0) + 1;
+                } else if (status === "rejected") {
+                    existing.rejectedCount = (existing.rejectedCount || 0) + 1;
+                } else if (status === "hidden") {
+                    existing.hiddenCount = (existing.hiddenCount || 0) + 1;
+                }
+
+                map.set(slug, existing);
+            });
+
+            const nextProjects = Array.from(map.values()).sort(function (a, b) {
+                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
+            });
+
+            saveProjectsStore(nextProjects);
+            return nextProjects;
+        }
+
+        function loadProjects() {
+            allProjects = getProjectsStore().slice().sort(function (a, b) {
+                return new Date(b.lastPostAt || 0) - new Date(a.lastPostAt || 0);
+            });
+        }
+
+        function hydrateTypeName(project) {
+            const typeSlug = getProjectTypeSlugFromValue(project.type);
+            return project.typeName || getProjectTypeNameFromSlug(typeSlug || project.type) || project.type || "Chưa phân loại";
+        }
+
+        function populateFilterOptions() {
+            const cities = Array.from(new Set(
+                allProjects.map(function (item) { return item.city || ""; }).filter(Boolean)
+            )).sort();
+
+            const types = Array.from(new Set(
+                allProjects.map(function (item) {
+                    return hydrateTypeName(item);
+                }).filter(Boolean)
+            )).sort();
+
+            cityFilter.innerHTML = '<option value="all">Tất cả tỉnh/thành</option>' +
+                cities.map(function (city) {
+                    return '<option value="' + city + '">' + city + '</option>';
+                }).join("");
+
+            typeFilter.innerHTML = '<option value="all">Tất cả loại</option>' +
+                types.map(function (type) {
+                    return '<option value="' + type + '">' + type + '</option>';
+                }).join("");
+        }
+
+        function updateStats() {
+            const totalProjects = allProjects.length;
+            const activeProjects = allProjects.filter(function (p) {
+                return (p.adminStatus || "active") !== "hidden";
+            }).length;
+            const pendingProjects = allProjects.filter(function (p) {
+                return Number(p.pendingCount || 0) > 0;
+            }).length;
+            const hiddenProjects = allProjects.filter(function (p) {
+                return (p.adminStatus || "active") === "hidden";
+            }).length;
+            const totalPosts = allProjects.reduce(function (sum, p) {
+                return sum + Number(p.totalPosts || 0);
+            }, 0);
+            const cityCoverage = new Set(allProjects.map(function (p) { return String(p && p.city || '').trim(); }).filter(Boolean)).size;
+            const wardCoverage = new Set(allProjects.map(function (p) { return String(p && p.ward || '').trim(); }).filter(Boolean)).size;
+            const duplicateGroups = (window.projectService && typeof window.projectService.getDuplicateProjectGroups === 'function')
+                ? (window.projectService.getDuplicateProjectGroups(3) || []).length
+                : 0;
+
+            document.getElementById("statTotalProjects").textContent = totalProjects;
+            document.getElementById("statActiveProjects").textContent = activeProjects;
+            document.getElementById("statPendingProjects").textContent = pendingProjects;
+            document.getElementById("statHiddenProjects").textContent = hiddenProjects;
+            document.getElementById("statTotalPosts").textContent = totalPosts;
+            document.getElementById("statCityCoverage").textContent = cityCoverage;
+            document.getElementById("statWardCoverage").textContent = wardCoverage;
+            document.getElementById("statDuplicateGroups").textContent = duplicateGroups;
+        }
+
+        function getProjectStatusLabel(project) {
+            if ((project.adminStatus || "active") === "hidden") return "Đã ẩn";
+            if (Number(project.pendingCount || 0) > 0) return "Có tin chờ duyệt";
+            return "Đang hoạt động";
+        }
+
+        function getProjectStatusBadgeClass(project) {
+            if ((project.adminStatus || "active") === "hidden") return "badge-hidden";
+            return "badge-active";
+        }
+
+        function getProjectDuplicateSuggestions(project) {
+            if (!project || !window.projectService || typeof window.projectService.getProjectDuplicateCandidates !== "function") return [];
+            try {
+                return (window.projectService.getProjectDuplicateCandidates(project, 3) || []).filter(function (item) {
+                    const other = item && item.project;
+                    return other && String(other.id || other.slug || "").trim() !== String(project.id || project.slug || "").trim();
+                });
+            } catch (error) {
+                console.warn("Không thể gợi ý dự án trùng:", error);
+                return [];
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value == null ? "" : value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        function buildProjectPublicLink(project) {
+            const fallbackId = String(project && (project.id || project.projectId || project.project_id || project.slug) || "").trim();
+            const resolvedUrl = window.userStorage && typeof window.userStorage.getResolvedProjectUrl === "function"
+                ? window.userStorage.getResolvedProjectUrl(project, fallbackId, "../")
+                : "";
+            if (resolvedUrl && resolvedUrl !== "javascript:void(0)") return resolvedUrl;
+
+            const explicitUrl = String(project.detailUrl || project.publicUrl || project.url || "").trim();
+            const slug = String(project.slug || "").trim();
+            const projectId = String(project.id || "").trim();
+
+            if (explicitUrl) return explicitUrl;
+
+            // Ưu tiên build URL chuẩn /du-an/{slug}-prj{id} qua tv-url-service
+            if (typeof window !== "undefined" && window.tvUrl && typeof window.tvUrl.buildProjectUrl === "function") {
+                const built = window.tvUrl.buildProjectUrl({ slug: slug, id: projectId }, projectId);
+                if (built && built !== "javascript:void(0)") return built;
+            }
+
+            if (slug) {
+                return "/du-an/" + encodeURIComponent(slug).replace(/%2F/ig, "-");
+            }
+
+            if (projectId && !/^project_/i.test(projectId)) {
+                return "../pages/chi-tiet-du-an.html?id=" + encodeURIComponent(projectId);
+            }
+
+            return "/du-an";
+        }
+
+        function applyFilters() {
+            const keyword = normalizeText(searchInput.value);
+            const cityValue = cityFilter.value;
+            const typeValue = typeFilter.value;
+            const statusValue = statusFilter.value;
+
+            projectCurrentPage = 1;
+
+            filteredProjects = allProjects.filter(function (project) {
+                const searchable = normalizeText([
+                    project.name,
+                    project.city,
+                    project.ward,
+                    project.addressDetail,
+                    project.developer,
+                    hydrateTypeName(project),
+                    project.slug
+                ].filter(Boolean).join(" "));
+
+                const matchKeyword = !keyword || searchable.includes(keyword);
+                const matchCity = cityValue === "all" || project.city === cityValue;
+                const matchType = typeValue === "all" || hydrateTypeName(project) === typeValue;
+
+                let matchStatus = true;
+                const normalizedAdminStatus = String(project.adminStatus || project.statusVisibility || "").trim().toLowerCase();
+                if (statusValue === "all" || statusValue === "active") {
+                    matchStatus = normalizedAdminStatus !== "hidden";
+                } else if (statusValue === "has_pending") {
+                    matchStatus = normalizedAdminStatus !== "hidden" && Number(project.pendingCount || 0) > 0;
+                } else if (statusValue === "hidden") {
+                    matchStatus = normalizedAdminStatus === "hidden";
+                }
+
+                return matchKeyword && matchCity && matchType && matchStatus;
+            });
+
+            renderProjects();
+            updateResultInfo();
+        }
+
+        function updateResultInfo() {
+            if (!allProjects.length) {
+                resultInfo.textContent = "Hệ thống hiện chưa có dự án nào.";
+                projectCountBadge.textContent = "0 dự án";
+                return;
+            }
+
+            resultInfo.textContent = "Đang hiển thị " + filteredProjects.length + " / " + allProjects.length + " dự án theo bộ lọc hiện tại.";
+            projectCountBadge.textContent = filteredProjects.length + " dự án";
+        }
+
+        function buildProjectCard(project) {
+            const statusLabel = getProjectStatusLabel(project);
+            const typeName = hydrateTypeName(project);
+            const isActive = selectedProjectSlug === project.slug;
+            const duplicateSuggestions = getProjectDuplicateSuggestions(project);
+            const mergeAction = duplicateSuggestions.length
+                ? `<button type="button" class="btn-soft" onclick="openProjectMergeSuggestion('${project.id || project.slug}')"><i class="fa-solid fa-layer-group mr-2"></i>Gợi ý gộp ${duplicateSuggestions.length}</button>`
+                : "";
+
+            return `
+                <article class="project-card ${isActive ? "active" : ""}" data-project-slug="${project.slug}">
+                    <div class="project-top">
+                        <div>
+                            <div class="project-title">${project.name || "Chưa có tên dự án"}</div>
+                            <div class="project-meta-line">
+                                <span class="badge badge-type"><i class="fa-solid fa-tag"></i>${typeName}</span>
+                                <span class="badge badge-city"><i class="fa-solid fa-location-dot"></i>${project.city || "Chưa có tỉnh/thành"}</span>
+                                <span class="badge ${getProjectStatusBadgeClass(project)}"><i class="fa-solid fa-circle-info"></i>${statusLabel}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-desc">
+                        ${project.developer ? ("Chủ đầu tư / Đơn vị phát triển: " + project.developer + ". ") : ""}
+                        ${[project.addressDetail, project.ward, project.city].filter(Boolean).join(", ") || "Chưa có mô tả vị trí chi tiết."}
+                    </div>
+
+                    <div class="project-stats-grid">
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Tổng bài</div>
+                            <div class="mini-stat-value">${project.totalPosts || 0}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Đã duyệt</div>
+                            <div class="mini-stat-value">${project.postCount || 0}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Chờ duyệt</div>
+                            <div class="mini-stat-value">${project.pendingCount || 0}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Từ chối</div>
+                            <div class="mini-stat-value">${project.rejectedCount || 0}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Đang ẩn</div>
+                            <div class="mini-stat-value">${project.hiddenCount || 0}</div>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="${buildProjectPublicLink(project)}" target="_blank" class="btn-soft">
+                            <i class="fa-solid fa-up-right-from-square mr-2"></i>Mở public
+                        </a>
+
+                        <button type="button" class="btn-primary" onclick="window.location.href='quan-ly-noi-dung-du-an.html?key='+encodeURIComponent('${project.id || project.slug}')">
+                            <i class="fa-solid fa-pen-to-square mr-2"></i>Biên tập nội dung
+                        </button>
+
+                        ${mergeAction}
+
+                        ${(project.adminStatus || "active") === "hidden"
+                            ? `<button type="button" class="btn-dark" onclick="toggleProjectAdminStatus('${project.id || project.slug}', 'active', this)">
+                                    <i class="fa-solid fa-eye mr-2"></i>Hiện lại
+                               </button>`
+                            : `<button type="button" class="btn-warning" onclick="toggleProjectAdminStatus('${project.id || project.slug}', 'hidden', this)">
+                                    <i class="fa-solid fa-eye-slash mr-2"></i>Ẩn dự án
+                               </button>`
+                        }
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderProjects() {
+            if (!filteredProjects.length) {
+                projectList.innerHTML = "";
+                if (window.TVPaginationHelper) window.TVPaginationHelper.clear(projectPagination);
+                emptyState.classList.remove("hidden");
+                clearDetailPanel();
+                return;
+            }
+
+            const pageState = window.TVPaginationHelper
+                ? window.TVPaginationHelper.paginate(filteredProjects, projectCurrentPage, PROJECTS_PER_PAGE)
+                : { items: filteredProjects, currentPage: 1, totalItems: filteredProjects.length, totalPages: 1, startIndex: filteredProjects.length ? 1 : 0, endIndex: filteredProjects.length };
+
+            projectCurrentPage = pageState.currentPage;
+            const visibleProjects = pageState.items;
+
+            emptyState.classList.add("hidden");
+            projectList.innerHTML = visibleProjects.map(buildProjectCard).join("");
+
+            document.querySelectorAll(".project-card").forEach(function (card) {
+                card.addEventListener("click", function (event) {
+                    const clickedButton = event.target.closest("button, a");
+                    if (clickedButton) return;
+
+                    selectedProjectSlug = card.getAttribute("data-project-slug") || "";
+                    renderDetailBySlug(selectedProjectSlug);
+                    highlightSelectedCard();
+                });
+            });
+
+            if (!selectedProjectSlug || !visibleProjects.find(function (item) { return item.slug === selectedProjectSlug; })) {
+                selectedProjectSlug = (visibleProjects[0] && visibleProjects[0].slug) || "";
+            }
+
+            if (window.TVPaginationHelper) {
+                window.TVPaginationHelper.render(projectPagination, {
+                    currentPage: projectCurrentPage,
+                    pageSize: PROJECTS_PER_PAGE,
+                    totalItems: filteredProjects.length,
+                    itemLabel: "dự án",
+                    scrollTarget: projectList,
+                    onPageChange: function (page) {
+                        projectCurrentPage = page;
+                        renderProjects();
+                    }
+                });
+            }
+
+            renderDetailBySlug(selectedProjectSlug);
+            highlightSelectedCard();
+        }
+
+        function highlightSelectedCard() {
+            document.querySelectorAll(".project-card").forEach(function (card) {
+                const isActive = card.getAttribute("data-project-slug") === selectedProjectSlug;
+                card.classList.toggle("active", isActive);
+            });
+        }
+
+        function clearDetailPanel() {
+            detailDefault.classList.remove("hidden");
+            detailContent.classList.add("hidden");
+        }
+
+        function renderDetailBySlug(slug) {
+            const project = filteredProjects.find(function (item) {
+                return item.slug === slug;
+            }) || allProjects.find(function (item) {
+                return item.slug === slug;
+            });
+
+            if (!project) {
+                clearDetailPanel();
+                return;
+            }
+
+            detailDefault.classList.add("hidden");
+            detailContent.classList.remove("hidden");
+
+            document.getElementById("detailProjectName").textContent = project.name || "---";
+            document.getElementById("detailProjectMeta").textContent = [
+                hydrateTypeName(project),
+                [project.ward, project.city].filter(Boolean).join(", "),
+                getProjectStatusLabel(project),
+                formatDateTime(project.lastPostAt)
+            ].filter(Boolean).join(" • ");
+
+            document.getElementById("detailProjectDeveloper").textContent = project.developer || "Chưa cập nhật";
+            document.getElementById("detailPublicLink").href = buildProjectPublicLink(project);
+
+            document.getElementById("detailTotalPosts").textContent = project.totalPosts || 0;
+            document.getElementById("detailApprovedPosts").textContent = project.postCount || 0;
+            document.getElementById("detailPendingPosts").textContent = project.pendingCount || 0;
+            document.getElementById("detailRejectedPosts").textContent = project.rejectedCount || 0;
+            document.getElementById("detailHiddenPosts").textContent = project.hiddenCount || 0;
+
+            const duplicateBox = document.getElementById("detailDuplicateProjects");
+            const suggestions = getProjectDuplicateSuggestions(project);
+            if (!suggestions.length) {
+                duplicateBox.textContent = "Chưa phát hiện dự án gần giống.";
+            } else {
+                duplicateBox.innerHTML = suggestions.map(function (item) {
+                    const other = item.project || {};
+                    const reason = Array.isArray(item.reasons) && item.reasons.length ? item.reasons.join(', ') : 'Tên dự án gần giống';
+                    return '<div class="mb-3 rounded-xl border border-slate-200 bg-slate-50 p-3">'
+                        + '<div class="font-extrabold text-slate-900">' + escapeHtml(other.name || 'Dự án chưa đặt tên') + '</div>'
+                        + '<div class="text-slate-600 mt-1">' + escapeHtml(([other.ward, other.city].filter(Boolean).join(', ')) || 'Chưa có khu vực') + ' • ' + escapeHtml(reason) + '</div>'
+                        + '<button type="button" class="btn-primary mt-3" data-target-key="' + encodeURIComponent(String(project.id || project.slug || '')) + '" data-source-key="' + encodeURIComponent(String(other.id || other.slug || '')) + '" onclick="mergeProjectIntoCanonical(decodeURIComponent(this.dataset.targetKey), decodeURIComponent(this.dataset.sourceKey), this)">'
+                        + '<i class="fa-solid fa-code-branch mr-2"></i>Gộp vào dự án đang chọn'
+                        + '</button>'
+                        + '</div>';
+                }).join('');
+            }
+        }
+
+        async function mergeProjectIntoCanonical(targetKey, sourceKey, triggerButton) {
+            if (!targetKey || !sourceKey || targetKey === sourceKey) return;
+            if (!confirm('Bạn có chắc muốn gộp dự án này? Tất cả tin thuộc dự án phụ sẽ được chuyển sang dự án chính.')) return;
+            const task = async function () {
+                try {
+                    let result = null;
+                    if (window.supabaseDataService && typeof window.supabaseDataService.mergeProjectsAdmin === 'function') {
+                        result = await window.supabaseDataService.mergeProjectsAdmin(targetKey, sourceKey, { source: 'admin-page' });
+                    } else {
+                        if (!window.projectService || typeof window.projectService.mergeProjectsByKey !== 'function') {
+                            throw new Error('Thiếu hàm gộp dự án để xử lý thao tác này.');
+                        }
+                        result = window.projectService.mergeProjectsByKey(targetKey, sourceKey, { source: 'admin' });
+                    }
+                    loadProjects();
+                    populateFilterOptions();
+                    updateStats();
+                    applyFilters();
+                    selectedProjectSlug = String((result && result.targetProject && (result.targetProject.slug || result.targetProject.id)) || targetKey).trim();
+                    renderDetailBySlug(selectedProjectSlug);
+                    highlightSelectedCard();
+                    showStatus('success', 'Đã gộp dự án trùng, chuyển tin liên quan sang dự án chính' + (result && typeof result.movedListings === 'number' ? ' (' + result.movedListings + ' tin trên DB/local).' : '.'));
+                } catch (error) {
+                    console.error('Không thể gộp dự án:', error);
+                    showStatus('error', error?.message || 'Không thể gộp dự án trùng.');
+                }
+            };
+            if (triggerButton) {
+                await runButtonTask(triggerButton, 'Đang gộp', task);
+                return;
+            }
+            await task();
+        }
+
+        function openProjectMergeSuggestion(projectKey) {
+            const safeKey = String(projectKey || '').trim();
+            if (!safeKey) return;
+            selectedProjectSlug = safeKey;
+            renderDetailBySlug(safeKey);
+            highlightSelectedCard();
+            safeScrollToTop();
+            showStatus('info', 'Đã mở nhanh gợi ý gộp dự án ở khung chi tiết bên phải.');
+        }
+
+        function updateProjectInStore(projectSlug, patchData) {
+            const projects = getProjectsStore();
+            const index = projects.findIndex(function (item) {
+                return item.slug === projectSlug;
+            });
+
+            if (index === -1) {
+                throw new Error("PROJECT_NOT_FOUND");
+            }
+
+            const mergedProject = {
+                ...projects[index],
+                ...patchData
+            };
+
+            const normalizedAdminStatus = String(mergedProject.adminStatus || mergedProject.statusVisibility || "active").trim().toLowerCase();
+            mergedProject.adminStatus = normalizedAdminStatus === "hidden" ? "hidden" : "active";
+            mergedProject.statusVisibility = mergedProject.adminStatus;
+            mergedProject.hidden = mergedProject.adminStatus === "hidden";
+            mergedProject.isHidden = mergedProject.hidden;
+
+            projects[index] = mergedProject;
+
+            saveProjectsStore(projects);
+        }
+
+        async function toggleProjectAdminStatus(projectSlug, nextStatus, triggerButton) {
+            const message = nextStatus === "hidden"
+                ? "Bạn có chắc muốn ẩn dự án này khỏi giao diện quản lý?"
+                : "Bạn có chắc muốn hiện lại dự án này?";
+
+            if (!confirm(message)) return;
+
+            const task = async function () {
+                try {
+                    const canSyncRemote = window.supabaseDataService && typeof window.supabaseDataService.updateProjectAdminStatus === "function";
+                    if (!canSyncRemote) {
+                        throw new Error("Thiếu kết nối Supabase để cập nhật trạng thái dự án. Trang admin không dùng fallback local cho thao tác này.");
+                    }
+
+                    await window.supabaseDataService.updateProjectAdminStatus(projectSlug, nextStatus);
+                    await syncListingsFromSupabase();
+
+                    loadProjects();
+                    populateFilterOptions();
+                    updateStats();
+                    applyFilters();
+
+                    showStatus(
+                        "success",
+                        nextStatus === "hidden"
+                            ? "Đã ẩn dự án và đồng bộ lại dữ liệu hiển thị liên quan."
+                            : "Đã hiện lại dự án và đồng bộ lại dữ liệu hiển thị liên quan."
+                    );
+                } catch (error) {
+                    console.error("Không thể cập nhật trạng thái admin của dự án:", error);
+                    showStatus("error", error?.message || "Không thể cập nhật trạng thái dự án.");
+                }
+            };
+
+            if (triggerButton) {
+                await runButtonTask(triggerButton, "Đang xử lý", task);
+                return;
+            }
+            await task();
+        }
+
+        async function syncListingsFromSupabase() {
+            if (!window.supabaseDataService) {
+                return;
+            }
+
+            const tasks = [];
+            if (typeof window.supabaseDataService.refreshPublicData === "function") {
+                tasks.push(window.supabaseDataService.refreshPublicData());
+            }
+            if (typeof window.supabaseDataService.refreshAdminListings === "function") {
+                tasks.push(window.supabaseDataService.refreshAdminListings());
+            }
+
+            if (!tasks.length) {
+                return;
+            }
+
+            await Promise.allSettled(tasks);
+        }
+
+        function syncProjectsFromPosts() {
+            try {
+                const posts = getAllPosts();
+                const synced = syncProjectStoreFromPosts(posts);
+
+                loadProjects();
+                populateFilterOptions();
+                if (!String(statusFilter.value || "").trim() || statusFilter.value === "all") {
+                    statusFilter.value = "active";
+                }
+                updateStats();
+                applyFilters();
+
+                showStatus("success", "Đã đồng bộ lại " + synced.length + " dự án từ dữ liệu bài đăng.");
+            } catch (error) {
+                console.error("Lỗi đồng bộ dự án:", error);
+                showStatus("error", "Không thể đồng bộ project store từ allPosts.");
+            }
+        }
+
+        function clearFilters() {
+            searchInput.value = "";
+            cityFilter.value = "all";
+            typeFilter.value = "all";
+            statusFilter.value = "active";
+            applyFilters();
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
+                }
+
+                if (typeof setupFixedHeaderSpacing === "function") {
+                    setupFixedHeaderSpacing();
+                }
+                if (typeof watchHeaderSpacing === "function") {
+                    watchHeaderSpacing();
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        async function syncProjectsFromSupabase() {
+            if (!window.supabaseDataService || typeof window.supabaseDataService.refreshAdminListings !== "function") {
+                return false;
+            }
+
+            try {
+                await window.supabaseDataService.refreshAdminListings();
+                return true;
+            } catch (error) {
+                console.warn("Không thể đồng bộ project store từ Supabase:", error);
+                return false;
+            }
+        }
+
+        async function initPage() {
+            await initSharedComponents();
+
+            try {
+                if (window.supabaseDataService && typeof window.supabaseDataService.ensureAdminAccess === "function") {
+                    await window.supabaseDataService.ensureAdminAccess();
+                } else {
+                    const currentUser = getCurrentUser();
+                    if (!isAdminUser(currentUser)) {
+                        showStatus("error", "Bạn không có quyền truy cập trang quản lý dự án. Hệ thống sẽ chuyển hướng ngay.");
+                        const redirectUrl = currentUser ? "../user/tai-khoan.html" : "../auth/dang-nhap.html";
+                        setTimeout(function () { window.location.href = redirectUrl; }, 1200);
+                        return false;
+                    }
+                }
+
+                await syncProjectsFromSupabase();
+                loadProjects();
+
+                if (!allProjects.length) {
+                    syncProjectStoreFromPosts(getAllPosts());
+                    loadProjects();
+                }
+
+                populateFilterOptions();
+                updateStats();
+                applyFilters();
+
+                if (!allProjects.length) {
+                    showStatus("info", "Hiện chưa có dự án nào trong hệ thống. Khi có tin gắn dự án, hệ thống sẽ tự gom nhóm.");
+                } else {
+                    hideStatus();
+                }
+                return true;
+            } catch (error) {
+                console.error("Lỗi khởi tạo trang quản lý dự án:", error);
+                showStatus("error", error?.message || "Không thể tải dữ liệu quản lý dự án.");
+                return false;
+            }
+        }
+
+        searchInput.addEventListener("input", applyFilters);
+        cityFilter.addEventListener("change", applyFilters);
+        typeFilter.addEventListener("change", applyFilters);
+        statusFilter.addEventListener("change", applyFilters);
+
+        clearFilterBtn.addEventListener("click", clearFilters);
+        refreshBtn.addEventListener("click", async function () {
+            await runButtonTask(this, "Đang tải", async function () {
+                const ready = await initPage();
+                if (ready) {
+                    showStatus("success", "Đã làm mới dữ liệu quản lý dự án.");
+                }
+            });
+        });
+        syncProjectsBtn.addEventListener("click", async function () {
+            await runButtonTask(this, "Đang đồng bộ", async function () {
+                const synced = await syncProjectsFromSupabase();
+                if (!synced) {
+                    throw new Error("Không thể đồng bộ dữ liệu dự án từ Supabase.");
+                }
+                loadProjects();
+                populateFilterOptions();
+                updateStats();
+                applyFilters();
+                showStatus("success", "Đã đồng bộ dự án từ dữ liệu Supabase.");
+            });
+        });
+
+        function handleProjectsSynced() {
+            loadProjects();
+            populateFilterOptions();
+            updateStats();
+            applyFilters();
+        }
+
+        document.addEventListener("tv:posts-synced", handleProjectsSynced);
+        document.addEventListener("tv:projects-synced", handleProjectsSynced);
+        window.addEventListener("tv:posts-synced", handleProjectsSynced);
+        window.addEventListener("tv:projects-synced", handleProjectsSynced);
+        window.addEventListener("storage", function (event) {
+            if (["allPosts", "projects", "managedPosts"].includes(event.key)) {
+                handleProjectsSynced();
+            }
+        });
+
+        window.toggleProjectAdminStatus = toggleProjectAdminStatus;
+        window.mergeProjectIntoCanonical = mergeProjectIntoCanonical;
+        window.openProjectMergeSuggestion = openProjectMergeSuggestion;
+        window.safeScrollToTop = safeScrollToTop;
+        window.addEventListener("load", function () {
+            initPage();
+        });
+    </script>
+
+
+    <script>
+    /* ===== PROJECT EDITOR v2 ===== */
+    (function(){
+    var overlay = document.getElementById('peo');
+    var curKey = '', curProject = null;
+    var galImages = []; // [{url, file?}]
+
+    /* ── Tabs ── */
+    function switchTab(name){
+      document.querySelectorAll('#peo .pe-tab').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-tab')===name); });
+      document.querySelectorAll('#peo .pe-panel').forEach(function(p){ p.classList.toggle('on', p.id==='tab'+name.charAt(0).toUpperCase()+name.slice(1)); });
+    }
+    document.querySelectorAll('#peo .pe-tab').forEach(function(btn){
+      btn.addEventListener('click', function(){ switchTab(btn.getAttribute('data-tab')); });
+    });
+
+    /* ── Rich editor toolbar (content) ── */
+    function peExec(c){
+      var rte = document.getElementById('projRte'); rte.focus();
+      if(c==='h2'||c==='h3'||c==='p'){document.execCommand('formatBlock',false,c);return}
+      if(c==='blockquote'){document.execCommand('formatBlock',false,'blockquote');return}
+      if(c==='link'){var u=prompt('URL liên kết:','https://');if(u)document.execCommand('createLink',false,u);return}
+      if(c==='imgurl'){
+    if(window.SimpleRichEditor&&typeof window.SimpleRichEditor.openImageModal==='function'){
+      var rteEl=document.getElementById('projRte');
+      window.SimpleRichEditor.openImageModal(function(html){
+        if(rteEl){rteEl.focus();document.execCommand('insertHTML',false,html);}
+      },'project');
+    }else{var u2=prompt('URL ảnh:');if(u2)document.execCommand('insertHTML',false,'<img src="'+u2+'" style="max-width:100%;border-radius:10px;margin:8px 0">');}
+    return}
+      if(c==='table'){var r=parseInt(prompt('Số hàng:','3'))||3,co=parseInt(prompt('Số cột:','3'))||3,h='<table style="width:100%;border-collapse:collapse;margin:12px 0">';for(var i=0;i<r;i++){h+='<tr>';for(var j=0;j<co;j++){var tg=i===0?'th':'td';h+='<'+tg+' style="border:1px solid #cbd5e1;padding:8px'+(i===0?';background:#f8fafc;font-weight:800':'')+'"> </'+tg+'>';}h+='</tr>';}h+='</table>';document.execCommand('insertHTML',false,h);return}
+      document.execCommand(c,false,null);
+    }
+    document.getElementById('peToolbar').addEventListener('click',function(e){var b=e.target.closest('[data-pc]');if(b){e.preventDefault();peExec(b.getAttribute('data-pc'));}});
+    document.getElementById('peFontSize').addEventListener('change',function(){if(!this.value)return;document.getElementById('projRte').focus();document.execCommand('fontSize',false,'7');document.getElementById('projRte').querySelectorAll('font[size="7"]').forEach(function(el){el.style.fontSize=this.value;el.removeAttribute('size');}.bind(this));this.value='';});
+    document.getElementById('peFontColor').addEventListener('change',function(){if(this.value){document.getElementById('projRte').focus();document.execCommand('foreColor',false,this.value);}setTimeout(function(){document.getElementById('peFontColor').value='';},100);});
+
+    /* Editor img upload */
+    document.getElementById('peImgFile').addEventListener('change', async function(){
+      var f=this.files&&this.files[0]; if(!f)return;
+      var url=''; try{if(window.supabaseDataService&&typeof window.supabaseDataService.uploadProjectImage==='function'){var r=await window.supabaseDataService.uploadProjectImage(f,curKey);url=r&&r.imageUrl||'';}if(!url)url=await rdF(f);}catch(e){url=await rdF(f);}
+      document.getElementById('projRte').focus();document.execCommand('insertHTML',false,'<img src="'+url+'" style="max-width:100%;border-radius:10px;margin:8px 0">');
+      wcUpdate(); this.value='';
+    });
+
+    /* Drag-drop into editor */
+    document.getElementById('projRte').addEventListener('drop',async function(e){
+      var fl=e.dataTransfer&&e.dataTransfer.files;if(fl&&fl.length&&fl[0].type.startsWith('image/')){e.preventDefault();var u=await rdF(fl[0]);document.execCommand('insertHTML',false,'<img src="'+u+'" style="max-width:100%;border-radius:10px;margin:8px 0">');}
+    });
+    document.getElementById('projRte').addEventListener('input',wcUpdate);
+    function wcUpdate(){
+      var t=document.getElementById('projRte').innerText||'';
+      var w=t.trim().split(/\s+/).filter(Boolean).length;
+      var b=document.getElementById('peWcBadge');
+      b.textContent=w+' từ'; b.style.background=w>=400?'#bbf7d0':w>=200?'#dcfce7':'#e2e8f0';
+      document.getElementById('peCcnt').textContent=t.length+' ký tự';
+    }
+
+    /* Paste cleanup */
+    document.getElementById('projRte').addEventListener('paste',function(e){
+      e.preventDefault();var h=e.clipboardData.getData('text/html');
+      if(h){h=h.replace(/<style[\s\S]*?<\/style>/gi,'').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/class="Mso[^"]*"/gi,'').replace(/<o:[^>]*>[\s\S]*?<\/o:[^>]*>/gi,'').replace(/##\s*/g,'');document.execCommand('insertHTML',false,h);}
+      else document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));
+      wcUpdate();
+    });
+
+    /* ── SEO live preview ── */
+    function updateSerp(){
+      var t=(document.getElementById('projSeoTitle').value||document.getElementById('editorModalTitle').textContent||'').trim();
+      var d=(document.getElementById('projSeoDescription').value||'').trim();
+      var s=(document.getElementById('projSeoSlug').value||'').trim();
+      document.getElementById('serpTitle').textContent=t.slice(0,65)+(t.length>65?'…':'')||'Tiêu đề trang dự án';
+      document.getElementById('serpUrl').textContent='toamviet.com.vn/du-an/'+(s||'ten-du-an');
+      document.getElementById('serpDesc').textContent=d.slice(0,155)+(d.length>155?'…':'')||'Mô tả sẽ hiển thị ở đây...';
+      var tl=t.length,dl=d.length;
+      var tc=document.getElementById('projSeoTitleCount'); tc.textContent=tl+' / 65 ký tự'; tc.style.color=tl>65?'#dc2626':tl>=45?'#0f766e':'#64748b';
+      var dc=document.getElementById('projSeoDescCount'); dc.textContent=dl+' / 155 ký tự'; dc.style.color=dl>155?'#dc2626':dl>=100?'#0f766e':'#64748b';
+    }
+    ['projSeoTitle','projSeoDescription'].forEach(function(id){ document.getElementById(id).addEventListener('input',updateSerp); });
+
+    /* ── Cover image ── */
+    document.getElementById('projImageUrl').addEventListener('input',function(){ syncCoverPreview(this.value.trim()); });
+    document.getElementById('projImageFile').addEventListener('change',function(){var f=this.files&&this.files[0];if(!f)return;rdF(f).then(function(u){document.getElementById('projImageUrl').value=u;syncCoverPreview(u);});});
+    document.getElementById('uploadProjImageBtn').addEventListener('click', async function(){
+      var f=document.getElementById('projImageFile').files&&document.getElementById('projImageFile').files[0];
+      if(!f){showES('info','Chọn file ảnh trước.');return;}
+      showES('info','Đang tải lên...'); try{
+        var r=window.supabaseDataService&&typeof window.supabaseDataService.uploadProjectImage==='function'?await window.supabaseDataService.uploadProjectImage(f,curKey):null;
+        var u=r&&r.imageUrl||await rdF(f);
+        document.getElementById('projImageUrl').value=u; syncCoverPreview(u); showES('success','Đã tải ảnh đại diện lên!');
+      }catch(err){showES('error',err.message||'Không thể tải ảnh.');}
+    });
+    function syncCoverPreview(u){var w=document.getElementById('projImagePreviewWrap'),img=document.getElementById('projImagePreview');w.style.display=u?'block':'none';img.src=u||'';}
+
+    /* ── Gallery ── */
+    function renderGallery(){
+      var grid=document.getElementById('galGrid');
+      var items=galImages.map(function(img,i){
+        return '<div class="gal-item" data-gi="'+i+'" title="'+(i===0?'Ảnh đại diện — bấm để xem':'Bấm để đặt làm ảnh đại diện')+'" onclick="peSetCover('+i+')">'+
+          '<img src="'+esc(img.url)+'" alt="" onerror="this.src=\'../assets/images/fallback-property.jpg\'">'+
+          (i===0?'<div class="gal-cover-badge">⭐ Ảnh đại diện</div>':'')+
+          '<button class="gal-del" onclick="event.stopPropagation();peDelGal('+i+')" title="Xóa ảnh"><i class="fa-solid fa-xmark"></i></button>'+
+        '</div>';
+      }).join('');
+      grid.innerHTML=items+'<div class="gal-add" id="galAddBtn" onclick="document.getElementById(\'galUploadFile\').click()"><i class="fa-solid fa-plus" style="font-size:18px;"></i><span>Thêm ảnh</span></div>';
+      document.getElementById('galCount').textContent=galImages.length;
+      // sync cover image
+      if(galImages.length>0&&!document.getElementById('projImageUrl').value.trim()){
+        document.getElementById('projImageUrl').value=galImages[0].url;
+        syncCoverPreview(galImages[0].url);
+      }
+    }
+    window.peSetCover=function(i){if(i===0)return;galImages.unshift(galImages.splice(i,1)[0]);renderGallery();showES('success','Đã đặt ảnh '+(i+1)+' làm ảnh đại diện.');};
+    window.peDelGal=function(i){galImages.splice(i,1);renderGallery();};
+
+    async function addGalFile(file){
+      if(galImages.length>=20){showES('error','Tối đa 20 ảnh.');return;}
+      var url=''; try{if(window.supabaseDataService&&typeof window.supabaseDataService.uploadProjectImage==='function'){var r=await window.supabaseDataService.uploadProjectImage(file,curKey+'-gal-'+Date.now());url=r&&r.imageUrl||'';}if(!url)url=await rdF(file);}catch(e){url=await rdF(file);}
+      galImages.push({url:url}); renderGallery();
+    }
+    document.getElementById('galUploadFile').addEventListener('change',async function(){
+      for(var i=0;i<this.files.length;i++) await addGalFile(this.files[i]);
+      this.value='';
+    });
+    document.getElementById('galDropZone').addEventListener('dragover',function(e){e.preventDefault();this.style.borderColor='#008b8b';this.style.background='#f0fafa';});
+    document.getElementById('galDropZone').addEventListener('dragleave',function(){this.style.borderColor='#cbd5e1';this.style.background='#f8fafc';});
+    document.getElementById('galDropZone').addEventListener('drop',async function(e){
+      e.preventDefault();this.style.borderColor='#cbd5e1';this.style.background='#f8fafc';
+      for(var i=0;i<e.dataTransfer.files.length;i++) await addGalFile(e.dataTransfer.files[i]);
+    });
+    document.getElementById('galDropZone').addEventListener('click',function(){document.getElementById('galUploadFile').click();});
+    document.getElementById('galClearBtn').addEventListener('click',function(){if(!confirm('Xóa tất cả ảnh gallery?'))return;galImages=[];renderGallery();});
+    document.getElementById('galAddUrlBtn').addEventListener('click',function(){
+      var u=document.getElementById('galUrlInput').value.trim();
+      if(!u){showES('info','Nhập URL ảnh trước.');return;}
+      if(galImages.length>=20){showES('error','Tối đa 20 ảnh.');return;}
+      galImages.push({url:u});renderGallery();document.getElementById('galUrlInput').value='';
+    });
+
+    /* ── Preview tab ── */
+    function buildPreview(){
+      var name=(curProject&&curProject.name)||document.getElementById('editorModalTitle').textContent||'Tên dự án';
+      var city=(curProject&&curProject.city)||'';
+      var dev=(curProject&&curProject.developer)||'';
+      var heroUrl=document.getElementById('projImageUrl').value.trim()||(galImages.length>0?galImages[0].url:'');
+      var heroEl=document.getElementById('prevHeroImg');
+      if(heroUrl){heroEl.src=heroUrl;heroEl.style.display='block';}else{heroEl.style.display='none';}
+      // mini gallery
+      var galEl=document.getElementById('prevGallery');
+      galEl.innerHTML=galImages.slice(0,8).map(function(g){return'<img src="'+esc(g.url)+'" alt="" onerror="this.style.display=\'none\'">';}).join('');
+      document.getElementById('prevTitle').textContent=name;
+      var metaParts=[];if(city)metaParts.push('📍 '+city);if(dev)metaParts.push('🏗️ '+dev);
+      var cs=document.getElementById('projCompletionStatus').value;if(cs)metaParts.push('🔑 '+cs);
+      document.getElementById('prevMeta').innerHTML=metaParts.map(function(m){return'<span>'+esc(m)+'</span>';}).join('');
+      document.getElementById('prevDesc').textContent=document.getElementById('projDescription').value.trim()||'';
+      // features
+      var feats=document.getElementById('projFeatures').value.split('\n').map(function(f){return f.trim();}).filter(Boolean);
+      document.getElementById('prevFeat').innerHTML=feats.map(function(f){return'<span><i class="fa-solid fa-check-circle" style="color:#008b8b"></i>'+esc(f)+'</span>';}).join('');
+      // info table
+      var rows=[];
+      var pf=document.getElementById('projPriceFrom').value.trim(),pt=document.getElementById('projPriceTo').value.trim();
+      if(pf||pt)rows.push(['Mức giá',pf&&pt?pf+' – '+pt:(pf||pt)]);
+      var af=document.getElementById('projAreaFrom').value.trim(),at=document.getElementById('projAreaTo').value.trim();
+      if(af||at)rows.push(['Diện tích',af&&at?af+' – '+at+' m²':(af||at)+' m²']);
+      var tu=document.getElementById('projTotalUnits').value;if(tu)rows.push(['Tổng số căn',tu+' căn']);
+      var sd=document.getElementById('projStartDate').value;if(sd)rows.push(['Khởi công',new Date(sd).toLocaleDateString('vi-VN')]);
+      var hd=document.getElementById('projHandoverDate').value;if(hd)rows.push(['Bàn giao dự kiến',new Date(hd).toLocaleDateString('vi-VN')]);
+      document.getElementById('prevInfoTable').innerHTML=rows.map(function(r){return'<tr><td>'+esc(r[0])+'</td><td style="font-weight:700;color:#0f172a">'+esc(r[1])+'</td></tr>';}).join('');
+      // content
+      document.getElementById('prevBody').innerHTML=document.getElementById('projRte').innerHTML||'<p style="color:#94a3b8">Chưa có nội dung chi tiết...</p>';
+    }
+    document.getElementById('refreshPrevBtn').addEventListener('click',buildPreview);
+    document.getElementById('pePreviewBtn').addEventListener('click',function(){switchTab('preview');buildPreview();});
+
+    /* ── Status ── */
+    function showES(type,msg){
+      var b=document.getElementById('editorStatusBox');
+      var bg=type==='success'?'#f0fdfa;color:#0f766e':type==='error'?'#fef2f2;color:#b91c1c':'#eff6ff;color:#1d4ed8';
+      b.style.cssText='display:block;margin:12px 22px 0;padding:12px 15px;border-radius:12px;font-weight:700;font-size:14px;background:'+bg.split(';')[0].replace('background:','').replace('#','#')+';'+bg.split(';')[1]+';';
+      b.textContent=msg;if(type!=='error')setTimeout(function(){b.style.display='none';},4000);
+    }
+    function esc(v){return String(v||'').replace(/[&<>"']/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];});}
+    function rdF(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result);};r.onerror=rej;r.readAsDataURL(f);});}
+
+    /* ── Form reset / fill ── */
+    function resetForm(){
+      document.getElementById('projDescription').value='';
+      document.getElementById('projRte').innerHTML='';
+      document.getElementById('projImageUrl').value='';
+      document.getElementById('projImagePreviewWrap').style.display='none';
+      document.getElementById('projFeatures').value='';
+      document.getElementById('projSeoTitle').value='';
+      document.getElementById('projSeoSlug').value='';
+      document.getElementById('projSeoDescription').value='';
+      document.getElementById('projSeoSchema').value='';
+      document.getElementById('projSeoRte').innerHTML='';
+      document.getElementById('projTotalUnits').value='';
+      document.getElementById('projOpenForSale').value='';
+      document.getElementById('projPriceFrom').value='';
+      document.getElementById('projPriceTo').value='';
+      document.getElementById('projAreaFrom').value='';
+      document.getElementById('projAreaTo').value='';
+      document.getElementById('projStartDate').value='';
+      document.getElementById('projHandoverDate').value='';
+      document.getElementById('projCompletionStatus').value='';
+      galImages=[];renderGallery();
+      document.getElementById('editorStatusBox').style.display='none';
+      wcUpdate();updateSerp();
+    }
+
+    function fillForm(project){
+      document.getElementById('editorModalTitle').textContent=project.name||'Dự án';
+      document.getElementById('projDescription').value=project.description||'';
+      document.getElementById('projRte').innerHTML=project.content||'';
+      var img=project.thumbnail_url||project.image||'';
+      document.getElementById('projImageUrl').value=img; syncCoverPreview(img);
+      var feats=Array.isArray(project.features)?project.features:(project.features?String(project.features).split(',').map(function(f){return f.trim();}):[]); 
+      document.getElementById('projFeatures').value=feats.join('\n');
+      document.getElementById('projSeoTitle').value=project.seo_title||'';
+      document.getElementById('projSeoSlug').value=project.slug||'';
+      document.getElementById('projSeoDescription').value=project.seo_description||'';
+      document.getElementById('projSeoSchema').value=project.seo_schema||'';
+      document.getElementById('projSeoRte').innerHTML=project.seo_body||'';
+      document.getElementById('projTotalUnits').value=project.total_units||'';
+      document.getElementById('projOpenForSale').value=project.open_for_sale_units||'';
+      document.getElementById('projPriceFrom').value=project.price_from||'';
+      document.getElementById('projPriceTo').value=project.price_to||'';
+      document.getElementById('projAreaFrom').value=project.area_from||'';
+      document.getElementById('projAreaTo').value=project.area_to||'';
+      document.getElementById('projStartDate').value=project.start_date?String(project.start_date).split('T')[0]:'';
+      document.getElementById('projHandoverDate').value=project.handover_date?String(project.handover_date).split('T')[0]:'';
+      document.getElementById('projCompletionStatus').value=project.completion_status||'';
+      // gallery
+      galImages=[];
+      var gal=project.gallery;
+      if(Array.isArray(gal))galImages=gal.map(function(u){return{url:u};});
+      else if(img)galImages=[{url:img}];
+      renderGallery();
+      wcUpdate();updateSerp();
+    }
+
+    /* ── Open editor ── */
+    window.openProjectEditor = async function(projectKey){
+      curKey=String(projectKey||'').trim();
+      if(!curKey)return;
+      overlay.style.display='block';
+      document.body.style.overflow='hidden';
+      resetForm();
+      document.getElementById('editorModalTitle').textContent='Đang tải...';
+      document.getElementById('editorSaveNote').textContent='Đang tải dữ liệu dự án...';
+      switchTab('content');
+      try{
+        var project=await window.supabaseDataService.getAdminProjectDetail(curKey);
+        curProject=project;
+        fillForm(project);
+        document.getElementById('editorSaveNote').textContent='Lưu để cập nhật ngay lên Supabase.';
+      }catch(err){
+        showES('error',err&&err.message?err.message:'Không thể tải dữ liệu dự án.');
+        document.getElementById('editorModalTitle').textContent='Lỗi tải dữ liệu';
+      }
+    };
+
+    function closeEditor(){overlay.style.display='none';document.body.style.overflow='';curKey='';curProject=null;}
+    document.getElementById('closeEditorBtn').addEventListener('click',closeEditor);
+    document.getElementById('cancelEditorBtn').addEventListener('click',closeEditor);
+    overlay.addEventListener('click',function(e){if(e.target===overlay)closeEditor();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.style.display!=='none')closeEditor();});
+
+    /* ── Save ── */
+    document.getElementById('saveProjectContentBtn').addEventListener('click', async function(){
+      if(!curKey){showES('error','Chưa chọn dự án để lưu.');return;}
+      var btn=this; var orig=btn.innerHTML;
+      btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...'; btn.disabled=true;
+      try{
+        var payload={
+          id: curKey,
+          slug: document.getElementById('projSeoSlug').value.trim(),
+          description: document.getElementById('projDescription').value.trim(),
+          content: document.getElementById('projRte').innerHTML.trim(),
+          seoTitle: document.getElementById('projSeoTitle').value.trim(),
+          seoDescription: document.getElementById('projSeoDescription').value.trim(),
+          seoBody: document.getElementById('projSeoRte').innerHTML.trim(),
+          seoSchema: document.getElementById('projSeoSchema').value.trim(),
+          thumbnailUrl: galImages.length>0?galImages[0].url:document.getElementById('projImageUrl').value.trim(),
+          image: galImages.length>0?galImages[0].url:document.getElementById('projImageUrl').value.trim(),
+          gallery: galImages.map(function(g){return g.url;}),
+          features: document.getElementById('projFeatures').value.split('\n').map(function(f){return f.trim();}).filter(Boolean),
+          totalUnits: document.getElementById('projTotalUnits').value,
+          openForSaleUnits: document.getElementById('projOpenForSale').value,
+          priceFrom: document.getElementById('projPriceFrom').value.trim(),
+          priceTo: document.getElementById('projPriceTo').value.trim(),
+          areaFrom: document.getElementById('projAreaFrom').value.trim(),
+          areaTo: document.getElementById('projAreaTo').value.trim(),
+          startDate: document.getElementById('projStartDate').value||null,
+          handoverDate: document.getElementById('projHandoverDate').value||null,
+          completionStatus: document.getElementById('projCompletionStatus').value
+        };
+        await window.supabaseDataService.saveAdminProjectContent(payload);
+        showES('success','✓ Đã lưu nội dung dự án thành công!');
+        document.getElementById('editorSaveNote').textContent='Đã lưu lúc '+new Date().toLocaleTimeString('vi-VN');
+      }catch(err){showES('error',err&&err.message?err.message:'Không thể lưu. Kiểm tra kết nối Supabase.');}
+      finally{btn.innerHTML=orig;btn.disabled=false;}
+    });
+
+    renderGallery();
+    })();
+    </script>
+
+    <script>
+    /* Accordion sidebar — auto-open current section */
+    (function(){
+      var page=location.pathname.split('/').pop().split('?')[0].split('#')[0];
+      function setupAccordions(){
+        document.querySelectorAll('.acc-btn').forEach(function(btn){
+          btn.addEventListener('click',function(){
+            var g=btn.closest('.acc-group');
+            var wasOpen=g.classList.contains('open');
+            document.querySelectorAll('.acc-group').forEach(function(x){x.classList.remove('open');var b=x.querySelector('.acc-btn');if(b)b.classList.remove('on');});
+            if(!wasOpen){g.classList.add('open');btn.classList.add('on');}
+          });
+        });
+        var autoOpened=false;
+        document.querySelectorAll('.acc-sub a').forEach(function(a){
+          var href=(a.getAttribute('href')||'').split('?')[0].split('#')[0].split('/').pop();
+          if(href===page){a.classList.add('on');var g=a.closest('.acc-group');if(g&&!autoOpened){g.classList.add('open');var b=g.querySelector('.acc-btn');if(b)b.classList.add('on');autoOpened=true;}}
+        });
+      }
+      if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setupAccordions);}else{setupAccordions();}
+    })();
+    </script>
+
+<script>
+/* ADMIN SESSION DOUBLE-CHECK v4 — minimal, tin tưởng EARLY GUARD + localStorage */
+(function(){
+  var ADMIN_ROLES = ['super_admin','admin','moderator','finance','seo_manager','content_editor','support','administrator','quan tri vien','quantri'];
+
+  function isRoleAdmin(role) {
+    return ADMIN_ROLES.includes(String(role||'').trim().toLowerCase());
+  }
+
+  function hasLocalAdmin() {
+    try {
+      var keys = ['currentUser','registeredUser'];
+      for (var i=0; i<keys.length; i++) {
+        var raw = localStorage.getItem(keys[i]);
+        if (!raw) continue;
+        var u = JSON.parse(raw);
+        if (!u) continue;
+        var role = u.systemRole || u.system_role || u.authRole || u.appRole || '';
+        if (isRoleAdmin(role)) return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  // Chỉ double-check với Supabase 1 lần sau 3s để đồng bộ localStorage.
+  // KHÔNG kick user — EARLY GUARD ở đầu file đã lo việc đó.
+  // Đây chỉ là "soft refresh": nếu Supabase trả role admin thì update localStorage.
+  async function softRefreshFromSupabase() {
+    try {
+      var svc = window.supabaseDataService;
+      if (!svc || typeof svc.getCurrentUserProfile !== 'function') return;
+      var profile = await svc.getCurrentUserProfile().catch(function(){return null;});
+      if (!profile) return;
+      // Nếu Supabase trả role admin thì localStorage đã được update bởi ensureProfileRow
+      // Không cần làm gì thêm
+      var role = profile.systemRole || profile.system_role || '';
+      if (!isRoleAdmin(role) && !hasLocalAdmin()) {
+        // Cả Supabase và localStorage đều không có admin → LAST RESORT kick
+        // Nhưng chỉ làm sau khi chắc chắn (đã pass EARLY GUARD vẫn xuống đây)
+        console.warn('[AdminGuard v4] Không tìm thấy admin role cả ở Supabase và localStorage');
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(softRefreshFromSupabase, 3000);
+  });
+})();
+</script>
+</body>
+</html>

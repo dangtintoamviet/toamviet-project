@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+    /* ADMIN EARLY GUARD - chạy trước tất cả mọi thứ */
+    (function() {
+        function isAdminLocally() {
+            try {
+                var keys = ["currentUser","registeredUser"];
+                for (var k = 0; k < keys.length; k++) {
+                    var raw = localStorage.getItem(keys[k]);
+                    if (!raw) continue;
+                    var u = JSON.parse(raw);
+                    if (!u) continue;
+                    var role = String(u.systemRole||u.system_role||u.authRole||u.appRole||"").trim().toLowerCase();
+                    if (["super_admin","admin","moderator","finance","seo_manager","content_editor","support","administrator","quan tri vien","quantri"].includes(role)) return true;
+                }
+            } catch(e) {}
+            return false;
+        }
+        var token = localStorage.getItem("authToken");
+        if (!token && !isAdminLocally()) {
+            window.location.replace("../auth/dang-nhap.html?redirect=" + encodeURIComponent(window.location.pathname));
+        }
+    })();
+    </script>
+    <title>Tổng quan quản trị | ToamViet.com.vn</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/admin-dashboard.css" />
+
+    <style>
+        :root {
+            --vip-color: #008b8b;
+            --vip-dark: #0f766e;
+            --hover-color: #ff8c00;
+            --soft-bg: #f4f7fa;
+            --stroke: #e2e8f0;
+            --text-main: #f4f7fa;
+            --text-soft: #64748b;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #0f766e;
+            --info: #2563eb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Roboto", "Segoe UI", sans-serif;
+            background: var(--soft-bg);
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .container-custom {
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .admin-shell {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .page-shell {
+            padding-bottom: 24px;
+        }
+
+        .page-breadcrumb {
+            margin-bottom: 16px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+            font-weight: 500;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .page-breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+            transition: 0.22s ease;
+        }
+
+        .page-breadcrumb a:hover {
+            color: var(--vip-color);
+        }
+
+        .page-hero {
+            margin-bottom: 24px;
+        }
+
+        .hero-card,
+        .sidebar-card,
+        .stats-card,
+        .panel-card,
+        .list-card {
+            background: white;
+            border: 1px solid var(--stroke);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .hero-card {
+            padding: 28px;
+            background: linear-gradient(135deg, #0f766e, #008b8b);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 18px;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .hero-title {
+            font-size: 30px;
+            line-height: 1.35;
+            font-weight: 900;
+            margin-bottom: 12px;
+            max-width: 900px;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.92);
+            max-width: 980px;
+            font-weight: 400;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hero-point {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 14px;
+        }
+
+        .hero-point .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 6px;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .hero-point .value {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.5;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 260px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar-card {
+            padding: 22px;
+            position: sticky;
+            top: 92px;
+        }
+
+        .admin-sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            transition: 0.25s ease;
+            color: #475569;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            text-decoration: none;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .admin-sidebar-item:hover,
+        .admin-sidebar-item.active {
+            background: var(--vip-color);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 139, 139, 0.16);
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .toolbar-card {
+            background: white;
+            border: 1px solid var(--stroke);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+            padding: 22px;
+            margin-bottom: 24px;
+        }
+
+        .toolbar-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #0f172a;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .toolbar-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.7;
+            font-weight: 400;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn-primary,
+        .btn-soft,
+        .btn-dark,
+        .btn-success,
+        .btn-warning {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--vip-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--vip-dark);
+        }
+
+        .btn-soft {
+            background: #eef2ff;
+            color: #334155;
+        }
+
+        .btn-soft:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1e293b;
+        }
+
+        .btn-success {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .btn-success:hover {
+            background: #d1fae5;
+        }
+
+        .btn-warning {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .btn-warning:hover {
+            background: #ffedd5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .stats-card {
+            padding: 18px;
+        }
+
+        .stats-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .stats-value {
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 10px;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .stats-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.5;
+            font-weight: 400;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+            gap: 24px;
+        }
+
+        .panel-card,
+        .list-card {
+            padding: 22px;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .section-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.7;
+            font-weight: 400;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .quick-item {
+            background: linear-gradient(180deg, #ffffff, #f8fafc);
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .quick-item-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .quick-item-value {
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 8px;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .quick-item-note {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+            font-weight: 400;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .activity-list,
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .activity-item,
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            background: #fff;
+        }
+
+        .activity-meta,
+        .action-meta {
+            min-width: 0;
+        }
+
+        .activity-title,
+        .action-title {
+            font-size: 14px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.6;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .activity-sub,
+        .action-sub {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-top: 4px;
+            font-weight: 400;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .activity-badge,
+        .mini-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .badge-pending {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .badge-approved {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .badge-project {
+            background: #ecfeff;
+            color: #0f766e;
+        }
+
+        .badge-users {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 34px 18px;
+            color: #94a3b8;
+            font-style: italic;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            background: #fff;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .status-box {
+            display: none;
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        .status-box.info {
+            display: block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-card {
+                position: static;
+            }
+
+            .hero-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid,
+            .quick-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-card,
+            .sidebar-card,
+            .stats-card,
+            .panel-card,
+            .list-card,
+            .toolbar-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .page-breadcrumb {
+                font-size: 12px;
+                line-height: 1.6;
+                margin-bottom: 14px;
+            }
+
+            .toolbar-head,
+            .section-head,
+            .activity-item,
+            .action-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-row .btn-primary,
+            .btn-row .btn-soft,
+            .btn-row .btn-dark,
+            .btn-row .btn-success,
+            .btn-row .btn-warning {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .quick-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        .acc-group{margin:4px 0}
+        .acc-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 15px;border-radius:12px;color:#475569;font-weight:700;font-size:15px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left}
+        .acc-btn:hover,.acc-btn.on{background:var(--vip-color,#008b8b);color:#fff}
+        .acc-btn .chev{transition:transform .2s;font-size:12px}
+        .acc-group.open .acc-btn .chev{transform:rotate(180deg)}
+        .acc-group.open .acc-btn{background:var(--vip-color,#008b8b);color:#fff}
+        .acc-sub{display:none;margin:5px 0 8px 20px;padding-left:12px;border-left:2px solid #dbe4ee}
+        .acc-group.open .acc-sub{display:flex;flex-direction:column}
+        .acc-subitem{display:block;padding:9px 12px;border-radius:10px;color:#64748b;font-weight:700;font-size:13px;text-decoration:none;margin:2px 0}
+        .acc-subitem:hover,.acc-subitem.on{background:#eaf2ff;color:#1d4ed8}
+    
+    /* ── Wide admin layout (same as quan-ly-tin-tuc) ── */
+    
+    .cw{max-width:1480px;margin:0 auto;padding:0 16px}
+    .pshell{padding-bottom:48px}
+    .adm-layout{display:flex;gap:0;align-items:flex-start;padding-top:20px}
+    .adm-sidebar{width:220px;flex-shrink:0;position:sticky;top:90px;margin-right:22px}
+    .adm-main{flex:1;min-width:0}
+    .sb-card{background:#fff;border:1px solid var(--stroke,#dbe4ee);border-radius:18px;box-shadow:0 6px 24px rgba(15,23,42,.06);padding:14px}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:3px;transition:.15s}
+    .sb-item:hover,.sb-item.on{background:#008b8b;color:#fff}
+    .sb-item i{width:16px;text-align:center;font-size:13px}
+    .sb-divider{height:1px;background:var(--stroke,#dbe4ee);margin:8px 0}
+    .acc-group{margin:2px 0}
+    .acc-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:11px;color:#475569;font-weight:700;font-size:14px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left;transition:.15s}
+    .acc-btn:hover,.acc-btn.on{background:#008b8b;color:#fff}
+    .acc-btn .chev{transition:transform .2s;font-size:10px;flex-shrink:0}
+    .acc-group.open .acc-btn .chev{transform:rotate(180deg)}
+    .acc-group.open .acc-btn{background:#008b8b;color:#fff}
+    .acc-sub{display:none;margin:3px 0 5px 16px;padding-left:11px;border-left:2px solid #dbe4ee}
+    .acc-group.open .acc-sub{display:flex;flex-direction:column}
+    .acc-subitem{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:9px;color:#64748b;font-weight:700;font-size:13px;text-decoration:none;margin:2px 0;transition:.15s}
+    .acc-subitem:hover,.acc-subitem.on{background:#eaf2ff;color:#1d4ed8}
+    @media(max-width:1100px){.adm-layout{flex-direction:column}.adm-sidebar{width:100%;position:static;margin-right:0;margin-bottom:16px}}
+    </style>
+</head>
+<body>
+    <div id="siteHeader"></div>
+    <div id="siteMobileMenu"></div>
+
+    <main class="pshell">
+        <div class="cw">
+                <div class="page-breadcrumb">
+                    <a href="/">Trang chủ</a>
+                    <span class="mx-2">/</span>
+                    <span class="text-slate-700 font-semibold">Admin</span>
+                    <span class="mx-2">/</span>
+                    <span class="text-slate-700 font-semibold">Tổng quan quản trị</span>
+                </div>
+
+                <section class="page-hero">
+                    <div class="hero-card">
+                        <div class="hero-badge">
+                            <i class="fa-solid fa-chart-line"></i>
+                            Trung tâm điều hành admin
+                        </div>
+
+                        <h1 class="hero-title">Theo dõi tổng thể dữ liệu website để quản trị viên kiểm soát thành viên, tin đăng, dự án và đồng bộ hệ thống</h1>
+
+                        <p class="hero-desc">
+                            Dashboard này là điểm vào trung tâm cho toàn bộ bộ admin. Tại đây bạn có thể nhìn nhanh số lượng tin chờ duyệt, dự án đang có dữ liệu, thành viên trong hệ thống và chạy nhanh các tác vụ đồng bộ để đảm bảo toàn bộ module user, admin và public hoạt động cùng một logic Supabase-first.
+                        </p>
+
+                        <div class="hero-points">
+                            <div class="hero-point">
+                                <div class="label">Tin đăng</div>
+                                <div class="value">Theo dõi pending, approved, hidden và rejected theo thời gian thực</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Dự án</div>
+                                <div class="value">Giám sát số dự án có dữ liệu và trạng thái nhóm bài theo project</div>
+                            </div>
+                            <div class="hero-point">
+                                <div class="label">Đồng bộ</div>
+                                <div class="value">Làm mới nhanh cache hiển thị và dữ liệu dự án từ DB trung tâm</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="adm-layout">
+                    
+  <!-- Sidebar -->
+  <aside class="adm-sidebar">
+    <div class="sb-card">
+      <a href="admin-dashboard.html" class="sb-item on"><i class="fa-solid fa-chart-line"></i>Tổng quan</a>
+      <a href="quan-ly-thanh-vien.html" class="sb-item"><i class="fa-solid fa-users"></i>Thành viên</a>
+      <a href="kiem-duyet-tin.html" class="sb-item"><i class="fa-solid fa-list-check"></i>Kiểm duyệt</a>
+      <div class="sb-divider"></div>
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-diagram-project"></i> Dự án</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-du-an.html" class="acc-subitem"><i class="fa-solid fa-list"></i>Danh sách</a>
+          <a href="quan-ly-noi-dung-du-an.html" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập nội dung</a>
+          <a href="quan-ly-chu-dau-tu.html" class="acc-subitem"><i class="fa-solid fa-building-circle-check"></i>Chủ đầu tư</a>
+          <a href="quan-ly-seo-du-an.html" class="acc-subitem"><i class="fa-solid fa-magnifying-glass-chart"></i>SEO dự án</a>
+        </div>
+      </div>
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-newspaper"></i> Tin tức</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-tin-tuc.html#list" class="acc-subitem"><i class="fa-solid fa-list"></i>Tất cả bài viết</a>
+          <a href="quan-ly-tin-tuc.html#editor" class="acc-subitem"><i class="fa-solid fa-pen-nib"></i>Biên tập bài viết</a>
+        </div>
+      </div>
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-magnifying-glass-chart"></i> SEO Landing</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-seo-landing.html#template" class="acc-subitem"><i class="fa-solid fa-code"></i>Template SEO</a>
+          <a href="quan-ly-seo-landing.html#override" class="acc-subitem"><i class="fa-solid fa-pen"></i>Override landing</a>
+        </div>
+      </div>
+
+      <div class="acc-group">
+        <button type="button" class="acc-btn"><span><i class="fa-solid fa-wallet"></i> Kiếm tiền / VIP</span><i class="fa-solid fa-chevron-down chev"></i></button>
+        <div class="acc-sub">
+          <a href="quan-ly-don-hang.html" class="acc-subitem"><i class="fa-solid fa-file-invoice-dollar"></i>Đơn hàng</a>
+          <a href="duyet-don-thu-phi.html" class="acc-subitem"><i class="fa-solid fa-money-check-dollar"></i>Duyệt đơn thu phí</a>
+          <a href="quan-ly-entitlement-vip.html" class="acc-subitem"><i class="fa-solid fa-crown"></i>Entitlement VIP</a>
+          <a href="cap-quyen-vip.html" class="acc-subitem"><i class="fa-solid fa-user-shield"></i>Cấp quyền VIP</a>
+        </div>
+      </div>
+      <div class="sb-divider"></div>
+      <a href="cai-dat-he-thong.html" class="sb-item"><i class="fa-solid fa-sliders"></i>Cài đặt hệ thống</a>
+    </div>
+  </aside>
+
+                      <div class="adm-main">
+                        <div class="toolbar-card">
+                            <div class="toolbar-head">
+                                <div>
+                                    <div class="toolbar-title">Tổng quan vận hành hệ thống</div>
+                                    <div class="toolbar-sub">Theo dõi dữ liệu chính và chạy nhanh các tác vụ quản trị để toàn hệ thống luôn đồng bộ.</div>
+                                </div>
+
+                                <div class="btn-row">
+                                    <button id="refreshDashboardBtn" type="button" class="btn-soft">
+                                        <i class="fa-solid fa-rotate-right mr-2"></i>Làm mới
+                                    </button>
+                                    <button id="syncDashboardBtn" type="button" class="btn-primary">
+                                        <i class="fa-solid fa-arrows-rotate mr-2"></i>Đồng bộ nhanh
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="globalStatus" class="status-box"></div>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng bài viết</div>
+                                <div class="stats-value" id="statTotalPosts">0</div>
+                                <div class="stats-note">Tổng dữ liệu bài viết đang có trong DB trung tâm.</div>
+                            </div>
+
+                            <div class="stats-card">
+                                <div class="stats-label">Tin chờ duyệt</div>
+                                <div class="stats-value" id="statPendingPosts">0</div>
+                                <div class="stats-note">Nhóm tin admin cần xử lý trước khi public.</div>
+                            </div>
+
+                            <div class="stats-card">
+                                <div class="stats-label">Tin đã duyệt</div>
+                                <div class="stats-value" id="statApprovedPosts">0</div>
+                                <div class="stats-note">Có thể hiển thị ngoài public.</div>
+                            </div>
+
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng dự án</div>
+                                <div class="stats-value" id="statProjects">0</div>
+                                <div class="stats-note">Số dự án đang có trong DB trung tâm và cache dùng chung.</div>
+                            </div>
+
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng thành viên</div>
+                                <div class="stats-value" id="statUsers">0</div>
+                                <div class="stats-note">Số tài khoản đã đồng bộ từ hồ sơ Supabase.</div>
+                            </div>
+
+                            <div class="stats-card">
+                                <div class="stats-label">Tổng lượt xem</div>
+                                <div class="stats-value" id="statTotalViews">0</div>
+                                <div class="stats-note">Tổng view thật của toàn bộ listings đang hiển thị trên sàn.</div>
+                            </div>
+
+                            <div class="stats-card">
+                                <div class="stats-label">Lead toàn sàn</div>
+                                <div class="stats-value" id="statTotalLeads">0</div>
+                                <div class="stats-note">Tổng lead đã ghi nhận. Đây là thước đo quan trọng trước khi bật thu phí.</div>
+                            </div>
+
+                            <div class="stats-card">
+                                <div class="stats-label">Chế độ kiếm tiền</div>
+                                <div class="stats-value" id="statMonetizationMode">FREE</div>
+                                <div class="stats-note">Hiện tại hệ thống nên để miễn phí cho đến khi admin chủ động bật thu phí.</div>
+                            </div>
+                        </div>
+
+                        <div class="content-grid">
+                            <div class="left-column">
+                                <div class="panel-card mb-6">
+                                    <div class="section-head">
+                                        <div>
+                                            <div class="section-title">Tác vụ nhanh quản trị</div>
+                                            <div class="section-sub">Các tác vụ dùng thường xuyên để kiểm tra và đồng bộ dữ liệu dùng chung.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="quick-grid">
+                                        <div class="quick-item">
+                                            <div class="quick-item-label">Kiểm duyệt tin đăng</div>
+                                            <div class="quick-item-value" id="quickPendingPosts">0 tin chờ duyệt</div>
+                                            <div class="quick-item-note">Đi thẳng đến khu vực duyệt tin mới để tránh tồn bài pending.</div>
+                                            <div class="btn-row mt-4">
+                                                <a href="kiem-duyet-tin.html" class="btn-primary">
+                                                    <i class="fa-solid fa-file-circle-check mr-2"></i>Mở duyệt tin
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="quick-item">
+                                            <div class="quick-item-label">Quản lý dự án</div>
+                                            <div class="quick-item-value" id="quickProjects">0 dự án</div>
+                                            <div class="quick-item-note">Kiểm tra các project có dữ liệu bài viết và đồng bộ nhóm dự án.</div>
+                                            <div class="btn-row mt-4">
+                                                <a href="quan-ly-du-an.html" class="btn-success">
+                                                    <i class="fa-solid fa-diagram-project mr-2"></i>Mở dự án
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="quick-item">
+                                            <div class="quick-item-label">Quản lý thành viên</div>
+                                            <div class="quick-item-value" id="quickUsers">0 tài khoản</div>
+                                            <div class="quick-item-note">Theo dõi tài khoản đã duyệt, chờ duyệt hoặc cần khóa tạm.</div>
+                                            <div class="btn-row mt-4">
+                                                <a href="quan-ly-thanh-vien.html" class="btn-soft">
+                                                    <i class="fa-solid fa-user-shield mr-2"></i>Mở thành viên
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="quick-item">
+                                            <div class="quick-item-label">Cài đặt hệ thống</div>
+                                            <div class="quick-item-value" id="quickStorage">0 KB cache</div>
+                                            <div class="quick-item-note">Kiểm tra cấu hình hệ thống và dung lượng cache giao diện đang dùng trên trình duyệt này.</div>
+                                            <div class="btn-row mt-4">
+                                                <a href="cai-dat-he-thong.html" class="btn-dark">
+                                                    <i class="fa-solid fa-gear mr-2"></i>Mở cài đặt
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="list-card">
+                                    <div class="section-head">
+                                        <div>
+                                            <div class="section-title">Hoạt động cần chú ý</div>
+                                            <div class="section-sub">Những điểm ưu tiên để admin xử lý trước từ dữ liệu hệ thống hiện tại.</div>
+                                        </div>
+                                    </div>
+
+                                    <div id="activityList" class="activity-list"></div>
+                                </div>
+                            </div>
+
+                            <div class="right-column">
+                                <div class="panel-card mb-6">
+                                    <div class="section-head">
+                                        <div>
+                                            <div class="section-title">Tình trạng dữ liệu nhanh</div>
+                                            <div class="section-sub">Nhìn nhanh cấu trúc dữ liệu đang có.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="activity-list">
+                                        <div class="activity-item">
+                                            <div class="activity-meta">
+                                                <div class="activity-title">Nguồn bài viết gốc</div>
+                                                <div class="activity-sub">Dữ liệu bài viết được đồng bộ từ Supabase rồi lưu cache hiển thị.</div>
+                                            </div>
+                                            <span class="mini-badge badge-approved" id="infoAllPostsBadge">0 bài</span>
+                                        </div>
+
+                                        <div class="activity-item">
+                                            <div class="activity-meta">
+                                                <div class="activity-title">Nhóm bất động sản</div>
+                                                <div class="activity-sub">Cache hiển thị cho nhóm bất động sản sau khi đồng bộ từ DB.</div>
+                                            </div>
+                                            <span class="mini-badge badge-project" id="infoPropertyBadge">0 nhóm</span>
+                                        </div>
+
+                                        <div class="activity-item">
+                                            <div class="activity-meta">
+                                                <div class="activity-title">Nhóm xây dựng</div>
+                                                <div class="activity-sub">Cache hiển thị cho nhóm xây dựng sau khi đồng bộ từ DB.</div>
+                                            </div>
+                                            <span class="mini-badge badge-approved" id="infoConstructionBadge">0 nhóm</span>
+                                        </div>
+
+                                        <div class="activity-item">
+                                            <div class="activity-meta">
+                                                <div class="activity-title">Bộ nhớ cache</div>
+                                                <div class="activity-sub">Ước tính tổng dung lượng cache giao diện đang dùng.</div>
+                                            </div>
+                                            <span class="mini-badge badge-users" id="infoStorageBadge">0 KB</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="list-card mb-6">
+                                    <div class="section-head">
+                                        <div>
+                                            <div class="section-title">Điểm nóng lead theo khu vực</div>
+                                            <div class="section-sub">Giúp admin nhìn ra tỉnh/thành và phường/xã đang tạo lead tốt nhất.</div>
+                                        </div>
+                                    </div>
+
+                                    <div id="leadAreaList" class="activity-list"></div>
+                                </div>
+
+                                <div class="list-card mb-6">
+                                    <div class="section-head">
+                                        <div>
+                                            <div class="section-title">Nguồn lead đang vào</div>
+                                            <div class="section-sub">Theo dõi kênh nào đang tạo lead nhiều nhất trên toàn site.</div>
+                                        </div>
+                                    </div>
+
+                                    <div id="leadSourceList" class="activity-list"></div>
+                                </div>
+
+                                <div class="panel-card">
+                                    <div class="section-head">
+                                        <div>
+                                            <div class="section-title">Lối tắt thao tác</div>
+                                            <div class="section-sub">Các thao tác quản trị nhanh hay dùng.</div>
+                                        </div>
+                                    </div>
+
+                                    <div id="actionList" class="action-list">
+                                        <div class="action-item">
+                                            <div class="action-meta">
+                                                <div class="action-title">Làm mới cache hiển thị</div>
+                                                <div class="action-sub">Làm mới các cache hiển thị từ dữ liệu trung tâm.</div>
+                                            </div>
+                                            <button id="rebuildStoresBtn" type="button" class="btn-soft">Chạy ngay</button>
+                                        </div>
+
+                                        <div class="action-item">
+                                            <div class="action-meta">
+                                                <div class="action-title">Làm mới dữ liệu dự án</div>
+                                                <div class="action-sub">Đồng bộ lại project counts và nhóm dự án từ DB trung tâm.</div>
+                                            </div>
+                                            <button id="syncProjectsBtn" type="button" class="btn-success">Chạy ngay</button>
+                                        </div>
+
+                                        <div class="action-item">
+                                            <div class="action-meta">
+                                                <div class="action-title">Mở trang kiểm duyệt tin</div>
+                                                <div class="action-sub">Đi thẳng đến trang xử lý bài pending.</div>
+                                            </div>
+                                            <a href="kiem-duyet-tin.html" class="btn-primary">Mở trang</a>
+                                        </div>
+
+                                        <div class="action-item">
+                                            <div class="action-meta">
+                                                <div class="action-title">Mở quản lý dự án</div>
+                                                <div class="action-sub">Kiểm tra project đã được gom nhóm đúng chưa.</div>
+                                            </div>
+                                            <a href="quan-ly-du-an.html" class="btn-dark">Mở trang</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div><!-- /adm-main -->
+                </div><!-- /adm-layout -->
+                </div><!-- /cw -->
+    </main>
+
+    <div id="siteFooter"></div>
+
+    <button id="goToTop" onclick="typeof safeScrollToTop === 'function' ? safeScrollToTop() : (typeof scrollToTop === 'function' ? scrollToTop() : window.scrollTo({ top: 0, behavior: 'smooth' }))">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
+
+    <script src="../assets/js/api-config.js"></script>
+    <script src="../assets/js/session.js"></script>
+    <script src="../assets/js/user-storage.js"></script>
+    <script src="../assets/js/post-storage.js"></script>
+    <script src="../assets/js/project-service.js"></script>
+    <script src="../assets/js/component-loader.js"></script>
+    <script src="../assets/js/vip-config.js"></script>
+    <script src="../assets/js/platform-core.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/auth-api.js"></script>
+    <script src="../assets/js/supabase-data-service.js"></script>
+    <script src="../assets/js/user-helpers.js"></script>
+    <script src="../assets/js/chat-support.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", initPage);
+
+
+        let dashboardState = {
+            posts: [],
+            projects: [],
+            users: [],
+            analytics: { topCities: [], topWards: [], sourceBreakdown: [] },
+            counts: {
+                posts: 0,
+                pendingPosts: 0,
+                approvedPosts: 0,
+                hiddenPosts: 0,
+                rejectedPosts: 0,
+                projects: 0,
+                users: 0,
+                propertyPosts: 0,
+                constructionPosts: 0,
+                totalViews: 0,
+                totalLeads: 0,
+                recentLeads: 0,
+                savedSearches: 0,
+                cityCoverage: 0,
+                wardCoverage: 0,
+                freeMode: true,
+                favorites: 0,
+                browserCacheKB: 0
+            }
+        };
+
+        let dashboardActionsBound = false;
+        let dashboardRealtimeBound = false;
+        let dashboardRefreshTimer = null;
+
+        function readLocalJson(key, fallback) {
+            try {
+                const raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : fallback;
+            } catch (error) {
+                return fallback;
+            }
+        }
+
+        function safeScrollToTop() {
+            if (typeof window.scrollToTop === "function") {
+                window.scrollToTop();
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        async function initSharedComponents() {
+            try {
+                if (typeof loadComponent === "function") {
+                    await loadComponent("siteHeader", "../components/header-inner.html");
+                    await loadComponent("siteMobileMenu", "../components/mobile-menu-inner.html");
+                    await loadComponent("siteFooter", "../components/footer-inner.html");
+                }
+
+                if (typeof setupFixedHeaderSpacing === "function") {
+                    setupFixedHeaderSpacing();
+                }
+                if (typeof watchHeaderSpacing === "function") {
+                    watchHeaderSpacing();
+                }
+            } catch (error) {
+                console.error("Không thể load component dùng chung:", error);
+            }
+        }
+
+        function getCurrentAdminUser() {
+            if (window.userStorage && typeof window.userStorage.getCurrentUser === "function") {
+                return window.userStorage.getCurrentUser();
+            }
+            return readLocalJson("currentUser", null) || readLocalJson("registeredUser", null) || null;
+        }
+
+        async function ensureAdminAccess() {
+            if (window.supabaseDataService && typeof window.supabaseDataService.ensureAdminAccess === "function") {
+                await window.supabaseDataService.ensureAdminAccess();
+                return getCurrentAdminUser();
+            }
+
+            const currentUser = getCurrentAdminUser();
+            const role = String(
+                currentUser?.systemRole ||
+                currentUser?.system_role ||
+                currentUser?.role ||
+                currentUser?.profileRole ||
+                currentUser?.roleLabel ||
+                ""
+            ).trim().toLowerCase();
+
+            const isAdmin = ["super_admin", "admin", "moderator", "finance", "seo_manager", "content_editor", "support", "administrator", "quan tri vien", "quantri"].includes(role);
+
+            if (isAdmin) {
+                return currentUser;
+            }
+
+            const redirectUrl = currentUser ? "../user/tai-khoan.html" : "../auth/dang-nhap.html";
+            showStatus("error", "Bạn không có quyền truy cập khu vực quản trị. Hệ thống sẽ chuyển hướng ngay sau ít giây.");
+            setTimeout(function () {
+                window.location.href = redirectUrl;
+            }, 1200);
+            throw new Error("ADMIN_ONLY");
+        }
+
+        function scheduleDashboardRefresh(message, statusType) {
+            if (dashboardRefreshTimer) {
+                clearTimeout(dashboardRefreshTimer);
+            }
+            dashboardRefreshTimer = setTimeout(function () {
+                syncDashboardFromDb(message || null, statusType || "info");
+            }, 120);
+        }
+
+        function showStatus(type, message) {
+            const box = document.getElementById("globalStatus");
+            box.className = "status-box " + type;
+            box.textContent = message;
+        }
+
+        function hideStatus() {
+            const box = document.getElementById("globalStatus");
+            box.className = "status-box";
+            box.textContent = "";
+        }
+
+        function setButtonBusy(button, busy, busyLabel) {
+            if (!button) return;
+            if (!button.dataset.originalLabel) {
+                button.dataset.originalLabel = button.innerHTML;
+            }
+            button.disabled = !!busy;
+            button.classList.toggle("is-loading", !!busy);
+            if (busy && busyLabel) {
+                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>' + busyLabel;
+            } else if (!busy && button.dataset.originalLabel) {
+                button.innerHTML = button.dataset.originalLabel;
+            }
+        }
+
+        async function runButtonTask(button, busyLabel, task) {
+            setButtonBusy(button, true, busyLabel);
+            try {
+                return await task();
+            } finally {
+                setButtonBusy(button, false);
+            }
+        }
+
+        function buildFallbackSnapshot() {
+            if (window.supabaseDataService && typeof window.supabaseDataService.buildAdminCacheSnapshot === "function") {
+                return window.supabaseDataService.buildAdminCacheSnapshot(dashboardState || {});
+            }
+            return dashboardState;
+        }
+
+        function applySnapshot(snapshot) {
+            dashboardState = snapshot || buildFallbackSnapshot();
+            const counts = dashboardState.counts || {};
+
+            document.getElementById("statTotalPosts").textContent = counts.posts || 0;
+            document.getElementById("statPendingPosts").textContent = counts.pendingPosts || 0;
+            document.getElementById("statApprovedPosts").textContent = counts.approvedPosts || 0;
+            document.getElementById("statProjects").textContent = counts.projects || 0;
+            document.getElementById("statUsers").textContent = counts.users || 0;
+            document.getElementById("statTotalViews").textContent = Number(counts.totalViews || 0).toLocaleString("vi-VN");
+            document.getElementById("statTotalLeads").textContent = Number(counts.totalLeads || 0).toLocaleString("vi-VN");
+            document.getElementById("statMonetizationMode").textContent = counts.freeMode ? "FREE" : "PAID";
+
+            document.getElementById("quickPendingPosts").textContent = (counts.pendingPosts || 0) + " tin chờ duyệt";
+            document.getElementById("quickProjects").textContent = (counts.projects || 0) + " dự án";
+            document.getElementById("quickUsers").textContent = (counts.users || 0) + " tài khoản";
+            document.getElementById("quickStorage").textContent = (counts.browserCacheKB || 0) + " KB cache";
+
+            document.getElementById("infoAllPostsBadge").textContent = (counts.posts || 0) + " bài";
+            document.getElementById("infoPropertyBadge").textContent = (counts.propertyPosts || 0) + " mục";
+            document.getElementById("infoConstructionBadge").textContent = (counts.constructionPosts || 0) + " mục";
+            document.getElementById("infoStorageBadge").textContent = (counts.browserCacheKB || 0) + " KB";
+            renderLeadInsights();
+        }
+
+        function renderLeadInsights() {
+            const analytics = dashboardState.analytics || {};
+            const areaList = document.getElementById("leadAreaList");
+            const sourceList = document.getElementById("leadSourceList");
+            if (!areaList || !sourceList) return;
+
+            const topCities = Array.isArray(analytics.topCities) ? analytics.topCities : [];
+            const topWards = Array.isArray(analytics.topWards) ? analytics.topWards : [];
+            const sourceBreakdown = Array.isArray(analytics.sourceBreakdown) ? analytics.sourceBreakdown : [];
+
+            const areaItems = [];
+            topCities.slice(0, 4).forEach(function (item) {
+                areaItems.push(`
+                    <div class="activity-item">
+                        <div class="activity-meta">
+                            <div class="activity-title">${escapeHtml(item.name || "Khu vực")}</div>
+                            <div class="activity-sub">${Number(item.leads || 0).toLocaleString("vi-VN")} lead • ${Number(item.views || 0).toLocaleString("vi-VN")} view • ${Number(item.listings || 0).toLocaleString("vi-VN")} tin</div>
+                        </div>
+                        <span class="mini-badge badge-users">City</span>
+                    </div>
+                `);
+            });
+            topWards.slice(0, 4).forEach(function (item) {
+                areaItems.push(`
+                    <div class="activity-item">
+                        <div class="activity-meta">
+                            <div class="activity-title">${escapeHtml(item.ward || "Phường/Xã")}</div>
+                            <div class="activity-sub">${escapeHtml(item.city || "")} • ${Number(item.leads || 0).toLocaleString("vi-VN")} lead • ${Number(item.listings || 0).toLocaleString("vi-VN")} tin</div>
+                        </div>
+                        <span class="mini-badge badge-project">Ward</span>
+                    </div>
+                `);
+            });
+            areaList.innerHTML = areaItems.length ? areaItems.join("") : `
+                <div class="activity-item">
+                    <div class="activity-meta">
+                        <div class="activity-title">Chưa có đủ lead để phân tích khu vực</div>
+                        <div class="activity-sub">Khi lead tích lũy nhiều hơn, dashboard sẽ tự hiện điểm nóng theo tỉnh/thành và phường/xã.</div>
+                    </div>
+                    <span class="mini-badge badge-project">Đang chờ</span>
+                </div>
+            `;
+
+            sourceList.innerHTML = sourceBreakdown.length ? sourceBreakdown.slice(0, 6).map(function (item) {
+                return `
+                    <div class="activity-item">
+                        <div class="activity-meta">
+                            <div class="activity-title">${escapeHtml(item.source || "website")}</div>
+                            <div class="activity-sub">${Number(item.count || 0).toLocaleString("vi-VN")} lead đã ghi nhận từ nguồn này.</div>
+                        </div>
+                        <span class="mini-badge badge-approved">Lead</span>
+                    </div>
+                `;
+            }).join("") : `
+                <div class="activity-item">
+                    <div class="activity-meta">
+                        <div class="activity-title">Chưa có nguồn lead nổi trội</div>
+                        <div class="activity-sub">Khi người dùng bắt đầu gọi điện, nhắn tin hoặc gửi form nhiều hơn, nguồn lead sẽ hiện ở đây.</div>
+                    </div>
+                    <span class="mini-badge badge-users">0</span>
+                </div>
+            `;
+        }
+
+        function renderActivities() {
+            const counts = dashboardState.counts || {};
+            const activityList = document.getElementById("activityList");
+            const items = [];
+
+            if (counts.pendingPosts) {
+                items.push({
+                    title: "Đang có " + counts.pendingPosts + " tin chờ admin duyệt",
+                    sub: "Bạn nên vào trang Kiểm duyệt tin để xử lý trước khi dữ liệu bị tồn.",
+                    badgeClass: "badge-pending",
+                    badgeText: "Ưu tiên",
+                    icon: "fa-solid fa-clock"
+                });
+            }
+
+            if (counts.projects) {
+                items.push({
+                    title: "Hệ thống đang có " + counts.projects + " dự án đã đồng bộ",
+                    sub: "Nên kiểm tra lại dự án nào có bài pending hoặc dữ liệu chưa chuẩn hóa.",
+                    badgeClass: "badge-project",
+                    badgeText: "Dự án",
+                    icon: "fa-solid fa-diagram-project"
+                });
+            }
+
+            if (counts.totalLeads) {
+                items.push({
+                    title: "Đã ghi nhận " + counts.totalLeads + " lead trên toàn sàn",
+                    sub: "Đây là số liệu nền để bạn đánh giá hiệu quả miễn phí hiện tại trước khi bật monetization trong tương lai.",
+                    badgeClass: "badge-users",
+                    badgeText: "Lead",
+                    icon: "fa-solid fa-phone-volume"
+                });
+            }
+
+            if (counts.freeMode) {
+                items.push({
+                    title: "Hệ thống đang ở chế độ đăng tin miễn phí",
+                    sub: "Thanh toán nên tiếp tục để OFF. Hãy dùng giai đoạn này để tối ưu dữ liệu, SEO và lead trước khi thu phí.",
+                    badgeClass: "badge-project",
+                    badgeText: "FREE",
+                    icon: "fa-solid fa-gift"
+                });
+            }
+
+            if (counts.users) {
+                items.push({
+                    title: "Đang có " + counts.users + " tài khoản thành viên đã đồng bộ",
+                    sub: "Bạn có thể sang trang Quản lý thành viên để rà trạng thái tài khoản.",
+                    badgeClass: "badge-users",
+                    badgeText: "Thành viên",
+                    icon: "fa-solid fa-user-shield"
+                });
+            }
+
+            if (counts.hiddenPosts) {
+                items.push({
+                    title: "Có " + counts.hiddenPosts + " tin đang ở trạng thái ẩn",
+                    sub: "Nên kiểm tra xem tin ẩn là do admin thao tác hay người dùng tạm tắt hiển thị.",
+                    badgeClass: "badge-project",
+                    badgeText: "Đang ẩn",
+                    icon: "fa-solid fa-eye-slash"
+                });
+            }
+
+            if (counts.rejectedPosts) {
+                items.push({
+                    title: "Có " + counts.rejectedPosts + " tin bị từ chối",
+                    sub: "Nên rà xem dữ liệu bị lỗi nội dung, pháp lý hay sai luồng hiển thị.",
+                    badgeClass: "badge-pending",
+                    badgeText: "Từ chối",
+                    icon: "fa-solid fa-ban"
+                });
+            }
+
+            if (!items.length) {
+                activityList.innerHTML = '<div class="empty-box">Hiện chưa có cảnh báo nào nổi bật. Hệ thống đang ở trạng thái ổn định.</div>';
+                return;
+            }
+
+            activityList.innerHTML = items.map(function (item) {
+                return `
+                    <div class="activity-item">
+                        <div class="activity-meta">
+                            <div class="activity-title">${item.title}</div>
+                            <div class="activity-sub">${item.sub}</div>
+                        </div>
+                        <span class="activity-badge ${item.badgeClass}">
+                            <i class="${item.icon}"></i>${item.badgeText}
+                        </span>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function bindRealtimeRefresh() {
+            if (dashboardRealtimeBound) return;
+            dashboardRealtimeBound = true;
+
+            ["tv:posts-synced", "tv:managed-posts-synced", "tv:projects-synced", "tv:profile-synced", "tv:users-synced", "tv:system-settings-saved"].forEach(function (eventName) {
+                document.addEventListener(eventName, function () {
+                    scheduleDashboardRefresh(null, "info");
+                });
+                window.addEventListener(eventName, function () {
+                    scheduleDashboardRefresh(null, "info");
+                });
+            });
+
+            window.addEventListener("storage", function (event) {
+                if (!event || !event.key) return;
+                if (["allPosts", "managedPosts", "projects", "currentUser", "registeredUser", "registeredUsers"].includes(event.key)) {
+                    scheduleDashboardRefresh(null, "info");
+                }
+            });
+        }
+
+        async function syncDashboardFromDb(message, statusType) {
+            if (!window.supabaseDataService || typeof window.supabaseDataService.refreshAdminSnapshot !== "function") {
+                const fallback = buildFallbackSnapshot();
+                applySnapshot(fallback);
+                renderActivities();
+                if (message) {
+                    showStatus(statusType || "info", message + " Nhưng chưa thể kết nối Supabase data service.");
+                }
+                return fallback;
+            }
+
+            try {
+                const snapshot = await window.supabaseDataService.refreshAdminSnapshot();
+                applySnapshot(snapshot);
+                renderActivities();
+                if (message) {
+                    showStatus(statusType || "success", message);
+                }
+                return snapshot;
+            } catch (error) {
+                console.warn("Không thể đồng bộ dashboard từ Supabase:", error);
+                const fallback = buildFallbackSnapshot();
+                applySnapshot(fallback);
+                renderActivities();
+                if (message) {
+                    showStatus("info", "Đang hiển thị dữ liệu từ bộ nhớ cục bộ. Bấm 'Đồng bộ nhanh' nếu cần làm mới từ DB.");
+                }
+                return fallback;
+            }
+        }
+
+        function bindActions() {
+            if (dashboardActionsBound) return;
+            dashboardActionsBound = true;
+
+            document.getElementById("refreshDashboardBtn").addEventListener("click", async function () {
+                await runButtonTask(this, "Đang tải", async function () {
+                    await syncDashboardFromDb("Đã làm mới dữ liệu dashboard từ Supabase DB trung tâm.", "success");
+                });
+            });
+
+            document.getElementById("syncDashboardBtn").addEventListener("click", async function () {
+                await runButtonTask(this, "Đang đồng bộ", async function () {
+                    await syncDashboardFromDb("Đã đồng bộ nhanh dashboard và cache hiển thị từ DB trung tâm.", "success");
+                });
+            });
+
+            document.getElementById("rebuildStoresBtn").addEventListener("click", async function () {
+                await runButtonTask(this, "Đang làm mới", async function () {
+                    if (window.supabaseDataService && typeof window.supabaseDataService.refreshPublicData === "function") {
+                        await window.supabaseDataService.refreshPublicData().catch(function () { return null; });
+                    }
+                    await syncDashboardFromDb("Đã làm mới cache hiển thị từ dữ liệu trung tâm.", "success");
+                });
+            });
+
+            document.getElementById("syncProjectsBtn").addEventListener("click", async function () {
+                await runButtonTask(this, "Đang làm mới", async function () {
+                    if (window.supabaseDataService && typeof window.supabaseDataService.refreshAdminListings === "function") {
+                        await window.supabaseDataService.refreshAdminListings().catch(function () { return null; });
+                    }
+                    await syncDashboardFromDb("Đã làm mới dữ liệu dự án và project counts từ DB trung tâm.", "success");
+                });
+            });
+        }
+
+        window.safeScrollToTop = safeScrollToTop;
+
+        async function initPage() {
+            await initSharedComponents();
+
+            try {
+                await ensureAdminAccess();
+            } catch (error) {
+                if (error && error.message === "ADMIN_ONLY") return;
+                console.error("Không thể xác thực quyền admin:", error);
+                showStatus("error", error?.message || "Không thể xác thực quyền truy cập khu vực quản trị.");
+                return;
+            }
+
+            hideStatus();
+            applySnapshot(buildFallbackSnapshot());
+            renderActivities();
+            bindActions();
+            bindRealtimeRefresh();
+            await syncDashboardFromDb(null, "success");
+        }
+    </script>
+
+    <script>
+    (function(){
+      var page=location.pathname.split("/").pop().split("?")[0].split("#")[0];
+      function setupAccordions(){
+        document.querySelectorAll(".acc-btn").forEach(function(btn){
+          btn.addEventListener("click",function(){
+            var g=btn.closest(".acc-group");
+            var wasOpen=g.classList.contains("open");
+            document.querySelectorAll(".acc-group").forEach(function(x){x.classList.remove("open");var b=x.querySelector(".acc-btn");if(b)b.classList.remove("on");});
+            if(!wasOpen){g.classList.add("open");btn.classList.add("on");}
+          });
+        });
+        var autoOpened=false;
+        document.querySelectorAll(".acc-sub a").forEach(function(a){
+          var href=(a.getAttribute("href")||"").split("?")[0].split("#")[0].split("/").pop();
+          if(href===page){a.classList.add("on");var g=a.closest(".acc-group");if(g&&!autoOpened){g.classList.add("open");var b=g.querySelector(".acc-btn");if(b)b.classList.add("on");autoOpened=true;}}
+        });
+      }
+      if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",setupAccordions);}else{setupAccordions();}
+    })();
+    </script>
+
+<script>
+/* ADMIN SESSION DOUBLE-CHECK v4 — minimal, tin tưởng EARLY GUARD + localStorage */
+(function(){
+  var ADMIN_ROLES = ['super_admin','admin','moderator','finance','seo_manager','content_editor','support','administrator','quan tri vien','quantri'];
+
+  function isRoleAdmin(role) {
+    return ADMIN_ROLES.includes(String(role||'').trim().toLowerCase());
+  }
+
+  function hasLocalAdmin() {
+    try {
+      var keys = ['currentUser','registeredUser'];
+      for (var i=0; i<keys.length; i++) {
+        var raw = localStorage.getItem(keys[i]);
+        if (!raw) continue;
+        var u = JSON.parse(raw);
+        if (!u) continue;
+        var role = u.systemRole || u.system_role || u.authRole || u.appRole || '';
+        if (isRoleAdmin(role)) return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  // Chỉ double-check với Supabase 1 lần sau 3s để đồng bộ localStorage.
+  // KHÔNG kick user — EARLY GUARD ở đầu file đã lo việc đó.
+  // Đây chỉ là "soft refresh": nếu Supabase trả role admin thì update localStorage.
+  async function softRefreshFromSupabase() {
+    try {
+      var svc = window.supabaseDataService;
+      if (!svc || typeof svc.getCurrentUserProfile !== 'function') return;
+      var profile = await svc.getCurrentUserProfile().catch(function(){return null;});
+      if (!profile) return;
+      // Nếu Supabase trả role admin thì localStorage đã được update bởi ensureProfileRow
+      // Không cần làm gì thêm
+      var role = profile.systemRole || profile.system_role || '';
+      if (!isRoleAdmin(role) && !hasLocalAdmin()) {
+        // Cả Supabase và localStorage đều không có admin → LAST RESORT kick
+        // Nhưng chỉ làm sau khi chắc chắn (đã pass EARLY GUARD vẫn xuống đây)
+        console.warn('[AdminGuard v4] Không tìm thấy admin role cả ở Supabase và localStorage');
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(softRefreshFromSupabase, 3000);
+  });
+})();
+</script>
+</body>
+</html>
